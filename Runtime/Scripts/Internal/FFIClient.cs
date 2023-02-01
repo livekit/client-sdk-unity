@@ -20,10 +20,7 @@ namespace LiveKit.Internal
     internal sealed class FFIClient
     {
         private static readonly Lazy<FFIClient> _instance = new Lazy<FFIClient>(() => new FFIClient());
-        public static FFIClient Instance
-        {
-            get => _instance.Value;
-        }
+        public static FFIClient Instance => _instance.Value;
 
         // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
