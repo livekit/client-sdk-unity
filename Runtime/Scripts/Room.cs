@@ -16,6 +16,7 @@ namespace LiveKit
         public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
         public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
+        public delegate void ConnectionDelegate();
 
         public String Sid { private set; get; }
         public String Name { private set; get; }
@@ -37,6 +38,10 @@ namespace LiveKit
         public event ConnectionQualityChangeDelegate ConnectionQualityChanged;
         public event DataDelegate DataReceived;
         public event ConnectionStateChangeDelegate ConnectionStateChanged;
+        public event ConnectionDelegate Connected;
+        public event ConnectionDelegate Disconnected;
+        public event ConnectionDelegate Reconnecting;
+        public event ConnectionDelegate Reconnected;
 
         public ConnectInstruction Connect(String url, String token)
         {
@@ -173,8 +178,18 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
+                case RoomEvent.MessageOneofCase.Connected:
+                    Connected?.Invoke();
+                    break;
                 case RoomEvent.MessageOneofCase.Disconnected:
+                    Disconnected?.Invoke();
                     OnDisconnect();
+                    break;
+                case RoomEvent.MessageOneofCase.Reconnecting:
+                    Reconnecting?.Invoke();
+                    break;
+                case RoomEvent.MessageOneofCase.Reconnected:
+                    Reconnected?.Invoke();
                     break;
             }
         }
