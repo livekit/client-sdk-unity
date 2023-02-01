@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using System.Runtime.InteropServices;
 
 namespace LiveKit
 {
@@ -13,6 +14,8 @@ namespace LiveKit
         public delegate void MuteDelegate(TrackPublication publication, Participant participant);
         public delegate void SpeakersChangeDelegate(List<Participant> speakers);
         public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
+        public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind);
+        public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
 
         public String Sid { private set; get; }
         public String Name { private set; get; }
@@ -32,6 +35,8 @@ namespace LiveKit
         public event MuteDelegate TrackUnmuted;
         public event SpeakersChangeDelegate ActiveSpeakersChanged;
         public event ConnectionQualityChangeDelegate ConnectionQualityChanged;
+        public event DataDelegate DataReceived;
+        public event ConnectionStateChangeDelegate ConnectionStateChanged;
 
         public ConnectInstruction Connect(String url, String token)
         {
@@ -154,8 +159,19 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
+                        var dataInfo = e.DataReceived;
+
+                        var handle = new FFIHandle((IntPtr)dataInfo.Handle.Id);
+                        var data = new byte[dataInfo.DataSize];
+                        Marshal.Copy((IntPtr)dataInfo.DataPtr, data, 0, data.Length);
+                        handle.Dispose();
+
                         var participant = GetParticipant(e.DataReceived.ParticipantSid);
+                        DataReceived?.Invoke(data, participant, dataInfo.Kind);
                     }
+                    break;
+                case RoomEvent.MessageOneofCase.ConnectionStateChanged:
+                    ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
                     OnDisconnect();
