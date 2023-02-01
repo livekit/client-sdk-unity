@@ -1,0 +1,19 @@
+{
+  "name": "io.livekit.livekit-sdk",
+  "version": "1.0.0",
+  "displayName": "LiveKit SDK",
+  "description": "LiveKit",
+  "unity": "2021.3",
+  "author": {
+    "name": "Th\u00e9o Monnom",
+    "email": "theo.monnom@outlook.com"
+  },
+  "samples": [
+    {
+      "displayName": "Example",
+      "description": "LiveKit sample",
+      "path": "Samples~"
+    }
+  ],
+  "type": "library"
+}
