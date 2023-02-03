@@ -52,8 +52,8 @@ namespace LiveKit
             var request = new FFIRequest();
             request.AsyncConnect = connect;
 
-            var reqId = FFIClient.Instance.SendRequest(request);
-            return new ConnectInstruction(reqId, this);
+            var resp = FFIClient.Instance.SendRequest(request);
+            return new ConnectInstruction(resp.AsyncId, this);
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -111,11 +111,13 @@ namespace LiveKit
                         {
                             var videoTrack = new RemoteVideoTrack(info);
                             publication.UpdateTrack(videoTrack);
+                            TrackSubscribed?.Invoke(videoTrack, publication, participant);
                         }
                         else if (info.Kind == TrackKind.KindAudio)
                         {
                             var audioTrack = new RemoteAudioTrack(info);
                             publication.UpdateTrack(audioTrack);
+                            TrackSubscribed?.Invoke(audioTrack, publication, participant);
                         }
                     }
                     break;
@@ -141,7 +143,7 @@ namespace LiveKit
                         var participant = GetParticipant(e.TrackUnmuted.ParticipantSid);
                         var publication = participant.Tracks[e.TrackUnmuted.TrackSid];
                         publication.UpdateMuted(false);
-                        TrackMuted?.Invoke(publication, participant);
+                        TrackUnmuted?.Invoke(publication, participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.SpeakersChanged:
@@ -216,27 +218,27 @@ namespace LiveKit
 
         public sealed class ConnectInstruction : YieldInstruction
         {
-            private uint _reqId;
+            private ulong _asyncId;
             private Room _room;
 
-            internal ConnectInstruction(uint reqId, Room room)
+            internal ConnectInstruction(ulong asyncId, Room room)
             {
-                _reqId = reqId;
+                _asyncId = asyncId;
                 _room = room;
                 FFIClient.Instance.ConnectReceived += OnConnect;
             }
 
-            private void OnConnect(uint reqId, ConnectResponse resp)
+            private void OnConnect(ulong asyncId, ConnectEvent e)
             {
-                if (_reqId != reqId)
+                if (_asyncId != asyncId)
                     return;
 
                 FFIClient.Instance.ConnectReceived -= OnConnect;
 
-                if (resp.Success)
-                    _room.OnConnect(resp.Room);
+                if (e.Success)
+                    _room.OnConnect(e.Room);
 
-                IsError = !resp.Success;
+                IsError = !e.Success;
                 IsDone = true;
             }
         }
