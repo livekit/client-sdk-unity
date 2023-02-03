@@ -11,7 +11,7 @@ namespace LiveKit.Internal
     delegate void FFICallbackDelegate(IntPtr data, int size);
 
     // Events
-    internal delegate void ConnectReceivedDelegate(ConnectResponse res);
+    internal delegate void ConnectReceivedDelegate(ulong async_id, ConnectEvent e);
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
     internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
@@ -40,7 +40,7 @@ namespace LiveKit.Internal
             FFICallbackDelegate callback = FFICallback;
 
             var configureReq = new InitializeRequest();
-            configureReq.CallbackPtr = unchecked((ulong)Marshal.GetFunctionPointerForDelegate(callback).ToInt64());
+            configureReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
 
             var request = new FFIRequest();
             request.Configure = configureReq;
@@ -74,19 +74,19 @@ namespace LiveKit.Internal
             // It uses a Queue internally
             _context.Post((resp) =>
             {
-                var response = resp as FFIResponse;
+                var response = resp as FFIEvent;
                 switch (response.MessageCase)
                 {
-                    case FFIResponse.MessageOneofCase.AsyncConnect:
-                        ConnectReceived?.Invoke(response.AsyncConnect);
+                    case FFIEvent.MessageOneofCase.ConnectEvent:
+                        ConnectReceived?.Invoke(response.AsyncId, response.ConnectEvent);
                         break;
-                    case FFIResponse.MessageOneofCase.RoomEvent:
+                    case FFIEvent.MessageOneofCase.RoomEvent:
                         RoomEventReceived?.Invoke(response.RoomEvent);
                         break;
-                    case FFIResponse.MessageOneofCase.TrackEvent:
+                    case FFIEvent.MessageOneofCase.TrackEvent:
                         TrackEventReceived?.Invoke(response.TrackEvent);
                         break;
-                    case FFIResponse.MessageOneofCase.ParticipantEvent:
+                    case FFIEvent.MessageOneofCase.ParticipantEvent:
                         ParticipantEventReceived?.Invoke(response.ParticipantEvent);
                         break;
                 }

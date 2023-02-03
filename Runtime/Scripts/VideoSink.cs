@@ -74,6 +74,28 @@ namespace LiveKit
 
             return null;
         }
+
+        public I420Buffer ToI420()
+        {
+            // ToI420Request will free the input buffer, don't drop twice
+            // This class instance is now invalid, the users should not use it 
+            // after using this function.
+            _handle.SetHandleAsInvalid();
+
+            var handleId = new FFIHandleId();
+            handleId.Id = (ulong)_handle.DangerousGetHandle();
+
+            var toi420 = new ToI420Request();
+            toi420.Buffer = handleId;
+
+            var request = new FFIRequest();
+            request.ToI420 = toi420;
+
+            var resp = FFIClient.Instance.SendRequest(request);
+            var id = resp.ToI420.NewBuffer.Id;
+
+            return new I420Buffer(new FFIHandle((IntPtr)id), _info);
+        }
     }
 
     public abstract class PlanarYuvBuffer : VideoFrameBuffer
