@@ -24,10 +24,11 @@ namespace LiveKit
         }
     }
 
-    public abstract class VideoFrameBuffer
+    public abstract class VideoFrameBuffer : IDisposable
     {
         private FFIHandle _handle;
         private VideoFrameBufferInfo _info;
+        private bool _disposed = false;
 
         public int Width => _info.Width;
         public int Height => _info.Height;
@@ -39,8 +40,45 @@ namespace LiveKit
         {
             _handle = handle;
             _info = info;
+
+            var memSize = GetMemorySize();
+            if (memSize > 0)
+                GC.AddMemoryPressure(memSize);
         }
 
+        ~VideoFrameBuffer()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _handle.Dispose();
+
+                var memSize = GetMemorySize();
+                if (memSize > 0)
+                    GC.RemoveMemoryPressure(memSize);
+
+                _disposed = true;
+            }
+        }
+
+        /// Used for GC.AddMemoryPressure(Int64)
+        /// TODO(theomonnom): Remove the default implementation when each buffer type is implemented
+        internal virtual long GetMemorySize()
+        {
+            return -1;
+        }
+
+        /// VideoFrameBuffer takes owenship of the FFIHandle
         internal static VideoFrameBuffer Create(FFIHandle handle, VideoFrameBufferInfo info)
         {
             switch (info.BufferType)
@@ -67,7 +105,7 @@ namespace LiveKit
         public I420Buffer ToI420()
         {
             if (!IsValid)
-                return null;
+                throw new SystemException("the handle is invalid");
 
             // ToI420Request will free the input buffer, don't drop twice
             // This class instance is now invalid, the users should not use it 
@@ -92,7 +130,7 @@ namespace LiveKit
         public void ToARGB(VideoFormatType format, IntPtr dst, int dstStride, int width, int height)
         {
             if (!IsValid)
-                return;
+                throw new SystemException("the handle is invalid");
 
             var handleId = new FFIHandleId();
             handleId.Id = (ulong)_handle.DangerousGetHandle();
@@ -109,7 +147,6 @@ namespace LiveKit
             request.ToArgb = argb;
 
             FFIClient.Instance.SendRequest(request);
-            GC.KeepAlive(_handle);
         }
     }
 
@@ -173,6 +210,14 @@ namespace LiveKit
     public class I420Buffer : PlanarYuv8Buffer
     {
         internal I420Buffer(FFIHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+
+        internal override long GetMemorySize()
+        {
+            var chromaHeight = (Height + 1) / 2;
+            return StrideY * Height
+                + StrideU * chromaHeight
+                + StrideV * chromaHeight;
+        }
     }
 
     public class I420ABuffer : I420Buffer
