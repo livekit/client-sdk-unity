@@ -15,6 +15,7 @@ namespace LiveKit
 
         private VideoSinkInfo _info;
         private bool _disposed = false;
+        private bool _dirty = false;
 
         /// Called when we receive a new frame from the VideoTrack
         public event FrameReceiveDelegate FrameReceived;
@@ -82,7 +83,7 @@ namespace LiveKit
             if (_disposed)
                 yield break;
 
-            if (VideoBuffer == null || !VideoBuffer.IsValid)
+            if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
                 goto Wait;
 
             var rWidth = VideoBuffer.Width;
@@ -101,7 +102,10 @@ namespace LiveKit
             if (textureChanged)
                 TextureReceived?.Invoke(Texture);
 
-            Wait:
+            TextureUploaded?.Invoke();
+            _dirty = false;
+
+        Wait:
             yield return new WaitForEndOfFrame();
         }
 
@@ -128,8 +132,10 @@ namespace LiveKit
             var frame = new VideoFrame(frameInfo);
             var buffer = VideoFrameBuffer.Create(handle, bufferInfo);
 
-            _buffer?.Dispose();
-            _buffer = buffer;
+            VideoBuffer?.Dispose();
+            VideoBuffer = buffer;
+            _dirty = true;
+
             FrameReceived?.Invoke(frame);
         }
     }
