@@ -44,6 +44,7 @@ namespace LiveKit
         public int Width => _info.Width;
         public int Height => _info.Height;
         public VideoFrameBufferType Type => _info.BufferType;
+        public bool IsValid => !_handle.IsClosed && !_handle.IsInvalid;
 
         // Explicitly ask for FFIHandle 
         internal VideoFrameBuffer(FFIHandle handle, VideoFrameBufferInfo info)
@@ -77,6 +78,9 @@ namespace LiveKit
 
         public I420Buffer ToI420()
         {
+            if (!IsValid)
+                return null;
+
             // ToI420Request will free the input buffer, don't drop twice
             // This class instance is now invalid, the users should not use it 
             // after using this function.
@@ -96,6 +100,29 @@ namespace LiveKit
 
             return new I420Buffer(new FFIHandle((IntPtr)id), _info);
         }
+
+        public void ToARGB(VideoFormatType format, IntPtr dst, int dstStride, int width, int height)
+        {
+            if (!IsValid)
+                return;
+
+            var handleId = new FFIHandleId();
+            handleId.Id = (ulong)_handle.DangerousGetHandle();
+
+            var argb = new ToARGBRequest();
+            argb.Buffer = handleId;
+            argb.DstPtr = (ulong)dst;
+            argb.DstFormat = format;
+            argb.DstStride = dstStride;
+            argb.DstWidth = width;
+            argb.DstHeight = height;
+
+            var request = new FFIRequest();
+            request.ToArgb = argb;
+
+            FFIClient.Instance.SendRequest(request);
+            GC.KeepAlive(_handle);
+        }
     }
 
     public abstract class PlanarYuvBuffer : VideoFrameBuffer
@@ -104,9 +131,9 @@ namespace LiveKit
 
         public int ChromaWidth => _info.ChromaWidth;
         public int ChromaHeight => _info.ChromaHeight;
-        public int StriveY => _info.StrideY;
-        public int StriveU => _info.StrideU;
-        public int StriveV => _info.StrideV;
+        public int StrideY => _info.StrideY;
+        public int StrideU => _info.StrideU;
+        public int StrideV => _info.StrideV;
         public IntPtr DataY => (IntPtr)_info.DataYPtr;
         public IntPtr DataU => (IntPtr)_info.DataUPtr;
         public IntPtr DataV => (IntPtr)_info.DataVPtr;
@@ -132,8 +159,8 @@ namespace LiveKit
 
         public int ChromaWidth => _info.ChromaWidth;
         public int ChromaHeight => _info.ChromaHeight;
-        public int StriveY => _info.StrideY;
-        public int StriveUV => _info.StrideUv;
+        public int StrideY => _info.StrideY;
+        public int StrideUV => _info.StrideUv;
         public IntPtr DataY => (IntPtr)_info.DataYPtr;
         public IntPtr DataUV => (IntPtr)_info.DataUvPtr;
 
