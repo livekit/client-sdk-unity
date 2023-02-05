@@ -19,6 +19,6 @@ namespace LiveKit.Internal
         internal static extern bool FFIDropHandle(IntPtr handleId);
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_request")]
-        internal static extern IntPtr FFIRequest(byte[] data, uint len, out FFIHandle handleId);
+        internal static extern unsafe FFIHandle FFINewRequest(byte[] data, int len, out byte* data_ptr, out int data_len);
     }
 }

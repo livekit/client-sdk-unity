@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace LiveKit
 {
@@ -228,7 +229,7 @@ namespace LiveKit
                 FFIClient.Instance.ConnectReceived += OnConnect;
             }
 
-            private void OnConnect(ulong asyncId, ConnectEvent e)
+            void OnConnect(ulong asyncId, ConnectEvent e)
             {
                 if (_asyncId != asyncId)
                     return;

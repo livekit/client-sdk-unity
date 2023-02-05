@@ -11,7 +11,7 @@ namespace LiveKit.Internal
     delegate void FFICallbackDelegate(IntPtr data, int size);
 
     // Events
-    internal delegate void ConnectReceivedDelegate(ulong async_id, ConnectEvent e);
+    internal delegate void ConnectReceivedDelegate(ulong asyncId, ConnectEvent e);
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
     internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
@@ -50,47 +50,47 @@ namespace LiveKit.Internal
         public FFIResponse SendRequest(FFIRequest request)
         {
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-            var respPtr = NativeMethods.FFIRequest(data, (uint)data.Length, out FFIHandle handle);
 
             FFIResponse response;
             unsafe
             {
-                // The first 4 bytes are the length of the byte array
-                var respSize = Marshal.ReadInt32(respPtr);
-                var respData = new Span<byte>(IntPtr.Add(respPtr, 4).ToPointer(), respSize);
-                response = FFIResponse.Parser.ParseFrom(respData);
+                var handle = NativeMethods.FFINewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+                response = FFIResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                handle.Dispose();
             }
 
-            handle.Dispose();
             return response;
         }
 
-        unsafe void FFICallback(IntPtr data, int size)
+
+        [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
+        static unsafe void FFICallback(IntPtr data, int size)
         {
             var respData = new Span<byte>(data.ToPointer(), size);
-            var response = FFIResponse.Parser.ParseFrom(respData);
+            var response = FFIEvent.Parser.ParseFrom(respData);
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
-            _context.Post((resp) =>
-            {
-                var response = resp as FFIEvent;
-                switch (response.MessageCase)
-                {
-                    case FFIEvent.MessageOneofCase.ConnectEvent:
-                        ConnectReceived?.Invoke(response.AsyncId, response.ConnectEvent);
-                        break;
-                    case FFIEvent.MessageOneofCase.RoomEvent:
-                        RoomEventReceived?.Invoke(response.RoomEvent);
-                        break;
-                    case FFIEvent.MessageOneofCase.TrackEvent:
-                        TrackEventReceived?.Invoke(response.TrackEvent);
-                        break;
-                    case FFIEvent.MessageOneofCase.ParticipantEvent:
-                        ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                        break;
-                }
-            }, response);
+            var client = FFIClient.Instance;
+            client._context.Post((resp) =>
+               {
+                   var response = resp as FFIEvent;
+                   switch (response.MessageCase)
+                   {
+                       case FFIEvent.MessageOneofCase.ConnectEvent:
+                           client.ConnectReceived?.Invoke(response.AsyncId, response.ConnectEvent);
+                           break;
+                       case FFIEvent.MessageOneofCase.RoomEvent:
+                           client.RoomEventReceived?.Invoke(response.RoomEvent);
+                           break;
+                       case FFIEvent.MessageOneofCase.TrackEvent:
+                           client.TrackEventReceived?.Invoke(response.TrackEvent);
+                           break;
+                       case FFIEvent.MessageOneofCase.ParticipantEvent:
+                           client.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
+                           break;
+                   }
+               }, response);
         }
     }
 }

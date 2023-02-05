@@ -9,6 +9,8 @@ namespace LiveKit.Internal
         // An FFIHandle instance is always owned (Getting them from the FFIClient)
         internal FFIHandle(IntPtr ptr) : base(ptr, true) { }
 
+        public FFIHandle() : base(IntPtr.Zero, true) { }
+
         public override bool IsInvalid => handle == IntPtr.Zero || handle == new IntPtr(-1);
 
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
