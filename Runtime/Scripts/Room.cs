@@ -73,8 +73,7 @@ namespace LiveKit
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
                     {
-                        var participant = new RemoteParticipant(e.ParticipantConnected.Info);
-                        _participants.Add(participant.Sid, participant);
+                        var participant = CreateRemoteParticipant(e.ParticipantConnected.Info);
                         ParticipantConnected?.Invoke(participant);
                     }
                     break;
@@ -90,6 +89,7 @@ namespace LiveKit
                     {
                         var participant = Participants[e.TrackPublished.ParticipantSid];
                         var publication = new RemoteTrackPublication(e.TrackPublished.Publication);
+                        participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
                         TrackPublished?.Invoke(publication, participant);
                     }
@@ -98,6 +98,7 @@ namespace LiveKit
                     {
                         var participant = Participants[e.TrackUnpublished.ParticipantSid];
                         var publication = participant.Tracks[e.TrackUnpublished.PublicationSid];
+                        participant._tracks.Remove(publication.Sid);
                         participant.OnTrackUnpublished(publication);
                         TrackUnpublished?.Invoke(publication, participant);
                     }
@@ -200,12 +201,34 @@ namespace LiveKit
         internal void OnConnect(RoomInfo info)
         {
             UpdateFromInfo(info);
+            LocalParticipant = new LocalParticipant(info.LocalParticipant);
+
+            // Add already connected participant
+            foreach (var p in info.Participants)
+                CreateRemoteParticipant(p);
+
             FFIClient.Instance.RoomEventReceived += OnEventReceived;
         }
 
         internal void OnDisconnect()
         {
             FFIClient.Instance.RoomEventReceived -= OnEventReceived;
+        }
+
+        RemoteParticipant CreateRemoteParticipant(ParticipantInfo info)
+        {
+            var participant = new RemoteParticipant(info);
+            _participants.Add(participant.Sid, participant);
+
+            foreach (var pubInfo in info.Publications)
+            {
+                var publication = new RemoteTrackPublication(pubInfo);
+                participant._tracks.Add(publication.Sid, publication);
+            }
+
+            Debug.Log(info);
+
+            return participant;
         }
 
         public Participant GetParticipant(string sid)
@@ -217,31 +240,32 @@ namespace LiveKit
             return remoteParticipant;
         }
 
-        public sealed class ConnectInstruction : YieldInstruction
+    }
+
+    public sealed class ConnectInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private Room _room;
+
+        internal ConnectInstruction(ulong asyncId, Room room)
         {
-            private ulong _asyncId;
-            private Room _room;
+            _asyncId = asyncId;
+            _room = room;
+            FFIClient.Instance.ConnectReceived += OnConnect;
+        }
 
-            internal ConnectInstruction(ulong asyncId, Room room)
-            {
-                _asyncId = asyncId;
-                _room = room;
-                FFIClient.Instance.ConnectReceived += OnConnect;
-            }
+        void OnConnect(ulong asyncId, ConnectEvent e)
+        {
+            if (_asyncId != asyncId)
+                return;
 
-            void OnConnect(ulong asyncId, ConnectEvent e)
-            {
-                if (_asyncId != asyncId)
-                    return;
+            FFIClient.Instance.ConnectReceived -= OnConnect;
 
-                FFIClient.Instance.ConnectReceived -= OnConnect;
+            if (e.Success)
+                _room.OnConnect(e.Room);
 
-                if (e.Success)
-                    _room.OnConnect(e.Room);
-
-                IsError = !e.Success;
-                IsDone = true;
-            }
+            IsError = !e.Success;
+            IsDone = true;
         }
     }
 }
