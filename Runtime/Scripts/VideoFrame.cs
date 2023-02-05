@@ -1,6 +1,7 @@
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using UnityEngine;
 
 namespace LiveKit
 {
@@ -122,9 +123,10 @@ namespace LiveKit
             request.ToI420 = toi420;
 
             var resp = FFIClient.SendRequest(request);
-            var id = resp.ToI420.NewBuffer.Id;
+            var newInfo = resp.ToI420.NewBuffer;
+            var newHandle = new FFIHandle((IntPtr)newInfo.Handle.Id);
 
-            return new I420Buffer(new FFIHandle((IntPtr)id), _info);
+            return new I420Buffer(newHandle, newInfo);
         }
 
         public void ToARGB(VideoFormatType format, IntPtr dst, int dstStride, int width, int height)
@@ -203,6 +205,11 @@ namespace LiveKit
     public class NativeBuffer : VideoFrameBuffer
     {
         private NativeBufferInfo _info;
+
+        internal override long GetMemorySize()
+        {
+            return 0;
+        }
 
         internal NativeBuffer(FFIHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
     }
