@@ -79,7 +79,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
-                        var info = e.ParticipantConnected.Info;
+                        var info = e.ParticipantDisconnected.Info;
                         var participant = Participants[info.Sid];
                         _participants.Remove(info.Sid);
                         ParticipantDisconnected?.Invoke(participant);

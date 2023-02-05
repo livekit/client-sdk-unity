@@ -2,6 +2,7 @@ using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
+using System.Runtime.CompilerServices;
 
 namespace LiveKit
 {
@@ -104,6 +105,7 @@ namespace LiveKit
             return null;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public I420Buffer ToI420()
         {
             if (!IsValid)
@@ -133,6 +135,7 @@ namespace LiveKit
             return new I420Buffer(newHandle, newInfo);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ToARGB(VideoFormatType format, IntPtr dst, int dstStride, int width, int height)
         {
             if (!IsValid)
