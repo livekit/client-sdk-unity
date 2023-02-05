@@ -23,7 +23,7 @@ namespace LiveKit
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
 
-        public readonly Dictionary<String, TrackPublication> _tracks = new();
+        internal readonly Dictionary<String, TrackPublication> _tracks = new();
         public IReadOnlyDictionary<String, TrackPublication> Tracks => _tracks;
 
         protected Participant(ParticipantInfo info)
@@ -38,15 +38,12 @@ namespace LiveKit
 
         internal void OnTrackPublished(RemoteTrackPublication publication)
         {
-            _tracks.Add(publication.Sid, publication);
             TrackPublished?.Invoke(publication);
         }
 
         internal void OnTrackUnpublished(RemoteTrackPublication publication)
         {
-            _tracks.Remove(publication.Sid);
             TrackUnpublished?.Invoke(publication);
-
         }
 
         public void PublishData()
@@ -57,16 +54,16 @@ namespace LiveKit
 
     public sealed class LocalParticipant : Participant
     {
-        public new IReadOnlyDictionary<String, LocalTrackPublication> Tracks => _tracks
-            as IReadOnlyDictionary<String, LocalTrackPublication>;
+        public new IReadOnlyDictionary<String, LocalTrackPublication> Tracks =>
+            base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
         internal LocalParticipant(ParticipantInfo info) : base(info) { }
     }
 
     public sealed class RemoteParticipant : Participant
     {
-        public new IReadOnlyDictionary<String, RemoteTrackPublication> Tracks => _tracks
-            as IReadOnlyDictionary<String, RemoteTrackPublication>;
+        public new IReadOnlyDictionary<String, RemoteTrackPublication> Tracks =>
+            base.Tracks.ToDictionary(p => p.Key, p => (RemoteTrackPublication)p.Value);
 
         internal RemoteParticipant(ParticipantInfo info) : base(info) { }
     }
