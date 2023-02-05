@@ -5,6 +5,10 @@ using UnityEngine;
 using Google.Protobuf;
 using System.Threading;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace LiveKit.Internal
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -16,41 +20,91 @@ namespace LiveKit.Internal
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
     internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
 
+#if UNITY_EDITOR
+    [InitializeOnLoad]
+#endif
     internal sealed class FFIClient
     {
         private static readonly Lazy<FFIClient> _instance = new Lazy<FFIClient>(() => new FFIClient());
         public static FFIClient Instance => _instance.Value;
 
-        // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void GetMainContext()
-        {
-            Instance._context = SynchronizationContext.Current;
-        }
-
-        private SynchronizationContext _context;
+        internal SynchronizationContext _context;
 
         public event ConnectReceivedDelegate ConnectReceived;
         public event RoomEventReceivedDelegate RoomEventReceived;
         public event TrackEventReceivedDelegate TrackEventReceived;
         public event ParticipantEventReceivedDelegate ParticipantEventReceived;
 
-        private FFIClient()
+#if UNITY_EDITOR
+        static FFIClient()
+        {
+            AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+            AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+            EditorApplication.quitting += Quit;
+        }
+
+        static void OnBeforeAssemblyReload()
+        {
+            Dispose();
+        }
+
+        static void OnAfterAssemblyReload()
+        {
+            Initialize();
+        }
+#else
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void Init()
+        {
+            Application.quitting += Quit;
+            Instance.Initialize();
+        }
+#endif
+
+        static void Quit()
+        {
+#if UNITY_EDITOR
+            AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
+            AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
+#endif
+            Dispose();
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void GetMainContext()
+        {
+            // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
+            Instance._context = SynchronizationContext.Current;
+        }
+
+        static void Initialize()
         {
             FFICallbackDelegate callback = FFICallback;
 
-            var configureReq = new InitializeRequest();
-            configureReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
+            var initReq = new InitializeRequest();
+            initReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
 
             var request = new FFIRequest();
-            request.Configure = configureReq;
+            request.Initialize = initReq;
             SendRequest(request);
+            Utils.Debug("FFIServer - Initialized");
         }
 
-        public FFIResponse SendRequest(FFIRequest request)
+        static void Dispose()
+        {
+            // Stop all rooms synchronously
+            // The rust lk implementation should also correctly dispose WebRTC
+            var disposeReq = new DisposeRequest();
+
+            var request = new FFIRequest();
+            request.Dispose = disposeReq;
+            SendRequest(request);
+            Utils.Debug("FFIServer - Stopped");
+        }
+
+        internal static FFIResponse SendRequest(FFIRequest request)
         {
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-
             FFIResponse response;
             unsafe
             {

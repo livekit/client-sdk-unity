@@ -53,7 +53,7 @@ namespace LiveKit
             var request = new FFIRequest();
             request.AsyncConnect = connect;
 
-            var resp = FFIClient.Instance.SendRequest(request);
+            var resp = FFIClient.SendRequest(request);
             return new ConnectInstruction(resp.AsyncId, this);
         }
 
