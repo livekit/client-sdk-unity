@@ -121,7 +121,7 @@ namespace LiveKit
             var request = new FFIRequest();
             request.ToI420 = toi420;
 
-            var resp = FFIClient.Instance.SendRequest(request);
+            var resp = FFIClient.SendRequest(request);
             var id = resp.ToI420.NewBuffer.Id;
 
             return new I420Buffer(new FFIHandle((IntPtr)id), _info);
@@ -146,7 +146,7 @@ namespace LiveKit
             var request = new FFIRequest();
             request.ToArgb = argb;
 
-            FFIClient.Instance.SendRequest(request);
+            FFIClient.SendRequest(request);
         }
     }
 
