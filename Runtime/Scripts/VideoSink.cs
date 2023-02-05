@@ -82,15 +82,13 @@ namespace LiveKit
         {
             while (true)
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
                 if (_disposed)
                     break;
 
                 if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
                     continue;
-
-                Debug.Log("A");
 
                 var rWidth = VideoBuffer.Width;
                 var rHeight = VideoBuffer.Height;

@@ -27,20 +27,21 @@ namespace LiveKit
 
     public abstract class VideoFrameBuffer : IDisposable
     {
+        protected VideoFrameBufferInfo Info;
+
         private FFIHandle _handle;
-        private VideoFrameBufferInfo _info;
         private bool _disposed = false;
 
-        public int Width => _info.Width;
-        public int Height => _info.Height;
-        public VideoFrameBufferType Type => _info.BufferType;
+        public int Width => Info.Width;
+        public int Height => Info.Height;
+        public VideoFrameBufferType Type => Info.BufferType;
         public bool IsValid => !_handle.IsClosed && !_handle.IsInvalid;
 
         // Explicitly ask for FFIHandle 
-        internal VideoFrameBuffer(FFIHandle handle, VideoFrameBufferInfo info)
+        protected VideoFrameBuffer(FFIHandle handle, VideoFrameBufferInfo info)
         {
             _handle = handle;
-            _info = info;
+            Info = info;
 
             var memSize = GetMemorySize();
             if (memSize > 0)
@@ -124,6 +125,9 @@ namespace LiveKit
 
             var resp = FFIClient.SendRequest(request);
             var newInfo = resp.ToI420.NewBuffer;
+            if (newInfo == null)
+                throw new SystemException("failed to convert");
+
             var newHandle = new FFIHandle((IntPtr)newInfo.Handle.Id);
 
             return new I420Buffer(newHandle, newInfo);
@@ -154,21 +158,16 @@ namespace LiveKit
 
     public abstract class PlanarYuvBuffer : VideoFrameBuffer
     {
-        private PlanarYuvBufferInfo _info;
+        public int ChromaWidth => Info.Yuv.ChromaWidth;
+        public int ChromaHeight => Info.Yuv.ChromaHeight;
+        public int StrideY => Info.Yuv.StrideY;
+        public int StrideU => Info.Yuv.StrideU;
+        public int StrideV => Info.Yuv.StrideV;
+        public IntPtr DataY => (IntPtr)Info.Yuv.DataYPtr;
+        public IntPtr DataU => (IntPtr)Info.Yuv.DataUPtr;
+        public IntPtr DataV => (IntPtr)Info.Yuv.DataVPtr;
 
-        public int ChromaWidth => _info.ChromaWidth;
-        public int ChromaHeight => _info.ChromaHeight;
-        public int StrideY => _info.StrideY;
-        public int StrideU => _info.StrideU;
-        public int StrideV => _info.StrideV;
-        public IntPtr DataY => (IntPtr)_info.DataYPtr;
-        public IntPtr DataU => (IntPtr)_info.DataUPtr;
-        public IntPtr DataV => (IntPtr)_info.DataVPtr;
-
-        internal PlanarYuvBuffer(FFIHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-            _info = info.Yuv;
-        }
+        internal PlanarYuvBuffer(FFIHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
     }
     public abstract class PlanarYuv8Buffer : PlanarYuvBuffer
     {
@@ -182,19 +181,14 @@ namespace LiveKit
 
     public abstract class BiplanarYuvBuffer : VideoFrameBuffer
     {
-        private BiplanarYuvBufferInfo _info;
+        public int ChromaWidth => Info.BiYuv.ChromaWidth;
+        public int ChromaHeight => Info.BiYuv.ChromaHeight;
+        public int StrideY => Info.BiYuv.StrideY;
+        public int StrideUV => Info.BiYuv.StrideUv;
+        public IntPtr DataY => (IntPtr)Info.BiYuv.DataYPtr;
+        public IntPtr DataUV => (IntPtr)Info.BiYuv.DataUvPtr;
 
-        public int ChromaWidth => _info.ChromaWidth;
-        public int ChromaHeight => _info.ChromaHeight;
-        public int StrideY => _info.StrideY;
-        public int StrideUV => _info.StrideUv;
-        public IntPtr DataY => (IntPtr)_info.DataYPtr;
-        public IntPtr DataUV => (IntPtr)_info.DataUvPtr;
-
-        internal BiplanarYuvBuffer(FFIHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-            _info = info.BiYuv;
-        }
+        internal BiplanarYuvBuffer(FFIHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
     }
 
     public abstract class BiplanarYuv8Buffer : BiplanarYuvBuffer
@@ -204,8 +198,6 @@ namespace LiveKit
 
     public class NativeBuffer : VideoFrameBuffer
     {
-        private NativeBufferInfo _info;
-
         internal override long GetMemorySize()
         {
             return 0;
