@@ -29,7 +29,7 @@ namespace LiveKit
 
     public interface IVideoTrack : ITrack
     {
-
+        public VideoSink Sink { get; }
     }
 
     public class Track : ITrack
@@ -65,6 +65,8 @@ namespace LiveKit
 
     public sealed class LocalVideoTrack : Track, ILocalTrack, IVideoTrack
     {
+        public VideoSink Sink { private set; get; }
+
         internal LocalVideoTrack(TrackInfo info) : base(info) { }
     }
 
@@ -75,6 +77,13 @@ namespace LiveKit
 
     public sealed class RemoteVideoTrack : Track, IRemoteTrack, IVideoTrack
     {
+        public VideoSink Sink { private set; get; }
+
         internal RemoteVideoTrack(TrackInfo info) : base(info) { }
+
+        internal void UpdateSink(VideoSink sink)
+        {
+            Sink = sink;
+        }
     }
 }

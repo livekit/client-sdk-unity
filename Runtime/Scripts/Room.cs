@@ -112,6 +112,7 @@ namespace LiveKit
                         if (info.Kind == TrackKind.KindVideo)
                         {
                             var videoTrack = new RemoteVideoTrack(info);
+                            videoTrack.UpdateSink(new VideoSink(e.TrackSubscribed.Sink));
                             publication.UpdateTrack(videoTrack);
                             TrackSubscribed?.Invoke(videoTrack, publication, participant);
                         }

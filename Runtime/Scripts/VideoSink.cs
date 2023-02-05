@@ -80,33 +80,37 @@ namespace LiveKit
 
         public IEnumerator UpdateRoutine()
         {
-            if (_disposed)
-                yield break;
-
-            if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
-                goto Wait;
-
-            var rWidth = VideoBuffer.Width;
-            var rHeight = VideoBuffer.Height;
-
-            var textureChanged = false;
-            if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
+            while (true)
             {
-                // Recreate the texture
-                Texture = new Texture2D(rWidth, rHeight, TextureFormat.RGBA32, mipChain: false, linear: true);
-                textureChanged = true;
+                yield return new WaitForEndOfFrame();
+
+                if (_disposed)
+                    break;
+
+                if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
+                    continue;
+
+                Debug.Log("A");
+
+                var rWidth = VideoBuffer.Width;
+                var rHeight = VideoBuffer.Height;
+
+                var textureChanged = false;
+                if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
+                {
+                    // Recreate the texture
+                    Texture = new Texture2D(rWidth, rHeight, TextureFormat.RGBA32, mipChain: false, linear: true);
+                    textureChanged = true;
+                }
+
+                UploadBuffer();
+
+                if (textureChanged)
+                    TextureReceived?.Invoke(Texture);
+
+                TextureUploaded?.Invoke();
+                _dirty = false;
             }
-
-            UploadBuffer();
-
-            if (textureChanged)
-                TextureReceived?.Invoke(Texture);
-
-            TextureUploaded?.Invoke();
-            _dirty = false;
-
-        Wait:
-            yield return new WaitForEndOfFrame();
         }
 
         /// Stop must be called on TrackUnsubscribed

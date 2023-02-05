@@ -70,7 +70,7 @@ namespace LiveKit.Internal
             Dispose();
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        [RuntimeInitializeOnLoadMethod]
         static void GetMainContext()
         {
             // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
@@ -99,7 +99,7 @@ namespace LiveKit.Internal
             var request = new FFIRequest();
             request.Dispose = disposeReq;
             SendRequest(request);
-            Utils.Debug("FFIServer - Stopped");
+            Utils.Debug("FFIServer - Disposed");
         }
 
         internal static FFIResponse SendRequest(FFIRequest request)
