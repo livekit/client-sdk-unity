@@ -29,7 +29,7 @@ namespace LiveKit
         /// The texture changes every time the video resolution changes.
         /// Can be null if UpdateRoutine isn't started
         public Texture2D Texture { private set; get; }
-        public VideoFrameBuffer VideoBuffer;
+        public VideoFrameBuffer VideoBuffer { private set; get; }
 
         internal VideoSink(VideoSinkInfo info)
         {
