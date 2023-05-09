@@ -5,8 +5,8 @@ namespace LiveKit
 {
     public interface ITrack
     {
-        public String Sid { get; }
-        public String Name { get; }
+        public string Sid { get; }
+        public string Name { get; }
         public TrackKind Kind { get; }
         public StreamState StreamState { get; }
         public bool Muted { get; }
@@ -29,15 +29,14 @@ namespace LiveKit
 
     public interface IVideoTrack : ITrack
     {
-        public VideoSink Sink { get; }
     }
 
     public class Track : ITrack
     {
         private TrackInfo _info;
 
-        public String Sid => _info.Sid;
-        public String Name => _info.Name;
+        public string Sid => _info.Sid;
+        public string Name => _info.Name;
         public TrackKind Kind => _info.Kind;
         public StreamState StreamState => _info.StreamState;
         public bool Muted => _info.Muted;
@@ -77,13 +76,6 @@ namespace LiveKit
 
     public sealed class RemoteVideoTrack : Track, IRemoteTrack, IVideoTrack
     {
-        public VideoSink Sink { private set; get; }
-
         internal RemoteVideoTrack(TrackInfo info) : base(info) { }
-
-        internal void UpdateSink(VideoSink sink)
-        {
-            Sink = sink;
-        }
     }
 }

@@ -19,13 +19,13 @@ namespace LiveKit
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate();
 
-        public String Sid { private set; get; }
-        public String Name { private set; get; }
-        public String Metadata { private set; get; }
+        public string Sid { private set; get; }
+        public string Name { private set; get; }
+        public string Metadata { private set; get; }
         public LocalParticipant LocalParticipant { private set; get; }
 
-        private readonly Dictionary<String, RemoteParticipant> _participants = new();
-        public IReadOnlyDictionary<String, RemoteParticipant> Participants => _participants;
+        private readonly Dictionary<string, RemoteParticipant> _participants = new();
+        public IReadOnlyDictionary<string, RemoteParticipant> Participants => _participants;
 
         public event ParticipantDelegate ParticipantConnected;
         public event ParticipantDelegate ParticipantDisconnected;
@@ -44,17 +44,19 @@ namespace LiveKit
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
 
-        public ConnectInstruction Connect(String url, String token)
+        private FfiHandle _handle;
+
+        public ConnectInstruction Connect(string url, string token)
         {
             var connect = new ConnectRequest();
             connect.Url = url;
             connect.Token = token;
 
             var request = new FFIRequest();
-            request.AsyncConnect = connect;
+            request.Connect = connect;
 
-            var resp = FFIClient.SendRequest(request);
-            return new ConnectInstruction(resp.AsyncId, this);
+            var resp = FfiClient.SendRequest(request);
+            return new ConnectInstruction(resp.Connect.AsyncId.Id, this);
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -66,7 +68,7 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomSid != Sid)
+            if (new FfiHandle((IntPtr)e.RoomHandle.Id, false) != _handle)
                 return;
 
             switch (e.MessageCase)
@@ -112,7 +114,6 @@ namespace LiveKit
                         if (info.Kind == TrackKind.KindVideo)
                         {
                             var videoTrack = new RemoteVideoTrack(info);
-                            videoTrack.UpdateSink(new VideoSink(e.TrackSubscribed.Sink));
                             publication.UpdateTrack(videoTrack);
                             TrackSubscribed?.Invoke(videoTrack, publication, participant);
                         }
@@ -171,7 +172,7 @@ namespace LiveKit
                     {
                         var dataInfo = e.DataReceived;
 
-                        var handle = new FFIHandle((IntPtr)dataInfo.Handle.Id);
+                        var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id, true);
                         var data = new byte[dataInfo.DataSize];
                         Marshal.Copy((IntPtr)dataInfo.DataPtr, data, 0, data.Length);
                         handle.Dispose();
@@ -201,6 +202,8 @@ namespace LiveKit
 
         internal void OnConnect(RoomInfo info)
         {
+            _handle = new FfiHandle((IntPtr)info.Handle.Id, true);
+
             UpdateFromInfo(info);
             LocalParticipant = new LocalParticipant(info.LocalParticipant);
 
@@ -208,12 +211,12 @@ namespace LiveKit
             foreach (var p in info.Participants)
                 CreateRemoteParticipant(p);
 
-            FFIClient.Instance.RoomEventReceived += OnEventReceived;
+            FfiClient.Instance.RoomEventReceived += OnEventReceived;
         }
 
         internal void OnDisconnect()
         {
-            FFIClient.Instance.RoomEventReceived -= OnEventReceived;
+            FfiClient.Instance.RoomEventReceived -= OnEventReceived;
         }
 
         RemoteParticipant CreateRemoteParticipant(ParticipantInfo info)
@@ -227,8 +230,6 @@ namespace LiveKit
                 participant._tracks.Add(publication.Sid, publication);
             }
 
-            Debug.Log(info);
-
             return participant;
         }
 
@@ -240,7 +241,6 @@ namespace LiveKit
             Participants.TryGetValue(sid, out var remoteParticipant);
             return remoteParticipant;
         }
-
     }
 
     public sealed class ConnectInstruction : YieldInstruction
@@ -252,20 +252,21 @@ namespace LiveKit
         {
             _asyncId = asyncId;
             _room = room;
-            FFIClient.Instance.ConnectReceived += OnConnect;
+            FfiClient.Instance.ConnectReceived += OnConnect;
         }
 
-        void OnConnect(ulong asyncId, ConnectEvent e)
+        void OnConnect(ConnectCallback e)
         {
-            if (_asyncId != asyncId)
+            if (_asyncId != e.AsyncId.Id)
                 return;
 
-            FFIClient.Instance.ConnectReceived -= OnConnect;
+            FfiClient.Instance.ConnectReceived -= OnConnect;
 
-            if (e.Success)
+            bool success = e.Error == null;
+            if (success)
                 _room.OnConnect(e.Room);
 
-            IsError = !e.Success;
+            IsError = success;
             IsDone = true;
         }
     }

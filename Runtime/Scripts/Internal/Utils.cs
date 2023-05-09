@@ -4,7 +4,7 @@ using UnityEngine;
 namespace LiveKit.Internal
 {
     /// <summary>
-    /// The class <c>Utils</c> contains internal utilities used for FFIClient
+    /// The class <c>Utils</c> contains internal utilities used for FfiClient 
     /// The log part is useful to print messages only when "LK_DEBUG" is defined.
     /// </summary>
     internal static class Utils

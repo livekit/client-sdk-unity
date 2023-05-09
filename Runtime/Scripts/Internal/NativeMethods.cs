@@ -16,9 +16,9 @@ namespace LiveKit.Internal
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_drop_handle")]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-        internal static extern bool FFIDropHandle(IntPtr handleId);
+        internal static extern bool FfiDropHandle(IntPtr handleId);
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_request")]
-        internal static extern unsafe FFIHandle FFINewRequest(byte[] data, int len, out byte* data_ptr, out int data_len);
+        internal static extern unsafe FfiHandle FfiNewRequest(byte[] data, int len, out byte* dataPtr, out int dataLen);
     }
 }
