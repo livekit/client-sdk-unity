@@ -11,10 +11,10 @@ namespace LiveKit
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
         private ParticipantInfo _info;
-        public String Sid => _info.Sid;
-        public String Identity => _info.Identity;
-        public String Name => _info.Name;
-        public String Metadata => _info.Metadata;
+        public string Sid => _info.Sid;
+        public string Identity => _info.Identity;
+        public string Name => _info.Name;
+        public string Metadata => _info.Metadata;
 
         public bool Speaking { private set; get; }
         public float AudioLevel { private set; get; }
@@ -23,8 +23,8 @@ namespace LiveKit
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
 
-        internal readonly Dictionary<String, TrackPublication> _tracks = new();
-        public IReadOnlyDictionary<String, TrackPublication> Tracks => _tracks;
+        internal readonly Dictionary<string, TrackPublication> _tracks = new();
+        public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
 
         protected Participant(ParticipantInfo info)
         {
@@ -54,7 +54,7 @@ namespace LiveKit
 
     public sealed class LocalParticipant : Participant
     {
-        public new IReadOnlyDictionary<String, LocalTrackPublication> Tracks =>
+        public new IReadOnlyDictionary<string, LocalTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
         internal LocalParticipant(ParticipantInfo info) : base(info) { }
@@ -62,7 +62,7 @@ namespace LiveKit
 
     public sealed class RemoteParticipant : Participant
     {
-        public new IReadOnlyDictionary<String, RemoteTrackPublication> Tracks =>
+        public new IReadOnlyDictionary<string, RemoteTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (RemoteTrackPublication)p.Value);
 
         internal RemoteParticipant(ParticipantInfo info) : base(info) { }

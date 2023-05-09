@@ -15,7 +15,7 @@ namespace LiveKit.Internal
     delegate void FFICallbackDelegate(IntPtr data, int size);
 
     // Events
-    internal delegate void ConnectReceivedDelegate(ulong asyncId, ConnectEvent e);
+    internal delegate void ConnectReceivedDelegate(ConnectCallback e);
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
     internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
@@ -23,10 +23,10 @@ namespace LiveKit.Internal
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
-    internal sealed class FFIClient
+    internal sealed class FfiClient
     {
-        private static readonly Lazy<FFIClient> _instance = new Lazy<FFIClient>(() => new FFIClient());
-        public static FFIClient Instance => _instance.Value;
+        private static readonly Lazy<FfiClient> _instance = new Lazy<FfiClient>(() => new FfiClient());
+        public static FfiClient Instance => _instance.Value;
 
         internal SynchronizationContext _context;
 
@@ -36,7 +36,7 @@ namespace LiveKit.Internal
         public event ParticipantEventReceivedDelegate ParticipantEventReceived;
 
 #if UNITY_EDITOR
-        static FFIClient()
+        static FfiClient()
         {
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
@@ -108,7 +108,7 @@ namespace LiveKit.Internal
             FFIResponse response;
             unsafe
             {
-                var handle = NativeMethods.FFINewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+                var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
                 response = FFIResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
                 handle.Dispose();
             }
@@ -125,23 +125,22 @@ namespace LiveKit.Internal
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
-            var client = FFIClient.Instance;
-            client._context.Post((resp) =>
+            Instance._context.Post((resp) =>
                {
                    var response = resp as FFIEvent;
                    switch (response.MessageCase)
                    {
-                       case FFIEvent.MessageOneofCase.ConnectEvent:
-                           client.ConnectReceived?.Invoke(response.AsyncId, response.ConnectEvent);
+                       case FFIEvent.MessageOneofCase.Connect:
+                           Instance.ConnectReceived?.Invoke(response.Connect);
                            break;
                        case FFIEvent.MessageOneofCase.RoomEvent:
-                           client.RoomEventReceived?.Invoke(response.RoomEvent);
+                           Instance.RoomEventReceived?.Invoke(response.RoomEvent);
                            break;
                        case FFIEvent.MessageOneofCase.TrackEvent:
-                           client.TrackEventReceived?.Invoke(response.TrackEvent);
+                           Instance.TrackEventReceived?.Invoke(response.TrackEvent);
                            break;
                        case FFIEvent.MessageOneofCase.ParticipantEvent:
-                           client.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
+                           Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
                            break;
                    }
                }, response);

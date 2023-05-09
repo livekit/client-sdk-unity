@@ -13,7 +13,7 @@ namespace LiveKit
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
         public delegate void TextureUploadDelegate();
 
-        private VideoSinkInfo _info;
+        private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
 
@@ -31,10 +31,10 @@ namespace LiveKit
         public Texture2D Texture { private set; get; }
         public VideoFrameBuffer VideoBuffer { private set; get; }
 
-        internal VideoSink(VideoSinkInfo info)
+        internal VideoSink(VideoStreamInfo info)
         {
             _info = info;
-            FFIClient.Instance.TrackEventReceived += OnTrackEvent;
+            FfiClient.Instance.TrackEventReceived += OnTrackEvent;
         }
 
         ~VideoSink()
@@ -97,7 +97,7 @@ namespace LiveKit
                 if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
                 {
                     // Recreate the texture
-                    Texture = new Texture2D(rWidth, rHeight, TextureFormat.RGBA32, mipChain: false, linear: true);
+                    Texture = new Texture2D((int) rWidth,(int) rHeight, TextureFormat.RGBA32, mipChain: false, linear: true);
                     textureChanged = true;
                 }
 
@@ -116,7 +116,7 @@ namespace LiveKit
         /// the FFIHandle to avoid memory leak (on each FrameReceiveEvent from the server)
         internal void Stop()
         {
-            FFIClient.Instance.TrackEventReceived -= OnTrackEvent;
+            FfiClient.Instance.TrackEventReceived -= OnTrackEvent;
         }
 
         private void OnTrackEvent(TrackEvent e)

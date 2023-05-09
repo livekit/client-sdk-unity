@@ -7,13 +7,14 @@ namespace LiveKit
     public class TrackPublication
     {
         private TrackPublicationInfo _info;
-        public String Sid => _info.Sid;
-        public String Name => _info.Name;
+        public string Sid => _info.Sid;
+        public string Name => _info.Name;
         public TrackKind Kind => _info.Kind;
         public TrackSource Source => _info.Source;
         public bool Simulcasted => _info.Simulcasted;
-        public Dimension Dimension => _info.Dimension;
-        public String MimeType => _info.MimeType;
+        public uint Width => _info.Width;
+        public uint Height => _info.Height;
+        public string MimeType => _info.MimeType;
         public bool Muted => _info.Muted;
 
         public Track Track { private set; get; }
