@@ -7,12 +7,13 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
-    public sealed class VideoSink : IDisposable
+    public class VideoStream
     {
         public delegate void FrameReceiveDelegate(VideoFrame frame);
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
         public delegate void TextureUploadDelegate();
 
+        internal readonly FfiHandle Handle;
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
@@ -31,13 +32,31 @@ namespace LiveKit
         public Texture2D Texture { private set; get; }
         public VideoFrameBuffer VideoBuffer { private set; get; }
 
-        internal VideoSink(VideoStreamInfo info)
+        public VideoStream(IVideoTrack videoTrack)
         {
-            _info = info;
-            FfiClient.Instance.TrackEventReceived += OnTrackEvent;
+            if (!videoTrack.Room.TryGetTarget(out var room))
+                throw new InvalidOperationException("videotrack's room is invalid");
+
+            if (!videoTrack.Participant.TryGetTarget(out var participant))
+                throw new InvalidOperationException("videotrack's participant is invalid");
+
+            var newVideoStream = new NewVideoStreamRequest();
+            newVideoStream.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
+            newVideoStream.ParticipantSid = participant.Sid;
+            newVideoStream.TrackSid = videoTrack.Sid;
+            newVideoStream.Type = VideoStreamType.VideoStreamNative;
+
+            var request = new FFIRequest();
+            request.NewVideoStream = newVideoStream;
+
+            var resp = FfiClient.SendRequest(request);
+            var streamInfo = resp.NewVideoStream.Stream;
+
+            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
-        ~VideoSink()
+        ~VideoStream()
         {
             Dispose(false);
         }
@@ -59,26 +78,22 @@ namespace LiveKit
             }
         }
 
-        /// This function assumes the size of the buffer is valid
         internal bool UploadBuffer()
         {
-            var texData = Texture.GetRawTextureData<byte>();
-
-            /// TODO(theomonnom): Support other buffer types: NativeBuffer
-            var i420 = VideoBuffer.ToI420();
-            VideoBuffer = i420;
+            var data = Texture.GetRawTextureData<byte>();
+            VideoBuffer = VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
 
             unsafe
             {
-                var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(texData);
-                i420.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, Texture.width * 4, Texture.width, Texture.height);
+                var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
+                VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
             }
 
             Texture.Apply();
             return true;
         }
 
-        public IEnumerator UpdateRoutine()
+        public IEnumerator Update()
         {
             while (true)
             {
@@ -90,14 +105,14 @@ namespace LiveKit
                 if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
                     continue;
 
+                _dirty = false;
                 var rWidth = VideoBuffer.Width;
                 var rHeight = VideoBuffer.Height;
 
                 var textureChanged = false;
                 if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
                 {
-                    // Recreate the texture
-                    Texture = new Texture2D((int) rWidth,(int) rHeight, TextureFormat.RGBA32, mipChain: false, linear: true);
+                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, true, true);
                     textureChanged = true;
                 }
 
@@ -107,29 +122,20 @@ namespace LiveKit
                     TextureReceived?.Invoke(Texture);
 
                 TextureUploaded?.Invoke();
-                _dirty = false;
             }
         }
 
-        /// Stop must be called on TrackUnsubscribed
-        /// This function isn't called on Dispose because we must initialize correctly
-        /// the FFIHandle to avoid memory leak (on each FrameReceiveEvent from the server)
-        internal void Stop()
+        private void OnVideoStreamEvent(VideoStreamEvent e)
         {
-            FfiClient.Instance.TrackEventReceived -= OnTrackEvent;
-        }
-
-        private void OnTrackEvent(TrackEvent e)
-        {
-            if (e.TrackSid != _info.TrackSid)
+            if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
                 return;
 
-            if (e.MessageCase != TrackEvent.MessageOneofCase.FrameReceived)
+            if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
             var frameInfo = e.FrameReceived.Frame;
-            var bufferInfo = e.FrameReceived.FrameBuffer;
-            var handle = new FFIHandle((IntPtr)bufferInfo.Handle.Id);
+            var bufferInfo = e.FrameReceived.Buffer;
+            var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
 
             var frame = new VideoFrame(frameInfo);
             var buffer = VideoFrameBuffer.Create(handle, bufferInfo);

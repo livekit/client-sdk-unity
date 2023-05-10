@@ -14,11 +14,16 @@ namespace LiveKit.Internal
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     delegate void FFICallbackDelegate(IntPtr data, int size);
 
-    // Events
+    // Callbacks
+    internal delegate void PublishTrackDelegate(PublishTrackCallback e);
     internal delegate void ConnectReceivedDelegate(ConnectCallback e);
+
+    // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
     internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
+    internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
+    internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
 
 #if UNITY_EDITOR
     [InitializeOnLoad]
@@ -30,10 +35,13 @@ namespace LiveKit.Internal
 
         internal SynchronizationContext _context;
 
+        public event PublishTrackDelegate PublishTrackReceived;
         public event ConnectReceivedDelegate ConnectReceived;
         public event RoomEventReceivedDelegate RoomEventReceived;
         public event TrackEventReceivedDelegate TrackEventReceived;
         public event ParticipantEventReceivedDelegate ParticipantEventReceived;
+        public event VideoStreamEventReceivedDelegate VideoStreamEventReceived;
+        public event AudioStreamEventReceivedDelegate AudioStreamEventReceived;
 
 #if UNITY_EDITOR
         static FfiClient()
@@ -41,6 +49,7 @@ namespace LiveKit.Internal
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
             EditorApplication.quitting += Quit;
+            Application.quitting += Quit;
         }
 
         static void OnBeforeAssemblyReload()
@@ -122,6 +131,7 @@ namespace LiveKit.Internal
         {
             var respData = new Span<byte>(data.ToPointer(), size);
             var response = FFIEvent.Parser.ParseFrom(respData);
+            Utils.Debug("FFIServer - Received Event: " + response.MessageCase);
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
@@ -133,6 +143,9 @@ namespace LiveKit.Internal
                        case FFIEvent.MessageOneofCase.Connect:
                            Instance.ConnectReceived?.Invoke(response.Connect);
                            break;
+                       case FFIEvent.MessageOneofCase.PublishTrack:
+                           Instance.PublishTrackReceived?.Invoke(response.PublishTrack);
+                           break;
                        case FFIEvent.MessageOneofCase.RoomEvent:
                            Instance.RoomEventReceived?.Invoke(response.RoomEvent);
                            break;
@@ -142,6 +155,10 @@ namespace LiveKit.Internal
                        case FFIEvent.MessageOneofCase.ParticipantEvent:
                            Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
                            break;
+                       case FFIEvent.MessageOneofCase.VideoStreamEvent:
+                           Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
+                           break;
+
                    }
                }, response);
         }

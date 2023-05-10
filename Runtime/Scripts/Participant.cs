@@ -23,11 +23,13 @@ namespace LiveKit
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
 
-        internal readonly Dictionary<string, TrackPublication> _tracks = new();
+        public readonly WeakReference<Room> Room;
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
+        internal readonly Dictionary<string, TrackPublication> _tracks = new();
 
-        protected Participant(ParticipantInfo info)
+        protected Participant(ParticipantInfo info, Room room)
         {
+            Room = new WeakReference<Room>(room);
             UpdateInfo(info);
         }
 
@@ -46,10 +48,6 @@ namespace LiveKit
             TrackUnpublished?.Invoke(publication);
         }
 
-        public void PublishData()
-        {
-
-        }
     }
 
     public sealed class LocalParticipant : Participant
@@ -57,7 +55,26 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, LocalTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
-        internal LocalParticipant(ParticipantInfo info) : base(info) { }
+        internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+
+        public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
+        {
+            if (!Room.TryGetTarget(out var room))
+                throw new Exception("room is invalid");
+
+            var track = (Track)localTrack;
+
+            var publish = new PublishTrackRequest();
+            publish.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
+            publish.TrackHandle = new FFIHandleId { Id = (ulong)track.Handle.DangerousGetHandle() };
+            publish.Options = options;
+
+            var request = new FFIRequest();
+            request.PublishTrack = publish;
+
+            var resp = FfiClient.SendRequest(request);
+            return new PublishTrackInstruction(resp.PublishTrack.AsyncId.Id);
+        }
     }
 
     public sealed class RemoteParticipant : Participant
@@ -65,6 +82,27 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, RemoteTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (RemoteTrackPublication)p.Value);
 
-        internal RemoteParticipant(ParticipantInfo info) : base(info) { }
+        internal RemoteParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+    }
+
+    public sealed class PublishTrackInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+
+        internal PublishTrackInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.PublishTrackReceived += OnPublish;
+        }
+
+        void OnPublish(PublishTrackCallback e)
+        {
+            if (e.AsyncId.Id != _asyncId)
+                return;
+
+            IsError = !string.IsNullOrEmpty(e.Error);
+            IsDone = true;
+            FfiClient.Instance.PublishTrackReceived -= OnPublish;
+        }
     }
 }

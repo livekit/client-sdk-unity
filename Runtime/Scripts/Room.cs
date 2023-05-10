@@ -44,7 +44,7 @@ namespace LiveKit
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
 
-        private FfiHandle _handle;
+        internal FfiHandle Handle;
 
         public ConnectInstruction Connect(string url, string token)
         {
@@ -68,7 +68,7 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (new FfiHandle((IntPtr)e.RoomHandle.Id, false) != _handle)
+            if (e.RoomHandle.Id != (ulong)Handle.DangerousGetHandle())
                 return;
 
             switch (e.MessageCase)
@@ -113,13 +113,13 @@ namespace LiveKit
 
                         if (info.Kind == TrackKind.KindVideo)
                         {
-                            var videoTrack = new RemoteVideoTrack(info);
+                            var videoTrack = new RemoteVideoTrack(null, info, this, participant);
                             publication.UpdateTrack(videoTrack);
                             TrackSubscribed?.Invoke(videoTrack, publication, participant);
                         }
                         else if (info.Kind == TrackKind.KindAudio)
                         {
-                            var audioTrack = new RemoteAudioTrack(info);
+                            var audioTrack = new RemoteAudioTrack(null, info, this, participant);
                             publication.UpdateTrack(audioTrack);
                             TrackSubscribed?.Invoke(audioTrack, publication, participant);
                         }
@@ -172,7 +172,7 @@ namespace LiveKit
                     {
                         var dataInfo = e.DataReceived;
 
-                        var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id, true);
+                        var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);
                         var data = new byte[dataInfo.DataSize];
                         Marshal.Copy((IntPtr)dataInfo.DataPtr, data, 0, data.Length);
                         handle.Dispose();
@@ -202,10 +202,10 @@ namespace LiveKit
 
         internal void OnConnect(RoomInfo info)
         {
-            _handle = new FfiHandle((IntPtr)info.Handle.Id, true);
+            Handle = new FfiHandle((IntPtr)info.Handle.Id);
 
             UpdateFromInfo(info);
-            LocalParticipant = new LocalParticipant(info.LocalParticipant);
+            LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
 
             // Add already connected participant
             foreach (var p in info.Participants)
@@ -221,7 +221,7 @@ namespace LiveKit
 
         RemoteParticipant CreateRemoteParticipant(ParticipantInfo info)
         {
-            var participant = new RemoteParticipant(info);
+            var participant = new RemoteParticipant(info, this);
             _participants.Add(participant.Sid, participant);
 
             foreach (var pubInfo in info.Publications)
@@ -262,11 +262,11 @@ namespace LiveKit
 
             FfiClient.Instance.ConnectReceived -= OnConnect;
 
-            bool success = e.Error == null;
+            bool success = string.IsNullOrEmpty(e.Error);
             if (success)
                 _room.OnConnect(e.Room);
 
-            IsError = success;
+            IsError = !success;
             IsDone = true;
         }
     }
