@@ -1,15 +1,18 @@
 using System;
 using LiveKit.Proto;
+using LiveKit.Internal;
 
 namespace LiveKit
 {
     public interface ITrack
     {
-        public string Sid { get; }
-        public string Name { get; }
-        public TrackKind Kind { get; }
-        public StreamState StreamState { get; }
-        public bool Muted { get; }
+        string Sid { get; }
+        string Name { get; }
+        TrackKind Kind { get; }
+        StreamState StreamState { get; }
+        bool Muted { get; }
+        WeakReference<Room> Room { get; }
+        WeakReference<Participant> Participant { get; }
     }
 
     public interface ILocalTrack : ITrack
@@ -40,9 +43,19 @@ namespace LiveKit
         public TrackKind Kind => _info.Kind;
         public StreamState StreamState => _info.StreamState;
         public bool Muted => _info.Muted;
+        public WeakReference<Room> Room { get; }
+        public WeakReference<Participant> Participant { get; }
 
-        internal Track(TrackInfo info)
+        // IsOwned is true if C# owns the handle
+        public bool IsOwned => Handle != null && !Handle.IsInvalid;
+
+        internal readonly FfiHandle Handle;
+
+        internal Track(FfiHandle handle, TrackInfo info, Room room, Participant participant)
         {
+            Handle = handle;
+            Room = new WeakReference<Room>(room);
+            Participant = new WeakReference<Participant>(participant);
             UpdateInfo(info);
         }
 
@@ -59,23 +72,45 @@ namespace LiveKit
 
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
     {
-        internal LocalAudioTrack(TrackInfo info) : base(info) { }
+        internal LocalAudioTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
     }
 
     public sealed class LocalVideoTrack : Track, ILocalTrack, IVideoTrack
     {
-        public VideoSink Sink { private set; get; }
+        internal LocalVideoTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
 
-        internal LocalVideoTrack(TrackInfo info) : base(info) { }
+        public static LocalVideoTrack CreateVideoTrack(string name, VideoSource source)
+        {
+            var captureOptions = new VideoCaptureOptions();
+            var resolution = new VideoResolution();
+            resolution.Width = 640;
+            resolution.Height = 480;
+            resolution.FrameRate = 30;
+            captureOptions.Resolution = resolution;
+
+            var createTrack = new CreateVideoTrackRequest();
+            createTrack.Name = name;
+            createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
+            createTrack.Options = captureOptions;
+
+            var request = new FFIRequest();
+            request.CreateVideoTrack = createTrack;
+
+            var resp = FfiClient.SendRequest(request);
+            var trackInfo = resp.CreateVideoTrack.Track;
+            var trackHandle = new FfiHandle((IntPtr)trackInfo.OptHandle.Id);
+            var track = new LocalVideoTrack(trackHandle, trackInfo, null);
+            return track;
+        }
     }
 
     public sealed class RemoteAudioTrack : Track, IRemoteTrack, IAudioTrack
     {
-        internal RemoteAudioTrack(TrackInfo info) : base(info) { }
+        internal RemoteAudioTrack(FfiHandle handle, TrackInfo info, Room room, RemoteParticipant participant) : base(handle, info, room, participant) { }
     }
 
     public sealed class RemoteVideoTrack : Track, IRemoteTrack, IVideoTrack
     {
-        internal RemoteVideoTrack(TrackInfo info) : base(info) { }
+        internal RemoteVideoTrack(FfiHandle handle, TrackInfo info, Room room, RemoteParticipant participant) : base(handle, info, room, participant) { }
     }
 }

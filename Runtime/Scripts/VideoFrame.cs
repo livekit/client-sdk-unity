@@ -23,18 +23,18 @@ namespace LiveKit
     {
         protected VideoFrameBufferInfo Info;
 
-        private FfiHandle _handle;
+        internal readonly FfiHandle Handle;
         private bool _disposed = false;
 
         public uint Width => Info.Width;
         public uint Height => Info.Height;
         public VideoFrameBufferType Type => Info.BufferType;
-        public bool IsValid => !_handle.IsClosed && !_handle.IsInvalid;
+        public bool IsValid => !Handle.IsClosed && !Handle.IsInvalid;
 
         // Explicitly ask for FFIHandle 
         protected VideoFrameBuffer(FfiHandle handle, VideoFrameBufferInfo info)
         {
-            _handle = handle;
+            Handle = handle;
             Info = info;
 
             var memSize = GetMemorySize();
@@ -57,7 +57,7 @@ namespace LiveKit
         {
             if (!_disposed)
             {
-                _handle.Dispose();
+                Handle.Dispose();
 
                 var memSize = GetMemorySize();
                 if (memSize > 0)
@@ -74,7 +74,7 @@ namespace LiveKit
             return -1;
         }
 
-        /// VideoFrameBuffer takes owenship of the FFIHandle
+        /// VideoFrameBuffer takes ownership of the FFIHandle
         internal static VideoFrameBuffer Create(FfiHandle handle, VideoFrameBufferInfo info)
         {
             switch (info.BufferType)
@@ -102,15 +102,15 @@ namespace LiveKit
         public I420Buffer ToI420()
         {
             if (!IsValid)
-                throw new SystemException("the handle is invalid");
+                throw new InvalidOperationException("the handle is invalid");
 
             // ToI420Request will free the input buffer, don't drop twice
             // This class instance is now invalid, the users should not use it 
             // after using this function.
-            _handle.SetHandleAsInvalid();
+            Handle.SetHandleAsInvalid();
 
             var handleId = new FFIHandleId();
-            handleId.Id = (ulong)_handle.DangerousGetHandle();
+            handleId.Id = (ulong)Handle.DangerousGetHandle();
 
             var toi420 = new ToI420Request();
             toi420.Buffer = handleId;
@@ -121,9 +121,9 @@ namespace LiveKit
             var resp = FfiClient.SendRequest(request);
             var newInfo = resp.ToI420.Buffer;
             if (newInfo == null)
-                throw new SystemException("failed to convert");
+                throw new InvalidOperationException("failed to convert");
 
-            var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id, true);
+            var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
             return new I420Buffer(newHandle, newInfo);
         }
 
@@ -131,10 +131,10 @@ namespace LiveKit
         public void ToARGB(VideoFormatType format, IntPtr dst, uint dstStride, uint width, uint height)
         {
             if (!IsValid)
-                throw new SystemException("the handle is invalid");
+                throw new InvalidOperationException("the handle is invalid");
 
             var handleId = new FFIHandleId();
-            handleId.Id = (ulong)_handle.DangerousGetHandle();
+            handleId.Id = (ulong)Handle.DangerousGetHandle();
 
             var argb = new ToARGBRequest();
             argb.Buffer = handleId;
