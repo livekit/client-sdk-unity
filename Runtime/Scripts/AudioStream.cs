@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using System.Threading;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -44,6 +46,7 @@ namespace LiveKit
         internal readonly FfiHandle Handle;
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
+        private RingBuffer _buffer;
 
         public AudioStream(IAudioTrack audioTrack, AudioSource source)
         {
@@ -79,6 +82,16 @@ namespace LiveKit
             _audioFilter.AudioRead += OnAudioRead;
         }
 
+        // Called on Unity audio thread
+        private void OnAudioRead(float[] data, int channels, int sampleRate)
+        {
+            lock (_buffer)
+            {
+
+            }
+        }
+
+        // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
@@ -87,7 +100,23 @@ namespace LiveKit
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var frameInfo = e.FrameReceived.Frame;
+            var info = e.FrameReceived.Frame;
+            var handle = new FfiHandle((IntPtr)info.Handle.Id);
+            unsafe
+            {
+                uint len = info.SamplesPerChannel * info.NumChannels;
+                var data = new Span<byte>(((IntPtr)info.DataPtr).ToPointer(), (int)len);
+
+                lock (_buffer)
+                {
+                    if (_buffer.AvailableWrite() < len)
+                    {
+                        Utils.Error("AudioStream buffer overflow");
+                        return;
+                    }
+                    _buffer.Write(data);
+                }
+            }
         }
     }
 }
