@@ -158,6 +158,9 @@ namespace LiveKit.Internal
                        case FFIEvent.MessageOneofCase.VideoStreamEvent:
                            Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
                            break;
+                       case FFIEvent.MessageOneofCase.AudioStreamEvent:
+                           Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent);
+                           break;
 
                    }
                }, response);

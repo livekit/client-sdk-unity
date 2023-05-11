@@ -17,26 +17,6 @@ namespace LiveKit.Internal
             _sameWrap = true;
         }
 
-        public int Write(byte[] data, int offset, int count)
-        {
-            /*int free = AvailableWrite();
-            int write = (free < count ? free : count);
-            int n = write;
-            int margin = _buffer.Length - _writePos;
-
-            if (write > margin)
-            {
-                Buffer.BlockCopy(data, offset, _buffer, _writePos, margin);
-                _writePos = 0;
-                n -= margin;
-                _sameWrap = false;
-            }
-            Buffer.BlockCopy(data, offset + write - n, _buffer, _writePos, n);
-            _writePos += n;*/
-
-            return Write(data.AsSpan(offset, count));
-        }
-
         public int Write(ReadOnlySpan<byte> data)
         {
             int free = AvailableWrite();
@@ -54,21 +34,20 @@ namespace LiveKit.Internal
             data.Slice(write - n, n).CopyTo(_buffer.AsSpan(_writePos));
             _writePos += n;
             return write;
-
         }
 
-        public int Read(byte[] data, int offset, int count)
+        public int Read(Span<byte> data)
         {
-            int readCount = GetBufferReadRegions(count, out int dataIndex1, out int dataLen1, out int dataIndex2, out int dataLen2);
+            int readCount = GetBufferReadRegions(data.Length, out int dataIndex1, out int dataLen1, out int dataIndex2, out int dataLen2);
             if (dataLen2 > 0)
             {
-                Buffer.BlockCopy(_buffer, dataIndex1, data, offset, dataLen1);
-                Buffer.BlockCopy(_buffer, dataIndex2, data, offset + dataLen1, dataLen2);
+                _buffer.AsSpan().Slice(dataIndex1, dataLen1).CopyTo(data);
+                _buffer.AsSpan().Slice(dataIndex2, dataLen2).CopyTo(data.Slice(dataLen1));
             }
             else
             {
                 // TODO(theomonnom): Don't always copy in this case?
-                Buffer.BlockCopy(_buffer, dataIndex1, data, offset, dataLen1);
+                _buffer.AsSpan().Slice(dataIndex1, dataLen1).CopyTo(data);
             }
 
             MoveReadPtr(readCount);

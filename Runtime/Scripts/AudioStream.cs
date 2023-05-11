@@ -1,11 +1,8 @@
-using System.Collections;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using System.Threading;
-using Unity.Collections.LowLevel.Unsafe;
+using System.Runtime.InteropServices;
 
 namespace LiveKit
 {
@@ -15,7 +12,6 @@ namespace LiveKit
         public delegate void OnAudioDelegate(float[] data, int channels, int sampleRate);
         // Event is called from the Unity audio thread
         public event OnAudioDelegate AudioRead;
-
         private int _sampleRate;
 
         void OnEnable()
@@ -47,6 +43,10 @@ namespace LiveKit
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
+        private short[] _tempBuffer;
+        private uint _numChannels;
+        private uint _sampleRate;
+        private object _lock = new object();
 
         public AudioStream(IAudioTrack audioTrack, AudioSource source)
         {
@@ -78,16 +78,39 @@ namespace LiveKit
         {
             _audioSource = source;
             _audioFilter = source.gameObject.AddComponent<AudioFilter>();
-            _audioFilter.hideFlags = HideFlags.HideInInspector;
+            //_audioFilter.hideFlags = HideFlags.HideInInspector;
             _audioFilter.AudioRead += OnAudioRead;
+            source.Play();
         }
 
         // Called on Unity audio thread
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
-            lock (_buffer)
+            lock (_lock)
             {
+                if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
+                {
+                    int size = (int)(channels * sampleRate * 0.2);
+                    _buffer = new RingBuffer(size * sizeof(short));
+                    _tempBuffer = new short[data.Length];
+                    _numChannels = (uint)channels;
+                    _sampleRate = (uint)sampleRate;
+                }
 
+
+                static float S16ToFloat(short v)
+                {
+                    return v / 32768f;
+                }
+
+                // "Send" the data to Unity
+                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan());
+                int read = _buffer.Read(temp);
+
+                Array.Clear(data, 0, data.Length);
+
+                for (int i = 0; i < read / sizeof(short); i++)
+                    data[i] = S16ToFloat(_tempBuffer[i]);
             }
         }
 
@@ -102,19 +125,14 @@ namespace LiveKit
 
             var info = e.FrameReceived.Frame;
             var handle = new FfiHandle((IntPtr)info.Handle.Id);
-            unsafe
-            {
-                uint len = info.SamplesPerChannel * info.NumChannels;
-                var data = new Span<byte>(((IntPtr)info.DataPtr).ToPointer(), (int)len);
 
-                lock (_buffer)
+            lock (_lock)
+            {
+                unsafe
                 {
-                    if (_buffer.AvailableWrite() < len)
-                    {
-                        Utils.Error("AudioStream buffer overflow");
-                        return;
-                    }
-                    _buffer.Write(data);
+                    uint len = info.SamplesPerChannel * info.NumChannels;
+                    var data = new Span<byte>(((IntPtr)info.DataPtr).ToPointer(), (int)len);
+                    _buffer?.Write(data);
                 }
             }
         }
