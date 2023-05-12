@@ -110,7 +110,9 @@ namespace LiveKit
                 Array.Clear(data, 0, data.Length);
 
                 for (int i = 0; i < read / sizeof(short); i++)
+                {
                     data[i] = S16ToFloat(_tempBuffer[i]);
+                }
             }
         }
 
