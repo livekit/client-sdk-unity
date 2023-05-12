@@ -131,7 +131,6 @@ namespace LiveKit.Internal
         {
             var respData = new Span<byte>(data.ToPointer(), size);
             var response = FFIEvent.Parser.ParseFrom(respData);
-            Utils.Debug("FFIServer - Received Event: " + response.MessageCase);
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
