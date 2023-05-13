@@ -73,13 +73,29 @@ namespace LiveKit
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
     {
         internal LocalAudioTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
+
+        public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source)
+        {
+            var createTrack = new CreateAudioTrackRequest();
+            createTrack.Name = name;
+            createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
+
+            var request = new FFIRequest();
+            request.CreateAudioTrack = createTrack;
+
+            var resp = FfiClient.SendRequest(request);
+            var trackInfo = resp.CreateAudioTrack.Track;
+            var trackHandle = new FfiHandle((IntPtr)trackInfo.OptHandle.Id);
+            var track = new LocalAudioTrack(trackHandle, trackInfo, null);
+            return track;
+        }
     }
 
     public sealed class LocalVideoTrack : Track, ILocalTrack, IVideoTrack
     {
         internal LocalVideoTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
 
-        public static LocalVideoTrack CreateVideoTrack(string name, VideoSource source)
+        public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source)
         {
             var captureOptions = new VideoCaptureOptions();
             var resolution = new VideoResolution();

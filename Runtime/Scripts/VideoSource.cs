@@ -9,12 +9,12 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
-    public abstract class VideoSource
+    public abstract class RtcVideoSource
     {
         internal readonly FfiHandle Handle;
         protected VideoSourceInfo _info;
 
-        public VideoSource()
+        public RtcVideoSource()
         {
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
@@ -28,7 +28,7 @@ namespace LiveKit
         }
     }
 
-    public class TextureVideoSource : VideoSource
+    public class TextureVideoSource : RtcVideoSource
     {
         public Texture Texture { get; }
         private NativeArray<byte> _data;
