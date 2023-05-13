@@ -16,7 +16,7 @@ namespace LiveKit
         public uint SamplesPerChannel => _info.SamplesPerChannel;
 
         public IntPtr Data => (IntPtr)_info.DataPtr;
-        public uint Length => SamplesPerChannel * NumChannels * sizeof(short);
+        public int Length => (int) (SamplesPerChannel * NumChannels * sizeof(short));
 
         internal AudioFrame(FfiHandle handle, AudioFrameBufferInfo info)
         {

@@ -46,6 +46,7 @@ namespace LiveKit
         private short[] _tempBuffer;
         private uint _numChannels;
         private uint _sampleRate;
+        private AudioResampler _resampler = new AudioResampler();
         private object _lock = new object();
 
         public AudioStream(IAudioTrack audioTrack, AudioSource source)
@@ -104,12 +105,11 @@ namespace LiveKit
                 }
 
                 // "Send" the data to Unity
-                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan());
+                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, data.Length));
                 int read = _buffer.Read(temp);
 
                 Array.Clear(data, 0, data.Length);
-
-                for (int i = 0; i < read / sizeof(short); i++)
+                for (int i = 0; i < data.Length; i++)
                 {
                     data[i] = S16ToFloat(_tempBuffer[i]);
                 }
@@ -127,13 +127,17 @@ namespace LiveKit
 
             var info = e.FrameReceived.Frame;
             var handle = new FfiHandle((IntPtr)info.Handle.Id);
+            var frame = new AudioFrame(handle, info);
 
             lock (_lock)
-            {
+            { 
+                if (_numChannels == 0)
+                    return;
+
                 unsafe
                 {
-                    uint len = info.SamplesPerChannel * info.NumChannels;
-                    var data = new Span<byte>(((IntPtr)info.DataPtr).ToPointer(), (int)len);
+                    var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
+                    var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
                     _buffer?.Write(data);
                 }
             }

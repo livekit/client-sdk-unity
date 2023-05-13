@@ -105,7 +105,7 @@ namespace LiveKit.Internal
                 dataLen2 = 0;
             }
 
-            return readable;
+            return read;
         }
 
         public int AvailableRead()

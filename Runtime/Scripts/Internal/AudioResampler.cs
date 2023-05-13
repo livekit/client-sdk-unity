@@ -31,7 +31,6 @@ namespace LiveKit
             var res = FfiClient.SendRequest(request);
             var bufferInfo = res.RemixAndResample.Buffer;
             var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
-
             return new AudioFrame(handle, bufferInfo);
         }
     }
