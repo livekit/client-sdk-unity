@@ -62,7 +62,7 @@ namespace LiveKit
 
             unsafe {
                 fixed (float* src = data) {
-                    var dst = (short*)_frame.Data.GetUnsafePtr();
+                    var dst = (short*)_frame.Data.ToPointer();
                     for (var i = 0; i < data.Length; i++) {
                         dst[i] = FloatToS16(src[i]);
                     }
