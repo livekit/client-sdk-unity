@@ -26,9 +26,9 @@ namespace LiveKit
 
         internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {
             var alloc = new AllocAudioBufferRequest();
-            alloc.SampleRate = sampleRate;
-            alloc.NumChannels = numChannels;
-            alloc.SamplesPerChannel = samplesPerChannel;
+            alloc.SampleRate = (uint) sampleRate;
+            alloc.NumChannels = (uint) numChannels;
+            alloc.SamplesPerChannel = (uint) samplesPerChannel;
 
             var request = new FFIRequest();
             request.AllocAudioBuffer = alloc;
