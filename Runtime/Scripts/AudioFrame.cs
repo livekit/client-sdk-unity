@@ -24,6 +24,22 @@ namespace LiveKit
             _info = info;
         }
 
+        internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {
+            var alloc = new AllocAudioBufferRequest();
+            alloc.SampleRate = sampleRate;
+            alloc.NumChannels = numChannels;
+            alloc.SamplesPerChannel = samplesPerChannel;
+
+            var request = new FFIRequest();
+            request.AllocAudioBuffer = alloc;
+
+            var res = FfiClient.SendRequest(request);
+            var bufferInfo = res.AllocAudioBuffer.Buffer;
+
+            Handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
+            _info = bufferInfo;
+        }
+
         ~AudioFrame()
         {
             Dispose(false);
