@@ -71,9 +71,6 @@ if (!publish.IsError)
 
 ### Receiving tracks 
 ```cs
-
-void 
-
 IEnumerator Start()
 {
     var room = new Room();
