@@ -9,7 +9,7 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
-    public abstract class RtcAudioSource
+    public class RtcAudioSource
     {
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
@@ -20,7 +20,7 @@ namespace LiveKit
         // Used on the AudioThread
         private AudioFrame _frame;
 
-        public RtcAudioSource()
+        public RtcAudioSource(AudioSource source)
         {
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
@@ -31,6 +31,7 @@ namespace LiveKit
             var resp = FfiClient.SendRequest(request);
             _info = resp.NewAudioSource.Source;
             Handle = new FfiHandle((IntPtr)_info.Handle.Id);
+            UpdateSource(source);
         }
 
         private void UpdateSource(AudioSource source)
@@ -46,11 +47,11 @@ namespace LiveKit
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             var samplesPerChannel = data.Length / channels;
-            if (_frame.NumChannels != channels 
+            if (_frame == null || _frame.NumChannels != channels 
                 || _frame.SampleRate != sampleRate 
                 || _frame.SamplesPerChannel != samplesPerChannel)
             {
-                _frame = new AudioFrame(channels, sampleRate, samplesPerChannel);
+                _frame = new AudioFrame(sampleRate, channels, samplesPerChannel);
             }
 
             static short FloatToS16(float v) {
@@ -61,13 +62,15 @@ namespace LiveKit
             }
 
             unsafe {
-                fixed (float* src = data) {
-                    var dst = (short*)_frame.Data.ToPointer();
-                    for (var i = 0; i < data.Length; i++) {
-                        dst[i] = FloatToS16(src[i]);
-                    }
+                var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
+                for (int i = 0; i < data.Length; i++)
+                {
+                    frameData[i] = FloatToS16(data[i]);
                 }
             }
+
+            // Don't play the audio locally
+            Array.Clear(data, 0, data.Length);
 
             var pushFrame = new CaptureAudioFrameRequest();
             pushFrame.SourceHandle = new FFIHandleId { Id = (ulong)Handle.DangerousGetHandle() };
@@ -77,6 +80,8 @@ namespace LiveKit
             request.CaptureAudioFrame = pushFrame;
 
             FfiClient.SendRequest(request);
+
+            Debug.Log($"Pushed audio frame with {data.Length} samples");
         }
     }
 }
