@@ -1,4 +1,9 @@
 # client-sdk-unity
+⚠️ Warning
+
+> This SDK is currently in Developer Preview mode and not ready for production use. There will be bugs and APIs may change during this period.
+>
+> We welcome and appreciate any feedback or contributions. You can create issues here or chat live with us in the #rust-developer-preview channel within the [LiveKit Community Slack](https://livekit.io/join-slack).
 
 ## Installation :
 Follow this [unity tutorial](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using the `https://github.com/livekit/client-sdk-unity.git` link.
