@@ -66,7 +66,7 @@ namespace LiveKit.Internal
         static void Init()
         {
             Application.quitting += Quit;
-            Instance.Initialize();
+            FfiClient.Initialize();
         }
 #endif
 
