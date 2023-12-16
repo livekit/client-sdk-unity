@@ -42,6 +42,15 @@ namespace LiveKit
             ReadbackSupport();
         }
 
+        public ~TextureVideoSource()
+        {
+            if (_data != null)
+            {
+                _data.Dispose();
+                _data = null;
+            }
+        }
+
         // Read the texture data into a native array asynchronously
         internal void ReadBuffer()
         {
