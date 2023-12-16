@@ -40,6 +40,15 @@ namespace LiveKit
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
         }
 
+        public ~TextureVideoSource()
+        {
+            if (_data != null)
+            {
+                _data.Dispose();
+                _data = null;
+            }
+        }
+
         // Read the texture data into a native array asynchronously
         internal void ReadBuffer()
         {
