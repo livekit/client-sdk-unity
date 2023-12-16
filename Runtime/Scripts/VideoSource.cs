@@ -40,7 +40,7 @@ namespace LiveKit
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
         }
 
-        public ~TextureVideoSource()
+        ~TextureVideoSource()
         {
             if (_data != null)
             {
