@@ -34,20 +34,23 @@ namespace LiveKit
         public Texture Texture { get; }
         private NativeArray<byte> _data;
         private bool _reading = false;
+        private bool isDisposed = true;
+
 
         public TextureVideoSource(Texture texture)
         {
             Texture = texture;
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
             ReadbackSupport();
+            isDisposed = false;
         }
 
         public ~TextureVideoSource()
         {
-            if (_data != null)
+            if (!isDisposed)
             {
                 _data.Dispose();
-                _data = null;
+                isDisposed = true;
             }
         }
 
