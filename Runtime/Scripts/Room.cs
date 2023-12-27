@@ -58,8 +58,7 @@ namespace LiveKit
 
             Debug.Log("Connect....");
             var resp = FfiClient.SendRequest(request);
-            Debug.Log("Connect response....");
-            Debug.Log(resp);
+            Debug.Log($"Connect response.... {resp}");
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
 

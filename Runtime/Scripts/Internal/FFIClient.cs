@@ -84,16 +84,17 @@ namespace LiveKit.Internal
         {
             // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
             Instance._context = SynchronizationContext.Current;
+            Debug.Log("Main Context created");
         }
 
         static void Initialize()
         {
             FFICallbackDelegate callback = FFICallback;
 
-            /*var initReq = new Initialization();
-            initReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
-
-            var ini = SetS
+            //var eventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
+            Debug.LogError("Initialize Call:");
+            NativeMethods.LiveKitInitialize(callback, false);
+           /* var ini = SetS
             var request = new FfiRequest();
             request.Initialize = initReq;
             request.SetSubscribed 
@@ -131,12 +132,14 @@ namespace LiveKit.Internal
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(IntPtr data, int size)
         {
+            Debug.Log("Fall Size: " + size);
             var respData = new Span<byte>(data.ToPointer(), size);
             var response = FfiEvent.Parser.ParseFrom(respData);
-
+            Debug.Log("FF CallBack HEre: "+ response.MessageCase);
+            return;
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
-            Instance._context.Post((resp) =>
+            if(Instance != null && Instance._context!=null) Instance._context.Post((resp) =>
             {
                 var response = resp as FfiEvent;
                 switch (response.MessageCase)
