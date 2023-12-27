@@ -65,15 +65,15 @@ namespace LiveKit
             var track = (Track)localTrack;
 
             var publish = new PublishTrackRequest();
-            publish.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            publish.TrackHandle = new FFIHandleId { Id = (ulong)track.Handle.DangerousGetHandle() };
+            publish.TrackHandle = (ulong)room.Handle.DangerousGetHandle();
+            //publish.TrackHandle = new FFIHandleId { Id = (ulong)track.Handle.DangerousGetHandle() };
             publish.Options = options;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.PublishTrack = publish;
 
             var resp = FfiClient.SendRequest(request);
-            return new PublishTrackInstruction(resp.PublishTrack.AsyncId.Id);
+            return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
         }
     }
 
@@ -97,7 +97,7 @@ namespace LiveKit
 
         void OnPublish(PublishTrackCallback e)
         {
-            if (e.AsyncId.Id != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);

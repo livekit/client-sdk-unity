@@ -4,6 +4,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using Google.Protobuf.Collections;
 
 namespace LiveKit
 {
@@ -52,11 +53,14 @@ namespace LiveKit
             connect.Url = url;
             connect.Token = token;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.Connect = connect;
 
+            Debug.Log("Connect....");
             var resp = FfiClient.SendRequest(request);
-            return new ConnectInstruction(resp.Connect.AsyncId.Id, this);
+            Debug.Log("Connect response....");
+            Debug.Log(resp);
+            return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -68,29 +72,29 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle.Id != (ulong)Handle.DangerousGetHandle())
+            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
                 return;
 
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
                     {
-                        var participant = CreateRemoteParticipant(e.ParticipantConnected.Info);
+                        var participant = CreateRemoteParticipant(e.ParticipantConnected.Info.Info, null);
                         ParticipantConnected?.Invoke(participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
-                        var info = e.ParticipantDisconnected.Info;
-                        var participant = Participants[info.Sid];
-                        _participants.Remove(info.Sid);
+                        var info = e.ParticipantDisconnected;
+                        var participant = Participants[info.ParticipantSid];
+                        _participants.Remove(info.ParticipantSid);
                         ParticipantDisconnected?.Invoke(participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = Participants[e.TrackPublished.ParticipantSid];
-                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication);
+                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info);
                         participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
                         TrackPublished?.Invoke(publication, participant);
@@ -107,7 +111,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackSubscribed:
                     {
-                        var info = e.TrackSubscribed.Track;
+                        var info = e.TrackSubscribed.Track.Info;
                         var participant = Participants[e.TrackSubscribed.ParticipantSid];
                         var publication = participant.Tracks[info.Sid];
 
@@ -150,9 +154,9 @@ namespace LiveKit
                         TrackUnmuted?.Invoke(publication, participant);
                     }
                     break;
-                case RoomEvent.MessageOneofCase.SpeakersChanged:
+                case RoomEvent.MessageOneofCase.ActiveSpeakersChanged:
                     {
-                        var sids = e.SpeakersChanged.ParticipantSids;
+                        var sids = e.ActiveSpeakersChanged.ParticipantSids;
                         var speakers = new List<Participant>(sids.Count);
 
                         foreach (var sid in sids)
@@ -170,23 +174,23 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
-                        var dataInfo = e.DataReceived;
+                        var dataInfo = e.DataReceived.Data;
 
                         var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);
-                        var data = new byte[dataInfo.DataSize];
-                        Marshal.Copy((IntPtr)dataInfo.DataPtr, data, 0, data.Length);
+                        var data = new byte[dataInfo.Data.DataLen];
+                        Marshal.Copy((IntPtr)dataInfo.Data.DataPtr, data, 0, data.Length);
                         handle.Dispose();
 
                         var participant = GetParticipant(e.DataReceived.ParticipantSid);
-                        DataReceived?.Invoke(data, participant, dataInfo.Kind);
+                        DataReceived?.Invoke(data, participant, e.DataReceived.Kind);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
-                case RoomEvent.MessageOneofCase.Connected:
+                /*case RoomEvent.MessageOneofCase.Connected:
                     Connected?.Invoke();
-                    break;
+                    break;*/
                 case RoomEvent.MessageOneofCase.Disconnected:
                     Disconnected?.Invoke();
                     OnDisconnect();
@@ -200,16 +204,17 @@ namespace LiveKit
             }
         }
 
-        internal void OnConnect(RoomInfo info)
+        internal void OnConnect(RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
-            Handle = new FfiHandle((IntPtr)info.Handle.Id);
+            Debug.Log("OnConnect 0....");
+            Handle = new FfiHandle((IntPtr)participant.Handle.Id);
 
             UpdateFromInfo(info);
-            LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
+            LocalParticipant = new LocalParticipant(participant.Info, this);
 
             // Add already connected participant
-            foreach (var p in info.Participants)
-                CreateRemoteParticipant(p);
+            foreach (var p in participants)
+                CreateRemoteParticipant(p.Participant.Info, p.Publications);
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
         }
@@ -219,14 +224,14 @@ namespace LiveKit
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
         }
 
-        RemoteParticipant CreateRemoteParticipant(ParticipantInfo info)
+        RemoteParticipant CreateRemoteParticipant(ParticipantInfo info, RepeatedField<OwnedTrackPublication> publications)
         {
             var participant = new RemoteParticipant(info, this);
             _participants.Add(participant.Sid, participant);
 
-            foreach (var pubInfo in info.Publications)
+            foreach (var pubInfo in publications)
             {
-                var publication = new RemoteTrackPublication(pubInfo);
+                var publication = new RemoteTrackPublication(pubInfo.Info);
                 participant._tracks.Add(publication.Sid, publication);
             }
 
@@ -241,6 +246,7 @@ namespace LiveKit
             Participants.TryGetValue(sid, out var remoteParticipant);
             return remoteParticipant;
         }
+
     }
 
     public sealed class ConnectInstruction : YieldInstruction
@@ -257,14 +263,17 @@ namespace LiveKit
 
         void OnConnect(ConnectCallback e)
         {
-            if (_asyncId != e.AsyncId.Id)
+            Debug.Log("OnConnect....");
+            Debug.Log(e);
+
+            if (_asyncId != e.AsyncId)
                 return;
 
             FfiClient.Instance.ConnectReceived -= OnConnect;
 
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
-                _room.OnConnect(e.Room);
+                _room.OnConnect(e.Room.Info, e.LocalParticipant, e.Participants);
 
             IsError = !success;
             IsDone = true;

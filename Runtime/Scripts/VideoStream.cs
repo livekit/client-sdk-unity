@@ -41,12 +41,12 @@ namespace LiveKit
                 throw new InvalidOperationException("videotrack's participant is invalid");
 
             var newVideoStream = new NewVideoStreamRequest();
-            newVideoStream.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            newVideoStream.ParticipantSid = participant.Sid;
-            newVideoStream.TrackSid = videoTrack.Sid;
+            newVideoStream.TrackHandle = (ulong)room.Handle.DangerousGetHandle();
+            //newVideoStream.ParticipantSid = participant.Sid;
+            //newVideoStream.TrackSid = videoTrack.Sid;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewVideoStream = newVideoStream;
 
             var resp = FfiClient.SendRequest(request);
@@ -127,15 +127,15 @@ namespace LiveKit
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
-            if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
+            if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
                 return;
 
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
             var frameInfo = e.FrameReceived.Frame;
-            var bufferInfo = e.FrameReceived.Buffer;
-            var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
+            var bufferInfo = e.FrameReceived.Buffer.Info;
+            var handle = new FfiHandle((IntPtr)e.FrameReceived.Buffer.Handle.Id);
 
             var frame = new VideoFrame(frameInfo);
             var buffer = VideoFrameBuffer.Create(handle, bufferInfo);

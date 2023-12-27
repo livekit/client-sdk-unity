@@ -21,7 +21,7 @@ namespace LiveKit.Internal
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
-    internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
+    internal delegate void ParticipantEventReceivedDelegate(OwnedParticipant e);
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
     internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
 
@@ -90,12 +90,14 @@ namespace LiveKit.Internal
         {
             FFICallbackDelegate callback = FFICallback;
 
-            var initReq = new InitializeRequest();
+            /*var initReq = new Initialization();
             initReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
 
+            var ini = SetS
             var request = new FfiRequest();
             request.Initialize = initReq;
-            SendRequest(request);
+            request.SetSubscribed 
+            SendRequest(request);*/
             Utils.Debug("FFIServer - Initialized");
         }
 
@@ -105,7 +107,7 @@ namespace LiveKit.Internal
             // The rust lk implementation should also correctly dispose WebRTC
             var disposeReq = new DisposeRequest();
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.Dispose = disposeReq;
             SendRequest(request);
             Utils.Debug("FFIServer - Disposed");
@@ -151,9 +153,9 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.TrackEvent:
                         Instance.TrackEventReceived?.Invoke(response.TrackEvent);
                         break;
-                    case FfiEvent.MessageOneofCase.ParticipantEvent:
+                    /*case FfiEvent.MessageOneofCase. ParticipantEvent:
                         Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                        break;
+                        break;*/
                     case FfiEvent.MessageOneofCase.VideoStreamEvent:
                         Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
                         break;

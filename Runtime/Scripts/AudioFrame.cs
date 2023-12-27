@@ -30,13 +30,13 @@ namespace LiveKit
             alloc.NumChannels = (uint) numChannels;
             alloc.SamplesPerChannel = (uint) samplesPerChannel;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.AllocAudioBuffer = alloc;
 
             var res = FfiClient.SendRequest(request);
-            var bufferInfo = res.AllocAudioBuffer.Buffer;
+            var bufferInfo = res.AllocAudioBuffer.Buffer.Info;
 
-            Handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
+            Handle = new FfiHandle((IntPtr)res.AllocAudioBuffer.Buffer.Handle.Id);
             _info = bufferInfo;
         }
 

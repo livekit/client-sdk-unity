@@ -78,15 +78,15 @@ namespace LiveKit
         {
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
-            createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.CreateAudioTrack = createTrack;
 
             var resp = FfiClient.SendRequest(request);
             var trackInfo = resp.CreateAudioTrack.Track;
-            var trackHandle = new FfiHandle((IntPtr)trackInfo.OptHandle.Id);
-            var track = new LocalAudioTrack(trackHandle, trackInfo, null);
+            var trackHandle = new FfiHandle((IntPtr)trackInfo.Handle.Id);
+            var track = new LocalAudioTrack(trackHandle, trackInfo.Info, null);
             return track;
         }
     }
@@ -97,25 +97,25 @@ namespace LiveKit
 
         public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source)
         {
-            var captureOptions = new VideoCaptureOptions();
+            /*var captureOptions = new VideoCaptureOptions();
             var resolution = new VideoResolution();
             resolution.Width = 640;
             resolution.Height = 480;
             resolution.FrameRate = 30;
-            captureOptions.Resolution = resolution;
+            captureOptions.Resolution = resolution;*/
 
             var createTrack = new CreateVideoTrackRequest();
             createTrack.Name = name;
-            createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
-            createTrack.Options = captureOptions;
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
+            //createTrack.Options = captureOptions;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.CreateVideoTrack = createTrack;
 
             var resp = FfiClient.SendRequest(request);
             var trackInfo = resp.CreateVideoTrack.Track;
-            var trackHandle = new FfiHandle((IntPtr)trackInfo.OptHandle.Id);
-            var track = new LocalVideoTrack(trackHandle, trackInfo, null);
+            var trackHandle = new FfiHandle((IntPtr)trackInfo.Handle.Id);
+            var track = new LocalVideoTrack(trackHandle, trackInfo.Info, null);
             return track;
         }
     }
