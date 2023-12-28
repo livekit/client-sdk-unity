@@ -58,9 +58,31 @@ namespace LiveKit
 
             Debug.Log("Connect....");
             var resp = FfiClient.SendRequest(request);
-            Debug.Log("Connect response....");
-            Debug.Log(resp);
+            Debug.Log($"Connect response.... {resp}");
             return new ConnectInstruction(resp.Connect.AsyncId, this);
+        }
+
+
+        public void PublishData(byte[] data, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
+        {
+            var req = new FfiRequest();
+
+            GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
+            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+
+            var dataRequest = new PublishDataRequest();
+            dataRequest.DataLen = (ulong)data.Length;
+            dataRequest.DataPtr = (ulong)pointer;
+            dataRequest.Kind = kind;
+            dataRequest.Topic = topic;
+            dataRequest.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+
+            var request = new FfiRequest();
+            request.PublishData = dataRequest;
+
+            Debug.LogError("Sending message: " + topic);
+            FfiClient.SendRequest(request);
+            pinnedArray.Free();
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -72,9 +94,12 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
-                return;
-
+            //if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
+            //{
+                //Debug.LogError("Ignoring. Different Room... ");
+                //return;
+            //}
+            Debug.LogError("Room Event Type: " + e.MessageCase);
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
@@ -174,6 +199,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
+                        Debug.LogError("Data Recieved!");
                         var dataInfo = e.DataReceived.Data;
 
                         var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);
@@ -206,12 +232,14 @@ namespace LiveKit
 
         internal void OnConnect(RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
-            Debug.Log("OnConnect 0....");
+            Debug.Log("OnConnect....");
+            
             Handle = new FfiHandle((IntPtr)participant.Handle.Id);
+          
 
-            UpdateFromInfo(info);
+            UpdateFromInfo(info); 
+            
             LocalParticipant = new LocalParticipant(participant.Info, this);
-
             // Add already connected participant
             foreach (var p in participants)
                 CreateRemoteParticipant(p.Participant.Info, p.Publications);
@@ -263,15 +291,14 @@ namespace LiveKit
 
         void OnConnect(ConnectCallback e)
         {
-            Debug.Log("OnConnect....");
-            Debug.Log(e);
-
+            Debug.Log($"OnConnect.... {e}");
             if (_asyncId != e.AsyncId)
                 return;
 
             FfiClient.Instance.ConnectReceived -= OnConnect;
 
             bool success = string.IsNullOrEmpty(e.Error);
+            Debug.Log("Connection success: " + success);
             if (success)
                 _room.OnConnect(e.Room.Info, e.LocalParticipant, e.Participants);
 
