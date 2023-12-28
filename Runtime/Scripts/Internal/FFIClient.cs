@@ -114,15 +114,20 @@ namespace LiveKit.Internal
             Utils.Debug("FFIServer - Disposed");
         }
 
-        internal static FfiResponse SendRequest(FfiRequest request)
+        internal static FfiResponse SendRequest(FfiRequest request )
         {
+            
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-            FfiResponse response;
+            
+            
+            
+            FfiResponse response = null;
             unsafe
             {
                 var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
-                response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
-                handle.Dispose();
+
+                    response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                    handle.Dispose();
             }
 
             return response;
@@ -132,11 +137,9 @@ namespace LiveKit.Internal
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(IntPtr data, int size)
         {
-            Debug.Log("Fall Size: " + size);
             var respData = new Span<byte>(data.ToPointer(), size);
             var response = FfiEvent.Parser.ParseFrom(respData);
-            Debug.Log("FF CallBack HEre: "+ response.MessageCase);
-            return;
+        
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
             if(Instance != null && Instance._context!=null) Instance._context.Post((resp) =>
@@ -151,6 +154,7 @@ namespace LiveKit.Internal
                         Instance.PublishTrackReceived?.Invoke(response.PublishTrack);
                         break;
                     case FfiEvent.MessageOneofCase.RoomEvent:
+                      
                         Instance.RoomEventReceived?.Invoke(response.RoomEvent);
                         break;
                     case FfiEvent.MessageOneofCase.TrackEvent:

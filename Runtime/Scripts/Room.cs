@@ -62,6 +62,29 @@ namespace LiveKit
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
 
+
+        public void PublishData(byte[] data, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
+        {
+            var req = new FfiRequest();
+
+            GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
+            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+
+            var dataRequest = new PublishDataRequest();
+            dataRequest.DataLen = (ulong)data.Length;
+            dataRequest.DataPtr = (ulong)pointer;
+            dataRequest.Kind = kind;
+            dataRequest.Topic = topic;
+            dataRequest.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+
+            var request = new FfiRequest();
+            request.PublishData = dataRequest;
+
+            Debug.LogError("Sending message: " + topic);
+            FfiClient.SendRequest(request);
+            pinnedArray.Free();
+        }
+
         internal void UpdateFromInfo(RoomInfo info)
         {
             Sid = info.Sid;
@@ -205,12 +228,14 @@ namespace LiveKit
 
         internal void OnConnect(RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
-            Debug.Log("OnConnect 0....");
+            Debug.Log("OnConnect....");
+            
             Handle = new FfiHandle((IntPtr)participant.Handle.Id);
+          
 
-            UpdateFromInfo(info);
+            UpdateFromInfo(info); 
+            
             LocalParticipant = new LocalParticipant(participant.Info, this);
-
             // Add already connected participant
             foreach (var p in participants)
                 CreateRemoteParticipant(p.Participant.Info, p.Publications);
@@ -262,15 +287,14 @@ namespace LiveKit
 
         void OnConnect(ConnectCallback e)
         {
-            Debug.Log("OnConnect....");
-            Debug.Log(e);
-
+            Debug.Log($"OnConnect.... {e}");
             if (_asyncId != e.AsyncId)
                 return;
 
             FfiClient.Instance.ConnectReceived -= OnConnect;
 
             bool success = string.IsNullOrEmpty(e.Error);
+            Debug.Log("Connection success: " + success);
             if (success)
                 _room.OnConnect(e.Room.Info, e.LocalParticipant, e.Participants);
 
