@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using UnityEngine;
 
 namespace LiveKit
 {
@@ -23,13 +24,21 @@ namespace LiveKit
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
 
-        public readonly WeakReference<Room> Room;
+        private Room _room;
+        public Room Room
+        {
+            get
+            {
+                return _room;
+            }
+        }
+
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
         internal readonly Dictionary<string, TrackPublication> _tracks = new();
 
         protected Participant(ParticipantInfo info, Room room)
         {
-            Room = new WeakReference<Room>(room);
+            _room =  room;
             UpdateInfo(info);
         }
 
@@ -59,21 +68,23 @@ namespace LiveKit
 
         public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
         {
-            if (!Room.TryGetTarget(out var room))
+            if (Room == null)
                 throw new Exception("room is invalid");
-
+          
             var track = (Track)localTrack;
-
             var publish = new PublishTrackRequest();
-            publish.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            publish.TrackHandle = new FFIHandleId { Id = (ulong)track.Handle.DangerousGetHandle() };
+            //publish.TrackHandle = (ulong)Room.Handle.DangerousGetHandle();
+            //publish.LocalParticipantHandle = 
+            publish.TrackHandle =   (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.PublishTrack = publish;
 
             var resp = FfiClient.SendRequest(request);
-            return new PublishTrackInstruction(resp.PublishTrack.AsyncId.Id);
+            if(resp!=null)
+                return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
+            return null;
         }
     }
 
@@ -97,7 +108,7 @@ namespace LiveKit
 
         void OnPublish(PublishTrackCallback e)
         {
-            if (e.AsyncId.Id != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);
