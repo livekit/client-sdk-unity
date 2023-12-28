@@ -90,15 +90,7 @@ namespace LiveKit.Internal
         static void Initialize()
         {
             FFICallbackDelegate callback = FFICallback;
-
-            //var eventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
-            Debug.LogError("Initialize Call:");
             NativeMethods.LiveKitInitialize(callback, false);
-           /* var ini = SetS
-            var request = new FfiRequest();
-            request.Initialize = initReq;
-            request.SetSubscribed 
-            SendRequest(request);*/
             Utils.Debug("FFIServer - Initialized");
         }
 
@@ -147,11 +139,10 @@ namespace LiveKit.Internal
             {
                 var response = resp as FfiEvent;
 
-                Debug.Log("Message: " + response.MessageCase);
+                Util.Debug("Message: " + response.MessageCase);
                 switch (response.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.PublishData:
-                        Debug.LogError("Data Sent");
                         break;
                     case FfiEvent.MessageOneofCase.Connect:
                         Instance.ConnectReceived?.Invoke(response.Connect);
