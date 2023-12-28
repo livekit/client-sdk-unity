@@ -94,9 +94,12 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
-                return;
-
+            //if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
+            //{
+                //Debug.LogError("Ignoring. Different Room... ");
+                //return;
+            //}
+            Debug.LogError("Room Event Type: " + e.MessageCase);
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
@@ -196,6 +199,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
+                        Debug.LogError("Data Recieved!");
                         var dataInfo = e.DataReceived.Data;
 
                         var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);

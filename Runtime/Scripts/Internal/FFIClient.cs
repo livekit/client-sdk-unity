@@ -140,13 +140,19 @@ namespace LiveKit.Internal
             var respData = new Span<byte>(data.ToPointer(), size);
             var response = FfiEvent.Parser.ParseFrom(respData);
         
+
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
             if(Instance != null && Instance._context!=null) Instance._context.Post((resp) =>
             {
                 var response = resp as FfiEvent;
+
+                Debug.Log("Message: " + response.MessageCase);
                 switch (response.MessageCase)
                 {
+                    case FfiEvent.MessageOneofCase.PublishData:
+                        Debug.LogError("Data Sent");
+                        break;
                     case FfiEvent.MessageOneofCase.Connect:
                         Instance.ConnectReceived?.Invoke(response.Connect);
                         break;
