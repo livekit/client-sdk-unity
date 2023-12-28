@@ -354,11 +354,14 @@ namespace LiveKit
             var publications = item.Publications;
             var newParticipant = new RemoteParticipant(participant, this);
             _participants.Add(participant.Info.Sid, newParticipant);
-            foreach (var pub in publications)
+            if (publications != null)
             {
-                var publication = new RemoteTrackPublication(pub.Info);
-                newParticipant._tracks.Add(publication.Sid, publication);
-                newParticipant.OnTrackPublished(publication);
+                foreach (var pub in publications)
+                {
+                    var publication = new RemoteTrackPublication(pub.Info);
+                    newParticipant._tracks.Add(publication.Sid, publication);
+                    newParticipant.OnTrackPublished(publication);
+                }
             }
             return newParticipant;
         }
