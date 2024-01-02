@@ -17,6 +17,7 @@ namespace LiveKit.Internal
     // Callbacks
     internal delegate void PublishTrackDelegate(PublishTrackCallback e);
     internal delegate void ConnectReceivedDelegate(ConnectCallback e);
+    internal delegate void DisconnectReceivedDelegate(DisconnectCallback e);
 
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
@@ -37,6 +38,7 @@ namespace LiveKit.Internal
 
         public event PublishTrackDelegate PublishTrackReceived;
         public event ConnectReceivedDelegate ConnectReceived;
+        public event DisconnectReceivedDelegate DisconnectReceived;
         public event RoomEventReceivedDelegate RoomEventReceived;
         public event TrackEventReceivedDelegate TrackEventReceived;
         public event ParticipantEventReceivedDelegate ParticipantEventReceived;
@@ -165,6 +167,9 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.TrackEvent:
                         Instance.TrackEventReceived?.Invoke(response.TrackEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.Disconnect:
+                        Instance.DisconnectReceived?.Invoke(response.Disconnect);
                         break;
                     /*case FfiEvent.MessageOneofCase. ParticipantEvent:
                         Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);

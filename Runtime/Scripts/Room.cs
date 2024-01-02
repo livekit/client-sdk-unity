@@ -46,6 +46,7 @@ namespace LiveKit
         public event ConnectionDelegate Reconnected;
 
         internal FfiHandle Handle;
+        internal FfiOwnedHandle RoomHandle;
 
         public ConnectInstruction Connect(string url, string token)
         {
@@ -83,6 +84,19 @@ namespace LiveKit
             Debug.LogError("Sending message: " + topic);
             FfiClient.SendRequest(request);
             pinnedArray.Free();
+        }
+
+        public void Disconnect()
+        {
+            var disconnect = new DisconnectRequest();
+            disconnect.RoomHandle = (ulong)RoomHandle.Id;
+
+            var request = new FfiRequest();
+            request.Disconnect = disconnect;
+
+            //Debug.Log($"Disconnect.... {disconnect.RoomHandle}");
+            var resp = FfiClient.SendRequest(request);
+            //Debug.Log($"Disconnect response.... {resp}");
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -217,6 +231,7 @@ namespace LiveKit
                 /*case RoomEvent.MessageOneofCase.Connected:
                     Connected?.Invoke();
                     break;*/
+                case RoomEvent.MessageOneofCase.Eos:
                 case RoomEvent.MessageOneofCase.Disconnected:
                     Disconnected?.Invoke();
                     OnDisconnect();
@@ -230,11 +245,12 @@ namespace LiveKit
             }
         }
 
-        internal void OnConnect(RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
+        internal void OnConnect(FfiOwnedHandle roomHandle, RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
-            Debug.Log("OnConnect....");
-            
+            //Debug.Log($"OnConnect.... {roomHandle.Id}  {participant.Handle.Id}");
+
             Handle = new FfiHandle((IntPtr)participant.Handle.Id);
+            RoomHandle = roomHandle;
           
 
             UpdateFromInfo(info); 
@@ -245,6 +261,14 @@ namespace LiveKit
                 CreateRemoteParticipant(p.Participant.Info, p.Publications);
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
+            FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
+        }
+
+        private void OnDisconnectReceived(DisconnectCallback e)
+        {
+            FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
+            //Debug.Log($"OnDisconnect.... {e}");
+
         }
 
         internal void OnDisconnect()
@@ -303,7 +327,7 @@ namespace LiveKit
             bool success = string.IsNullOrEmpty(e.Error);
             Debug.Log("Connection success: " + success);
             if (success)
-                _room.OnConnect(e.Room.Info, e.LocalParticipant, e.Participants);
+                _room.OnConnect(e.Room.Handle, e.Room.Info, e.LocalParticipant, e.Participants);
 
             IsError = !success;
             IsDone = true;
