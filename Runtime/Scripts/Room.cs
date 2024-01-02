@@ -57,9 +57,9 @@ namespace LiveKit
             var request = new FfiRequest();
             request.Connect = connect;
 
-            Util.Debug("Connect....");
+            Utils.Debug("Connect....");
             var resp = FfiClient.SendRequest(request);
-            Util.Debug($"Connect response.... {resp}");
+            Utils.Debug($"Connect response.... {resp}");
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
 
@@ -81,7 +81,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.PublishData = dataRequest;
 
-            Util.Debug("Sending message: " + topic);
+            Utils.Debug("Sending message: " + topic);
             FfiClient.SendRequest(request);
             pinnedArray.Free();
         }
@@ -94,7 +94,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.Disconnect = disconnect;
 
-            Util.Debug($"Disconnect.... {disconnect.RoomHandle}");
+            Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
             var resp = FfiClient.SendRequest(request);
             //Util.Debug($"Disconnect response.... {resp}");
         }
@@ -108,7 +108,7 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            Util.Debug("Room Event Type: " + e.MessageCase);
+            Utils.Debug("Room Event Type: " + e.MessageCase);
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
@@ -241,7 +241,7 @@ namespace LiveKit
 
         internal void OnConnect(FfiOwnedHandle roomHandle, RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
-            Util.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle.Id}");
+            Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle.Id}");
 
             Handle = new FfiHandle((IntPtr)participant.Handle.Id);
             RoomHandle = roomHandle;
@@ -261,7 +261,7 @@ namespace LiveKit
         private void OnDisconnectReceived(DisconnectCallback e)
         {
             FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
-            Util.Debug($"OnDisconnect.... {e}");
+            Utils.Debug($"OnDisconnect.... {e}");
 
         }
 
@@ -312,14 +312,14 @@ namespace LiveKit
 
         void OnConnect(ConnectCallback e)
         {
-            Util.Debug($"OnConnect.... {e}");
+            Utils.Debug($"OnConnect.... {e}");
             if (_asyncId != e.AsyncId)
                 return;
 
             FfiClient.Instance.ConnectReceived -= OnConnect;
 
             bool success = string.IsNullOrEmpty(e.Error);
-            Util.Debug("Connection success: " + success);
+            Utils.Debug("Connection success: " + success);
             if (success)
                 _room.OnConnect(e.Room.Handle, e.Room.Info, e.LocalParticipant, e.Participants);
 

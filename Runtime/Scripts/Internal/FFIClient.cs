@@ -141,7 +141,7 @@ namespace LiveKit.Internal
             {
                 var response = resp as FfiEvent;
 
-                Util.Debug("Message: " + response.MessageCase);
+                Utils.Debug("Message: " + response.MessageCase);
                 switch (response.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.PublishData:
