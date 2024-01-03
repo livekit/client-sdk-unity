@@ -18,7 +18,7 @@ namespace LiveKit
         public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
         public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
-        public delegate void ConnectionDelegate();
+        public delegate void ConnectionDelegate(Room room);
 
         public string Sid { private set; get; }
         public string Name { private set; get; }
@@ -96,7 +96,7 @@ namespace LiveKit
 
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
             var resp = FfiClient.SendRequest(request);
-            //Util.Debug($"Disconnect response.... {resp}");
+            Utils.Debug($"Disconnect response.... {resp}");
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -108,7 +108,14 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            Utils.Debug("Room Event Type: " + e.MessageCase);
+
+            if (e.RoomHandle != (ulong)RoomHandle.Id)
+            {
+                Debug.LogError("Ignoring. Different Room... ");
+                return;
+            }
+            Utils.Debug($"Room {Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)RoomHandle.Id})");
+            //Utils.Debug(e);
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
@@ -223,18 +230,18 @@ namespace LiveKit
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
                 /*case RoomEvent.MessageOneofCase.Connected:
-                    Connected?.Invoke();
+                    Connected?.Invoke(this);
                     break;*/
                 case RoomEvent.MessageOneofCase.Eos:
                 case RoomEvent.MessageOneofCase.Disconnected:
-                    Disconnected?.Invoke();
+                    Disconnected?.Invoke(this);
                     OnDisconnect();
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
-                    Reconnecting?.Invoke();
+                    Reconnecting?.Invoke(this);
                     break;
                 case RoomEvent.MessageOneofCase.Reconnected:
-                    Reconnected?.Invoke();
+                    Reconnected?.Invoke(this);
                     break;
             }
         }
