@@ -4,6 +4,7 @@ using LiveKit.Proto;
 using UnityEngine;
 using Google.Protobuf;
 using System.Threading;
+using System.Threading.Tasks;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -108,23 +109,46 @@ namespace LiveKit.Internal
             Utils.Debug("FFIServer - Disposed");
         }
 
-        internal static FfiResponse SendRequest(FfiRequest request )
+        async internal static Task<FfiResponse> SendRequest(FfiRequest request )
         {
-            
+
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-            
-            
-            
-            FfiResponse response = null;
-            unsafe
+
+
+            return await Task.Run(() =>
             {
-                var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+                FfiResponse response = null;
+                unsafe
+                {
+                    var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
 
                     response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
                     handle.Dispose();
-            }
+                    return response;
+                }
+            });
+            //return response;
+        }
 
-            return response;
+        async internal static Task<FfiResponse> SendRequestAsync(FfiRequest request)
+        {
+
+            var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
+
+
+            return await Task.Run(() =>
+            {
+                FfiResponse response = null;
+                unsafe
+                {
+                    var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+
+                    response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                    handle.Dispose();
+                    return response;
+                }
+            });
+            //return response;
         }
 
 

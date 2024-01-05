@@ -8,7 +8,12 @@ namespace LiveKit
     {
         private AudioFrameBufferInfo _info;
 
-        internal readonly FfiHandle Handle;
+        //internal readonly FfiHandle Handle;
+        private FfiHandle _handle;
+        internal FfiHandle Handle
+        {
+            get { return _handle; }
+        }
         private bool _disposed = false;
 
         public uint NumChannels => _info.NumChannels;
@@ -20,7 +25,7 @@ namespace LiveKit
 
         internal AudioFrame(FfiHandle handle, AudioFrameBufferInfo info)
         {
-            Handle = handle;
+            _handle = handle;
             _info = info;
         }
 
@@ -33,11 +38,17 @@ namespace LiveKit
             var request = new FfiRequest();
             request.AllocAudioBuffer = alloc;
 
-            var res = FfiClient.SendRequest(request);
+            Init(request);
+        }
+
+        async void Init(FfiRequest request)
+        {
+            var res = await FfiClient .SendRequest(request);
             var bufferInfo = res.AllocAudioBuffer.Buffer.Info;
 
-            Handle = new FfiHandle((IntPtr)res.AllocAudioBuffer.Buffer.Handle.Id);
+            _handle = new FfiHandle((IntPtr)res.AllocAudioBuffer.Buffer.Handle.Id);
             _info = bufferInfo;
+            
         }
 
         ~AudioFrame()

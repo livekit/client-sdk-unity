@@ -3,6 +3,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -99,7 +100,7 @@ namespace LiveKit
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public I420Buffer ToI420()
+        async public Task<I420Buffer> ToI420()
         {
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
@@ -119,7 +120,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.ToI420 = toi420;
 
-            var resp = FfiClient.SendRequest(request);
+            var resp = await FfiClient.SendRequest(request);
             var newInfo = resp.ToI420.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");

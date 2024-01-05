@@ -3,12 +3,18 @@ using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
     public class AudioStream
     {
-        internal readonly FfiHandle Handle;
+        //internal readonly FfiHandle Handle;
+        private FfiHandle _handle;
+        internal FfiHandle Handle
+        {
+            get { return _handle; }
+        }
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -35,13 +41,19 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewAudioStream = newAudioStream;
 
-            var resp = FfiClient.SendRequest(request);
+            Init(request, source);
+        }
+
+        async void Init(FfiRequest request, AudioSource source)
+        {
+            var resp = await FfiClient.SendRequest(request);
             var streamInfo = resp.NewAudioStream.Stream;
 
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
+            
         }
 
         private void UpdateSource(AudioSource source)
@@ -86,7 +98,7 @@ namespace LiveKit
         }
 
         // Called on the MainThread (See FfiClient)
-        private void OnAudioStreamEvent(AudioStreamEvent e)
+        async private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
                 return;
@@ -98,18 +110,22 @@ namespace LiveKit
             var handle = new FfiHandle((IntPtr)e.FrameReceived.Frame.Handle.Id);
             var frame = new AudioFrame(handle, info);
 
-            lock (_lock)
-            { 
-                if (_numChannels == 0)
-                    return;
+            await Task.Run(() =>
+            {
+                lock (_lock)
+                { 
+                    if (_numChannels == 0)
+                        return;
 
-                unsafe
-                {
-                    var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                    _buffer?.Write(data);
+               
+                    unsafe
+                    {
+                        var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate).Result;
+                        var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
+                        _buffer?.Write(data);
+                    }
                 }
-            }
+            });
         }
     }
 }

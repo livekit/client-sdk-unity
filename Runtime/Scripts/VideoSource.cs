@@ -11,7 +11,12 @@ namespace LiveKit
 {
     public abstract class RtcVideoSource
     {
-        internal readonly FfiHandle Handle;
+        //internal readonly FfiHandle Handle;
+        private FfiHandle _handle;
+        internal FfiHandle Handle
+        {
+            get { return _handle; }
+        }
         protected VideoSourceInfo _info;
 
         public RtcVideoSource()
@@ -22,9 +27,14 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewVideoSource = newVideoSource;
 
-            var resp = FfiClient.SendRequest(request);
+            Init(request);
+        }
+
+        async void Init(FfiRequest request)
+        {
+            var resp = await FfiClient.SendRequest(request);
             _info = resp.NewVideoSource.Source.Info;
-            Handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
+            _handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
         }
     }
 
@@ -72,7 +82,7 @@ namespace LiveKit
             }
         }
 
-        private void OnReadback(AsyncGPUReadbackRequest req)
+        async private void OnReadback(AsyncGPUReadbackRequest req)
         {
             _reading = false;
             if (req.hasError)
@@ -99,7 +109,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.ToI420 = toI420;
 
-            var resp = FfiClient.SendRequest(request);
+            var resp = await FfiClient.SendRequest(request);
             var bufferInfo = resp.ToI420.Buffer;
             var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
 

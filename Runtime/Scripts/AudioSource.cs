@@ -14,7 +14,12 @@ namespace LiveKit
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
 
-        internal readonly FfiHandle Handle;
+        //internal readonly FfiHandle Handle;
+        private FfiHandle _handle;
+        internal FfiHandle Handle
+        {
+            get { return _handle; }
+        }
         protected AudioSourceInfo _info;
 
         // Used on the AudioThread
@@ -28,10 +33,16 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewAudioSource = newAudioSource;
 
-            var resp = FfiClient.SendRequest(request);
+            Init(request, source);
+        }
+
+        async void Init(FfiRequest request, AudioSource source)
+        {
+            var resp = await FfiClient.SendRequest(request);
             _info = resp.NewAudioSource.Source.Info;
-            Handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
+            _handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
             UpdateSource(source);
+            
         }
 
         private void UpdateSource(AudioSource source)

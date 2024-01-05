@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -66,7 +67,7 @@ namespace LiveKit
 
         internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
 
-        public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
+        async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
         {
             if (Room == null)
                 throw new Exception("room is invalid");
@@ -81,7 +82,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.PublishTrack = publish;
 
-            var resp = FfiClient.SendRequest(request);
+            var resp = await FfiClient.SendRequest(request);
             if(resp!=null)
                 return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
             return null;

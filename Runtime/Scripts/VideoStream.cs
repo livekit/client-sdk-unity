@@ -4,6 +4,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -13,7 +14,12 @@ namespace LiveKit
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
         public delegate void TextureUploadDelegate();
 
-        internal readonly FfiHandle Handle;
+        //internal readonly FfiHandle Handle;
+        private FfiHandle _handle;
+        internal FfiHandle Handle
+        {
+            get { return _handle; }
+        }
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
@@ -49,11 +55,17 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewVideoStream = newVideoStream;
 
-            var resp = FfiClient.SendRequest(request);
+            Init(request);
+        }
+
+        async void Init(FfiRequest request)
+        {
+            var resp = await FfiClient.SendRequest(request);
             var streamInfo = resp.NewVideoStream.Stream;
 
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
+
         }
 
         ~VideoStream()
@@ -78,10 +90,10 @@ namespace LiveKit
             }
         }
 
-        internal bool UploadBuffer()
+        async internal Task<bool> UploadBuffer()
         {
             var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
+            VideoBuffer = await VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
 
             unsafe
             {

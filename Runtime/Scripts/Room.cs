@@ -5,6 +5,7 @@ using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using Google.Protobuf.Collections;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -48,7 +49,7 @@ namespace LiveKit
         internal FfiHandle Handle;
         internal FfiOwnedHandle RoomHandle;
 
-        public ConnectInstruction Connect(string url, string token)
+        async public Task<ConnectInstruction> Connect(string url, string token)
         {
             var connect = new ConnectRequest();
             connect.Url = url;
@@ -58,7 +59,22 @@ namespace LiveKit
             request.Connect = connect;
 
             Utils.Debug("Connect....");
-            var resp = FfiClient.SendRequest(request);
+            var resp = await FfiClient.SendRequest(request);
+            Utils.Debug($"Connect response.... {resp}");
+            return new ConnectInstruction(resp.Connect.AsyncId, this);
+        }
+
+        async public Task<ConnectInstruction> ConnectAsync(string url, string token)
+        {
+            var connect = new ConnectRequest();
+            connect.Url = url;
+            connect.Token = token;
+
+            var request = new FfiRequest();
+            request.Connect = connect;
+
+            Utils.Debug("Connect....");
+            var resp = await FfiClient.SendRequestAsync(request);
             Utils.Debug($"Connect response.... {resp}");
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
@@ -249,6 +265,7 @@ namespace LiveKit
         internal void OnConnect(FfiOwnedHandle roomHandle, RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle.Id}");
+            Utils.Debug(info);
 
             Handle = new FfiHandle((IntPtr)participant.Handle.Id);
             RoomHandle = roomHandle;
@@ -263,6 +280,7 @@ namespace LiveKit
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
+            Connected?.Invoke(this);
         }
 
         private void OnDisconnectReceived(DisconnectCallback e)
