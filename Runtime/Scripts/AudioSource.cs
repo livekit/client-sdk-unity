@@ -6,6 +6,7 @@ using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -55,7 +56,7 @@ namespace LiveKit
         }
 
 
-        private void OnAudioRead(float[] data, int channels, int sampleRate)
+        private async void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             var samplesPerChannel = data.Length / channels;
             if (_frame == null || _frame.NumChannels != channels 
@@ -72,27 +73,43 @@ namespace LiveKit
                 return (short)(v + Math.Sign(v) * 0.5f);
             }
 
-            unsafe {
-                var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
-                for (int i = 0; i < data.Length; i++)
+            try
+            {
+                await Task.Run(() =>
                 {
-                    frameData[i] = FloatToS16(data[i]);
-                }
+                    unsafe
+                    {
+                        var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
+                        for (int i = 0; i < data.Length; i++)
+                        {
+                            frameData[i] = FloatToS16(data[i]);
+                        }
+                    }
+
+                    // Don't play the audio locally
+                    Array.Clear(data, 0, data.Length);
+
+                    var pushFrame = new CaptureAudioFrameRequest();
+                    pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
+                    pushFrame.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong)_frame.Handle.DangerousGetHandle() };
+
+                    var request = new FfiRequest();
+                    request.CaptureAudioFrame = pushFrame;
+
+                    FfiClient.SendRequest(request);
+
+                    Debug.Log($"Pushed audio frame with {data.Length} samples");
+                });
+                
             }
+            catch (Exception e)
+            {
 
-            // Don't play the audio locally
-            Array.Clear(data, 0, data.Length);
+                Utils.Error("Audio Framedata error: "+e.Message);
+            }
+           
 
-            var pushFrame = new CaptureAudioFrameRequest();
-            pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
-            pushFrame.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong)_frame.Handle.DangerousGetHandle() };
-
-            var request = new FfiRequest();
-            request.CaptureAudioFrame = pushFrame;
-
-            FfiClient.SendRequest(request);
-
-            Debug.Log($"Pushed audio frame with {data.Length} samples");
+           
         }
     }
 }
