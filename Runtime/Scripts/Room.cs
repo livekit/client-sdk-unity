@@ -127,7 +127,7 @@ namespace LiveKit
 
             if (e.RoomHandle != (ulong)RoomHandle.Id)
             {
-                Debug.LogError("Ignoring. Different Room... ");
+                //Debug.LogError("Ignoring. Different Room... ");
                 return;
             }
             Utils.Debug($"Room {Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)RoomHandle.Id})");

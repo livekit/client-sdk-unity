@@ -98,7 +98,7 @@ namespace LiveKit
 
                     FfiClient.SendRequest(request);
 
-                    Debug.Log($"Pushed audio frame with {data.Length} samples");
+                    Utils.Debug($"Pushed audio frame with {data.Length} samples");
                 });
                 
             }
