@@ -87,7 +87,7 @@ namespace LiveKit.Internal
         {
             // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
             Instance._context = SynchronizationContext.Current;
-            Debug.Log("Main Context created");
+            Utils.Debug("Main Context created");
         }
 
         static void Initialize()
@@ -109,7 +109,7 @@ namespace LiveKit.Internal
             Utils.Debug("FFIServer - Disposed");
         }
 
-        async internal static Task<FfiResponse> SendRequest(FfiRequest request )
+        async internal static Task<FfiResponse> SendRequest(FfiRequest request)
         {
 
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
@@ -120,35 +120,21 @@ namespace LiveKit.Internal
                 FfiResponse response = null;
                 unsafe
                 {
-                    var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
 
-                    response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
-                    handle.Dispose();
+                    try
+                    {
+                        var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+                        response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                        handle.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        Utils.Error(e);
+                    }
+                    
                     return response;
                 }
             });
-            //return response;
-        }
-
-        async internal static Task<FfiResponse> SendRequestAsync(FfiRequest request)
-        {
-
-            var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-
-
-            return await Task.Run(() =>
-            {
-                FfiResponse response = null;
-                unsafe
-                {
-                    var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
-
-                    response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
-                    handle.Dispose();
-                    return response;
-                }
-            });
-            //return response;
         }
 
 

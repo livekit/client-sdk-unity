@@ -4,6 +4,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -24,7 +25,7 @@ namespace LiveKit
         private AudioResampler _resampler = new AudioResampler();
         private object _lock = new object();
 
-        public AudioStream(IAudioTrack audioTrack, AudioSource source)
+        public AudioStream(IAudioTrack audioTrack, AudioSource source, CancellationTokenSource canceltoken)
         {
             if (!audioTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("audiotrack's room is invalid");
@@ -41,12 +42,19 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewAudioStream = newAudioStream;
 
-            Init(request, source);
+            Init(request, source, canceltoken);
         }
 
-        async void Init(FfiRequest request, AudioSource source)
+        async void Init(FfiRequest request, AudioSource source, CancellationTokenSource canceltoken)
         {
             var resp = await FfiClient.SendRequest(request);
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             var streamInfo = resp.NewAudioStream.Stream;
 
             _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);

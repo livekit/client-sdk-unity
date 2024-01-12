@@ -4,6 +4,7 @@ using LiveKit.Proto;
 using UnityEngine;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -100,7 +101,7 @@ namespace LiveKit
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        async public Task<I420Buffer> ToI420()
+        async public Task<I420Buffer> ToI420(CancellationTokenSource canceltoken)
         {
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
@@ -121,6 +122,13 @@ namespace LiveKit
             request.ToI420 = toi420;
 
             var resp = await FfiClient.SendRequest(request);
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
             var newInfo = resp.ToI420.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");

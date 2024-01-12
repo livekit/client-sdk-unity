@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -26,7 +27,13 @@ namespace LiveKit
         // Used on the AudioThread
         private AudioFrame _frame;
 
-        public RtcAudioSource(AudioSource source)
+        public RtcAudioSource()
+        {
+            
+
+        }
+
+        async public void Init(AudioSource source, CancellationTokenSource canceltoken)
         {
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
@@ -34,12 +41,14 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewAudioSource = newAudioSource;
 
-            Init(request, source);
-        }
-
-        async void Init(FfiRequest request, AudioSource source)
-        {
             var resp = await FfiClient.SendRequest(request);
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             _info = resp.NewAudioSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
             UpdateSource(source);

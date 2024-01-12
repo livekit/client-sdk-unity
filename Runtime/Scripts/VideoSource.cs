@@ -6,6 +6,7 @@ using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -21,18 +22,25 @@ namespace LiveKit
 
         public RtcVideoSource()
         {
+            
+        }
+
+        async void Init(CancellationTokenSource canceltoken)
+        {
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
 
             var request = new FfiRequest();
             request.NewVideoSource = newVideoSource;
 
-            Init(request);
-        }
-
-        async void Init(FfiRequest request)
-        {
             var resp = await FfiClient.SendRequest(request);
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             _info = resp.NewVideoSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
         }
@@ -44,13 +52,20 @@ namespace LiveKit
         private NativeArray<byte> _data;
         private bool _reading = false;
         private bool isDisposed = true;
-
+        private CancellationTokenSource canceltoken;
 
         public TextureVideoSource(Texture texture)
         {
             Texture = texture;
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
             isDisposed = false;
+        }
+
+        public void Init(CancellationTokenSource canceltoken)
+        {
+            this.canceltoken = canceltoken;
+            Thread sendDataThread = new Thread(new ThreadStart(StartReading));
+            sendDataThread.Start();
         }
 
         ~TextureVideoSource()
@@ -72,13 +87,18 @@ namespace LiveKit
             AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
         }
 
-        public IEnumerator Update()
+        private void StartReading()
         {
             while (true)
             {
-                yield return null;
+                //yield return null;
                 ReadBuffer();
-
+                if (canceltoken.IsCancellationRequested)
+                {
+                    // End the task
+                    Utils.Debug("Task cancelled");
+                    break;
+                }
             }
         }
 
@@ -110,6 +130,13 @@ namespace LiveKit
             request.ToI420 = toI420;
 
             var resp = await FfiClient.SendRequest(request);
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             var bufferInfo = resp.ToI420.Buffer;
             var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
 

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using Google.Protobuf.Collections;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -49,7 +50,7 @@ namespace LiveKit
         internal FfiHandle Handle;
         internal FfiOwnedHandle RoomHandle;
 
-        async public Task<ConnectInstruction> Connect(string url, string token)
+        async public Task<ConnectInstruction> Connect(string url, string token, CancellationTokenSource canceltoken)
         {
             var connect = new ConnectRequest();
             connect.Url = url;
@@ -61,24 +62,15 @@ namespace LiveKit
             Utils.Debug("Connect....");
             var resp = await FfiClient.SendRequest(request);
             Utils.Debug($"Connect response.... {resp}");
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
-
-        async public Task<ConnectInstruction> ConnectAsync(string url, string token)
-        {
-            var connect = new ConnectRequest();
-            connect.Url = url;
-            connect.Token = token;
-
-            var request = new FfiRequest();
-            request.Connect = connect;
-
-            Utils.Debug("Connect....");
-            var resp = await FfiClient.SendRequestAsync(request);
-            Utils.Debug($"Connect response.... {resp}");
-            return new ConnectInstruction(resp.Connect.AsyncId, this);
-        }
-
 
         public void PublishData(byte[] data, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
         {

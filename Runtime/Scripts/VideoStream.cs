@@ -5,6 +5,7 @@ using LiveKit.Proto;
 using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -90,10 +91,10 @@ namespace LiveKit
             }
         }
 
-        async internal Task<bool> UploadBuffer()
+        async internal Task<bool> UploadBuffer(CancellationTokenSource canceltoken)
         {
             var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = await VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
+            VideoBuffer = await VideoBuffer.ToI420(canceltoken); // TODO(theomonnom): Support other buffer types
 
             unsafe
             {
@@ -105,11 +106,10 @@ namespace LiveKit
             return true;
         }
 
-        public IEnumerator Update()
+        async public void GetFrame(CancellationTokenSource canceltoken)
         {
             while (true)
             {
-                yield return null;
 
                 if (_disposed)
                     break;
@@ -128,7 +128,15 @@ namespace LiveKit
                     textureChanged = true;
                 }
 
-                UploadBuffer();
+                await UploadBuffer(canceltoken);
+
+                // Check if the task has been cancelled
+                if (canceltoken.IsCancellationRequested)
+                {
+                    // End the task
+                    Utils.Debug("Task cancelled");
+                    return;
+                }
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);

@@ -5,6 +5,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -67,11 +68,11 @@ namespace LiveKit
 
         internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
 
-        async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
+        async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options, CancellationTokenSource canceltoken)
         {
             if (Room == null)
                 throw new Exception("room is invalid");
-          
+
             var track = (Track)localTrack;
             var publish = new PublishTrackRequest();
             //publish.TrackHandle = (ulong)Room.Handle.DangerousGetHandle();
@@ -83,7 +84,15 @@ namespace LiveKit
             request.PublishTrack = publish;
 
             var resp = await FfiClient.SendRequest(request);
-            if(resp!=null)
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
+
+            if (resp!=null)
                 return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
             return null;
         }
