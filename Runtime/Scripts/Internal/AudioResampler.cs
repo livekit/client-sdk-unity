@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -14,11 +15,15 @@ namespace LiveKit
             get { return _handle; }
         }
 
-        public AudioResampler()
+        private CancellationTokenSource canceltoken;
+
+        public AudioResampler(CancellationTokenSource canceltoken)
         {
             var newResampler = new NewAudioResamplerRequest();
             var request = new FfiRequest();
             request.NewAudioResampler = newResampler;
+
+            this.canceltoken = canceltoken;
 
             Init(request);
         }
@@ -40,6 +45,13 @@ namespace LiveKit
             request.RemixAndResample = remix;
 
             var res = await FfiClient.SendRequest(request);
+            // Check if the task has been cancelled
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
             var bufferInfo = res.RemixAndResample.Buffer;
             var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
             return new AudioFrame(handle, remix.Buffer);
