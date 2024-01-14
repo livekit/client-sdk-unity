@@ -115,26 +115,23 @@ namespace LiveKit.Internal
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
 
 
-            return await Task.Run(() =>
+            FfiResponse response = null;
+            unsafe
             {
-                FfiResponse response = null;
-                unsafe
-                {
 
-                    try
-                    {
-                        var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
-                        response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
-                        handle.Dispose();
-                    }
-                    catch (Exception e)
-                    {
-                        Utils.Error(e);
-                    }
-                    
-                    return response;
+                try
+                {
+                    var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+                    response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                    handle.Dispose();
                 }
-            });
+                catch (Exception e)
+                {
+                    Utils.Error(e);
+                }
+                    
+                return response;
+            }
         }
 
 
