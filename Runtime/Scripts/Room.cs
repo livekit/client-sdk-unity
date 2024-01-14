@@ -315,8 +315,11 @@ namespace LiveKit
 
     }
 
-    public sealed class ConnectInstruction : YieldInstruction
+    public sealed class ConnectInstruction
     {
+        public bool IsDone { protected set; get; }
+        public bool IsError { protected set; get; }
+
         private ulong _asyncId;
         private Room _room;
 

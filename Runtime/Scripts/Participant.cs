@@ -106,8 +106,11 @@ namespace LiveKit
         internal RemoteParticipant(ParticipantInfo info, Room room) : base(info, room) { }
     }
 
-    public sealed class PublishTrackInstruction : YieldInstruction
+    public sealed class PublishTrackInstruction 
     {
+        public bool IsDone { protected set; get; }
+        public bool IsError { protected set; get; }
+
         private ulong _asyncId;
 
         internal PublishTrackInstruction(ulong asyncId)
