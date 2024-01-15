@@ -179,6 +179,10 @@ namespace LiveKit.Internal
                         Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent);
                         break;
 
+                    case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                        Utils.Debug(response.CaptureAudioFrame);
+                        break;
+
                 }
             }, response);
         }

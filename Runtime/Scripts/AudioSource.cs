@@ -26,14 +26,16 @@ namespace LiveKit
 
         // Used on the AudioThread
         private AudioFrame _frame;
+        private SynchronizationContext syncContext;
 
         public RtcAudioSource()
         {
-            
+            syncContext = SynchronizationContext.Current;
+
 
         }
 
-        async public void Init(AudioSource source, CancellationTokenSource canceltoken)
+        async public Task Init(AudioSource source, CancellationTokenSource canceltoken)
         {
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
@@ -52,16 +54,20 @@ namespace LiveKit
             _info = resp.NewAudioSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
             UpdateSource(source);
-            
+            return;
         }
 
         private void UpdateSource(AudioSource source)
         {
-            _audioSource = source;
-            _audioFilter = source.gameObject.AddComponent<AudioFilter>();
-            //_audioFilter.hideFlags = HideFlags.HideInInspector;
-            _audioFilter.AudioRead += OnAudioRead;
-            source.Play();
+            syncContext.Post(_ =>
+            {
+                _audioSource = source;
+                _audioFilter = source.gameObject.AddComponent<AudioFilter>();
+                //_audioFilter.hideFlags = HideFlags.HideInInspector;
+                _audioFilter.AudioRead += OnAudioRead;
+                source.Play();
+            }, null);
+            
         }
 
 
