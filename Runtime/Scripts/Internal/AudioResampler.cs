@@ -35,6 +35,12 @@ namespace LiveKit
         }
 
         async public Task<AudioFrame> RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate) {
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
             var remix = new RemixAndResampleRequest();
             remix.ResamplerHandle = (ulong) Handle.DangerousGetHandle();
             remix.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong) frame.Handle.DangerousGetHandle()};

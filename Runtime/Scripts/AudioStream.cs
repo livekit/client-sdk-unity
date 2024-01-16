@@ -33,6 +33,13 @@ namespace LiveKit
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
+
             _resampler = new AudioResampler(canceltoken);
 
             var newAudioStream = new NewAudioStreamRequest();
@@ -49,6 +56,7 @@ namespace LiveKit
 
         async void Init(FfiRequest request, AudioSource source, CancellationToken canceltoken)
         {
+
             var resp = await FfiClient.SendRequest(request);
             // Check if the task has been cancelled
             if (canceltoken.IsCancellationRequested)

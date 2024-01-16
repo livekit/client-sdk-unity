@@ -73,6 +73,13 @@ namespace LiveKit
             if (Room == null)
                 throw new Exception("room is invalid");
 
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
+
             var track = (Track)localTrack;
             var publish = new PublishTrackRequest();
             //publish.TrackHandle = (ulong)Room.Handle.DangerousGetHandle();

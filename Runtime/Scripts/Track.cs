@@ -78,6 +78,13 @@ namespace LiveKit
 
         async public static Task<LocalAudioTrack> CreateAudioTrack(string name, RtcAudioSource source, Room room, CancellationToken canceltoken)
         {
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
+
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
             createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();

@@ -27,6 +27,12 @@ namespace LiveKit
 
         async void Init(CancellationToken canceltoken)
         {
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
 
@@ -80,6 +86,12 @@ namespace LiveKit
         // Read the texture data into a native array asynchronously
         internal void ReadBuffer()
         {
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             if (_reading)
                 return;
 
@@ -104,6 +116,12 @@ namespace LiveKit
 
         async private void OnReadback(AsyncGPUReadbackRequest req)
         {
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return;
+            }
             _reading = false;
             if (req.hasError)
             {

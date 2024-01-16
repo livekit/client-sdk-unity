@@ -52,6 +52,13 @@ namespace LiveKit
 
         async public Task<ConnectInstruction> Connect(string url, string token, CancellationToken canceltoken)
         {
+            if (canceltoken.IsCancellationRequested)
+            {
+                // End the task
+                Utils.Debug("Task cancelled");
+                return null;
+            }
+
             var connect = new ConnectRequest();
             connect.Url = url;
             connect.Token = token;

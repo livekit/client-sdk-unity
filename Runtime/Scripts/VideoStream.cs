@@ -110,6 +110,12 @@ namespace LiveKit
         {
             while (true)
             {
+                if (canceltoken.IsCancellationRequested)
+                {
+                    // End the task
+                    Utils.Debug("Task cancelled");
+                    return;
+                }
 
                 if (_disposed)
                     break;
