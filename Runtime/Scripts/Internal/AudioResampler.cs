@@ -15,9 +15,9 @@ namespace LiveKit
             get { return _handle; }
         }
 
-        private CancellationTokenSource canceltoken;
+        private CancellationToken canceltoken;
 
-        public AudioResampler(CancellationTokenSource canceltoken)
+        public AudioResampler(CancellationToken canceltoken)
         {
             var newResampler = new NewAudioResamplerRequest();
             var request = new FfiRequest();

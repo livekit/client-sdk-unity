@@ -101,7 +101,7 @@ namespace LiveKit
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        async public Task<I420Buffer> ToI420(CancellationTokenSource canceltoken)
+        async public Task<I420Buffer> ToI420(CancellationToken canceltoken)
         {
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");

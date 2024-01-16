@@ -76,7 +76,7 @@ namespace LiveKit
     {
         internal LocalAudioTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
 
-        async public static Task<LocalAudioTrack> CreateAudioTrack(string name, RtcAudioSource source, Room room, CancellationTokenSource canceltoken)
+        async public static Task<LocalAudioTrack> CreateAudioTrack(string name, RtcAudioSource source, Room room, CancellationToken canceltoken)
         {
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;

@@ -25,7 +25,7 @@ namespace LiveKit
             
         }
 
-        async void Init(CancellationTokenSource canceltoken)
+        async void Init(CancellationToken canceltoken)
         {
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
@@ -52,7 +52,7 @@ namespace LiveKit
         private NativeArray<byte> _data;
         private bool _reading = false;
         private bool isDisposed = true;
-        private CancellationTokenSource canceltoken;
+        private CancellationToken canceltoken;
 
         public TextureVideoSource(Texture texture)
         {
@@ -61,7 +61,7 @@ namespace LiveKit
             isDisposed = false;
         }
 
-        public void Init(CancellationTokenSource canceltoken)
+        public void Init(CancellationToken canceltoken)
         {
             this.canceltoken = canceltoken;
             Thread sendDataThread = new Thread(new ThreadStart(StartReading));

@@ -25,7 +25,7 @@ namespace LiveKit
         private AudioResampler _resampler;
         private object _lock = new object();
 
-        public AudioStream(IAudioTrack audioTrack, AudioSource source, CancellationTokenSource canceltoken)
+        public AudioStream(IAudioTrack audioTrack, AudioSource source, CancellationToken canceltoken)
         {
             if (!audioTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("audiotrack's room is invalid");
@@ -47,7 +47,7 @@ namespace LiveKit
             Init(request, source, canceltoken);
         }
 
-        async void Init(FfiRequest request, AudioSource source, CancellationTokenSource canceltoken)
+        async void Init(FfiRequest request, AudioSource source, CancellationToken canceltoken)
         {
             var resp = await FfiClient.SendRequest(request);
             // Check if the task has been cancelled

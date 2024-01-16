@@ -68,7 +68,7 @@ namespace LiveKit
 
         internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
 
-        async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options, CancellationTokenSource canceltoken)
+        async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options, CancellationToken canceltoken)
         {
             if (Room == null)
                 throw new Exception("room is invalid");

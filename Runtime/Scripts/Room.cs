@@ -50,7 +50,7 @@ namespace LiveKit
         internal FfiHandle Handle;
         internal FfiOwnedHandle RoomHandle;
 
-        async public Task<ConnectInstruction> Connect(string url, string token, CancellationTokenSource canceltoken)
+        async public Task<ConnectInstruction> Connect(string url, string token, CancellationToken canceltoken)
         {
             var connect = new ConnectRequest();
             connect.Url = url;

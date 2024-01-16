@@ -35,7 +35,7 @@ namespace LiveKit
 
         }
 
-        async public Task Init(AudioSource source, CancellationTokenSource canceltoken)
+        async public Task Init(AudioSource source, CancellationToken canceltoken)
         {
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;

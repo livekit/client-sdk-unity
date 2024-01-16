@@ -91,7 +91,7 @@ namespace LiveKit
             }
         }
 
-        async internal Task<bool> UploadBuffer(CancellationTokenSource canceltoken)
+        async internal Task<bool> UploadBuffer(CancellationToken canceltoken)
         {
             var data = Texture.GetRawTextureData<byte>();
             VideoBuffer = await VideoBuffer.ToI420(canceltoken); // TODO(theomonnom): Support other buffer types
@@ -106,7 +106,7 @@ namespace LiveKit
             return true;
         }
 
-        async public void GetFrame(CancellationTokenSource canceltoken)
+        async public void GetFrame(CancellationToken canceltoken)
         {
             while (true)
             {
