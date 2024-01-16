@@ -19,6 +19,8 @@ namespace LiveKit
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
 
+        internal FfiHandle Handle;
+
         public bool Speaking { private set; get; }
         public float AudioLevel { private set; get; }
         public ConnectionQuality ConnectionQuality { private set; get; }
@@ -38,9 +40,10 @@ namespace LiveKit
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
         internal readonly Dictionary<string, TrackPublication> _tracks = new();
 
-        protected Participant(ParticipantInfo info, Room room)
+        protected Participant(ParticipantInfo info, Room room, FfiHandle handle)
         {
             _room =  room;
+            Handle = handle;
             UpdateInfo(info);
         }
 
@@ -66,7 +69,7 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, LocalTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
-        internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+        internal LocalParticipant(ParticipantInfo info, Room room, FfiHandle handle) : base(info, room, handle) { }
 
         async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options, CancellationToken canceltoken)
         {
@@ -84,6 +87,7 @@ namespace LiveKit
             var publish = new PublishTrackRequest();
             //publish.TrackHandle = (ulong)Room.Handle.DangerousGetHandle();
             //publish.LocalParticipantHandle = 
+            publish.LocalParticipantHandle = (ulong)Room.LocalParticipant.Handle.DangerousGetHandle();
             publish.TrackHandle =   (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
 
@@ -110,7 +114,7 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, RemoteTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (RemoteTrackPublication)p.Value);
 
-        internal RemoteParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+        internal RemoteParticipant(ParticipantInfo info, Room room, FfiHandle handle) : base(info, room, handle) { }
     }
 
     public sealed class PublishTrackInstruction 

@@ -48,7 +48,6 @@ namespace LiveKit
         public event ConnectionDelegate Reconnected;
 
         internal FfiHandle Handle;
-        internal FfiOwnedHandle RoomHandle;
 
         async public Task<ConnectInstruction> Connect(string url, string token, CancellationToken canceltoken)
         {
@@ -91,7 +90,7 @@ namespace LiveKit
             dataRequest.DataPtr = (ulong)pointer;
             dataRequest.Kind = kind;
             dataRequest.Topic = topic;
-            dataRequest.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
 
             var request = new FfiRequest();
             request.PublishData = dataRequest;
@@ -104,7 +103,7 @@ namespace LiveKit
         public void Disconnect()
         {
             var disconnect = new DisconnectRequest();
-            disconnect.RoomHandle = (ulong)RoomHandle.Id;
+            disconnect.RoomHandle = (ulong)Handle.DangerousGetHandle();
 
             var request = new FfiRequest();
             request.Disconnect = disconnect;
@@ -124,18 +123,18 @@ namespace LiveKit
         internal void OnEventReceived(RoomEvent e)
         {
 
-            if (e.RoomHandle != (ulong)RoomHandle.Id)
+            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
             {
                 //Debug.LogError("Ignoring. Different Room... ");
                 return;
             }
-            Utils.Debug($"Room {Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)RoomHandle.Id})");
+            Utils.Debug($"Room {Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)Handle.DangerousGetHandle()})");
             //Utils.Debug(e);
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
                     {
-                        var participant = CreateRemoteParticipant(e.ParticipantConnected.Info.Info, null);
+                        var participant = CreateRemoteParticipant(e.ParticipantConnected.Info.Info, null, new FfiHandle((IntPtr)e.ParticipantConnected.Info.Handle.Id));
                         ParticipantConnected?.Invoke(participant);
                     }
                     break;
@@ -266,16 +265,15 @@ namespace LiveKit
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle.Id}");
             Utils.Debug(info);
 
-            Handle = new FfiHandle((IntPtr)participant.Handle.Id);
-            RoomHandle = roomHandle;
+            Handle = new FfiHandle((IntPtr)roomHandle.Id);
           
 
             UpdateFromInfo(info); 
             
-            LocalParticipant = new LocalParticipant(participant.Info, this);
+            LocalParticipant = new LocalParticipant(participant.Info, this, new FfiHandle((IntPtr)participant.Handle.Id));
             // Add already connected participant
             foreach (var p in participants)
-                CreateRemoteParticipant(p.Participant.Info, p.Publications);
+                CreateRemoteParticipant(p.Participant.Info, p.Publications, new FfiHandle((IntPtr)p.Participant.Handle.Id));
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
@@ -294,9 +292,9 @@ namespace LiveKit
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
         }
 
-        RemoteParticipant CreateRemoteParticipant(ParticipantInfo info, RepeatedField<OwnedTrackPublication> publications)
+        RemoteParticipant CreateRemoteParticipant(ParticipantInfo info, RepeatedField<OwnedTrackPublication> publications, FfiHandle handle)
         {
-            var participant = new RemoteParticipant(info, this);
+            var participant = new RemoteParticipant(info, this, handle);
             _participants.Add(participant.Sid, participant);
 
             if (publications != null)
