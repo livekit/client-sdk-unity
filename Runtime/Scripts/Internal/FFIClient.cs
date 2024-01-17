@@ -73,7 +73,7 @@ namespace LiveKit.Internal
         }
 #endif
 
-        static void Quit()
+        public static void Quit()
         {
 #if UNITY_EDITOR
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
@@ -97,7 +97,7 @@ namespace LiveKit.Internal
             Utils.Debug("FFIServer - Initialized");
         }
 
-        static async void Dispose()
+        static void Dispose()
         {
             // Stop all rooms synchronously
             // The rust lk implementation should also correctly dispose WebRTC
@@ -105,20 +105,17 @@ namespace LiveKit.Internal
 
             var request = new FfiRequest();
             request.Dispose = disposeReq;
-            await SendRequest(request);
+            SendRequest(request);
             Utils.Debug("FFIServer - Disposed");
         }
 
-        async internal static Task<FfiResponse> SendRequest(FfiRequest request)
+        internal static FfiResponse SendRequest(FfiRequest request)
         {
-
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-
 
             FfiResponse response = null;
             unsafe
             {
-
                 try
                 {
                     var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
@@ -129,11 +126,9 @@ namespace LiveKit.Internal
                 {
                     Utils.Error(e);
                 }
-                    
                 return response;
             }
         }
-
 
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(IntPtr data, int size)
@@ -147,8 +142,6 @@ namespace LiveKit.Internal
             if(Instance != null && Instance._context!=null) Instance._context.Post((resp) =>
             {
                 var response = resp as FfiEvent;
-
-                Utils.Debug("Message: " + response.MessageCase);
                 switch (response.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.PublishData:

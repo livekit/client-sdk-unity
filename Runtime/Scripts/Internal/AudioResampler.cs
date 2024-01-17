@@ -23,16 +23,11 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewAudioResampler = newResampler;
             _canceltoken = canceltoken;
-            Init(request);
-        }
-
-        async void Init(FfiRequest request)
-        {
-            var res = await FfiClient.SendRequest(request);
+            var res = FfiClient.SendRequest(request);
             _handle = new FfiHandle((IntPtr)res.NewAudioResampler.Resampler.Handle.Id);
         }
 
-        async public Task<AudioFrame> RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate) {
+        public AudioFrame RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate) {
 
             if (_canceltoken.IsCancellationRequested) return null;
             var remix = new RemixAndResampleRequest();
@@ -44,7 +39,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.RemixAndResample = remix;
 
-            var res = await FfiClient.SendRequest(request);
+            var res = FfiClient.SendRequest(request);
             // Check if the task has been cancelled
 
             if (_canceltoken.IsCancellationRequested) return null;

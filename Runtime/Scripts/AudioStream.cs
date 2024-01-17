@@ -25,15 +25,13 @@ namespace LiveKit
         private AudioResampler _resampler;
         private object _lock = new object();
 
-        public AudioStream(IAudioTrack audioTrack, AudioSource source, CancellationToken canceltoken)
+        public AudioStream(IAudioTrack audioTrack, AudioSource source)
         {
             if (!audioTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("audiotrack's room is invalid");
 
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
-
-            if (canceltoken.IsCancellationRequested) return;
 
             _resampler = new AudioResampler(canceltoken);
 
@@ -44,13 +42,7 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewAudioStream = newAudioStream;
 
-            Init(request, source, canceltoken);
-        }
-
-        async void Init(FfiRequest request, AudioSource source, CancellationToken canceltoken)
-        {
-            var resp = await FfiClient.SendRequest(request);
-            if (canceltoken.IsCancellationRequested) return;
+            var resp = FfiClient.SendRequest(request);
             var streamInfo = resp.NewAudioStream.Stream;
 
             _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
@@ -71,6 +63,8 @@ namespace LiveKit
         // Called on Unity audio thread
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
+            Queue here 
+
             lock (_lock)
             {
                 if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
@@ -101,7 +95,7 @@ namespace LiveKit
         }
 
         // Called on the MainThread (See FfiClient)
-        async private void OnAudioStreamEvent(AudioStreamEvent e)
+        private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
                 return;
@@ -112,9 +106,7 @@ namespace LiveKit
             var info = e.FrameReceived.Frame.Info;
             var handle = new FfiHandle((IntPtr)e.FrameReceived.Frame.Handle.Id);
             var frame = new AudioFrame(handle, info);
-
-            await Task.Run(() =>
-            {
+            
                 lock (_lock)
                 { 
                     if (_numChannels == 0)
@@ -128,7 +120,6 @@ namespace LiveKit
                         _buffer?.Write(data);
                     }
                 }
-            });
         }
     }
 }

@@ -25,6 +25,9 @@ namespace LiveKit
         private bool _disposed = false;
         private bool _dirty = false;
 
+        // Thread for parsing textures
+        Thread _frameThread;
+
         /// Called when we receive a new frame from the VideoTrack
         public event FrameReceiveDelegate FrameReceived;
 
@@ -59,9 +62,9 @@ namespace LiveKit
             Init(request);
         }
 
-        async void Init(FfiRequest request)
+        void Init(FfiRequest request)
         {
-            var resp = await FfiClient.SendRequest(request);
+            var resp = FfiClient.SendRequest(request);
             var streamInfo = resp.NewVideoStream.Stream;
 
             _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
@@ -73,6 +76,19 @@ namespace LiveKit
         {
             Dispose(false);
         }
+
+        public void StartStreaming(CancellationToken canceltoken)
+        {
+            StopStreaming();
+            _frameThread = new Thread(async () => await GetFrame(canceltoken));
+            _frameThread.Start();
+        }
+
+        public void StopStreaming()
+        {
+            if (_frameThread != null) _frameThread.Abort();
+        }
+
 
         public void Dispose()
         {
@@ -91,28 +107,23 @@ namespace LiveKit
             }
         }
 
-        async internal Task<bool> UploadBuffer(CancellationToken canceltoken)
+        private void UploadBuffer()
         {
             var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = await VideoBuffer.ToI420(canceltoken); // TODO MindTrust-VID
-            if (canceltoken.IsCancellationRequested) return false;
+            VideoBuffer = VideoBuffer.ToI420(); // TODO MindTrust-VID
             unsafe
             {
                 var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
                 VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
             }
             Texture.Apply();
-            return true;
         }
 
-        async public void GetFrame(CancellationToken canceltoken)
+        private async Task GetFrame(CancellationToken canceltoken)
         {
-            while (true)
+            while (!canceltoken.IsCancellationRequested && !_disposed)
             {
-                if (canceltoken.IsCancellationRequested) return;
-
-                if (_disposed)
-                    break;
+                await Task.Delay(5);
 
                 if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
                     continue;
@@ -128,13 +139,12 @@ namespace LiveKit
                     textureChanged = true;
                 }
 
-                await UploadBuffer(canceltoken);
-                if (canceltoken.IsCancellationRequested) return;
+                UploadBuffer();
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);
 
-                TextureUploaded?.Invoke();
+                TextureUploaded?.Invoke(); 
             }
         }
 

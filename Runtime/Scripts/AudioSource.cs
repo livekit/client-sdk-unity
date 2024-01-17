@@ -26,57 +26,35 @@ namespace LiveKit
 
         // Used on the AudioThread
         private AudioFrame _frame;
-        private SynchronizationContext syncContext;
 
-        private RtcAudioSource()
+        public RtcAudioSource(AudioSource source)
         {
-            syncContext = SynchronizationContext.Current;
-        }
-
-        async static public Task<RtcAudioSource> Create(AudioSource source, CancellationToken canceltoken)
-        {
-            var response = new RtcAudioSource();
-            await response.Init(source, canceltoken);
-            if (canceltoken.IsCancellationRequested) return null;
-            return response;
-        }
-
-        async public Task Init(AudioSource source, CancellationToken canceltoken)
-        {
-            if (canceltoken.IsCancellationRequested) return;
-
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
 
             var request = new FfiRequest();
             request.NewAudioSource = newAudioSource;
 
-            var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested) return ;
+            var resp = FfiClient.SendRequest(request);
 
             _info = resp.NewAudioSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
             UpdateSource(source);
-            return;
         }
 
         private void UpdateSource(AudioSource source)
         {
-            syncContext.Post(_ =>
-            {
-                _audioSource = source;
-                _audioFilter = source.gameObject.AddComponent<AudioFilter>();
-                //_audioFilter.hideFlags = HideFlags.HideInInspector;
-                _audioFilter.AudioRead += OnAudioRead;
-                source.Play();
-            }, null);
-            
+            _audioSource = source;
+            _audioFilter = source.gameObject.AddComponent<AudioFilter>();
+            //_audioFilter.hideFlags = HideFlags.HideInInspector;
+            _audioFilter.AudioRead += OnAudioRead;
+            source.Play();
         }
-
 
         private async void OnAudioRead(float[] data, int channels, int sampleRate)
         {
+            Queue here
+
             var samplesPerChannel = data.Length / channels;
             if (_frame == null || _frame.NumChannels != channels 
                 || _frame.SampleRate != sampleRate 
@@ -87,7 +65,7 @@ namespace LiveKit
 
             try
             {
-                await Task.Run(async () =>
+                await Task.Run( () =>
                 {
                     // Don't play the audio locally
                     Array.Clear(data, 0, data.Length);
@@ -99,7 +77,7 @@ namespace LiveKit
                     var request = new FfiRequest();
                     request.CaptureAudioFrame = pushFrame;
 
-                    await FfiClient.SendRequest(request);
+                    FfiClient.SendRequest(request);
 
                     Utils.Debug($"Pushed audio frame with {data.Length} samples");
                 });

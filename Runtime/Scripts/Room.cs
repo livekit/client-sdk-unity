@@ -49,10 +49,8 @@ namespace LiveKit
 
         internal FfiHandle Handle;
 
-        async public Task<ConnectInstruction> Connect(string url, string token, CancellationToken canceltoken)
+        public ConnectInstruction Connect(string url, string token)
         {
-            if (canceltoken.IsCancellationRequested) return null;
-
             var connect = new ConnectRequest();
             connect.Url = url;
             connect.Token = token;
@@ -61,35 +59,37 @@ namespace LiveKit
             request.Connect = connect;
 
             Utils.Debug("Connect....");
-            var resp = await FfiClient.SendRequest(request);
+            var resp = FfiClient.SendRequest(request);
             Utils.Debug($"Connect response.... {resp}");
-            if (canceltoken.IsCancellationRequested) return null;
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
 
-        public void PublishData(byte[] data, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
+        public async Task PublishData(byte[] data, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
         {
-            var req = new FfiRequest();
+            await Task.Run(() => // TODO if this really need to be on a thread? spinning up a thread may be most costly than sending a small data packet
+            {
+                var req = new FfiRequest();
 
-            GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
-            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
+                GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
+                IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-            var dataRequest = new PublishDataRequest();
-            dataRequest.DataLen = (ulong)data.Length;
-            dataRequest.DataPtr = (ulong)pointer;
-            dataRequest.Kind = kind;
-            dataRequest.Topic = topic;
-            dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
+                var dataRequest = new PublishDataRequest();
+                dataRequest.DataLen = (ulong)data.Length;
+                dataRequest.DataPtr = (ulong)pointer;
+                dataRequest.Kind = kind;
+                dataRequest.Topic = topic;
+                dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
 
-            var request = new FfiRequest();
-            request.PublishData = dataRequest;
+                var request = new FfiRequest();
+                request.PublishData = dataRequest;
 
-            Utils.Debug("Sending message: " + topic);
-            FfiClient.SendRequest(request);
-            pinnedArray.Free();
+                Utils.Debug("Sending message: " + topic);
+                FfiClient.SendRequest(request);
+                pinnedArray.Free();
+            });
         }
 
-        public async void Disconnect()
+        public void Disconnect()
         {
             var disconnect = new DisconnectRequest();
             disconnect.RoomHandle = (ulong)Handle.DangerousGetHandle();
@@ -98,7 +98,7 @@ namespace LiveKit
             request.Disconnect = disconnect;
 
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
-            var resp = await FfiClient.SendRequest(request);
+            var resp = FfiClient.SendRequest(request);
             Utils.Debug($"Disconnect response.... {resp}");
         }
 

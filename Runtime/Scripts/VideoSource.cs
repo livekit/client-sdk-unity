@@ -7,6 +7,8 @@ using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace LiveKit
 {
@@ -22,21 +24,14 @@ namespace LiveKit
 
         public RtcVideoSource()
         {
-            
-        }
-
-        async void Init(CancellationToken canceltoken)
-        {
-            if (canceltoken.IsCancellationRequested) return;
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
 
             var request = new FfiRequest();
             request.NewVideoSource = newVideoSource;
 
-            var resp = await FfiClient.SendRequest(request);
+            var resp = FfiClient.SendRequest(request);
 
-            if (canceltoken.IsCancellationRequested) return;
             _info = resp.NewVideoSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
         }
@@ -48,6 +43,7 @@ namespace LiveKit
         private NativeArray<byte> _data;
         private bool _reading = false;
         private bool isDisposed = true;
+        private Thread _readVideoThread;
         private CancellationToken _canceltoken;
 
         public TextureVideoSource(Texture texture)
@@ -57,11 +53,16 @@ namespace LiveKit
             isDisposed = false;
         }
 
-        public void Init(CancellationToken canceltoken)
+        public void Start(CancellationToken canceltoken)
         {
             _canceltoken = canceltoken;
-            Thread sendDataThread = new Thread(new ThreadStart(StartReading));
-            sendDataThread.Start();
+            _readVideoThread = new Thread(async ()=> await Update(canceltoken));
+            _readVideoThread.Start();
+        }
+
+        public void Stop()
+        {
+            if (_readVideoThread != null) _readVideoThread.Abort();
         }
 
         ~TextureVideoSource()
@@ -72,11 +73,21 @@ namespace LiveKit
                 isDisposed = true;
             }
         }
+        
+
+        private async Task Update(CancellationToken canceltoken)
+        {
+            while (!canceltoken.IsCancellationRequested)
+            {
+                await Task.Delay(5);
+                ReadBuffer();
+                ReadBack();
+            }
+        }
 
         // Read the texture data into a native array asynchronously
         internal void ReadBuffer()
         {
-            if (_canceltoken.IsCancellationRequested) return;
             if (_reading)
                 return;
 
@@ -84,64 +95,65 @@ namespace LiveKit
             AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
         }
 
-        private void StartReading()
+        private AsyncGPUReadbackRequest _readBackRequest;
+        private bool _requestPending = false;
+        private void OnReadback(AsyncGPUReadbackRequest req)
         {
-            while (true)
-            {
-                //yield return null;
-                ReadBuffer();
-                if (_canceltoken.IsCancellationRequested) return;
-            }
+            _readBackRequest = req;
+            _requestPending = true;
         }
 
-        async private void OnReadback(AsyncGPUReadbackRequest req)
+        private void ReadBack()
         {
-            _reading = false;
-
-            if (_canceltoken.IsCancellationRequested) return;
-            if (req.hasError)
+            if(_requestPending)
             {
-                Utils.Error("failed to read texture data");
-                return;
+                var req = _readBackRequest;
+                if (_canceltoken != null && _canceltoken.IsCancellationRequested) return;
+                if (req.hasError)
+                {
+                    Utils.Error("failed to read texture data");
+                    return;
+                }
+
+                // ToI420
+                var argbInfo = new ArgbBufferInfo(); // TODO: MindTrust_VID
+                unsafe
+                {
+                    argbInfo.Ptr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
+                }
+                argbInfo.Format = VideoFormatType.FormatArgb;
+                argbInfo.Stride = (uint)Texture.width * 4;
+                argbInfo.Width = (uint)Texture.width;
+                argbInfo.Height = (uint)Texture.height;
+
+                var toI420 = new ToI420Request();
+                toI420.FlipY = true;
+                toI420.Argb = argbInfo;
+
+                var request = new FfiRequest();
+                request.ToI420 = toI420;
+
+                var resp = FfiClient.SendRequest(request);
+                var bufferInfo = resp.ToI420.Buffer;
+                var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
+
+                // Send the frame to WebRTC
+                var frameInfo = new VideoFrameInfo();
+                frameInfo.Rotation = VideoRotation._0;
+                frameInfo.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+                var capture = new CaptureVideoFrameRequest();
+                capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
+                capture.Handle = (ulong)buffer.Handle.DangerousGetHandle();
+                capture.Frame = frameInfo;
+
+                request = new FfiRequest();
+                request.CaptureVideoFrame = capture;
+
+                FfiClient.SendRequest(request);
+                _reading = false;
+                _requestPending = false;
             }
-
-            // ToI420
-            var argbInfo = new ArgbBufferInfo(); // TODO: MindTrust_VID
-            unsafe
-            {
-                argbInfo.Ptr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
-            }
-            argbInfo.Format = VideoFormatType.FormatArgb;
-            argbInfo.Stride = (uint)Texture.width * 4;
-            argbInfo.Width = (uint)Texture.width;
-            argbInfo.Height = (uint)Texture.height;
-
-            var toI420 = new ToI420Request();
-            toI420.FlipY = true;
-            toI420.Argb = argbInfo;
-
-            var request = new FfiRequest();
-            request.ToI420 = toI420;
-
-            var resp = await FfiClient.SendRequest(request);
-            if (_canceltoken.IsCancellationRequested) return;
-            var bufferInfo = resp.ToI420.Buffer;
-            var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
-
-            // Send the frame to WebRTC
-            var frameInfo = new VideoFrameInfo();
-            frameInfo.Rotation = VideoRotation._0;
-            frameInfo.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-
-            var capture = new CaptureVideoFrameRequest();
-            capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
-            capture.Handle = (ulong)buffer.Handle.DangerousGetHandle();
-            capture.Frame = frameInfo;
-
-            request = new FfiRequest();
-            request.CaptureVideoFrame = capture;
-
-            await FfiClient.SendRequest(request);
         }
     }
 }

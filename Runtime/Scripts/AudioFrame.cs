@@ -41,9 +41,9 @@ namespace LiveKit
             Init(request);
         }
 
-        async void Init(FfiRequest request)
+        void Init(FfiRequest request)
         {
-            var res = await FfiClient.SendRequest(request);
+            var res = FfiClient.SendRequest(request);
             var bufferInfo = res.AllocAudioBuffer.Buffer.Info;
 
             _handle = new FfiHandle((IntPtr)res.AllocAudioBuffer.Buffer.Handle.Id);
