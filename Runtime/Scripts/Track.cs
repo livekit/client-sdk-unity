@@ -76,10 +76,8 @@ namespace LiveKit
     {
         internal LocalAudioTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
 
-        async public static Task<LocalAudioTrack> CreateAudioTrack(string name, RtcAudioSource source, Room room, CancellationToken canceltoken)
+        public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source, Room room)
         {
-            if (canceltoken.IsCancellationRequested) return null;
-
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
             createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
@@ -88,8 +86,6 @@ namespace LiveKit
             request.CreateAudioTrack = createTrack;
 
             var resp = FfiClient.SendRequest(request);
-            if (canceltoken.IsCancellationRequested) return null;
-
             var trackInfo = resp.CreateAudioTrack.Track;
             var trackHandle = new FfiHandle((IntPtr)trackInfo.Handle.Id);
             var track = new LocalAudioTrack(trackHandle, trackInfo.Info, room);
@@ -101,7 +97,7 @@ namespace LiveKit
     {
         internal LocalVideoTrack(FfiHandle handle, TrackInfo info, Room room) : base(handle, info, room, room?.LocalParticipant) { }
 
-        async public static Task<LocalVideoTrack> CreateVideoTrack(string name, RtcVideoSource source, Room room)
+        public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source, Room room)
         {
             /*var captureOptions = new VideoCaptureOptions();
             var resolution = new VideoResolution();

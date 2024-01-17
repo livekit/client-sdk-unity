@@ -25,6 +25,10 @@ namespace LiveKit
         private AudioResampler _resampler;
         private object _lock = new object();
 
+
+        private Thread _readAudioThread;
+        private bool _pending = false;
+
         public AudioStream(IAudioTrack audioTrack, AudioSource source)
         {
             if (!audioTrack.Room.TryGetTarget(out var room))
@@ -33,7 +37,7 @@ namespace LiveKit
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
-            _resampler = new AudioResampler(canceltoken);
+            _resampler = new AudioResampler();
 
             var newAudioStream = new NewAudioStreamRequest();
             newAudioStream.TrackHandle = (ulong)room.Handle.DangerousGetHandle();
@@ -60,39 +64,71 @@ namespace LiveKit
             source.Play();
         }
 
+
+        private float[] _data;
+        private int _channels;
+        private int _pendingSampleRate;
+
         // Called on Unity audio thread
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
-            Queue here 
-
             lock (_lock)
             {
-                if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
+                _data = data;
+                _channels = channels;
+                _pendingSampleRate = sampleRate;
+                _pending = true;
+            }
+        }
+
+        public void Start()
+        {
+            Stop();
+            _readAudioThread = new Thread(async () => await Update());
+            _readAudioThread.Start();
+        }
+
+        public void Stop()
+        {
+            if (_readAudioThread != null) _readAudioThread.Abort();
+        }
+
+        private async Task Update()
+        {
+            while (true)
+            {
+                await Task.Delay(Constants.TASK_DELAY);
+
+                lock (_lock)
                 {
-                    int size = (int)(channels * sampleRate * 0.2);
-                    _buffer = new RingBuffer(size * sizeof(short));
-                    _tempBuffer = new short[data.Length];
-                    _numChannels = (uint)channels;
-                    _sampleRate = (uint)sampleRate;
-                }
+                    if (_buffer == null || _channels != _numChannels || _pendingSampleRate != _sampleRate || _data.Length != _tempBuffer.Length)
+                    {
+                        int size = (int)(_channels * _sampleRate * 0.2);
+                        _buffer = new RingBuffer(size * sizeof(short));
+                        _tempBuffer = new short[_data.Length];
+                        _numChannels = (uint)_channels;
+                        _sampleRate = (uint)_pendingSampleRate;
+                    }
 
 
-                static float S16ToFloat(short v)
-                {
-                    return v / 32768f;
-                }
+                    static float S16ToFloat(short v)
+                    {
+                        return v / 32768f;
+                    }
 
-                // "Send" the data to Unity
-                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, data.Length));
-                int read = _buffer.Read(temp);
+                    // "Send" the data to Unity
+                    //var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, _data.Length));
+                    //int read = _buffer.Read(temp);
 
-                Array.Clear(data, 0, data.Length);
-                for (int i = 0; i < data.Length; i++)
-                {
-                    data[i] = S16ToFloat(_tempBuffer[i]);
+                    Array.Clear(_data, 0, _data.Length);
+                    for (int i = 0; i < _data.Length; i++)
+                    {
+                        _data[i] = S16ToFloat(_tempBuffer[i]);
+                    }
                 }
             }
         }
+               
 
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
@@ -115,7 +151,7 @@ namespace LiveKit
                
                     unsafe
                     {
-                        var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate).Result;
+                        var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
                         var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
                         _buffer?.Write(data);
                     }

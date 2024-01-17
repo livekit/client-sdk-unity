@@ -15,21 +15,17 @@ namespace LiveKit
             get { return _handle; }
         }
 
-        private CancellationToken _canceltoken;
-
-        public AudioResampler(CancellationToken canceltoken)
+        public AudioResampler()
         {
             var newResampler = new NewAudioResamplerRequest();
             var request = new FfiRequest();
             request.NewAudioResampler = newResampler;
-            _canceltoken = canceltoken;
             var res = FfiClient.SendRequest(request);
             _handle = new FfiHandle((IntPtr)res.NewAudioResampler.Resampler.Handle.Id);
         }
 
         public AudioFrame RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate) {
 
-            if (_canceltoken.IsCancellationRequested) return null;
             var remix = new RemixAndResampleRequest();
             remix.ResamplerHandle = (ulong) Handle.DangerousGetHandle();
             remix.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong) frame.Handle.DangerousGetHandle()};
@@ -40,9 +36,6 @@ namespace LiveKit
             request.RemixAndResample = remix;
 
             var res = FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-
-            if (_canceltoken.IsCancellationRequested) return null;
             var bufferInfo = res.RemixAndResample.Buffer;
             var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
             return new AudioFrame(handle, remix.Buffer);

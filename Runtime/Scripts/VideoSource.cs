@@ -44,7 +44,6 @@ namespace LiveKit
         private bool _reading = false;
         private bool isDisposed = true;
         private Thread _readVideoThread;
-        private CancellationToken _canceltoken;
 
         public TextureVideoSource(Texture texture)
         {
@@ -53,10 +52,9 @@ namespace LiveKit
             isDisposed = false;
         }
 
-        public void Start(CancellationToken canceltoken)
+        public void Start()
         {
-            _canceltoken = canceltoken;
-            _readVideoThread = new Thread(async ()=> await Update(canceltoken));
+            _readVideoThread = new Thread(async ()=> await Update());
             _readVideoThread.Start();
         }
 
@@ -75,11 +73,11 @@ namespace LiveKit
         }
         
 
-        private async Task Update(CancellationToken canceltoken)
+        private async Task Update()
         {
-            while (!canceltoken.IsCancellationRequested)
+            while (true)
             {
-                await Task.Delay(5);
+                await Task.Delay(Constants.TASK_DELAY);
                 ReadBuffer();
                 ReadBack();
             }
@@ -105,10 +103,9 @@ namespace LiveKit
 
         private void ReadBack()
         {
-            if(_requestPending)
+            if(_requestPending && !isDisposed)
             {
                 var req = _readBackRequest;
-                if (_canceltoken != null && _canceltoken.IsCancellationRequested) return;
                 if (req.hasError)
                 {
                     Utils.Error("failed to read texture data");

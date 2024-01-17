@@ -71,12 +71,10 @@ namespace LiveKit
 
         internal LocalParticipant(ParticipantInfo info, Room room, FfiHandle handle) : base(info, room, handle) { }
 
-        async public Task<PublishTrackInstruction> PublishTrack(ILocalTrack localTrack, TrackPublishOptions options, CancellationToken canceltoken)
+        public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
         {
             if (Room == null)
                 throw new Exception("room is invalid");
-
-            if (canceltoken.IsCancellationRequested) return null;
 
             var track = (Track)localTrack;
             var publish = new PublishTrackRequest();
@@ -86,9 +84,7 @@ namespace LiveKit
 
             var request = new FfiRequest();
             request.PublishTrack = publish;
-            var resp = await FfiClient.SendRequest(request);
-
-            if (canceltoken.IsCancellationRequested) return null;
+            var resp = FfiClient.SendRequest(request);
 
             if (resp!=null)
                 return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
