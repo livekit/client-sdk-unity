@@ -94,14 +94,13 @@ namespace LiveKit
         async internal Task<bool> UploadBuffer(CancellationToken canceltoken)
         {
             var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = await VideoBuffer.ToI420(canceltoken); // TODO(theomonnom): Support other buffer types
-
+            VideoBuffer = await VideoBuffer.ToI420(canceltoken); // TODO MindTrust-VID
+            if (canceltoken.IsCancellationRequested) return false;
             unsafe
             {
                 var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
                 VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
             }
-
             Texture.Apply();
             return true;
         }
@@ -110,12 +109,7 @@ namespace LiveKit
         {
             while (true)
             {
-                if (canceltoken.IsCancellationRequested)
-                {
-                    // End the task
-                    Utils.Debug("Task cancelled");
-                    return;
-                }
+                if (canceltoken.IsCancellationRequested) return;
 
                 if (_disposed)
                     break;
@@ -135,14 +129,7 @@ namespace LiveKit
                 }
 
                 await UploadBuffer(canceltoken);
-
-                // Check if the task has been cancelled
-                if (canceltoken.IsCancellationRequested)
-                {
-                    // End the task
-                    Utils.Debug("Task cancelled");
-                    return;
-                }
+                if (canceltoken.IsCancellationRequested) return;
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);

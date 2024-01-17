@@ -51,12 +51,7 @@ namespace LiveKit
 
         async public Task<ConnectInstruction> Connect(string url, string token, CancellationToken canceltoken)
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
 
             var connect = new ConnectRequest();
             connect.Url = url;
@@ -68,13 +63,7 @@ namespace LiveKit
             Utils.Debug("Connect....");
             var resp = await FfiClient.SendRequest(request);
             Utils.Debug($"Connect response.... {resp}");
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
             return new ConnectInstruction(resp.Connect.AsyncId, this);
         }
 

@@ -27,12 +27,7 @@ namespace LiveKit
 
         async void Init(CancellationToken canceltoken)
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (canceltoken.IsCancellationRequested) return;
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
 
@@ -40,13 +35,8 @@ namespace LiveKit
             request.NewVideoSource = newVideoSource;
 
             var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+
+            if (canceltoken.IsCancellationRequested) return;
             _info = resp.NewVideoSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
         }
@@ -58,7 +48,7 @@ namespace LiveKit
         private NativeArray<byte> _data;
         private bool _reading = false;
         private bool isDisposed = true;
-        private CancellationToken canceltoken;
+        private CancellationToken _canceltoken;
 
         public TextureVideoSource(Texture texture)
         {
@@ -69,7 +59,7 @@ namespace LiveKit
 
         public void Init(CancellationToken canceltoken)
         {
-            this.canceltoken = canceltoken;
+            _canceltoken = canceltoken;
             Thread sendDataThread = new Thread(new ThreadStart(StartReading));
             sendDataThread.Start();
         }
@@ -86,12 +76,7 @@ namespace LiveKit
         // Read the texture data into a native array asynchronously
         internal void ReadBuffer()
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (_canceltoken.IsCancellationRequested) return;
             if (_reading)
                 return;
 
@@ -105,24 +90,15 @@ namespace LiveKit
             {
                 //yield return null;
                 ReadBuffer();
-                if (canceltoken.IsCancellationRequested)
-                {
-                    // End the task
-                    Utils.Debug("Task cancelled");
-                    break;
-                }
+                if (_canceltoken.IsCancellationRequested) return;
             }
         }
 
         async private void OnReadback(AsyncGPUReadbackRequest req)
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
             _reading = false;
+
+            if (_canceltoken.IsCancellationRequested) return;
             if (req.hasError)
             {
                 Utils.Error("failed to read texture data");
@@ -130,7 +106,7 @@ namespace LiveKit
             }
 
             // ToI420
-            var argbInfo = new ArgbBufferInfo();
+            var argbInfo = new ArgbBufferInfo(); // TODO: MindTrust_VID
             unsafe
             {
                 argbInfo.Ptr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
@@ -148,13 +124,7 @@ namespace LiveKit
             request.ToI420 = toI420;
 
             var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (_canceltoken.IsCancellationRequested) return;
             var bufferInfo = resp.ToI420.Buffer;
             var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
 
@@ -171,7 +141,7 @@ namespace LiveKit
             request = new FfiRequest();
             request.CaptureVideoFrame = capture;
 
-            FfiClient.SendRequest(request);
+            await FfiClient.SendRequest(request);
         }
     }
 }

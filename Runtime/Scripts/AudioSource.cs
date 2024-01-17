@@ -37,12 +37,8 @@ namespace LiveKit
 
         async public Task Init(AudioSource source, CancellationToken canceltoken)
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (canceltoken.IsCancellationRequested) return;
+
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
 
@@ -51,12 +47,8 @@ namespace LiveKit
 
             var resp = await FfiClient.SendRequest(request);
             // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (canceltoken.IsCancellationRequested) return ;
+
             _info = resp.NewAudioSource.Source.Info;
             _handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
             UpdateSource(source);

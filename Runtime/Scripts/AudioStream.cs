@@ -33,19 +33,12 @@ namespace LiveKit
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (canceltoken.IsCancellationRequested) return;
 
             _resampler = new AudioResampler(canceltoken);
 
             var newAudioStream = new NewAudioStreamRequest();
             newAudioStream.TrackHandle = (ulong)room.Handle.DangerousGetHandle();
-            //newAudioStream.ParticipantSid = participant.Sid;
-            //newAudioStream.TrackSid = audioTrack.Sid;
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
 
             var request = new FfiRequest();
@@ -56,22 +49,14 @@ namespace LiveKit
 
         async void Init(FfiRequest request, AudioSource source, CancellationToken canceltoken)
         {
-
             var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return;
-            }
+            if (canceltoken.IsCancellationRequested) return;
             var streamInfo = resp.NewAudioStream.Stream;
 
             _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
-            
         }
 
         private void UpdateSource(AudioSource source)

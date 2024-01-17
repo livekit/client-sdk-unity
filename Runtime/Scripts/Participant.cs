@@ -76,32 +76,19 @@ namespace LiveKit
             if (Room == null)
                 throw new Exception("room is invalid");
 
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
 
             var track = (Track)localTrack;
             var publish = new PublishTrackRequest();
-            //publish.TrackHandle = (ulong)Room.Handle.DangerousGetHandle();
-            //publish.LocalParticipantHandle = 
             publish.LocalParticipantHandle = (ulong)Room.LocalParticipant.Handle.DangerousGetHandle();
             publish.TrackHandle =   (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
 
             var request = new FfiRequest();
             request.PublishTrack = publish;
-
             var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+
+            if (canceltoken.IsCancellationRequested) return null;
 
             if (resp!=null)
                 return new PublishTrackInstruction(resp.PublishTrack.AsyncId);

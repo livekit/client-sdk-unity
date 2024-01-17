@@ -103,12 +103,7 @@ namespace LiveKit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         async public Task<I420Buffer> ToI420(CancellationToken canceltoken)
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
 
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
@@ -129,19 +124,13 @@ namespace LiveKit
             request.ToI420 = toi420;
 
             var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
             var newInfo = resp.ToI420.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");
 
             var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
-            return new I420Buffer(newHandle, newInfo.Info);
+            return new I420Buffer(newHandle, newInfo.Info); // TODO MindTrust_VID
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

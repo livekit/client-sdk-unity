@@ -78,12 +78,7 @@ namespace LiveKit
 
         async public static Task<LocalAudioTrack> CreateAudioTrack(string name, RtcAudioSource source, Room room, CancellationToken canceltoken)
         {
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
 
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
@@ -93,13 +88,8 @@ namespace LiveKit
             request.CreateAudioTrack = createTrack;
 
             var resp = await FfiClient.SendRequest(request);
-            // Check if the task has been cancelled
-            if (canceltoken.IsCancellationRequested)
-            {
-                // End the task
-                Utils.Debug("Task cancelled");
-                return null;
-            }
+            if (canceltoken.IsCancellationRequested) return null;
+
             var trackInfo = resp.CreateAudioTrack.Track;
             var trackHandle = new FfiHandle((IntPtr)trackInfo.Handle.Id);
             var track = new LocalAudioTrack(trackHandle, trackInfo.Info, room);
