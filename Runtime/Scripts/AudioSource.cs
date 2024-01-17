@@ -87,26 +87,10 @@ namespace LiveKit
                 _frame = new AudioFrame(sampleRate, channels, samplesPerChannel);
             }
 
-            static short FloatToS16(float v) {
-                v *= 32768f;
-                v = Math.Min(v, 32767f);
-                v = Math.Max(v, -32768f);
-                return (short)(v + Math.Sign(v) * 0.5f);
-            }
-
             try
             {
                 await Task.Run(async () =>
                 {
-                    unsafe
-                    {
-                        var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
-                        for (int i = 0; i < data.Length; i++)
-                        {
-                            frameData[i] = FloatToS16(data[i]);
-                        }
-                    }
-
                     // Don't play the audio locally
                     Array.Clear(data, 0, data.Length);
 
