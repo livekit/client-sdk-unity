@@ -28,11 +28,17 @@ namespace LiveKit
         private AudioFrame _frame;
         private SynchronizationContext syncContext;
 
-        public RtcAudioSource()
+        private RtcAudioSource()
         {
             syncContext = SynchronizationContext.Current;
+        }
 
-
+        async static public Task<RtcAudioSource> Create(AudioSource source, CancellationToken canceltoken)
+        {
+            var response = new RtcAudioSource();
+            await response.Init(source, canceltoken);
+            if (canceltoken.IsCancellationRequested) return null;
+            return response;
         }
 
         async public Task Init(AudioSource source, CancellationToken canceltoken)
