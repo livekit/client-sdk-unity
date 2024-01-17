@@ -89,7 +89,7 @@ namespace LiveKit
             pinnedArray.Free();
         }
 
-        public void Disconnect()
+        public async void Disconnect()
         {
             var disconnect = new DisconnectRequest();
             disconnect.RoomHandle = (ulong)Handle.DangerousGetHandle();
@@ -98,7 +98,7 @@ namespace LiveKit
             request.Disconnect = disconnect;
 
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
-            var resp = FfiClient.SendRequest(request);
+            var resp = await FfiClient.SendRequest(request);
             Utils.Debug($"Disconnect response.... {resp}");
         }
 

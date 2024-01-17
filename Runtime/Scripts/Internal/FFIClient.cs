@@ -97,7 +97,7 @@ namespace LiveKit.Internal
             Utils.Debug("FFIServer - Initialized");
         }
 
-        static void Dispose()
+        static async void Dispose()
         {
             // Stop all rooms synchronously
             // The rust lk implementation should also correctly dispose WebRTC
@@ -105,7 +105,7 @@ namespace LiveKit.Internal
 
             var request = new FfiRequest();
             request.Dispose = disposeReq;
-            SendRequest(request);
+            await SendRequest(request);
             Utils.Debug("FFIServer - Disposed");
         }
 
