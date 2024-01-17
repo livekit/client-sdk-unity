@@ -96,7 +96,7 @@ namespace LiveKit
 
             try
             {
-                await Task.Run(() =>
+                await Task.Run(async () =>
                 {
                     unsafe
                     {
@@ -117,7 +117,7 @@ namespace LiveKit
                     var request = new FfiRequest();
                     request.CaptureAudioFrame = pushFrame;
 
-                    FfiClient.SendRequest(request);
+                    await FfiClient.SendRequest(request);
 
                     Utils.Debug($"Pushed audio frame with {data.Length} samples");
                 });
