@@ -21,9 +21,11 @@ namespace LiveKit.Internal
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
-    internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
+    internal delegate void ParticipantEventReceivedDelegate(OwnedParticipant e);
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
     internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
+
+    internal delegate void LogsReceivedDelegate(LogBatch e);
 
 #if UNITY_EDITOR
     [InitializeOnLoad]
@@ -42,6 +44,8 @@ namespace LiveKit.Internal
         public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate AudioStreamEventReceived;
+
+        public event LogsReceivedDelegate LogsReceived;
 
 #if UNITY_EDITOR
         static FfiClient()
@@ -66,7 +70,7 @@ namespace LiveKit.Internal
         static void Init()
         {
             Application.quitting += Quit;
-            Instance.Initialize();
+            FfiClient.Initialize();
         }
 #endif
 
@@ -84,18 +88,14 @@ namespace LiveKit.Internal
         {
             // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
             Instance._context = SynchronizationContext.Current;
+            Debug.Log("Main Context created");
         }
 
         static void Initialize()
         {
+            Utils.Debug("FFIServer - Before initialize");
             FFICallbackDelegate callback = FFICallback;
-
-            var initReq = new InitializeRequest();
-            initReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
-
-            var request = new FFIRequest();
-            request.Initialize = initReq;
-            SendRequest(request);
+            NativeMethods.LiveKitInitialize(callback, false);
             Utils.Debug("FFIServer - Initialized");
         }
 
@@ -105,20 +105,24 @@ namespace LiveKit.Internal
             // The rust lk implementation should also correctly dispose WebRTC
             var disposeReq = new DisposeRequest();
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.Dispose = disposeReq;
             SendRequest(request);
             Utils.Debug("FFIServer - Disposed");
         }
 
-        internal static FFIResponse SendRequest(FFIRequest request)
+        internal static FfiResponse SendRequest(FfiRequest request)
         {
+
             var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-            FFIResponse response;
+
+
+            FfiResponse response = null;
             unsafe
             {
                 var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
-                response = FFIResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+
+                response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
                 handle.Dispose();
             }
 
@@ -130,40 +134,48 @@ namespace LiveKit.Internal
         static unsafe void FFICallback(IntPtr data, int size)
         {
             var respData = new Span<byte>(data.ToPointer(), size);
-            var response = FFIEvent.Parser.ParseFrom(respData);
+            var response = FfiEvent.Parser.ParseFrom(respData);
+
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
-            Instance._context.Post((resp) =>
-               {
-                   var response = resp as FFIEvent;
-                   switch (response.MessageCase)
-                   {
-                       case FFIEvent.MessageOneofCase.Connect:
-                           Instance.ConnectReceived?.Invoke(response.Connect);
-                           break;
-                       case FFIEvent.MessageOneofCase.PublishTrack:
-                           Instance.PublishTrackReceived?.Invoke(response.PublishTrack);
-                           break;
-                       case FFIEvent.MessageOneofCase.RoomEvent:
-                           Instance.RoomEventReceived?.Invoke(response.RoomEvent);
-                           break;
-                       case FFIEvent.MessageOneofCase.TrackEvent:
-                           Instance.TrackEventReceived?.Invoke(response.TrackEvent);
-                           break;
-                       case FFIEvent.MessageOneofCase.ParticipantEvent:
-                           Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                           break;
-                       case FFIEvent.MessageOneofCase.VideoStreamEvent:
-                           Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
-                           break;
-                       case FFIEvent.MessageOneofCase.AudioStreamEvent:
-                           Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent);
-                           break;
+            if (Instance != null && Instance._context != null) Instance._context.Post((resp) =>
+            {
+                var response = resp as FfiEvent;
 
-                   }
-               }, response);
+                //Utils.Debug("Message: " + response.MessageCase);
+                switch (response.MessageCase)
+                {
+                    case FfiEvent.MessageOneofCase.PublishData:
+                        break;
+                    case FfiEvent.MessageOneofCase.Connect:
+                        Instance.ConnectReceived?.Invoke(response.Connect);
+                        break;
+                    case FfiEvent.MessageOneofCase.PublishTrack:
+                        Instance.PublishTrackReceived?.Invoke(response.PublishTrack);
+                        break;
+                    case FfiEvent.MessageOneofCase.RoomEvent:
+
+                        Instance.RoomEventReceived?.Invoke(response.RoomEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.TrackEvent:
+                        Instance.TrackEventReceived?.Invoke(response.TrackEvent);
+                        break;
+                    /*case FfiEvent.MessageOneofCase. ParticipantEvent:
+                        Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
+                        break;*/
+                    case FfiEvent.MessageOneofCase.VideoStreamEvent:
+                        Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
+                        Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.Logs:
+                        Instance.LogsReceived?.Invoke(response.Logs);
+                        break;
+
+                }
+            }, response);
         }
     }
 }
-

@@ -19,12 +19,12 @@ namespace LiveKit
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewVideoSource = newVideoSource;
 
             var resp = FfiClient.SendRequest(request);
-            _info = resp.NewVideoSource.Source;
-            Handle = new FfiHandle((IntPtr)_info.Handle.Id);
+            _info = resp.NewVideoSource.Source.Info;
+            Handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
         }
     }
 
@@ -70,7 +70,7 @@ namespace LiveKit
             }
 
             // ToI420
-            var argbInfo = new ARGBBufferInfo();
+            var argbInfo = new ArgbBufferInfo();
             unsafe
             {
                 argbInfo.Ptr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
@@ -84,24 +84,23 @@ namespace LiveKit
             toI420.FlipY = true;
             toI420.Argb = argbInfo;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.ToI420 = toI420;
 
             var resp = FfiClient.SendRequest(request);
-            var bufferInfo = resp.ToI420.Buffer;
-            var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo);
+            var ownedBuffer = resp.ToI420.Buffer;
+            var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)ownedBuffer.Handle.Id), ownedBuffer.Info);
 
             // Send the frame to WebRTC
             var frameInfo = new VideoFrameInfo();
             frameInfo.Rotation = VideoRotation._0;
-            frameInfo.Timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            frameInfo.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
             var capture = new CaptureVideoFrameRequest();
-            capture.SourceHandle = new FFIHandleId { Id = (ulong)Handle.DangerousGetHandle() };
-            capture.BufferHandle = new FFIHandleId { Id = (ulong)buffer.Handle.DangerousGetHandle() };
+            capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
             capture.Frame = frameInfo;
 
-            request = new FFIRequest();
+            request = new FfiRequest();
             request.CaptureVideoFrame = capture;
 
             FfiClient.SendRequest(request);

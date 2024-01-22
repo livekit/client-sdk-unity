@@ -1,6 +1,8 @@
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using UnityEngine;
+
 
 namespace LiveKit
 {
@@ -11,26 +13,27 @@ namespace LiveKit
         public AudioResampler()
         {
             var newResampler = new NewAudioResamplerRequest();
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewAudioResampler = newResampler;
 
             var res = FfiClient.SendRequest(request);
-            Handle = new FfiHandle((IntPtr)res.NewAudioResampler.Handle.Id);
+            Handle = new FfiHandle((IntPtr)res.NewAudioResampler.Resampler.Handle.Id);
         }
 
-        public AudioFrame RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate) {
+        public AudioFrame RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate)
+        {
             var remix = new RemixAndResampleRequest();
-            remix.ResamplerHandle = new FFIHandleId { Id = (ulong) Handle.DangerousGetHandle()};
-            remix.BufferHandle = new FFIHandleId { Id = (ulong) frame.Handle.DangerousGetHandle()};
+            remix.ResamplerHandle = (ulong)Handle.DangerousGetHandle();
+            remix.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong)frame.Handle.DangerousGetHandle() };
             remix.NumChannels = numChannels;
             remix.SampleRate = sampleRate;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.RemixAndResample = remix;
 
             var res = FfiClient.SendRequest(request);
-            var bufferInfo = res.RemixAndResample.Buffer;
-            var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
+            var bufferInfo = res.RemixAndResample.Buffer.Info;
+            var handle = new FfiHandle((IntPtr)res.RemixAndResample.Buffer.Handle.Id);
             return new AudioFrame(handle, bufferInfo);
         }
     }

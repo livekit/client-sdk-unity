@@ -10,7 +10,7 @@ namespace LiveKit
     {
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
-        private ParticipantInfo _info;
+        internal ParticipantInfo _info;
         public string Sid => _info.Sid;
         public string Identity => _info.Identity;
         public string Name => _info.Name;
@@ -55,7 +55,11 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, LocalTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
-        internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+        private FfiOwnedHandle _handle;
+
+        internal LocalParticipant(ParticipantInfo info, Room room, FfiOwnedHandle handle) : base(info, room) {
+            _handle = handle;
+         }
 
         public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
         {
@@ -65,15 +69,15 @@ namespace LiveKit
             var track = (Track)localTrack;
 
             var publish = new PublishTrackRequest();
-            publish.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            publish.TrackHandle = new FFIHandleId { Id = (ulong)track.Handle.DangerousGetHandle() };
+            publish.LocalParticipantHandle = (ulong)_handle.Id;
+            publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.PublishTrack = publish;
 
             var resp = FfiClient.SendRequest(request);
-            return new PublishTrackInstruction(resp.PublishTrack.AsyncId.Id);
+            return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
         }
     }
 
@@ -97,7 +101,7 @@ namespace LiveKit
 
         void OnPublish(PublishTrackCallback e)
         {
-            if (e.AsyncId.Id != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);

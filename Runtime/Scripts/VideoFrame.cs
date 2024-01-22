@@ -10,7 +10,7 @@ namespace LiveKit
     {
         private VideoFrameInfo _info;
 
-        public long Timestamp => _info.Timestamp;
+        public long Timestamp => _info.TimestampUs;
         public VideoRotation Rotation => _info.Rotation;
 
         public VideoFrame(VideoFrameInfo info)
@@ -109,13 +109,10 @@ namespace LiveKit
             // after using this function.
             Handle.SetHandleAsInvalid();
 
-            var handleId = new FFIHandleId();
-            handleId.Id = (ulong)Handle.DangerousGetHandle();
-
             var toi420 = new ToI420Request();
-            toi420.Buffer = handleId;
+            toi420.Handle = (ulong)Handle.DangerousGetHandle();
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.ToI420 = toi420;
 
             var resp = FfiClient.SendRequest(request);
@@ -124,7 +121,7 @@ namespace LiveKit
                 throw new InvalidOperationException("failed to convert");
 
             var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
-            return new I420Buffer(newHandle, newInfo);
+            return new I420Buffer(newHandle, newInfo.Info);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -133,18 +130,15 @@ namespace LiveKit
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
 
-            var handleId = new FFIHandleId();
-            handleId.Id = (ulong)Handle.DangerousGetHandle();
-
-            var argb = new ToARGBRequest();
-            argb.Buffer = handleId;
+            var argb = new ToArgbRequest();
+            argb.Buffer = Info;
             argb.DstPtr = (ulong)dst;
             argb.DstFormat = format;
             argb.DstStride = dstStride;
             argb.DstWidth = width;
             argb.DstHeight = height;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.ToArgb = argb;
 
             FfiClient.SendRequest(request);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LiveKit.Proto;
+using LiveKit.Internal;
 
 namespace LiveKit
 {
@@ -16,12 +17,14 @@ namespace LiveKit
         public uint Height => _info.Height;
         public string MimeType => _info.MimeType;
         public bool Muted => _info.Muted;
+        public FfiHandle Handle {get; internal set;}
 
         public Track Track { private set; get; }
 
-        protected TrackPublication(TrackPublicationInfo info)
+        protected TrackPublication(OwnedTrackPublication publication)
         {
-            UpdateInfo(info);
+            UpdateInfo(publication.Info);
+            Handle = new FfiHandle((IntPtr)publication.Handle.Id);
         }
 
         internal void UpdateInfo(TrackPublicationInfo info)
@@ -45,13 +48,13 @@ namespace LiveKit
     {
         public new IRemoteTrack Track => base.Track as IRemoteTrack;
 
-        internal RemoteTrackPublication(TrackPublicationInfo info) : base(info) { }
+        internal RemoteTrackPublication(OwnedTrackPublication info) : base(info) { }
     }
 
     public sealed class LocalTrackPublication : TrackPublication
     {
         public new ILocalTrack Track => base.Track as ILocalTrack;
 
-        internal LocalTrackPublication(TrackPublicationInfo info) : base(info) { }
+        internal LocalTrackPublication(OwnedTrackPublication info) : base(info) { }
     }
 }

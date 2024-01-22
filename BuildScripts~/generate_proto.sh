@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FFI_PROTOCOL=../client-sdk-rust~/livekit-ffi/protocol
+FFI_PROTOCOL=../protocol
 OUT_CSHARP=../Runtime/Scripts/Proto
 
 protoc \
@@ -12,4 +12,6 @@ protoc \
     $FFI_PROTOCOL/participant.proto \
     $FFI_PROTOCOL/room.proto \
     $FFI_PROTOCOL/track.proto \
-    $FFI_PROTOCOL/video_frame.proto
+    $FFI_PROTOCOL/video_frame.proto \
+    $FFI_PROTOCOL/e2ee.proto \
+    $FFI_PROTOCOL/stats.proto

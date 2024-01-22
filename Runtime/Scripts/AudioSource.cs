@@ -25,12 +25,12 @@ namespace LiveKit
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewAudioSource = newAudioSource;
 
             var resp = FfiClient.SendRequest(request);
-            _info = resp.NewAudioSource.Source;
-            Handle = new FfiHandle((IntPtr)_info.Handle.Id);
+            _info = resp.NewAudioSource.Source.Info;
+            Handle = new FfiHandle((IntPtr)resp.NewAudioSource.Source.Handle.Id);
             UpdateSource(source);
         }
 
@@ -73,10 +73,10 @@ namespace LiveKit
             Array.Clear(data, 0, data.Length);
 
             var pushFrame = new CaptureAudioFrameRequest();
-            pushFrame.SourceHandle = new FFIHandleId { Id = (ulong)Handle.DangerousGetHandle() };
-            pushFrame.BufferHandle = new FFIHandleId { Id = (ulong)_frame.Handle.DangerousGetHandle() };
+            pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
+            pushFrame.Buffer = _frame.Info;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.CaptureAudioFrame = pushFrame;
 
             FfiClient.SendRequest(request);
