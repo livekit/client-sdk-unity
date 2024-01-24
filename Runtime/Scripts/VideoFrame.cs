@@ -3,6 +3,8 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -68,7 +70,7 @@ namespace LiveKit
         }
 
         /// Used for GC.AddMemoryPressure(Int64)
-        /// TODO(theomonnom): Remove the default implementation when each buffer type is implemented
+        /// TODO(theomonnom): Remove the default implementation when each buffer type is implemented  cc MindTrust_VID
         internal virtual long GetMemorySize()
         {
             return -1;
@@ -125,7 +127,7 @@ namespace LiveKit
                 throw new InvalidOperationException("failed to convert");
 
             var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
-            return new I420Buffer(newHandle, newInfo.Info);
+            return new I420Buffer(newHandle, newInfo.Info); // TODO MindTrust_VID
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -134,12 +136,8 @@ namespace LiveKit
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
 
-            //var handleId = new FFIHandleId();
-            //handleId.Id = (ulong)Handle.DangerousGetHandle();
-
             var argb = new ToArgbRequest();
             //argb.Buffer = handleId;
-            //argb. = handleId;
             argb.DstPtr = (ulong)dst;
             argb.DstFormat = format;
             argb.DstStride = dstStride;

@@ -1,9 +1,8 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using UnityEngine;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -11,11 +10,24 @@ namespace LiveKit
     {
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
+
         private ParticipantInfo _info;
         public string Sid => _info.Sid;
         public string Identity => _info.Identity;
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
+
+        public void SetMeta(string meta)
+        {
+            _info.Metadata = meta;
+        }
+
+        private FfiHandle _handle;
+
+        internal FfiHandle Handle
+        {
+            get { return _handle; }
+        }
 
         public bool Speaking { private set; get; }
         public float AudioLevel { private set; get; }
@@ -24,21 +36,15 @@ namespace LiveKit
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
 
-        private Room _room;
-        public Room Room
-        {
-            get
-            {
-                return _room;
-            }
-        }
+        public Room Room { get; }
 
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
         internal readonly Dictionary<string, TrackPublication> _tracks = new();
 
-        protected Participant(ParticipantInfo info, Room room)
+        protected Participant(ParticipantInfo info, Room room, FfiHandle handle)
         {
-            _room =  room;
+            Room = room;
+            _handle = handle;
             UpdateInfo(info);
         }
 
@@ -64,27 +70,25 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, LocalTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
-        internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
-
-        public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
+        internal LocalParticipant(ParticipantInfo info, Room room, FfiHandle handle) : base(info, room, handle)
         {
-            if (Room == null)
-                throw new Exception("room is invalid");
-          
+        }
+
+        public PublishTrackInstruction PublishTrack(
+            ILocalTrack localTrack,
+            TrackPublishOptions options,
+            CancellationToken token)
+        {
             var track = (Track)localTrack;
             var publish = new PublishTrackRequest();
-            //publish.TrackHandle = (ulong)Room.Handle.DangerousGetHandle();
-            //publish.LocalParticipantHandle = 
-            publish.TrackHandle =   (ulong)track.Handle.DangerousGetHandle();
+            publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
 
             var request = new FfiRequest();
             request.PublishTrack = publish;
-
             var resp = FfiClient.SendRequest(request);
-            if(resp!=null)
-                return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
-            return null;
+            return new PublishTrackInstruction(resp.PublishTrack.AsyncId, Room, token);
         }
     }
 
@@ -93,16 +97,21 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, RemoteTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (RemoteTrackPublication)p.Value);
 
-        internal RemoteParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+        internal RemoteParticipant(ParticipantInfo info, Room room, FfiHandle handle) : base(info, room, handle)
+        {
+        }
     }
 
-    public sealed class PublishTrackInstruction : YieldInstruction
+    public sealed class PublishTrackInstruction : AsyncInstruction
     {
         private ulong _asyncId;
+        private Room _room;
 
-        internal PublishTrackInstruction(ulong asyncId)
+
+        internal PublishTrackInstruction(ulong asyncId, Room room, CancellationToken token) : base(token)
         {
             _asyncId = asyncId;
+            _room = room;
             FfiClient.Instance.PublishTrackReceived += OnPublish;
         }
 
@@ -113,6 +122,7 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
+
             FfiClient.Instance.PublishTrackReceived -= OnPublish;
         }
     }

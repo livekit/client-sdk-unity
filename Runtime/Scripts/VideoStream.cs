@@ -4,19 +4,30 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace LiveKit
 {
     public class VideoStream
     {
         public delegate void FrameReceiveDelegate(VideoFrame frame);
+
+
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
+
+
         public delegate void TextureUploadDelegate();
 
-        internal readonly FfiHandle Handle;
+
+        internal FfiHandle Handle { get; private set; }
+
         private VideoStreamInfo _info;
-        private bool _disposed = false;
         private bool _dirty = false;
+        private volatile bool disposed = false;
+
+        // Thread for parsing textures
+        private Thread? frameThread;
 
         /// Called when we receive a new frame from the VideoTrack
         public event FrameReceiveDelegate FrameReceived;
@@ -30,7 +41,9 @@ namespace LiveKit
         /// The texture changes every time the video resolution changes.
         /// Can be null if UpdateRoutine isn't started
         public Texture2D Texture { private set; get; }
-        public VideoFrameBuffer VideoBuffer { private set; get; }
+        public VideoFrameBuffer? VideoBuffer { get; private set; }
+        
+        private readonly object _lock = new();
 
         public VideoStream(IVideoTrack videoTrack)
         {
@@ -49,6 +62,11 @@ namespace LiveKit
             var request = new FfiRequest();
             request.NewVideoStream = newVideoStream;
 
+            Init(request);
+        }
+
+        private void Init(FfiRequest request)
+        {
             var resp = FfiClient.SendRequest(request);
             var streamInfo = resp.NewVideoStream.Stream;
 
@@ -61,6 +79,19 @@ namespace LiveKit
             Dispose(false);
         }
 
+        public void StartStreaming()
+        {
+            StopStreaming();
+            frameThread = new Thread(GetFrame);
+            frameThread.Start();
+        }
+
+        public void StopStreaming()
+        {
+            frameThread?.Abort();
+        }
+
+
         public void Dispose()
         {
             Dispose(true);
@@ -69,59 +100,58 @@ namespace LiveKit
 
         private void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!disposed)
             {
                 if (disposing)
                     VideoBuffer?.Dispose();
 
-                _disposed = true;
+                disposed = true;
             }
         }
 
-        internal bool UploadBuffer()
+        private void UploadBuffer()
         {
             var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
-
+            VideoBuffer = VideoBuffer.ToI420(); // TODO MindTrust-VID
             unsafe
             {
                 var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
-                VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
+                VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width,
+                    (uint)Texture.height);
             }
 
             Texture.Apply();
-            return true;
         }
 
-        public IEnumerator Update()
+        private void GetFrame()
         {
-            while (true)
+            while (!disposed)
             {
-                yield return null;
+                Thread.Sleep(Constants.TASK_DELAY);
 
-                if (_disposed)
-                    break;
-
-                if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
-                    continue;
-
-                _dirty = false;
-                var rWidth = VideoBuffer.Width;
-                var rHeight = VideoBuffer.Height;
-
-                var textureChanged = false;
-                if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
+                lock (_lock)
                 {
-                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, true, true);
-                    textureChanged = true;
+                    if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
+                        continue;
+
+                    _dirty = false;
+                    var rWidth = VideoBuffer.Width;
+                    var rHeight = VideoBuffer.Height;
+
+                    var textureChanged = false;
+                    if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
+                    {
+                        Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, true, true);
+                        textureChanged = true;
+                    }
+
+                    UploadBuffer();
+
+                    if (textureChanged)
+                        TextureReceived?.Invoke(Texture);
+
+                    TextureUploaded?.Invoke();
                 }
-
-                UploadBuffer();
-
-                if (textureChanged)
-                    TextureReceived?.Invoke(Texture);
-
-                TextureUploaded?.Invoke();
             }
         }
 
@@ -140,9 +170,12 @@ namespace LiveKit
             var frame = new VideoFrame(frameInfo);
             var buffer = VideoFrameBuffer.Create(handle, bufferInfo);
 
-            VideoBuffer?.Dispose();
-            VideoBuffer = buffer;
-            _dirty = true;
+            lock (_lock)
+            {
+                VideoBuffer?.Dispose();
+                VideoBuffer = buffer;
+                _dirty = true;
+            }
 
             FrameReceived?.Invoke(frame);
         }

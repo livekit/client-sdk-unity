@@ -1,12 +1,33 @@
+using LiveKit.Internal;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace LiveKit
 {
-    public class YieldInstruction : CustomYieldInstruction
+    public class AsyncInstruction
     {
         public bool IsDone { protected set; get; }
         public bool IsError { protected set; get; }
 
-        public override bool keepWaiting => !IsDone;
+        public bool keepWaiting => !IsDone;
+
+        private CancellationToken _token;
+        protected CancellationToken Token => _token;
+
+
+        internal AsyncInstruction(CancellationToken token)
+        {
+            _token = token;
+        }
+
+        public async Task AwaitCompletion()
+        {
+            while (!IsDone)
+            {
+                _token.ThrowIfCancellationRequested();
+                await Task.Delay(Constants.TASK_DELAY);
+            }
+        }
     }
 }
