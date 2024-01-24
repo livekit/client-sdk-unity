@@ -17,6 +17,7 @@ namespace LiveKit.Internal
     // Callbacks
     internal delegate void PublishTrackDelegate(PublishTrackCallback e);
     internal delegate void ConnectReceivedDelegate(ConnectCallback e);
+    internal delegate void DisconnectReceivedDelegate(DisconnectCallback e);
 
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
@@ -36,6 +37,7 @@ namespace LiveKit.Internal
 
         public event PublishTrackDelegate PublishTrackReceived;
         public event ConnectReceivedDelegate ConnectReceived;
+        public event DisconnectReceivedDelegate DisconnectReceived;
         public event RoomEventReceivedDelegate RoomEventReceived;
         public event TrackEventReceivedDelegate TrackEventReceived;
         //public event ParticipantEventReceivedDelegate ParticipantEventReceived;
@@ -72,7 +74,7 @@ namespace LiveKit.Internal
         }
 #endif
 
-        static void Quit()
+        private static void Quit()
         {
 #if UNITY_EDITOR
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
@@ -103,15 +105,23 @@ namespace LiveKit.Internal
         internal static FfiResponse SendRequest(FfiRequest request)
         {
             var data = request.ToByteArray();
-            FfiResponse response;
             unsafe
             {
-                var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
-                response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
-                handle.Dispose();
+                try
+                {
+                    var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
+                    var response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                    handle.Dispose();
+                    return response;
+                }
+                catch (Exception e)
+                {
+                    // Since we are in a thread I want to make sure we catch and log
+                    Utils.Error(e);
+                    // But we aren't actually handling this exception so we should re-throw here 
+                    throw e;
+                }
             }
-
-            return response;
         }
 
 
@@ -130,6 +140,9 @@ namespace LiveKit.Internal
                    {
                        case FfiEvent.MessageOneofCase.Connect:
                            Instance.ConnectReceived?.Invoke(response.Connect);
+                           break;
+                       case FfiEvent.MessageOneofCase.Disconnect:
+                           Instance.DisconnectReceived?.Invoke(response.Disconnect);
                            break;
                        case FfiEvent.MessageOneofCase.PublishTrack:
                            Instance.PublishTrackReceived?.Invoke(response.PublishTrack);

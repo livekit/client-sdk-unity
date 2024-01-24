@@ -77,7 +77,7 @@ namespace LiveKit
     {
         internal LocalAudioTrack(FfiHandle handle, OwnedTrack track, Room room) : base(handle, track, room, room?.LocalParticipant) { }
 
-        public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source)
+        public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source, Room room)
         {
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
@@ -89,7 +89,7 @@ namespace LiveKit
             var resp = FfiClient.SendRequest(request);
             var newTrack = resp.CreateAudioTrack.Track;
             var trackHandle = new FfiHandle((IntPtr)newTrack.Handle.Id);
-            var track = new LocalAudioTrack(trackHandle, newTrack, null);
+            var track = new LocalAudioTrack(trackHandle, newTrack, room);
             return track;
         }
     }
@@ -98,7 +98,7 @@ namespace LiveKit
     {
         internal LocalVideoTrack(FfiHandle handle, OwnedTrack track, Room room) : base(handle, track, room, room?.LocalParticipant) { }
 
-        public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source)
+        public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source, Room room)
         {
 
             var createTrack = new CreateVideoTrackRequest();
@@ -111,7 +111,7 @@ namespace LiveKit
             var resp = FfiClient.SendRequest(request);
             var newTrack = resp.CreateVideoTrack.Track;
             var trackHandle = new FfiHandle((IntPtr)newTrack.Handle.Id);
-            var track = new LocalVideoTrack(trackHandle, newTrack, null);
+            var track = new LocalVideoTrack(trackHandle, newTrack, room);
             return track;
         }
     }

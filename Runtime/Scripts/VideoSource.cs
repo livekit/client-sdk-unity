@@ -7,6 +7,8 @@ using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.Experimental.Rendering;
+using System.Threading;
+using UnityEngine.UIElements.Experimental;
 
 namespace LiveKit
 {
@@ -35,13 +37,14 @@ namespace LiveKit
         private NativeArray<byte> _data;
         private bool _reading = false;
         private bool isDisposed = true;
-
+        private Thread? readVideoThread;
+        private AsyncGPUReadbackRequest _readBackRequest;
+        private bool _requestPending = false;
 
         public TextureVideoSource(Texture texture)
         {
             Texture = texture;
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
-            ReadbackSupport();
             isDisposed = false;
         }
 
@@ -54,6 +57,18 @@ namespace LiveKit
             }
         }
 
+        public void Start()
+        {
+            Stop();
+            //readVideoThread = new Thread(Update);
+            //readVideoThread.Start();
+        }
+
+        public void Stop()
+        {
+            //readVideoThread?.Abort();
+        }
+
         // Read the texture data into a native array asynchronously
         internal void ReadBuffer()
         {
@@ -61,7 +76,14 @@ namespace LiveKit
                 return;
 
             _reading = true;
-            AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
+            try
+            {
+                AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
+            } catch(Exception _)
+            {
+                _reading = false;
+            }
+            
         }
 
         public IEnumerator Update()
@@ -70,65 +92,65 @@ namespace LiveKit
             {
                 yield return null;
                 ReadBuffer();
+                ReadBack();
 
-            }
-        }
-
-        private void ReadbackSupport()
-        {
-            GraphicsFormat[] read_formats = (GraphicsFormat[])System.Enum.GetValues(typeof(GraphicsFormat));
-
-            foreach(var f in read_formats)
-            {
-                if (SystemInfo.IsFormatSupported(f, FormatUsage.ReadPixels))
-                {
-                    Debug.Log("support + " + f);
-                }
             }
         }
 
         private void OnReadback(AsyncGPUReadbackRequest req)
         {
-            _reading = false;
-            if (req.hasError)
+            _readBackRequest = req;
+            _requestPending = true;
+        }
+
+        private void ReadBack()
+        {
+            if (_requestPending && !isDisposed)
             {
-                Utils.Error("failed to read texture data");
-                return;
+                var req = _readBackRequest;
+                _reading = false;
+                if (req.hasError)
+                {
+                    Utils.Error("failed to read texture data");
+                    return;
+                }
+
+                // ToI420
+                var argbInfo = new VideoBufferInfo();
+                unsafe
+                {
+                    argbInfo.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
+                }
+                argbInfo.Type = VideoBufferType.Rgba;
+                argbInfo.Stride = (uint)Texture.width * 4;
+                argbInfo.Width = (uint)Texture.width;
+                argbInfo.Height = (uint)Texture.height;
+
+                var toI420 = new VideoConvertRequest();
+                toI420.FlipY = true;
+                toI420.Buffer = argbInfo;
+                toI420.DstType = VideoBufferType.I420;
+
+                var request = new FfiRequest();
+                request.VideoConvert = toI420;
+
+                var resp = FfiClient.SendRequest(request);
+                var newBuffer = resp.VideoConvert.Buffer;
+
+                var capture = new CaptureVideoFrameRequest();
+                capture.Buffer = newBuffer.Info;
+                capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                capture.Rotation = VideoRotation._0;
+                capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
+
+
+                request = new FfiRequest();
+                request.CaptureVideoFrame = capture;
+
+                FfiClient.SendRequest(request);
+                _reading = false;
+                _requestPending = false;
             }
-
-            // ToI420
-            var argbInfo = new VideoBufferInfo();
-            unsafe
-            {
-                argbInfo.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
-            }
-            argbInfo.Type = VideoBufferType.Rgba;
-            argbInfo.Stride = (uint)Texture.width * 4;
-            argbInfo.Width = (uint)Texture.width;
-            argbInfo.Height = (uint)Texture.height;
-
-            var toI420 = new VideoConvertRequest();
-            toI420.FlipY = true;
-            toI420.Buffer = argbInfo;
-            toI420.DstType = VideoBufferType.I420;
-
-            var request = new FfiRequest();
-            request.VideoConvert = toI420;
-
-            var resp = FfiClient.SendRequest(request);
-            var newBuffer = resp.VideoConvert.Buffer;
-
-            var capture = new CaptureVideoFrameRequest();
-            capture.Buffer = newBuffer.Info;
-            capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            capture.Rotation = VideoRotation._0;
-            capture.SourceHandle  = (ulong)Handle.DangerousGetHandle();
-
-
-            request = new FfiRequest();
-            request.CaptureVideoFrame = capture;
-
-            FfiClient.SendRequest(request);
         }
     }
 }

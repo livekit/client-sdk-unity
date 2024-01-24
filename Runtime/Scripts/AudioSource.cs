@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using LiveKit.Proto;
 using LiveKit.Internal;
+using System.Threading;
 
 namespace LiveKit
 {
@@ -15,6 +16,12 @@ namespace LiveKit
 
         // Used on the AudioThread
         private AudioFrame _frame;
+        private Thread _readAudioThread;
+        private object _lock = new object();
+        private float[] _data;
+        private int _channels;
+        private int _sampleRate;
+        private volatile bool _pending = false;
 
         public RtcAudioSource(AudioSource source)
         {
@@ -34,6 +41,95 @@ namespace LiveKit
             UpdateSource(source);
         }
 
+        public void Start()
+        {
+            Stop();
+            _readAudioThread = new Thread(Update);
+            _readAudioThread.Start();
+        }
+
+        public void Stop()
+        {
+            if (_readAudioThread != null)
+            {
+                _readAudioThread.Abort();
+                _readAudioThread = null;
+            }
+        }
+
+        private void Update()
+        {
+            while (true)
+            {
+                Thread.Sleep(Constants.TASK_DELAY);
+                if (_pending)
+                {
+                    ReadAudio();
+                }
+            }
+        }
+
+        private void ReadAudio()
+        {
+            _pending = false;
+            lock (_lock)
+            {
+                var samplesPerChannel = _data.Length / _channels;
+                if (_frame == null
+                    || _frame.NumChannels != _channels
+                    || _frame.SampleRate != _sampleRate
+                    || _frame.SamplesPerChannel != samplesPerChannel)
+                {
+                    _frame = new AudioFrame(_sampleRate, _channels, samplesPerChannel);
+                }
+                try
+                {
+
+                    static short FloatToS16(float v)
+                    {
+                        v *= 32768f;
+                        v = Math.Min(v, 32767f);
+                        v = Math.Max(v, -32768f);
+                        return (short)(v + Math.Sign(v) * 0.5f);
+                    }
+
+                    unsafe
+                    {
+                        var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
+                        for (int i = 0; i < _data.Length; i++)
+                        {
+                            frameData[i] = FloatToS16(_data[i]);
+                        }
+
+                        var pushFrame = new CaptureAudioFrameRequest();
+                        pushFrame.SourceHandle = (ulong)Handle.Id;
+                        pushFrame.Buffer = new AudioFrameBufferInfo()
+                        {
+                            DataPtr = (ulong)_frame.Data,
+                            NumChannels = _frame.NumChannels,
+                            SampleRate = _frame.SampleRate,
+                            SamplesPerChannel = _frame.SamplesPerChannel
+                        };
+                        var request = new FfiRequest();
+                        request.CaptureAudioFrame = pushFrame;
+
+                        FfiClient.SendRequest(request);
+                    }
+
+                    Utils.Debug($"Pushed audio frame with {_data.Length} sample rate "
+                                + _frame.SampleRate
+                                + "  num channels "
+                                + _frame.NumChannels
+                                + " and samplers per channel "
+                                + _frame.SamplesPerChannel);
+                }
+                catch (Exception e)
+                {
+                    Utils.Error("Audio Framedata error: " + e.Message);
+                }
+            }
+        }
+
         private void UpdateSource(AudioSource source)
         {
             _audioSource = source;
@@ -43,53 +139,15 @@ namespace LiveKit
             source.Play();
         }
 
-
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
-            var samplesPerChannel = data.Length / channels;
-            if (_frame == null || _frame.NumChannels != channels 
-                || _frame.SampleRate != sampleRate 
-                || _frame.SamplesPerChannel != samplesPerChannel)
+            lock (_lock)
             {
-                _frame = new AudioFrame(sampleRate, channels, samplesPerChannel);
+                _data = data;
+                _channels = channels;
+                _sampleRate = sampleRate;
+                _pending = true;
             }
-
-            static short FloatToS16(float v) {
-                v *= 32768f;
-                v = Math.Min(v, 32767f);
-                v = Math.Max(v, -32768f);
-                return (short)(v + Math.Sign(v) * 0.5f);
-            }
-
-            unsafe {
-                var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
-                for (int i = 0; i < data.Length; i++)
-                {
-                    frameData[i] = FloatToS16(data[i]);
-                }
-            }
-
-            // Don't play the audio locally
-            Array.Clear(data, 0, data.Length);
-
-            var audioFrameBufferInfo = new AudioFrameBufferInfo();
-
-            audioFrameBufferInfo.DataPtr = (ulong)_frame.Data;
-            audioFrameBufferInfo.NumChannels = _frame.NumChannels;
-            audioFrameBufferInfo.SampleRate = _frame.SampleRate;
-            audioFrameBufferInfo.SamplesPerChannel = _frame.SamplesPerChannel;
-
-            var pushFrame = new CaptureAudioFrameRequest();
-            pushFrame.SourceHandle = Handle.Id;
-            pushFrame.Buffer = audioFrameBufferInfo;
-
-            var request = new FfiRequest();
-            request.CaptureAudioFrame = pushFrame;
-
-            FfiClient.SendRequest(request);
-
-
-            //Debug.Log($"Pushed audio frame with {data.Length} samples");
         }
     }
 }

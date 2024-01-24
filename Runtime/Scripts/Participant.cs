@@ -18,6 +18,11 @@ namespace LiveKit
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
 
+        public void SetMeta(string meta)
+        {
+            _info.Metadata = meta;
+        }
+
         public bool Speaking { private set; get; }
         public float AudioLevel { private set; get; }
         public ConnectionQuality ConnectionQuality { private set; get; }
