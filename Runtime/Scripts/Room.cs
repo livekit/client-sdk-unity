@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using Google.Protobuf.Collections;
-using System.Threading.Tasks;
 using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -58,18 +57,16 @@ namespace LiveKit
 
         public ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken)
         {
-            var connect = new ConnectRequest();
+            using var request = FFIBridge.Instance.NewRequest<ConnectRequest>();
+            var connect = request.request;
             connect.Url = url;
             connect.Token = authToken;
-            connect.Options = new RoomOptions() { AutoSubscribe = false };
-
-            var request = new FfiRequest();
-            request.Connect = connect;
-
+            connect.Options = new RoomOptions { AutoSubscribe = false };
             Utils.Debug("Connect....");
-            var resp = FfiClient.SendRequest(request);
-            Utils.Debug($"Connect response.... {resp}");
-            return new ConnectInstruction(resp.Connect.AsyncId, this, cancelToken);
+            using var response = request.Send();
+            FfiResponse res = response;
+            Utils.Debug($"Connect response.... {response}");
+            return new ConnectInstruction(res.Connect.AsyncId, this, cancelToken);
         }
 
         public void PublishData(byte[] data, string topic,  DataPacketKind kind = DataPacketKind.KindLossy)
@@ -77,31 +74,27 @@ namespace LiveKit
             GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
             IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-            var dataRequest = new PublishDataRequest();
+            using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
+            var dataRequest = request.request;
             dataRequest.DataLen = (ulong)data.Length;
             dataRequest.DataPtr = (ulong)pointer;
             dataRequest.Kind = kind;
             dataRequest.Topic = topic;
             dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
-
-            var request = new FfiRequest();
-            request.PublishData = dataRequest;
-
             Utils.Debug("Sending message: " + topic);
-            FfiClient.SendRequest(request);
+            using var response = request.Send();
             pinnedArray.Free();
         }
 
         public void Disconnect()
         {
-            var disconnect = new DisconnectRequest();
+            using var request = FFIBridge.Instance.NewRequest<DisconnectRequest>();
+            var disconnect = request.request;
             disconnect.RoomHandle = (ulong)Handle.DangerousGetHandle();
 
-            var request = new FfiRequest();
-            request.Disconnect = disconnect;
-
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
-            var resp = FfiClient.SendRequest(request);
+            using var response = request.Send();
+            FfiResponse resp = response;
             Utils.Debug($"Disconnect response.... {resp}");
         }
 

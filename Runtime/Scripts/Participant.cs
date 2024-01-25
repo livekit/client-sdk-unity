@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -80,15 +81,15 @@ namespace LiveKit
             CancellationToken token)
         {
             var track = (Track)localTrack;
-            var publish = new PublishTrackRequest();
+            
+            using var request = FFIBridge.Instance.NewRequest<PublishTrackRequest>();
+            var publish = request.request;
             publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
-
-            var request = new FfiRequest();
-            request.PublishTrack = publish;
-            var resp = FfiClient.SendRequest(request);
-            return new PublishTrackInstruction(resp.PublishTrack.AsyncId, Room, token);
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new PublishTrackInstruction(res.PublishTrack.AsyncId, Room, token);
         }
     }
 

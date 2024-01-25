@@ -1,10 +1,8 @@
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using UnityEngine;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -114,15 +112,15 @@ namespace LiveKit
             //var handleId = new VideoFrameBufferInfo();
             //handleId.Id = (ulong)Handle.DangerousGetHandle();
 
-            var toi420 = new ToI420Request();
+            using var request = FFIBridge.Instance.NewRequest<ToI420Request>();
+            var toi420 = request.request;
             //toi420.Buffer = handleId;
             toi420.Handle = (ulong)Handle.DangerousGetHandle();
 
-            var request = new FfiRequest();
-            request.ToI420 = toi420;
-
-            var resp = FfiClient.SendRequest(request);
-            var newInfo = resp.ToI420.Buffer;
+            using var response = request.Send();
+            FfiResponse res = response;
+            
+            var newInfo = res.ToI420.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");
 
@@ -136,18 +134,15 @@ namespace LiveKit
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
 
-            var argb = new ToArgbRequest();
+            using var request = FFIBridge.Instance.NewRequest<ToArgbRequest>();
+            var argb = request.request;
             //argb.Buffer = handleId;
             argb.DstPtr = (ulong)dst;
             argb.DstFormat = format;
             argb.DstStride = dstStride;
             argb.DstWidth = width;
             argb.DstHeight = height;
-
-            var request = new FfiRequest();
-            request.ToArgb = argb;
-
-            FfiClient.SendRequest(request);
+            using var response = request.Send();
         }
     }
 
@@ -162,16 +157,23 @@ namespace LiveKit
         public IntPtr DataU => (IntPtr)Info.Yuv.DataUPtr;
         public IntPtr DataV => (IntPtr)Info.Yuv.DataVPtr;
 
-        internal PlanarYuvBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal PlanarYuvBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
+
     public abstract class PlanarYuv8Buffer : PlanarYuvBuffer
     {
-        internal PlanarYuv8Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal PlanarYuv8Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public abstract class PlanarYuv16BBuffer : PlanarYuvBuffer
     {
-        internal PlanarYuv16BBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal PlanarYuv16BBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public abstract class BiplanarYuvBuffer : VideoFrameBuffer
@@ -183,12 +185,16 @@ namespace LiveKit
         public IntPtr DataY => (IntPtr)Info.BiYuv.DataYPtr;
         public IntPtr DataUV => (IntPtr)Info.BiYuv.DataUvPtr;
 
-        internal BiplanarYuvBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal BiplanarYuvBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public abstract class BiplanarYuv8Buffer : BiplanarYuvBuffer
     {
-        internal BiplanarYuv8Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal BiplanarYuv8Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public class NativeBuffer : VideoFrameBuffer
@@ -198,45 +204,59 @@ namespace LiveKit
             return 0;
         }
 
-        internal NativeBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal NativeBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public class I420Buffer : PlanarYuv8Buffer
     {
-        internal I420Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal I420Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
 
         internal override long GetMemorySize()
         {
             var chromaHeight = (Height + 1) / 2;
             return StrideY * Height
-                + StrideU * chromaHeight
-                + StrideV * chromaHeight;
+                   + StrideU * chromaHeight
+                   + StrideV * chromaHeight;
         }
     }
 
     public class I420ABuffer : I420Buffer
     {
-        internal I420ABuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal I420ABuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public class I422Buffer : PlanarYuv8Buffer
     {
-        internal I422Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal I422Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public class I444Buffer : PlanarYuv8Buffer
     {
-        internal I444Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal I444Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public class I010Buffer : PlanarYuv16BBuffer
     {
-        internal I010Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal I010Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
     public class NV12Buffer : BiplanarYuv8Buffer
     {
-        internal NV12Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info) { }
+        internal NV12Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
+        {
+        }
     }
 
 }

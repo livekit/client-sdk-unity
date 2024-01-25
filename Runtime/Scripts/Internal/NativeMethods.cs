@@ -8,22 +8,21 @@ namespace LiveKit.Internal
     [SuppressUnmanagedCodeSecurity]
     internal static class NativeMethods
     {
-#if UNITY_IOS
+        #if UNITY_IOS
         const string Lib = "__Internal";
-#else
+        #else
         const string Lib = "livekit_ffi";
-#endif
+        #endif
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_drop_handle")]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-        internal static extern bool FfiDropHandle(IntPtr handleId);
+        internal extern static bool FfiDropHandle(IntPtr handleId);
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_request")]
-        internal static extern unsafe FfiHandle FfiNewRequest(byte[] data, int len, out byte* dataPtr, out int dataLen);
+        internal extern static unsafe FfiHandle FfiNewRequest(byte* data, int len, out byte* dataPtr, out int dataLen);
 
+        //TODO optimise FfiHandle, can be replaced by FfiHandleId = uint64_t
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_initialize")]
-        internal static extern unsafe FfiHandle LiveKitInitialize(FFICallbackDelegate cb, bool capture_logs);
-
-
+        internal extern static unsafe FfiHandle LiveKitInitialize(FFICallbackDelegate cb, bool captureLogs);
     }
 }
