@@ -1,6 +1,9 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
+using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
+using System.Security.Cryptography;
 
 namespace LiveKit
 {
@@ -13,6 +16,7 @@ namespace LiveKit
         bool Muted { get; }
         WeakReference<Room> Room { get; }
         WeakReference<Participant> Participant { get; }
+        FfiOwnedHandle TrackHandle { get; }
     }
 
     public interface ILocalTrack : ITrack
@@ -47,16 +51,15 @@ namespace LiveKit
         public WeakReference<Participant> Participant { get; }
 
         // IsOwned is true if C# owns the handle
-        public bool IsOwned => Handle != null && !Handle.IsInvalid;
+        public bool IsOwned => Handle != null && Handle.Id != 0;
 
-        public readonly FfiHandle Handle;
+        public readonly FfiOwnedHandle Handle;
 
-        internal FfiOwnedHandle TrackHandle { get; }
+        FfiOwnedHandle ITrack.TrackHandle => Handle;
 
-        internal Track(FfiHandle handle, OwnedTrack track, Room room, Participant participant)
+        internal Track(OwnedTrack track, Room room, Participant participant)
         {
-            Handle = handle;
-            TrackHandle = track.Handle;
+            Handle = track.Handle;
             Room = new WeakReference<Room>(room);
             Participant = new WeakReference<Participant>(participant);
             UpdateInfo(track.Info);
@@ -75,54 +78,48 @@ namespace LiveKit
 
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
     {
-        internal LocalAudioTrack(FfiHandle handle, OwnedTrack track, Room room) : base(handle, track, room, room?.LocalParticipant) { }
+        internal LocalAudioTrack(OwnedTrack track, Room room) : base(track, room, room?.LocalParticipant) { }
 
         public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source, Room room)
         {
-            var createTrack = new CreateAudioTrackRequest();
+            using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
+            var createTrack = request.request;
             createTrack.Name = name;
             createTrack.SourceHandle = (ulong)source.Handle.Id;
 
-            var request = new FfiRequest();
-            request.CreateAudioTrack = createTrack;
-
-            var resp = FfiClient.SendRequest(request);
-            var newTrack = resp.CreateAudioTrack.Track;
-            var trackHandle = new FfiHandle((IntPtr)newTrack.Handle.Id);
-            var track = new LocalAudioTrack(trackHandle, newTrack, room);
+            using var resp = request.Send();
+            FfiResponse res = resp;
+            var trackInfo = res.CreateAudioTrack.Track;
+            var track = new LocalAudioTrack(trackInfo, room);
             return track;
         }
     }
 
     public sealed class LocalVideoTrack : Track, ILocalTrack, IVideoTrack
     {
-        internal LocalVideoTrack(FfiHandle handle, OwnedTrack track, Room room) : base(handle, track, room, room?.LocalParticipant) { }
+        internal LocalVideoTrack(OwnedTrack track, Room room) : base(track, room, room?.LocalParticipant) { }
 
         public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source, Room room)
         {
-
-            var createTrack = new CreateVideoTrackRequest();
+            using var request = FFIBridge.Instance.NewRequest<CreateVideoTrackRequest>();
+            var createTrack = request.request;
             createTrack.Name = name;
             createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
-  
-            var request = new FfiRequest();
-            request.CreateVideoTrack = createTrack;
-
-            var resp = FfiClient.SendRequest(request);
-            var newTrack = resp.CreateVideoTrack.Track;
-            var trackHandle = new FfiHandle((IntPtr)newTrack.Handle.Id);
-            var track = new LocalVideoTrack(trackHandle, newTrack, room);
+            using var response = request.Send();
+            FfiResponse res = response;
+            var trackInfo = res.CreateVideoTrack.Track;
+            var track = new LocalVideoTrack(trackInfo, room);
             return track;
         }
     }
 
     public sealed class RemoteAudioTrack : Track, IRemoteTrack, IAudioTrack
     {
-        internal RemoteAudioTrack(FfiHandle handle, OwnedTrack track, Room room, RemoteParticipant participant) : base(handle, track, room, participant) { }
+        internal RemoteAudioTrack(OwnedTrack track, Room room, RemoteParticipant participant) : base(track, room, participant) { }
     }
 
     public sealed class RemoteVideoTrack : Track, IRemoteTrack, IVideoTrack
     {
-        internal RemoteVideoTrack(FfiHandle handle, OwnedTrack track, Room room, RemoteParticipant participant) : base(handle, track, room, participant) { }
+        internal RemoteVideoTrack(OwnedTrack track, Room room, RemoteParticipant participant) : base(track, room, participant) { }
     }
 }

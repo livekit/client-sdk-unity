@@ -3,6 +3,7 @@ using UnityEngine;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -25,19 +26,16 @@ namespace LiveKit
 
         public RtcAudioSource(AudioSource source)
         {
-            var newAudioSource = new NewAudioSourceRequest();
+            using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
+            var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = 2;
             newAudioSource.SampleRate = 48000;
-
-            var request = new FfiRequest();
-            request.NewAudioSource = newAudioSource;
-
-            var resp = FfiClient.SendRequest(request);
-            var respSource = resp.NewAudioSource.Source;
-            _info = respSource.Info;
-
-            Handle = respSource.Handle;
+            using var response = request.Send();
+            FfiResponse res = response;
+            _info = res.NewAudioSource.Source.Info;
+            //TODO pooling handles
+            Handle = res.NewAudioSource.Source.Handle;
             UpdateSource(source);
         }
 
@@ -101,19 +99,17 @@ namespace LiveKit
                             frameData[i] = FloatToS16(_data[i]);
                         }
 
-                        var pushFrame = new CaptureAudioFrameRequest();
+                        using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
+                        var pushFrame = request.request;
                         pushFrame.SourceHandle = (ulong)Handle.Id;
-                        pushFrame.Buffer = new AudioFrameBufferInfo()
+                        pushFrame.Buffer = new AudioFrameBufferInfo
                         {
                             DataPtr = (ulong)_frame.Data,
                             NumChannels = _frame.NumChannels,
                             SampleRate = _frame.SampleRate,
                             SamplesPerChannel = _frame.SamplesPerChannel
                         };
-                        var request = new FfiRequest();
-                        request.CaptureAudioFrame = pushFrame;
-
-                        FfiClient.SendRequest(request);
+                        using var response = request.Send();
                     }
 
                     Utils.Debug($"Pushed audio frame with {_data.Length} sample rate "

@@ -1,5 +1,7 @@
 using System;
 using LiveKit.Proto;
+using LiveKit.Internal;
+using LiveKit.Internal.FFIClients.Requests;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
@@ -27,14 +29,14 @@ namespace LiveKit
 
         public int Length => (int) (SamplesPerChannel * NumChannels * sizeof(short));
 
-        internal AudioFrame(FfiOwnedHandle handle, AudioFrameBufferInfo info)
+        internal AudioFrame(OwnedAudioFrameBuffer info)
         {
-            _handle = handle;
-            _info = info;
+            _handle = info.Handle;
+            _info = info.Info;
             _sampleRate = _info.SampleRate;
             _numChannels = _info.NumChannels;
             _samplesPerChannel = _info.SamplesPerChannel;
-            _dataPtr = (IntPtr)info.DataPtr;
+            _dataPtr = (IntPtr)_info.DataPtr;
         }
 
         internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {

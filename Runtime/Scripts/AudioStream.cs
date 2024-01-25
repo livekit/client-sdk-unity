@@ -3,6 +3,8 @@ using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
+using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -26,17 +28,14 @@ namespace LiveKit
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
-            var newAudioStream = new NewAudioStreamRequest();
-            newAudioStream.TrackHandle = ((Track)audioTrack).TrackHandle.Id;
+            using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
+            var newAudioStream = request.request;
+            newAudioStream.TrackHandle = (ulong)audioTrack.TrackHandle.Id;
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
-
-            var request = new FfiRequest();
-            request.NewAudioStream = newAudioStream;
-
-            var resp = FfiClient.SendRequest(request);
-            var streamInfo = resp.NewAudioStream.Stream;
-
-            Handle = streamInfo.Handle;
+            
+            using var response = request.Send();
+            FfiResponse res = response;
+            Handle = res.NewAudioStream.Stream.Handle;
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -92,8 +91,7 @@ namespace LiveKit
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var newFrame = e.FrameReceived.Frame;
-            var frame = new AudioFrame(newFrame.Handle, newFrame.Info);
+            var frame = new AudioFrame(e.FrameReceived.Frame);
 
             lock (_lock)
             { 

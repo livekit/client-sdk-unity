@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
+using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -70,20 +72,16 @@ namespace LiveKit
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
 
-            var track = (Track)localTrack;
-
-            var publish = new PublishTrackRequest();
-            publish.LocalParticipantHandle = Handle.Id;
-            publish.TrackHandle = (ulong)track.TrackHandle.Id;
+            var track = (Track)localTrack;            
+            
+            using var request = FFIBridge.Instance.NewRequest<PublishTrackRequest>();
+            var publish = request.request;
+            publish.LocalParticipantHandle = (ulong)Handle.Id;
+            publish.TrackHandle = (ulong)track.Handle.Id;
             publish.Options = options;
-
-            var request = new FfiRequest();
-            request.PublishTrack = publish;
-
-            track.Room = Room;
-
-            var resp = FfiClient.SendRequest(request);
-            return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new PublishTrackInstruction(res.PublishTrack.AsyncId);
         }
 
         public PublishTrackInstruction publishData(byte[] data, string[] destination_sids = null, bool reliable = true, string topic = null)
@@ -91,7 +89,9 @@ namespace LiveKit
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
 
-            var publish = new PublishDataRequest();
+            using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
+
+            var publish = request.request;
             publish.LocalParticipantHandle = Handle.Id;
             publish.Kind = reliable ? DataPacketKind.KindReliable : DataPacketKind.KindLossy;
 
@@ -110,33 +110,27 @@ namespace LiveKit
                 publish.DataPtr = (ulong)System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement<byte>(data, 0);
             }
 
-            var request = new FfiRequest();
-            request.PublishData = publish;
+            var response = request.Send();
+            FfiResponse resp = response;
 
-            var resp = FfiClient.SendRequest(request);
-
-            return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
+            return new PublishTrackInstruction(resp.PublishData.AsyncId);
         }
 
 
         public void UpdateMetadata(string metadata)
         {
-            var updateReq = new UpdateLocalMetadataRequest();
+            using var request = FFIBridge.Instance.NewRequest<UpdateLocalMetadataRequest>();
+            var updateReq = request.request;
             updateReq.Metadata = metadata;
-            var request = new FfiRequest();
-            request.UpdateLocalMetadata = updateReq;
-
-            FfiClient.SendRequest(request);
+            var resp = request.Send();
         }
 
         public void UpdateName(string name)
         {
-            var updateReq = new UpdateLocalNameRequest();
+            using var request = FFIBridge.Instance.NewRequest<UpdateLocalNameRequest>();
+            var updateReq = request.request;
             updateReq.Name = name;
-            var request = new FfiRequest();
-            request.UpdateLocalName = updateReq;
-
-            FfiClient.SendRequest(request);
+            var resp = request.Send();
         }
     }
 

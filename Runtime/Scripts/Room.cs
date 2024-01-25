@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
+using Google.Protobuf.Collections;
+using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -159,28 +162,35 @@ namespace LiveKit
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
-            var connect = new ConnectRequest();
-            connect.Url = url;
-            connect.Token = token;
-            connect.Options = options.ToProto();
+            using var response = FFIBridge.Instance.SendConnectRequest(url, token, options);
+            Utils.Debug("Connect....");
+            FfiResponse res = response;
+            Utils.Debug($"Connect response.... {response}");
+            return new ConnectInstruction(res.Connect.AsyncId, this, options);
+        }
 
-            var request = new FfiRequest();
-            request.Connect = connect;
+        public void PublishData(byte[] data, string topic,  DataPacketKind kind = DataPacketKind.KindLossy)
+        {
+            GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
+            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-            var resp = FfiClient.SendRequest(request);
-            return new ConnectInstruction(resp.Connect.AsyncId, this, options);
+            using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
+            var dataRequest = request.request;
+            dataRequest.DataLen = (ulong)data.Length;
+            dataRequest.DataPtr = (ulong)pointer;
+            dataRequest.Kind = kind;
+            dataRequest.Topic = topic;
+            dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.Id;
+            Utils.Debug("Sending message: " + topic);
+            using var response = request.Send();
+            pinnedArray.Free();
         }
 
         public void Disconnect()
         {
-            var disconnect = new DisconnectRequest();
-            disconnect.RoomHandle = (ulong)RoomHandle.Id;
-
-            var request = new FfiRequest();
-            request.Disconnect = disconnect;
-
-            Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
-            var resp = FfiClient.SendRequest(request);
+            using var response = FFIBridge.Instance.SendDisconnectRequest(this);
+            Utils.Debug($"Disconnect.... {RoomHandle}");
+            FfiResponse resp = response;
             Utils.Debug($"Disconnect response.... {resp}");
         }
 
@@ -230,7 +240,7 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = Participants[e.TrackPublished.ParticipantSid];
-                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info);
+                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info, e.TrackPublished.Publication.Handle);
                         participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
                         TrackPublished?.Invoke(publication, participant);
@@ -260,13 +270,13 @@ namespace LiveKit
 
                         if (info.Kind == TrackKind.KindVideo)
                         {
-                            var videoTrack = new RemoteVideoTrack(null, track, this, participant);
+                            var videoTrack = new RemoteVideoTrack(track, this, participant);
                             publication.UpdateTrack(videoTrack);
                             TrackSubscribed?.Invoke(videoTrack, publication, participant);
                         }
                         else if (info.Kind == TrackKind.KindAudio)
                         {
-                            var audioTrack = new RemoteAudioTrack(null, track, this, participant);
+                            var audioTrack = new RemoteAudioTrack(track, this, participant);
                             publication.UpdateTrack(audioTrack);
                             TrackSubscribed?.Invoke(audioTrack, publication, participant);
                         }
@@ -408,7 +418,7 @@ namespace LiveKit
             _participants.Add(participant.Info.Sid, newParticipant);
             foreach (var pub in publications)
             {
-                var publication = new RemoteTrackPublication(pub.Info);
+                var publication = new RemoteTrackPublication(pub.Info, pub.Handle);
                 newParticipant._tracks.Add(publication.Sid, publication);
                 newParticipant.OnTrackPublished(publication);
             }

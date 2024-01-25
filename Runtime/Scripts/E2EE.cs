@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using LiveKit.Internal;
+using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
-
 
 namespace LiveKit
 {
@@ -47,82 +47,67 @@ namespace LiveKit
 
         public void SetSharedKey(byte[] key, int keyIndex)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.SetSharedKey = new SetSharedKeyRequest();
-            req.E2Ee.SetSharedKey.KeyIndex = keyIndex;
-            req.E2Ee.SetSharedKey.SharedKey = Google.Protobuf.ByteString.CopyFrom(key);
+            using var request = FFIBridge.Instance.NewRequest<SetSharedKeyRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
+            e2ee.SharedKey = Google.Protobuf.ByteString.CopyFrom(key);
 
-            FfiClient.SendRequest(req);
+            using var response = request.Send();
         }
 
         public byte[] GetSharedKey(int keyIndex)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.GetSharedKey = new GetSharedKeyRequest();
-            req.E2Ee.GetSharedKey.KeyIndex = keyIndex;
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<GetSharedKeyRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
 
+            using var response = request.Send();
+            FfiResponse resp = response;
             return resp.E2Ee.GetSharedKey.Key.ToByteArray();
         }
 
         public byte[] RatchetSharedKey(int keyIndex)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.RatchetSharedKey = new RatchetSharedKeyRequest();
-            req.E2Ee.RatchetSharedKey.KeyIndex = keyIndex;
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<RatchetSharedKeyRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
 
+            using var response = request.Send();
+            FfiResponse resp = response;
             return resp.E2Ee.RatchetSharedKey.NewKey.ToByteArray();
         }
 
         public void SetKey(string participantIdentity, byte[] key, int keyIndex)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.SetKey = new SetKeyRequest();
-            req.E2Ee.SetKey.KeyIndex = keyIndex;
-            req.E2Ee.SetKey.ParticipantIdentity = participantIdentity;
-            req.E2Ee.SetKey.Key = Google.Protobuf.ByteString.CopyFrom(key);
+            using var request = FFIBridge.Instance.NewRequest<SetKeyRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
+            e2ee.ParticipantIdentity = participantIdentity;
 
-            FfiClient.SendRequest(req);
+            using var response = request.Send();
         }
 
         public byte[] GetKey(string participantIdentity, int keyIndex)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.GetKey = new GetKeyRequest();
-            req.E2Ee.GetKey.KeyIndex = keyIndex;
-            req.E2Ee.GetKey.ParticipantIdentity = participantIdentity;
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<GetKeyRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
+            e2ee.ParticipantIdentity = participantIdentity;
 
+            using var response = request.Send();
+            FfiResponse resp = response;
             return resp.E2Ee.GetKey.Key.ToByteArray();
         }
 
         public byte[] RatchetKey(string participantIdentity, int keyIndex)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.RatchetKey = new RatchetKeyRequest();
-            req.E2Ee.RatchetKey.KeyIndex = keyIndex;
-            req.E2Ee.RatchetKey.ParticipantIdentity = participantIdentity;
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<RatchetKeyRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
+            e2ee.ParticipantIdentity = participantIdentity;
 
+            using var response = request.Send();
+            FfiResponse resp = response;
             return resp.E2Ee.RatchetKey.NewKey.ToByteArray();
         }
     }
@@ -130,13 +115,13 @@ namespace LiveKit
 
     public class FrameCryptor
     {
-        internal ulong RoomHandle;
+        internal FfiOwnedHandle RoomHandle;
         public string ParticipantIdentity;
         public string TrackSid;
         public bool Enabled;
         public int KeyIndex;
 
-        public FrameCryptor(ulong roomHandle, string identity, string trackSid, bool enabled, int keyIndex)
+        public FrameCryptor(FfiOwnedHandle roomHandle, string identity, string trackSid, bool enabled, int keyIndex)
         {
             RoomHandle = roomHandle;
             ParticipantIdentity = identity;
@@ -148,29 +133,21 @@ namespace LiveKit
         public void SetKeyIndex(int keyIndex)
         {
             KeyIndex = keyIndex;
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
-            req.E2Ee.CryptorSetKeyIndex = new FrameCryptorSetKeyIndexRequest();
-            req.E2Ee.CryptorSetKeyIndex.KeyIndex = keyIndex;
-            req.E2Ee.CryptorSetKeyIndex.ParticipantIdentity = ParticipantIdentity;
-
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<FrameCryptorSetKeyIndexRequest>();
+            var e2ee = request.request;
+            e2ee.KeyIndex = keyIndex;
+            e2ee.ParticipantIdentity = ParticipantIdentity;
+            request.Send();
         }
 
         public void SetEnabled(bool enabled)
         {
             Enabled = enabled;
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
-            req.E2Ee.CryptorSetEnabled = new FrameCryptorSetEnabledRequest();
-            req.E2Ee.CryptorSetEnabled.Enabled = enabled;
-            req.E2Ee.CryptorSetEnabled.ParticipantIdentity = ParticipantIdentity;
-
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<FrameCryptorSetEnabledRequest>();
+            var e2ee = request.request;
+            e2ee.Enabled = enabled;
+            e2ee.ParticipantIdentity = ParticipantIdentity;
+            request.Send();
         }
     }
 
@@ -190,30 +167,25 @@ namespace LiveKit
 
         public void setEnabled(bool enabled)
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.ManagerSetEnabled = new E2eeManagerSetEnabledRequest();
-            req.E2Ee.ManagerSetEnabled.Enabled = enabled;
-
-            var resp = FfiClient.SendRequest(req);
+            using var request = FFIBridge.Instance.NewRequest<E2eeManagerSetEnabledRequest>();
+            var e2ee = request.request;
+            e2ee.Enabled = enabled;
+            request.Send();
         }
 
         public List<FrameCryptor> frameCryptors()
         {
-            var e2eeReq = new E2eeRequest();
-            var req = new FfiRequest();
-            req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle.Id;
-            req.E2Ee.ManagerGetFrameCryptors = new E2eeManagerGetFrameCryptorsRequest();
+            using var request = FFIBridge.Instance.NewRequest<E2eeManagerSetEnabledRequest>();
+            var e2ee = request.request;
+   
+            using var response = request.Send();
+            FfiResponse resp = response;
 
-            var resp = FfiClient.SendRequest(req);
             List<FrameCryptor> cryptors = new List<FrameCryptor>();
 
             foreach(var c in resp.E2Ee.ManagerGetFrameCryptors.FrameCryptors)
             {
-                cryptors.Add(new FrameCryptor(RoomHandle.Id, c.ParticipantIdentity, c.TrackSid, c.Enabled, c.KeyIndex));
+                cryptors.Add(new FrameCryptor(RoomHandle, c.ParticipantIdentity, c.TrackSid, c.Enabled, c.KeyIndex));
             }
             return cryptors;
         }

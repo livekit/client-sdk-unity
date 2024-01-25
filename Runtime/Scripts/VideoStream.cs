@@ -1,8 +1,11 @@
 using System;
-using System.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
+using Unity.Collections.LowLevel.Unsafe;
+using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
+using System.Collections;
 
 namespace LiveKit
 {
@@ -12,7 +15,7 @@ namespace LiveKit
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
         public delegate void TextureUploadDelegate();
 
-        internal readonly FfiHandle Handle;
+        internal readonly FfiOwnedHandle Handle;
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
@@ -39,18 +42,15 @@ namespace LiveKit
             if (!videoTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("videotrack's participant is invalid");
 
-            var newVideoStream = new NewVideoStreamRequest();
-  
-            newVideoStream.TrackHandle = ((Track)videoTrack).TrackHandle.Id;
+            using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
+            var newVideoStream = request.request;
+            newVideoStream.TrackHandle = (ulong)videoTrack.TrackHandle.Id;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
-
-            var request = new FfiRequest();
-            request.NewVideoStream = newVideoStream;
-
-            var resp = FfiClient.SendRequest(request);
-            var streamInfo = resp.NewVideoStream.Stream;
-
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            newVideoStream.Format = VideoBufferType.I420;
+            newVideoStream.NormalizeStride = true;
+            using var response = request.Send();
+            FfiResponse res = response;
+            Handle = res.NewVideoStream.Stream.Handle;
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
@@ -115,7 +115,7 @@ namespace LiveKit
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
-            if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
+            if (e.StreamHandle != (ulong)Handle.Id)
                 return;
 
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
