@@ -1,21 +1,47 @@
 using System;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
 
 namespace LiveKit.Internal
 {
-    public class FfiHandle : SafeHandle
+    //TODO move to struct, IDisposable
+    public class FfiHandle : IDisposable
     {
-        internal FfiHandle(IntPtr ptr) : base(ptr, true) { }
+        private IntPtr handle;
+        private bool isClosed;
 
-        public FfiHandle() : base(IntPtr.Zero, true) { }
+        
+        public FfiHandle(IntPtr handle)
+        {
+            this.handle = handle;
+        }
 
-        public override bool IsInvalid => handle == IntPtr.Zero || handle == new IntPtr(-1);
+        public bool IsInvalid => handle == IntPtr.Zero || handle == new IntPtr(-1);
+        
+        public bool IsClosed => isClosed;
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IntPtr DangerousGetHandle()
+        {
+            return handle;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void SetHandleAsInvalid()
+        {
+            isClosed = true;
+            Dispose();
+        }
 
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
-        protected override bool ReleaseHandle()
+        public void Dispose()
         {
-            return NativeMethods.FfiDropHandle(handle);
+            if (IsInvalid)
+            {
+                return;
+            }
+            NativeMethods.FfiDropHandle(handle);
+            handle = IntPtr.Zero;
         }
     }
 }
