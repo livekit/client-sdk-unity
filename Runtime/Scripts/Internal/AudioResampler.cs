@@ -18,6 +18,7 @@ namespace LiveKit
         public AudioFrame RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate)
         {
             using var request = FFIBridge.Instance.NewRequest<RemixAndResampleRequest>();
+            using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
             var remix = request.request;
             remix.ResamplerHandle = resampler.Handle.Id;
             remix.Buffer = frame.Info;

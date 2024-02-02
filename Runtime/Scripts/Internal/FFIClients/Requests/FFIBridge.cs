@@ -9,7 +9,7 @@ namespace LiveKit.Internal.FFIClients.Requests
         private static readonly Lazy<FFIBridge> instance = new(() =>
             new FFIBridge(
                 FfiClient.Instance,
-                new MultiPool()
+                new ThreadSafeMultiPool()
             )
         );
 
