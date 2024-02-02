@@ -168,24 +168,7 @@ namespace LiveKit
             Utils.Debug($"Connect response.... {response}");
             return new ConnectInstruction(res.Connect.AsyncId, this, options);
         }
-
-        public void PublishData(byte[] data, string topic,  DataPacketKind kind = DataPacketKind.KindLossy)
-        {
-            GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
-            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
-
-            using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
-            var dataRequest = request.request;
-            dataRequest.DataLen = (ulong)data.Length;
-            dataRequest.DataPtr = (ulong)pointer;
-            dataRequest.Kind = kind;
-            dataRequest.Topic = topic;
-            dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
-            Utils.Debug("Sending message: " + topic);
-            using var response = request.Send();
-            pinnedArray.Free();
-        }
-
+        
         public void Disconnect()
         {
             using var response = FFIBridge.Instance.SendDisconnectRequest(this);
@@ -193,7 +176,6 @@ namespace LiveKit
             FfiResponse resp = response;
             Utils.Debug($"Disconnect response.... {resp}");
         }
-
 
         internal void UpdateFromInfo(RoomInfo info)
         {

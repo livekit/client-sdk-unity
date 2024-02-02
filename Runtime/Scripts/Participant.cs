@@ -84,7 +84,23 @@ namespace LiveKit
             return new PublishTrackInstruction(res.PublishTrack.AsyncId);
         }
 
-        public PublishTrackInstruction publishData(byte[] data, string[] destination_sids = null, bool reliable = true, string topic = null)
+        public void PublishData(byte[] data, string[] destination_sids = null, bool reliable = true, string topic = null)
+        {
+            PublishData(new Span<byte>(data), destination_sids, reliable, topic);
+        }
+        
+        public void PublishData(Span<byte> data, string[] destination_sids = null, bool reliable = true, string topic = null)
+        {
+            unsafe
+            {
+                fixed (byte* pointer = data)
+                {
+                    PublishData(pointer, data.Length, destination_sids, reliable, topic);
+                }   
+            }
+        }
+
+        public unsafe void PublishData(byte* data, int len, string[] destination_sids = null, bool reliable = true, string topic = null)
         {
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
@@ -106,16 +122,12 @@ namespace LiveKit
             }
 
             unsafe {
-                publish.DataLen = (ulong)data.Length;
-                publish.DataPtr = (ulong)System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement<byte>(data, 0);
+                publish.DataLen = (ulong)len;
+                publish.DataPtr = (ulong)data;
             }
-
+            Utils.Debug("Sending message: " + topic);
             var response = request.Send();
-            FfiResponse resp = response;
-
-            return new PublishTrackInstruction(resp.PublishData.AsyncId);
         }
-
 
         public void UpdateMetadata(string metadata)
         {
