@@ -99,14 +99,22 @@ namespace LiveKit
                         }
 
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
+                        using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
+                        
                         var pushFrame = request.request;
                         pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
-                        pushFrame.Buffer = new AudioFrameBufferInfo
-                        {
-                            DataPtr = (ulong)_frame.Data, NumChannels = _frame.NumChannels, SampleRate = _frame.SampleRate,
-                            SamplesPerChannel = _frame.SamplesPerChannel
-                        };
+                        pushFrame.Buffer = audioFrameBufferInfo;
+                        pushFrame.Buffer.DataPtr = (ulong)_frame.Data;
+                        pushFrame.Buffer.NumChannels = _frame.NumChannels;
+                        pushFrame.Buffer.SampleRate = _frame.SampleRate;
+                        pushFrame.Buffer.SamplesPerChannel = _frame.SamplesPerChannel;
+
                         using var response = request.Send();
+
+                        pushFrame.Buffer.DataPtr = 0;
+                        pushFrame.Buffer.NumChannels = 0;
+                        pushFrame.Buffer.SampleRate = 0;
+                        pushFrame.Buffer.SamplesPerChannel = 0;
                     }
 
                     Utils.Debug($"Pushed audio frame with {_data.Length} sample rate "

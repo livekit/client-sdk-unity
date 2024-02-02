@@ -106,7 +106,11 @@ namespace LiveKit
                 }
 
                 // ToI420
-                var argbInfo = new ArgbBufferInfo(); // TODO: MindTrust_VID
+
+                using var requestToI420 = FFIBridge.Instance.NewRequest<ToI420Request>();
+                using var argbInfoWrap = requestToI420.TempResource<ArgbBufferInfo>();
+
+                var argbInfo = argbInfoWrap.value;
                 unsafe
                 {
                     argbInfo.Ptr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(data);
@@ -117,7 +121,6 @@ namespace LiveKit
                 argbInfo.Width = (uint)Texture.width;
                 argbInfo.Height = (uint)Texture.height;
 
-                using var requestToI420 = FFIBridge.Instance.NewRequest<ToI420Request>();
                 var toI420 = requestToI420.request;
                 toI420.FlipY = true;
                 toI420.Argb = argbInfo;
@@ -128,11 +131,14 @@ namespace LiveKit
                 var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
 
                 // Send the frame to WebRTC
-                var frameInfo = new VideoFrameInfo();
+
+                using var request = FFIBridge.Instance.NewRequest<CaptureVideoFrameRequest>();
+                using var frameInfoWrap = request.TempResource<VideoFrameInfo>();
+                
+                var frameInfo = frameInfoWrap.value;
                 frameInfo.Rotation = VideoRotation._0;
                 frameInfo.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-                using var request = FFIBridge.Instance.NewRequest<CaptureVideoFrameRequest>();
                 var capture = request.request;
                 capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
                 capture.Handle = (ulong)buffer.Handle.DangerousGetHandle();

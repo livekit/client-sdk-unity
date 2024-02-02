@@ -5,6 +5,7 @@ using Google.Protobuf;
 using System.Threading;
 using LiveKit.Internal.FFIClients;
 using LiveKit.Internal.FFIClients.Pools;
+using LiveKit.Internal.FFIClients.Pools.Memory;
 using UnityEngine.Pool;
 
 #if UNITY_EDITOR
@@ -25,33 +26,38 @@ namespace LiveKit.Internal
 
         private readonly IObjectPool<FfiResponse> ffiResponsePool;
         private readonly MessageParser<FfiResponse> responseParser;
+        private readonly IMemoryPool memoryPool;
 
-        public event PublishTrackDelegate PublishTrackReceived;
-        public event ConnectReceivedDelegate ConnectReceived;
-        public event DisconnectReceivedDelegate DisconnectReceived;
-        public event RoomEventReceivedDelegate RoomEventReceived;
-        public event TrackEventReceivedDelegate TrackEventReceived;
+        public event PublishTrackDelegate? PublishTrackReceived;
+        public event ConnectReceivedDelegate? ConnectReceived;
+        public event DisconnectReceivedDelegate? DisconnectReceived;
+        public event RoomEventReceivedDelegate? RoomEventReceived;
+        public event TrackEventReceivedDelegate? TrackEventReceived;
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
-        public event VideoStreamEventReceivedDelegate VideoStreamEventReceived;
-        public event AudioStreamEventReceivedDelegate AudioStreamEventReceived;
+        public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
+        public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
 
-        public FfiClient() : this(Pools.NewFfiResponsePool())
-        {
-        }
-
-        public FfiClient(IObjectPool<FfiResponse> ffiResponsePool) : this(
-            ffiResponsePool,
-            new MessageParser<FfiResponse>(ffiResponsePool.Get)
-        )
+        public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
 
         public FfiClient(
             IObjectPool<FfiResponse> ffiResponsePool,
-            MessageParser<FfiResponse> responseParser
+            IMemoryPool memoryPool
+        ) : this(
+            ffiResponsePool,
+            new MessageParser<FfiResponse>(ffiResponsePool.Get), memoryPool)
+        {
+        }
+
+        public FfiClient(
+            IObjectPool<FfiResponse> ffiResponsePool,
+            MessageParser<FfiResponse> responseParser,
+            IMemoryPool memoryPool
         )
         {
             this.responseParser = responseParser;
+            this.memoryPool = memoryPool;
             this.ffiResponsePool = ffiResponsePool;
         }
 
@@ -135,7 +141,10 @@ namespace LiveKit.Internal
             {
                 unsafe
                 {
-                    var data = request.ToByteArray()!; //TODO use spans
+                    using var memory = memoryPool.Memory(request);
+                    var data = memory.Span();
+                    request.WriteTo(data);
+
                     fixed (byte* requestDataPtr = data)
                     {
                         var handle = NativeMethods.FfiNewRequest(
@@ -147,7 +156,7 @@ namespace LiveKit.Internal
 
                         var dataSpan = new Span<byte>(dataPtr, dataLen);
                         var response = responseParser.ParseFrom(dataSpan)!;
-                        handle.Dispose();
+                        NativeMethods.FfiDropHandle(handle);
                         return response;
                     }
                 }
@@ -171,46 +180,47 @@ namespace LiveKit.Internal
             Utils.Debug("Callback... " + response.ToString());
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
-            if (Instance != null && Instance._context != null)
-                Instance._context.Post((resp) =>
+            Instance._context?.Post((resp) =>
+            {
+                var r = resp as FfiEvent;
+                if (r?.MessageCase != FfiEvent.MessageOneofCase.Logs)
+                    Utils.Debug("Callback: " + r?.MessageCase);
+                switch (r?.MessageCase)
                 {
-                    var response = resp as FfiEvent;
-                    if (response.MessageCase != FfiEvent.MessageOneofCase.Logs)
-                        Utils.Debug("Callback: " + response.MessageCase);
-                    switch (response.MessageCase)
-                    {
-                        case FfiEvent.MessageOneofCase.PublishData:
-                            break;
-                        case FfiEvent.MessageOneofCase.Connect:
-                            Instance.ConnectReceived?.Invoke(response.Connect);
-                            break;
-                        case FfiEvent.MessageOneofCase.PublishTrack:
-                            Instance.PublishTrackReceived?.Invoke(response.PublishTrack);
-                            break;
-                        case FfiEvent.MessageOneofCase.RoomEvent:
-                            Utils.Debug("Call back on room event: " + response.RoomEvent.MessageCase);
-                            Instance.RoomEventReceived?.Invoke(response.RoomEvent);
-                            break;
-                        case FfiEvent.MessageOneofCase.TrackEvent:
-                            Instance.TrackEventReceived?.Invoke(response.TrackEvent);
-                            break;
-                        case FfiEvent.MessageOneofCase.Disconnect:
-                            Instance.DisconnectReceived?.Invoke(response.Disconnect);
-                            break;
-                        /*case FfiEvent.MessageOneofCase. ParticipantEvent:
+                    case FfiEvent.MessageOneofCase.PublishData:
+                        break;
+                    case FfiEvent.MessageOneofCase.Connect:
+                        Instance.ConnectReceived?.Invoke(r.Connect!);
+                        break;
+                    case FfiEvent.MessageOneofCase.PublishTrack:
+                        Instance.PublishTrackReceived?.Invoke(r.PublishTrack!);
+                        break;
+                    case FfiEvent.MessageOneofCase.RoomEvent:
+                        Utils.Debug("Call back on room event: " + r.RoomEvent!.MessageCase);
+                        Instance.RoomEventReceived?.Invoke(r.RoomEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.TrackEvent:
+                        Instance.TrackEventReceived?.Invoke(r.TrackEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.Disconnect:
+                        Instance.DisconnectReceived?.Invoke(r.Disconnect!);
+                        break;
+                    /*case FfiEvent.MessageOneofCase. ParticipantEvent:
                             Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
                             break;*/
-                        case FfiEvent.MessageOneofCase.VideoStreamEvent:
-                            Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
-                            break;
-                        case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                            Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent);
-                            break;
-                        case FfiEvent.MessageOneofCase.CaptureAudioFrame:
-                            Utils.Debug(response.CaptureAudioFrame);
-                            break;
-                    }
-                }, response);
+                    case FfiEvent.MessageOneofCase.VideoStreamEvent:
+                        Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
+                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                        Utils.Debug(r.CaptureAudioFrame!);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");
+                }
+            }, response);
         }
     }
 }

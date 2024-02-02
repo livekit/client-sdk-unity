@@ -1,16 +1,17 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using LiveKit.Internal.FFIClients.Pools.ObjectPool;
 using UnityEngine.Pool;
 
 namespace LiveKit.Internal.FFIClients.Pools
 {
-    public class MultiPool : IMultiPool
+    public class ThreadSafeMultiPool : IMultiPool
     {
-        private readonly Dictionary<Type, IObjectPool<object>> pools = new();
+        private readonly ConcurrentDictionary<Type, IObjectPool<object>> pools = new();
 
         public T Get<T>() where T : class, new()
         {
-            return (T) Pool<T>().Get()!;
+            return (T)Pool<T>().Get()!;
         }
 
         public void Release<T>(T poolObject) where T : class, new()
@@ -23,7 +24,7 @@ namespace LiveKit.Internal.FFIClients.Pools
             var type = typeof(T);
             if (!pools.TryGetValue(type, out var pool))
             {
-                pool = pools[type] = new ObjectPool<object>(() => new T());
+                pool = pools[type] = new ThreadSafeObjectPool<object>(() => new T());
             }
 
             return pool!;
