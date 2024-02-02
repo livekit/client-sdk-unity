@@ -53,6 +53,7 @@ namespace LiveKit
         public event ConnectionDelegate? Reconnecting;
         public event ConnectionDelegate? Reconnected;
 
+        //TODO private
         internal FfiHandle Handle;
 
         public ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken)
@@ -270,7 +271,8 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
                         var dataInfo = e.DataReceived.Data;
-
+                        
+                        //TODO replace to readonly span with properly disposing, also public it with shared pointer approach
                         var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);
                         var data = new byte[dataInfo.Data.DataLen];
                         Marshal.Copy((IntPtr)dataInfo.Data.DataPtr, data, 0, data.Length);
