@@ -74,19 +74,31 @@ namespace LiveKit
 
         public void PublishData(byte[] data, string topic,  DataPacketKind kind = DataPacketKind.KindLossy)
         {
-            GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
-            IntPtr pointer = pinnedArray.AddrOfPinnedObject();
-
+            PublishData(new Span<byte>(data), topic, kind);
+        }
+        
+        public void PublishData(Span<byte> data, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
+        {
+            unsafe
+            {
+                fixed (byte* pointer = data)
+                {
+                    PublishData(pointer, data.Length, topic, kind);
+                }   
+            }
+        }
+        
+        public unsafe void PublishData(byte* data, int len, string topic, DataPacketKind kind = DataPacketKind.KindLossy)
+        {
             using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
             var dataRequest = request.request;
-            dataRequest.DataLen = (ulong)data.Length;
-            dataRequest.DataPtr = (ulong)pointer;
+            dataRequest.DataLen = (ulong)len;
+            dataRequest.DataPtr = (ulong)data;
             dataRequest.Kind = kind;
             dataRequest.Topic = topic;
             dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
             Utils.Debug("Sending message: " + topic);
             using var response = request.Send();
-            pinnedArray.Free();
         }
 
         public void Disconnect()
