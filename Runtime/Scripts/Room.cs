@@ -72,6 +72,7 @@ namespace LiveKit
             return new ConnectInstruction(res.Connect.AsyncId, this, cancelToken);
         }
 
+        [Obsolete("Use span instead")]
         public void PublishData(byte[] data, string topic,  DataPacketKind kind = DataPacketKind.KindLossy)
         {
             PublishData(new Span<byte>(data), topic, kind);
