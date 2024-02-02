@@ -8,8 +8,6 @@ namespace LiveKit.Internal
     {
         internal FfiHandle(IntPtr ptr) : base(ptr, true) { }
 
-        public FfiHandle() : base(IntPtr.Zero, true) { }
-
         public override bool IsInvalid => handle == IntPtr.Zero || handle == new IntPtr(-1);
 
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]

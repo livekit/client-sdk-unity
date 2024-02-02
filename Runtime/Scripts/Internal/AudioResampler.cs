@@ -20,10 +20,12 @@ namespace LiveKit
         public AudioFrame RemixAndResample(AudioFrame frame, uint numChannels, uint sampleRate)
         {
             using var request = FFIBridge.Instance.NewRequest<RemixAndResampleRequest>();
+            using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
             var remix = request.request;
             remix.ResamplerHandle = (ulong)Handle.DangerousGetHandle();
-            //TODO pooling inner buffers
-            remix.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong)frame.Handle.DangerousGetHandle() };
+            remix.Buffer = audioFrameBufferInfo;
+            remix.Buffer.DataPtr = (ulong)frame.Handle.DangerousGetHandle();
+            
             Utils.Debug(
                 "TODO MindTrust: Most likely we want this second one and not use the frame's handler. Should be data. Based on AudioSource. Ref Python FFI -mg");
             //remix.Buffer = new AudioFrameBufferInfo() { DataPtr = (ulong) frame.Handle.DangerousGetHandle(), NumChannels = frame.NumChannels, SampleRate = frame.SampleRate/100, SamplesPerChannel = frame.SamplesPerChannel};

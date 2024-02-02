@@ -1,4 +1,6 @@
 using System;
+using Google.Protobuf;
+using LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients;
 using LiveKit.Internal.FFIClients.Pools;
 using LiveKit.Proto;
 
@@ -7,6 +9,7 @@ namespace LiveKit.Internal.FFIClients.Requests
     public struct FfiRequestWrap<T> : IDisposable where T : class, new()
     {
         public readonly T request;
+        private readonly IMultiPool multiPool;
         private readonly IFFIClient ffiClient;
         private readonly FfiRequest ffiRequest;
         private readonly Action<FfiRequest> releaseFfiRequest;
@@ -16,6 +19,7 @@ namespace LiveKit.Internal.FFIClients.Requests
 
         public FfiRequestWrap(IFFIClient ffiClient, IMultiPool multiPool) : this(
             multiPool.Get<T>(),
+            multiPool,
             multiPool.Get<FfiRequest>(),
             ffiClient,
             multiPool.Release,
@@ -26,6 +30,7 @@ namespace LiveKit.Internal.FFIClients.Requests
 
         public FfiRequestWrap(
             T request,
+            IMultiPool multiPool,
             FfiRequest ffiRequest,
             IFFIClient ffiClient,
             Action<FfiRequest> releaseFfiRequest,
@@ -33,6 +38,7 @@ namespace LiveKit.Internal.FFIClients.Requests
         )
         {
             this.request = request;
+            this.multiPool = multiPool;
             this.ffiRequest = ffiRequest;
             this.ffiClient = ffiClient;
             this.releaseFfiRequest = releaseFfiRequest;
@@ -51,6 +57,12 @@ namespace LiveKit.Internal.FFIClients.Requests
             ffiRequest.Inject(request);
             var response = ffiClient.SendRequest(ffiRequest);
             return new FfiResponseWrap(response, ffiClient);
+        }
+
+        public SmartWrap<TK> TempResource<TK>() where TK : class, IMessage, new()
+        {
+            var resource = multiPool.Get<TK>();
+            return new SmartWrap<TK>(resource, multiPool);
         }
 
         public void Dispose()

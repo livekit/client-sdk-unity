@@ -16,6 +16,8 @@ namespace LiveKit.Internal.FFIClients
 
         public void Dispose()
         {
+            //TODO pooling inner parts
+            response.ClearMessage();
             client.Release(response);
         }
 
