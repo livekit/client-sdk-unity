@@ -70,6 +70,7 @@ namespace LiveKit.Rooms
         private readonly ITracksFactory tracksFactory;
         private readonly IFfiHandleFactory ffiHandleFactory;
         private readonly IParticipantFactory participantFactory;
+        private readonly ITrackPublicationFactory trackPublicationFactory;
 
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
@@ -77,12 +78,13 @@ namespace LiveKit.Rooms
             new ParticipantsHub(),
             new TracksFactory(), 
             IFfiHandleFactory.Default, 
-            IParticipantFactory.Default
+            IParticipantFactory.Default, 
+            ITrackPublicationFactory.Default
         )
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory, IParticipantFactory participantFactory)
+        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory, IParticipantFactory participantFactory, ITrackPublicationFactory trackPublicationFactory)
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
@@ -90,6 +92,7 @@ namespace LiveKit.Rooms
             this.tracksFactory = tracksFactory;
             this.ffiHandleFactory = ffiHandleFactory;
             this.participantFactory = participantFactory;
+            this.trackPublicationFactory = trackPublicationFactory;
         }
 
         public ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken)
@@ -228,7 +231,7 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = participantsHub.RemoteParticipantEnsured(e.TrackPublished!.ParticipantSid!);
-                        var publication = ITrackPublicationFactory.Default.NewTrackPublication(e.TrackPublished.Publication!.Info!);
+                        var publication = trackPublicationFactory.NewTrackPublication(e.TrackPublished.Publication!.Info!);
                         participant.Publish(publication);
                         TrackPublished?.Invoke(publication, participant);
                         publication.SetSubscribedForRemote(true);
