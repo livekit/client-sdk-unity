@@ -30,7 +30,7 @@ namespace LiveKit.Rooms.Tracks.Factory
             return CreateTrack(response, room);
         }
 
-        public ITrack NewLocalTrack(string name, RtcVideoSource source, Room room)
+        public ITrack NewVideoTrack(string name, RtcVideoSource source, Room room)
         {
             using var request = FFIBridge.Instance.NewRequest<CreateVideoTrackRequest>();
             var createTrack = request.request;
