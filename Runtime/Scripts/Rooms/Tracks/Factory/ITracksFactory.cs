@@ -8,7 +8,7 @@ namespace LiveKit.Rooms.Tracks.Factory
     {
         ITrack NewAudioTrack(string name, RtcAudioSource source, Room room);
 
-        ITrack NewLocalTrack(string name, RtcVideoSource source, Room room);
+        ITrack NewVideoTrack(string name, RtcVideoSource source, Room room);
 
         ITrack NewTrack(FfiHandle? handle, TrackInfo info, Room room, Participant participant);
     }
