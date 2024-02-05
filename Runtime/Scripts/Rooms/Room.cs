@@ -66,22 +66,25 @@ namespace LiveKit.Rooms
         private readonly IMutableActiveSpeakers activeSpeakers;
         private readonly IMutableParticipantsHub participantsHub;
         private readonly ITracksFactory tracksFactory;
+        private readonly IFfiHandleFactory ffiHandleFactory;
 
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
             new DefaultActiveSpeakers(),
             new ParticipantsHub(),
-            new TracksFactory()
+            new TracksFactory(), 
+            IFfiHandleFactory.Default
         )
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory)
+        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory)
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
             this.participantsHub = participantsHub;
             this.tracksFactory = tracksFactory;
+            this.ffiHandleFactory = ffiHandleFactory;
         }
 
         public ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken)
@@ -137,7 +140,7 @@ namespace LiveKit.Rooms
             FfiResponse resp = response;
             Utils.Debug($"Disconnect response.... {resp}");
 
-            IFfiHandleFactory.Default.Release(Handle);
+            ffiHandleFactory.Release(Handle);
         }
 
         private void UpdateFromInfo(RoomInfo info)
@@ -177,7 +180,7 @@ namespace LiveKit.Rooms
                         this,
                             e.ParticipantConnected!.Info!.Info!,
                             null,
-                            IFfiHandleFactory.Default.NewFfiHandle(e.ParticipantConnected.Info.Handle!.Id
+                            ffiHandleFactory.NewFfiHandle(e.ParticipantConnected.Info.Handle!.Id
                         )
                     );
                     participantsHub.AddRemote(participant);
@@ -330,13 +333,13 @@ namespace LiveKit.Rooms
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle!.Id}");
             Utils.Debug(info);
 
-            Handle = IFfiHandleFactory.Default.NewFfiHandle(roomHandle.Id);
+            Handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
             UpdateFromInfo(info);
 
             var selfParticipant = new Participant(
                 participant.Info!,
                 this,
-                IFfiHandleFactory.Default.NewFfiHandle(participant.Handle.Id),
+                ffiHandleFactory.NewFfiHandle(participant.Handle.Id),
                 Origin.Local
             );
             participantsHub.AssignLocal(selfParticipant);
@@ -346,7 +349,7 @@ namespace LiveKit.Rooms
                 var remote = Participant.NewRemote(
                     this,
                     p.Participant!.Info!, p.Publications,
-                    IFfiHandleFactory.Default.NewFfiHandle(p.Participant.Handle!.Id)
+                    ffiHandleFactory.NewFfiHandle(p.Participant.Handle!.Id)
                 );
                 participantsHub.AddRemote(remote);
             }
