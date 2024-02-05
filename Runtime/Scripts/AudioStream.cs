@@ -4,17 +4,15 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Rooms;
 
 namespace LiveKit
 {
     public class AudioStream
     {
-        //internal readonly FfiHandle Handle;
+        internal FfiHandle Handle => _handle;
+
         private FfiHandle _handle;
-        internal FfiHandle Handle
-        {
-            get { return _handle; }
-        }
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -28,8 +26,11 @@ namespace LiveKit
         private Thread? _readAudioThread;
         private bool _pending = false;
 
-        public AudioStream(IAudioTrack audioTrack, AudioSource source)
+        public AudioStream(ITrack audioTrack, AudioSource source)
         {
+            if (audioTrack.Kind is not TrackKind.KindAudio)
+                throw new InvalidOperationException("audioTrack is not an audio track");
+            
             if (!audioTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("audiotrack's room is invalid");
 

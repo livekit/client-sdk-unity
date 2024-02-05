@@ -11,6 +11,12 @@ namespace LiveKit.Internal.FFIClients.Pools.Memory
 
     public static class MemoryPoolExtensions
     {
+        public static MemoryWrap Memory(this IMemoryPool pool, ulong byteSize)
+        {
+            var size = (int)byteSize;
+            return pool.Memory(size);
+        }
+        
         public static MemoryWrap Memory(this IMemoryPool pool, IMessage forMessage)
         {
             var size = forMessage.CalculateSize();
