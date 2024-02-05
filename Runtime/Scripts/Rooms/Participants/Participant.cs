@@ -7,7 +7,7 @@ using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.AsyncInstractions;
 
-namespace LiveKit.Rooms
+namespace LiveKit.Rooms.Participants
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
@@ -90,7 +90,7 @@ namespace LiveKit.Rooms
             {
                 var publication = new TrackPublication(pubInfo.Info!);
                 participant.AddTrack(publication);
-                publication.SetSubscribed(true);
+                publication.SetSubscribedForRemote(true);
             }
 
             return participant;

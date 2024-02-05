@@ -1,4 +1,5 @@
 using System;
+using LiveKit.Rooms.Participants;
 
 namespace LiveKit.Rooms
 {
@@ -6,8 +7,8 @@ namespace LiveKit.Rooms
     {
         public static Participant? Participant(this Room room, string sid)
         {
-            if (sid == room.LocalParticipant.Sid)
-                return room.LocalParticipant;
+            if (sid == room.Participants.LocalParticipant().Sid)
+                return room.Participants.LocalParticipant();
 
             return RemoteParticipant(room, sid);
         }
@@ -19,8 +20,7 @@ namespace LiveKit.Rooms
         
         public static Participant? RemoteParticipant(this Room room, string sid)
         {
-            room.RemoteParticipants.TryGetValue(sid, out var remoteParticipant);
-            return remoteParticipant;
+            return room.Participants.RemoteParticipant(sid);
         }
         
         public static Participant RemoteParticipantEnsured(this Room room, string sid)

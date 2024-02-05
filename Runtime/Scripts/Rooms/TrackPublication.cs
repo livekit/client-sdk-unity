@@ -42,7 +42,7 @@ namespace LiveKit.Rooms
             Track?.UpdateMuted(muted);
         }
         
-        public void SetSubscribed(bool subscribed)
+        public void SetSubscribedForRemote(bool subscribed)
         {
             if (Origin is not Origin.Remote)
             {

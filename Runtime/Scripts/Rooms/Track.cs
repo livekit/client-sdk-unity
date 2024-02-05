@@ -3,6 +3,7 @@ using LiveKit.Proto;
 using LiveKit.Internal;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Rooms.Participants;
 
 namespace LiveKit.Rooms
 {
@@ -77,7 +78,7 @@ namespace LiveKit.Rooms
         {
             var trackInfo = res.CreateVideoTrack!.Track;
             var trackHandle = new FfiHandle((IntPtr)trackInfo!.Handle.Id);
-            var track = new Track(trackHandle, trackInfo.Info, room, room.LocalParticipant);
+            var track = new Track(trackHandle, trackInfo.Info, room, room.Participants.LocalParticipant());
             return track;
         }
     }
