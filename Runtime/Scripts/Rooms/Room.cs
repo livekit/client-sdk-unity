@@ -181,7 +181,7 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
                         var info = e.ParticipantDisconnected!;
-                        var participant = this.RemoteParticipantEnsured(info.ParticipantSid!);
+                        var participant = participantsHub.RemoteParticipantEnsured(info.ParticipantSid!);
                         participantsHub.RemoveRemote(participant);
                         ParticipantDisconnected?.Invoke(participant);
                     }
@@ -213,7 +213,7 @@ namespace LiveKit.Rooms
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
-                        var participant = this.RemoteParticipantEnsured(e.TrackPublished!.ParticipantSid!);
+                        var participant = participantsHub.RemoteParticipantEnsured(e.TrackPublished!.ParticipantSid!);
                         var publication = new TrackPublication(e.TrackPublished.Publication!.Info!);
                         participant.Publish(publication);
                         TrackPublished?.Invoke(publication, participant);
@@ -222,7 +222,7 @@ namespace LiveKit.Rooms
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnpublished:
                     {
-                        var participant = this.RemoteParticipantEnsured(e.TrackUnpublished!.ParticipantSid!);
+                        var participant = participantsHub.RemoteParticipantEnsured(e.TrackUnpublished!.ParticipantSid!);
                         participant.UnPublish(e.TrackUnpublished.PublicationSid!, out var unpublishedTrack);
                         TrackUnpublished?.Invoke(unpublishedTrack, participant);
                     }
@@ -230,7 +230,7 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.TrackSubscribed:
                     {
                         var info = e.TrackSubscribed!.Track!.Info!;
-                        var participant = this.RemoteParticipantEnsured(e.TrackSubscribed.ParticipantSid!);
+                        var participant = participantsHub.RemoteParticipantEnsured(e.TrackSubscribed.ParticipantSid!);
                         var publication = participant.TrackPublication(info.Sid!);
 
                         var track = new Track(null, info, this, participant);
