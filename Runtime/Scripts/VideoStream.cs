@@ -6,6 +6,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms;
+using LiveKit.Rooms.Tracks;
 
 namespace LiveKit
 {

@@ -1,5 +1,6 @@
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
+using LiveKit.Rooms.Tracks;
 
 namespace LiveKit.Rooms
 {
@@ -18,19 +19,19 @@ namespace LiveKit.Rooms
         public string MimeType => info.MimeType!;
         public bool Muted => info.Muted;
 
-        public Track? Track { get; private set; }
+        public ITrack? Track { get; private set; }
 
         public TrackPublication(TrackPublicationInfo info)
         {
             this.info = info;
         }
 
-        internal void UpdateTrack(Track track)
+        internal void UpdateTrack(ITrack track)
         {
             Track = track;
         }
 
-        public void RemoveTrack(out Track? removedTrack)
+        public void RemoveTrack(out ITrack? removedTrack)
         {
             removedTrack = Track;
             Track = null;

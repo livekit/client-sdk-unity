@@ -10,6 +10,8 @@ using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.ActiveSpeakers;
 using LiveKit.Rooms.AsyncInstractions;
 using LiveKit.Rooms.Participants;
+using LiveKit.Rooms.Tracks;
+using LiveKit.Rooms.Tracks.Factory;
 
 namespace LiveKit.Rooms
 {
@@ -64,20 +66,23 @@ namespace LiveKit.Rooms
         private readonly IMemoryPool memoryPool;
         private readonly IMutableActiveSpeakers activeSpeakers;
         private readonly IMutableParticipantsHub participantsHub;
+        private readonly ITracksFactory tracksFactory;
 
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
             new DefaultActiveSpeakers(),
-            new ParticipantsHub()
+            new ParticipantsHub(),
+            new TracksFactory()
         )
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub)
+        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory)
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
             this.participantsHub = participantsHub;
+            this.tracksFactory = tracksFactory;
         }
 
         public ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken)
@@ -233,7 +238,7 @@ namespace LiveKit.Rooms
                         var participant = participantsHub.RemoteParticipantEnsured(e.TrackSubscribed.ParticipantSid!);
                         var publication = participant.TrackPublication(info.Sid!);
 
-                        var track = new Track(null, info, this, participant);
+                        var track = tracksFactory.NewTrack(null, info, this, participant);
                         publication.UpdateTrack(track);
                         TrackSubscribed?.Invoke(track, publication, participant);
                     }
@@ -280,20 +285,9 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
                         var dataInfo = e.DataReceived!.Data!;
-                        
-                        using var memory = memoryPool.Memory(dataInfo.Data!.DataLen);
-                        var data = memory.Span();
-
-                        unsafe
-                        {
-                            var unmanagedBuffer = new Span<byte>((void*)dataInfo.Data.DataPtr, data.Length);
-                            unmanagedBuffer.CopyTo(data);
-                        }
-
-                        NativeMethods.FfiDropHandle(dataInfo.Handle!.Id);
-
+                        using var memory = dataInfo.ReadAndDispose(memoryPool);
                         var participant = this.ParticipantEnsured(e.DataReceived.ParticipantSid!);
-                        DataReceived?.Invoke(data, participant, e.DataReceived.Kind);
+                        DataReceived?.Invoke(memory.Span(), participant, e.DataReceived.Kind);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
