@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using LiveKit.Rooms.TrackPublications;
 
 namespace LiveKit.Rooms.Participants.Factory
 {
@@ -27,7 +28,7 @@ namespace LiveKit.Rooms.Participants.Factory
             var participant = factory.NewParticipant(info, room, handle, Origin.Remote);
             foreach (var pubInfo in publications ?? Array.Empty<OwnedTrackPublication>())
             {
-                var publication = new TrackPublication(pubInfo.Info!);
+                var publication = ITrackPublicationFactory.Default.NewTrackPublication(pubInfo.Info!);
                 participant.AddTrack(publication);
                 publication.SetSubscribedForRemote(true);
             }

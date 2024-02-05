@@ -6,6 +6,7 @@ using LiveKit.Proto;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.AsyncInstractions;
+using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
 
 namespace LiveKit.Rooms.Participants

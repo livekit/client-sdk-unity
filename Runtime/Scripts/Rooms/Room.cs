@@ -11,6 +11,7 @@ using LiveKit.Rooms.ActiveSpeakers;
 using LiveKit.Rooms.AsyncInstractions;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Participants.Factory;
+using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Factory;
 
@@ -227,7 +228,7 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = participantsHub.RemoteParticipantEnsured(e.TrackPublished!.ParticipantSid!);
-                        var publication = new TrackPublication(e.TrackPublished.Publication!.Info!);
+                        var publication = ITrackPublicationFactory.Default.NewTrackPublication(e.TrackPublished.Publication!.Info!);
                         participant.Publish(publication);
                         TrackPublished?.Invoke(publication, participant);
                         publication.SetSubscribedForRemote(true);

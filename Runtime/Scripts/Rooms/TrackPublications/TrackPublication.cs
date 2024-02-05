@@ -2,11 +2,11 @@ using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Tracks;
 
-namespace LiveKit.Rooms
+namespace LiveKit.Rooms.TrackPublications
 {
     public class TrackPublication
     {
-        private readonly TrackPublicationInfo info;
+        private TrackPublicationInfo info;
 
         public Origin Origin => info.Remote ? Origin.Remote : Origin.Local;
         public string Sid => info.Sid!;
@@ -21,9 +21,15 @@ namespace LiveKit.Rooms
 
         public ITrack? Track { get; private set; }
 
-        public TrackPublication(TrackPublicationInfo info)
+        internal void Construct(TrackPublicationInfo info)
         {
             this.info = info;
+        }
+
+        public void Clear()
+        {
+            info = null!;
+            Track = null;
         }
 
         internal void UpdateTrack(ITrack track)
