@@ -182,7 +182,7 @@ namespace LiveKit.Rooms
                     {
                         var info = e.ParticipantDisconnected!;
                         var participant = this.RemoteParticipantEnsured(info.ParticipantSid!);
-                        participantsHub.RemoteParticipant(info.ParticipantSid!);
+                        participantsHub.RemoveRemote(participant);
                         ParticipantDisconnected?.Invoke(participant);
                     }
                     break;
