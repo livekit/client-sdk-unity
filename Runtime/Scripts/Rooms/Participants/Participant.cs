@@ -16,7 +16,7 @@ namespace LiveKit.Rooms.Participants
     {
         public delegate void PublishDelegate(TrackPublication publication);
         
-        public Origin Origin { get; }
+        public Origin Origin { get; private set; }
         
         public string Sid => info.Sid!;
         public string Identity => info.Identity!;
@@ -35,19 +35,27 @@ namespace LiveKit.Rooms.Participants
         
         public IReadOnlyDictionary<string, TrackPublication> Tracks => tracks;
         
-        internal FfiHandle Handle { get; }
+        internal FfiHandle Handle { get; private set; }= null!;
 
-        public Room Room { get; }
+        public Room Room { get; private set; }= null!;
 
         private readonly Dictionary<string, TrackPublication> tracks = new();
-        private readonly ParticipantInfo info;
+        private ParticipantInfo info = null!;
 
-        public Participant(ParticipantInfo info, Room room, FfiHandle handle, Origin origin)
+        internal void Construct(ParticipantInfo info, Room room, FfiHandle handle, Origin origin)
         {
             Room = room;
             Origin = origin;
             Handle = handle;
             this.info = info;
+        }
+        
+        public void Clear()
+        {
+            Room = null!;
+            Handle = null!;
+            info = null!;
+            tracks.Clear();
         }
 
         public void Publish(TrackPublication track)
@@ -79,24 +87,6 @@ namespace LiveKit.Rooms.Participants
             info.Metadata = meta;
         }
 
-        public static Participant NewRemote(
-            Room room,
-            ParticipantInfo info, 
-            IReadOnlyList<OwnedTrackPublication>? publications, 
-            FfiHandle handle
-            )
-        {
-            var participant = new Participant(info, room, handle, Origin.Remote);
-            foreach (var pubInfo in publications ?? Array.Empty<OwnedTrackPublication>())
-            {
-                var publication = new TrackPublication(pubInfo.Info!);
-                participant.AddTrack(publication);
-                publication.SetSubscribedForRemote(true);
-            }
-
-            return participant;
-        }
-        
         public PublishTrackInstruction PublishTrack(
             ITrack localTrack,
             TrackPublishOptions options,

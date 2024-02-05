@@ -10,6 +10,7 @@ using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.ActiveSpeakers;
 using LiveKit.Rooms.AsyncInstractions;
 using LiveKit.Rooms.Participants;
+using LiveKit.Rooms.Participants.Factory;
 using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Factory;
 
@@ -67,24 +68,27 @@ namespace LiveKit.Rooms
         private readonly IMutableParticipantsHub participantsHub;
         private readonly ITracksFactory tracksFactory;
         private readonly IFfiHandleFactory ffiHandleFactory;
+        private readonly IParticipantFactory participantFactory;
 
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
             new DefaultActiveSpeakers(),
             new ParticipantsHub(),
             new TracksFactory(), 
-            IFfiHandleFactory.Default
+            IFfiHandleFactory.Default, 
+            IParticipantFactory.Default
         )
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory)
+        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory, IParticipantFactory participantFactory)
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
             this.participantsHub = participantsHub;
             this.tracksFactory = tracksFactory;
             this.ffiHandleFactory = ffiHandleFactory;
+            this.participantFactory = participantFactory;
         }
 
         public ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken)
@@ -176,7 +180,7 @@ namespace LiveKit.Rooms
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
                 {
-                    var participant = Participant.NewRemote(
+                    var participant = participantFactory.NewRemote(
                         this,
                             e.ParticipantConnected!.Info!.Info!,
                             null,
@@ -336,7 +340,7 @@ namespace LiveKit.Rooms
             Handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
             UpdateFromInfo(info);
 
-            var selfParticipant = new Participant(
+            var selfParticipant = participantFactory.NewParticipant(
                 participant.Info!,
                 this,
                 ffiHandleFactory.NewFfiHandle(participant.Handle.Id),
@@ -346,7 +350,7 @@ namespace LiveKit.Rooms
             // Add already connected participant
             foreach (var p in participants)
             {
-                var remote = Participant.NewRemote(
+                var remote = participantFactory.NewRemote(
                     this,
                     p.Participant!.Info!, p.Publications,
                     ffiHandleFactory.NewFfiHandle(p.Participant.Handle!.Id)
