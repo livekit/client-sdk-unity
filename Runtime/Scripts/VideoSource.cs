@@ -24,7 +24,7 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             _info = res.NewVideoSource.Source.Info;
-            Handle = new FfiHandle((IntPtr)res.NewVideoSource.Source.Handle.Id);
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewVideoSource.Source.Handle.Id);
         }
     }
 
@@ -128,7 +128,7 @@ namespace LiveKit
                 FfiResponse res = responseToI420;
 
                 var bufferInfo = res.ToI420.Buffer;
-                var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo.Info);
+                var buffer = VideoFrameBuffer.Create(IFfiHandleFactory.Default.NewFfiHandle(bufferInfo.Handle.Id), bufferInfo.Info);
 
                 // Send the frame to WebRTC
 

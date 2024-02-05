@@ -10,15 +10,21 @@ namespace LiveKit.Internal
         private IntPtr handle;
         private bool isClosed;
 
-        
-        public FfiHandle(IntPtr handle)
-        {
-            this.handle = handle;
-        }
-
         public bool IsInvalid => handle == IntPtr.Zero || handle == new IntPtr(-1);
         
         public bool IsClosed => isClosed;
+
+        internal void Construct(IntPtr intPtr)
+        {
+            handle = intPtr;
+            isClosed = false;
+        }
+        
+        internal void Clear()
+        {
+            handle = IntPtr.Zero;
+            isClosed = false;
+        }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IntPtr DangerousGetHandle()

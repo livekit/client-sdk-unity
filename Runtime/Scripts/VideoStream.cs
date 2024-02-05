@@ -65,7 +65,7 @@ namespace LiveKit
             FfiResponse res = response;
             var streamInfo = res.NewVideoStream.Stream;
 
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(streamInfo.Handle.Id);
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
@@ -160,7 +160,7 @@ namespace LiveKit
 
             var frameInfo = e.FrameReceived.Frame;
             var bufferInfo = e.FrameReceived.Buffer.Info;
-            var handle = new FfiHandle((IntPtr)e.FrameReceived.Buffer.Handle.Id);
+            var handle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Buffer.Handle.Id);
 
             var frame = new VideoFrame(frameInfo);
             var buffer = VideoFrameBuffer.Create(handle, bufferInfo);

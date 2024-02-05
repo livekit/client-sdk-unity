@@ -36,8 +36,8 @@ namespace LiveKit.Rooms
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Metadata { get; private set; } = string.Empty;
 
-        internal FfiHandle Handle => handle;
-        
+        internal FfiHandle Handle { get; private set; } = null!;
+
         public event MetaDelegate? RoomMetadataChanged;
         public event ParticipantDelegate? ParticipantConnected;
         public event ParticipantDelegate? ParticipantMetadataChanged;
@@ -62,7 +62,6 @@ namespace LiveKit.Rooms
         public IActiveSpeakers ActiveSpeakers => activeSpeakers;
 
         public IParticipantsHub Participants => participantsHub;
-        private FfiHandle handle = null!;
         private readonly IMemoryPool memoryPool;
         private readonly IMutableActiveSpeakers activeSpeakers;
         private readonly IMutableParticipantsHub participantsHub;
@@ -130,13 +129,15 @@ namespace LiveKit.Rooms
         {
             using var request = FFIBridge.Instance.NewRequest<DisconnectRequest>();
             var disconnect = request.request;
-            disconnect.RoomHandle = (ulong)handle.DangerousGetHandle();
+            disconnect.RoomHandle = (ulong)Handle.DangerousGetHandle();
 
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
             using var response = request.Send();
             // ReSharper disable once RedundantAssignment
             FfiResponse resp = response;
             Utils.Debug($"Disconnect response.... {resp}");
+
+            IFfiHandleFactory.Default.Release(Handle);
         }
 
         private void UpdateFromInfo(RoomInfo info)
@@ -149,12 +150,12 @@ namespace LiveKit.Rooms
         private void OnEventReceived(RoomEvent e)
         {
 
-            if (e.RoomHandle != (ulong)handle.DangerousGetHandle())
+            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
             {
                 Utils.Debug("Ignoring. Different Room... " + e);
                 return;
             }
-            Utils.Debug($"Room {Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)handle.DangerousGetHandle()})");
+            Utils.Debug($"Room {Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)Handle.DangerousGetHandle()})");
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.RoomMetadataChanged:
@@ -176,7 +177,7 @@ namespace LiveKit.Rooms
                         this,
                             e.ParticipantConnected!.Info!.Info!,
                             null,
-                            new FfiHandle((IntPtr)e.ParticipantConnected.Info.Handle!.Id
+                            IFfiHandleFactory.Default.NewFfiHandle(e.ParticipantConnected.Info.Handle!.Id
                         )
                     );
                     participantsHub.AddRemote(participant);
@@ -329,13 +330,13 @@ namespace LiveKit.Rooms
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle!.Id}");
             Utils.Debug(info);
 
-            handle = new FfiHandle((IntPtr)roomHandle.Id);
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(roomHandle.Id);
             UpdateFromInfo(info);
 
             var selfParticipant = new Participant(
                 participant.Info!,
                 this,
-                new FfiHandle((IntPtr)participant.Handle.Id),
+                IFfiHandleFactory.Default.NewFfiHandle(participant.Handle.Id),
                 Origin.Local
             );
             participantsHub.AssignLocal(selfParticipant);
@@ -345,7 +346,7 @@ namespace LiveKit.Rooms
                 var remote = Participant.NewRemote(
                     this,
                     p.Participant!.Info!, p.Publications,
-                    new FfiHandle((IntPtr)p.Participant.Handle!.Id)
+                    IFfiHandleFactory.Default.NewFfiHandle(p.Participant.Handle!.Id)
                 );
                 participantsHub.AddRemote(remote);
             }

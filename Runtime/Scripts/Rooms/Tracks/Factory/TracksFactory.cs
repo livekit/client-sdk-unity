@@ -50,7 +50,7 @@ namespace LiveKit.Rooms.Tracks.Factory
         private Track CreateTrack(FfiResponse res, Room room)
         {
             var trackInfo = res.CreateVideoTrack!.Track;
-            var trackHandle = new FfiHandle((IntPtr)trackInfo!.Handle.Id);
+            var trackHandle = IFfiHandleFactory.Default.NewFfiHandle(trackInfo!.Handle!.Id);
             var track = trackPool.Get()!;
             track.Construct(trackHandle, trackInfo.Info!, room, room.Participants.LocalParticipant());
             return track;

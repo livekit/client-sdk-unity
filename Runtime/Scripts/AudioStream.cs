@@ -48,7 +48,7 @@ namespace LiveKit
             FfiResponse res = response;
             var streamInfo = res.NewAudioStream.Stream;
 
-            _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            _handle = IFfiHandleFactory.Default.NewFfiHandle(streamInfo.Handle.Id);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -143,7 +143,7 @@ namespace LiveKit
                 return;
 
             var info = e.FrameReceived.Frame.Info;
-            var handle = new FfiHandle((IntPtr)e.FrameReceived.Frame.Handle.Id);
+            var handle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Frame.Handle.Id);
             var frame = new AudioFrame(handle, info);
 
             lock (_lock)
