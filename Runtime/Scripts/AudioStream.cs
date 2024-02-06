@@ -106,6 +106,7 @@ namespace LiveKit
                         if (_buffer == null || _channels != _numChannels || _pendingSampleRate != _sampleRate || _data.Length != _tempBuffer.Length)
                         {
                             int size = (int)(_channels * _sampleRate * 0.2);
+                            _buffer?.Dispose();
                             _buffer = new RingBuffer(size * sizeof(short));
                             _tempBuffer = new short[_data.Length];
                             _numChannels = (uint)_channels;
