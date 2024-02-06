@@ -8,6 +8,8 @@ namespace LiveKit.Internal.FFIClients.Pools.Memory
         private readonly int length;
         private readonly IMemoryPool memoryPool;
 
+        public int Length => length;
+
         public MemoryWrap(byte[] buffer, int length, IMemoryPool memoryPool)
         {
             this.buffer = buffer;
