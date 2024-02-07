@@ -5,6 +5,8 @@ using UnityEngine;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Rooms;
+using LiveKit.Rooms.Tracks;
 
 namespace LiveKit
 {
@@ -44,8 +46,11 @@ namespace LiveKit
         
         private readonly object _lock = new();
 
-        public VideoStream(IVideoTrack videoTrack)
+        public VideoStream(ITrack videoTrack)
         {
+            if (videoTrack.Kind is not TrackKind.KindVideo)
+                throw new InvalidOperationException("videoTrack is not a video track");
+            
             if (!videoTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("videotrack's room is invalid");
 
@@ -55,14 +60,12 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
             var newVideoStream = request.request;
             newVideoStream.TrackHandle = (ulong)room.Handle.DangerousGetHandle();
-            //newVideoStream.ParticipantSid = participant.Sid;
-            //newVideoStream.TrackSid = videoTrack.Sid;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
             using var response = request.Send();
             FfiResponse res = response;
             var streamInfo = res.NewVideoStream.Stream;
 
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(streamInfo.Handle.Id);
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
@@ -157,7 +160,7 @@ namespace LiveKit
 
             var frameInfo = e.FrameReceived.Frame;
             var bufferInfo = e.FrameReceived.Buffer.Info;
-            var handle = new FfiHandle((IntPtr)e.FrameReceived.Buffer.Handle.Id);
+            var handle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Buffer.Handle.Id);
 
             var frame = new VideoFrame(frameInfo);
             var buffer = VideoFrameBuffer.Create(handle, bufferInfo);

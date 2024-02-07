@@ -9,9 +9,8 @@ namespace LiveKit
     {
         private AudioFrameBufferInfo _info;
         private bool _disposed = false;
-        private FfiHandle _handle;
 
-        internal FfiHandle Handle => _handle;
+        internal FfiHandle Handle { get; }
 
         public uint NumChannels => _info.NumChannels;
         public uint SampleRate => _info.SampleRate;
@@ -22,7 +21,7 @@ namespace LiveKit
 
         internal AudioFrame(FfiHandle handle, AudioFrameBufferInfo info)
         {
-            _handle = handle;
+            Handle = handle;
             _info = info;
         }
 
@@ -36,7 +35,7 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             var bufferInfo = res.AllocAudioBuffer.Buffer.Info;
-            _handle = new FfiHandle((IntPtr)res.AllocAudioBuffer.Buffer.Handle.Id);
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(res.AllocAudioBuffer.Buffer.Handle.Id);
             _info = bufferInfo;
 
             res.AllocAudioBuffer = null;
@@ -58,6 +57,7 @@ namespace LiveKit
             if (!_disposed)
             {
                 Handle.Dispose();
+                IFfiHandleFactory.Default.Release(Handle);
                 _disposed = true;
             }
         }

@@ -4,17 +4,16 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Rooms;
+using LiveKit.Rooms.Tracks;
 
 namespace LiveKit
 {
     public class AudioStream
     {
-        //internal readonly FfiHandle Handle;
+        internal FfiHandle Handle => _handle;
+
         private FfiHandle _handle;
-        internal FfiHandle Handle
-        {
-            get { return _handle; }
-        }
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -28,8 +27,11 @@ namespace LiveKit
         private Thread? _readAudioThread;
         private bool _pending = false;
 
-        public AudioStream(IAudioTrack audioTrack, AudioSource source)
+        public AudioStream(ITrack audioTrack, AudioSource source)
         {
+            if (audioTrack.Kind is not TrackKind.KindAudio)
+                throw new InvalidOperationException("audioTrack is not an audio track");
+            
             if (!audioTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("audiotrack's room is invalid");
 
@@ -46,7 +48,7 @@ namespace LiveKit
             FfiResponse res = response;
             var streamInfo = res.NewAudioStream.Stream;
 
-            _handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            _handle = IFfiHandleFactory.Default.NewFfiHandle(streamInfo.Handle.Id);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -104,6 +106,7 @@ namespace LiveKit
                         if (_buffer == null || _channels != _numChannels || _pendingSampleRate != _sampleRate || _data.Length != _tempBuffer.Length)
                         {
                             int size = (int)(_channels * _sampleRate * 0.2);
+                            _buffer?.Dispose();
                             _buffer = new RingBuffer(size * sizeof(short));
                             _tempBuffer = new short[_data.Length];
                             _numChannels = (uint)_channels;
@@ -141,7 +144,7 @@ namespace LiveKit
                 return;
 
             var info = e.FrameReceived.Frame.Info;
-            var handle = new FfiHandle((IntPtr)e.FrameReceived.Frame.Handle.Id);
+            var handle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Frame.Handle.Id);
             var frame = new AudioFrame(handle, info);
 
             lock (_lock)

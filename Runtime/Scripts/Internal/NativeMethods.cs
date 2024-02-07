@@ -14,6 +14,8 @@ namespace LiveKit.Internal
         const string Lib = "livekit_ffi";
         #endif
 
+        internal static bool FfiDropHandle(ulong handleId) => FfiDropHandle((IntPtr)handleId);
+
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_drop_handle")]
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         internal extern static bool FfiDropHandle(IntPtr handleId);

@@ -12,9 +12,7 @@ namespace LiveKit
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
 
-        private FfiHandle _handle;
-
-        internal FfiHandle Handle => _handle;
+        internal FfiHandle Handle { get; }
 
         protected AudioSourceInfo _info;
 
@@ -38,7 +36,7 @@ namespace LiveKit
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
             //TODO pooling handles
-            _handle = new FfiHandle((IntPtr)res.NewAudioSource.Source.Handle.Id);
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioSource.Source.Handle!.Id);
             UpdateSource(source, audioFilter);
         }
 

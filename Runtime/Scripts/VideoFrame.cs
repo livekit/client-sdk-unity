@@ -58,6 +58,7 @@ namespace LiveKit
             if (!_disposed)
             {
                 Handle.Dispose();
+                IFfiHandleFactory.Default.Release(Handle);
 
                 var memSize = GetMemorySize();
                 if (memSize > 0)
@@ -124,7 +125,7 @@ namespace LiveKit
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");
 
-            var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
+            var newHandle = IFfiHandleFactory.Default.NewFfiHandle(newInfo.Handle.Id);
             return new I420Buffer(newHandle, newInfo.Info); // TODO MindTrust_VID
         }
 
