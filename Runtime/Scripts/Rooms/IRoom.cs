@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using LiveKit.Proto;
 using LiveKit.Rooms.AsyncInstractions;
@@ -34,7 +35,7 @@ namespace LiveKit.Rooms
         //TODO async
         ConnectInstruction Connect(string url, string authToken, CancellationToken cancelToken);
         
-        void PublishData(Span<byte> data, string topic, DataPacketKind kind = DataPacketKind.KindLossy);
+        void PublishData(Span<byte> data, string topic, IReadOnlyList<string> destinationSids, DataPacketKind kind = DataPacketKind.KindLossy);
 
         void Disconnect();
     }
