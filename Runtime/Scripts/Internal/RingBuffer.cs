@@ -4,17 +4,19 @@ namespace LiveKit.Internal
 {
     // Basic RingBuffer implementation (used WebRtc_RingBuffer as reference)
     // The one from com.unity.collections is dealing element per element, which is not efficient when dealing with bytes
-    public class RingBuffer
+    public struct RingBuffer : IDisposable
     {
-        private byte[] _buffer;
-        private int _writePos;
-        private int _readPos;
-        private bool _sameWrap;
+        private readonly MemoryWrap buffer;
+        private int writePos;
+        private int readPos;
+        private bool sameWrap;
 
         public RingBuffer(int size)
         {
-            _buffer = new byte[size];
-            _sameWrap = true;
+            buffer = MemoryPool.Memory(size);
+            writePos = 0;
+            readPos = 0;
+            sameWrap = true;
         }
 
         public int Write(ReadOnlySpan<byte> data)
@@ -22,17 +24,17 @@ namespace LiveKit.Internal
             int free = AvailableWrite();
             int write = (free < data.Length ? free : data.Length);
             int n = write;
-            int margin = _buffer.Length - _writePos;
+            int margin = buffer.Length - writePos;
 
             if (write > margin)
             {
-                data.Slice(0, margin).CopyTo(_buffer.AsSpan(_writePos));
-                _writePos = 0;
+                data.Slice(0, margin).CopyTo(buffer.Span().Slice(writePos));
+                writePos = 0;
                 n -= margin;
-                _sameWrap = false;
+                sameWrap = false;
             }
-            data.Slice(write - n, n).CopyTo(_buffer.AsSpan(_writePos));
-            _writePos += n;
+            data.Slice(write - n, n).CopyTo(buffer.Span().Slice(writePos));
+            writePos += n;
             return write;
         }
 
@@ -41,13 +43,13 @@ namespace LiveKit.Internal
             int readCount = GetBufferReadRegions(data.Length, out int dataIndex1, out int dataLen1, out int dataIndex2, out int dataLen2);
             if (dataLen2 > 0)
             {
-                _buffer.AsSpan().Slice(dataIndex1, dataLen1).CopyTo(data);
-                _buffer.AsSpan().Slice(dataIndex2, dataLen2).CopyTo(data.Slice(dataLen1));
+                buffer.Span().Slice(dataIndex1, dataLen1).CopyTo(data);
+                buffer.Span().Slice(dataIndex2, dataLen2).CopyTo(data.Slice(dataLen1));
             }
             else
             {
                 // TODO(theomonnom): Don't always copy in this case?
-                _buffer.AsSpan().Slice(dataIndex1, dataLen1).CopyTo(data);
+                buffer.Span().Slice(dataIndex1, dataLen1).CopyTo(data);
             }
 
             MoveReadPtr(readCount);
@@ -58,7 +60,7 @@ namespace LiveKit.Internal
         {
             int free = AvailableWrite();
             int read = AvailableRead();
-            int readPos = _readPos;
+            int readPosition = readPos;
 
             if (len > read)
                 len = read;
@@ -66,19 +68,19 @@ namespace LiveKit.Internal
             if (len < -free)
                 len = -free;
 
-            readPos += len;
-            if (readPos > _buffer.Length)
+            readPosition += len;
+            if (readPosition > buffer.Length)
             {
-                readPos -= _buffer.Length;
-                _sameWrap = true;
+                readPosition -= buffer.Length;
+                sameWrap = true;
             }
-            if (readPos < 0)
+            if (readPosition < 0)
             {
-                readPos += _buffer.Length;
-                _sameWrap = false;
+                readPosition += buffer.Length;
+                sameWrap = false;
             }
 
-            _readPos = readPos;
+            readPos = readPosition;
             return len;
         }
 
@@ -86,12 +88,12 @@ namespace LiveKit.Internal
         {
             int readable = AvailableRead();
             int read = readable < len ? readable : len;
-            int margin = _buffer.Length - _readPos;
+            int margin = buffer.Length - readPos;
 
             if (read > margin)
             {
                 // Not contiguous
-                dataIndex1 = _readPos;
+                dataIndex1 = readPos;
                 dataLen1 = margin;
                 dataIndex2 = 0;
                 dataLen2 = read - margin;
@@ -99,7 +101,7 @@ namespace LiveKit.Internal
             else
             {
                 // Contiguous
-                dataIndex1 = _readPos;
+                dataIndex1 = readPos;
                 dataLen1 = read;
                 dataIndex2 = 0;
                 dataLen2 = 0;
@@ -110,15 +112,19 @@ namespace LiveKit.Internal
 
         public int AvailableRead()
         {
-            if (_sameWrap)
-                return _writePos - _readPos;
-            else
-                return _buffer.Length - _readPos + _writePos;
+            return sameWrap 
+                ? writePos - readPos 
+                : buffer.Length - readPos + writePos;
         }
 
         public int AvailableWrite()
         {
-            return _buffer.Length - AvailableRead();
+            return buffer.Length - AvailableRead();
+        }
+
+        public void Dispose()
+        {
+            buffer.Dispose();
         }
     }
 }
