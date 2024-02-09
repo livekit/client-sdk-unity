@@ -1,12 +1,11 @@
 {
-  "name": "io.livekit.livekit-sdk",
-  "version": "1.0.0",
+  "name": "com.decentraland.livekit-sdk",
+  "version": "1.0.1",
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2021.3",
   "author": {
-    "name": "Th\u00e9o Monnom",
-    "email": "theo.monnom@outlook.com"
+    "name": "Decentraland"
   },
   "samples": [
     {
