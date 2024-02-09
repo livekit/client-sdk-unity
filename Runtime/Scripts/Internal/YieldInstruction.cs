@@ -1,7 +1,6 @@
 using LiveKit.Internal;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace LiveKit
 {
@@ -28,6 +27,12 @@ namespace LiveKit
                 _token.ThrowIfCancellationRequested();
                 await Task.Delay(Constants.TASK_DELAY);
             }
+        }
+
+        public async Task<bool> AwaitWithSuccess()
+        {
+            await AwaitCompletion();
+            return IsError == false;
         }
     }
 }
