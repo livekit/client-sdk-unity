@@ -97,7 +97,7 @@ namespace LiveKit.Rooms
 
         public void Disconnect()
         {
-            FFIBridge.Instance.SendDisconnectRequest(this);
+            using var _ = FFIBridge.Instance.SendDisconnectRequest(this);
             ffiHandleFactory.Release(Handle);
         }
 
