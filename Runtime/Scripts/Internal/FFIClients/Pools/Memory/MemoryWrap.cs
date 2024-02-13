@@ -22,6 +22,15 @@ namespace LiveKit.Internal.FFIClients.Pools.Memory
             return new Span<byte>(buffer, 0, length);
         }
 
+        /// <summary>
+        /// Gives the direct access to the buffer. Ownership remains on MemoryWrap and it can dispose it anytime.
+        /// You know what you are doing
+        /// </summary>
+        public byte[] DangerousBuffer()
+        {
+            return buffer;
+        }
+
         public void Dispose()
         {
             memoryPool.Release(buffer);
