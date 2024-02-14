@@ -16,7 +16,7 @@ namespace LiveKit
         private FfiHandle _handle;
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
-        private RingBuffer _buffer;
+        private RingBuffer? _buffer;
         private short[] _tempBuffer;
         private uint _numChannels;
         private uint _sampleRate;
