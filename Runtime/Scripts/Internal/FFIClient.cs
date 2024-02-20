@@ -85,7 +85,7 @@ namespace LiveKit.Internal
         static void Init()
         {
             Application.quitting += Quit;
-            FfiClient.Initialize();
+            InitializeSdk();
         }
         #endif
 
