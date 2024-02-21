@@ -7,6 +7,20 @@ using UnityEngine;
 
 namespace LiveKit
 {
+
+    public class RTCConfiguration
+    {
+        
+    }
+
+    public class RoomOptions
+    {
+        public bool AutoSubscribe;
+        public bool Dynacast;
+        public E2EEOptions E2EE;
+        public RTCConfiguration RtcConfig;
+    }
+
     public class Room
     {
         public delegate void ParticipantDelegate(RemoteParticipant participant);
@@ -46,11 +60,12 @@ namespace LiveKit
 
         internal FfiHandle Handle;
 
-        public ConnectInstruction Connect(string url, string token)
+        public ConnectInstruction Connect(string url, string token, RoomOptions roomOptions)
         {
             var connect = new ConnectRequest();
             connect.Url = url;
             connect.Token = token;
+            connect.Options = roomOptions;
 
             var request = new FFIRequest();
             request.Connect = connect;
