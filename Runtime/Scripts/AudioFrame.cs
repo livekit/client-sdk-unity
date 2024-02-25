@@ -1,6 +1,7 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
+using UnityEditor.PackageManager.Requests;
 
 namespace LiveKit
 {
@@ -8,38 +9,45 @@ namespace LiveKit
     {
         private AudioFrameBufferInfo _info;
 
-        internal readonly FfiHandle Handle;
+        private FfiOwnedHandle _handle;
+
         private bool _disposed = false;
 
         public uint NumChannels => _info.NumChannels;
         public uint SampleRate => _info.SampleRate;
         public uint SamplesPerChannel => _info.SamplesPerChannel;
 
+        public AudioFrameBufferInfo Info => _info;
+
         public IntPtr Data => (IntPtr)_info.DataPtr;
         public int Length => (int) (SamplesPerChannel * NumChannels * sizeof(short));
 
-        internal AudioFrame(FfiHandle handle, AudioFrameBufferInfo info)
+        internal AudioFrame(FfiOwnedHandle handle, AudioFrameBufferInfo info)
         {
-            Handle = handle;
+            _handle = handle;
             _info = info;
+
         }
 
         internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {
-            var alloc = new AllocAudioBufferRequest();
-            alloc.SampleRate = (uint) sampleRate;
-            alloc.NumChannels = (uint) numChannels;
-            alloc.SamplesPerChannel = (uint) samplesPerChannel;
+            var request = new FfiRequest();
+            request.NewAudioResampler = new Proto.NewAudioResamplerRequest();
 
-            var request = new FFIRequest();
-            request.AllocAudioBuffer = alloc;
+            var resp = FfiClient.SendRequest(request);
 
-            var res = FfiClient.SendRequest(request);
-            var bufferInfo = res.AllocAudioBuffer.Buffer;
+            var resample_request = new FfiRequest();
 
-            Handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
-            _info = bufferInfo;
+            resample_request.RemixAndResample = new RemixAndResampleRequest();
+            resample_request.RemixAndResample.ResamplerHandle = resp.NewAudioResampler.Resampler.Handle.Id;
+            resample_request.RemixAndResample.Buffer = _info;
+            resample_request.RemixAndResample.SampleRate = (uint)sampleRate;
+            resample_request.RemixAndResample.NumChannels = (uint)numChannels;
+
+            resp = FfiClient.SendRequest(resample_request);
+
+            _handle = resp.RemixAndResample.Buffer.Handle;
+             _info = resp.RemixAndResample.Buffer.Info;
         }
-
         ~AudioFrame()
         {
             Dispose(false);
@@ -55,7 +63,6 @@ namespace LiveKit
         {
             if (!_disposed)
             {
-                Handle.Dispose();
                 _disposed = true;
             }
         }

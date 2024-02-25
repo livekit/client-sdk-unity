@@ -27,12 +27,11 @@ namespace LiveKit
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
             var newAudioStream = new NewAudioStreamRequest();
-            newAudioStream.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
             newAudioStream.ParticipantSid = participant.Sid;
-            newAudioStream.TrackSid = audioTrack.Sid;
+            newAudioStream.TrackHandle = audioTrack.Sid;
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewAudioStream = newAudioStream;
 
             var resp = FfiClient.SendRequest(request);
@@ -88,15 +87,12 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
-            if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
-                return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
             var info = e.FrameReceived.Frame;
-            var handle = new FfiHandle((IntPtr)info.Handle.Id);
-            var frame = new AudioFrame(handle, info);
+            var frame = new AudioFrame(info.Handle, info.Info);
 
             lock (_lock)
             { 

@@ -46,7 +46,7 @@ namespace LiveKit
             newVideoStream.TrackSid = videoTrack.Sid;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewVideoStream = newVideoStream;
 
             var resp = FfiClient.SendRequest(request);
@@ -133,7 +133,7 @@ namespace LiveKit
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var frameInfo = e.FrameReceived.Frame;
+            var frameInfo = e.FrameReceived.Buffer.Info;
             var bufferInfo = e.FrameReceived.Buffer;
             var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
 

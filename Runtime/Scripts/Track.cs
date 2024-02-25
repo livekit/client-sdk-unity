@@ -80,7 +80,7 @@ namespace LiveKit
             createTrack.Name = name;
             createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.CreateAudioTrack = createTrack;
 
             var resp = FfiClient.SendRequest(request);
