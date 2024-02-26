@@ -16,7 +16,7 @@ namespace LiveKit.Rooms.DataPipes
         public void PublishData(
             Span<byte> data,
             string topic,
-            IReadOnlyList<string> sids,
+            IReadOnlyCollection<string> sids,
             DataPacketKind kind = DataPacketKind.KindLossy
         )
         {
@@ -33,7 +33,7 @@ namespace LiveKit.Rooms.DataPipes
             byte* data,
             int len,
             string topic,
-            IReadOnlyList<string> sids,
+            IReadOnlyCollection<string> sids,
             DataPacketKind kind = DataPacketKind.KindLossy
         )
         {

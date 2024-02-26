@@ -18,7 +18,7 @@ namespace LiveKit.Rooms.DataPipes
         void PublishData(
             Span<byte> data,
             string topic,
-            IReadOnlyList<string> destinationSids,
+            IReadOnlyCollection<string> destinationSids,
             DataPacketKind kind = DataPacketKind.KindLossy
         );
     }
