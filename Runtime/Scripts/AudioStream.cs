@@ -27,8 +27,7 @@ namespace LiveKit
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
             var newAudioStream = new NewAudioStreamRequest();
-            newAudioStream.ParticipantSid = participant.Sid;
-            newAudioStream.TrackHandle = audioTrack.Sid;
+            newAudioStream.TrackHandle = audioTrack.TrackHandle;
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
 
             var request = new FfiRequest();

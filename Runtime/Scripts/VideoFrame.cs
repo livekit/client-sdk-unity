@@ -8,14 +8,16 @@ namespace LiveKit
 {
     public sealed class VideoFrame
     {
-        private VideoB _info;
+        private VideoBufferInfo _info;
 
-        public long Timestamp => _info.Timestamp;
-        public VideoRotation Rotation => _info.Rotation;
+        public long Timestamp;
+        public VideoRotation Rotation;
 
-        public VideoFrame(VideoFrameInfo info)
+        public VideoFrame(VideoBufferInfo info, long timeStamp, VideoRotation rotation)
         {
             _info = info;
+            Timestamp = timeStamp;
+            Rotation = rotation;
         }
     }
 
@@ -79,8 +81,8 @@ namespace LiveKit
         {
             switch (info.Type)
             {
-                case VideoBufferType.Native:
-                    return new NativeBuffer(handle, info);
+                //case VideoBufferType.Native:
+                //    return new NativeBuffer(handle, info);
                 case VideoBufferType.I420:
                     return new I420Buffer(handle, info);
                 case VideoBufferType.I420A:
@@ -109,43 +111,38 @@ namespace LiveKit
             // after using this function.
             Handle.SetHandleAsInvalid();
 
-            var handleId = new FFIHandleId();
-            handleId.Id = (ulong)Handle.DangerousGetHandle();
-
-            var toi420 = new ToI420Request();
-            toi420.Buffer = handleId;
+     
+            var toi420 = new VideoConvertRequest();
+            toi420.Buffer = Info;
+            toi420.DstType = VideoBufferType.I420;
 
             var request = new FfiRequest();
-            request.ToI420 = toi420;
+            request.VideoConvert = toi420;
 
             var resp = FfiClient.SendRequest(request);
-            var newInfo = resp.ToI420.Buffer;
+            var newInfo = resp.VideoConvert.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");
 
             var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
-            return new I420Buffer(newHandle, newInfo);
+            return new I420Buffer(newHandle, newInfo.Info);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToARGB(VideoFormatType format, IntPtr dst, uint dstStride, uint width, uint height)
+        public void ToARGB(VideoBufferType format, IntPtr dst, uint dstStride, uint width, uint height)
         {
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
 
-            var handleId = new FFIHandleId();
+            var handleId = new FfiOwnedHandle();
             handleId.Id = (ulong)Handle.DangerousGetHandle();
 
-            var argb = new ToARGBRequest();
-            argb.Buffer = handleId;
-            argb.DstPtr = (ulong)dst;
-            argb.DstFormat = format;
-            argb.DstStride = dstStride;
-            argb.DstWidth = width;
-            argb.DstHeight = height;
+            var toARGB = new VideoConvertRequest();
+            toARGB.Buffer = Info;
+            toARGB.DstType = VideoBufferType.Argb;
 
             var request = new FfiRequest();
-            request.ToArgb = argb;
+            request.VideoConvert = toARGB;
 
             FfiClient.SendRequest(request);
         }

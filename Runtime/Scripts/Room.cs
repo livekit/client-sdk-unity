@@ -42,7 +42,7 @@ namespace LiveKit
         public delegate void MuteDelegate(TrackPublication publication, Participant participant);
         public delegate void SpeakersChangeDelegate(List<Participant> speakers);
         public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
-        public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind);
+        public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind, string topic);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate();
 
@@ -200,21 +200,14 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
                         var dataInfo = e.DataReceived;
-
-                        var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);
-                        var data = new byte[dataInfo.DataSize];
-                        Marshal.Copy((IntPtr)dataInfo.DataPtr, data, 0, data.Length);
-                        handle.Dispose();
-
+                        var data = new byte[dataInfo.Data.Data.CalculateSize()];
+                        Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
                         var participant = GetParticipant(e.DataReceived.ParticipantSid);
-                        DataReceived?.Invoke(data, participant, dataInfo.Kind);
+                        DataReceived?.Invoke(data, participant, dataInfo.Kind, dataInfo.Topic);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
-                    break;
-                case RoomEvent.MessageOneofCase.Connected:
-                    Connected?.Invoke();
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
                     Disconnected?.Invoke();
@@ -229,12 +222,12 @@ namespace LiveKit
             }
         }
 
-        internal void OnConnect(RoomInfo info)
+        internal void OnConnect(ConnectCallback info)
         {
-            Handle = new FfiHandle((IntPtr)info.Handle.Id);
+            Handle = new FfiHandle((IntPtr)info.AsyncId);
 
-            UpdateFromInfo(info);
-            LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
+            UpdateFromInfo(info.Room.Info);
+            LocalParticipant = new LocalParticipant(info.LocalParticipant.Info, this);
 
             // Add already connected participant
             foreach (var p in info.Participants)
@@ -252,13 +245,6 @@ namespace LiveKit
         {
             var participant = new RemoteParticipant(info, this);
             _participants.Add(participant.Sid, participant);
-
-            foreach (var pubInfo in info.Publications)
-            {
-                var publication = new RemoteTrackPublication(pubInfo);
-                participant._tracks.Add(publication.Sid, publication);
-            }
-
             return participant;
         }
 
@@ -293,7 +279,7 @@ namespace LiveKit
 
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
-                _room.OnConnect(e.Room.Info);
+                _room.OnConnect(e);
 
             IsError = !success;
             IsDone = true;

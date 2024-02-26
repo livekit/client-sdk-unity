@@ -1,6 +1,7 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
+using UnityEngine;
 
 namespace LiveKit
 {
@@ -13,6 +14,7 @@ namespace LiveKit
         bool Muted { get; }
         WeakReference<Room> Room { get; }
         WeakReference<Participant> Participant { get; }
+        ulong TrackHandle { get; }
     }
 
     public interface ILocalTrack : ITrack
@@ -49,11 +51,14 @@ namespace LiveKit
         // IsOwned is true if C# owns the handle
         public bool IsOwned => Handle != null && !Handle.IsInvalid;
 
-        internal readonly FfiHandle Handle;
+        public readonly FfiHandle Handle;
+
+        public ulong TrackHandle { get; }
 
         internal Track(FfiHandle handle, TrackInfo info, Room room, Participant participant)
         {
             Handle = handle;
+            TrackHandle = (ulong)handle.DangerousGetHandle();
             Room = new WeakReference<Room>(room);
             Participant = new WeakReference<Participant>(participant);
             UpdateInfo(info);
@@ -78,15 +83,15 @@ namespace LiveKit
         {
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
-            createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
 
             var request = new FfiRequest();
             request.CreateAudioTrack = createTrack;
 
             var resp = FfiClient.SendRequest(request);
-            var trackInfo = resp.CreateAudioTrack.Track;
-            var trackHandle = new FfiHandle((IntPtr)trackInfo.OptHandle.Id);
-            var track = new LocalAudioTrack(trackHandle, trackInfo, null);
+            var newTrack = resp.CreateAudioTrack.Track;
+            var trackHandle = new FfiHandle((IntPtr)newTrack.Handle.Id);
+            var track = new LocalAudioTrack(trackHandle, newTrack.Info, null);
             return track;
         }
     }
@@ -97,25 +102,18 @@ namespace LiveKit
 
         public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source)
         {
-            var captureOptions = new VideoCaptureOptions();
-            var resolution = new VideoResolution();
-            resolution.Width = 640;
-            resolution.Height = 480;
-            resolution.FrameRate = 30;
-            captureOptions.Resolution = resolution;
 
             var createTrack = new CreateVideoTrackRequest();
             createTrack.Name = name;
-            createTrack.SourceHandle = new FFIHandleId { Id = (ulong)source.Handle.DangerousGetHandle() };
-            createTrack.Options = captureOptions;
-
-            var request = new FFIRequest();
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
+  
+            var request = new FfiRequest();
             request.CreateVideoTrack = createTrack;
 
             var resp = FfiClient.SendRequest(request);
-            var trackInfo = resp.CreateVideoTrack.Track;
-            var trackHandle = new FfiHandle((IntPtr)trackInfo.OptHandle.Id);
-            var track = new LocalVideoTrack(trackHandle, trackInfo, null);
+            var newTrack = resp.CreateVideoTrack.Track;
+            var trackHandle = new FfiHandle((IntPtr)newTrack.Handle.Id);
+            var track = new LocalVideoTrack(trackHandle, newTrack.Info, null);
             return track;
         }
     }

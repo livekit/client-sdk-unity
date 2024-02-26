@@ -65,8 +65,7 @@ namespace LiveKit
             var track = (Track)localTrack;
 
             var publish = new PublishTrackRequest();
-            publish.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            publish.TrackHandle = new FFIHandleId { Id = (ulong)track.Handle.DangerousGetHandle() };
+            publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
 
             var request = new FfiRequest();
