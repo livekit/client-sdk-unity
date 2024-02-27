@@ -81,8 +81,6 @@ namespace LiveKit
         {
             switch (info.Type)
             {
-                //case VideoBufferType.Native:
-                //    return new NativeBuffer(handle, info);
                 case VideoBufferType.I420:
                     return new I420Buffer(handle, info);
                 case VideoBufferType.I420A:
@@ -150,6 +148,7 @@ namespace LiveKit
 
     public abstract class PlanarYuvBuffer : VideoFrameBuffer
     {
+        /*
         public uint ChromaWidth => Info.Yuv.ChromaWidth;
         public uint ChromaHeight => Info.Yuv.ChromaHeight;
         public uint StrideY => Info.Yuv.StrideY;
@@ -158,7 +157,7 @@ namespace LiveKit
         public IntPtr DataY => (IntPtr)Info.Yuv.DataYPtr;
         public IntPtr DataU => (IntPtr)Info.Yuv.DataUPtr;
         public IntPtr DataV => (IntPtr)Info.Yuv.DataVPtr;
-
+        */
         internal PlanarYuvBuffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }
     }
     public abstract class PlanarYuv8Buffer : PlanarYuvBuffer
@@ -173,13 +172,14 @@ namespace LiveKit
 
     public abstract class BiplanarYuvBuffer : VideoFrameBuffer
     {
+        /*
         public uint ChromaWidth => Info.BiYuv.ChromaWidth;
         public uint ChromaHeight => Info.BiYuv.ChromaHeight;
         public uint StrideY => Info.BiYuv.StrideY;
         public uint StrideUV => Info.BiYuv.StrideUv;
         public IntPtr DataY => (IntPtr)Info.BiYuv.DataYPtr;
         public IntPtr DataUV => (IntPtr)Info.BiYuv.DataUvPtr;
-
+        */
         internal BiplanarYuvBuffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }
     }
 
@@ -204,10 +204,13 @@ namespace LiveKit
 
         internal override long GetMemorySize()
         {
+            return Info.CalculateSize();
+            /*
             var chromaHeight = (Height + 1) / 2;
             return StrideY * Height
                 + StrideU * chromaHeight
                 + StrideV * chromaHeight;
+            */
         }
     }
 

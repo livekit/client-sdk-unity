@@ -2,6 +2,8 @@ using System;
 using System.Security;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Reflection;
 
 namespace LiveKit.Internal
 {
@@ -20,5 +22,8 @@ namespace LiveKit.Internal
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_request")]
         internal static extern unsafe FfiHandle FfiNewRequest(byte[] data, int len, out byte* dataPtr, out int dataLen);
+
+        [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_initialize")]
+        internal static extern unsafe FfiHandle FfiInitialize(ulong cb, bool captureLogs);
     }
 }

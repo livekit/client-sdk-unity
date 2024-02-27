@@ -21,7 +21,7 @@ namespace LiveKit.Internal
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
-    internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
+    //internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
     internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
 
@@ -39,13 +39,15 @@ namespace LiveKit.Internal
         public event ConnectReceivedDelegate ConnectReceived;
         public event RoomEventReceivedDelegate RoomEventReceived;
         public event TrackEventReceivedDelegate TrackEventReceived;
-        public event ParticipantEventReceivedDelegate ParticipantEventReceived;
+        //public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate AudioStreamEventReceived;
 
 #if UNITY_EDITOR
         static FfiClient()
         {
+            FFICallbackDelegate callback = FFICallback;
+            NativeMethods.FfiInitialize((ulong)Marshal.GetFunctionPointerForDelegate(callback), true);
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
             EditorApplication.quitting += Quit;
@@ -59,14 +61,13 @@ namespace LiveKit.Internal
 
         static void OnAfterAssemblyReload()
         {
-            Initialize();
+ 
         }
 #else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
             Application.quitting += Quit;
-            Initialize();
         }
 #endif
 
@@ -86,19 +87,6 @@ namespace LiveKit.Internal
             Instance._context = SynchronizationContext.Current;
         }
 
-        static void Initialize()
-        {
-            FFICallbackDelegate callback = FFICallback;
-
-            var initReq = new InitializeRequest();
-            initReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
-
-            var request = new FfiRequest();
-            request.Initialize = initReq;
-            SendRequest(request);
-            Utils.Debug("FFIServer - Initialized");
-        }
-
         static void Dispose()
         {
             // Stop all rooms synchronously
@@ -113,7 +101,7 @@ namespace LiveKit.Internal
 
         internal static FfiResponse SendRequest(FfiRequest request)
         {
-            var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
+            var data = request.ToByteArray();
             FfiResponse response;
             unsafe
             {
@@ -150,9 +138,6 @@ namespace LiveKit.Internal
                            break;
                        case FfiEvent.MessageOneofCase.TrackEvent:
                            Instance.TrackEventReceived?.Invoke(response.TrackEvent);
-                           break;
-                       //case FfiEvent.MessageOneofCase.ParticipantEvent:
-                       //    Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
                            break;
                        case FfiEvent.MessageOneofCase.VideoStreamEvent:
                            Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
