@@ -77,21 +77,6 @@ namespace LiveKit
             }
         }
 
-        internal bool UploadBuffer()
-        {
-            var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
-
-            unsafe
-            {
-                var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
-                VideoBuffer.ToARGB(VideoBufferType.Abgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
-            }
-
-            Texture.Apply();
-            return true;
-        }
-
         public IEnumerator Update()
         {
             while (true)
@@ -111,11 +96,16 @@ namespace LiveKit
                 var textureChanged = false;
                 if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
                 {
-                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, true, true);
+                   if (Texture != null) UnityEngine.Object.Destroy(Texture);
+                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
+                    Texture.ignoreMipmapLimit = false;
                     textureChanged = true;
                 }
-
-                UploadBuffer();
+                var rgba = VideoBuffer.ToRGBA();
+                {
+                    Texture.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize()); 
+                }
+                Texture.Apply();
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);
@@ -131,7 +121,7 @@ namespace LiveKit
 
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
                 return;
-
+ 
             var newBuffer = e.FrameReceived.Buffer;
             var handle = new FfiHandle((IntPtr)newBuffer.Handle.Id);
             var frameInfo = newBuffer.Info;

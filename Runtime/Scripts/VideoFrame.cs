@@ -23,7 +23,7 @@ namespace LiveKit
 
     public abstract class VideoFrameBuffer : IDisposable
     {
-        protected VideoBufferInfo Info;
+        public VideoBufferInfo Info;
 
         internal readonly FfiHandle Handle;
         private bool _disposed = false;
@@ -68,12 +68,9 @@ namespace LiveKit
                 _disposed = true;
             }
         }
-
-        /// Used for GC.AddMemoryPressure(Int64)
-        /// TODO(theomonnom): Remove the default implementation when each buffer type is implemented
         internal virtual long GetMemorySize()
         {
-            return -1;
+            return (Info.Height * Info.Width * 3) / 2;
         }
 
         /// VideoFrameBuffer takes ownership of the FFIHandle
@@ -127,7 +124,7 @@ namespace LiveKit
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToARGB(VideoBufferType format, IntPtr dst, uint dstStride, uint width, uint height)
+        public RGBABBuffer ToRGBA()
         {
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
@@ -135,14 +132,21 @@ namespace LiveKit
             var handleId = new FfiOwnedHandle();
             handleId.Id = (ulong)Handle.DangerousGetHandle();
 
-            var toARGB = new VideoConvertRequest();
-            toARGB.Buffer = Info;
-            toARGB.DstType = VideoBufferType.Argb;
+            var toRGBA = new VideoConvertRequest();
+            toRGBA.Buffer = Info;
+            toRGBA.DstType = VideoBufferType.Rgba;
 
             var request = new FfiRequest();
-            request.VideoConvert = toARGB;
+            request.VideoConvert = toRGBA;
 
-            FfiClient.SendRequest(request);
+            var resp = FfiClient.SendRequest(request);
+
+            var newInfo = resp.VideoConvert.Buffer;
+            if (newInfo == null)
+                throw new InvalidOperationException("failed to convert");
+
+            var newHandle = new FfiHandle((IntPtr)newInfo.Handle.Id);
+            return new RGBABBuffer(newHandle, newInfo.Info);
         }
     }
 
@@ -198,19 +202,23 @@ namespace LiveKit
         internal NativeBuffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }
     }
 
+        public class RGBABBuffer : VideoFrameBuffer
+    {
+        internal override long GetMemorySize()
+        {
+            return (Info.Width * Info.Height * 4);
+        }
+
+        internal RGBABBuffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }
+    }
+
     public class I420Buffer : PlanarYuv8Buffer
     {
         internal I420Buffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }
 
         internal override long GetMemorySize()
         {
-            return Info.CalculateSize();
-            /*
-            var chromaHeight = (Height + 1) / 2;
-            return StrideY * Height
-                + StrideU * chromaHeight
-                + StrideV * chromaHeight;
-            */
+            return (Info.Width * Info.Height * 3) / 2;
         }
     }
 
