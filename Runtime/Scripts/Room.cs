@@ -4,7 +4,6 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using PlasticGui.WorkspaceWindow;
 
 namespace LiveKit
 {

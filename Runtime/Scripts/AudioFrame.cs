@@ -1,7 +1,6 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using UnityEditor.PackageManager.Requests;
 
 namespace LiveKit
 {
