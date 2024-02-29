@@ -91,6 +91,9 @@ namespace LiveKit.Internal
 
         private static void Quit()
         {
+            #if NO_LIVEKIT_MODE
+            return;
+            #endif
             #if UNITY_EDITOR
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
@@ -108,6 +111,10 @@ namespace LiveKit.Internal
 
         private static void InitializeSdk()
         {
+            #if NO_LIVEKIT_MODE
+            return;
+            #endif
+            
             #if LK_VERBOSE
             const bool captureLogs = true;
             #else
@@ -131,6 +138,9 @@ namespace LiveKit.Internal
 
         public void Dispose()
         {
+            #if NO_LIVEKIT_MODE
+            return;
+            #endif
             // Stop all rooms synchronously
             // The rust lk implementation should also correctly dispose WebRTC
             initialized = false;
@@ -150,6 +160,9 @@ namespace LiveKit.Internal
 
         public FfiResponse SendRequest(FfiRequest request)
         {
+            #if NO_LIVEKIT_MODE
+            return new FfiResponse();
+            #endif
             try
             {
                 unsafe
@@ -187,6 +200,10 @@ namespace LiveKit.Internal
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(IntPtr data, int size)
         {
+            #if NO_LIVEKIT_MODE
+            return;
+            #endif
+            
             var respData = new Span<byte>(data.ToPointer()!, size);
             var response = FfiEvent.Parser!.ParseFrom(respData);
 
