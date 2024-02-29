@@ -76,9 +76,16 @@ namespace LiveKit
             // Don't play the audio locally
             Array.Clear(data, 0, data.Length);
 
+            var audioFrameBufferInfo = new AudioFrameBufferInfo();
+
+            audioFrameBufferInfo.DataPtr = (ulong)_frame.Data;
+            audioFrameBufferInfo.NumChannels = _frame.NumChannels;
+            audioFrameBufferInfo.SampleRate = _frame.SampleRate;
+            audioFrameBufferInfo.SamplesPerChannel = _frame.SamplesPerChannel;
+
             var pushFrame = new CaptureAudioFrameRequest();
             pushFrame.SourceHandle = Handle.Id;
-            pushFrame.Buffer = _frame.Info;
+            pushFrame.Buffer = audioFrameBufferInfo;
 
             var request = new FfiRequest();
             request.CaptureAudioFrame = pushFrame;
