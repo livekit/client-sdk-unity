@@ -3,6 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -75,6 +77,38 @@ namespace LiveKit
             request.PublishTrack = publish;
 
             var resp = FfiClient.SendRequest(request);
+            return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
+        }
+
+        public PublishTrackInstruction publishData(byte[] data, string[] destination_sids = null, bool reliable = true, string topic = null)
+        {
+            if (!Room.TryGetTarget(out var room))
+                throw new Exception("room is invalid");
+
+            var publish = new PublishDataRequest();
+            publish.LocalParticipantHandle = Handle.Id;
+            publish.Kind = reliable ? DataPacketKind.KindReliable : DataPacketKind.KindLossy;
+
+            if (destination_sids is not null)
+            {
+                publish.DestinationSids.AddRange(destination_sids);
+            }
+
+            if(topic is not null)
+            {
+                publish.Topic = topic;
+            }
+
+            unsafe {
+                publish.DataLen = (ulong)data.Length;
+                publish.DataPtr = (ulong)System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement<byte>(data, 0);
+            }
+
+            var request = new FfiRequest();
+            request.PublishData = publish;
+
+            var resp = FfiClient.SendRequest(request);
+
             return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
         }
     }
