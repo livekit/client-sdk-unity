@@ -32,7 +32,10 @@ namespace LiveKit
         {
             _handle = handle;
             _info = info;
-
+            _sampleRate = _info.SampleRate;
+            _numChannels = _info.NumChannels;
+            _samplesPerChannel = _info.SamplesPerChannel;
+            _dataPtr = (IntPtr)info.DataPtr;
         }
 
         internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {

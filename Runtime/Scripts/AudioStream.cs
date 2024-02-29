@@ -92,8 +92,8 @@ namespace LiveKit
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var info = e.FrameReceived.Frame;
-            var frame = new AudioFrame(info.Handle, info.Info);
+            var newFrame = e.FrameReceived.Frame;
+            var frame = new AudioFrame(newFrame.Handle, newFrame.Info);
 
             lock (_lock)
             { 
