@@ -83,7 +83,7 @@ namespace LiveKit
         {
             var createTrack = new CreateAudioTrackRequest();
             createTrack.Name = name;
-            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
+            createTrack.SourceHandle = (ulong)source.Handle.Id;
 
             var request = new FfiRequest();
             request.CreateAudioTrack = createTrack;

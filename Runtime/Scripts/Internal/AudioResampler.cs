@@ -29,6 +29,9 @@ namespace LiveKit
             request.RemixAndResample = remix;
 
             var res = FfiClient.SendRequest(request);
+            if(res.RemixAndResample == null) {
+                return null;
+            }
             var newBuffer = res.RemixAndResample.Buffer;
             return new AudioFrame(newBuffer.Handle, newBuffer.Info);
         }

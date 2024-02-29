@@ -10,6 +10,7 @@ namespace LiveKit
     {
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
+        public FfiOwnedHandle Handle;
         private ParticipantInfo _info;
         public string Sid => _info.Sid;
         public string Identity => _info.Identity;
@@ -27,10 +28,11 @@ namespace LiveKit
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
         internal readonly Dictionary<string, TrackPublication> _tracks = new();
 
-        protected Participant(ParticipantInfo info, Room room)
+        protected Participant(OwnedParticipant participant, Room room)
         {
             Room = new WeakReference<Room>(room);
-            UpdateInfo(info);
+            Handle = participant.Handle;
+            UpdateInfo(participant.Info);
         }
 
         internal void UpdateInfo(ParticipantInfo info)
@@ -55,7 +57,7 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, LocalTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (LocalTrackPublication)p.Value);
 
-        internal LocalParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+        internal LocalParticipant(OwnedParticipant participant, Room room) : base(participant, room) { }
 
         public PublishTrackInstruction PublishTrack(ILocalTrack localTrack, TrackPublishOptions options)
         {
@@ -65,7 +67,8 @@ namespace LiveKit
             var track = (Track)localTrack;
 
             var publish = new PublishTrackRequest();
-            publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
+            publish.LocalParticipantHandle = Handle.Id;
+            publish.TrackHandle = (ulong)track.TrackHandle;
             publish.Options = options;
 
             var request = new FfiRequest();
@@ -81,7 +84,7 @@ namespace LiveKit
         public new IReadOnlyDictionary<string, RemoteTrackPublication> Tracks =>
             base.Tracks.ToDictionary(p => p.Key, p => (RemoteTrackPublication)p.Value);
 
-        internal RemoteParticipant(ParticipantInfo info, Room room) : base(info, room) { }
+        internal RemoteParticipant(OwnedParticipant participant, Room room) : base(participant, room) { }
     }
 
     public sealed class PublishTrackInstruction : YieldInstruction

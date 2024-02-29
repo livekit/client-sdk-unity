@@ -8,7 +8,7 @@ namespace LiveKit
 {
     public class AudioStream
     {
-        internal readonly FfiHandle Handle;
+        internal readonly FfiOwnedHandle Handle;
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -36,7 +36,7 @@ namespace LiveKit
             var resp = FfiClient.SendRequest(request);
             var streamInfo = resp.NewAudioStream.Stream;
 
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            Handle = streamInfo.Handle;
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -86,6 +86,8 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
+            if(Handle.Id != e.StreamHandle)
+                return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
@@ -101,8 +103,11 @@ namespace LiveKit
                 unsafe
                 {
                     var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                    _buffer?.Write(data);
+                    if(uFrame != null) {
+                        var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
+                        _buffer?.Write(data);
+                    }
+                    
                 }
             }
         }

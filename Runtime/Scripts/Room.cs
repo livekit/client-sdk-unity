@@ -235,7 +235,7 @@ namespace LiveKit
             RoomHandle = info.AsyncId;
 
             UpdateFromInfo(info.Room.Info);
-            LocalParticipant = new LocalParticipant(info.LocalParticipant.Info, this);
+            LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
 
             // Add already connected participant
             foreach (var p in info.Participants)
@@ -253,7 +253,7 @@ namespace LiveKit
         {
             var participant = item.Participant;
             var publications = item.Publications;
-            var newParticipant = new RemoteParticipant(participant.Info, this);
+            var newParticipant = new RemoteParticipant(participant, this);
             _participants.Add(participant.Info.Sid, newParticipant);
             foreach (var pub in publications)
             {
@@ -266,7 +266,7 @@ namespace LiveKit
 
         RemoteParticipant CreateRemoteParticipant(OwnedParticipant participant)
         {
-            var newParticipant = new RemoteParticipant(participant.Info, this);
+            var newParticipant = new RemoteParticipant(participant, this);
             _participants.Add(participant.Info.Sid, newParticipant);
             return newParticipant;
         }

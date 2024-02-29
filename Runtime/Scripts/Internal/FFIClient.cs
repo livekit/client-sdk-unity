@@ -67,6 +67,8 @@ namespace LiveKit.Internal
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
+            FFICallbackDelegate callback = FFICallback;
+            NativeMethods.FfiInitialize((ulong)Marshal.GetFunctionPointerForDelegate(callback), true);
             Application.quitting += Quit;
         }
 #endif

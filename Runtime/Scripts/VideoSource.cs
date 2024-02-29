@@ -75,7 +75,7 @@ namespace LiveKit
             {
                 argbInfo.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
             }
-            argbInfo.Type = VideoBufferType.Argb;
+            argbInfo.Type = VideoBufferType.Rgba;
             argbInfo.Stride = (uint)Texture.width * 4;
             argbInfo.Width = (uint)Texture.width;
             argbInfo.Height = (uint)Texture.height;
@@ -83,22 +83,19 @@ namespace LiveKit
             var toI420 = new VideoConvertRequest();
             toI420.FlipY = true;
             toI420.Buffer = argbInfo;
+            toI420.DstType = VideoBufferType.I420;
 
             var request = new FfiRequest();
             request.VideoConvert = toI420;
 
             var resp = FfiClient.SendRequest(request);
             var newBuffer = resp.VideoConvert.Buffer;
-            var bufferInfo = newBuffer.Info;
-            var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)newBuffer.Handle.Id), bufferInfo);
-
-            // Send the frame to WebRTC
-            var frameInfo = new VideoBufferInfo();
 
             var capture = new CaptureVideoFrameRequest();
-            capture.Buffer = frameInfo;
+            capture.Buffer = newBuffer.Info;
             capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            capture.Rotation = VideoRotation._0;
+            capture.Rotation = VideoRotation._180;
+            capture.SourceHandle  = (ulong)Handle.DangerousGetHandle();
 
 
             request = new FfiRequest();

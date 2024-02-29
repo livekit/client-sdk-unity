@@ -1,6 +1,8 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -12,13 +14,18 @@ namespace LiveKit
 
         private bool _disposed = false;
 
-        public uint NumChannels => _info.NumChannels;
-        public uint SampleRate => _info.SampleRate;
-        public uint SamplesPerChannel => _info.SamplesPerChannel;
+        private uint _numChannels;
+        public uint NumChannels => _numChannels;
+        private uint _sampleRate;
+        public uint SampleRate => _sampleRate;
+        private uint _samplesPerChannel;
+        public uint SamplesPerChannel => _samplesPerChannel;
 
         public AudioFrameBufferInfo Info => _info;
 
-        public IntPtr Data => (IntPtr)_info.DataPtr;
+        private IntPtr _dataPtr;
+        public IntPtr Data => _dataPtr;
+
         public int Length => (int) (SamplesPerChannel * NumChannels * sizeof(short));
 
         internal AudioFrame(FfiOwnedHandle handle, AudioFrameBufferInfo info)
@@ -29,23 +36,14 @@ namespace LiveKit
         }
 
         internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {
-            var request = new FfiRequest();
-            request.NewAudioResampler = new Proto.NewAudioResamplerRequest();
-
-            var resp = FfiClient.SendRequest(request);
-
-            var resample_request = new FfiRequest();
-
-            resample_request.RemixAndResample = new RemixAndResampleRequest();
-            resample_request.RemixAndResample.ResamplerHandle = resp.NewAudioResampler.Resampler.Handle.Id;
-            resample_request.RemixAndResample.Buffer = _info;
-            resample_request.RemixAndResample.SampleRate = (uint)sampleRate;
-            resample_request.RemixAndResample.NumChannels = (uint)numChannels;
-
-            resp = FfiClient.SendRequest(resample_request);
-
-            _handle = resp.RemixAndResample.Buffer.Handle;
-             _info = resp.RemixAndResample.Buffer.Info;
+            _sampleRate = (uint)sampleRate;
+            _numChannels = (uint)numChannels;
+            _samplesPerChannel = (uint)samplesPerChannel;
+            unsafe
+            {
+                var data = new NativeArray<byte>(Length, Allocator.Persistent);
+                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(data);
+            }
         }
         ~AudioFrame()
         {
