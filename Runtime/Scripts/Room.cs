@@ -4,26 +4,92 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEditor.VersionControl;
+using System.Linq;
 
 namespace LiveKit
 {
+    public enum IceTransportType
+    {
+        TRANSPORT_RELAY = 0,
+        TRANSPORT_NOHOST = 1,
+        TRANSPORT_ALL = 2
+    }
+
+    public enum ContinualGatheringPolicy
+    {
+        GATHER_ONCE = 0,
+        GATHER_CONTINUALLY = 1
+    }
+
+
+    public class IceServer
+    {
+        public string[] Urls;
+        public string Username;
+        public string Password;
+
+        public Proto.IceServer ToProto()
+        {
+            var proto = new Proto.IceServer();
+            proto.Username = Username;
+            proto.Password = Password;
+            proto.Urls.AddRange(Urls);
+
+            return proto;
+        }
+    }
 
     public class RTCConfiguration
     {
-        
+        IceTransportType IceTransportType = IceTransportType.TRANSPORT_ALL;
+        ContinualGatheringPolicy ContinualGatheringPolicy = ContinualGatheringPolicy.GATHER_ONCE;
+        IceServer[] IceServers;
+
+        public Proto.RtcConfig ToProto()
+        {
+            var proto = new Proto.RtcConfig();
+
+            switch(ContinualGatheringPolicy)
+            {
+                case ContinualGatheringPolicy.GATHER_ONCE:
+                    proto.ContinualGatheringPolicy = Proto.ContinualGatheringPolicy.GatherOnce;
+                    break;
+                case ContinualGatheringPolicy.GATHER_CONTINUALLY:
+                    proto.ContinualGatheringPolicy = Proto.ContinualGatheringPolicy.GatherContinually;
+                    break;
+            }
+
+            switch(IceTransportType)
+            {
+                case IceTransportType.TRANSPORT_ALL:
+                    proto.IceTransportType = Proto.IceTransportType.TransportAll;
+                    break;
+                case IceTransportType.TRANSPORT_RELAY:
+                    proto.IceTransportType = Proto.IceTransportType.TransportRelay;
+                    break;
+                case IceTransportType.TRANSPORT_NOHOST:
+                    proto.IceTransportType = Proto.IceTransportType.TransportNohost;
+                    break;
+            }
+
+            foreach(var item in IceServers)
+            {
+                proto.IceServers.Add(item.ToProto());
+            }
+
+            return proto;
+        }
     }
+
+
     public class RoomOptions
     {
         public bool AutoSubscribe = true;
         public bool Dynacast = true;
         public bool AdaptiveStream = true;
         public uint JoinRetries = 3;
-
-        public RTCConfiguration RtcConfig;
-
-        public RoomOptions()
-        { 
-        }
+        public RTCConfiguration RtcConfig = null;
 
         public Proto.RoomOptions ToProto()
         {
@@ -33,6 +99,7 @@ namespace LiveKit
             proto.Dynacast = Dynacast;
             proto.AdaptiveStream = AdaptiveStream;
             proto.JoinRetries = JoinRetries;
+            proto.RtcConfig = RtcConfig?.ToProto();
 
             return proto;
         }
