@@ -16,8 +16,8 @@ namespace LiveKit.Rooms
         IParticipantsHub Participants { get; }
         
         IDataPipe DataPipe { get; }
-        
-        Task<bool> Connect(string url, string authToken, CancellationToken cancelToken);
+
+        Task<bool> Connect(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
 
         void Disconnect();
     }

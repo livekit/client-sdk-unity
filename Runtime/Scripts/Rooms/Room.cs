@@ -87,9 +87,9 @@ namespace LiveKit.Rooms
             dataPipe.Assign(participantsHub);
         }
 
-        public Task<bool> Connect(string url, string authToken, CancellationToken cancelToken)
+        public Task<bool> Connect(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
         {
-            using var response = FFIBridge.Instance.SendConnectRequest(url, authToken);
+            using var response = FFIBridge.Instance.SendConnectRequest(url, authToken, autoSubscribe);
             FfiResponse res = response;
             return new ConnectInstruction(res.Connect!.AsyncId, this, cancelToken)
                 .AwaitWithSuccess();
@@ -180,10 +180,9 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = participantsHub.RemoteParticipantEnsured(e.TrackPublished!.ParticipantSid!);
-                        var publication = trackPublicationFactory.NewTrackPublication(e.TrackPublished.Publication!.Info!);
+                        var publication = trackPublicationFactory.NewTrackPublication(e.TrackPublished.Publication!.Handle, e.TrackPublished.Publication!.Info!);
                         participant.Publish(publication);
                         TrackPublished?.Invoke(publication, participant);
-                        publication.SetSubscribedForRemote(true);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnpublished:
@@ -198,8 +197,9 @@ namespace LiveKit.Rooms
                         var info = e.TrackSubscribed!.Track!.Info!;
                         var participant = participantsHub.RemoteParticipantEnsured(e.TrackSubscribed.ParticipantSid!);
                         var publication = participant.TrackPublication(info.Sid!);
+                        var trackHandle = ffiHandleFactory.NewFfiHandle((IntPtr)e.TrackSubscribed.Track.Handle.Id);
 
-                        var track = tracksFactory.NewTrack(null, info, this, participant);
+                        var track = tracksFactory.NewTrack(trackHandle, info, this, participant);
                         publication.UpdateTrack(track);
                         TrackSubscribed?.Invoke(track, publication, participant);
                     }

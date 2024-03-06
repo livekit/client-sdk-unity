@@ -33,5 +33,10 @@ namespace LiveKit
             // Called by Unity on the Audio thread
             AudioRead?.Invoke(data, channels, _sampleRate);
         }
+
+        private void OnDestroy()
+        {
+            AudioRead = null;
+        }
     }
 }

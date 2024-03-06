@@ -21,23 +21,25 @@ namespace LiveKit
         private Thread _readAudioThread;
         private object _lock = new object();
         private float[] _data;
-        private int _channels;
-        private int _sampleRate;
+        private uint _channels;
+        private uint _sampleRate;
         private volatile bool _pending = false;
 
         public RtcAudioSource(AudioSource source, AudioFilter audioFilter)
         {
-            using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
-            var newAudioSource = request.request;
-            newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            //newAudioSource.NumChannels = 2;
-            //newAudioSource.SampleRate = 48000;
-            using var response = request.Send();
-            FfiResponse res = response;
-            _info = res.NewAudioSource.Source.Info;
-            //TODO pooling handles
-            Handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioSource.Source.Handle!.Id);
-            UpdateSource(source, audioFilter);
+
+                using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
+                var newAudioSource = request.request;
+                newAudioSource.Type = AudioSourceType.AudioSourceNative;
+                newAudioSource.NumChannels = 2;
+                newAudioSource.SampleRate = 48000;
+
+                using var response = request.Send();
+                FfiResponse res = response;
+                _info = res.NewAudioSource.Source.Info;
+                Handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioSource.Source.Handle!.Id);
+                UpdateSource(source, audioFilter);
+
         }
 
         public void Start()
@@ -45,11 +47,16 @@ namespace LiveKit
             Stop();
             _readAudioThread = new Thread(Update);
             _readAudioThread.Start();
+
+            _audioFilter.AudioRead += OnAudioRead;
+            _audioSource.Play();
         }
 
         public void Stop()
         {
             _readAudioThread?.Abort();
+            if(_audioFilter) _audioFilter.AudioRead -= OnAudioRead;
+            if(_audioSource) _audioSource.Stop();
         }
 
         private void Update()
@@ -75,7 +82,7 @@ namespace LiveKit
                     || _frame.SampleRate != _sampleRate
                     || _frame.SamplesPerChannel != samplesPerChannel)
                 {
-                    _frame = new AudioFrame(_sampleRate, _channels, samplesPerChannel);
+                    _frame = new AudioFrame(_sampleRate, _channels, (uint)samplesPerChannel);
                 }
 
                 try
@@ -93,14 +100,18 @@ namespace LiveKit
                         var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
                         for (int i = 0; i < _data.Length; i++)
                         {
-                            frameData[i] = FloatToS16(_data[i]);
+                            frameData[i] = FloatToS16(_data[i]); 
                         }
+
+                        // Don't play the audio locally
+                        Array.Clear(_data, 0, _data.Length);
 
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
                         using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
                         
                         var pushFrame = request.request;
                         pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
+
                         pushFrame.Buffer = audioFrameBufferInfo;
                         pushFrame.Buffer.DataPtr = (ulong)_frame.Data;
                         pushFrame.Buffer.NumChannels = _frame.NumChannels;
@@ -114,13 +125,6 @@ namespace LiveKit
                         pushFrame.Buffer.SampleRate = 0;
                         pushFrame.Buffer.SamplesPerChannel = 0;
                     }
-
-                    Utils.Debug($"Pushed audio frame with {_data.Length} sample rate "
-                                + _frame.SampleRate
-                                + "  num channels "
-                                + _frame.NumChannels
-                                + " and samplers per channel "
-                                + _frame.SamplesPerChannel);
                 }
                 catch (Exception e)
                 {
@@ -133,8 +137,6 @@ namespace LiveKit
         {
             _audioSource = source;
             _audioFilter = audioFilter;
-            _audioFilter.AudioRead += OnAudioRead;
-            _audioSource.Play();
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
@@ -142,11 +144,13 @@ namespace LiveKit
             lock (_lock)
             {
                 _data = data;
-                _channels = channels;
-                _sampleRate = sampleRate;
+                _channels = (uint)channels;
+                _sampleRate = (uint)sampleRate;
                 _pending = true;
             }
         }
+
+        
 
     }
 }

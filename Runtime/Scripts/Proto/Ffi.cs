@@ -26,7 +26,7 @@ namespace LiveKit.Proto {
           string.Concat(
             "CglmZmkucHJvdG8SDWxpdmVraXQucHJvdG8aCmUyZWUucHJvdG8aC3RyYWNr",
             "LnByb3RvGgpyb29tLnByb3RvGhF2aWRlb19mcmFtZS5wcm90bxoRYXVkaW9f",
-            "ZnJhbWUucHJvdG8igA0KCkZmaVJlcXVlc3QSMAoHZGlzcG9zZRgCIAEoCzId",
+            "ZnJhbWUucHJvdG8izwsKCkZmaVJlcXVlc3QSMAoHZGlzcG9zZRgCIAEoCzId",
             "LmxpdmVraXQucHJvdG8uRGlzcG9zZVJlcXVlc3RIABIwCgdjb25uZWN0GAMg",
             "ASgLMh0ubGl2ZWtpdC5wcm90by5Db25uZWN0UmVxdWVzdEgAEjYKCmRpc2Nv",
             "bm5lY3QYBCABKAsyIC5saXZla2l0LnByb3RvLkRpc2Nvbm5lY3RSZXF1ZXN0",
@@ -44,107 +44,101 @@ namespace LiveKit.Proto {
             "dmVraXQucHJvdG8uQ3JlYXRlVmlkZW9UcmFja1JlcXVlc3RIABJEChJjcmVh",
             "dGVfYXVkaW9fdHJhY2sYDSABKAsyJi5saXZla2l0LnByb3RvLkNyZWF0ZUF1",
             "ZGlvVHJhY2tSZXF1ZXN0SAASMwoJZ2V0X3N0YXRzGA4gASgLMh4ubGl2ZWtp",
-            "dC5wcm90by5HZXRTdGF0c1JlcXVlc3RIABJEChJhbGxvY192aWRlb19idWZm",
-            "ZXIYDyABKAsyJi5saXZla2l0LnByb3RvLkFsbG9jVmlkZW9CdWZmZXJSZXF1",
-            "ZXN0SAASQAoQbmV3X3ZpZGVvX3N0cmVhbRgQIAEoCzIkLmxpdmVraXQucHJv",
-            "dG8uTmV3VmlkZW9TdHJlYW1SZXF1ZXN0SAASQAoQbmV3X3ZpZGVvX3NvdXJj",
-            "ZRgRIAEoCzIkLmxpdmVraXQucHJvdG8uTmV3VmlkZW9Tb3VyY2VSZXF1ZXN0",
-            "SAASRgoTY2FwdHVyZV92aWRlb19mcmFtZRgSIAEoCzInLmxpdmVraXQucHJv",
-            "dG8uQ2FwdHVyZVZpZGVvRnJhbWVSZXF1ZXN0SAASLwoHdG9faTQyMBgTIAEo",
-            "CzIcLmxpdmVraXQucHJvdG8uVG9JNDIwUmVxdWVzdEgAEi8KB3RvX2FyZ2IY",
-            "FCABKAsyHC5saXZla2l0LnByb3RvLlRvQXJnYlJlcXVlc3RIABJEChJhbGxv",
-            "Y19hdWRpb19idWZmZXIYFSABKAsyJi5saXZla2l0LnByb3RvLkFsbG9jQXVk",
-            "aW9CdWZmZXJSZXF1ZXN0SAASQAoQbmV3X2F1ZGlvX3N0cmVhbRgWIAEoCzIk",
-            "LmxpdmVraXQucHJvdG8uTmV3QXVkaW9TdHJlYW1SZXF1ZXN0SAASQAoQbmV3",
-            "X2F1ZGlvX3NvdXJjZRgXIAEoCzIkLmxpdmVraXQucHJvdG8uTmV3QXVkaW9T",
-            "b3VyY2VSZXF1ZXN0SAASRgoTY2FwdHVyZV9hdWRpb19mcmFtZRgYIAEoCzIn",
-            "LmxpdmVraXQucHJvdG8uQ2FwdHVyZUF1ZGlvRnJhbWVSZXF1ZXN0SAASRgoT",
-            "bmV3X2F1ZGlvX3Jlc2FtcGxlchgZIAEoCzInLmxpdmVraXQucHJvdG8uTmV3",
-            "QXVkaW9SZXNhbXBsZXJSZXF1ZXN0SAASRAoScmVtaXhfYW5kX3Jlc2FtcGxl",
-            "GBogASgLMiYubGl2ZWtpdC5wcm90by5SZW1peEFuZFJlc2FtcGxlUmVxdWVz",
-            "dEgAEioKBGUyZWUYGyABKAsyGi5saXZla2l0LnByb3RvLkUyZWVSZXF1ZXN0",
-            "SABCCQoHbWVzc2FnZSKbDQoLRmZpUmVzcG9uc2USMQoHZGlzcG9zZRgCIAEo",
-            "CzIeLmxpdmVraXQucHJvdG8uRGlzcG9zZVJlc3BvbnNlSAASMQoHY29ubmVj",
-            "dBgDIAEoCzIeLmxpdmVraXQucHJvdG8uQ29ubmVjdFJlc3BvbnNlSAASNwoK",
-            "ZGlzY29ubmVjdBgEIAEoCzIhLmxpdmVraXQucHJvdG8uRGlzY29ubmVjdFJl",
-            "c3BvbnNlSAASPAoNcHVibGlzaF90cmFjaxgFIAEoCzIjLmxpdmVraXQucHJv",
-            "dG8uUHVibGlzaFRyYWNrUmVzcG9uc2VIABJACg91bnB1Ymxpc2hfdHJhY2sY",
-            "BiABKAsyJS5saXZla2l0LnByb3RvLlVucHVibGlzaFRyYWNrUmVzcG9uc2VI",
-            "ABI6CgxwdWJsaXNoX2RhdGEYByABKAsyIi5saXZla2l0LnByb3RvLlB1Ymxp",
-            "c2hEYXRhUmVzcG9uc2VIABI+Cg5zZXRfc3Vic2NyaWJlZBgIIAEoCzIkLmxp",
-            "dmVraXQucHJvdG8uU2V0U3Vic2NyaWJlZFJlc3BvbnNlSAASSwoVdXBkYXRl",
-            "X2xvY2FsX21ldGFkYXRhGAkgASgLMioubGl2ZWtpdC5wcm90by5VcGRhdGVM",
-            "b2NhbE1ldGFkYXRhUmVzcG9uc2VIABJDChF1cGRhdGVfbG9jYWxfbmFtZRgK",
-            "IAEoCzImLmxpdmVraXQucHJvdG8uVXBkYXRlTG9jYWxOYW1lUmVzcG9uc2VI",
-            "ABJDChFnZXRfc2Vzc2lvbl9zdGF0cxgLIAEoCzImLmxpdmVraXQucHJvdG8u",
-            "R2V0U2Vzc2lvblN0YXRzUmVzcG9uc2VIABJFChJjcmVhdGVfdmlkZW9fdHJh",
-            "Y2sYDCABKAsyJy5saXZla2l0LnByb3RvLkNyZWF0ZVZpZGVvVHJhY2tSZXNw",
-            "b25zZUgAEkUKEmNyZWF0ZV9hdWRpb190cmFjaxgNIAEoCzInLmxpdmVraXQu",
-            "cHJvdG8uQ3JlYXRlQXVkaW9UcmFja1Jlc3BvbnNlSAASNAoJZ2V0X3N0YXRz",
-            "GA4gASgLMh8ubGl2ZWtpdC5wcm90by5HZXRTdGF0c1Jlc3BvbnNlSAASRQoS",
-            "YWxsb2NfdmlkZW9fYnVmZmVyGA8gASgLMicubGl2ZWtpdC5wcm90by5BbGxv",
-            "Y1ZpZGVvQnVmZmVyUmVzcG9uc2VIABJBChBuZXdfdmlkZW9fc3RyZWFtGBAg",
-            "ASgLMiUubGl2ZWtpdC5wcm90by5OZXdWaWRlb1N0cmVhbVJlc3BvbnNlSAAS",
-            "QQoQbmV3X3ZpZGVvX3NvdXJjZRgRIAEoCzIlLmxpdmVraXQucHJvdG8uTmV3",
-            "VmlkZW9Tb3VyY2VSZXNwb25zZUgAEkcKE2NhcHR1cmVfdmlkZW9fZnJhbWUY",
-            "EiABKAsyKC5saXZla2l0LnByb3RvLkNhcHR1cmVWaWRlb0ZyYW1lUmVzcG9u",
-            "c2VIABIwCgd0b19pNDIwGBMgASgLMh0ubGl2ZWtpdC5wcm90by5Ub0k0MjBS",
-            "ZXNwb25zZUgAEjAKB3RvX2FyZ2IYFCABKAsyHS5saXZla2l0LnByb3RvLlRv",
-            "QXJnYlJlc3BvbnNlSAASRQoSYWxsb2NfYXVkaW9fYnVmZmVyGBUgASgLMicu",
-            "bGl2ZWtpdC5wcm90by5BbGxvY0F1ZGlvQnVmZmVyUmVzcG9uc2VIABJBChBu",
-            "ZXdfYXVkaW9fc3RyZWFtGBYgASgLMiUubGl2ZWtpdC5wcm90by5OZXdBdWRp",
-            "b1N0cmVhbVJlc3BvbnNlSAASQQoQbmV3X2F1ZGlvX3NvdXJjZRgXIAEoCzIl",
-            "LmxpdmVraXQucHJvdG8uTmV3QXVkaW9Tb3VyY2VSZXNwb25zZUgAEkcKE2Nh",
-            "cHR1cmVfYXVkaW9fZnJhbWUYGCABKAsyKC5saXZla2l0LnByb3RvLkNhcHR1",
-            "cmVBdWRpb0ZyYW1lUmVzcG9uc2VIABJHChNuZXdfYXVkaW9fcmVzYW1wbGVy",
-            "GBkgASgLMigubGl2ZWtpdC5wcm90by5OZXdBdWRpb1Jlc2FtcGxlclJlc3Bv",
-            "bnNlSAASRQoScmVtaXhfYW5kX3Jlc2FtcGxlGBogASgLMicubGl2ZWtpdC5w",
-            "cm90by5SZW1peEFuZFJlc2FtcGxlUmVzcG9uc2VIABIrCgRlMmVlGBsgASgL",
-            "MhsubGl2ZWtpdC5wcm90by5FMmVlUmVzcG9uc2VIAEIJCgdtZXNzYWdlIs8H",
-            "CghGZmlFdmVudBIuCgpyb29tX2V2ZW50GAEgASgLMhgubGl2ZWtpdC5wcm90",
-            "by5Sb29tRXZlbnRIABIwCgt0cmFja19ldmVudBgCIAEoCzIZLmxpdmVraXQu",
-            "cHJvdG8uVHJhY2tFdmVudEgAEj0KEnZpZGVvX3N0cmVhbV9ldmVudBgDIAEo",
-            "CzIfLmxpdmVraXQucHJvdG8uVmlkZW9TdHJlYW1FdmVudEgAEj0KEmF1ZGlv",
-            "X3N0cmVhbV9ldmVudBgEIAEoCzIfLmxpdmVraXQucHJvdG8uQXVkaW9TdHJl",
-            "YW1FdmVudEgAEjEKB2Nvbm5lY3QYBSABKAsyHi5saXZla2l0LnByb3RvLkNv",
-            "bm5lY3RDYWxsYmFja0gAEjcKCmRpc2Nvbm5lY3QYBiABKAsyIS5saXZla2l0",
-            "LnByb3RvLkRpc2Nvbm5lY3RDYWxsYmFja0gAEjEKB2Rpc3Bvc2UYByABKAsy",
-            "Hi5saXZla2l0LnByb3RvLkRpc3Bvc2VDYWxsYmFja0gAEjwKDXB1Ymxpc2hf",
-            "dHJhY2sYCCABKAsyIy5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFja0NhbGxi",
-            "YWNrSAASQAoPdW5wdWJsaXNoX3RyYWNrGAkgASgLMiUubGl2ZWtpdC5wcm90",
-            "by5VbnB1Ymxpc2hUcmFja0NhbGxiYWNrSAASOgoMcHVibGlzaF9kYXRhGAog",
-            "ASgLMiIubGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YUNhbGxiYWNrSAASRwoT",
-            "Y2FwdHVyZV9hdWRpb19mcmFtZRgLIAEoCzIoLmxpdmVraXQucHJvdG8uQ2Fw",
-            "dHVyZUF1ZGlvRnJhbWVDYWxsYmFja0gAEksKFXVwZGF0ZV9sb2NhbF9tZXRh",
-            "ZGF0YRgMIAEoCzIqLmxpdmVraXQucHJvdG8uVXBkYXRlTG9jYWxNZXRhZGF0",
-            "YUNhbGxiYWNrSAASQwoRdXBkYXRlX2xvY2FsX25hbWUYDSABKAsyJi5saXZl",
-            "a2l0LnByb3RvLlVwZGF0ZUxvY2FsTmFtZUNhbGxiYWNrSAASNAoJZ2V0X3N0",
-            "YXRzGA4gASgLMh8ubGl2ZWtpdC5wcm90by5HZXRTdGF0c0NhbGxiYWNrSAAS",
-            "JwoEbG9ncxgPIAEoCzIXLmxpdmVraXQucHJvdG8uTG9nQmF0Y2hIABJDChFn",
-            "ZXRfc2Vzc2lvbl9zdGF0cxgQIAEoCzImLmxpdmVraXQucHJvdG8uR2V0U2Vz",
-            "c2lvblN0YXRzQ2FsbGJhY2tIAEIJCgdtZXNzYWdlIh8KDkRpc3Bvc2VSZXF1",
-            "ZXN0Eg0KBWFzeW5jGAEgASgIIjUKD0Rpc3Bvc2VSZXNwb25zZRIVCghhc3lu",
-            "Y19pZBgBIAEoBEgAiAEBQgsKCV9hc3luY19pZCIjCg9EaXNwb3NlQ2FsbGJh",
-            "Y2sSEAoIYXN5bmNfaWQYASABKAQitgEKCUxvZ1JlY29yZBImCgVsZXZlbBgB",
-            "IAEoDjIXLmxpdmVraXQucHJvdG8uTG9nTGV2ZWwSDgoGdGFyZ2V0GAIgASgJ",
-            "EhgKC21vZHVsZV9wYXRoGAMgASgJSACIAQESEQoEZmlsZRgEIAEoCUgBiAEB",
-            "EhEKBGxpbmUYBSABKA1IAogBARIPCgdtZXNzYWdlGAYgASgJQg4KDF9tb2R1",
-            "bGVfcGF0aEIHCgVfZmlsZUIHCgVfbGluZSI1CghMb2dCYXRjaBIpCgdyZWNv",
-            "cmRzGAEgAygLMhgubGl2ZWtpdC5wcm90by5Mb2dSZWNvcmQqUwoITG9nTGV2",
-            "ZWwSDQoJTE9HX0VSUk9SEAASDAoITE9HX1dBUk4QARIMCghMT0dfSU5GTxAC",
-            "Eg0KCUxPR19ERUJVRxADEg0KCUxPR19UUkFDRRAEQhCqAg1MaXZlS2l0LlBy",
-            "b3RvYgZwcm90bzM="));
+            "dC5wcm90by5HZXRTdGF0c1JlcXVlc3RIABJAChBuZXdfdmlkZW9fc3RyZWFt",
+            "GBAgASgLMiQubGl2ZWtpdC5wcm90by5OZXdWaWRlb1N0cmVhbVJlcXVlc3RI",
+            "ABJAChBuZXdfdmlkZW9fc291cmNlGBEgASgLMiQubGl2ZWtpdC5wcm90by5O",
+            "ZXdWaWRlb1NvdXJjZVJlcXVlc3RIABJGChNjYXB0dXJlX3ZpZGVvX2ZyYW1l",
+            "GBIgASgLMicubGl2ZWtpdC5wcm90by5DYXB0dXJlVmlkZW9GcmFtZVJlcXVl",
+            "c3RIABI7Cg12aWRlb19jb252ZXJ0GBMgASgLMiIubGl2ZWtpdC5wcm90by5W",
+            "aWRlb0NvbnZlcnRSZXF1ZXN0SAASQAoQbmV3X2F1ZGlvX3N0cmVhbRgWIAEo",
+            "CzIkLmxpdmVraXQucHJvdG8uTmV3QXVkaW9TdHJlYW1SZXF1ZXN0SAASQAoQ",
+            "bmV3X2F1ZGlvX3NvdXJjZRgXIAEoCzIkLmxpdmVraXQucHJvdG8uTmV3QXVk",
+            "aW9Tb3VyY2VSZXF1ZXN0SAASRgoTY2FwdHVyZV9hdWRpb19mcmFtZRgYIAEo",
+            "CzInLmxpdmVraXQucHJvdG8uQ2FwdHVyZUF1ZGlvRnJhbWVSZXF1ZXN0SAAS",
+            "RgoTbmV3X2F1ZGlvX3Jlc2FtcGxlchgZIAEoCzInLmxpdmVraXQucHJvdG8u",
+            "TmV3QXVkaW9SZXNhbXBsZXJSZXF1ZXN0SAASRAoScmVtaXhfYW5kX3Jlc2Ft",
+            "cGxlGBogASgLMiYubGl2ZWtpdC5wcm90by5SZW1peEFuZFJlc2FtcGxlUmVx",
+            "dWVzdEgAEioKBGUyZWUYGyABKAsyGi5saXZla2l0LnByb3RvLkUyZWVSZXF1",
+            "ZXN0SABCCQoHbWVzc2FnZSLnCwoLRmZpUmVzcG9uc2USMQoHZGlzcG9zZRgC",
+            "IAEoCzIeLmxpdmVraXQucHJvdG8uRGlzcG9zZVJlc3BvbnNlSAASMQoHY29u",
+            "bmVjdBgDIAEoCzIeLmxpdmVraXQucHJvdG8uQ29ubmVjdFJlc3BvbnNlSAAS",
+            "NwoKZGlzY29ubmVjdBgEIAEoCzIhLmxpdmVraXQucHJvdG8uRGlzY29ubmVj",
+            "dFJlc3BvbnNlSAASPAoNcHVibGlzaF90cmFjaxgFIAEoCzIjLmxpdmVraXQu",
+            "cHJvdG8uUHVibGlzaFRyYWNrUmVzcG9uc2VIABJACg91bnB1Ymxpc2hfdHJh",
+            "Y2sYBiABKAsyJS5saXZla2l0LnByb3RvLlVucHVibGlzaFRyYWNrUmVzcG9u",
+            "c2VIABI6CgxwdWJsaXNoX2RhdGEYByABKAsyIi5saXZla2l0LnByb3RvLlB1",
+            "Ymxpc2hEYXRhUmVzcG9uc2VIABI+Cg5zZXRfc3Vic2NyaWJlZBgIIAEoCzIk",
+            "LmxpdmVraXQucHJvdG8uU2V0U3Vic2NyaWJlZFJlc3BvbnNlSAASSwoVdXBk",
+            "YXRlX2xvY2FsX21ldGFkYXRhGAkgASgLMioubGl2ZWtpdC5wcm90by5VcGRh",
+            "dGVMb2NhbE1ldGFkYXRhUmVzcG9uc2VIABJDChF1cGRhdGVfbG9jYWxfbmFt",
+            "ZRgKIAEoCzImLmxpdmVraXQucHJvdG8uVXBkYXRlTG9jYWxOYW1lUmVzcG9u",
+            "c2VIABJDChFnZXRfc2Vzc2lvbl9zdGF0cxgLIAEoCzImLmxpdmVraXQucHJv",
+            "dG8uR2V0U2Vzc2lvblN0YXRzUmVzcG9uc2VIABJFChJjcmVhdGVfdmlkZW9f",
+            "dHJhY2sYDCABKAsyJy5saXZla2l0LnByb3RvLkNyZWF0ZVZpZGVvVHJhY2tS",
+            "ZXNwb25zZUgAEkUKEmNyZWF0ZV9hdWRpb190cmFjaxgNIAEoCzInLmxpdmVr",
+            "aXQucHJvdG8uQ3JlYXRlQXVkaW9UcmFja1Jlc3BvbnNlSAASNAoJZ2V0X3N0",
+            "YXRzGA4gASgLMh8ubGl2ZWtpdC5wcm90by5HZXRTdGF0c1Jlc3BvbnNlSAAS",
+            "QQoQbmV3X3ZpZGVvX3N0cmVhbRgQIAEoCzIlLmxpdmVraXQucHJvdG8uTmV3",
+            "VmlkZW9TdHJlYW1SZXNwb25zZUgAEkEKEG5ld192aWRlb19zb3VyY2UYESAB",
+            "KAsyJS5saXZla2l0LnByb3RvLk5ld1ZpZGVvU291cmNlUmVzcG9uc2VIABJH",
+            "ChNjYXB0dXJlX3ZpZGVvX2ZyYW1lGBIgASgLMigubGl2ZWtpdC5wcm90by5D",
+            "YXB0dXJlVmlkZW9GcmFtZVJlc3BvbnNlSAASPAoNdmlkZW9fY29udmVydBgT",
+            "IAEoCzIjLmxpdmVraXQucHJvdG8uVmlkZW9Db252ZXJ0UmVzcG9uc2VIABJB",
+            "ChBuZXdfYXVkaW9fc3RyZWFtGBYgASgLMiUubGl2ZWtpdC5wcm90by5OZXdB",
+            "dWRpb1N0cmVhbVJlc3BvbnNlSAASQQoQbmV3X2F1ZGlvX3NvdXJjZRgXIAEo",
+            "CzIlLmxpdmVraXQucHJvdG8uTmV3QXVkaW9Tb3VyY2VSZXNwb25zZUgAEkcK",
+            "E2NhcHR1cmVfYXVkaW9fZnJhbWUYGCABKAsyKC5saXZla2l0LnByb3RvLkNh",
+            "cHR1cmVBdWRpb0ZyYW1lUmVzcG9uc2VIABJHChNuZXdfYXVkaW9fcmVzYW1w",
+            "bGVyGBkgASgLMigubGl2ZWtpdC5wcm90by5OZXdBdWRpb1Jlc2FtcGxlclJl",
+            "c3BvbnNlSAASRQoScmVtaXhfYW5kX3Jlc2FtcGxlGBogASgLMicubGl2ZWtp",
+            "dC5wcm90by5SZW1peEFuZFJlc2FtcGxlUmVzcG9uc2VIABIrCgRlMmVlGBsg",
+            "ASgLMhsubGl2ZWtpdC5wcm90by5FMmVlUmVzcG9uc2VIAEIJCgdtZXNzYWdl",
+            "IvYHCghGZmlFdmVudBIuCgpyb29tX2V2ZW50GAEgASgLMhgubGl2ZWtpdC5w",
+            "cm90by5Sb29tRXZlbnRIABIwCgt0cmFja19ldmVudBgCIAEoCzIZLmxpdmVr",
+            "aXQucHJvdG8uVHJhY2tFdmVudEgAEj0KEnZpZGVvX3N0cmVhbV9ldmVudBgD",
+            "IAEoCzIfLmxpdmVraXQucHJvdG8uVmlkZW9TdHJlYW1FdmVudEgAEj0KEmF1",
+            "ZGlvX3N0cmVhbV9ldmVudBgEIAEoCzIfLmxpdmVraXQucHJvdG8uQXVkaW9T",
+            "dHJlYW1FdmVudEgAEjEKB2Nvbm5lY3QYBSABKAsyHi5saXZla2l0LnByb3Rv",
+            "LkNvbm5lY3RDYWxsYmFja0gAEjcKCmRpc2Nvbm5lY3QYBiABKAsyIS5saXZl",
+            "a2l0LnByb3RvLkRpc2Nvbm5lY3RDYWxsYmFja0gAEjEKB2Rpc3Bvc2UYByAB",
+            "KAsyHi5saXZla2l0LnByb3RvLkRpc3Bvc2VDYWxsYmFja0gAEjwKDXB1Ymxp",
+            "c2hfdHJhY2sYCCABKAsyIy5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFja0Nh",
+            "bGxiYWNrSAASQAoPdW5wdWJsaXNoX3RyYWNrGAkgASgLMiUubGl2ZWtpdC5w",
+            "cm90by5VbnB1Ymxpc2hUcmFja0NhbGxiYWNrSAASOgoMcHVibGlzaF9kYXRh",
+            "GAogASgLMiIubGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YUNhbGxiYWNrSAAS",
+            "RwoTY2FwdHVyZV9hdWRpb19mcmFtZRgLIAEoCzIoLmxpdmVraXQucHJvdG8u",
+            "Q2FwdHVyZUF1ZGlvRnJhbWVDYWxsYmFja0gAEksKFXVwZGF0ZV9sb2NhbF9t",
+            "ZXRhZGF0YRgMIAEoCzIqLmxpdmVraXQucHJvdG8uVXBkYXRlTG9jYWxNZXRh",
+            "ZGF0YUNhbGxiYWNrSAASQwoRdXBkYXRlX2xvY2FsX25hbWUYDSABKAsyJi5s",
+            "aXZla2l0LnByb3RvLlVwZGF0ZUxvY2FsTmFtZUNhbGxiYWNrSAASNAoJZ2V0",
+            "X3N0YXRzGA4gASgLMh8ubGl2ZWtpdC5wcm90by5HZXRTdGF0c0NhbGxiYWNr",
+            "SAASJwoEbG9ncxgPIAEoCzIXLmxpdmVraXQucHJvdG8uTG9nQmF0Y2hIABJD",
+            "ChFnZXRfc2Vzc2lvbl9zdGF0cxgQIAEoCzImLmxpdmVraXQucHJvdG8uR2V0",
+            "U2Vzc2lvblN0YXRzQ2FsbGJhY2tIABIlCgVwYW5pYxgRIAEoCzIULmxpdmVr",
+            "aXQucHJvdG8uUGFuaWNIAEIJCgdtZXNzYWdlIh8KDkRpc3Bvc2VSZXF1ZXN0",
+            "Eg0KBWFzeW5jGAEgASgIIjUKD0Rpc3Bvc2VSZXNwb25zZRIVCghhc3luY19p",
+            "ZBgBIAEoBEgAiAEBQgsKCV9hc3luY19pZCIjCg9EaXNwb3NlQ2FsbGJhY2sS",
+            "EAoIYXN5bmNfaWQYASABKAQitgEKCUxvZ1JlY29yZBImCgVsZXZlbBgBIAEo",
+            "DjIXLmxpdmVraXQucHJvdG8uTG9nTGV2ZWwSDgoGdGFyZ2V0GAIgASgJEhgK",
+            "C21vZHVsZV9wYXRoGAMgASgJSACIAQESEQoEZmlsZRgEIAEoCUgBiAEBEhEK",
+            "BGxpbmUYBSABKA1IAogBARIPCgdtZXNzYWdlGAYgASgJQg4KDF9tb2R1bGVf",
+            "cGF0aEIHCgVfZmlsZUIHCgVfbGluZSI1CghMb2dCYXRjaBIpCgdyZWNvcmRz",
+            "GAEgAygLMhgubGl2ZWtpdC5wcm90by5Mb2dSZWNvcmQiGAoFUGFuaWMSDwoH",
+            "bWVzc2FnZRgBIAEoCSpTCghMb2dMZXZlbBINCglMT0dfRVJST1IQABIMCghM",
+            "T0dfV0FSThABEgwKCExPR19JTkZPEAISDQoJTE9HX0RFQlVHEAMSDQoJTE9H",
+            "X1RSQUNFEARCEKoCDUxpdmVLaXQuUHJvdG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, global::LiveKit.Proto.RoomReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.AudioFrameReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.LogLevel), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "UpdateLocalMetadata", "UpdateLocalName", "GetSessionStats", "CreateVideoTrack", "CreateAudioTrack", "GetStats", "AllocVideoBuffer", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "ToI420", "ToArgb", "AllocAudioBuffer", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "UpdateLocalMetadata", "UpdateLocalName", "GetSessionStats", "CreateVideoTrack", "CreateAudioTrack", "GetStats", "AllocVideoBuffer", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "ToI420", "ToArgb", "AllocAudioBuffer", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "CaptureAudioFrame", "UpdateLocalMetadata", "UpdateLocalName", "GetStats", "Logs", "GetSessionStats" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "UpdateLocalMetadata", "UpdateLocalName", "GetSessionStats", "CreateVideoTrack", "CreateAudioTrack", "GetStats", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "UpdateLocalMetadata", "UpdateLocalName", "GetSessionStats", "CreateVideoTrack", "CreateAudioTrack", "GetStats", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "CaptureAudioFrame", "UpdateLocalMetadata", "UpdateLocalName", "GetStats", "Logs", "GetSessionStats", "Panic" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeRequest), global::LiveKit.Proto.DisposeRequest.Parser, new[]{ "Async" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeResponse), global::LiveKit.Proto.DisposeResponse.Parser, new[]{ "AsyncId" }, new[]{ "AsyncId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeCallback), global::LiveKit.Proto.DisposeCallback.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LogRecord), global::LiveKit.Proto.LogRecord.Parser, new[]{ "Level", "Target", "ModulePath", "File", "Line", "Message" }, new[]{ "ModulePath", "File", "Line" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LogBatch), global::LiveKit.Proto.LogBatch.Parser, new[]{ "Records" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LogBatch), global::LiveKit.Proto.LogBatch.Parser, new[]{ "Records" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.Panic), global::LiveKit.Proto.Panic.Parser, new[]{ "Message" }, null, null, null, null)
           }));
     }
     #endregion
@@ -241,9 +235,6 @@ namespace LiveKit.Proto {
         case MessageOneofCase.GetStats:
           GetStats = other.GetStats.Clone();
           break;
-        case MessageOneofCase.AllocVideoBuffer:
-          AllocVideoBuffer = other.AllocVideoBuffer.Clone();
-          break;
         case MessageOneofCase.NewVideoStream:
           NewVideoStream = other.NewVideoStream.Clone();
           break;
@@ -253,14 +244,8 @@ namespace LiveKit.Proto {
         case MessageOneofCase.CaptureVideoFrame:
           CaptureVideoFrame = other.CaptureVideoFrame.Clone();
           break;
-        case MessageOneofCase.ToI420:
-          ToI420 = other.ToI420.Clone();
-          break;
-        case MessageOneofCase.ToArgb:
-          ToArgb = other.ToArgb.Clone();
-          break;
-        case MessageOneofCase.AllocAudioBuffer:
-          AllocAudioBuffer = other.AllocAudioBuffer.Clone();
+        case MessageOneofCase.VideoConvert:
+          VideoConvert = other.VideoConvert.Clone();
           break;
         case MessageOneofCase.NewAudioStream:
           NewAudioStream = other.NewAudioStream.Clone();
@@ -453,23 +438,11 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "alloc_video_buffer" field.</summary>
-    public const int AllocVideoBufferFieldNumber = 15;
+    /// <summary>Field number for the "new_video_stream" field.</summary>
+    public const int NewVideoStreamFieldNumber = 16;
     /// <summary>
     /// Video
     /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.AllocVideoBufferRequest AllocVideoBuffer {
-      get { return messageCase_ == MessageOneofCase.AllocVideoBuffer ? (global::LiveKit.Proto.AllocVideoBufferRequest) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.AllocVideoBuffer;
-      }
-    }
-
-    /// <summary>Field number for the "new_video_stream" field.</summary>
-    public const int NewVideoStreamFieldNumber = 16;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewVideoStreamRequest NewVideoStream {
@@ -504,47 +477,23 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "to_i420" field.</summary>
-    public const int ToI420FieldNumber = 19;
+    /// <summary>Field number for the "video_convert" field.</summary>
+    public const int VideoConvertFieldNumber = 19;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.ToI420Request ToI420 {
-      get { return messageCase_ == MessageOneofCase.ToI420 ? (global::LiveKit.Proto.ToI420Request) message_ : null; }
+    public global::LiveKit.Proto.VideoConvertRequest VideoConvert {
+      get { return messageCase_ == MessageOneofCase.VideoConvert ? (global::LiveKit.Proto.VideoConvertRequest) message_ : null; }
       set {
         message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ToI420;
-      }
-    }
-
-    /// <summary>Field number for the "to_argb" field.</summary>
-    public const int ToArgbFieldNumber = 20;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.ToArgbRequest ToArgb {
-      get { return messageCase_ == MessageOneofCase.ToArgb ? (global::LiveKit.Proto.ToArgbRequest) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ToArgb;
-      }
-    }
-
-    /// <summary>Field number for the "alloc_audio_buffer" field.</summary>
-    public const int AllocAudioBufferFieldNumber = 21;
-    /// <summary>
-    /// Audio
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.AllocAudioBufferRequest AllocAudioBuffer {
-      get { return messageCase_ == MessageOneofCase.AllocAudioBuffer ? (global::LiveKit.Proto.AllocAudioBufferRequest) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.AllocAudioBuffer;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.VideoConvert;
       }
     }
 
     /// <summary>Field number for the "new_audio_stream" field.</summary>
     public const int NewAudioStreamFieldNumber = 22;
+    /// <summary>
+    /// Audio
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewAudioStreamRequest NewAudioStream {
@@ -632,13 +581,10 @@ namespace LiveKit.Proto {
       CreateVideoTrack = 12,
       CreateAudioTrack = 13,
       GetStats = 14,
-      AllocVideoBuffer = 15,
       NewVideoStream = 16,
       NewVideoSource = 17,
       CaptureVideoFrame = 18,
-      ToI420 = 19,
-      ToArgb = 20,
-      AllocAudioBuffer = 21,
+      VideoConvert = 19,
       NewAudioStream = 22,
       NewAudioSource = 23,
       CaptureAudioFrame = 24,
@@ -688,13 +634,10 @@ namespace LiveKit.Proto {
       if (!object.Equals(CreateVideoTrack, other.CreateVideoTrack)) return false;
       if (!object.Equals(CreateAudioTrack, other.CreateAudioTrack)) return false;
       if (!object.Equals(GetStats, other.GetStats)) return false;
-      if (!object.Equals(AllocVideoBuffer, other.AllocVideoBuffer)) return false;
       if (!object.Equals(NewVideoStream, other.NewVideoStream)) return false;
       if (!object.Equals(NewVideoSource, other.NewVideoSource)) return false;
       if (!object.Equals(CaptureVideoFrame, other.CaptureVideoFrame)) return false;
-      if (!object.Equals(ToI420, other.ToI420)) return false;
-      if (!object.Equals(ToArgb, other.ToArgb)) return false;
-      if (!object.Equals(AllocAudioBuffer, other.AllocAudioBuffer)) return false;
+      if (!object.Equals(VideoConvert, other.VideoConvert)) return false;
       if (!object.Equals(NewAudioStream, other.NewAudioStream)) return false;
       if (!object.Equals(NewAudioSource, other.NewAudioSource)) return false;
       if (!object.Equals(CaptureAudioFrame, other.CaptureAudioFrame)) return false;
@@ -722,13 +665,10 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.CreateVideoTrack) hash ^= CreateVideoTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.CreateAudioTrack) hash ^= CreateAudioTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.GetStats) hash ^= GetStats.GetHashCode();
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) hash ^= AllocVideoBuffer.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewVideoStream) hash ^= NewVideoStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewVideoSource) hash ^= NewVideoSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureVideoFrame) hash ^= CaptureVideoFrame.GetHashCode();
-      if (messageCase_ == MessageOneofCase.ToI420) hash ^= ToI420.GetHashCode();
-      if (messageCase_ == MessageOneofCase.ToArgb) hash ^= ToArgb.GetHashCode();
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) hash ^= AllocAudioBuffer.GetHashCode();
+      if (messageCase_ == MessageOneofCase.VideoConvert) hash ^= VideoConvert.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioStream) hash ^= NewAudioStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioSource) hash ^= NewAudioSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) hash ^= CaptureAudioFrame.GetHashCode();
@@ -806,10 +746,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(114);
         output.WriteMessage(GetStats);
       }
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-        output.WriteRawTag(122);
-        output.WriteMessage(AllocVideoBuffer);
-      }
       if (messageCase_ == MessageOneofCase.NewVideoStream) {
         output.WriteRawTag(130, 1);
         output.WriteMessage(NewVideoStream);
@@ -822,17 +758,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(146, 1);
         output.WriteMessage(CaptureVideoFrame);
       }
-      if (messageCase_ == MessageOneofCase.ToI420) {
+      if (messageCase_ == MessageOneofCase.VideoConvert) {
         output.WriteRawTag(154, 1);
-        output.WriteMessage(ToI420);
-      }
-      if (messageCase_ == MessageOneofCase.ToArgb) {
-        output.WriteRawTag(162, 1);
-        output.WriteMessage(ToArgb);
-      }
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-        output.WriteRawTag(170, 1);
-        output.WriteMessage(AllocAudioBuffer);
+        output.WriteMessage(VideoConvert);
       }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         output.WriteRawTag(178, 1);
@@ -920,10 +848,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(114);
         output.WriteMessage(GetStats);
       }
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-        output.WriteRawTag(122);
-        output.WriteMessage(AllocVideoBuffer);
-      }
       if (messageCase_ == MessageOneofCase.NewVideoStream) {
         output.WriteRawTag(130, 1);
         output.WriteMessage(NewVideoStream);
@@ -936,17 +860,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(146, 1);
         output.WriteMessage(CaptureVideoFrame);
       }
-      if (messageCase_ == MessageOneofCase.ToI420) {
+      if (messageCase_ == MessageOneofCase.VideoConvert) {
         output.WriteRawTag(154, 1);
-        output.WriteMessage(ToI420);
-      }
-      if (messageCase_ == MessageOneofCase.ToArgb) {
-        output.WriteRawTag(162, 1);
-        output.WriteMessage(ToArgb);
-      }
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-        output.WriteRawTag(170, 1);
-        output.WriteMessage(AllocAudioBuffer);
+        output.WriteMessage(VideoConvert);
       }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         output.WriteRawTag(178, 1);
@@ -1021,9 +937,6 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.GetStats) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(GetStats);
       }
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AllocVideoBuffer);
-      }
       if (messageCase_ == MessageOneofCase.NewVideoStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(NewVideoStream);
       }
@@ -1033,14 +946,8 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.CaptureVideoFrame) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(CaptureVideoFrame);
       }
-      if (messageCase_ == MessageOneofCase.ToI420) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ToI420);
-      }
-      if (messageCase_ == MessageOneofCase.ToArgb) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ToArgb);
-      }
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(AllocAudioBuffer);
+      if (messageCase_ == MessageOneofCase.VideoConvert) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(VideoConvert);
       }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(NewAudioStream);
@@ -1151,12 +1058,6 @@ namespace LiveKit.Proto {
           }
           GetStats.MergeFrom(other.GetStats);
           break;
-        case MessageOneofCase.AllocVideoBuffer:
-          if (AllocVideoBuffer == null) {
-            AllocVideoBuffer = new global::LiveKit.Proto.AllocVideoBufferRequest();
-          }
-          AllocVideoBuffer.MergeFrom(other.AllocVideoBuffer);
-          break;
         case MessageOneofCase.NewVideoStream:
           if (NewVideoStream == null) {
             NewVideoStream = new global::LiveKit.Proto.NewVideoStreamRequest();
@@ -1175,23 +1076,11 @@ namespace LiveKit.Proto {
           }
           CaptureVideoFrame.MergeFrom(other.CaptureVideoFrame);
           break;
-        case MessageOneofCase.ToI420:
-          if (ToI420 == null) {
-            ToI420 = new global::LiveKit.Proto.ToI420Request();
+        case MessageOneofCase.VideoConvert:
+          if (VideoConvert == null) {
+            VideoConvert = new global::LiveKit.Proto.VideoConvertRequest();
           }
-          ToI420.MergeFrom(other.ToI420);
-          break;
-        case MessageOneofCase.ToArgb:
-          if (ToArgb == null) {
-            ToArgb = new global::LiveKit.Proto.ToArgbRequest();
-          }
-          ToArgb.MergeFrom(other.ToArgb);
-          break;
-        case MessageOneofCase.AllocAudioBuffer:
-          if (AllocAudioBuffer == null) {
-            AllocAudioBuffer = new global::LiveKit.Proto.AllocAudioBufferRequest();
-          }
-          AllocAudioBuffer.MergeFrom(other.AllocAudioBuffer);
+          VideoConvert.MergeFrom(other.VideoConvert);
           break;
         case MessageOneofCase.NewAudioStream:
           if (NewAudioStream == null) {
@@ -1363,15 +1252,6 @@ namespace LiveKit.Proto {
             GetStats = subBuilder;
             break;
           }
-          case 122: {
-            global::LiveKit.Proto.AllocVideoBufferRequest subBuilder = new global::LiveKit.Proto.AllocVideoBufferRequest();
-            if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-              subBuilder.MergeFrom(AllocVideoBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocVideoBuffer = subBuilder;
-            break;
-          }
           case 130: {
             global::LiveKit.Proto.NewVideoStreamRequest subBuilder = new global::LiveKit.Proto.NewVideoStreamRequest();
             if (messageCase_ == MessageOneofCase.NewVideoStream) {
@@ -1400,30 +1280,12 @@ namespace LiveKit.Proto {
             break;
           }
           case 154: {
-            global::LiveKit.Proto.ToI420Request subBuilder = new global::LiveKit.Proto.ToI420Request();
-            if (messageCase_ == MessageOneofCase.ToI420) {
-              subBuilder.MergeFrom(ToI420);
+            global::LiveKit.Proto.VideoConvertRequest subBuilder = new global::LiveKit.Proto.VideoConvertRequest();
+            if (messageCase_ == MessageOneofCase.VideoConvert) {
+              subBuilder.MergeFrom(VideoConvert);
             }
             input.ReadMessage(subBuilder);
-            ToI420 = subBuilder;
-            break;
-          }
-          case 162: {
-            global::LiveKit.Proto.ToArgbRequest subBuilder = new global::LiveKit.Proto.ToArgbRequest();
-            if (messageCase_ == MessageOneofCase.ToArgb) {
-              subBuilder.MergeFrom(ToArgb);
-            }
-            input.ReadMessage(subBuilder);
-            ToArgb = subBuilder;
-            break;
-          }
-          case 170: {
-            global::LiveKit.Proto.AllocAudioBufferRequest subBuilder = new global::LiveKit.Proto.AllocAudioBufferRequest();
-            if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-              subBuilder.MergeFrom(AllocAudioBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocAudioBuffer = subBuilder;
+            VideoConvert = subBuilder;
             break;
           }
           case 178: {
@@ -1612,15 +1474,6 @@ namespace LiveKit.Proto {
             GetStats = subBuilder;
             break;
           }
-          case 122: {
-            global::LiveKit.Proto.AllocVideoBufferRequest subBuilder = new global::LiveKit.Proto.AllocVideoBufferRequest();
-            if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-              subBuilder.MergeFrom(AllocVideoBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocVideoBuffer = subBuilder;
-            break;
-          }
           case 130: {
             global::LiveKit.Proto.NewVideoStreamRequest subBuilder = new global::LiveKit.Proto.NewVideoStreamRequest();
             if (messageCase_ == MessageOneofCase.NewVideoStream) {
@@ -1649,30 +1502,12 @@ namespace LiveKit.Proto {
             break;
           }
           case 154: {
-            global::LiveKit.Proto.ToI420Request subBuilder = new global::LiveKit.Proto.ToI420Request();
-            if (messageCase_ == MessageOneofCase.ToI420) {
-              subBuilder.MergeFrom(ToI420);
+            global::LiveKit.Proto.VideoConvertRequest subBuilder = new global::LiveKit.Proto.VideoConvertRequest();
+            if (messageCase_ == MessageOneofCase.VideoConvert) {
+              subBuilder.MergeFrom(VideoConvert);
             }
             input.ReadMessage(subBuilder);
-            ToI420 = subBuilder;
-            break;
-          }
-          case 162: {
-            global::LiveKit.Proto.ToArgbRequest subBuilder = new global::LiveKit.Proto.ToArgbRequest();
-            if (messageCase_ == MessageOneofCase.ToArgb) {
-              subBuilder.MergeFrom(ToArgb);
-            }
-            input.ReadMessage(subBuilder);
-            ToArgb = subBuilder;
-            break;
-          }
-          case 170: {
-            global::LiveKit.Proto.AllocAudioBufferRequest subBuilder = new global::LiveKit.Proto.AllocAudioBufferRequest();
-            if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-              subBuilder.MergeFrom(AllocAudioBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocAudioBuffer = subBuilder;
+            VideoConvert = subBuilder;
             break;
           }
           case 178: {
@@ -1814,9 +1649,6 @@ namespace LiveKit.Proto {
         case MessageOneofCase.GetStats:
           GetStats = other.GetStats.Clone();
           break;
-        case MessageOneofCase.AllocVideoBuffer:
-          AllocVideoBuffer = other.AllocVideoBuffer.Clone();
-          break;
         case MessageOneofCase.NewVideoStream:
           NewVideoStream = other.NewVideoStream.Clone();
           break;
@@ -1826,14 +1658,8 @@ namespace LiveKit.Proto {
         case MessageOneofCase.CaptureVideoFrame:
           CaptureVideoFrame = other.CaptureVideoFrame.Clone();
           break;
-        case MessageOneofCase.ToI420:
-          ToI420 = other.ToI420.Clone();
-          break;
-        case MessageOneofCase.ToArgb:
-          ToArgb = other.ToArgb.Clone();
-          break;
-        case MessageOneofCase.AllocAudioBuffer:
-          AllocAudioBuffer = other.AllocAudioBuffer.Clone();
+        case MessageOneofCase.VideoConvert:
+          VideoConvert = other.VideoConvert.Clone();
           break;
         case MessageOneofCase.NewAudioStream:
           NewAudioStream = other.NewAudioStream.Clone();
@@ -2026,23 +1852,11 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "alloc_video_buffer" field.</summary>
-    public const int AllocVideoBufferFieldNumber = 15;
+    /// <summary>Field number for the "new_video_stream" field.</summary>
+    public const int NewVideoStreamFieldNumber = 16;
     /// <summary>
     /// Video
     /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.AllocVideoBufferResponse AllocVideoBuffer {
-      get { return messageCase_ == MessageOneofCase.AllocVideoBuffer ? (global::LiveKit.Proto.AllocVideoBufferResponse) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.AllocVideoBuffer;
-      }
-    }
-
-    /// <summary>Field number for the "new_video_stream" field.</summary>
-    public const int NewVideoStreamFieldNumber = 16;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewVideoStreamResponse NewVideoStream {
@@ -2077,47 +1891,23 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "to_i420" field.</summary>
-    public const int ToI420FieldNumber = 19;
+    /// <summary>Field number for the "video_convert" field.</summary>
+    public const int VideoConvertFieldNumber = 19;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.ToI420Response ToI420 {
-      get { return messageCase_ == MessageOneofCase.ToI420 ? (global::LiveKit.Proto.ToI420Response) message_ : null; }
+    public global::LiveKit.Proto.VideoConvertResponse VideoConvert {
+      get { return messageCase_ == MessageOneofCase.VideoConvert ? (global::LiveKit.Proto.VideoConvertResponse) message_ : null; }
       set {
         message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ToI420;
-      }
-    }
-
-    /// <summary>Field number for the "to_argb" field.</summary>
-    public const int ToArgbFieldNumber = 20;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.ToArgbResponse ToArgb {
-      get { return messageCase_ == MessageOneofCase.ToArgb ? (global::LiveKit.Proto.ToArgbResponse) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ToArgb;
-      }
-    }
-
-    /// <summary>Field number for the "alloc_audio_buffer" field.</summary>
-    public const int AllocAudioBufferFieldNumber = 21;
-    /// <summary>
-    /// Audio
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.AllocAudioBufferResponse AllocAudioBuffer {
-      get { return messageCase_ == MessageOneofCase.AllocAudioBuffer ? (global::LiveKit.Proto.AllocAudioBufferResponse) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.AllocAudioBuffer;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.VideoConvert;
       }
     }
 
     /// <summary>Field number for the "new_audio_stream" field.</summary>
     public const int NewAudioStreamFieldNumber = 22;
+    /// <summary>
+    /// Audio
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewAudioStreamResponse NewAudioStream {
@@ -2205,13 +1995,10 @@ namespace LiveKit.Proto {
       CreateVideoTrack = 12,
       CreateAudioTrack = 13,
       GetStats = 14,
-      AllocVideoBuffer = 15,
       NewVideoStream = 16,
       NewVideoSource = 17,
       CaptureVideoFrame = 18,
-      ToI420 = 19,
-      ToArgb = 20,
-      AllocAudioBuffer = 21,
+      VideoConvert = 19,
       NewAudioStream = 22,
       NewAudioSource = 23,
       CaptureAudioFrame = 24,
@@ -2261,13 +2048,10 @@ namespace LiveKit.Proto {
       if (!object.Equals(CreateVideoTrack, other.CreateVideoTrack)) return false;
       if (!object.Equals(CreateAudioTrack, other.CreateAudioTrack)) return false;
       if (!object.Equals(GetStats, other.GetStats)) return false;
-      if (!object.Equals(AllocVideoBuffer, other.AllocVideoBuffer)) return false;
       if (!object.Equals(NewVideoStream, other.NewVideoStream)) return false;
       if (!object.Equals(NewVideoSource, other.NewVideoSource)) return false;
       if (!object.Equals(CaptureVideoFrame, other.CaptureVideoFrame)) return false;
-      if (!object.Equals(ToI420, other.ToI420)) return false;
-      if (!object.Equals(ToArgb, other.ToArgb)) return false;
-      if (!object.Equals(AllocAudioBuffer, other.AllocAudioBuffer)) return false;
+      if (!object.Equals(VideoConvert, other.VideoConvert)) return false;
       if (!object.Equals(NewAudioStream, other.NewAudioStream)) return false;
       if (!object.Equals(NewAudioSource, other.NewAudioSource)) return false;
       if (!object.Equals(CaptureAudioFrame, other.CaptureAudioFrame)) return false;
@@ -2295,13 +2079,10 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.CreateVideoTrack) hash ^= CreateVideoTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.CreateAudioTrack) hash ^= CreateAudioTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.GetStats) hash ^= GetStats.GetHashCode();
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) hash ^= AllocVideoBuffer.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewVideoStream) hash ^= NewVideoStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewVideoSource) hash ^= NewVideoSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureVideoFrame) hash ^= CaptureVideoFrame.GetHashCode();
-      if (messageCase_ == MessageOneofCase.ToI420) hash ^= ToI420.GetHashCode();
-      if (messageCase_ == MessageOneofCase.ToArgb) hash ^= ToArgb.GetHashCode();
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) hash ^= AllocAudioBuffer.GetHashCode();
+      if (messageCase_ == MessageOneofCase.VideoConvert) hash ^= VideoConvert.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioStream) hash ^= NewAudioStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioSource) hash ^= NewAudioSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) hash ^= CaptureAudioFrame.GetHashCode();
@@ -2379,10 +2160,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(114);
         output.WriteMessage(GetStats);
       }
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-        output.WriteRawTag(122);
-        output.WriteMessage(AllocVideoBuffer);
-      }
       if (messageCase_ == MessageOneofCase.NewVideoStream) {
         output.WriteRawTag(130, 1);
         output.WriteMessage(NewVideoStream);
@@ -2395,17 +2172,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(146, 1);
         output.WriteMessage(CaptureVideoFrame);
       }
-      if (messageCase_ == MessageOneofCase.ToI420) {
+      if (messageCase_ == MessageOneofCase.VideoConvert) {
         output.WriteRawTag(154, 1);
-        output.WriteMessage(ToI420);
-      }
-      if (messageCase_ == MessageOneofCase.ToArgb) {
-        output.WriteRawTag(162, 1);
-        output.WriteMessage(ToArgb);
-      }
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-        output.WriteRawTag(170, 1);
-        output.WriteMessage(AllocAudioBuffer);
+        output.WriteMessage(VideoConvert);
       }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         output.WriteRawTag(178, 1);
@@ -2493,10 +2262,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(114);
         output.WriteMessage(GetStats);
       }
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-        output.WriteRawTag(122);
-        output.WriteMessage(AllocVideoBuffer);
-      }
       if (messageCase_ == MessageOneofCase.NewVideoStream) {
         output.WriteRawTag(130, 1);
         output.WriteMessage(NewVideoStream);
@@ -2509,17 +2274,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(146, 1);
         output.WriteMessage(CaptureVideoFrame);
       }
-      if (messageCase_ == MessageOneofCase.ToI420) {
+      if (messageCase_ == MessageOneofCase.VideoConvert) {
         output.WriteRawTag(154, 1);
-        output.WriteMessage(ToI420);
-      }
-      if (messageCase_ == MessageOneofCase.ToArgb) {
-        output.WriteRawTag(162, 1);
-        output.WriteMessage(ToArgb);
-      }
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-        output.WriteRawTag(170, 1);
-        output.WriteMessage(AllocAudioBuffer);
+        output.WriteMessage(VideoConvert);
       }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         output.WriteRawTag(178, 1);
@@ -2594,9 +2351,6 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.GetStats) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(GetStats);
       }
-      if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AllocVideoBuffer);
-      }
       if (messageCase_ == MessageOneofCase.NewVideoStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(NewVideoStream);
       }
@@ -2606,14 +2360,8 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.CaptureVideoFrame) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(CaptureVideoFrame);
       }
-      if (messageCase_ == MessageOneofCase.ToI420) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ToI420);
-      }
-      if (messageCase_ == MessageOneofCase.ToArgb) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ToArgb);
-      }
-      if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(AllocAudioBuffer);
+      if (messageCase_ == MessageOneofCase.VideoConvert) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(VideoConvert);
       }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(NewAudioStream);
@@ -2724,12 +2472,6 @@ namespace LiveKit.Proto {
           }
           GetStats.MergeFrom(other.GetStats);
           break;
-        case MessageOneofCase.AllocVideoBuffer:
-          if (AllocVideoBuffer == null) {
-            AllocVideoBuffer = new global::LiveKit.Proto.AllocVideoBufferResponse();
-          }
-          AllocVideoBuffer.MergeFrom(other.AllocVideoBuffer);
-          break;
         case MessageOneofCase.NewVideoStream:
           if (NewVideoStream == null) {
             NewVideoStream = new global::LiveKit.Proto.NewVideoStreamResponse();
@@ -2748,23 +2490,11 @@ namespace LiveKit.Proto {
           }
           CaptureVideoFrame.MergeFrom(other.CaptureVideoFrame);
           break;
-        case MessageOneofCase.ToI420:
-          if (ToI420 == null) {
-            ToI420 = new global::LiveKit.Proto.ToI420Response();
+        case MessageOneofCase.VideoConvert:
+          if (VideoConvert == null) {
+            VideoConvert = new global::LiveKit.Proto.VideoConvertResponse();
           }
-          ToI420.MergeFrom(other.ToI420);
-          break;
-        case MessageOneofCase.ToArgb:
-          if (ToArgb == null) {
-            ToArgb = new global::LiveKit.Proto.ToArgbResponse();
-          }
-          ToArgb.MergeFrom(other.ToArgb);
-          break;
-        case MessageOneofCase.AllocAudioBuffer:
-          if (AllocAudioBuffer == null) {
-            AllocAudioBuffer = new global::LiveKit.Proto.AllocAudioBufferResponse();
-          }
-          AllocAudioBuffer.MergeFrom(other.AllocAudioBuffer);
+          VideoConvert.MergeFrom(other.VideoConvert);
           break;
         case MessageOneofCase.NewAudioStream:
           if (NewAudioStream == null) {
@@ -2936,15 +2666,6 @@ namespace LiveKit.Proto {
             GetStats = subBuilder;
             break;
           }
-          case 122: {
-            global::LiveKit.Proto.AllocVideoBufferResponse subBuilder = new global::LiveKit.Proto.AllocVideoBufferResponse();
-            if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-              subBuilder.MergeFrom(AllocVideoBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocVideoBuffer = subBuilder;
-            break;
-          }
           case 130: {
             global::LiveKit.Proto.NewVideoStreamResponse subBuilder = new global::LiveKit.Proto.NewVideoStreamResponse();
             if (messageCase_ == MessageOneofCase.NewVideoStream) {
@@ -2973,30 +2694,12 @@ namespace LiveKit.Proto {
             break;
           }
           case 154: {
-            global::LiveKit.Proto.ToI420Response subBuilder = new global::LiveKit.Proto.ToI420Response();
-            if (messageCase_ == MessageOneofCase.ToI420) {
-              subBuilder.MergeFrom(ToI420);
+            global::LiveKit.Proto.VideoConvertResponse subBuilder = new global::LiveKit.Proto.VideoConvertResponse();
+            if (messageCase_ == MessageOneofCase.VideoConvert) {
+              subBuilder.MergeFrom(VideoConvert);
             }
             input.ReadMessage(subBuilder);
-            ToI420 = subBuilder;
-            break;
-          }
-          case 162: {
-            global::LiveKit.Proto.ToArgbResponse subBuilder = new global::LiveKit.Proto.ToArgbResponse();
-            if (messageCase_ == MessageOneofCase.ToArgb) {
-              subBuilder.MergeFrom(ToArgb);
-            }
-            input.ReadMessage(subBuilder);
-            ToArgb = subBuilder;
-            break;
-          }
-          case 170: {
-            global::LiveKit.Proto.AllocAudioBufferResponse subBuilder = new global::LiveKit.Proto.AllocAudioBufferResponse();
-            if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-              subBuilder.MergeFrom(AllocAudioBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocAudioBuffer = subBuilder;
+            VideoConvert = subBuilder;
             break;
           }
           case 178: {
@@ -3185,15 +2888,6 @@ namespace LiveKit.Proto {
             GetStats = subBuilder;
             break;
           }
-          case 122: {
-            global::LiveKit.Proto.AllocVideoBufferResponse subBuilder = new global::LiveKit.Proto.AllocVideoBufferResponse();
-            if (messageCase_ == MessageOneofCase.AllocVideoBuffer) {
-              subBuilder.MergeFrom(AllocVideoBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocVideoBuffer = subBuilder;
-            break;
-          }
           case 130: {
             global::LiveKit.Proto.NewVideoStreamResponse subBuilder = new global::LiveKit.Proto.NewVideoStreamResponse();
             if (messageCase_ == MessageOneofCase.NewVideoStream) {
@@ -3222,30 +2916,12 @@ namespace LiveKit.Proto {
             break;
           }
           case 154: {
-            global::LiveKit.Proto.ToI420Response subBuilder = new global::LiveKit.Proto.ToI420Response();
-            if (messageCase_ == MessageOneofCase.ToI420) {
-              subBuilder.MergeFrom(ToI420);
+            global::LiveKit.Proto.VideoConvertResponse subBuilder = new global::LiveKit.Proto.VideoConvertResponse();
+            if (messageCase_ == MessageOneofCase.VideoConvert) {
+              subBuilder.MergeFrom(VideoConvert);
             }
             input.ReadMessage(subBuilder);
-            ToI420 = subBuilder;
-            break;
-          }
-          case 162: {
-            global::LiveKit.Proto.ToArgbResponse subBuilder = new global::LiveKit.Proto.ToArgbResponse();
-            if (messageCase_ == MessageOneofCase.ToArgb) {
-              subBuilder.MergeFrom(ToArgb);
-            }
-            input.ReadMessage(subBuilder);
-            ToArgb = subBuilder;
-            break;
-          }
-          case 170: {
-            global::LiveKit.Proto.AllocAudioBufferResponse subBuilder = new global::LiveKit.Proto.AllocAudioBufferResponse();
-            if (messageCase_ == MessageOneofCase.AllocAudioBuffer) {
-              subBuilder.MergeFrom(AllocAudioBuffer);
-            }
-            input.ReadMessage(subBuilder);
-            AllocAudioBuffer = subBuilder;
+            VideoConvert = subBuilder;
             break;
           }
           case 178: {
@@ -3397,6 +3073,9 @@ namespace LiveKit.Proto {
           break;
         case MessageOneofCase.GetSessionStats:
           GetSessionStats = other.GetSessionStats.Clone();
+          break;
+        case MessageOneofCase.Panic:
+          Panic = other.Panic.Clone();
           break;
       }
 
@@ -3601,6 +3280,18 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "panic" field.</summary>
+    public const int PanicFieldNumber = 17;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.Panic Panic {
+      get { return messageCase_ == MessageOneofCase.Panic ? (global::LiveKit.Proto.Panic) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.Panic;
+      }
+    }
+
     private object message_;
     /// <summary>Enum of possible cases for the "message" oneof.</summary>
     public enum MessageOneofCase {
@@ -3621,6 +3312,7 @@ namespace LiveKit.Proto {
       GetStats = 14,
       Logs = 15,
       GetSessionStats = 16,
+      Panic = 17,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3667,6 +3359,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(GetStats, other.GetStats)) return false;
       if (!object.Equals(Logs, other.Logs)) return false;
       if (!object.Equals(GetSessionStats, other.GetSessionStats)) return false;
+      if (!object.Equals(Panic, other.Panic)) return false;
       if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3691,6 +3384,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.GetStats) hash ^= GetStats.GetHashCode();
       if (messageCase_ == MessageOneofCase.Logs) hash ^= Logs.GetHashCode();
       if (messageCase_ == MessageOneofCase.GetSessionStats) hash ^= GetSessionStats.GetHashCode();
+      if (messageCase_ == MessageOneofCase.Panic) hash ^= Panic.GetHashCode();
       hash ^= (int) messageCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3774,6 +3468,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(130, 1);
         output.WriteMessage(GetSessionStats);
       }
+      if (messageCase_ == MessageOneofCase.Panic) {
+        output.WriteRawTag(138, 1);
+        output.WriteMessage(Panic);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3848,6 +3546,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(130, 1);
         output.WriteMessage(GetSessionStats);
       }
+      if (messageCase_ == MessageOneofCase.Panic) {
+        output.WriteRawTag(138, 1);
+        output.WriteMessage(Panic);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3905,6 +3607,9 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.GetSessionStats) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(GetSessionStats);
+      }
+      if (messageCase_ == MessageOneofCase.Panic) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(Panic);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4014,6 +3719,12 @@ namespace LiveKit.Proto {
             GetSessionStats = new global::LiveKit.Proto.GetSessionStatsCallback();
           }
           GetSessionStats.MergeFrom(other.GetSessionStats);
+          break;
+        case MessageOneofCase.Panic:
+          if (Panic == null) {
+            Panic = new global::LiveKit.Proto.Panic();
+          }
+          Panic.MergeFrom(other.Panic);
           break;
       }
 
@@ -4176,6 +3887,15 @@ namespace LiveKit.Proto {
             GetSessionStats = subBuilder;
             break;
           }
+          case 138: {
+            global::LiveKit.Proto.Panic subBuilder = new global::LiveKit.Proto.Panic();
+            if (messageCase_ == MessageOneofCase.Panic) {
+              subBuilder.MergeFrom(Panic);
+            }
+            input.ReadMessage(subBuilder);
+            Panic = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -4333,6 +4053,15 @@ namespace LiveKit.Proto {
             }
             input.ReadMessage(subBuilder);
             GetSessionStats = subBuilder;
+            break;
+          }
+          case 138: {
+            global::LiveKit.Proto.Panic subBuilder = new global::LiveKit.Proto.Panic();
+            if (messageCase_ == MessageOneofCase.Panic) {
+              subBuilder.MergeFrom(Panic);
+            }
+            input.ReadMessage(subBuilder);
+            Panic = subBuilder;
             break;
           }
         }
@@ -5530,6 +5259,196 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             records_.AddEntriesFrom(ref input, _repeated_records_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class Panic : pb::IMessage<Panic>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<Panic> _parser = new pb::MessageParser<Panic>(() => new Panic());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<Panic> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.FfiReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public Panic() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public Panic(Panic other) : this() {
+      message_ = other.message_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public Panic Clone() {
+      return new Panic(this);
+    }
+
+    /// <summary>Field number for the "message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Message {
+      get { return message_; }
+      set {
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as Panic);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(Panic other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Message != other.Message) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(Panic other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Message.Length != 0) {
+        Message = other.Message;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Message = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Message = input.ReadString();
             break;
           }
         }

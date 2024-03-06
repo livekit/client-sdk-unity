@@ -21,8 +21,10 @@ namespace LiveKit.Internal
     {
         private static bool initialized = false;
         private static readonly Lazy<FfiClient> instance = new(() => new FfiClient());
-        public static FfiClient Instance => instance.Value!;
 
+        public static FfiClient Instance => instance.Value!;
+        private static bool _isDisposed;
+        
         private SynchronizationContext? context;
 
         private readonly IObjectPool<FfiResponse> ffiResponsePool;
@@ -80,14 +82,14 @@ namespace LiveKit.Internal
         {
             InitializeSdk();
         }
-        #else
+#else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
             Application.quitting += Quit;
             InitializeSdk();
         }
-        #endif
+#endif
 
         private static void Quit()
         {
@@ -98,7 +100,8 @@ namespace LiveKit.Internal
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
             #endif
-            Instance.Dispose();
+                Instance.Dispose();
+            
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -111,17 +114,20 @@ namespace LiveKit.Internal
 
         private static void InitializeSdk()
         {
+
             #if NO_LIVEKIT_MODE
             return;
             #endif
-            
-            #if LK_VERBOSE
+
+
+#if LK_VERBOSE
             const bool captureLogs = true;
-            #else
+#else
             const bool captureLogs = false;
-            #endif
+#endif
 
             NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
+
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
         }
@@ -141,6 +147,9 @@ namespace LiveKit.Internal
             #if NO_LIVEKIT_MODE
             return;
             #endif
+
+            _isDisposed = true;
+
             // Stop all rooms synchronously
             // The rust lk implementation should also correctly dispose WebRTC
             initialized = false;
@@ -199,24 +208,28 @@ namespace LiveKit.Internal
         //TODO interface + memory optimisation
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(IntPtr data, int size)
-        {
+        { 
             #if NO_LIVEKIT_MODE
             return;
             #endif
-            
+
+            if (_isDisposed) return;
             var respData = new Span<byte>(data.ToPointer()!, size);
             var response = FfiEvent.Parser!.ParseFrom(respData);
 
-            Utils.Debug("Callback... " + response.ToString());
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
             Instance.context?.Post((resp) =>
             {
                 var r = resp as FfiEvent;
+#if LK_VERBOSE
                 if (r?.MessageCase != FfiEvent.MessageOneofCase.Logs)
                     Utils.Debug("Callback: " + r?.MessageCase);
+#endif
                 switch (r?.MessageCase)
                 {
+                    case FfiEvent.MessageOneofCase.Logs:
+                        break;
                     case FfiEvent.MessageOneofCase.PublishData:
                         break;
                     case FfiEvent.MessageOneofCase.Connect:
@@ -226,7 +239,6 @@ namespace LiveKit.Internal
                         Instance.PublishTrackReceived?.Invoke(r.PublishTrack!);
                         break;
                     case FfiEvent.MessageOneofCase.RoomEvent:
-                        Utils.Debug("Call back on room event: " + r.RoomEvent!.MessageCase);
                         Instance.RoomEventReceived?.Invoke(r.RoomEvent);
                         break;
                     case FfiEvent.MessageOneofCase.TrackEvent:
@@ -245,7 +257,6 @@ namespace LiveKit.Internal
                         Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.CaptureAudioFrame:
-                        Utils.Debug(r.CaptureAudioFrame!);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");

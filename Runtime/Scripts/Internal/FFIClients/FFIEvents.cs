@@ -24,9 +24,6 @@ namespace LiveKit.Internal
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
 
 
-    internal delegate void ParticipantEventReceivedDelegate(OwnedParticipant e);
-
-
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
 
 

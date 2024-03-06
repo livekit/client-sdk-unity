@@ -1,48 +1,48 @@
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using System.Runtime.CompilerServices;
 using LiveKit.Internal.FFIClients.Requests;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace LiveKit
 {
-    public sealed class VideoFrame
+    public class VideoFrame : IDisposable
     {
-        private VideoFrameInfo _info;
+        private VideoBufferInfo _info;
+        internal VideoBufferInfo Info => _info;
 
-        public long Timestamp => _info.TimestampUs;
-        public VideoRotation Rotation => _info.Rotation;
-
-        public VideoFrame(VideoFrameInfo info)
-        {
-            _info = info;
-        }
-    }
-
-    public abstract class VideoFrameBuffer : IDisposable
-    {
-        protected VideoFrameBufferInfo Info;
-
-        internal readonly FfiHandle Handle;
+        private FfiHandle _handle;
+        public FfiHandle Handle => _handle;
+        internal uint Width => _info.Width;
+        internal uint Height => _info.Height;
+        internal uint Stride => _info.Stride;
+        private VideoBufferType _type;
+        internal VideoBufferType Type => _type;
+      
         private bool _disposed = false;
 
-        public uint Width => Info.Width;
-        public uint Height => Info.Height;
-        public VideoFrameBufferType Type => Info.BufferType;
         public bool IsValid => !Handle.IsClosed && !Handle.IsInvalid;
 
         // Explicitly ask for FFIHandle 
-        protected VideoFrameBuffer(FfiHandle handle, VideoFrameBufferInfo info)
+        protected VideoFrame(FfiHandle handle, VideoBufferInfo info)
         {
-            Handle = handle;
-            Info = info;
-
+            _info = info;
+            _handle = handle;
+            
+            _type = info.Type;
             var memSize = GetMemorySize();
             if (memSize > 0)
                 GC.AddMemoryPressure(memSize);
         }
 
-        ~VideoFrameBuffer()
+
+     
+
+        
+
+
+        ~VideoFrame()
         {
             Dispose(false);
         }
@@ -58,7 +58,6 @@ namespace LiveKit
             if (!_disposed)
             {
                 Handle.Dispose();
-                IFfiHandleFactory.Default.Release(Handle);
 
                 var memSize = GetMemorySize();
                 if (memSize > 0)
@@ -69,195 +68,44 @@ namespace LiveKit
         }
 
         /// Used for GC.AddMemoryPressure(Int64)
-        /// TODO(theomonnom): Remove the default implementation when each buffer type is implemented  cc MindTrust_VID
-        internal virtual long GetMemorySize()
+        public virtual long GetMemorySize()
         {
-            return -1;
+            return  Height * Stride;
         }
 
-        /// VideoFrameBuffer takes ownership of the FFIHandle
-        internal static VideoFrameBuffer Create(FfiHandle handle, VideoFrameBufferInfo info)
+        public static VideoFrame FromOwnedInfo(OwnedVideoBuffer ownedInfo)
         {
-            switch (info.BufferType)
-            {
-                case VideoFrameBufferType.Native:
-                    return new NativeBuffer(handle, info);
-                case VideoFrameBufferType.I420:
-                    return new I420Buffer(handle, info);
-                case VideoFrameBufferType.I420A:
-                    return new I420ABuffer(handle, info);
-                case VideoFrameBufferType.I422:
-                    return new I422Buffer(handle, info);
-                case VideoFrameBufferType.I444:
-                    return new I444Buffer(handle, info);
-                case VideoFrameBufferType.I010:
-                    return new I010Buffer(handle, info);
-                case VideoFrameBufferType.Nv12:
-                    return new NV12Buffer(handle, info);
-            }
-
-            return null;
+            var info = ownedInfo.Info;
+            VideoFrame frame = new VideoFrame(IFfiHandleFactory.Default.NewFfiHandle(info.DataPtr), info);
+            return frame;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public I420Buffer ToI420()
+        public static VideoFrame Convert(OwnedVideoBuffer ownedInfo, VideoBufferType type)
         {
-            if (!IsValid)
-                throw new InvalidOperationException("the handle is invalid");
-
-            // ToI420Request will free the input buffer, don't drop twice
-            // This class instance is now invalid, the users should not use it 
-            // after using this function.
-            Handle.SetHandleAsInvalid();
-
-            //var handleId = new VideoFrameBufferInfo();
-            //handleId.Id = (ulong)Handle.DangerousGetHandle();
-
-            using var request = FFIBridge.Instance.NewRequest<ToI420Request>();
-            var toi420 = request.request;
-            //toi420.Buffer = handleId;
-            toi420.Handle = (ulong)Handle.DangerousGetHandle();
-
+            using var request = FFIBridge.Instance.NewRequest<VideoConvertRequest>();
+            var alloc = request.request;
+            alloc.FlipY = GetFlip();
+            alloc.DstType = type;
+            alloc.Buffer = ownedInfo.Info;
             using var response = request.Send();
             FfiResponse res = response;
-            
-            var newInfo = res.ToI420.Buffer;
-            if (newInfo == null)
-                throw new InvalidOperationException("failed to convert");
-
-            var newHandle = IFfiHandleFactory.Default.NewFfiHandle(newInfo.Handle.Id);
-            return new I420Buffer(newHandle, newInfo.Info); // TODO MindTrust_VID
+            if(res.VideoConvert.HasError)
+            {
+                throw new Exception(res.VideoConvert.Error);
+            }
+            return FromOwnedInfo(res.VideoConvert.Buffer);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ToARGB(VideoFormatType format, IntPtr dst, uint dstStride, uint width, uint height)
+       
+        protected static bool GetFlip()
         {
-            if (!IsValid)
-                throw new InvalidOperationException("the handle is invalid");
-
-            using var request = FFIBridge.Instance.NewRequest<ToArgbRequest>();
-            var argb = request.request;
-            //argb.Buffer = handleId;
-            argb.DstPtr = (ulong)dst;
-            argb.DstFormat = format;
-            argb.DstStride = dstStride;
-            argb.DstWidth = width;
-            argb.DstHeight = height;
-            using var response = request.Send();
+            var graphicDevice = SystemInfo.graphicsDeviceType;
+            return graphicDevice == GraphicsDeviceType.OpenGLCore ||
+            graphicDevice == GraphicsDeviceType.OpenGLES2 ||
+            graphicDevice == GraphicsDeviceType.OpenGLES3 ||
+            graphicDevice == GraphicsDeviceType.Vulkan ?
+            false :
+            true;
         }
     }
-
-    public abstract class PlanarYuvBuffer : VideoFrameBuffer
-    {
-        public uint ChromaWidth => Info.Yuv.ChromaWidth;
-        public uint ChromaHeight => Info.Yuv.ChromaHeight;
-        public uint StrideY => Info.Yuv.StrideY;
-        public uint StrideU => Info.Yuv.StrideU;
-        public uint StrideV => Info.Yuv.StrideV;
-        public IntPtr DataY => (IntPtr)Info.Yuv.DataYPtr;
-        public IntPtr DataU => (IntPtr)Info.Yuv.DataUPtr;
-        public IntPtr DataV => (IntPtr)Info.Yuv.DataVPtr;
-
-        internal PlanarYuvBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public abstract class PlanarYuv8Buffer : PlanarYuvBuffer
-    {
-        internal PlanarYuv8Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public abstract class PlanarYuv16BBuffer : PlanarYuvBuffer
-    {
-        internal PlanarYuv16BBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public abstract class BiplanarYuvBuffer : VideoFrameBuffer
-    {
-        public uint ChromaWidth => Info.BiYuv.ChromaWidth;
-        public uint ChromaHeight => Info.BiYuv.ChromaHeight;
-        public uint StrideY => Info.BiYuv.StrideY;
-        public uint StrideUV => Info.BiYuv.StrideUv;
-        public IntPtr DataY => (IntPtr)Info.BiYuv.DataYPtr;
-        public IntPtr DataUV => (IntPtr)Info.BiYuv.DataUvPtr;
-
-        internal BiplanarYuvBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public abstract class BiplanarYuv8Buffer : BiplanarYuvBuffer
-    {
-        internal BiplanarYuv8Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public class NativeBuffer : VideoFrameBuffer
-    {
-        internal override long GetMemorySize()
-        {
-            return 0;
-        }
-
-        internal NativeBuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public class I420Buffer : PlanarYuv8Buffer
-    {
-        internal I420Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-
-        internal override long GetMemorySize()
-        {
-            var chromaHeight = (Height + 1) / 2;
-            return StrideY * Height
-                   + StrideU * chromaHeight
-                   + StrideV * chromaHeight;
-        }
-    }
-
-    public class I420ABuffer : I420Buffer
-    {
-        internal I420ABuffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public class I422Buffer : PlanarYuv8Buffer
-    {
-        internal I422Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public class I444Buffer : PlanarYuv8Buffer
-    {
-        internal I444Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public class I010Buffer : PlanarYuv16BBuffer
-    {
-        internal I010Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
-    public class NV12Buffer : BiplanarYuv8Buffer
-    {
-        internal NV12Buffer(FfiHandle handle, VideoFrameBufferInfo info) : base(handle, info)
-        {
-        }
-    }
-
 }

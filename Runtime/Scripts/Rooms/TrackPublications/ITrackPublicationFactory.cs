@@ -4,7 +4,7 @@ namespace LiveKit.Rooms.TrackPublications
 {
     public interface ITrackPublicationFactory
     {
-        TrackPublication NewTrackPublication(TrackPublicationInfo info);
+        TrackPublication NewTrackPublication(FfiOwnedHandle handle, TrackPublicationInfo info);
         
         void Release(TrackPublication publication);
         

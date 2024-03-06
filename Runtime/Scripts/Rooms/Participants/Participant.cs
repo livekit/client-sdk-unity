@@ -105,5 +105,22 @@ namespace LiveKit.Rooms.Participants
             FfiResponse res = response;
             return new PublishTrackInstruction(res.PublishTrack.AsyncId, Room, token);
         }
+
+        public void UnpublishTrack(
+           ITrack localTrack,
+           bool stopOnUnpublish)
+        {
+            if (Origin is not Origin.Local)
+                throw new InvalidOperationException("Can unpublish track for the local participant only");
+
+            using var request = FFIBridge.Instance.NewRequest<UnpublishTrackRequest>();
+            var publish = request.request;
+            publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            publish.TrackSid = localTrack.Sid;
+            publish.StopOnUnpublish = stopOnUnpublish;
+            using var response = request.Send();
+            FfiResponse res = response;
+            UnityEngine.Debug.LogError("UnpublishTrack Response:: " + res);
+        }
     }
 }

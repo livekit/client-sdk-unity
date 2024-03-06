@@ -53,9 +53,6 @@ namespace LiveKit.Internal.FFIClients
                     ffiRequest.GetStats = getStatsRequest;
                     break;
                 // Video
-                case AllocVideoBufferRequest allocVideoBufferRequest:
-                    ffiRequest.AllocVideoBuffer = allocVideoBufferRequest;
-                    break;
                 case NewVideoStreamRequest newVideoStreamRequest:
                     ffiRequest.NewVideoStream = newVideoStreamRequest;
                     break;
@@ -65,16 +62,10 @@ namespace LiveKit.Internal.FFIClients
                 case CaptureVideoFrameRequest captureVideoFrameRequest:
                     ffiRequest.CaptureVideoFrame = captureVideoFrameRequest;
                     break;
-                case ToI420Request toI420Request:
-                    ffiRequest.ToI420 = toI420Request;
-                    break;
-                case ToArgbRequest toArgbRequest:
-                    ffiRequest.ToArgb = toArgbRequest;
+                case VideoConvertRequest videoConvertRequest:
+                    ffiRequest.VideoConvert = videoConvertRequest;
                     break;
                 // Audio
-                case AllocAudioBufferRequest allocAudioBufferRequest:
-                    ffiRequest.AllocAudioBuffer = allocAudioBufferRequest;
-                    break;
                 case NewAudioStreamRequest wewAudioStreamRequest:
                     ffiRequest.NewAudioStream = wewAudioStreamRequest;
                     break;
@@ -127,17 +118,14 @@ namespace LiveKit.Internal.FFIClients
                 ||
 
                 // Video
-                request.AllocVideoBuffer != null
-                || request.NewVideoStream != null
+                request.NewVideoStream != null
                 || request.NewVideoSource != null
                 || request.CaptureVideoFrame != null
-                || request.ToI420 != null
-                || request.ToArgb != null
+                || request.VideoConvert != null
                 ||
 
                 // Audio
-                request.AllocAudioBuffer != null
-                || request.NewAudioStream != null
+                request.NewAudioStream != null
                 || request.NewAudioSource != null
                 || request.CaptureAudioFrame != null
                 || request.NewAudioResampler != null
@@ -155,6 +143,7 @@ namespace LiveKit.Internal.FFIClients
             // list of messages is taken from: livekit-ffi/protocol/ffi.proto
             // https://github.com/livekit/rust-sdks/blob/cf34856e78892a639c4d3c1d6a27e9aba0a4a8ff/livekit-ffi/protocol/ffi.proto#L4
 
+        
             if (
                 response.Dispose != null
                 ||
@@ -178,17 +167,14 @@ namespace LiveKit.Internal.FFIClients
                 ||
 
                 // Video
-                response.AllocVideoBuffer != null
-                || response.NewVideoStream != null
+                response.NewVideoStream != null
                 || response.NewVideoSource != null
                 || response.CaptureVideoFrame != null
-                || response.ToI420 != null
-                || response.ToArgb != null
+                || response.VideoConvert != null
                 ||
 
                 // Audio
-                response.AllocAudioBuffer != null
-                || response.NewAudioStream != null
+                response.NewAudioStream != null
                 || response.NewAudioSource != null
                 || response.CaptureAudioFrame != null
                 || response.NewAudioResampler != null
@@ -196,8 +182,8 @@ namespace LiveKit.Internal.FFIClients
                 || response.E2Ee != null
             )
             {
-                throw new InvalidOperationException("Response is not cleared");
-            }
+                throw new InvalidOperationException("Response is not cleared: ");
+            } 
         }
     }
 }

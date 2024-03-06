@@ -20,10 +20,12 @@ namespace LiveKit.Rooms.TrackPublications
         public bool Muted => info.Muted;
 
         public ITrack? Track { get; private set; }
+        public FfiOwnedHandle? Handle { get; private set; }
 
-        internal void Construct(TrackPublicationInfo info)
+        internal void Construct(FfiOwnedHandle handle, TrackPublicationInfo info)
         {
             this.info = info;
+            this.Handle = handle;
         }
 
         public void Clear()
@@ -55,11 +57,10 @@ namespace LiveKit.Rooms.TrackPublications
             {
                 throw new System.InvalidOperationException("Cannot set subscribed on non-remote track");
             }
-            
             using var request = FFIBridge.Instance.NewRequest<SetSubscribedRequest>();
             var setSubscribed = request.request;
             setSubscribed.Subscribe = subscribed;
-            setSubscribed.PublicationHandle = (ulong)Track.Handle.DangerousGetHandle();
+            setSubscribed.PublicationHandle = Handle.Id;
             using var response = request.Send();
         }
     }

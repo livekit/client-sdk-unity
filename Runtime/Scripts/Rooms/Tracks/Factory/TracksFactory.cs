@@ -27,7 +27,7 @@ namespace LiveKit.Rooms.Tracks.Factory
             createTrack.Name = name;
             createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
             using var response = request.Send();
-            return CreateTrack(response, room);
+            return CreateTrack(response, room, true);
         }
 
         public ITrack NewVideoTrack(string name, RtcVideoSource source, Room room)
@@ -37,7 +37,7 @@ namespace LiveKit.Rooms.Tracks.Factory
             createTrack.Name = name;
             createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
             using var response = request.Send();
-            return CreateTrack(response, room);
+            return CreateTrack(response, room, false);
         }
 
         public ITrack NewTrack(FfiHandle? handle, TrackInfo info, Room room, Participant participant)
@@ -47,9 +47,9 @@ namespace LiveKit.Rooms.Tracks.Factory
             return track;
         }
 
-        private Track CreateTrack(FfiResponse res, Room room)
+        private Track CreateTrack(FfiResponse res, Room room, bool isAudio)
         {
-            var trackInfo = res.CreateVideoTrack!.Track;
+            var trackInfo = isAudio ? res.CreateAudioTrack!.Track : res.CreateVideoTrack!.Track;
             var trackHandle = IFfiHandleFactory.Default.NewFfiHandle(trackInfo!.Handle!.Id);
             var track = trackPool.Get()!;
             track.Construct(trackHandle, trackInfo.Info!, room, room.Participants.LocalParticipant());

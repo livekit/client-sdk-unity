@@ -5,7 +5,7 @@ namespace LiveKit.Internal.FFIClients.Requests
 {
     public static class FFIBridgeExtensions
     {
-        public static FfiResponseWrap SendConnectRequest(this IFFIBridge ffiBridge, string url, string authToken)
+        public static FfiResponseWrap SendConnectRequest(this IFFIBridge ffiBridge, string url, string authToken, bool autoSubscribe)
         {
             Utils.Debug("Connect....");
             using var request = ffiBridge.NewRequest<ConnectRequest>();
@@ -14,7 +14,7 @@ namespace LiveKit.Internal.FFIClients.Requests
             connect.Url = url;
             connect.Token = authToken;
             connect.Options = roomOptions;
-            connect.Options.AutoSubscribe = false;
+            connect.Options.AutoSubscribe = autoSubscribe;
             var response = request.Send();
             Utils.Debug($"Connect response.... {response}");
             return response;

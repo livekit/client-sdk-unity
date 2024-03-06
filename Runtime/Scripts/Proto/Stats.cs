@@ -9857,11 +9857,10 @@ namespace LiveKit.Proto {
       if (other.QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) {
         QualityLimitationReason = other.QualityLimitationReason;
       }
-      //qualityLimitationDurations_.MergeFrom(other.qualityLimitationDurations_);
-      foreach (var pair in other.qualityLimitationDurations_)
-      {
-        qualityLimitationDurations_[pair.Key] = pair.Value;
-      }
+      foreach(var limit in other.qualityLimitationDurations_)
+            {
+                qualityLimitationDurations_[limit.Key] = other.qualityLimitationDurations_[limit.Key];
+            }
       if (other.QualityLimitationResolutionChanges != 0) {
         QualityLimitationResolutionChanges = other.QualityLimitationResolutionChanges;
       }

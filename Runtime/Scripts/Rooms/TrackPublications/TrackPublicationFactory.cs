@@ -7,7 +7,7 @@ namespace LiveKit.Rooms.TrackPublications
     {
         private readonly Stack<TrackPublication> publications = new();
         
-        public TrackPublication NewTrackPublication(TrackPublicationInfo info)
+        public TrackPublication NewTrackPublication(FfiOwnedHandle handle, TrackPublicationInfo info)
         {
             lock (publications)
             {
@@ -16,7 +16,7 @@ namespace LiveKit.Rooms.TrackPublications
                     publication = new TrackPublication();
                 }
                 
-                publication!.Construct(info);
+                publication!.Construct(handle, info);
                 return publication;
             }
         }
