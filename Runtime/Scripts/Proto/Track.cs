@@ -24,49 +24,55 @@ namespace LiveKit.Proto {
     static TrackReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgt0cmFjay5wcm90bxIHbGl2ZWtpdBoMaGFuZGxlLnByb3RvGhF2aWRlb19m",
-            "cmFtZS5wcm90bxoRYXVkaW9fZnJhbWUucHJvdG8iQwoTVmlkZW9DYXB0dXJl",
-            "T3B0aW9ucxIsCgpyZXNvbHV0aW9uGAEgASgLMhgubGl2ZWtpdC5WaWRlb1Jl",
-            "c29sdXRpb24iZgoTQXVkaW9DYXB0dXJlT3B0aW9ucxIZChFlY2hvX2NhbmNl",
-            "bGxhdGlvbhgBIAEoCBIZChFub2lzZV9zdXBwcmVzc2lvbhgCIAEoCBIZChFh",
-            "dXRvX2dhaW5fY29udHJvbBgDIAEoCCKDAQoXQ3JlYXRlVmlkZW9UcmFja1Jl",
-            "cXVlc3QSDAoEbmFtZRgBIAEoCRItCgdvcHRpb25zGAIgASgLMhwubGl2ZWtp",
-            "dC5WaWRlb0NhcHR1cmVPcHRpb25zEisKDXNvdXJjZV9oYW5kbGUYAyABKAsy",
-            "FC5saXZla2l0LkZGSUhhbmRsZUlkIj0KGENyZWF0ZVZpZGVvVHJhY2tSZXNw",
-            "b25zZRIhCgV0cmFjaxgBIAEoCzISLmxpdmVraXQuVHJhY2tJbmZvIoMBChdD",
-            "cmVhdGVBdWRpb1RyYWNrUmVxdWVzdBIMCgRuYW1lGAEgASgJEi0KB29wdGlv",
-            "bnMYAiABKAsyHC5saXZla2l0LkF1ZGlvQ2FwdHVyZU9wdGlvbnMSKwoNc291",
-            "cmNlX2hhbmRsZRgDIAEoCzIULmxpdmVraXQuRkZJSGFuZGxlSWQiPQoYQ3Jl",
-            "YXRlQXVkaW9UcmFja1Jlc3BvbnNlEiEKBXRyYWNrGAEgASgLMhIubGl2ZWtp",
-            "dC5UcmFja0luZm8iDAoKVHJhY2tFdmVudCLfAQoUVHJhY2tQdWJsaWNhdGlv",
-            "bkluZm8SCwoDc2lkGAEgASgJEgwKBG5hbWUYAiABKAkSIAoEa2luZBgDIAEo",
-            "DjISLmxpdmVraXQuVHJhY2tLaW5kEiQKBnNvdXJjZRgEIAEoDjIULmxpdmVr",
-            "aXQuVHJhY2tTb3VyY2USEwoLc2ltdWxjYXN0ZWQYBSABKAgSDQoFd2lkdGgY",
-            "BiABKA0SDgoGaGVpZ2h0GAcgASgNEhEKCW1pbWVfdHlwZRgIIAEoCRINCgVt",
-            "dXRlZBgJIAEoCBIOCgZyZW1vdGUYCiABKAgivQEKCVRyYWNrSW5mbxIoCgpv",
-            "cHRfaGFuZGxlGAEgASgLMhQubGl2ZWtpdC5GRklIYW5kbGVJZBILCgNzaWQY",
-            "AiABKAkSDAoEbmFtZRgDIAEoCRIgCgRraW5kGAQgASgOMhIubGl2ZWtpdC5U",
-            "cmFja0tpbmQSKgoMc3RyZWFtX3N0YXRlGAUgASgOMhQubGl2ZWtpdC5TdHJl",
-            "YW1TdGF0ZRINCgVtdXRlZBgGIAEoCBIOCgZyZW1vdGUYByABKAgqPQoJVHJh",
-            "Y2tLaW5kEhAKDEtJTkRfVU5LTk9XThAAEg4KCktJTkRfQVVESU8QARIOCgpL",
-            "SU5EX1ZJREVPEAIqgQEKC1RyYWNrU291cmNlEhIKDlNPVVJDRV9VTktOT1dO",
-            "EAASEQoNU09VUkNFX0NBTUVSQRABEhUKEVNPVVJDRV9NSUNST1BIT05FEAIS",
-            "FgoSU09VUkNFX1NDUkVFTlNIQVJFEAMSHAoYU09VUkNFX1NDUkVFTlNIQVJF",
-            "X0FVRElPEAQqRAoLU3RyZWFtU3RhdGUSEQoNU1RBVEVfVU5LTk9XThAAEhAK",
-            "DFNUQVRFX0FDVElWRRABEhAKDFNUQVRFX1BBVVNFRBACQhCqAg1MaXZlS2l0",
-            "LlByb3RvYgZwcm90bzM="));
+            "Cgt0cmFjay5wcm90bxINbGl2ZWtpdC5wcm90bxoKZTJlZS5wcm90bxoMaGFu",
+            "ZGxlLnByb3RvGgtzdGF0cy5wcm90byI+ChdDcmVhdGVWaWRlb1RyYWNrUmVx",
+            "dWVzdBIMCgRuYW1lGAEgASgJEhUKDXNvdXJjZV9oYW5kbGUYAiABKAQiRAoY",
+            "Q3JlYXRlVmlkZW9UcmFja1Jlc3BvbnNlEigKBXRyYWNrGAEgASgLMhkubGl2",
+            "ZWtpdC5wcm90by5Pd25lZFRyYWNrIj4KF0NyZWF0ZUF1ZGlvVHJhY2tSZXF1",
+            "ZXN0EgwKBG5hbWUYASABKAkSFQoNc291cmNlX2hhbmRsZRgCIAEoBCJEChhD",
+            "cmVhdGVBdWRpb1RyYWNrUmVzcG9uc2USKAoFdHJhY2sYASABKAsyGS5saXZl",
+            "a2l0LnByb3RvLk93bmVkVHJhY2siJwoPR2V0U3RhdHNSZXF1ZXN0EhQKDHRy",
+            "YWNrX2hhbmRsZRgBIAEoBCIkChBHZXRTdGF0c1Jlc3BvbnNlEhAKCGFzeW5j",
+            "X2lkGAEgASgEImoKEEdldFN0YXRzQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASAB",
+            "KAQSEgoFZXJyb3IYAiABKAlIAIgBARImCgVzdGF0cxgDIAMoCzIXLmxpdmVr",
+            "aXQucHJvdG8uUnRjU3RhdHNCCAoGX2Vycm9yIgwKClRyYWNrRXZlbnQiowIK",
+            "FFRyYWNrUHVibGljYXRpb25JbmZvEgsKA3NpZBgBIAEoCRIMCgRuYW1lGAIg",
+            "ASgJEiYKBGtpbmQYAyABKA4yGC5saXZla2l0LnByb3RvLlRyYWNrS2luZBIq",
+            "CgZzb3VyY2UYBCABKA4yGi5saXZla2l0LnByb3RvLlRyYWNrU291cmNlEhMK",
+            "C3NpbXVsY2FzdGVkGAUgASgIEg0KBXdpZHRoGAYgASgNEg4KBmhlaWdodBgH",
+            "IAEoDRIRCgltaW1lX3R5cGUYCCABKAkSDQoFbXV0ZWQYCSABKAgSDgoGcmVt",
+            "b3RlGAogASgIEjYKD2VuY3J5cHRpb25fdHlwZRgLIAEoDjIdLmxpdmVraXQu",
+            "cHJvdG8uRW5jcnlwdGlvblR5cGUieQoVT3duZWRUcmFja1B1YmxpY2F0aW9u",
+            "Ei0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5k",
+            "bGUSMQoEaW5mbxgCIAEoCzIjLmxpdmVraXQucHJvdG8uVHJhY2tQdWJsaWNh",
+            "dGlvbkluZm8inwEKCVRyYWNrSW5mbxILCgNzaWQYASABKAkSDAoEbmFtZRgC",
+            "IAEoCRImCgRraW5kGAMgASgOMhgubGl2ZWtpdC5wcm90by5UcmFja0tpbmQS",
+            "MAoMc3RyZWFtX3N0YXRlGAQgASgOMhoubGl2ZWtpdC5wcm90by5TdHJlYW1T",
+            "dGF0ZRINCgVtdXRlZBgFIAEoCBIOCgZyZW1vdGUYBiABKAgiYwoKT3duZWRU",
+            "cmFjaxItCgZoYW5kbGUYASABKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVk",
+            "SGFuZGxlEiYKBGluZm8YAiABKAsyGC5saXZla2l0LnByb3RvLlRyYWNrSW5m",
+            "byo9CglUcmFja0tpbmQSEAoMS0lORF9VTktOT1dOEAASDgoKS0lORF9BVURJ",
+            "TxABEg4KCktJTkRfVklERU8QAiqBAQoLVHJhY2tTb3VyY2USEgoOU09VUkNF",
+            "X1VOS05PV04QABIRCg1TT1VSQ0VfQ0FNRVJBEAESFQoRU09VUkNFX01JQ1JP",
+            "UEhPTkUQAhIWChJTT1VSQ0VfU0NSRUVOU0hBUkUQAxIcChhTT1VSQ0VfU0NS",
+            "RUVOU0hBUkVfQVVESU8QBCpECgtTdHJlYW1TdGF0ZRIRCg1TVEFURV9VTktO",
+            "T1dOEAASEAoMU1RBVEVfQUNUSVZFEAESEAoMU1RBVEVfUEFVU0VEEAJCEKoC",
+            "DUxpdmVLaXQuUHJvdG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.AudioFrameReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.StatsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.TrackKind), typeof(global::LiveKit.Proto.TrackSource), typeof(global::LiveKit.Proto.StreamState), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoCaptureOptions), global::LiveKit.Proto.VideoCaptureOptions.Parser, new[]{ "Resolution" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioCaptureOptions), global::LiveKit.Proto.AudioCaptureOptions.Parser, new[]{ "EchoCancellation", "NoiseSuppression", "AutoGainControl" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateVideoTrackRequest), global::LiveKit.Proto.CreateVideoTrackRequest.Parser, new[]{ "Name", "Options", "SourceHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateVideoTrackRequest), global::LiveKit.Proto.CreateVideoTrackRequest.Parser, new[]{ "Name", "SourceHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateVideoTrackResponse), global::LiveKit.Proto.CreateVideoTrackResponse.Parser, new[]{ "Track" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateAudioTrackRequest), global::LiveKit.Proto.CreateAudioTrackRequest.Parser, new[]{ "Name", "Options", "SourceHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateAudioTrackRequest), global::LiveKit.Proto.CreateAudioTrackRequest.Parser, new[]{ "Name", "SourceHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateAudioTrackResponse), global::LiveKit.Proto.CreateAudioTrackResponse.Parser, new[]{ "Track" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsRequest), global::LiveKit.Proto.GetStatsRequest.Parser, new[]{ "TrackHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsResponse), global::LiveKit.Proto.GetStatsResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsCallback), global::LiveKit.Proto.GetStatsCallback.Parser, new[]{ "AsyncId", "Error", "Stats" }, new[]{ "Error" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackEvent), global::LiveKit.Proto.TrackEvent.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackPublicationInfo), global::LiveKit.Proto.TrackPublicationInfo.Parser, new[]{ "Sid", "Name", "Kind", "Source", "Simulcasted", "Width", "Height", "MimeType", "Muted", "Remote" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackInfo), global::LiveKit.Proto.TrackInfo.Parser, new[]{ "OptHandle", "Sid", "Name", "Kind", "StreamState", "Muted", "Remote" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackPublicationInfo), global::LiveKit.Proto.TrackPublicationInfo.Parser, new[]{ "Sid", "Name", "Kind", "Source", "Simulcasted", "Width", "Height", "MimeType", "Muted", "Remote", "EncryptionType" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedTrackPublication), global::LiveKit.Proto.OwnedTrackPublication.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackInfo), global::LiveKit.Proto.TrackInfo.Parser, new[]{ "Sid", "Name", "Kind", "StreamState", "Muted", "Remote" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedTrack), global::LiveKit.Proto.OwnedTrack.Parser, new[]{ "Handle", "Info" }, null, null, null, null)
           }));
     }
     #endregion
@@ -96,470 +102,10 @@ namespace LiveKit.Proto {
   #endregion
 
   #region Messages
-  public sealed partial class VideoCaptureOptions : pb::IMessage<VideoCaptureOptions>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<VideoCaptureOptions> _parser = new pb::MessageParser<VideoCaptureOptions>(() => new VideoCaptureOptions());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<VideoCaptureOptions> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[0]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public VideoCaptureOptions() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public VideoCaptureOptions(VideoCaptureOptions other) : this() {
-      resolution_ = other.resolution_ != null ? other.resolution_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public VideoCaptureOptions Clone() {
-      return new VideoCaptureOptions(this);
-    }
-
-    /// <summary>Field number for the "resolution" field.</summary>
-    public const int ResolutionFieldNumber = 1;
-    private global::LiveKit.Proto.VideoResolution resolution_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.VideoResolution Resolution {
-      get { return resolution_; }
-      set {
-        resolution_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as VideoCaptureOptions);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(VideoCaptureOptions other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(Resolution, other.Resolution)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (resolution_ != null) hash ^= Resolution.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (resolution_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Resolution);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (resolution_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Resolution);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (resolution_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Resolution);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(VideoCaptureOptions other) {
-      if (other == null) {
-        return;
-      }
-      if (other.resolution_ != null) {
-        if (resolution_ == null) {
-          Resolution = new global::LiveKit.Proto.VideoResolution();
-        }
-        Resolution.MergeFrom(other.Resolution);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (resolution_ == null) {
-              Resolution = new global::LiveKit.Proto.VideoResolution();
-            }
-            input.ReadMessage(Resolution);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (resolution_ == null) {
-              Resolution = new global::LiveKit.Proto.VideoResolution();
-            }
-            input.ReadMessage(Resolution);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class AudioCaptureOptions : pb::IMessage<AudioCaptureOptions>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<AudioCaptureOptions> _parser = new pb::MessageParser<AudioCaptureOptions>(() => new AudioCaptureOptions());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<AudioCaptureOptions> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AudioCaptureOptions() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AudioCaptureOptions(AudioCaptureOptions other) : this() {
-      echoCancellation_ = other.echoCancellation_;
-      noiseSuppression_ = other.noiseSuppression_;
-      autoGainControl_ = other.autoGainControl_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AudioCaptureOptions Clone() {
-      return new AudioCaptureOptions(this);
-    }
-
-    /// <summary>Field number for the "echo_cancellation" field.</summary>
-    public const int EchoCancellationFieldNumber = 1;
-    private bool echoCancellation_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool EchoCancellation {
-      get { return echoCancellation_; }
-      set {
-        echoCancellation_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "noise_suppression" field.</summary>
-    public const int NoiseSuppressionFieldNumber = 2;
-    private bool noiseSuppression_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool NoiseSuppression {
-      get { return noiseSuppression_; }
-      set {
-        noiseSuppression_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "auto_gain_control" field.</summary>
-    public const int AutoGainControlFieldNumber = 3;
-    private bool autoGainControl_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool AutoGainControl {
-      get { return autoGainControl_; }
-      set {
-        autoGainControl_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as AudioCaptureOptions);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(AudioCaptureOptions other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (EchoCancellation != other.EchoCancellation) return false;
-      if (NoiseSuppression != other.NoiseSuppression) return false;
-      if (AutoGainControl != other.AutoGainControl) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (EchoCancellation != false) hash ^= EchoCancellation.GetHashCode();
-      if (NoiseSuppression != false) hash ^= NoiseSuppression.GetHashCode();
-      if (AutoGainControl != false) hash ^= AutoGainControl.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (EchoCancellation != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(EchoCancellation);
-      }
-      if (NoiseSuppression != false) {
-        output.WriteRawTag(16);
-        output.WriteBool(NoiseSuppression);
-      }
-      if (AutoGainControl != false) {
-        output.WriteRawTag(24);
-        output.WriteBool(AutoGainControl);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EchoCancellation != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(EchoCancellation);
-      }
-      if (NoiseSuppression != false) {
-        output.WriteRawTag(16);
-        output.WriteBool(NoiseSuppression);
-      }
-      if (AutoGainControl != false) {
-        output.WriteRawTag(24);
-        output.WriteBool(AutoGainControl);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (EchoCancellation != false) {
-        size += 1 + 1;
-      }
-      if (NoiseSuppression != false) {
-        size += 1 + 1;
-      }
-      if (AutoGainControl != false) {
-        size += 1 + 1;
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(AudioCaptureOptions other) {
-      if (other == null) {
-        return;
-      }
-      if (other.EchoCancellation != false) {
-        EchoCancellation = other.EchoCancellation;
-      }
-      if (other.NoiseSuppression != false) {
-        NoiseSuppression = other.NoiseSuppression;
-      }
-      if (other.AutoGainControl != false) {
-        AutoGainControl = other.AutoGainControl;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            EchoCancellation = input.ReadBool();
-            break;
-          }
-          case 16: {
-            NoiseSuppression = input.ReadBool();
-            break;
-          }
-          case 24: {
-            AutoGainControl = input.ReadBool();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            EchoCancellation = input.ReadBool();
-            break;
-          }
-          case 16: {
-            NoiseSuppression = input.ReadBool();
-            break;
-          }
-          case 24: {
-            AutoGainControl = input.ReadBool();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   /// <summary>
   /// Create a new VideoTrack from a VideoSource
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CreateVideoTrackRequest : pb::IMessage<CreateVideoTrackRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -574,7 +120,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[2]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -595,8 +141,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CreateVideoTrackRequest(CreateVideoTrackRequest other) : this() {
       name_ = other.name_;
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      sourceHandle_ = other.sourceHandle_ != null ? other.sourceHandle_.Clone() : null;
+      sourceHandle_ = other.sourceHandle_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -618,24 +163,12 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "options" field.</summary>
-    public const int OptionsFieldNumber = 2;
-    private global::LiveKit.Proto.VideoCaptureOptions options_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.VideoCaptureOptions Options {
-      get { return options_; }
-      set {
-        options_ = value;
-      }
-    }
-
     /// <summary>Field number for the "source_handle" field.</summary>
-    public const int SourceHandleFieldNumber = 3;
-    private global::LiveKit.Proto.FFIHandleId sourceHandle_;
+    public const int SourceHandleFieldNumber = 2;
+    private ulong sourceHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.FFIHandleId SourceHandle {
+    public ulong SourceHandle {
       get { return sourceHandle_; }
       set {
         sourceHandle_ = value;
@@ -658,8 +191,7 @@ namespace LiveKit.Proto {
         return true;
       }
       if (Name != other.Name) return false;
-      if (!object.Equals(Options, other.Options)) return false;
-      if (!object.Equals(SourceHandle, other.SourceHandle)) return false;
+      if (SourceHandle != other.SourceHandle) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -668,8 +200,7 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (options_ != null) hash ^= Options.GetHashCode();
-      if (sourceHandle_ != null) hash ^= SourceHandle.GetHashCode();
+      if (SourceHandle != 0UL) hash ^= SourceHandle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -692,13 +223,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (options_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(Options);
-      }
-      if (sourceHandle_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(SourceHandle);
+      if (SourceHandle != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(SourceHandle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -714,13 +241,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (options_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(Options);
-      }
-      if (sourceHandle_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(SourceHandle);
+      if (SourceHandle != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(SourceHandle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -735,11 +258,8 @@ namespace LiveKit.Proto {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (options_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Options);
-      }
-      if (sourceHandle_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SourceHandle);
+      if (SourceHandle != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -756,17 +276,8 @@ namespace LiveKit.Proto {
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.options_ != null) {
-        if (options_ == null) {
-          Options = new global::LiveKit.Proto.VideoCaptureOptions();
-        }
-        Options.MergeFrom(other.Options);
-      }
-      if (other.sourceHandle_ != null) {
-        if (sourceHandle_ == null) {
-          SourceHandle = new global::LiveKit.Proto.FFIHandleId();
-        }
-        SourceHandle.MergeFrom(other.SourceHandle);
+      if (other.SourceHandle != 0UL) {
+        SourceHandle = other.SourceHandle;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -787,18 +298,8 @@ namespace LiveKit.Proto {
             Name = input.ReadString();
             break;
           }
-          case 18: {
-            if (options_ == null) {
-              Options = new global::LiveKit.Proto.VideoCaptureOptions();
-            }
-            input.ReadMessage(Options);
-            break;
-          }
-          case 26: {
-            if (sourceHandle_ == null) {
-              SourceHandle = new global::LiveKit.Proto.FFIHandleId();
-            }
-            input.ReadMessage(SourceHandle);
+          case 16: {
+            SourceHandle = input.ReadUInt64();
             break;
           }
         }
@@ -820,18 +321,8 @@ namespace LiveKit.Proto {
             Name = input.ReadString();
             break;
           }
-          case 18: {
-            if (options_ == null) {
-              Options = new global::LiveKit.Proto.VideoCaptureOptions();
-            }
-            input.ReadMessage(Options);
-            break;
-          }
-          case 26: {
-            if (sourceHandle_ == null) {
-              SourceHandle = new global::LiveKit.Proto.FFIHandleId();
-            }
-            input.ReadMessage(SourceHandle);
+          case 16: {
+            SourceHandle = input.ReadUInt64();
             break;
           }
         }
@@ -841,6 +332,7 @@ namespace LiveKit.Proto {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CreateVideoTrackResponse : pb::IMessage<CreateVideoTrackResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -855,7 +347,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[3]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -887,10 +379,10 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track" field.</summary>
     public const int TrackFieldNumber = 1;
-    private global::LiveKit.Proto.TrackInfo track_;
+    private global::LiveKit.Proto.OwnedTrack track_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.TrackInfo Track {
+    public global::LiveKit.Proto.OwnedTrack Track {
       get { return track_; }
       set {
         track_ = value;
@@ -984,7 +476,7 @@ namespace LiveKit.Proto {
       }
       if (other.track_ != null) {
         if (track_ == null) {
-          Track = new global::LiveKit.Proto.TrackInfo();
+          Track = new global::LiveKit.Proto.OwnedTrack();
         }
         Track.MergeFrom(other.Track);
       }
@@ -1005,7 +497,7 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             if (track_ == null) {
-              Track = new global::LiveKit.Proto.TrackInfo();
+              Track = new global::LiveKit.Proto.OwnedTrack();
             }
             input.ReadMessage(Track);
             break;
@@ -1027,7 +519,7 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             if (track_ == null) {
-              Track = new global::LiveKit.Proto.TrackInfo();
+              Track = new global::LiveKit.Proto.OwnedTrack();
             }
             input.ReadMessage(Track);
             break;
@@ -1042,6 +534,7 @@ namespace LiveKit.Proto {
   /// <summary>
   /// Create a new AudioTrack from a AudioSource
   /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CreateAudioTrackRequest : pb::IMessage<CreateAudioTrackRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1056,7 +549,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[4]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1077,8 +570,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CreateAudioTrackRequest(CreateAudioTrackRequest other) : this() {
       name_ = other.name_;
-      options_ = other.options_ != null ? other.options_.Clone() : null;
-      sourceHandle_ = other.sourceHandle_ != null ? other.sourceHandle_.Clone() : null;
+      sourceHandle_ = other.sourceHandle_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1100,24 +592,12 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "options" field.</summary>
-    public const int OptionsFieldNumber = 2;
-    private global::LiveKit.Proto.AudioCaptureOptions options_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.AudioCaptureOptions Options {
-      get { return options_; }
-      set {
-        options_ = value;
-      }
-    }
-
     /// <summary>Field number for the "source_handle" field.</summary>
-    public const int SourceHandleFieldNumber = 3;
-    private global::LiveKit.Proto.FFIHandleId sourceHandle_;
+    public const int SourceHandleFieldNumber = 2;
+    private ulong sourceHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.FFIHandleId SourceHandle {
+    public ulong SourceHandle {
       get { return sourceHandle_; }
       set {
         sourceHandle_ = value;
@@ -1140,8 +620,7 @@ namespace LiveKit.Proto {
         return true;
       }
       if (Name != other.Name) return false;
-      if (!object.Equals(Options, other.Options)) return false;
-      if (!object.Equals(SourceHandle, other.SourceHandle)) return false;
+      if (SourceHandle != other.SourceHandle) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1150,8 +629,7 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (options_ != null) hash ^= Options.GetHashCode();
-      if (sourceHandle_ != null) hash ^= SourceHandle.GetHashCode();
+      if (SourceHandle != 0UL) hash ^= SourceHandle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1174,13 +652,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (options_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(Options);
-      }
-      if (sourceHandle_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(SourceHandle);
+      if (SourceHandle != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(SourceHandle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1196,13 +670,9 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (options_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(Options);
-      }
-      if (sourceHandle_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(SourceHandle);
+      if (SourceHandle != 0UL) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(SourceHandle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1217,11 +687,8 @@ namespace LiveKit.Proto {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (options_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Options);
-      }
-      if (sourceHandle_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SourceHandle);
+      if (SourceHandle != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1238,17 +705,8 @@ namespace LiveKit.Proto {
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.options_ != null) {
-        if (options_ == null) {
-          Options = new global::LiveKit.Proto.AudioCaptureOptions();
-        }
-        Options.MergeFrom(other.Options);
-      }
-      if (other.sourceHandle_ != null) {
-        if (sourceHandle_ == null) {
-          SourceHandle = new global::LiveKit.Proto.FFIHandleId();
-        }
-        SourceHandle.MergeFrom(other.SourceHandle);
+      if (other.SourceHandle != 0UL) {
+        SourceHandle = other.SourceHandle;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1269,18 +727,8 @@ namespace LiveKit.Proto {
             Name = input.ReadString();
             break;
           }
-          case 18: {
-            if (options_ == null) {
-              Options = new global::LiveKit.Proto.AudioCaptureOptions();
-            }
-            input.ReadMessage(Options);
-            break;
-          }
-          case 26: {
-            if (sourceHandle_ == null) {
-              SourceHandle = new global::LiveKit.Proto.FFIHandleId();
-            }
-            input.ReadMessage(SourceHandle);
+          case 16: {
+            SourceHandle = input.ReadUInt64();
             break;
           }
         }
@@ -1302,18 +750,8 @@ namespace LiveKit.Proto {
             Name = input.ReadString();
             break;
           }
-          case 18: {
-            if (options_ == null) {
-              Options = new global::LiveKit.Proto.AudioCaptureOptions();
-            }
-            input.ReadMessage(Options);
-            break;
-          }
-          case 26: {
-            if (sourceHandle_ == null) {
-              SourceHandle = new global::LiveKit.Proto.FFIHandleId();
-            }
-            input.ReadMessage(SourceHandle);
+          case 16: {
+            SourceHandle = input.ReadUInt64();
             break;
           }
         }
@@ -1323,6 +761,7 @@ namespace LiveKit.Proto {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CreateAudioTrackResponse : pb::IMessage<CreateAudioTrackResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1337,7 +776,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[5]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1369,10 +808,10 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track" field.</summary>
     public const int TrackFieldNumber = 1;
-    private global::LiveKit.Proto.TrackInfo track_;
+    private global::LiveKit.Proto.OwnedTrack track_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.TrackInfo Track {
+    public global::LiveKit.Proto.OwnedTrack Track {
       get { return track_; }
       set {
         track_ = value;
@@ -1466,7 +905,7 @@ namespace LiveKit.Proto {
       }
       if (other.track_ != null) {
         if (track_ == null) {
-          Track = new global::LiveKit.Proto.TrackInfo();
+          Track = new global::LiveKit.Proto.OwnedTrack();
         }
         Track.MergeFrom(other.Track);
       }
@@ -1487,7 +926,7 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             if (track_ == null) {
-              Track = new global::LiveKit.Proto.TrackInfo();
+              Track = new global::LiveKit.Proto.OwnedTrack();
             }
             input.ReadMessage(Track);
             break;
@@ -1509,7 +948,7 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             if (track_ == null) {
-              Track = new global::LiveKit.Proto.TrackInfo();
+              Track = new global::LiveKit.Proto.OwnedTrack();
             }
             input.ReadMessage(Track);
             break;
@@ -1521,6 +960,654 @@ namespace LiveKit.Proto {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GetStatsRequest : pb::IMessage<GetStatsRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetStatsRequest> _parser = new pb::MessageParser<GetStatsRequest>(() => new GetStatsRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetStatsRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsRequest(GetStatsRequest other) : this() {
+      trackHandle_ = other.trackHandle_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsRequest Clone() {
+      return new GetStatsRequest(this);
+    }
+
+    /// <summary>Field number for the "track_handle" field.</summary>
+    public const int TrackHandleFieldNumber = 1;
+    private ulong trackHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong TrackHandle {
+      get { return trackHandle_; }
+      set {
+        trackHandle_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetStatsRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetStatsRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TrackHandle != other.TrackHandle) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TrackHandle != 0UL) hash ^= TrackHandle.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (TrackHandle != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(TrackHandle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TrackHandle != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(TrackHandle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (TrackHandle != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TrackHandle);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetStatsRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TrackHandle != 0UL) {
+        TrackHandle = other.TrackHandle;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TrackHandle = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TrackHandle = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GetStatsResponse : pb::IMessage<GetStatsResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetStatsResponse> _parser = new pb::MessageParser<GetStatsResponse>(() => new GetStatsResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetStatsResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsResponse(GetStatsResponse other) : this() {
+      asyncId_ = other.asyncId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsResponse Clone() {
+      return new GetStatsResponse(this);
+    }
+
+    /// <summary>Field number for the "async_id" field.</summary>
+    public const int AsyncIdFieldNumber = 1;
+    private ulong asyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong AsyncId {
+      get { return asyncId_; }
+      set {
+        asyncId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetStatsResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetStatsResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (AsyncId != other.AsyncId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (AsyncId != 0UL) hash ^= AsyncId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (AsyncId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (AsyncId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (AsyncId != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetStatsResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.AsyncId != 0UL) {
+        AsyncId = other.AsyncId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GetStatsCallback : pb::IMessage<GetStatsCallback>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetStatsCallback> _parser = new pb::MessageParser<GetStatsCallback>(() => new GetStatsCallback());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetStatsCallback> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsCallback() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsCallback(GetStatsCallback other) : this() {
+      asyncId_ = other.asyncId_;
+      error_ = other.error_;
+      stats_ = other.stats_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetStatsCallback Clone() {
+      return new GetStatsCallback(this);
+    }
+
+    /// <summary>Field number for the "async_id" field.</summary>
+    public const int AsyncIdFieldNumber = 1;
+    private ulong asyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong AsyncId {
+      get { return asyncId_; }
+      set {
+        asyncId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "error" field.</summary>
+    public const int ErrorFieldNumber = 2;
+    private readonly static string ErrorDefaultValue = "";
+
+    private string error_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Error {
+      get { return error_ ?? ErrorDefaultValue; }
+      set {
+        error_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "error" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasError {
+      get { return error_ != null; }
+    }
+    /// <summary>Clears the value of the "error" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearError() {
+      error_ = null;
+    }
+
+    /// <summary>Field number for the "stats" field.</summary>
+    public const int StatsFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::LiveKit.Proto.RtcStats> _repeated_stats_codec
+        = pb::FieldCodec.ForMessage(26, global::LiveKit.Proto.RtcStats.Parser);
+    private readonly pbc::RepeatedField<global::LiveKit.Proto.RtcStats> stats_ = new pbc::RepeatedField<global::LiveKit.Proto.RtcStats>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::LiveKit.Proto.RtcStats> Stats {
+      get { return stats_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetStatsCallback);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetStatsCallback other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (AsyncId != other.AsyncId) return false;
+      if (Error != other.Error) return false;
+      if(!stats_.Equals(other.stats_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (AsyncId != 0UL) hash ^= AsyncId.GetHashCode();
+      if (HasError) hash ^= Error.GetHashCode();
+      hash ^= stats_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (AsyncId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (HasError) {
+        output.WriteRawTag(18);
+        output.WriteString(Error);
+      }
+      stats_.WriteTo(output, _repeated_stats_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (AsyncId != 0UL) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (HasError) {
+        output.WriteRawTag(18);
+        output.WriteString(Error);
+      }
+      stats_.WriteTo(ref output, _repeated_stats_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (AsyncId != 0UL) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
+      }
+      if (HasError) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
+      }
+      size += stats_.CalculateSize(_repeated_stats_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetStatsCallback other) {
+      if (other == null) {
+        return;
+      }
+      if (other.AsyncId != 0UL) {
+        AsyncId = other.AsyncId;
+      }
+      if (other.HasError) {
+        Error = other.Error;
+      }
+      stats_.Add(other.stats_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Error = input.ReadString();
+            break;
+          }
+          case 26: {
+            stats_.AddEntriesFrom(input, _repeated_stats_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Error = input.ReadString();
+            break;
+          }
+          case 26: {
+            stats_.AddEntriesFrom(ref input, _repeated_stats_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class TrackEvent : pb::IMessage<TrackEvent>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1535,7 +1622,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[6]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1673,6 +1760,7 @@ namespace LiveKit.Proto {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class TrackPublicationInfo : pb::IMessage<TrackPublicationInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1687,7 +1775,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[7]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1717,6 +1805,7 @@ namespace LiveKit.Proto {
       mimeType_ = other.mimeType_;
       muted_ = other.muted_;
       remote_ = other.remote_;
+      encryptionType_ = other.encryptionType_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1846,6 +1935,18 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "encryption_type" field.</summary>
+    public const int EncryptionTypeFieldNumber = 11;
+    private global::LiveKit.Proto.EncryptionType encryptionType_ = global::LiveKit.Proto.EncryptionType.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.EncryptionType EncryptionType {
+      get { return encryptionType_; }
+      set {
+        encryptionType_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1871,6 +1972,7 @@ namespace LiveKit.Proto {
       if (MimeType != other.MimeType) return false;
       if (Muted != other.Muted) return false;
       if (Remote != other.Remote) return false;
+      if (EncryptionType != other.EncryptionType) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1888,6 +1990,7 @@ namespace LiveKit.Proto {
       if (MimeType.Length != 0) hash ^= MimeType.GetHashCode();
       if (Muted != false) hash ^= Muted.GetHashCode();
       if (Remote != false) hash ^= Remote.GetHashCode();
+      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) hash ^= EncryptionType.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1946,6 +2049,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(80);
         output.WriteBool(Remote);
       }
+      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+        output.WriteRawTag(88);
+        output.WriteEnum((int) EncryptionType);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1996,6 +2103,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(80);
         output.WriteBool(Remote);
       }
+      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+        output.WriteRawTag(88);
+        output.WriteEnum((int) EncryptionType);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2035,6 +2146,9 @@ namespace LiveKit.Proto {
       }
       if (Remote != false) {
         size += 1 + 1;
+      }
+      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) EncryptionType);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2078,6 +2192,9 @@ namespace LiveKit.Proto {
       if (other.Remote != false) {
         Remote = other.Remote;
       }
+      if (other.EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+        EncryptionType = other.EncryptionType;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2131,6 +2248,10 @@ namespace LiveKit.Proto {
           }
           case 80: {
             Remote = input.ReadBool();
+            break;
+          }
+          case 88: {
+            EncryptionType = (global::LiveKit.Proto.EncryptionType) input.ReadEnum();
             break;
           }
         }
@@ -2188,6 +2309,10 @@ namespace LiveKit.Proto {
             Remote = input.ReadBool();
             break;
           }
+          case 88: {
+            EncryptionType = (global::LiveKit.Proto.EncryptionType) input.ReadEnum();
+            break;
+          }
         }
       }
     }
@@ -2195,6 +2320,252 @@ namespace LiveKit.Proto {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class OwnedTrackPublication : pb::IMessage<OwnedTrackPublication>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<OwnedTrackPublication> _parser = new pb::MessageParser<OwnedTrackPublication>(() => new OwnedTrackPublication());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<OwnedTrackPublication> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public OwnedTrackPublication() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public OwnedTrackPublication(OwnedTrackPublication other) : this() {
+      handle_ = other.handle_ != null ? other.handle_.Clone() : null;
+      info_ = other.info_ != null ? other.info_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public OwnedTrackPublication Clone() {
+      return new OwnedTrackPublication(this);
+    }
+
+    /// <summary>Field number for the "handle" field.</summary>
+    public const int HandleFieldNumber = 1;
+    private global::LiveKit.Proto.FfiOwnedHandle handle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.FfiOwnedHandle Handle {
+      get { return handle_; }
+      set {
+        handle_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "info" field.</summary>
+    public const int InfoFieldNumber = 2;
+    private global::LiveKit.Proto.TrackPublicationInfo info_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.TrackPublicationInfo Info {
+      get { return info_; }
+      set {
+        info_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as OwnedTrackPublication);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(OwnedTrackPublication other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Handle, other.Handle)) return false;
+      if (!object.Equals(Info, other.Info)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (handle_ != null) hash ^= Handle.GetHashCode();
+      if (info_ != null) hash ^= Info.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (handle_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Handle);
+      }
+      if (info_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Info);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (handle_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Handle);
+      }
+      if (info_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Info);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (handle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Handle);
+      }
+      if (info_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Info);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(OwnedTrackPublication other) {
+      if (other == null) {
+        return;
+      }
+      if (other.handle_ != null) {
+        if (handle_ == null) {
+          Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+        }
+        Handle.MergeFrom(other.Handle);
+      }
+      if (other.info_ != null) {
+        if (info_ == null) {
+          Info = new global::LiveKit.Proto.TrackPublicationInfo();
+        }
+        Info.MergeFrom(other.Info);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (handle_ == null) {
+              Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+            }
+            input.ReadMessage(Handle);
+            break;
+          }
+          case 18: {
+            if (info_ == null) {
+              Info = new global::LiveKit.Proto.TrackPublicationInfo();
+            }
+            input.ReadMessage(Info);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (handle_ == null) {
+              Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+            }
+            input.ReadMessage(Handle);
+            break;
+          }
+          case 18: {
+            if (info_ == null) {
+              Info = new global::LiveKit.Proto.TrackPublicationInfo();
+            }
+            input.ReadMessage(Info);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class TrackInfo : pb::IMessage<TrackInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2209,7 +2580,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[8]; }
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2229,7 +2600,6 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TrackInfo(TrackInfo other) : this() {
-      optHandle_ = other.optHandle_ != null ? other.optHandle_.Clone() : null;
       sid_ = other.sid_;
       name_ = other.name_;
       kind_ = other.kind_;
@@ -2245,23 +2615,8 @@ namespace LiveKit.Proto {
       return new TrackInfo(this);
     }
 
-    /// <summary>Field number for the "opt_handle" field.</summary>
-    public const int OptHandleFieldNumber = 1;
-    private global::LiveKit.Proto.FFIHandleId optHandle_;
-    /// <summary>
-    /// Tracks created/owned by the client will have a handle
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.FFIHandleId OptHandle {
-      get { return optHandle_; }
-      set {
-        optHandle_ = value;
-      }
-    }
-
     /// <summary>Field number for the "sid" field.</summary>
-    public const int SidFieldNumber = 2;
+    public const int SidFieldNumber = 1;
     private string sid_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2273,7 +2628,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 3;
+    public const int NameFieldNumber = 2;
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2285,7 +2640,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "kind" field.</summary>
-    public const int KindFieldNumber = 4;
+    public const int KindFieldNumber = 3;
     private global::LiveKit.Proto.TrackKind kind_ = global::LiveKit.Proto.TrackKind.KindUnknown;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2297,7 +2652,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "stream_state" field.</summary>
-    public const int StreamStateFieldNumber = 5;
+    public const int StreamStateFieldNumber = 4;
     private global::LiveKit.Proto.StreamState streamState_ = global::LiveKit.Proto.StreamState.StateUnknown;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2309,7 +2664,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "muted" field.</summary>
-    public const int MutedFieldNumber = 6;
+    public const int MutedFieldNumber = 5;
     private bool muted_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2321,7 +2676,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "remote" field.</summary>
-    public const int RemoteFieldNumber = 7;
+    public const int RemoteFieldNumber = 6;
     private bool remote_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2347,7 +2702,6 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(OptHandle, other.OptHandle)) return false;
       if (Sid != other.Sid) return false;
       if (Name != other.Name) return false;
       if (Kind != other.Kind) return false;
@@ -2361,7 +2715,6 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (optHandle_ != null) hash ^= OptHandle.GetHashCode();
       if (Sid.Length != 0) hash ^= Sid.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) hash ^= Kind.GetHashCode();
@@ -2386,32 +2739,28 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (optHandle_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(OptHandle);
-      }
       if (Sid.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(Sid);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteString(Name);
       }
       if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
       if (StreamState != global::LiveKit.Proto.StreamState.StateUnknown) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteEnum((int) StreamState);
       }
       if (Muted != false) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteBool(Muted);
       }
       if (Remote != false) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteBool(Remote);
       }
       if (_unknownFields != null) {
@@ -2424,32 +2773,28 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (optHandle_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(OptHandle);
-      }
       if (Sid.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(Sid);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteString(Name);
       }
       if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
       if (StreamState != global::LiveKit.Proto.StreamState.StateUnknown) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteEnum((int) StreamState);
       }
       if (Muted != false) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteBool(Muted);
       }
       if (Remote != false) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteBool(Remote);
       }
       if (_unknownFields != null) {
@@ -2462,9 +2807,6 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (optHandle_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OptHandle);
-      }
       if (Sid.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Sid);
       }
@@ -2494,12 +2836,6 @@ namespace LiveKit.Proto {
     public void MergeFrom(TrackInfo other) {
       if (other == null) {
         return;
-      }
-      if (other.optHandle_ != null) {
-        if (optHandle_ == null) {
-          OptHandle = new global::LiveKit.Proto.FFIHandleId();
-        }
-        OptHandle.MergeFrom(other.OptHandle);
       }
       if (other.Sid.Length != 0) {
         Sid = other.Sid;
@@ -2535,33 +2871,26 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (optHandle_ == null) {
-              OptHandle = new global::LiveKit.Proto.FFIHandleId();
-            }
-            input.ReadMessage(OptHandle);
-            break;
-          }
-          case 18: {
             Sid = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             Name = input.ReadString();
             break;
           }
-          case 32: {
+          case 24: {
             Kind = (global::LiveKit.Proto.TrackKind) input.ReadEnum();
             break;
           }
-          case 40: {
+          case 32: {
             StreamState = (global::LiveKit.Proto.StreamState) input.ReadEnum();
             break;
           }
-          case 48: {
+          case 40: {
             Muted = input.ReadBool();
             break;
           }
-          case 56: {
+          case 48: {
             Remote = input.ReadBool();
             break;
           }
@@ -2581,34 +2910,272 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            if (optHandle_ == null) {
-              OptHandle = new global::LiveKit.Proto.FFIHandleId();
-            }
-            input.ReadMessage(OptHandle);
-            break;
-          }
-          case 18: {
             Sid = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             Name = input.ReadString();
             break;
           }
-          case 32: {
+          case 24: {
             Kind = (global::LiveKit.Proto.TrackKind) input.ReadEnum();
             break;
           }
-          case 40: {
+          case 32: {
             StreamState = (global::LiveKit.Proto.StreamState) input.ReadEnum();
             break;
           }
-          case 48: {
+          case 40: {
             Muted = input.ReadBool();
             break;
           }
-          case 56: {
+          case 48: {
             Remote = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class OwnedTrack : pb::IMessage<OwnedTrack>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<OwnedTrack> _parser = new pb::MessageParser<OwnedTrack>(() => new OwnedTrack());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<OwnedTrack> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public OwnedTrack() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public OwnedTrack(OwnedTrack other) : this() {
+      handle_ = other.handle_ != null ? other.handle_.Clone() : null;
+      info_ = other.info_ != null ? other.info_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public OwnedTrack Clone() {
+      return new OwnedTrack(this);
+    }
+
+    /// <summary>Field number for the "handle" field.</summary>
+    public const int HandleFieldNumber = 1;
+    private global::LiveKit.Proto.FfiOwnedHandle handle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.FfiOwnedHandle Handle {
+      get { return handle_; }
+      set {
+        handle_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "info" field.</summary>
+    public const int InfoFieldNumber = 2;
+    private global::LiveKit.Proto.TrackInfo info_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.TrackInfo Info {
+      get { return info_; }
+      set {
+        info_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as OwnedTrack);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(OwnedTrack other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Handle, other.Handle)) return false;
+      if (!object.Equals(Info, other.Info)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (handle_ != null) hash ^= Handle.GetHashCode();
+      if (info_ != null) hash ^= Info.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (handle_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Handle);
+      }
+      if (info_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Info);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (handle_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Handle);
+      }
+      if (info_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Info);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (handle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Handle);
+      }
+      if (info_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Info);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(OwnedTrack other) {
+      if (other == null) {
+        return;
+      }
+      if (other.handle_ != null) {
+        if (handle_ == null) {
+          Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+        }
+        Handle.MergeFrom(other.Handle);
+      }
+      if (other.info_ != null) {
+        if (info_ == null) {
+          Info = new global::LiveKit.Proto.TrackInfo();
+        }
+        Info.MergeFrom(other.Info);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (handle_ == null) {
+              Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+            }
+            input.ReadMessage(Handle);
+            break;
+          }
+          case 18: {
+            if (info_ == null) {
+              Info = new global::LiveKit.Proto.TrackInfo();
+            }
+            input.ReadMessage(Info);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (handle_ == null) {
+              Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+            }
+            input.ReadMessage(Handle);
+            break;
+          }
+          case 18: {
+            if (info_ == null) {
+              Info = new global::LiveKit.Proto.TrackInfo();
+            }
+            input.ReadMessage(Info);
             break;
           }
         }

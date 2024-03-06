@@ -7,9 +7,11 @@ protoc \
     -I=$FFI_PROTOCOL \
     --csharp_out=$OUT_CSHARP \
     $FFI_PROTOCOL/audio_frame.proto \
+    $FFI_PROTOCOL/e2ee.proto \
     $FFI_PROTOCOL/ffi.proto \
     $FFI_PROTOCOL/handle.proto \
     $FFI_PROTOCOL/participant.proto \
     $FFI_PROTOCOL/room.proto \
+    $FFI_PROTOCOL/stats.proto \
     $FFI_PROTOCOL/track.proto \
     $FFI_PROTOCOL/video_frame.proto

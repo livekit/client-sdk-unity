@@ -24,26 +24,24 @@ namespace LiveKit.Proto {
     static ParticipantReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChFwYXJ0aWNpcGFudC5wcm90bxIHbGl2ZWtpdBoLdHJhY2sucHJvdG8ihQEK",
-            "D1BhcnRpY2lwYW50SW5mbxILCgNzaWQYASABKAkSDAoEbmFtZRgCIAEoCRIQ",
-            "CghpZGVudGl0eRgDIAEoCRIQCghtZXRhZGF0YRgEIAEoCRIzCgxwdWJsaWNh",
-            "dGlvbnMYBSADKAsyHS5saXZla2l0LlRyYWNrUHVibGljYXRpb25JbmZvIm4K",
-            "EFBhcnRpY2lwYW50RXZlbnQSFwoPcGFydGljaXBhbnRfc2lkGAEgASgJEjYK",
-            "EHNwZWFraW5nX2NoYW5nZWQYAiABKAsyGi5saXZla2l0LklzU3BlYWtpbmdD",
-            "aGFuZ2VkSABCCQoHbWVzc2FnZSIlChFJc1NwZWFraW5nQ2hhbmdlZBIQCghz",
-            "cGVha2luZxgBIAEoCEIQqgINTGl2ZUtpdC5Qcm90b2IGcHJvdG8z"));
+            "ChFwYXJ0aWNpcGFudC5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
+            "b3RvIlAKD1BhcnRpY2lwYW50SW5mbxILCgNzaWQYASABKAkSDAoEbmFtZRgC",
+            "IAEoCRIQCghpZGVudGl0eRgDIAEoCRIQCghtZXRhZGF0YRgEIAEoCSJvChBP",
+            "d25lZFBhcnRpY2lwYW50Ei0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJv",
+            "dG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAEoCzIeLmxpdmVraXQucHJv",
+            "dG8uUGFydGljaXBhbnRJbmZvQhCqAg1MaXZlS2l0LlByb3RvYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::LiveKit.Proto.TrackReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Publications" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantEvent), global::LiveKit.Proto.ParticipantEvent.Parser, new[]{ "ParticipantSid", "SpeakingChanged" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.IsSpeakingChanged), global::LiveKit.Proto.IsSpeakingChanged.Parser, new[]{ "Speaking" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class ParticipantInfo : pb::IMessage<ParticipantInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -82,7 +80,6 @@ namespace LiveKit.Proto {
       name_ = other.name_;
       identity_ = other.identity_;
       metadata_ = other.metadata_;
-      publications_ = other.publications_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -140,17 +137,6 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "publications" field.</summary>
-    public const int PublicationsFieldNumber = 5;
-    private static readonly pb::FieldCodec<global::LiveKit.Proto.TrackPublicationInfo> _repeated_publications_codec
-        = pb::FieldCodec.ForMessage(42, global::LiveKit.Proto.TrackPublicationInfo.Parser);
-    private readonly pbc::RepeatedField<global::LiveKit.Proto.TrackPublicationInfo> publications_ = new pbc::RepeatedField<global::LiveKit.Proto.TrackPublicationInfo>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::LiveKit.Proto.TrackPublicationInfo> Publications {
-      get { return publications_; }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -170,7 +156,6 @@ namespace LiveKit.Proto {
       if (Name != other.Name) return false;
       if (Identity != other.Identity) return false;
       if (Metadata != other.Metadata) return false;
-      if(!publications_.Equals(other.publications_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -182,7 +167,6 @@ namespace LiveKit.Proto {
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Identity.Length != 0) hash ^= Identity.GetHashCode();
       if (Metadata.Length != 0) hash ^= Metadata.GetHashCode();
-      hash ^= publications_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -217,7 +201,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(34);
         output.WriteString(Metadata);
       }
-      publications_.WriteTo(output, _repeated_publications_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -244,7 +227,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(34);
         output.WriteString(Metadata);
       }
-      publications_.WriteTo(ref output, _repeated_publications_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -267,7 +249,6 @@ namespace LiveKit.Proto {
       if (Metadata.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Metadata);
       }
-      size += publications_.CalculateSize(_repeated_publications_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -292,7 +273,6 @@ namespace LiveKit.Proto {
       if (other.Metadata.Length != 0) {
         Metadata = other.Metadata;
       }
-      publications_.Add(other.publications_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -322,10 +302,6 @@ namespace LiveKit.Proto {
           }
           case 34: {
             Metadata = input.ReadString();
-            break;
-          }
-          case 42: {
-            publications_.AddEntriesFrom(input, _repeated_publications_codec);
             break;
           }
         }
@@ -359,10 +335,6 @@ namespace LiveKit.Proto {
             Metadata = input.ReadString();
             break;
           }
-          case 42: {
-            publications_.AddEntriesFrom(ref input, _repeated_publications_codec);
-            break;
-          }
         }
       }
     }
@@ -370,16 +342,17 @@ namespace LiveKit.Proto {
 
   }
 
-  public sealed partial class ParticipantEvent : pb::IMessage<ParticipantEvent>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class OwnedParticipant : pb::IMessage<OwnedParticipant>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<ParticipantEvent> _parser = new pb::MessageParser<ParticipantEvent>(() => new ParticipantEvent());
+    private static readonly pb::MessageParser<OwnedParticipant> _parser = new pb::MessageParser<OwnedParticipant>(() => new OwnedParticipant());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ParticipantEvent> Parser { get { return _parser; } }
+    public static pb::MessageParser<OwnedParticipant> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -395,7 +368,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ParticipantEvent() {
+    public OwnedParticipant() {
       OnConstruction();
     }
 
@@ -403,85 +376,59 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ParticipantEvent(ParticipantEvent other) : this() {
-      participantSid_ = other.participantSid_;
-      switch (other.MessageCase) {
-        case MessageOneofCase.SpeakingChanged:
-          SpeakingChanged = other.SpeakingChanged.Clone();
-          break;
-      }
-
+    public OwnedParticipant(OwnedParticipant other) : this() {
+      handle_ = other.handle_ != null ? other.handle_.Clone() : null;
+      info_ = other.info_ != null ? other.info_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ParticipantEvent Clone() {
-      return new ParticipantEvent(this);
+    public OwnedParticipant Clone() {
+      return new OwnedParticipant(this);
     }
 
-    /// <summary>Field number for the "participant_sid" field.</summary>
-    public const int ParticipantSidFieldNumber = 1;
-    private string participantSid_ = "";
+    /// <summary>Field number for the "handle" field.</summary>
+    public const int HandleFieldNumber = 1;
+    private global::LiveKit.Proto.FfiOwnedHandle handle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string ParticipantSid {
-      get { return participantSid_; }
+    public global::LiveKit.Proto.FfiOwnedHandle Handle {
+      get { return handle_; }
       set {
-        participantSid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        handle_ = value;
       }
     }
 
-    /// <summary>Field number for the "speaking_changed" field.</summary>
-    public const int SpeakingChangedFieldNumber = 2;
+    /// <summary>Field number for the "info" field.</summary>
+    public const int InfoFieldNumber = 2;
+    private global::LiveKit.Proto.ParticipantInfo info_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.IsSpeakingChanged SpeakingChanged {
-      get { return messageCase_ == MessageOneofCase.SpeakingChanged ? (global::LiveKit.Proto.IsSpeakingChanged) message_ : null; }
+    public global::LiveKit.Proto.ParticipantInfo Info {
+      get { return info_; }
       set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.SpeakingChanged;
+        info_ = value;
       }
-    }
-
-    private object message_;
-    /// <summary>Enum of possible cases for the "message" oneof.</summary>
-    public enum MessageOneofCase {
-      None = 0,
-      SpeakingChanged = 2,
-    }
-    private MessageOneofCase messageCase_ = MessageOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public MessageOneofCase MessageCase {
-      get { return messageCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearMessage() {
-      messageCase_ = MessageOneofCase.None;
-      message_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as ParticipantEvent);
+      return Equals(other as OwnedParticipant);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ParticipantEvent other) {
+    public bool Equals(OwnedParticipant other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ParticipantSid != other.ParticipantSid) return false;
-      if (!object.Equals(SpeakingChanged, other.SpeakingChanged)) return false;
-      if (MessageCase != other.MessageCase) return false;
+      if (!object.Equals(Handle, other.Handle)) return false;
+      if (!object.Equals(Info, other.Info)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -489,9 +436,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantSid.Length != 0) hash ^= ParticipantSid.GetHashCode();
-      if (messageCase_ == MessageOneofCase.SpeakingChanged) hash ^= SpeakingChanged.GetHashCode();
-      hash ^= (int) messageCase_;
+      if (handle_ != null) hash ^= Handle.GetHashCode();
+      if (info_ != null) hash ^= Info.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -510,13 +456,13 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantSid.Length != 0) {
+      if (handle_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(ParticipantSid);
+        output.WriteMessage(Handle);
       }
-      if (messageCase_ == MessageOneofCase.SpeakingChanged) {
+      if (info_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(SpeakingChanged);
+        output.WriteMessage(Info);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -528,13 +474,13 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantSid.Length != 0) {
+      if (handle_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(ParticipantSid);
+        output.WriteMessage(Handle);
       }
-      if (messageCase_ == MessageOneofCase.SpeakingChanged) {
+      if (info_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(SpeakingChanged);
+        output.WriteMessage(Info);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -546,11 +492,11 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantSid.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantSid);
+      if (handle_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Handle);
       }
-      if (messageCase_ == MessageOneofCase.SpeakingChanged) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SpeakingChanged);
+      if (info_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Info);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -560,22 +506,22 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ParticipantEvent other) {
+    public void MergeFrom(OwnedParticipant other) {
       if (other == null) {
         return;
       }
-      if (other.ParticipantSid.Length != 0) {
-        ParticipantSid = other.ParticipantSid;
+      if (other.handle_ != null) {
+        if (handle_ == null) {
+          Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+        }
+        Handle.MergeFrom(other.Handle);
       }
-      switch (other.MessageCase) {
-        case MessageOneofCase.SpeakingChanged:
-          if (SpeakingChanged == null) {
-            SpeakingChanged = new global::LiveKit.Proto.IsSpeakingChanged();
-          }
-          SpeakingChanged.MergeFrom(other.SpeakingChanged);
-          break;
+      if (other.info_ != null) {
+        if (info_ == null) {
+          Info = new global::LiveKit.Proto.ParticipantInfo();
+        }
+        Info.MergeFrom(other.Info);
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -592,16 +538,17 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            ParticipantSid = input.ReadString();
+            if (handle_ == null) {
+              Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+            }
+            input.ReadMessage(Handle);
             break;
           }
           case 18: {
-            global::LiveKit.Proto.IsSpeakingChanged subBuilder = new global::LiveKit.Proto.IsSpeakingChanged();
-            if (messageCase_ == MessageOneofCase.SpeakingChanged) {
-              subBuilder.MergeFrom(SpeakingChanged);
+            if (info_ == null) {
+              Info = new global::LiveKit.Proto.ParticipantInfo();
             }
-            input.ReadMessage(subBuilder);
-            SpeakingChanged = subBuilder;
+            input.ReadMessage(Info);
             break;
           }
         }
@@ -620,205 +567,17 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            ParticipantSid = input.ReadString();
+            if (handle_ == null) {
+              Handle = new global::LiveKit.Proto.FfiOwnedHandle();
+            }
+            input.ReadMessage(Handle);
             break;
           }
           case 18: {
-            global::LiveKit.Proto.IsSpeakingChanged subBuilder = new global::LiveKit.Proto.IsSpeakingChanged();
-            if (messageCase_ == MessageOneofCase.SpeakingChanged) {
-              subBuilder.MergeFrom(SpeakingChanged);
+            if (info_ == null) {
+              Info = new global::LiveKit.Proto.ParticipantInfo();
             }
-            input.ReadMessage(subBuilder);
-            SpeakingChanged = subBuilder;
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class IsSpeakingChanged : pb::IMessage<IsSpeakingChanged>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<IsSpeakingChanged> _parser = new pb::MessageParser<IsSpeakingChanged>(() => new IsSpeakingChanged());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<IsSpeakingChanged> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.ParticipantReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public IsSpeakingChanged() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public IsSpeakingChanged(IsSpeakingChanged other) : this() {
-      speaking_ = other.speaking_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public IsSpeakingChanged Clone() {
-      return new IsSpeakingChanged(this);
-    }
-
-    /// <summary>Field number for the "speaking" field.</summary>
-    public const int SpeakingFieldNumber = 1;
-    private bool speaking_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Speaking {
-      get { return speaking_; }
-      set {
-        speaking_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as IsSpeakingChanged);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(IsSpeakingChanged other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Speaking != other.Speaking) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Speaking != false) hash ^= Speaking.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (Speaking != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(Speaking);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Speaking != false) {
-        output.WriteRawTag(8);
-        output.WriteBool(Speaking);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (Speaking != false) {
-        size += 1 + 1;
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(IsSpeakingChanged other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Speaking != false) {
-        Speaking = other.Speaking;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            Speaking = input.ReadBool();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            Speaking = input.ReadBool();
+            input.ReadMessage(Info);
             break;
           }
         }

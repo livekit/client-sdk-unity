@@ -1,22 +1,66 @@
-using System;
-using System.Collections;
 using LiveKit.Internal;
+using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
-using UnityEngine;
+using LiveKit.Rooms.Tracks;
+using System;
+using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
+    public sealed class VideoFrameEvent
+    {
+        private VideoFrame _frame;
+        public VideoFrame Frame => _frame;
+        private long _timestamp;
+        public long Timestamp => _timestamp;
+        private VideoRotation _rotation;
+        public VideoRotation Rotation => _rotation;
+
+        public VideoFrameEvent(VideoFrame frame, long timeStamp, VideoRotation rot)
+        {
+            _frame = frame;
+            _timestamp = timeStamp;
+            _rotation = rot;
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                if(_frame != null)
+                {
+                    return _frame.IsValid;
+                }
+                return false;
+            }
+        }
+
+        public void Dispose()
+        {
+            _frame?.Dispose();
+        }
+    }
+
     public class VideoStream
     {
-        public delegate void FrameReceiveDelegate(VideoFrame frame);
+        public delegate void FrameReceiveDelegate(VideoFrameEvent frameEvent);
+
+
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
+
+
         public delegate void TextureUploadDelegate();
 
-        internal readonly FfiHandle Handle;
+
+        internal FfiHandle Handle { get; private set; }
+
         private VideoStreamInfo _info;
-        private bool _disposed = false;
         private bool _dirty = false;
+        private bool _playing = false;
+        private volatile bool disposed = false;
 
         /// Called when we receive a new frame from the VideoTrack
         public event FrameReceiveDelegate FrameReceived;
@@ -30,29 +74,28 @@ namespace LiveKit
         /// The texture changes every time the video resolution changes.
         /// Can be null if UpdateRoutine isn't started
         public Texture2D Texture { private set; get; }
-        public VideoFrameBuffer VideoBuffer { private set; get; }
+        public VideoFrameEvent? VideoBuffer { get; private set; }
+        
+        private readonly object _lock = new();
 
-        public VideoStream(IVideoTrack videoTrack)
+        public VideoStream(ITrack videoTrack, VideoBufferType format)
         {
             if (!videoTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("videotrack's room is invalid");
 
             if (!videoTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("videotrack's participant is invalid");
-
-            var newVideoStream = new NewVideoStreamRequest();
-            newVideoStream.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            newVideoStream.ParticipantSid = participant.Sid;
-            newVideoStream.TrackSid = videoTrack.Sid;
+             
+            using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
+            var newVideoStream = request.request;
+            newVideoStream.TrackHandle = (ulong)videoTrack.Handle.DangerousGetHandle();
+            newVideoStream.Format = format;
+            newVideoStream.NormalizeStride = true;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
-
-            var request = new FFIRequest();
-            request.NewVideoStream = newVideoStream;
-
-            var resp = FfiClient.SendRequest(request);
-            var streamInfo = resp.NewVideoStream.Stream;
-
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            using var response = request.Send();
+            FfiResponse res = response;
+            var streamInfo = res.NewVideoStream.Stream;
+            Handle = IFfiHandleFactory.Default.NewFfiHandle(streamInfo.Handle.Id);
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
@@ -60,6 +103,18 @@ namespace LiveKit
         {
             Dispose(false);
         }
+
+        public void Start()
+        {
+            Stop();
+            _playing = true;
+        }
+
+        public void Stop()
+        {
+            _playing = false;
+        }
+
 
         public void Dispose()
         {
@@ -69,54 +124,43 @@ namespace LiveKit
 
         private void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (Texture != null) UnityEngine.Object.Destroy(Texture);
+            if (!disposed)
             {
                 if (disposing)
                     VideoBuffer?.Dispose();
-
-                _disposed = true;
+                disposed = true;
             }
         }
 
-        internal bool UploadBuffer()
+        // Needs to be on main thread
+        public void Update()
         {
-            var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
-
-            unsafe
+            if (!_playing || disposed) return;
+            lock (_lock)
             {
-                var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
-                VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
-            }
-
-            Texture.Apply();
-            return true;
-        }
-
-        public IEnumerator Update()
-        {
-            while (true)
-            {
-                yield return null;
-
-                if (_disposed)
-                    break;
-
                 if (VideoBuffer == null || !VideoBuffer.IsValid || !_dirty)
-                    continue;
+                    return;
 
                 _dirty = false;
-                var rWidth = VideoBuffer.Width;
-                var rHeight = VideoBuffer.Height;
+                var rWidth = VideoBuffer.Frame.Width;
+                var rHeight = VideoBuffer.Frame.Height;
 
                 var textureChanged = false;
                 if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
                 {
-                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, true, true);
+                    if (Texture != null) UnityEngine.Object.Destroy(Texture);
+                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
+                    Texture.ignoreMipmapLimit = false;
                     textureChanged = true;
                 }
 
-                UploadBuffer();
+                int size = (int)VideoBuffer.Frame.GetMemorySize();
+                unsafe
+                {
+                    Texture.LoadRawTextureData(VideoBuffer.Frame.Handle.DangerousGetHandle(), (int)size); 
+                }
+                Texture.Apply();
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);
@@ -127,24 +171,25 @@ namespace LiveKit
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
-            if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
+            if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
                 return;
 
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
                 return;
+              
+            var bufferInfo = e.FrameReceived.Buffer.Info;
 
-            var frameInfo = e.FrameReceived.Frame;
-            var bufferInfo = e.FrameReceived.Buffer;
-            var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
+            var frame = VideoFrame.FromOwnedInfo(e.FrameReceived.Buffer);
+            var evt = new VideoFrameEvent(frame, e.FrameReceived.TimestampUs, e.FrameReceived.Rotation);
 
-            var frame = new VideoFrame(frameInfo);
-            var buffer = VideoFrameBuffer.Create(handle, bufferInfo);
+            lock (_lock)
+            {
+                VideoBuffer?.Dispose();
+                VideoBuffer = evt;
+                _dirty = true;
+            }
 
-            VideoBuffer?.Dispose();
-            VideoBuffer = buffer;
-            _dirty = true;
-
-            FrameReceived?.Invoke(frame);
+            FrameReceived?.Invoke(evt);
         }
     }
 }
