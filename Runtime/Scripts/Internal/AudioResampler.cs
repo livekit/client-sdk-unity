@@ -1,5 +1,6 @@
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
+using UnityEngine;
 
 namespace LiveKit
 {

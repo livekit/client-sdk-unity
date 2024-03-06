@@ -143,7 +143,6 @@ namespace LiveKit.Internal.FFIClients
             // list of messages is taken from: livekit-ffi/protocol/ffi.proto
             // https://github.com/livekit/rust-sdks/blob/cf34856e78892a639c4d3c1d6a27e9aba0a4a8ff/livekit-ffi/protocol/ffi.proto#L4
 
-
             if (
                 response.Dispose != null
                 ||

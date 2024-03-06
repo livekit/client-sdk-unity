@@ -26,7 +26,37 @@ PluginImporter:
     second:
       enabled: 0
       settings:
+<<<<<<<< HEAD:Runtime/Plugins/libwebrtc.jar.meta
         DefaultValueInitialized: true
+========
+        CPU: ARM64
+        DefaultValueInitialized: true
+        OS: OSX
+  - first:
+      Standalone: Linux64
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Standalone: OSXUniversal
+    second:
+      enabled: 1
+      settings:
+        CPU: ARM64
+  - first:
+      Standalone: Win
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+  - first:
+      Standalone: Win64
+    second:
+      enabled: 0
+      settings:
+        CPU: None
+>>>>>>>> 985eb1e (feat: Audio/Video Support (#29)):Runtime/Plugins/arm64/livekit_ffi.h.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 

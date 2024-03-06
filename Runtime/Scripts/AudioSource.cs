@@ -44,6 +44,9 @@ namespace LiveKit
             Stop();
             _readAudioThread = new Thread(Update);
             _readAudioThread.Start();
+
+            _audioFilter.AudioRead += OnAudioRead;
+            _audioSource.Play();
         }
 
         public void Stop()
@@ -53,6 +56,8 @@ namespace LiveKit
                 _readAudioThread.Abort();
                 _readAudioThread = null;
             }
+            if(_audioFilter) _audioFilter.AudioRead -= OnAudioRead;
+            if(_audioSource) _audioSource.Stop();
         }
 
         private void Update()
@@ -96,21 +101,24 @@ namespace LiveKit
                         var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
                         for (int i = 0; i < _data.Length; i++)
                         {
-                            frameData[i] = FloatToS16(_data[i]);
+                            frameData[i] = FloatToS16(_data[i]); 
                         }
+
+                        // Don't play the audio locally
+                        Array.Clear(_data, 0, _data.Length);
 
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
                         using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
                         
                         var pushFrame = request.request;
                         pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
-                        pushFrame.Buffer = new AudioFrameBufferInfo
-                        {
-                            DataPtr = (ulong)_frame.Data,
-                            NumChannels = _frame.NumChannels,
-                            SampleRate = _frame.SampleRate,
-                            SamplesPerChannel = _frame.SamplesPerChannel
-                        };
+  
+                        pushFrame.Buffer = audioFrameBufferInfo;
+                        pushFrame.Buffer.DataPtr = (ulong)_frame.Data;
+                        pushFrame.Buffer.NumChannels = _frame.NumChannels;
+                        pushFrame.Buffer.SampleRate = _frame.SampleRate;
+                        pushFrame.Buffer.SamplesPerChannel = _frame.SamplesPerChannel;
+
                         using var response = request.Send();
 
                         pushFrame.Buffer.DataPtr = 0;
@@ -118,13 +126,6 @@ namespace LiveKit
                         pushFrame.Buffer.SampleRate = 0;
                         pushFrame.Buffer.SamplesPerChannel = 0;
                     }
-
-                    Utils.Debug($"Pushed audio frame with {_data.Length} sample rate "
-                                + _frame.SampleRate
-                                + "  num channels "
-                                + _frame.NumChannels
-                                + " and samplers per channel "
-                                + _frame.SamplesPerChannel);
                 }
                 catch (Exception e)
                 {
@@ -137,9 +138,6 @@ namespace LiveKit
         {
             _audioSource = source;
             _audioFilter = source.gameObject.AddComponent<AudioFilter>();
-            //_audioFilter.hideFlags = HideFlags.HideInInspector;
-            _audioFilter.AudioRead += OnAudioRead;
-            source.Play();
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
