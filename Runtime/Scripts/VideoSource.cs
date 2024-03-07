@@ -6,6 +6,7 @@ using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
@@ -38,6 +39,7 @@ namespace LiveKit
         {
             Texture = texture;
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
+            ReadbackSupport();
         }
 
         // Read the texture data into a native array asynchronously
@@ -47,7 +49,13 @@ namespace LiveKit
                 return;
 
             _reading = true;
-            AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
+            try
+            {
+                AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
+            }catch(Exception _)
+            {
+
+            }
         }
 
         public IEnumerator Update()
@@ -57,6 +65,19 @@ namespace LiveKit
                 yield return null;
                 ReadBuffer();
 
+            }
+        }
+
+        private void ReadbackSupport()
+        {
+            GraphicsFormat[] read_formats = (GraphicsFormat[])System.Enum.GetValues(typeof(GraphicsFormat));
+
+            foreach(var f in read_formats)
+            {
+                if (SystemInfo.IsFormatSupported(f, FormatUsage.ReadPixels))
+                {
+                    Debug.Log("support + " + f);
+                }
             }
         }
 
@@ -94,7 +115,7 @@ namespace LiveKit
             var capture = new CaptureVideoFrameRequest();
             capture.Buffer = newBuffer.Info;
             capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            capture.Rotation = VideoRotation._180;
+            capture.Rotation = VideoRotation._0;
             capture.SourceHandle  = (ulong)Handle.DangerousGetHandle();
 
 

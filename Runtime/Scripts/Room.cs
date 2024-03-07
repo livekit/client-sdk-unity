@@ -90,6 +90,7 @@ namespace LiveKit
         public bool AdaptiveStream = true;
         public uint JoinRetries = 3;
         public RTCConfiguration RtcConfig = null;
+        public E2EEOptions E2EE = null;
 
         public Proto.RoomOptions ToProto()
         {
@@ -137,10 +138,11 @@ namespace LiveKit
         public event ConnectionQualityChangeDelegate ConnectionQualityChanged;
         public event DataDelegate DataReceived;
         public event ConnectionStateChangeDelegate ConnectionStateChanged;
-        //public event ConnectionDelegate Connected;
         public event ConnectionDelegate Disconnected;
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
+
+        public E2EEManager E2EEManager { internal set; get; }
 
         internal ulong RoomHandle;
 
@@ -155,7 +157,7 @@ namespace LiveKit
             request.Connect = connect;
 
             var resp = FfiClient.SendRequest(request);
-            return new ConnectInstruction(resp.Connect.AsyncId, this);
+            return new ConnectInstruction(resp.Connect.AsyncId, this, options);
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -352,11 +354,13 @@ namespace LiveKit
     {
         private ulong _asyncId;
         private Room _room;
+        private RoomOptions _roomOptions;
 
-        internal ConnectInstruction(ulong asyncId, Room room)
+        internal ConnectInstruction(ulong asyncId, Room room, RoomOptions options)
         {
             _asyncId = asyncId;
             _room = room;
+            _roomOptions = options;
             FfiClient.Instance.ConnectReceived += OnConnect;
         }
 
@@ -369,7 +373,14 @@ namespace LiveKit
 
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
-                _room.OnConnect(e);
+            {
+                if(_roomOptions.E2EE != null)
+                {
+                    _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
+                    _room.OnConnect(e);
+                }
+                
+            }
 
             IsError = !success;
             IsDone = true;

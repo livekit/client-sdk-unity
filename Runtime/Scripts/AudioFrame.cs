@@ -1,6 +1,5 @@
 using System;
 using LiveKit.Proto;
-using LiveKit.Internal;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 
