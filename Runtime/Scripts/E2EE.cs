@@ -21,17 +21,6 @@ namespace LiveKit
 
     }
 
-    public enum EncryptionState
-    {
-        NEW = 0,
-        OK = 1,
-        ENCRYPTION_FAILED = 2,
-        DECRYPTION_FAILED = 3,
-        MISSING_KEY = 4,
-        KEY_RATCHETED = 5,
-        INTERNAL_ERROR = 6,
-    }
-
     public class E2EEOptions
     {
         public KeyProviderOptions KeyProviderOptions;

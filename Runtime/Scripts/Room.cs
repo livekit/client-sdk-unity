@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
-using UnityEngine;
-using UnityEditor.VersionControl;
-using System.Linq;
 
 namespace LiveKit
 {
@@ -117,6 +114,7 @@ namespace LiveKit
         public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind, string topic);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate();
+        public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
 
         public string Sid { private set; get; }
         public string Name { private set; get; }
@@ -141,6 +139,7 @@ namespace LiveKit
         public event ConnectionDelegate Disconnected;
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
+        public event E2EeStateChangedDelegate E2EeStateChanged;
 
         public E2EEManager E2EEManager { internal set; get; }
 
@@ -295,6 +294,12 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.Reconnected:
                     Reconnected?.Invoke();
+                    break;
+                case RoomEvent.MessageOneofCase.E2EeStateChanged:
+                    {
+                        var participant = GetParticipant(e.E2EeStateChanged.ParticipantSid);
+                        E2EeStateChanged?.Invoke(participant, e.E2EeStateChanged.State);
+                    }
                     break;
             }
         }
