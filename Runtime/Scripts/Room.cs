@@ -98,6 +98,7 @@ namespace LiveKit
             proto.AdaptiveStream = AdaptiveStream;
             proto.JoinRetries = JoinRetries;
             proto.RtcConfig = RtcConfig?.ToProto();
+            proto.E2Ee = E2EE?.ToProto();
 
             return proto;
         }

@@ -49,13 +49,7 @@ namespace LiveKit
                 return;
 
             _reading = true;
-            try
-            {
-                AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
-            }catch(Exception _)
-            {
-
-            }
+            AsyncGPUReadback.RequestIntoNativeArray(ref _data, Texture, 0, TextureFormat.RGBA32, OnReadback);
         }
 
         public IEnumerator Update()
