@@ -121,6 +121,8 @@ namespace LiveKit
         public string Name { private set; get; }
         public string Metadata { private set; get; }
         public LocalParticipant LocalParticipant { private set; get; }
+        public ConnectionState ConnectionState { private set; get; }
+        public bool IsConnected => RoomHandle != 0 && ConnectionState != ConnectionState.ConnDisconnected;
 
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         public IReadOnlyDictionary<string, RemoteParticipant> Participants => _participants;
@@ -159,6 +161,24 @@ namespace LiveKit
             var resp = FfiClient.SendRequest(request);
             return new ConnectInstruction(resp.Connect.AsyncId, this, options);
         }
+
+        public void Disconnect()
+        {
+            if(!IsConnected) {
+                return;
+            }
+            var disconnect = new DisconnectRequest();
+            disconnect.RoomHandle = RoomHandle;
+            var request = new FfiRequest();
+            request.Disconnect = disconnect;
+
+            FfiClient.SendRequest(request);
+
+            RoomHandle = 0;
+
+            ConnectionState = ConnectionState.ConnDisconnected;
+        }
+
 
         internal void UpdateFromInfo(RoomInfo info)
         {
@@ -284,6 +304,7 @@ namespace LiveKit
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
+                    ConnectionState = e.ConnectionStateChanged.State;
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:

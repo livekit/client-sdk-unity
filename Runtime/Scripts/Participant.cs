@@ -111,6 +111,27 @@ namespace LiveKit
 
             return new PublishTrackInstruction(resp.PublishTrack.AsyncId);
         }
+
+
+        public void UpdateMetadata(string metadata)
+        {
+            var updateReq = new UpdateLocalMetadataRequest();
+            updateReq.Metadata = metadata;
+            var request = new FfiRequest();
+            request.UpdateLocalMetadata = updateReq;
+
+            FfiClient.SendRequest(request);
+        }
+
+        public void UpdateName(string name)
+        {
+            var updateReq = new UpdateLocalNameRequest();
+            updateReq.Name = name;
+            var request = new FfiRequest();
+            request.UpdateLocalName = updateReq;
+
+            FfiClient.SendRequest(request);
+        }
     }
 
     public sealed class RemoteParticipant : Participant
