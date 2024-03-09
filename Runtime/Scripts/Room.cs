@@ -383,9 +383,9 @@ namespace LiveKit
                 if(_roomOptions.E2EE != null)
                 {
                     _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
-                    _room.OnConnect(e);
                 }
-                
+
+                _room.OnConnect(e);
             }
 
             IsError = !success;
