@@ -167,6 +167,7 @@ namespace LiveKit
             if(!IsConnected) {
                 return;
             }
+
             var disconnect = new DisconnectRequest();
             disconnect.RoomHandle = RoomHandle;
             var request = new FfiRequest();
@@ -328,7 +329,7 @@ namespace LiveKit
 
         internal void OnConnect(ConnectCallback info)
         {
-            RoomHandle = info.AsyncId;
+            RoomHandle = info.Room.Handle.Id;
 
             UpdateFromInfo(info.Room.Info);
             LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
