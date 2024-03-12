@@ -190,6 +190,8 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
+            if (e.RoomHandle != (ulong)RoomHandle.Id)
+                return;
 
             switch (e.MessageCase)
             {
