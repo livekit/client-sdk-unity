@@ -41,7 +41,7 @@ namespace LiveKit
 
             var newVideoStream = new NewVideoStreamRequest();
   
-            newVideoStream.TrackHandle = videoTrack.TrackHandle.Id;
+            newVideoStream.TrackHandle = ((Track)videoTrack).TrackHandle.Id;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
 
             var request = new FfiRequest();

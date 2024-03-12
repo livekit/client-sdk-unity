@@ -13,7 +13,6 @@ namespace LiveKit
         bool Muted { get; }
         WeakReference<Room> Room { get; }
         WeakReference<Participant> Participant { get; }
-        FfiOwnedHandle TrackHandle { get; }
     }
 
     public interface ILocalTrack : ITrack
@@ -52,7 +51,7 @@ namespace LiveKit
 
         public readonly FfiHandle Handle;
 
-        public FfiOwnedHandle TrackHandle { get; }
+        internal FfiOwnedHandle TrackHandle { get; }
 
         internal Track(FfiHandle handle, OwnedTrack track, Room room, Participant participant)
         {
