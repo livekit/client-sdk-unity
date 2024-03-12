@@ -3,8 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -70,11 +68,13 @@ namespace LiveKit
 
             var publish = new PublishTrackRequest();
             publish.LocalParticipantHandle = Handle.Id;
-            publish.TrackHandle = (ulong)track.TrackHandle;
+            publish.TrackHandle = (ulong)track.TrackHandle.Id;
             publish.Options = options;
 
             var request = new FfiRequest();
             request.PublishTrack = publish;
+
+            track.Room = Room;
 
             var resp = FfiClient.SendRequest(request);
             return new PublishTrackInstruction(resp.PublishTrack.AsyncId);

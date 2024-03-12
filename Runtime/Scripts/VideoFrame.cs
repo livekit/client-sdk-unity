@@ -1,7 +1,6 @@
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using UnityEngine;
 using System.Runtime.CompilerServices;
 
 namespace LiveKit

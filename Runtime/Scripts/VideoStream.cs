@@ -3,7 +3,6 @@ using System.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -42,7 +41,7 @@ namespace LiveKit
 
             var newVideoStream = new NewVideoStreamRequest();
   
-            newVideoStream.TrackHandle = videoTrack.TrackHandle;
+            newVideoStream.TrackHandle = videoTrack.TrackHandle.Id;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
 
             var request = new FfiRequest();

@@ -1,4 +1,3 @@
-using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 

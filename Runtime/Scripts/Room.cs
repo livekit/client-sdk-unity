@@ -122,7 +122,7 @@ namespace LiveKit
         public string Metadata { private set; get; }
         public LocalParticipant LocalParticipant { private set; get; }
         public ConnectionState ConnectionState { private set; get; }
-        public bool IsConnected => RoomHandle != 0 && ConnectionState != ConnectionState.ConnDisconnected;
+        public bool IsConnected => RoomHandle == null && ConnectionState != ConnectionState.ConnDisconnected;
 
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         public IReadOnlyDictionary<string, RemoteParticipant> Participants => _participants;
@@ -146,7 +146,7 @@ namespace LiveKit
 
         public E2EEManager E2EEManager { internal set; get; }
 
-        internal ulong RoomHandle;
+        internal FfiOwnedHandle RoomHandle = null;
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
@@ -169,13 +169,13 @@ namespace LiveKit
             }
 
             var disconnect = new DisconnectRequest();
-            disconnect.RoomHandle = RoomHandle;
+            disconnect.RoomHandle = RoomHandle.Id;
             var request = new FfiRequest();
             request.Disconnect = disconnect;
 
             FfiClient.SendRequest(request);
 
-            RoomHandle = 0;
+            RoomHandle = null;
 
             ConnectionState = ConnectionState.ConnDisconnected;
         }
@@ -329,7 +329,7 @@ namespace LiveKit
 
         internal void OnConnect(ConnectCallback info)
         {
-            RoomHandle = info.Room.Handle.Id;
+            RoomHandle = info.Room.Handle;
 
             UpdateFromInfo(info.Room.Info);
             LocalParticipant = new LocalParticipant(info.LocalParticipant, this);

@@ -2,8 +2,6 @@ using System;
 using System.Security;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Reflection;
 
 namespace LiveKit.Internal
 {

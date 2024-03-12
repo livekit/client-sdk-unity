@@ -21,7 +21,6 @@ namespace LiveKit.Internal
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
-    //internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
     internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
 

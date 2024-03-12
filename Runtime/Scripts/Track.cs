@@ -1,7 +1,6 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using UnityEngine;
 
 namespace LiveKit
 {
@@ -14,7 +13,7 @@ namespace LiveKit
         bool Muted { get; }
         WeakReference<Room> Room { get; }
         WeakReference<Participant> Participant { get; }
-        ulong TrackHandle { get; }
+        FfiOwnedHandle TrackHandle { get; }
     }
 
     public interface ILocalTrack : ITrack
@@ -45,7 +44,7 @@ namespace LiveKit
         public TrackKind Kind => _info.Kind;
         public StreamState StreamState => _info.StreamState;
         public bool Muted => _info.Muted;
-        public WeakReference<Room> Room { get; }
+        public WeakReference<Room> Room { internal set; get; }
         public WeakReference<Participant> Participant { get; }
 
         // IsOwned is true if C# owns the handle
@@ -53,12 +52,12 @@ namespace LiveKit
 
         public readonly FfiHandle Handle;
 
-        public ulong TrackHandle { get; }
+        public FfiOwnedHandle TrackHandle { get; }
 
         internal Track(FfiHandle handle, OwnedTrack track, Room room, Participant participant)
         {
             Handle = handle;
-            TrackHandle = (ulong)track.Handle.Id;
+            TrackHandle = track.Handle;
             Room = new WeakReference<Room>(room);
             Participant = new WeakReference<Participant>(participant);
             UpdateInfo(track.Info);

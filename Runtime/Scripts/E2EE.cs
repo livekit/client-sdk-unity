@@ -36,10 +36,10 @@ namespace LiveKit
 
     public class KeyProvider
     {
-        internal ulong RoomHandle;
+        internal FfiOwnedHandle RoomHandle;
         public KeyProviderOptions KeyProviderOptions;
 
-        public KeyProvider(ulong roomHandle, KeyProviderOptions keyProviderOptions)
+        public KeyProvider(FfiOwnedHandle roomHandle, KeyProviderOptions keyProviderOptions)
         {
             RoomHandle = roomHandle;
             KeyProviderOptions = keyProviderOptions;
@@ -50,7 +50,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.SetSharedKey = new SetSharedKeyRequest();
             req.E2Ee.SetSharedKey.KeyIndex = keyIndex;
             req.E2Ee.SetSharedKey.SharedKey = Google.Protobuf.ByteString.CopyFrom(key);
@@ -63,7 +63,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.GetSharedKey = new GetSharedKeyRequest();
             req.E2Ee.GetSharedKey.KeyIndex = keyIndex;
             var resp = FfiClient.SendRequest(req);
@@ -76,7 +76,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.RatchetSharedKey = new RatchetSharedKeyRequest();
             req.E2Ee.RatchetSharedKey.KeyIndex = keyIndex;
             var resp = FfiClient.SendRequest(req);
@@ -89,7 +89,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.SetKey = new SetKeyRequest();
             req.E2Ee.SetKey.KeyIndex = keyIndex;
             req.E2Ee.SetKey.ParticipantIdentity = participantIdentity;
@@ -103,7 +103,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.GetKey = new GetKeyRequest();
             req.E2Ee.GetKey.KeyIndex = keyIndex;
             req.E2Ee.GetKey.ParticipantIdentity = participantIdentity;
@@ -117,7 +117,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.RatchetKey = new RatchetKeyRequest();
             req.E2Ee.RatchetKey.KeyIndex = keyIndex;
             req.E2Ee.RatchetKey.ParticipantIdentity = participantIdentity;
@@ -177,11 +177,11 @@ namespace LiveKit
 
     public class E2EEManager
     {
-        internal ulong RoomHandle;
+        internal FfiOwnedHandle RoomHandle;
         public KeyProvider KeyProvider;
         public E2EEOptions E2EEOptions;
 
-        public E2EEManager(ulong roomHandle, E2EEOptions e2EEOptions)
+        public E2EEManager(FfiOwnedHandle roomHandle, E2EEOptions e2EEOptions)
         {
             RoomHandle = roomHandle;
             KeyProvider = new KeyProvider(roomHandle, e2EEOptions.KeyProviderOptions);
@@ -193,7 +193,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.ManagerSetEnabled = new E2eeManagerSetEnabledRequest();
             req.E2Ee.ManagerSetEnabled.Enabled = enabled;
 
@@ -205,7 +205,7 @@ namespace LiveKit
             var e2eeReq = new E2eeRequest();
             var req = new FfiRequest();
             req.E2Ee = e2eeReq;
-            req.E2Ee.RoomHandle = RoomHandle;
+            req.E2Ee.RoomHandle = RoomHandle.Id;
             req.E2Ee.ManagerGetFrameCryptors = new E2eeManagerGetFrameCryptorsRequest();
 
             var resp = FfiClient.SendRequest(req);
@@ -213,7 +213,7 @@ namespace LiveKit
 
             foreach(var c in resp.E2Ee.ManagerGetFrameCryptors.FrameCryptors)
             {
-                cryptors.Add(new FrameCryptor(RoomHandle, c.ParticipantIdentity, c.TrackSid, c.Enabled, c.KeyIndex));
+                cryptors.Add(new FrameCryptor(RoomHandle.Id, c.ParticipantIdentity, c.TrackSid, c.Enabled, c.KeyIndex));
             }
             return cryptors;
         }
