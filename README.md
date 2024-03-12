@@ -17,7 +17,7 @@
 - [x] MacOS
 - [x] Linux
 - [ ] iOS
-- [ ] Android
+- [x] Android
 - [ ] WebGL
 
 We plan to support all Unity platforms with this SDK. WebGL is currently supported with [client-sdk-unity-web](https://github.com/livekit/client-sdk-unity-web).
@@ -31,7 +31,9 @@ This repo uses [Git LFS](https://git-lfs.com/), please ensure it's installed whe
 
 ## Examples
 
-### Connect to a room:
+You can find examples in the [unity-example](https://github.com/livekit-examples/unity-example.git).
+
+### Connect to a room
 
 ```cs
 using LiveKit;
