@@ -21,7 +21,6 @@ namespace LiveKit.Internal
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
-    internal delegate void ParticipantEventReceivedDelegate(ParticipantEvent e);
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
     internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
 
@@ -39,13 +38,15 @@ namespace LiveKit.Internal
         public event ConnectReceivedDelegate ConnectReceived;
         public event RoomEventReceivedDelegate RoomEventReceived;
         public event TrackEventReceivedDelegate TrackEventReceived;
-        public event ParticipantEventReceivedDelegate ParticipantEventReceived;
+        //public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate AudioStreamEventReceived;
 
 #if UNITY_EDITOR
         static FfiClient()
         {
+            FFICallbackDelegate callback = FFICallback;
+            NativeMethods.FfiInitialize((ulong)Marshal.GetFunctionPointerForDelegate(callback), true);
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
             EditorApplication.quitting += Quit;
@@ -59,14 +60,15 @@ namespace LiveKit.Internal
 
         static void OnAfterAssemblyReload()
         {
-            Initialize();
+ 
         }
 #else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
+            FFICallbackDelegate callback = FFICallback;
+            NativeMethods.FfiInitialize((ulong)Marshal.GetFunctionPointerForDelegate(callback), true);
             Application.quitting += Quit;
-            Instance.Initialize();
         }
 #endif
 
@@ -86,39 +88,26 @@ namespace LiveKit.Internal
             Instance._context = SynchronizationContext.Current;
         }
 
-        static void Initialize()
-        {
-            FFICallbackDelegate callback = FFICallback;
-
-            var initReq = new InitializeRequest();
-            initReq.EventCallbackPtr = (ulong)Marshal.GetFunctionPointerForDelegate(callback);
-
-            var request = new FFIRequest();
-            request.Initialize = initReq;
-            SendRequest(request);
-            Utils.Debug("FFIServer - Initialized");
-        }
-
         static void Dispose()
         {
             // Stop all rooms synchronously
             // The rust lk implementation should also correctly dispose WebRTC
             var disposeReq = new DisposeRequest();
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.Dispose = disposeReq;
             SendRequest(request);
             Utils.Debug("FFIServer - Disposed");
         }
 
-        internal static FFIResponse SendRequest(FFIRequest request)
+        internal static FfiResponse SendRequest(FfiRequest request)
         {
-            var data = request.ToByteArray(); // TODO(theomonnom): Avoid more allocations
-            FFIResponse response;
+            var data = request.ToByteArray();
+            FfiResponse response;
             unsafe
             {
                 var handle = NativeMethods.FfiNewRequest(data, data.Length, out byte* dataPtr, out int dataLen);
-                response = FFIResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
+                response = FfiResponse.Parser.ParseFrom(new Span<byte>(dataPtr, dataLen));
                 handle.Dispose();
             }
 
@@ -130,34 +119,31 @@ namespace LiveKit.Internal
         static unsafe void FFICallback(IntPtr data, int size)
         {
             var respData = new Span<byte>(data.ToPointer(), size);
-            var response = FFIEvent.Parser.ParseFrom(respData);
+            var response = FfiEvent.Parser.ParseFrom(respData);
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
             Instance._context.Post((resp) =>
                {
-                   var response = resp as FFIEvent;
+                   var response = resp as FfiEvent;
                    switch (response.MessageCase)
                    {
-                       case FFIEvent.MessageOneofCase.Connect:
+                       case FfiEvent.MessageOneofCase.Connect:
                            Instance.ConnectReceived?.Invoke(response.Connect);
                            break;
-                       case FFIEvent.MessageOneofCase.PublishTrack:
+                       case FfiEvent.MessageOneofCase.PublishTrack:
                            Instance.PublishTrackReceived?.Invoke(response.PublishTrack);
                            break;
-                       case FFIEvent.MessageOneofCase.RoomEvent:
+                       case FfiEvent.MessageOneofCase.RoomEvent:
                            Instance.RoomEventReceived?.Invoke(response.RoomEvent);
                            break;
-                       case FFIEvent.MessageOneofCase.TrackEvent:
+                       case FfiEvent.MessageOneofCase.TrackEvent:
                            Instance.TrackEventReceived?.Invoke(response.TrackEvent);
                            break;
-                       case FFIEvent.MessageOneofCase.ParticipantEvent:
-                           Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                           break;
-                       case FFIEvent.MessageOneofCase.VideoStreamEvent:
+                       case FfiEvent.MessageOneofCase.VideoStreamEvent:
                            Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent);
                            break;
-                       case FFIEvent.MessageOneofCase.AudioStreamEvent:
+                       case FfiEvent.MessageOneofCase.AudioStreamEvent:
                            Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent);
                            break;
 

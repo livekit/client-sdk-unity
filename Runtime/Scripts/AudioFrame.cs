@@ -1,6 +1,7 @@
 using System;
 using LiveKit.Proto;
-using LiveKit.Internal;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -8,38 +9,44 @@ namespace LiveKit
     {
         private AudioFrameBufferInfo _info;
 
-        internal readonly FfiHandle Handle;
+        private FfiOwnedHandle _handle;
+
         private bool _disposed = false;
 
-        public uint NumChannels => _info.NumChannels;
-        public uint SampleRate => _info.SampleRate;
-        public uint SamplesPerChannel => _info.SamplesPerChannel;
+        private uint _numChannels;
+        public uint NumChannels => _numChannels;
+        private uint _sampleRate;
+        public uint SampleRate => _sampleRate;
+        private uint _samplesPerChannel;
+        public uint SamplesPerChannel => _samplesPerChannel;
 
-        public IntPtr Data => (IntPtr)_info.DataPtr;
+        public AudioFrameBufferInfo Info => _info;
+
+        private IntPtr _dataPtr;
+        public IntPtr Data => _dataPtr;
+
         public int Length => (int) (SamplesPerChannel * NumChannels * sizeof(short));
 
-        internal AudioFrame(FfiHandle handle, AudioFrameBufferInfo info)
+        internal AudioFrame(FfiOwnedHandle handle, AudioFrameBufferInfo info)
         {
-            Handle = handle;
+            _handle = handle;
             _info = info;
+            _sampleRate = _info.SampleRate;
+            _numChannels = _info.NumChannels;
+            _samplesPerChannel = _info.SamplesPerChannel;
+            _dataPtr = (IntPtr)info.DataPtr;
         }
 
         internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {
-            var alloc = new AllocAudioBufferRequest();
-            alloc.SampleRate = (uint) sampleRate;
-            alloc.NumChannels = (uint) numChannels;
-            alloc.SamplesPerChannel = (uint) samplesPerChannel;
-
-            var request = new FFIRequest();
-            request.AllocAudioBuffer = alloc;
-
-            var res = FfiClient.SendRequest(request);
-            var bufferInfo = res.AllocAudioBuffer.Buffer;
-
-            Handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
-            _info = bufferInfo;
+            _sampleRate = (uint)sampleRate;
+            _numChannels = (uint)numChannels;
+            _samplesPerChannel = (uint)samplesPerChannel;
+            unsafe
+            {
+                var data = new NativeArray<byte>(Length, Allocator.Persistent);
+                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(data);
+            }
         }
-
         ~AudioFrame()
         {
             Dispose(false);
@@ -55,7 +62,6 @@ namespace LiveKit
         {
             if (!_disposed)
             {
-                Handle.Dispose();
                 _disposed = true;
             }
         }

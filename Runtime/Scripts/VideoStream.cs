@@ -3,7 +3,6 @@ using System.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -41,12 +40,11 @@ namespace LiveKit
                 throw new InvalidOperationException("videotrack's participant is invalid");
 
             var newVideoStream = new NewVideoStreamRequest();
-            newVideoStream.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            newVideoStream.ParticipantSid = participant.Sid;
-            newVideoStream.TrackSid = videoTrack.Sid;
+  
+            newVideoStream.TrackHandle = ((Track)videoTrack).TrackHandle.Id;
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewVideoStream = newVideoStream;
 
             var resp = FfiClient.SendRequest(request);
@@ -78,21 +76,6 @@ namespace LiveKit
             }
         }
 
-        internal bool UploadBuffer()
-        {
-            var data = Texture.GetRawTextureData<byte>();
-            VideoBuffer = VideoBuffer.ToI420(); // TODO(theomonnom): Support other buffer types
-
-            unsafe
-            {
-                var texPtr = NativeArrayUnsafeUtility.GetUnsafePtr(data);
-                VideoBuffer.ToARGB(VideoFormatType.FormatAbgr, (IntPtr)texPtr, (uint)Texture.width * 4, (uint)Texture.width, (uint)Texture.height);
-            }
-
-            Texture.Apply();
-            return true;
-        }
-
         public IEnumerator Update()
         {
             while (true)
@@ -112,11 +95,16 @@ namespace LiveKit
                 var textureChanged = false;
                 if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
                 {
-                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, true, true);
+                   if (Texture != null) UnityEngine.Object.Destroy(Texture);
+                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
+                    Texture.ignoreMipmapLimit = false;
                     textureChanged = true;
                 }
-
-                UploadBuffer();
+                var rgba = VideoBuffer.ToRGBA();
+                {
+                    Texture.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize()); 
+                }
+                Texture.Apply();
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);
@@ -127,18 +115,18 @@ namespace LiveKit
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
-            if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
+            if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
                 return;
 
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
                 return;
+ 
+            var newBuffer = e.FrameReceived.Buffer;
+            var handle = new FfiHandle((IntPtr)newBuffer.Handle.Id);
+            var frameInfo = newBuffer.Info;
 
-            var frameInfo = e.FrameReceived.Frame;
-            var bufferInfo = e.FrameReceived.Buffer;
-            var handle = new FfiHandle((IntPtr)bufferInfo.Handle.Id);
-
-            var frame = new VideoFrame(frameInfo);
-            var buffer = VideoFrameBuffer.Create(handle, bufferInfo);
+            var frame = new VideoFrame(frameInfo, e.FrameReceived.TimestampUs, e.FrameReceived.Rotation);
+            var buffer = VideoFrameBuffer.Create(handle, frameInfo);
 
             VideoBuffer?.Dispose();
             VideoBuffer = buffer;

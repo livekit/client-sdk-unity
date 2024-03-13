@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using LiveKit.Internal;
 using LiveKit.Proto;
 
 namespace LiveKit
@@ -16,6 +15,7 @@ namespace LiveKit
         public uint Height => _info.Height;
         public string MimeType => _info.MimeType;
         public bool Muted => _info.Muted;
+        public Proto.EncryptionType EncryptionType => _info.EncryptionType;
 
         public Track Track { private set; get; }
 
@@ -44,8 +44,20 @@ namespace LiveKit
     public sealed class RemoteTrackPublication : TrackPublication
     {
         public new IRemoteTrack Track => base.Track as IRemoteTrack;
+        public bool Subscribed = false;
 
         internal RemoteTrackPublication(TrackPublicationInfo info) : base(info) { }
+
+        public void SetSubscribed(bool subscribed)
+        {
+            Subscribed = subscribed;
+            var updateReq = new SetSubscribedRequest();
+            updateReq.Subscribe = subscribed;
+            var request = new FfiRequest();
+            request.SetSubscribed = updateReq;
+
+            FfiClient.SendRequest(request);
+        }
     }
 
     public sealed class LocalTrackPublication : TrackPublication

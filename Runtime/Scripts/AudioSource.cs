@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using UnityEngine.Rendering;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -14,7 +10,7 @@ namespace LiveKit
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
 
-        internal readonly FfiHandle Handle;
+        internal readonly FfiOwnedHandle Handle;
         protected AudioSourceInfo _info;
 
         // Used on the AudioThread
@@ -24,13 +20,17 @@ namespace LiveKit
         {
             var newAudioSource = new NewAudioSourceRequest();
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
+            newAudioSource.NumChannels = 2;
+            newAudioSource.SampleRate = 48000;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewAudioSource = newAudioSource;
 
             var resp = FfiClient.SendRequest(request);
-            _info = resp.NewAudioSource.Source;
-            Handle = new FfiHandle((IntPtr)_info.Handle.Id);
+            var respSource = resp.NewAudioSource.Source;
+            _info = respSource.Info;
+
+            Handle = respSource.Handle;
             UpdateSource(source);
         }
 
@@ -72,16 +72,24 @@ namespace LiveKit
             // Don't play the audio locally
             Array.Clear(data, 0, data.Length);
 
-            var pushFrame = new CaptureAudioFrameRequest();
-            pushFrame.SourceHandle = new FFIHandleId { Id = (ulong)Handle.DangerousGetHandle() };
-            pushFrame.BufferHandle = new FFIHandleId { Id = (ulong)_frame.Handle.DangerousGetHandle() };
+            var audioFrameBufferInfo = new AudioFrameBufferInfo();
 
-            var request = new FFIRequest();
+            audioFrameBufferInfo.DataPtr = (ulong)_frame.Data;
+            audioFrameBufferInfo.NumChannels = _frame.NumChannels;
+            audioFrameBufferInfo.SampleRate = _frame.SampleRate;
+            audioFrameBufferInfo.SamplesPerChannel = _frame.SamplesPerChannel;
+
+            var pushFrame = new CaptureAudioFrameRequest();
+            pushFrame.SourceHandle = Handle.Id;
+            pushFrame.Buffer = audioFrameBufferInfo;
+
+            var request = new FfiRequest();
             request.CaptureAudioFrame = pushFrame;
 
             FfiClient.SendRequest(request);
 
-            Debug.Log($"Pushed audio frame with {data.Length} samples");
+
+            //Debug.Log($"Pushed audio frame with {data.Length} samples");
         }
     }
 }

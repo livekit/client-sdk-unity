@@ -3,10 +3,107 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
-using UnityEngine;
 
 namespace LiveKit
 {
+    public enum IceTransportType
+    {
+        TRANSPORT_RELAY = 0,
+        TRANSPORT_NOHOST = 1,
+        TRANSPORT_ALL = 2
+    }
+
+    public enum ContinualGatheringPolicy
+    {
+        GATHER_ONCE = 0,
+        GATHER_CONTINUALLY = 1
+    }
+
+
+    public class IceServer
+    {
+        public string[] Urls;
+        public string Username;
+        public string Password;
+
+        public Proto.IceServer ToProto()
+        {
+            var proto = new Proto.IceServer();
+            proto.Username = Username;
+            proto.Password = Password;
+            proto.Urls.AddRange(Urls);
+
+            return proto;
+        }
+    }
+
+    public class RTCConfiguration
+    {
+        IceTransportType IceTransportType = IceTransportType.TRANSPORT_ALL;
+        ContinualGatheringPolicy ContinualGatheringPolicy = ContinualGatheringPolicy.GATHER_ONCE;
+        IceServer[] IceServers;
+
+        public Proto.RtcConfig ToProto()
+        {
+            var proto = new Proto.RtcConfig();
+
+            switch(ContinualGatheringPolicy)
+            {
+                case ContinualGatheringPolicy.GATHER_ONCE:
+                    proto.ContinualGatheringPolicy = Proto.ContinualGatheringPolicy.GatherOnce;
+                    break;
+                case ContinualGatheringPolicy.GATHER_CONTINUALLY:
+                    proto.ContinualGatheringPolicy = Proto.ContinualGatheringPolicy.GatherContinually;
+                    break;
+            }
+
+            switch(IceTransportType)
+            {
+                case IceTransportType.TRANSPORT_ALL:
+                    proto.IceTransportType = Proto.IceTransportType.TransportAll;
+                    break;
+                case IceTransportType.TRANSPORT_RELAY:
+                    proto.IceTransportType = Proto.IceTransportType.TransportRelay;
+                    break;
+                case IceTransportType.TRANSPORT_NOHOST:
+                    proto.IceTransportType = Proto.IceTransportType.TransportNohost;
+                    break;
+            }
+
+            foreach(var item in IceServers)
+            {
+                proto.IceServers.Add(item.ToProto());
+            }
+
+            return proto;
+        }
+    }
+
+
+    public class RoomOptions
+    {
+        public bool AutoSubscribe = true;
+        public bool Dynacast = true;
+        public bool AdaptiveStream = true;
+        public uint JoinRetries = 3;
+        public RTCConfiguration RtcConfig = null;
+        public E2EEOptions E2EE = null;
+
+        public Proto.RoomOptions ToProto()
+        {
+            var proto = new Proto.RoomOptions();
+
+            proto.AutoSubscribe = AutoSubscribe;
+            proto.Dynacast = Dynacast;
+            proto.AdaptiveStream = AdaptiveStream;
+            proto.JoinRetries = JoinRetries;
+            proto.RtcConfig = RtcConfig?.ToProto();
+            proto.E2Ee = E2EE?.ToProto();
+
+            return proto;
+        }
+    }
+
     public class Room
     {
         public delegate void ParticipantDelegate(RemoteParticipant participant);
@@ -15,14 +112,17 @@ namespace LiveKit
         public delegate void MuteDelegate(TrackPublication publication, Participant participant);
         public delegate void SpeakersChangeDelegate(List<Participant> speakers);
         public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
-        public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind);
+        public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind, string topic);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate();
+        public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
 
         public string Sid { private set; get; }
         public string Name { private set; get; }
         public string Metadata { private set; get; }
         public LocalParticipant LocalParticipant { private set; get; }
+        public ConnectionState ConnectionState { private set; get; }
+        public bool IsConnected => RoomHandle == null && ConnectionState != ConnectionState.ConnDisconnected;
 
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         public IReadOnlyDictionary<string, RemoteParticipant> Participants => _participants;
@@ -39,25 +139,47 @@ namespace LiveKit
         public event ConnectionQualityChangeDelegate ConnectionQualityChanged;
         public event DataDelegate DataReceived;
         public event ConnectionStateChangeDelegate ConnectionStateChanged;
-        public event ConnectionDelegate Connected;
         public event ConnectionDelegate Disconnected;
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
+        public event E2EeStateChangedDelegate E2EeStateChanged;
 
-        internal FfiHandle Handle;
+        public E2EEManager E2EEManager { internal set; get; }
 
-        public ConnectInstruction Connect(string url, string token)
+        internal FfiOwnedHandle RoomHandle = null;
+
+        public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
             var connect = new ConnectRequest();
             connect.Url = url;
             connect.Token = token;
+            connect.Options = options.ToProto();
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.Connect = connect;
 
             var resp = FfiClient.SendRequest(request);
-            return new ConnectInstruction(resp.Connect.AsyncId.Id, this);
+            return new ConnectInstruction(resp.Connect.AsyncId, this, options);
         }
+
+        public void Disconnect()
+        {
+            if(!IsConnected) {
+                return;
+            }
+
+            var disconnect = new DisconnectRequest();
+            disconnect.RoomHandle = RoomHandle.Id;
+            var request = new FfiRequest();
+            request.Disconnect = disconnect;
+
+            FfiClient.SendRequest(request);
+
+            RoomHandle = null;
+
+            ConnectionState = ConnectionState.ConnDisconnected;
+        }
+
 
         internal void UpdateFromInfo(RoomInfo info)
         {
@@ -68,7 +190,7 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle.Id != (ulong)Handle.DangerousGetHandle())
+            if (e.RoomHandle != (ulong)RoomHandle.Id)
                 return;
 
             switch (e.MessageCase)
@@ -81,16 +203,16 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
-                        var info = e.ParticipantDisconnected.Info;
-                        var participant = Participants[info.Sid];
-                        _participants.Remove(info.Sid);
+                        var sid = e.ParticipantDisconnected.ParticipantSid;
+                        var participant = Participants[Sid];
+                        _participants.Remove(Sid);
                         ParticipantDisconnected?.Invoke(participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = Participants[e.TrackPublished.ParticipantSid];
-                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication);
+                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info);
                         participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
                         TrackPublished?.Invoke(publication, participant);
@@ -107,19 +229,26 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackSubscribed:
                     {
-                        var info = e.TrackSubscribed.Track;
+                        var track = e.TrackSubscribed.Track;
+                        var info = track.Info;
                         var participant = Participants[e.TrackSubscribed.ParticipantSid];
                         var publication = participant.Tracks[info.Sid];
 
+                        if(publication == null)
+                        {
+                            participant._tracks.Add(publication.Sid, publication);
+                        }
+
+
                         if (info.Kind == TrackKind.KindVideo)
                         {
-                            var videoTrack = new RemoteVideoTrack(null, info, this, participant);
+                            var videoTrack = new RemoteVideoTrack(null, track, this, participant);
                             publication.UpdateTrack(videoTrack);
                             TrackSubscribed?.Invoke(videoTrack, publication, participant);
                         }
                         else if (info.Kind == TrackKind.KindAudio)
                         {
-                            var audioTrack = new RemoteAudioTrack(null, info, this, participant);
+                            var audioTrack = new RemoteAudioTrack(null, track, this, participant);
                             publication.UpdateTrack(audioTrack);
                             TrackSubscribed?.Invoke(audioTrack, publication, participant);
                         }
@@ -150,9 +279,9 @@ namespace LiveKit
                         TrackUnmuted?.Invoke(publication, participant);
                     }
                     break;
-                case RoomEvent.MessageOneofCase.SpeakersChanged:
+                case RoomEvent.MessageOneofCase.ActiveSpeakersChanged:
                     {
-                        var sids = e.SpeakersChanged.ParticipantSids;
+                        var sids = e.ActiveSpeakersChanged.ParticipantSids;
                         var speakers = new List<Participant>(sids.Count);
 
                         foreach (var sid in sids)
@@ -171,21 +300,15 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
                         var dataInfo = e.DataReceived;
-
-                        var handle = new FfiHandle((IntPtr)dataInfo.Handle.Id);
-                        var data = new byte[dataInfo.DataSize];
-                        Marshal.Copy((IntPtr)dataInfo.DataPtr, data, 0, data.Length);
-                        handle.Dispose();
-
+                        var data = new byte[dataInfo.Data.Data.CalculateSize()];
+                        Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
                         var participant = GetParticipant(e.DataReceived.ParticipantSid);
-                        DataReceived?.Invoke(data, participant, dataInfo.Kind);
+                        DataReceived?.Invoke(data, participant, dataInfo.Kind, dataInfo.Topic);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
+                    ConnectionState = e.ConnectionStateChanged.State;
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
-                    break;
-                case RoomEvent.MessageOneofCase.Connected:
-                    Connected?.Invoke();
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
                     Disconnected?.Invoke();
@@ -197,19 +320,25 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.Reconnected:
                     Reconnected?.Invoke();
                     break;
+                case RoomEvent.MessageOneofCase.E2EeStateChanged:
+                    {
+                        var participant = GetParticipant(e.E2EeStateChanged.ParticipantSid);
+                        E2EeStateChanged?.Invoke(participant, e.E2EeStateChanged.State);
+                    }
+                    break;
             }
         }
 
-        internal void OnConnect(RoomInfo info)
+        internal void OnConnect(ConnectCallback info)
         {
-            Handle = new FfiHandle((IntPtr)info.Handle.Id);
+            RoomHandle = info.Room.Handle;
 
-            UpdateFromInfo(info);
+            UpdateFromInfo(info.Room.Info);
             LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
 
             // Add already connected participant
             foreach (var p in info.Participants)
-                CreateRemoteParticipant(p);
+                CreateRemoteParticipantWithTracks(p);
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
         }
@@ -219,18 +348,26 @@ namespace LiveKit
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
         }
 
-        RemoteParticipant CreateRemoteParticipant(ParticipantInfo info)
+        RemoteParticipant CreateRemoteParticipantWithTracks(ConnectCallback.Types.ParticipantWithTracks item)
         {
-            var participant = new RemoteParticipant(info, this);
-            _participants.Add(participant.Sid, participant);
-
-            foreach (var pubInfo in info.Publications)
+            var participant = item.Participant;
+            var publications = item.Publications;
+            var newParticipant = new RemoteParticipant(participant, this);
+            _participants.Add(participant.Info.Sid, newParticipant);
+            foreach (var pub in publications)
             {
-                var publication = new RemoteTrackPublication(pubInfo);
-                participant._tracks.Add(publication.Sid, publication);
+                var publication = new RemoteTrackPublication(pub.Info);
+                newParticipant._tracks.Add(publication.Sid, publication);
+                newParticipant.OnTrackPublished(publication);
             }
+            return newParticipant;
+        }
 
-            return participant;
+        RemoteParticipant CreateRemoteParticipant(OwnedParticipant participant)
+        {
+            var newParticipant = new RemoteParticipant(participant, this);
+            _participants.Add(participant.Info.Sid, newParticipant);
+            return newParticipant;
         }
 
         public Participant GetParticipant(string sid)
@@ -247,24 +384,33 @@ namespace LiveKit
     {
         private ulong _asyncId;
         private Room _room;
+        private RoomOptions _roomOptions;
 
-        internal ConnectInstruction(ulong asyncId, Room room)
+        internal ConnectInstruction(ulong asyncId, Room room, RoomOptions options)
         {
             _asyncId = asyncId;
             _room = room;
+            _roomOptions = options;
             FfiClient.Instance.ConnectReceived += OnConnect;
         }
 
         void OnConnect(ConnectCallback e)
         {
-            if (_asyncId != e.AsyncId.Id)
+            if (_asyncId != e.AsyncId)
                 return;
 
             FfiClient.Instance.ConnectReceived -= OnConnect;
 
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
-                _room.OnConnect(e.Room);
+            {
+                if(_roomOptions.E2EE != null)
+                {
+                    _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
+                }
+
+                _room.OnConnect(e);
+            }
 
             IsError = !success;
             IsDone = true;

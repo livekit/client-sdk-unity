@@ -8,7 +8,7 @@ namespace LiveKit
 {
     public class AudioStream
     {
-        internal readonly FfiHandle Handle;
+        internal readonly FfiOwnedHandle Handle;
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -27,18 +27,16 @@ namespace LiveKit
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
             var newAudioStream = new NewAudioStreamRequest();
-            newAudioStream.RoomHandle = new FFIHandleId { Id = (ulong)room.Handle.DangerousGetHandle() };
-            newAudioStream.ParticipantSid = participant.Sid;
-            newAudioStream.TrackSid = audioTrack.Sid;
+            newAudioStream.TrackHandle = ((Track)audioTrack).TrackHandle.Id;
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewAudioStream = newAudioStream;
 
             var resp = FfiClient.SendRequest(request);
             var streamInfo = resp.NewAudioStream.Stream;
 
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            Handle = streamInfo.Handle;
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -88,15 +86,14 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
-            if (e.Handle.Id != (ulong)Handle.DangerousGetHandle())
+            if(Handle.Id != e.StreamHandle)
                 return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var info = e.FrameReceived.Frame;
-            var handle = new FfiHandle((IntPtr)info.Handle.Id);
-            var frame = new AudioFrame(handle, info);
+            var newFrame = e.FrameReceived.Frame;
+            var frame = new AudioFrame(newFrame.Handle, newFrame.Info);
 
             lock (_lock)
             { 
@@ -106,8 +103,11 @@ namespace LiveKit
                 unsafe
                 {
                     var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                    _buffer?.Write(data);
+                    if(uFrame != null) {
+                        var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
+                        _buffer?.Write(data);
+                    }
+                    
                 }
             }
         }

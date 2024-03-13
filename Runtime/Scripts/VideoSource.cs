@@ -6,6 +6,7 @@ using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
@@ -19,12 +20,12 @@ namespace LiveKit
             var newVideoSource = new NewVideoSourceRequest();
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
 
-            var request = new FFIRequest();
+            var request = new FfiRequest();
             request.NewVideoSource = newVideoSource;
 
             var resp = FfiClient.SendRequest(request);
-            _info = resp.NewVideoSource.Source;
-            Handle = new FfiHandle((IntPtr)_info.Handle.Id);
+            _info = resp.NewVideoSource.Source.Info;
+            Handle = new FfiHandle((IntPtr)resp.NewVideoSource.Source.Handle.Id);
         }
     }
 
@@ -38,6 +39,7 @@ namespace LiveKit
         {
             Texture = texture;
             _data = new NativeArray<byte>(Texture.width * Texture.height * 4, Allocator.Persistent);
+            ReadbackSupport();
         }
 
         // Read the texture data into a native array asynchronously
@@ -60,6 +62,19 @@ namespace LiveKit
             }
         }
 
+        private void ReadbackSupport()
+        {
+            GraphicsFormat[] read_formats = (GraphicsFormat[])System.Enum.GetValues(typeof(GraphicsFormat));
+
+            foreach(var f in read_formats)
+            {
+                if (SystemInfo.IsFormatSupported(f, FormatUsage.ReadPixels))
+                {
+                    Debug.Log("support + " + f);
+                }
+            }
+        }
+
         private void OnReadback(AsyncGPUReadbackRequest req)
         {
             _reading = false;
@@ -70,38 +85,35 @@ namespace LiveKit
             }
 
             // ToI420
-            var argbInfo = new ARGBBufferInfo();
+            var argbInfo = new VideoBufferInfo();
             unsafe
             {
-                argbInfo.Ptr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
+                argbInfo.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
             }
-            argbInfo.Format = VideoFormatType.FormatArgb;
+            argbInfo.Type = VideoBufferType.Rgba;
             argbInfo.Stride = (uint)Texture.width * 4;
             argbInfo.Width = (uint)Texture.width;
             argbInfo.Height = (uint)Texture.height;
 
-            var toI420 = new ToI420Request();
+            var toI420 = new VideoConvertRequest();
             toI420.FlipY = true;
-            toI420.Argb = argbInfo;
+            toI420.Buffer = argbInfo;
+            toI420.DstType = VideoBufferType.I420;
 
-            var request = new FFIRequest();
-            request.ToI420 = toI420;
+            var request = new FfiRequest();
+            request.VideoConvert = toI420;
 
             var resp = FfiClient.SendRequest(request);
-            var bufferInfo = resp.ToI420.Buffer;
-            var buffer = VideoFrameBuffer.Create(new FfiHandle((IntPtr)bufferInfo.Handle.Id), bufferInfo);
-
-            // Send the frame to WebRTC
-            var frameInfo = new VideoFrameInfo();
-            frameInfo.Rotation = VideoRotation._0;
-            frameInfo.Timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            var newBuffer = resp.VideoConvert.Buffer;
 
             var capture = new CaptureVideoFrameRequest();
-            capture.SourceHandle = new FFIHandleId { Id = (ulong)Handle.DangerousGetHandle() };
-            capture.BufferHandle = new FFIHandleId { Id = (ulong)buffer.Handle.DangerousGetHandle() };
-            capture.Frame = frameInfo;
+            capture.Buffer = newBuffer.Info;
+            capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            capture.Rotation = VideoRotation._0;
+            capture.SourceHandle  = (ulong)Handle.DangerousGetHandle();
 
-            request = new FFIRequest();
+
+            request = new FfiRequest();
             request.CaptureVideoFrame = capture;
 
             FfiClient.SendRequest(request);
