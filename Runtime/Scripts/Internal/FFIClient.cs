@@ -229,6 +229,8 @@ namespace LiveKit.Internal
                 switch (r?.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.Logs:
+                        
+                        Debug.Log($"LK_DEBUG: {r.Logs.Records}");
                         break;
                     case FfiEvent.MessageOneofCase.PublishData:
                         break;
