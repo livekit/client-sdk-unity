@@ -31,5 +31,7 @@ namespace LiveKit.Rooms.Participants
         void RemoveRemote(Participant participant);
         
         void NotifyParticipantUpdate(Participant participant, UpdateFromParticipant update);
+
+        void Clear();
     }
 }

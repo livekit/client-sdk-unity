@@ -47,5 +47,11 @@ namespace LiveKit.Rooms.Participants
         {
             UpdatesFromParticipant?.Invoke(participant, update);
         }
+
+        public void Clear()
+        {
+            local = null;
+            remoteParticipants.Clear();
+        }
     }
 }

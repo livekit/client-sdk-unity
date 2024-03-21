@@ -19,6 +19,12 @@ namespace LiveKit.Rooms.ActiveSpeakers
             Updated?.Invoke();
         }
 
+        public void Clear()
+        {
+            actives.Clear();
+            Updated?.Invoke();
+        }
+
         public IEnumerator<string> GetEnumerator()
         {
             return actives.GetEnumerator();

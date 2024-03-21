@@ -57,7 +57,7 @@ namespace LiveKit.Rooms
         private readonly IParticipantFactory participantFactory;
         private readonly ITrackPublicationFactory trackPublicationFactory;
         private readonly IMutableDataPipe dataPipe;
-        private readonly MemoryRoomInfo roomInfo;
+        private readonly IMutableRoomInfo roomInfo;
 
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
@@ -73,7 +73,7 @@ namespace LiveKit.Rooms
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory, IParticipantFactory participantFactory, ITrackPublicationFactory trackPublicationFactory, IMutableDataPipe dataPipe, MemoryRoomInfo roomInfo)
+        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory, IParticipantFactory participantFactory, ITrackPublicationFactory trackPublicationFactory, IMutableDataPipe dataPipe, IMutableRoomInfo roomInfo)
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
@@ -281,6 +281,9 @@ namespace LiveKit.Rooms
         {
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle!.Id}");
             Utils.Debug(info);
+
+            activeSpeakers.Clear();
+            participantsHub.Clear();
 
             Handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
             roomInfo.UpdateFromInfo(info);

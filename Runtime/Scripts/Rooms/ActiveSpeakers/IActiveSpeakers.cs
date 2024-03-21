@@ -10,6 +10,8 @@ namespace LiveKit.Rooms.ActiveSpeakers
     
     public interface IMutableActiveSpeakers : IActiveSpeakers
     {
-        public void UpdateCurrentActives(IEnumerable<string> sids);
+        void UpdateCurrentActives(IEnumerable<string> sids);
+
+        void Clear();
     }
 }
