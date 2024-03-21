@@ -87,6 +87,13 @@ namespace LiveKit.Rooms
             dataPipe.Assign(participantsHub);
         }
 
+        public void UpdateLocalMetadata(string metadata)
+        {
+            using var request = FFIBridge.Instance.NewRequest<UpdateLocalMetadataRequest>();
+            request.request.Metadata = metadata;
+            using var response = request.Send();
+        }
+
         public Task<bool> Connect(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
         {
             using var response = FFIBridge.Instance.SendConnectRequest(url, authToken, autoSubscribe);

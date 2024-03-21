@@ -20,6 +20,8 @@ namespace LiveKit.Rooms
         
         IDataPipe DataPipe { get; }
 
+        void UpdateLocalMetadata(string metadata);
+
         Task<bool> Connect(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
 
         void Disconnect();
