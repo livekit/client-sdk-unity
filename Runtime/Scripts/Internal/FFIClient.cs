@@ -24,7 +24,7 @@ namespace LiveKit.Internal
 
         public static FfiClient Instance => instance.Value!;
         private static bool _isDisposed;
-        
+
         private SynchronizationContext? context;
 
         private readonly IObjectPool<FfiResponse> ffiResponsePool;
@@ -82,14 +82,14 @@ namespace LiveKit.Internal
         {
             InitializeSdk();
         }
-#else
+        #else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
             Application.quitting += Quit;
             InitializeSdk();
         }
-#endif
+        #endif
 
         private static void Quit()
         {
@@ -100,8 +100,7 @@ namespace LiveKit.Internal
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
             #endif
-                Instance.Dispose();
-            
+            Instance.Dispose();
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -114,17 +113,16 @@ namespace LiveKit.Internal
 
         private static void InitializeSdk()
         {
-
             #if NO_LIVEKIT_MODE
             return;
             #endif
 
 
-#if LK_VERBOSE
+            #if LK_VERBOSE
             const bool captureLogs = true;
-#else
+            #else
             const bool captureLogs = false;
-#endif
+            #endif
 
             NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
 
@@ -192,6 +190,11 @@ namespace LiveKit.Internal
                         var dataSpan = new Span<byte>(dataPtr, dataLen);
                         var response = responseParser.ParseFrom(dataSpan)!;
                         NativeMethods.FfiDropHandle(handle);
+                        
+                        #if LK_VERBOSE
+                        Debug.Log($"FFIClient response of type: {response.MessageCase} with asyncId: {AsyncId(response)}");
+                        #endif
+                            
                         return response;
                     }
                 }
@@ -208,7 +211,7 @@ namespace LiveKit.Internal
         //TODO interface + memory optimisation
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(IntPtr data, int size)
-        { 
+        {
             #if NO_LIVEKIT_MODE
             return;
             #endif
@@ -222,14 +225,14 @@ namespace LiveKit.Internal
             Instance.context?.Post((resp) =>
             {
                 var r = resp as FfiEvent;
-#if LK_VERBOSE
+                #if LK_VERBOSE
                 if (r?.MessageCase != FfiEvent.MessageOneofCase.Logs)
                     Utils.Debug("Callback: " + r?.MessageCase);
-#endif
+                #endif
                 switch (r?.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.Logs:
-                        
+
                         Debug.Log($"LK_DEBUG: {r.Logs.Records}");
                         break;
                     case FfiEvent.MessageOneofCase.PublishData:
@@ -264,9 +267,42 @@ namespace LiveKit.Internal
                         Debug.LogError($"Panic received from FFI: {r.Panic?.Message}");
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException($"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");
+                        throw new ArgumentOutOfRangeException(
+                            $"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");
                 }
             }, response);
+        }
+
+        private static ulong AsyncId(FfiResponse response)
+        {
+            return response.MessageCase switch
+            {
+                FfiResponse.MessageOneofCase.None => 0,
+                FfiResponse.MessageOneofCase.Dispose => response.Dispose!.AsyncId,
+                FfiResponse.MessageOneofCase.Connect => response.Connect!.AsyncId,
+                FfiResponse.MessageOneofCase.Disconnect => response.Disconnect!.AsyncId,
+                FfiResponse.MessageOneofCase.PublishTrack => response.PublishTrack!.AsyncId,
+                FfiResponse.MessageOneofCase.UnpublishTrack => response.UnpublishTrack!.AsyncId,
+                FfiResponse.MessageOneofCase.PublishData => response.PublishData!.AsyncId,
+                FfiResponse.MessageOneofCase.SetSubscribed => 0,
+                FfiResponse.MessageOneofCase.UpdateLocalMetadata => response.UpdateLocalMetadata!.AsyncId,
+                FfiResponse.MessageOneofCase.UpdateLocalName => response.UpdateLocalName!.AsyncId,
+                FfiResponse.MessageOneofCase.GetSessionStats => response.GetSessionStats!.AsyncId,
+                FfiResponse.MessageOneofCase.CreateVideoTrack => 0,
+                FfiResponse.MessageOneofCase.CreateAudioTrack => 0,
+                FfiResponse.MessageOneofCase.GetStats => response.GetStats!.AsyncId,
+                FfiResponse.MessageOneofCase.NewVideoStream => 0,
+                FfiResponse.MessageOneofCase.NewVideoSource => 0,
+                FfiResponse.MessageOneofCase.CaptureVideoFrame => 0,
+                FfiResponse.MessageOneofCase.VideoConvert => 0,
+                FfiResponse.MessageOneofCase.NewAudioStream => 0,
+                FfiResponse.MessageOneofCase.NewAudioSource => 0,
+                FfiResponse.MessageOneofCase.CaptureAudioFrame => response.CaptureAudioFrame!.AsyncId,
+                FfiResponse.MessageOneofCase.NewAudioResampler => 0,
+                FfiResponse.MessageOneofCase.RemixAndResample => 0,
+                FfiResponse.MessageOneofCase.E2Ee => 0,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 }
