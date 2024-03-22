@@ -4,6 +4,8 @@ namespace LiveKit.Rooms.Info
 {
     public interface IMutableRoomInfo : IRoomInfo
     {
+        void UpdateConnectionState(ConnectionState state);
+        
         void UpdateSid(string sid);
 
         void UpdateName(string name);

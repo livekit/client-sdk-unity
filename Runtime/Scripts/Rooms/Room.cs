@@ -251,6 +251,7 @@ namespace LiveKit.Rooms
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
+                    roomInfo.UpdateConnectionState(e.ConnectionStateChanged!.State);
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged!.State);
                     break;
                 /*case RoomEvent.MessageOneofCase.Connected:
