@@ -94,7 +94,7 @@ namespace LiveKit.Rooms
             using var response = request.Send();
         }
 
-        public Task<bool> Connect(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
+        public Task<bool> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
         {
             using var response = FFIBridge.Instance.SendConnectRequest(url, authToken, autoSubscribe);
             FfiResponse res = response;
@@ -102,9 +102,12 @@ namespace LiveKit.Rooms
                 .AwaitWithSuccess();
         }
 
-        public void Disconnect()
+        public async Task DisconnectAsync(CancellationToken cancellationToken)
         {
-            using var _ = FFIBridge.Instance.SendDisconnectRequest(this);
+            using var response = FFIBridge.Instance.SendDisconnectRequest(this);
+            FfiResponse res = response;
+            var instruction = new DisconnectInstruction(res.Disconnect!.AsyncId, this, cancellationToken);
+            await instruction.AwaitWithSuccess();
             ffiHandleFactory.Release(Handle);
         }
 
@@ -260,7 +263,6 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.Eos:
                 case RoomEvent.MessageOneofCase.Disconnected:
                     ConnectionUpdated?.Invoke(this, ConnectionUpdate.Disconnected);
-                    OnDisconnect();
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
                     ConnectionUpdated?.Invoke(this, ConnectionUpdate.Reconnecting);
@@ -325,7 +327,7 @@ namespace LiveKit.Rooms
             Utils.Debug($"OnDisconnect.... {e}");
         }
 
-        private void OnDisconnect()
+        public void OnDisconnect()
         {
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
         }
