@@ -2,7 +2,6 @@ using System;
 using LiveKit.Proto;
 using UnityEngine;
 using Google.Protobuf;
-using System.Threading;
 using LiveKit.Internal.FFIClients;
 using LiveKit.Internal.FFIClients.Pools;
 using LiveKit.Internal.FFIClients.Pools.Memory;
@@ -23,9 +22,7 @@ namespace LiveKit.Internal
         private static readonly Lazy<FfiClient> instance = new(() => new FfiClient());
 
         public static FfiClient Instance => instance.Value!;
-        private static bool _isDisposed;
-
-        private SynchronizationContext? context;
+        private static bool isDisposed;
 
         private readonly IObjectPool<FfiResponse> ffiResponsePool;
         private readonly MessageParser<FfiResponse> responseParser;
@@ -103,14 +100,6 @@ namespace LiveKit.Internal
             Instance.Dispose();
         }
 
-        [RuntimeInitializeOnLoadMethod]
-        static void GetMainContext()
-        {
-            // https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Scripting/UnitySynchronizationContext.cs
-            Instance.context = SynchronizationContext.Current;
-            Utils.Debug("Main Context created");
-        }
-
         private static void InitializeSdk()
         {
             #if NO_LIVEKIT_MODE
@@ -146,7 +135,7 @@ namespace LiveKit.Internal
             return;
             #endif
 
-            _isDisposed = true;
+            isDisposed = true;
 
             // Stop all rooms synchronously
             // The rust lk implementation should also correctly dispose WebRTC
@@ -208,69 +197,62 @@ namespace LiveKit.Internal
             }
         }
 
-        //TODO interface + memory optimisation
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
-        static unsafe void FFICallback(IntPtr data, int size)
+        private static unsafe void FFICallback(IntPtr data, int size)
         {
             #if NO_LIVEKIT_MODE
             return;
             #endif
 
-            if (_isDisposed) return;
+            if (isDisposed) return;
             var respData = new Span<byte>(data.ToPointer()!, size);
             var response = FfiEvent.Parser!.ParseFrom(respData);
-
-            // Run on the main thread, the order of execution is guaranteed by Unity
-            // It uses a Queue internally
-            Instance.context?.Post((resp) =>
+            
+            #if LK_VERBOSE
+            if (response?.MessageCase != FfiEvent.MessageOneofCase.Logs)
+                Utils.Debug("Callback: " + response?.MessageCase);
+            #endif
+            switch (response?.MessageCase)
             {
-                var r = resp as FfiEvent;
-                #if LK_VERBOSE
-                if (r?.MessageCase != FfiEvent.MessageOneofCase.Logs)
-                    Utils.Debug("Callback: " + r?.MessageCase);
-                #endif
-                switch (r?.MessageCase)
-                {
-                    case FfiEvent.MessageOneofCase.Logs:
+                case FfiEvent.MessageOneofCase.Logs:
 
-                        Debug.Log($"LK_DEBUG: {r.Logs.Records}");
-                        break;
-                    case FfiEvent.MessageOneofCase.PublishData:
-                        break;
-                    case FfiEvent.MessageOneofCase.Connect:
-                        Instance.ConnectReceived?.Invoke(r.Connect!);
-                        break;
-                    case FfiEvent.MessageOneofCase.PublishTrack:
-                        Instance.PublishTrackReceived?.Invoke(r.PublishTrack!);
-                        break;
-                    case FfiEvent.MessageOneofCase.RoomEvent:
-                        Instance.RoomEventReceived?.Invoke(r.RoomEvent);
-                        break;
-                    case FfiEvent.MessageOneofCase.TrackEvent:
-                        Instance.TrackEventReceived?.Invoke(r.TrackEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.Disconnect:
-                        Instance.DisconnectReceived?.Invoke(r.Disconnect!);
-                        break;
-                    /*case FfiEvent.MessageOneofCase. ParticipantEvent:
-                            Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                            break;*/
-                    case FfiEvent.MessageOneofCase.VideoStreamEvent:
-                        Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.CaptureAudioFrame:
-                        break;
-                    case FfiEvent.MessageOneofCase.Panic:
-                        Debug.LogError($"Panic received from FFI: {r.Panic?.Message}");
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(
-                            $"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");
-                }
-            }, response);
+                    Debug.Log($"LK_DEBUG: {response.Logs.Records}");
+                    break;
+                case FfiEvent.MessageOneofCase.PublishData:
+                    break;
+                case FfiEvent.MessageOneofCase.Connect:
+                    Instance.ConnectReceived?.Invoke(response.Connect!);
+                    break;
+                case FfiEvent.MessageOneofCase.PublishTrack:
+                    Instance.PublishTrackReceived?.Invoke(response.PublishTrack!);
+                    break;
+                case FfiEvent.MessageOneofCase.RoomEvent:
+                    Instance.RoomEventReceived?.Invoke(response.RoomEvent);
+                    break;
+                case FfiEvent.MessageOneofCase.TrackEvent:
+                    Instance.TrackEventReceived?.Invoke(response.TrackEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.Disconnect:
+                    Instance.DisconnectReceived?.Invoke(response.Disconnect!);
+                    break;
+                /*case FfiEvent.MessageOneofCase. ParticipantEvent:
+                        Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
+                        break;*/
+                case FfiEvent.MessageOneofCase.VideoStreamEvent:
+                    Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.AudioStreamEvent:
+                    Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                    break;
+                case FfiEvent.MessageOneofCase.Panic:
+                    Debug.LogError($"Panic received from FFI: {response.Panic?.Message}");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        $"Unknown message type: {response?.MessageCase.ToString() ?? "null"}");
+            }
         }
 
         private static ulong AsyncId(FfiResponse response)
