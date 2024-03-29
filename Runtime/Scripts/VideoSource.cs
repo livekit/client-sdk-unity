@@ -45,7 +45,7 @@ namespace LiveKit
             isDisposed = false;
         }
 
-        public ~TextureVideoSource()
+        ~TextureVideoSource()
         {
             if (!isDisposed)
             {

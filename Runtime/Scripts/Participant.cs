@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
+using UnityEngine;
 
 namespace LiveKit
 {
