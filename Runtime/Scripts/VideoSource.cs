@@ -5,7 +5,6 @@ using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine.Experimental.Rendering;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using System.Collections;

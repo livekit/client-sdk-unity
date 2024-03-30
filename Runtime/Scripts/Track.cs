@@ -1,9 +1,7 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
-using System.Security.Cryptography;
 
 namespace LiveKit
 {

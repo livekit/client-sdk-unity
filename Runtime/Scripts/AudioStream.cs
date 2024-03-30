@@ -3,7 +3,6 @@ using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit

@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using UnityEngine;
 
 namespace LiveKit.Internal
 {

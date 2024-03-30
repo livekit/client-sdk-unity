@@ -2,8 +2,6 @@ using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
-using Unity.Collections.LowLevel.Unsafe;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using System.Collections;
 

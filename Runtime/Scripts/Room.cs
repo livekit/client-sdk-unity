@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
-using Google.Protobuf.Collections;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
