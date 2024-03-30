@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
+using LiveKit.Proto;
 
 namespace LiveKit.Internal
 {
@@ -17,5 +18,11 @@ namespace LiveKit.Internal
         {
             return NativeMethods.FfiDropHandle(handle);
         }
+
+        public static FfiHandle FromOwnedHandle(FfiOwnedHandle handle)
+        {
+            return new FfiHandle((IntPtr)handle.Id);
+        }
     }
+
 }

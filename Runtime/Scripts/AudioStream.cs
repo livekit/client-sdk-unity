@@ -10,7 +10,7 @@ namespace LiveKit
 {
     public class AudioStream
     {
-        internal readonly FfiOwnedHandle Handle;
+        internal readonly FfiHandle Handle;
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -30,12 +30,12 @@ namespace LiveKit
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
             var newAudioStream = request.request;
-            newAudioStream.TrackHandle = (ulong)audioTrack.TrackHandle.Id;
+            newAudioStream.TrackHandle = (ulong)audioTrack.TrackHandle.DangerousGetHandle();
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
             
             using var response = request.Send();
             FfiResponse res = response;
-            Handle = res.NewAudioStream.Stream.Handle;
+            Handle = FfiHandle.FromOwnedHandle(res.NewAudioStream.Stream.Handle);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -85,7 +85,7 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
-            if(Handle.Id != e.StreamHandle)
+            if((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
                 return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)

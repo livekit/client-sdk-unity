@@ -36,10 +36,10 @@ namespace LiveKit
 
     public class KeyProvider
     {
-        internal FfiOwnedHandle RoomHandle;
+        internal FfiHandle RoomHandle;
         public KeyProviderOptions KeyProviderOptions;
 
-        public KeyProvider(FfiOwnedHandle roomHandle, KeyProviderOptions keyProviderOptions)
+        public KeyProvider(FfiHandle roomHandle, KeyProviderOptions keyProviderOptions)
         {
             RoomHandle = roomHandle;
             KeyProviderOptions = keyProviderOptions;
@@ -115,13 +115,13 @@ namespace LiveKit
 
     public class FrameCryptor
     {
-        internal FfiOwnedHandle RoomHandle;
+        internal FfiHandle RoomHandle;
         public string ParticipantIdentity;
         public string TrackSid;
         public bool Enabled;
         public int KeyIndex;
 
-        public FrameCryptor(FfiOwnedHandle roomHandle, string identity, string trackSid, bool enabled, int keyIndex)
+        public FrameCryptor(FfiHandle roomHandle, string identity, string trackSid, bool enabled, int keyIndex)
         {
             RoomHandle = roomHandle;
             ParticipantIdentity = identity;
@@ -154,11 +154,11 @@ namespace LiveKit
 
     public class E2EEManager
     {
-        internal FfiOwnedHandle RoomHandle;
+        internal FfiHandle RoomHandle;
         public KeyProvider KeyProvider;
         public E2EEOptions E2EEOptions;
 
-        public E2EEManager(FfiOwnedHandle roomHandle, E2EEOptions e2EEOptions)
+        public E2EEManager(FfiHandle roomHandle, E2EEOptions e2EEOptions)
         {
             RoomHandle = roomHandle;
             KeyProvider = new KeyProvider(roomHandle, e2EEOptions.KeyProviderOptions);

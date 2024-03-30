@@ -21,7 +21,7 @@ namespace LiveKit.Internal.FFIClients.Requests
         {
             using var request = ffiBridge.NewRequest<DisconnectRequest>();
             var disconnect = request.request;
-            disconnect.RoomHandle = (ulong)room.RoomHandle.Id;
+            disconnect.RoomHandle = (ulong)room.RoomHandle.DangerousGetHandle();
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
             var response = request.Send();
             // ReSharper disable once RedundantAssignment

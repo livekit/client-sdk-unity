@@ -158,7 +158,7 @@ namespace LiveKit
 
         public E2EEManager E2EEManager { internal set; get; }
 
-        internal FfiOwnedHandle RoomHandle = null;
+        internal FfiHandle RoomHandle = null;
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
@@ -180,7 +180,7 @@ namespace LiveKit
             dataRequest.DataPtr = (ulong)pointer;
             dataRequest.Kind = kind;
             dataRequest.Topic = topic;
-            dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.Id;
+            dataRequest.LocalParticipantHandle = (ulong)LocalParticipant.Handle.DangerousGetHandle();
             Utils.Debug("Sending message: " + topic);
             using var response = request.Send();
             pinnedArray.Free();
@@ -204,7 +204,7 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle != (ulong)RoomHandle.Id)
+            if (e.RoomHandle != (ulong)RoomHandle.DangerousGetHandle())
                 return;
 
             switch (e.MessageCase)
@@ -240,7 +240,7 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
                         var participant = Participants[e.TrackPublished.ParticipantSid];
-                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info, e.TrackPublished.Publication.Handle);
+                        var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info, FfiHandle.FromOwnedHandle(e.TrackPublished.Publication.Handle));
                         participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
                         TrackPublished?.Invoke(publication, participant);
@@ -385,7 +385,7 @@ namespace LiveKit
 
         internal void OnConnect(ConnectCallback info)
         {
-            RoomHandle = info.Room.Handle;
+            RoomHandle = FfiHandle.FromOwnedHandle(info.Room.Handle);
 
             UpdateFromInfo(info.Room.Info);
             LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
@@ -418,7 +418,7 @@ namespace LiveKit
             _participants.Add(participant.Info.Sid, newParticipant);
             foreach (var pub in publications)
             {
-                var publication = new RemoteTrackPublication(pub.Info, pub.Handle);
+                var publication = new RemoteTrackPublication(pub.Info, FfiHandle.FromOwnedHandle(pub.Handle));
                 newParticipant._tracks.Add(publication.Sid, publication);
                 newParticipant.OnTrackPublished(publication);
             }

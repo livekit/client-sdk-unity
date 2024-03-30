@@ -11,7 +11,7 @@ namespace LiveKit
     {
         private AudioFrameBufferInfo _info;
 
-        private FfiOwnedHandle _handle;
+        private FfiHandle _handle;
 
         private bool _disposed = false;
 
@@ -31,7 +31,7 @@ namespace LiveKit
 
         internal AudioFrame(OwnedAudioFrameBuffer info)
         {
-            _handle = info.Handle;
+            _handle = FfiHandle.FromOwnedHandle(info.Handle);
             _info = info.Info;
             _sampleRate = _info.SampleRate;
             _numChannels = _info.NumChannels;

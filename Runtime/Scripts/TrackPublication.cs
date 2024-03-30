@@ -47,9 +47,9 @@ namespace LiveKit
         public new IRemoteTrack Track => base.Track as IRemoteTrack;
         public bool Subscribed = false;
 
-        private FfiOwnedHandle Handle;
+        private FfiHandle Handle;
 
-        internal RemoteTrackPublication(TrackPublicationInfo info, FfiOwnedHandle handle) : base(info)
+        internal RemoteTrackPublication(TrackPublicationInfo info, FfiHandle handle) : base(info)
         {
             Handle = handle;
         }
@@ -60,7 +60,7 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<SetSubscribedRequest>();
             var setSubscribed = request.request;
             setSubscribed.Subscribe = subscribed;
-            setSubscribed.PublicationHandle = (ulong)Handle.Id;
+            setSubscribed.PublicationHandle = (ulong)Handle.DangerousGetHandle();
             using var response = request.Send();
         }
     }

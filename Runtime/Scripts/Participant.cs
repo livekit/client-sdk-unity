@@ -13,7 +13,7 @@ namespace LiveKit
     {
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
-        public FfiOwnedHandle Handle;
+        public FfiHandle Handle;
         private ParticipantInfo _info;
         public string Sid => _info.Sid;
         public string Identity => _info.Identity;
@@ -39,7 +39,7 @@ namespace LiveKit
         protected Participant(OwnedParticipant participant, Room room)
         {
             Room = new WeakReference<Room>(room);
-            Handle = participant.Handle;
+            Handle = FfiHandle.FromOwnedHandle(participant.Handle);
             UpdateInfo(participant.Info);
         }
 
@@ -76,8 +76,8 @@ namespace LiveKit
             
             using var request = FFIBridge.Instance.NewRequest<PublishTrackRequest>();
             var publish = request.request;
-            publish.LocalParticipantHandle = (ulong)Handle.Id;
-            publish.TrackHandle = (ulong)track.Handle.Id;
+            publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
             using var response = request.Send();
             FfiResponse res = response;
@@ -92,7 +92,7 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
 
             var publish = request.request;
-            publish.LocalParticipantHandle = Handle.Id;
+            publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             publish.Kind = reliable ? DataPacketKind.KindReliable : DataPacketKind.KindLossy;
 
             if (destination_sids is not null)

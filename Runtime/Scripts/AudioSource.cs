@@ -12,7 +12,7 @@ namespace LiveKit
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
 
-        internal readonly FfiOwnedHandle Handle;
+        internal readonly FfiHandle Handle;
         protected AudioSourceInfo _info;
 
         // Used on the AudioThread
@@ -35,7 +35,7 @@ namespace LiveKit
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
             //TODO pooling handles
-            Handle = res.NewAudioSource.Source.Handle;
+            Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
             UpdateSource(source);
         }
 
@@ -101,7 +101,7 @@ namespace LiveKit
 
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
                         var pushFrame = request.request;
-                        pushFrame.SourceHandle = (ulong)Handle.Id;
+                        pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
                         pushFrame.Buffer = new AudioFrameBufferInfo
                         {
                             DataPtr = (ulong)_frame.Data,

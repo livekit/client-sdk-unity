@@ -16,7 +16,7 @@ namespace LiveKit
         bool Muted { get; }
         WeakReference<Room> Room { get; }
         WeakReference<Participant> Participant { get; }
-        FfiOwnedHandle TrackHandle { get; }
+        FfiHandle TrackHandle { get; }
     }
 
     public interface ILocalTrack : ITrack
@@ -51,15 +51,15 @@ namespace LiveKit
         public WeakReference<Participant> Participant { get; }
 
         // IsOwned is true if C# owns the handle
-        public bool IsOwned => Handle != null && Handle.Id != 0;
+        public bool IsOwned => Handle != null && !Handle.IsInvalid;
 
-        public readonly FfiOwnedHandle Handle;
+        public readonly FfiHandle Handle;
 
-        FfiOwnedHandle ITrack.TrackHandle => Handle;
+        FfiHandle ITrack.TrackHandle => Handle;
 
         internal Track(OwnedTrack track, Room room, Participant participant)
         {
-            Handle = track.Handle;
+            Handle = FfiHandle.FromOwnedHandle(track.Handle);
             Room = new WeakReference<Room>(room);
             Participant = new WeakReference<Participant>(participant);
             UpdateInfo(track.Info);
@@ -85,7 +85,7 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
             var createTrack = request.request;
             createTrack.Name = name;
-            createTrack.SourceHandle = (ulong)source.Handle.Id;
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
 
             using var resp = request.Send();
             FfiResponse res = resp;

@@ -15,7 +15,7 @@ namespace LiveKit
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
         public delegate void TextureUploadDelegate();
 
-        internal readonly FfiOwnedHandle Handle;
+        internal readonly FfiHandle Handle;
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
@@ -44,13 +44,13 @@ namespace LiveKit
 
             using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
             var newVideoStream = request.request;
-            newVideoStream.TrackHandle = (ulong)videoTrack.TrackHandle.Id;
+            newVideoStream.TrackHandle = (ulong)videoTrack.TrackHandle.DangerousGetHandle();
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
             newVideoStream.Format = VideoBufferType.I420;
             newVideoStream.NormalizeStride = true;
             using var response = request.Send();
             FfiResponse res = response;
-            Handle = res.NewVideoStream.Stream.Handle;
+            Handle = FfiHandle.FromOwnedHandle(res.NewVideoStream.Stream.Handle);
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
@@ -115,7 +115,7 @@ namespace LiveKit
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
-            if (e.StreamHandle != (ulong)Handle.Id)
+            if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
                 return;
 
             if (e.MessageCase != VideoStreamEvent.MessageOneofCase.FrameReceived)
