@@ -182,6 +182,13 @@ namespace LiveKit
             Metadata = info.Metadata;
         }
 
+        void UpdateLocalMetadata(string metadata)
+        {
+            using var request = FFIBridge.Instance.NewRequest<UpdateLocalMetadataRequest>();
+            request.request.Metadata = metadata;
+            using var response = request.Send();
+        }
+
         internal void OnEventReceived(RoomEvent e)
         {
             if (e.RoomHandle != (ulong)RoomHandle.DangerousGetHandle())
