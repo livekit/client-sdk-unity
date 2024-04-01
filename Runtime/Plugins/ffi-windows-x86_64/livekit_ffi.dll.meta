@@ -41,14 +41,8 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-<<<<<<<< HEAD:Runtime/Plugins/ffi-windows-x86_64/livekit_ffi.dll.meta
-        CPU: AnyCPU
-        DefaultValueInitialized: true
-        OS: AnyOS
-========
         CPU: x86_64
         DefaultValueInitialized: true
->>>>>>>> 985eb1e (feat: Audio/Video Support (#29)):Runtime/Plugins/mac-x86_64/liblivekit_ffi.dylib.meta
   - first:
       Standalone: Linux64
     second:
@@ -60,11 +54,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-<<<<<<<< HEAD:Runtime/Plugins/ffi-windows-x86_64/livekit_ffi.dll.meta
-        CPU: None
-========
         CPU: x86_64
->>>>>>>> 985eb1e (feat: Audio/Video Support (#29)):Runtime/Plugins/mac-x86_64/liblivekit_ffi.dylib.meta
   - first:
       Standalone: Win
     second:
@@ -76,20 +66,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-<<<<<<<< HEAD:Runtime/Plugins/ffi-windows-x86_64/livekit_ffi.dll.meta
-        CPU: None
-  - first:
-      iPhone: iOS
-    second:
-      enabled: 0
-      settings:
-        AddToEmbeddedBinaries: false
-        CPU: AnyCPU
-        CompileFlags: 
-        FrameworkDependencies: 
-========
         CPU: x86_64
->>>>>>>> 985eb1e (feat: Audio/Video Support (#29)):Runtime/Plugins/mac-x86_64/liblivekit_ffi.dylib.meta
   userData: 
   assetBundleName: 
   assetBundleVariant: 
