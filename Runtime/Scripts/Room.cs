@@ -341,7 +341,7 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.DataReceived:
                     {
                         var dataInfo = e.DataReceived;
-                        var data = new byte[dataInfo.Data.Data.CalculateSize()];
+                        var data = new byte[dataInfo.Data.Data.DataLen];
                         Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
                         var participant = GetParticipant(e.DataReceived.ParticipantSid);
                         DataReceived?.Invoke(data, participant, dataInfo.Kind, dataInfo.Topic);
