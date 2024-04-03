@@ -11,18 +11,14 @@ namespace LiveKit
     {
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
-        public FfiHandle Handle;
+
         private ParticipantInfo _info;
+        internal readonly Dictionary<string, TrackPublication> _tracks = new();
+        public FfiHandle Handle;
         public string Sid => _info.Sid;
         public string Identity => _info.Identity;
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
-
-        public void SetMeta(string meta)
-        {
-            _info.Metadata = meta;
-        }
-
         public bool Speaking { private set; get; }
         public float AudioLevel { private set; get; }
         public ConnectionQuality ConnectionQuality { private set; get; }
@@ -32,13 +28,22 @@ namespace LiveKit
 
         public readonly WeakReference<Room> Room;
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
-        internal readonly Dictionary<string, TrackPublication> _tracks = new();
 
         protected Participant(OwnedParticipant participant, Room room)
         {
             Room = new WeakReference<Room>(room);
             Handle = FfiHandle.FromOwnedHandle(participant.Handle);
             UpdateInfo(participant.Info);
+        }
+
+        public void SetMeta(string meta)
+        {
+            _info.Metadata = meta;
+        }
+
+        public void SetName(string name)
+        {
+            _info.Name = name;
         }
 
         internal void UpdateInfo(ParticipantInfo info)
@@ -82,12 +87,12 @@ namespace LiveKit
             return new PublishTrackInstruction(res.PublishTrack.AsyncId);
         }
 
-        public void PublishData(byte[] data, string[] destination_sids = null, bool reliable = true, string topic = null)
+        public void PublishData(byte[] data, IReadOnlyCollection<string> destination_sids = null, bool reliable = true, string topic = null)
         {
             PublishData(new Span<byte>(data), destination_sids, reliable, topic);
         }
-        
-        public void PublishData(Span<byte> data, string[] destination_sids = null, bool reliable = true, string topic = null)
+
+        public void PublishData(Span<byte> data, IReadOnlyCollection<string> destination_sids = null, bool reliable = true, string topic = null)
         {
             unsafe
             {
@@ -96,35 +101,6 @@ namespace LiveKit
                     PublishData(pointer, data.Length, destination_sids, reliable, topic);
                 }   
             }
-        }
-
-        public unsafe void PublishData(byte* data, int len, string[] destination_sids = null, bool reliable = true, string topic = null)
-        {
-            if (!Room.TryGetTarget(out var room))
-                throw new Exception("room is invalid");
-
-            using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
-
-            var publish = request.request;
-            publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
-            publish.Kind = reliable ? DataPacketKind.KindReliable : DataPacketKind.KindLossy;
-
-            if (destination_sids is not null)
-            {
-                publish.DestinationSids.AddRange(destination_sids);
-            }
-
-            if(topic is not null)
-            {
-                publish.Topic = topic;
-            }
-
-            unsafe {
-                publish.DataLen = (ulong)len;
-                publish.DataPtr = (ulong)data;
-            }
-            Utils.Debug("Sending message: " + topic);
-            var response = request.Send();
         }
 
         public void UpdateMetadata(string metadata)
@@ -141,6 +117,34 @@ namespace LiveKit
             var updateReq = request.request;
             updateReq.Name = name;
             var resp = request.Send();
+        }
+
+        private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_sids = null, bool reliable = true, string topic = null)
+        {
+            if (!Room.TryGetTarget(out var room))
+                throw new Exception("room is invalid");
+
+            using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
+
+            var publish = request.request;
+            publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            publish.Kind = reliable ? DataPacketKind.KindReliable : DataPacketKind.KindLossy;
+
+            if (destination_sids is not null) {
+                publish.DestinationSids.AddRange(destination_sids);
+            }
+
+            if (topic is not null)
+            {
+                publish.Topic = topic;
+            }
+
+            unsafe {
+                publish.DataLen = (ulong)len;
+                publish.DataPtr = (ulong)data;
+            }
+            Utils.Debug("Sending message: " + topic);
+            var response = request.Send();
         }
     }
 
@@ -162,7 +166,7 @@ namespace LiveKit
             FfiClient.Instance.PublishTrackReceived += OnPublish;
         }
 
-        void OnPublish(PublishTrackCallback e)
+        internal void OnPublish(PublishTrackCallback e)
         {
             if (e.AsyncId != _asyncId)
                 return;

@@ -32,6 +32,8 @@ namespace LiveKit
         public Texture2D Texture { private set; get; }
         public VideoFrameBuffer VideoBuffer { private set; get; }
 
+        protected bool _playing = false;
+
         public VideoStream(IVideoTrack videoTrack)
         {
             if (!videoTrack.Room.TryGetTarget(out var room))
@@ -74,9 +76,20 @@ namespace LiveKit
             }
         }
 
+        public virtual void Start()
+        {
+            Stop();
+            _playing = true;
+        }
+
+        public virtual void Stop()
+        {
+            _playing = false;
+        }
+
         public IEnumerator Update()
         {
-            while (true)
+            while (_playing)
             {
                 yield return null;
 
@@ -109,6 +122,8 @@ namespace LiveKit
 
                 TextureUploaded?.Invoke();
             }
+
+            yield break;
         }
 
         private void OnVideoStreamEvent(VideoStreamEvent e)

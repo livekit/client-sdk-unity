@@ -1,5 +1,4 @@
 using System;
-using LiveKit;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;

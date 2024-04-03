@@ -5,11 +5,7 @@ using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.UI;
-using System.Threading.Tasks;
 using System.Collections;
 
 namespace LiveKit
@@ -96,6 +92,8 @@ namespace LiveKit
                 ReadBuffer();
                 SendFrame();
             }
+
+            yield break;
         }
 
         public virtual void Dispose()
