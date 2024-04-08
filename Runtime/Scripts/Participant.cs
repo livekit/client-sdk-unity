@@ -19,10 +19,7 @@ namespace LiveKit
         public string Identity => _info.Identity;
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
-        public bool Speaking { private set; get; }
-        public float AudioLevel { private set; get; }
-        public ConnectionQuality ConnectionQuality { private set; get; }
-
+        public ConnectionQuality ConnectionQuality { internal set; get; }
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
 

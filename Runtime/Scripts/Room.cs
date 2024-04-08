@@ -334,6 +334,7 @@ namespace LiveKit
                     {
                         var participant = GetParticipant(e.ConnectionQualityChanged.ParticipantSid);
                         var quality = e.ConnectionQualityChanged.Quality;
+                        participant.ConnectionQuality = quality;
                         ConnectionQualityChanged?.Invoke(quality, participant);
                     }
                     break;
