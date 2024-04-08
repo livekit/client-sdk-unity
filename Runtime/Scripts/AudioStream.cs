@@ -3,12 +3,13 @@ using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
     public class AudioStream
     {
-        internal readonly FfiOwnedHandle Handle;
+        internal readonly FfiHandle Handle;
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
@@ -26,17 +27,14 @@ namespace LiveKit
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
-            var newAudioStream = new NewAudioStreamRequest();
-            newAudioStream.TrackHandle = ((Track)audioTrack).TrackHandle.Id;
+            using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
+            var newAudioStream = request.request;
+            newAudioStream.TrackHandle = (ulong)audioTrack.TrackHandle.DangerousGetHandle();
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
-
-            var request = new FfiRequest();
-            request.NewAudioStream = newAudioStream;
-
-            var resp = FfiClient.SendRequest(request);
-            var streamInfo = resp.NewAudioStream.Stream;
-
-            Handle = streamInfo.Handle;
+            
+            using var response = request.Send();
+            FfiResponse res = response;
+            Handle = FfiHandle.FromOwnedHandle(res.NewAudioStream.Stream.Handle);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             UpdateSource(source);
@@ -59,6 +57,7 @@ namespace LiveKit
                 if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
                 {
                     int size = (int)(channels * sampleRate * 0.2);
+                    _buffer?.Dispose();
                     _buffer = new RingBuffer(size * sizeof(short));
                     _tempBuffer = new short[data.Length];
                     _numChannels = (uint)channels;
@@ -86,14 +85,13 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
-            if(Handle.Id != e.StreamHandle)
+            if((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
                 return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var newFrame = e.FrameReceived.Frame;
-            var frame = new AudioFrame(newFrame.Handle, newFrame.Info);
+            var frame = new AudioFrame(e.FrameReceived.Frame);
 
             lock (_lock)
             { 

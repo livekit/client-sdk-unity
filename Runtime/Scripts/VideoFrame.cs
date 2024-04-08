@@ -2,6 +2,7 @@ using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.CompilerServices;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
@@ -106,15 +107,15 @@ namespace LiveKit
             Handle.SetHandleAsInvalid();
 
      
-            var toi420 = new VideoConvertRequest();
+            using var request = FFIBridge.Instance.NewRequest<VideoConvertRequest>();
+            var toi420 = request.request;
             toi420.Buffer = Info;
             toi420.DstType = VideoBufferType.I420;
 
-            var request = new FfiRequest();
-            request.VideoConvert = toi420;
-
-            var resp = FfiClient.SendRequest(request);
-            var newInfo = resp.VideoConvert.Buffer;
+            using var response = request.Send();
+            FfiResponse res = response;
+            
+            var newInfo = res.VideoConvert.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");
 
@@ -128,19 +129,16 @@ namespace LiveKit
             if (!IsValid)
                 throw new InvalidOperationException("the handle is invalid");
 
-            var handleId = new FfiOwnedHandle();
-            handleId.Id = (ulong)Handle.DangerousGetHandle();
-
-            var toRGBA = new VideoConvertRequest();
+            using var request = FFIBridge.Instance.NewRequest<VideoConvertRequest>();
+            var toRGBA = request.request;
             toRGBA.Buffer = Info;
             toRGBA.DstType = VideoBufferType.Rgba;
 
-            var request = new FfiRequest();
-            request.VideoConvert = toRGBA;
+            using var response = request.Send();
+            FfiResponse res = response;
 
-            var resp = FfiClient.SendRequest(request);
 
-            var newInfo = resp.VideoConvert.Buffer;
+            var newInfo = res.VideoConvert.Buffer;
             if (newInfo == null)
                 throw new InvalidOperationException("failed to convert");
 
@@ -163,6 +161,7 @@ namespace LiveKit
         */
         internal PlanarYuvBuffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }
     }
+
     public abstract class PlanarYuv8Buffer : PlanarYuvBuffer
     {
         internal PlanarYuv8Buffer(FfiHandle handle, VideoBufferInfo info) : base(handle, info) { }

@@ -1,4 +1,5 @@
 using LiveKit.Internal;
+using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 
 namespace LiveKit
@@ -46,17 +47,21 @@ namespace LiveKit
         public new IRemoteTrack Track => base.Track as IRemoteTrack;
         public bool Subscribed = false;
 
-        internal RemoteTrackPublication(TrackPublicationInfo info) : base(info) { }
+        private FfiHandle Handle;
+
+        internal RemoteTrackPublication(TrackPublicationInfo info, FfiHandle handle) : base(info)
+        {
+            Handle = handle;
+        }
 
         public void SetSubscribed(bool subscribed)
         {
             Subscribed = subscribed;
-            var updateReq = new SetSubscribedRequest();
-            updateReq.Subscribe = subscribed;
-            var request = new FfiRequest();
-            request.SetSubscribed = updateReq;
-
-            FfiClient.SendRequest(request);
+            using var request = FFIBridge.Instance.NewRequest<SetSubscribedRequest>();
+            var setSubscribed = request.request;
+            setSubscribed.Subscribe = subscribed;
+            setSubscribed.PublicationHandle = (ulong)Handle.DangerousGetHandle();
+            using var response = request.Send();
         }
     }
 
@@ -64,6 +69,8 @@ namespace LiveKit
     {
         public new ILocalTrack Track => base.Track as ILocalTrack;
 
-        internal LocalTrackPublication(TrackPublicationInfo info) : base(info) { }
+        internal LocalTrackPublication(TrackPublicationInfo info) : base(info)
+        {
+        }
     }
 }

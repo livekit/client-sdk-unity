@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
+using LiveKit.Internal.FFIClients.Requests;
+using System.Collections;
 
 namespace LiveKit
 {
@@ -31,6 +32,8 @@ namespace LiveKit
         public Texture2D Texture { private set; get; }
         public VideoFrameBuffer VideoBuffer { private set; get; }
 
+        protected bool _playing = false;
+
         public VideoStream(IVideoTrack videoTrack)
         {
             if (!videoTrack.Room.TryGetTarget(out var room))
@@ -39,18 +42,15 @@ namespace LiveKit
             if (!videoTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("videotrack's participant is invalid");
 
-            var newVideoStream = new NewVideoStreamRequest();
-  
-            newVideoStream.TrackHandle = ((Track)videoTrack).TrackHandle.Id;
+            using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
+            var newVideoStream = request.request;
+            newVideoStream.TrackHandle = (ulong)videoTrack.TrackHandle.DangerousGetHandle();
             newVideoStream.Type = VideoStreamType.VideoStreamNative;
-
-            var request = new FfiRequest();
-            request.NewVideoStream = newVideoStream;
-
-            var resp = FfiClient.SendRequest(request);
-            var streamInfo = resp.NewVideoStream.Stream;
-
-            Handle = new FfiHandle((IntPtr)streamInfo.Handle.Id);
+            newVideoStream.Format = VideoBufferType.I420;
+            newVideoStream.NormalizeStride = true;
+            using var response = request.Send();
+            FfiResponse res = response;
+            Handle = FfiHandle.FromOwnedHandle(res.NewVideoStream.Stream.Handle);
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
@@ -76,9 +76,20 @@ namespace LiveKit
             }
         }
 
+        public virtual void Start()
+        {
+            Stop();
+            _playing = true;
+        }
+
+        public virtual void Stop()
+        {
+            _playing = false;
+        }
+
         public IEnumerator Update()
         {
-            while (true)
+            while (_playing)
             {
                 yield return null;
 
@@ -111,6 +122,8 @@ namespace LiveKit
 
                 TextureUploaded?.Invoke();
             }
+
+            yield break;
         }
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
