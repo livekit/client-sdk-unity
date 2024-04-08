@@ -66,7 +66,6 @@ namespace LiveKit.Internal
         {
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
-            EditorApplication.quitting += Quit;
             Application.quitting += Quit;
         }
 
