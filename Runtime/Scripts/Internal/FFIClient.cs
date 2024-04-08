@@ -134,6 +134,12 @@ namespace LiveKit.Internal
             return;
             #endif
 
+            if (isDisposed)
+            {
+                Utils.Debug("FFIServer - Already Disposed");
+                return;
+            }
+            
             isDisposed = true;
 
             // Stop all rooms synchronously
