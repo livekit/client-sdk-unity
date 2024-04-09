@@ -112,7 +112,11 @@ namespace LiveKit.Internal
             const bool captureLogs = false;
             #endif
 
-            NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
+            try
+            {
+                NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
+            }
+            catch (DllNotFoundException) {}
 
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
