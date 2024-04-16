@@ -149,6 +149,9 @@ namespace LiveKit
                 _sampleRate = sampleRate;
                 _pending = true;
             }
+
+            // Don't play the audio locally
+            Array.Clear(data, 0, data.Length);
         }
     }
 }
