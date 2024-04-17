@@ -9,8 +9,8 @@ namespace LiveKit
 {
     public class RtcAudioSource
     {
-        public static int DefaultSampleRate = 48000;
-        public static int DefaultChannels = 2;
+        public static uint DefaultSampleRate = 48000;
+        public static uint DefaultChannels = 2;
 
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
@@ -27,8 +27,8 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = 2;
-            newAudioSource.SampleRate = 48000;
+            newAudioSource.NumChannels = DefaultChannels;
+            newAudioSource.SampleRate = DefaultSampleRate;
 
             using var response = request.Send();
             FfiResponse res = response;
