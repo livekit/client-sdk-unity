@@ -42,6 +42,7 @@ namespace LiveKit
 
         public void Start()
         {
+            Stop();
             _audioFilter.AudioRead += OnAudioRead;
             _audioSource.Play();
         }
@@ -49,7 +50,7 @@ namespace LiveKit
         public void Stop()
         {
             if(_audioFilter) _audioFilter.AudioRead -= OnAudioRead;
-            if(_audioSource) _audioSource.Stop();
+            if(_audioSource && _audioSource.isPlaying) _audioSource.Stop();
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
