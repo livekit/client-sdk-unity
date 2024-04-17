@@ -38,10 +38,10 @@ namespace LiveKit
             _dataPtr = (IntPtr)_info.DataPtr;
         }
 
-        internal AudioFrame(int sampleRate, int numChannels, int samplesPerChannel) {
-            _sampleRate = (uint)sampleRate;
-            _numChannels = (uint)numChannels;
-            _samplesPerChannel = (uint)samplesPerChannel;
+        internal AudioFrame(uint sampleRate, uint numChannels, uint samplesPerChannel) {
+            _sampleRate = sampleRate;
+            _numChannels = numChannels;
+            _samplesPerChannel = samplesPerChannel;
             unsafe
             {
                 var data = new NativeArray<byte>(Length, Allocator.Persistent);
