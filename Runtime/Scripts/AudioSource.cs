@@ -21,16 +21,14 @@ namespace LiveKit
         // Used on the AudioThread
         private AudioFrame _frame;
         private object _lock = new object();
-        private int _channels => DefaultChannels;
-        private int _sampleRate => DefaultSampleRate;
 
         public RtcAudioSource(AudioSource source)
         {
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = (uint)_channels;
-            newAudioSource.SampleRate = (uint)_sampleRate;
+            newAudioSource.NumChannels = 2;
+            newAudioSource.SampleRate = 48000;
 
             using var response = request.Send();
             FfiResponse res = response;
@@ -57,14 +55,15 @@ namespace LiveKit
         {
             lock (_lock)
             {
-                var samplesPerChannel = data.Length / _channels;
+                var samplesPerChannel = data.Length / channels;
                 if (_frame == null
-                    || _frame.NumChannels != _channels
-                    || _frame.SampleRate != _sampleRate
+                    || _frame.NumChannels != channels
+                    || _frame.SampleRate != sampleRate
                     || _frame.SamplesPerChannel != samplesPerChannel)
                 {
-                    _frame = new AudioFrame((uint)_sampleRate, (uint)_channels, (uint)samplesPerChannel);
+                    _frame = new AudioFrame((uint)sampleRate, (uint)channels, (uint)samplesPerChannel);
                 }
+
                 try
                 {
 
