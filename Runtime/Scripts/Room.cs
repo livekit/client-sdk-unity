@@ -219,8 +219,8 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
                         var sid = e.ParticipantDisconnected.ParticipantSid;
-                        var participant = RemoteParticipants[Sid];
-                        _participants.Remove(Sid);
+                        var participant = RemoteParticipants[sid];
+                        _participants.Remove(sid);
                         ParticipantDisconnected?.Invoke(participant);
                     }
                     break;
