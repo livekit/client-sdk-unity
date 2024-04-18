@@ -270,7 +270,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnsubscribed:
                     {
-                        var participant = RemoteParticipants[e.TrackSubscribed.ParticipantSid];
+                        var participant = RemoteParticipants[e.TrackUnsubscribed.ParticipantSid];
                         var publication = participant.Tracks[e.TrackUnsubscribed.TrackSid];
                         var track = publication.Track;
                         publication.UpdateTrack(null);
