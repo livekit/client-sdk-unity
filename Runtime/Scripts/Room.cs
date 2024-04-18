@@ -219,8 +219,8 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
                         var sid = e.ParticipantDisconnected.ParticipantSid;
-                        var participant = RemoteParticipants[Sid];
-                        _participants.Remove(Sid);
+                        var participant = RemoteParticipants[sid];
+                        _participants.Remove(sid);
                         ParticipantDisconnected?.Invoke(participant);
                     }
                     break;
@@ -270,7 +270,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnsubscribed:
                     {
-                        var participant = RemoteParticipants[e.TrackSubscribed.ParticipantSid];
+                        var participant = RemoteParticipants[e.TrackUnsubscribed.ParticipantSid];
                         var publication = participant.Tracks[e.TrackUnsubscribed.TrackSid];
                         var track = publication.Track;
                         publication.UpdateTrack(null);
