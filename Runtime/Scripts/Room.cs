@@ -342,8 +342,8 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.DataPacketReceived:
                     {
-                        var kind = e.DataPacketReceived.ValueCase;
-                        switch(kind)
+                        var valueType = e.DataPacketReceived.ValueCase;
+                        switch(valueType)
                         {
                             case DataPacketReceived.ValueOneofCase.None:
                                 //do nothing.
