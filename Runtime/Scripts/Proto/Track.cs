@@ -5,8 +5,6 @@
 #pragma warning disable 1591, 0612, 3021, 8981
 #region Designer generated code
 
-using System;
-using LiveKit.Internal.FFIClients;
 using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
@@ -958,14 +956,9 @@ namespace LiveKit.Proto {
         }
       }
     }
+    #endif
 
-        public static implicit operator CreateAudioTrackResponse(FfiResponseWrap v)
-        {
-            throw new NotImplementedException();
-        }
-#endif
-
-    }
+  }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class GetStatsRequest : pb::IMessage<GetStatsRequest>

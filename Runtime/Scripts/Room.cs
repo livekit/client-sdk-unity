@@ -120,6 +120,7 @@ namespace LiveKit
         public delegate void SpeakersChangeDelegate(List<Participant> speakers);
         public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
         public delegate void DataDelegate(byte[] data, Participant participant, DataPacketKind kind, string topic);
+        public delegate void SipDtmfDelegate(Participant participant, UInt32 code, string digit);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate(Room room);
         public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
@@ -146,6 +147,7 @@ namespace LiveKit
         public event SpeakersChangeDelegate ActiveSpeakersChanged;
         public event ConnectionQualityChangeDelegate ConnectionQualityChanged;
         public event DataDelegate DataReceived;
+        public event SipDtmfDelegate SipDtmfReceived;
         public event ConnectionStateChangeDelegate ConnectionStateChanged;
         public event ConnectionDelegate Connected;
         public event ConnectionDelegate Disconnected;
@@ -338,13 +340,31 @@ namespace LiveKit
                         ConnectionQualityChanged?.Invoke(quality, participant);
                     }
                     break;
-                case RoomEvent.MessageOneofCase.DataReceived:
+                case RoomEvent.MessageOneofCase.DataPacketReceived:
                     {
-                        var dataInfo = e.DataReceived;
-                        var data = new byte[dataInfo.Data.Data.DataLen];
-                        Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
-                        var participant = GetParticipant(e.DataReceived.ParticipantSid);
-                        DataReceived?.Invoke(data, participant, dataInfo.Kind, dataInfo.Topic);
+                        var valueType = e.DataPacketReceived.ValueCase;
+                        switch(valueType)
+                        {
+                            case DataPacketReceived.ValueOneofCase.None:
+                                //do nothing.
+                                break;
+                            case DataPacketReceived.ValueOneofCase.User:
+                                {
+                                    var dataInfo = e.DataPacketReceived.User;
+                                    var data = new byte[dataInfo.Data.Data.DataLen];
+                                    Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
+                                    var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
+                                    DataReceived?.Invoke(data, participant, e.DataPacketReceived.Kind, dataInfo.Topic);
+                                }
+                                break;
+                            case DataPacketReceived.ValueOneofCase.SipDtmf:
+                                {
+                                    var dtmfInfo = e.DataPacketReceived.SipDtmf;
+                                    var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
+                                    SipDtmfReceived?.Invoke(participant, dtmfInfo.Code, dtmfInfo.Digit);
+                                }
+                                break;
+                        }
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
