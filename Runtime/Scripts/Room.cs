@@ -355,7 +355,6 @@ namespace LiveKit
                                     Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
                                     var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
                                     DataReceived?.Invoke(data, participant, e.DataPacketReceived.Kind, dataInfo.Topic);
-                                    
                                 }
                                 break;
                             case DataPacketReceived.ValueOneofCase.SipDtmf:
@@ -363,7 +362,6 @@ namespace LiveKit
                                     var dtmfInfo = e.DataPacketReceived.SipDtmf;
                                     var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
                                     SipDtmfReceived?.Invoke(participant, dtmfInfo.Code, dtmfInfo.Digit);
-                                    
                                 }
                                 break;
                         }
