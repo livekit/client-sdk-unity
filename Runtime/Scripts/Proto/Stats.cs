@@ -9857,7 +9857,7 @@ namespace LiveKit.Proto {
       if (other.QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) {
         QualityLimitationReason = other.QualityLimitationReason;
       }
-      qualityLimitationDurations_.Add(other.qualityLimitationDurations_);
+      qualityLimitationDurations_.MergeFrom(other.qualityLimitationDurations_);
       if (other.QualityLimitationResolutionChanges != 0) {
         QualityLimitationResolutionChanges = other.QualityLimitationResolutionChanges;
       }
