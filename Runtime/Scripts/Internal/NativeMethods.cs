@@ -3,6 +3,8 @@ using System.Security;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 
+using FfiHandleId = System.UInt64;
+
 namespace LiveKit.Internal
 {
     [SuppressUnmanagedCodeSecurity]
@@ -19,7 +21,7 @@ namespace LiveKit.Internal
         internal extern static bool FfiDropHandle(IntPtr handleId);
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_request")]
-        internal extern static unsafe IntPtr FfiNewRequest(byte* data, int len, out byte* dataPtr, out int dataLen);
+        internal extern static unsafe IntPtr FfiNewRequest(byte* data, UIntPtr len, out byte* dataPtr, out UIntPtr dataLen);
 
         //TODO optimise FfiHandle, can be replaced by FfiHandleId = uint64_t
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_initialize")]

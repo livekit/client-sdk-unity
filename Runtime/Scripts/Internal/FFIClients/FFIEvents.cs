@@ -5,7 +5,7 @@ using LiveKit.Proto;
 namespace LiveKit.Internal
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    internal delegate void FFICallbackDelegate(IntPtr data, int size);
+    internal delegate void FFICallbackDelegate(IntPtr data, UIntPtr size);
 
     // Callbacks
     internal delegate void PublishTrackDelegate(PublishTrackCallback e);
