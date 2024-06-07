@@ -9,7 +9,11 @@ namespace LiveKit
 {
     public class RtcAudioSource
     {
+#if UNITY_IOS
+        public static uint DefaultSampleRate = 24000;
+#else
         public static uint DefaultSampleRate = 48000;
+#endif
         public static uint DefaultChannels = 2;
 
         private AudioSource _audioSource;
@@ -29,11 +33,13 @@ namespace LiveKit
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = DefaultChannels;
             newAudioSource.SampleRate = DefaultSampleRate;
-
+            newAudioSource.Options = request.TempResource<AudioSourceOptions>();
+            newAudioSource.Options.EchoCancellation = true;
+            newAudioSource.Options.AutoGainControl = true;
+            newAudioSource.Options.NoiseSuppression = true;
             using var response = request.Send();
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
-            //TODO pooling handles
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
             UpdateSource(source);
         }
@@ -87,24 +93,17 @@ namespace LiveKit
                         Array.Clear(data, 0, data.Length);
 
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
-                        using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
-                        
+
                         var pushFrame = request.request;
                         pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
-  
-                        pushFrame.Buffer = audioFrameBufferInfo;
-                        pushFrame.Buffer.DataPtr = (ulong)_frame.Data;
-                        pushFrame.Buffer.NumChannels = _frame.NumChannels;
-                        pushFrame.Buffer.SampleRate = _frame.SampleRate;
-                        pushFrame.Buffer.SamplesPerChannel = _frame.SamplesPerChannel;
+
+                        pushFrame.Buffer = request.TempResource<AudioFrameBufferInfo>();
+                        pushFrame.Buffer.DataPtr = (ulong)_frame.Data.ToPointer();
+                        pushFrame.Buffer.NumChannels = (uint)_frame.NumChannels;
+                        pushFrame.Buffer.SampleRate = (uint)_frame.SampleRate;
+                        pushFrame.Buffer.SamplesPerChannel = (uint)_frame.SamplesPerChannel;
 
                         using var response = request.Send();
-
-                        pushFrame.Buffer.DataPtr = 0;
-                        pushFrame.Buffer.NumChannels = 0;
-                        pushFrame.Buffer.SampleRate = 0;
-                        pushFrame.Buffer.SamplesPerChannel = 0;
-
                     }
                 }
                 catch (Exception e)

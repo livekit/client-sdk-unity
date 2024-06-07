@@ -199,8 +199,10 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ParticipantMetadataChanged:
                     {
                         var participant = GetParticipant(e.ParticipantMetadataChanged.ParticipantSid);
-                        participant.SetMeta(e.ParticipantMetadataChanged.Metadata);
-                        if (participant != null) ParticipantMetadataChanged?.Invoke(participant);
+                        if (participant != null) {
+                            participant.SetMeta(e.ParticipantMetadataChanged.Metadata);
+                            ParticipantMetadataChanged?.Invoke(participant);
+                        }
                         else Utils.Debug("Unable to find participant: " + e.ParticipantMetadataChanged.ParticipantSid + " in Meta data Change Event");
                     }
                     break;
