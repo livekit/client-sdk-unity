@@ -21,7 +21,11 @@ namespace LiveKit
         // Used on the AudioThread
         private AudioFrame _frame;
         private object _lock = new object();
-
+        private Thread _readAudioThread;
+        private volatile bool _pending = false;
+        private uint _channels;
+        private uint _sampleRate;
+        private float[] _data;
         public RtcAudioSource(AudioSource source)
         {
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
@@ -29,7 +33,10 @@ namespace LiveKit
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = DefaultChannels;
             newAudioSource.SampleRate = DefaultSampleRate;
-
+            newAudioSource.Options = request.TempResource<AudioSourceOptions>();
+            newAudioSource.Options.EchoCancellation = true;
+            newAudioSource.Options.AutoGainControl = true;
+            newAudioSource.Options.NoiseSuppression = true;
             using var response = request.Send();
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
@@ -41,27 +48,53 @@ namespace LiveKit
         public void Start()
         {
             Stop();
+            _readAudioThread = new Thread(Update);
+            _readAudioThread.Start();
+
             _audioFilter.AudioRead += OnAudioRead;
             _audioSource.Play();
         }
 
         public void Stop()
         {
+            _readAudioThread?.Abort();
             if(_audioFilter) _audioFilter.AudioRead -= OnAudioRead;
             if(_audioSource && _audioSource.isPlaying) _audioSource.Stop();
+        }
+        private void Update()
+        {
+            while (true)
+            {
+                Thread.Sleep(Constants.TASK_DELAY);
+                if (_pending)
+                {
+                    ReadAudio();
+                }
+            }
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             lock (_lock)
             {
-                var samplesPerChannel = data.Length / channels;
+                _data = data;
+                _channels = (uint)channels;
+                _sampleRate = (uint)sampleRate;
+                _pending = true;
+            }
+        }
+        private void ReadAudio()
+        {
+            _pending = false;
+            lock (_lock)
+            {
+                var samplesPerChannel = _data.Length / _channels;
                 if (_frame == null
-                    || _frame.NumChannels != channels
-                    || _frame.SampleRate != sampleRate
+                    || _frame.NumChannels != _channels
+                    || _frame.SampleRate != _sampleRate
                     || _frame.SamplesPerChannel != samplesPerChannel)
                 {
-                    _frame = new AudioFrame((uint)sampleRate, (uint)channels, (uint)samplesPerChannel);
+                    _frame = new AudioFrame((uint)_sampleRate, (uint)_channels, (uint)samplesPerChannel);
                 }
 
                 try
@@ -78,13 +111,13 @@ namespace LiveKit
                     unsafe
                     {
                         var frameData = new Span<short>(_frame.Data.ToPointer(), _frame.Length / sizeof(short));
-                        for (int i = 0; i < data.Length; i++)
+                        for (int i = 0; i < _data.Length; i++)
                         {
-                            frameData[i] = FloatToS16(data[i]); 
+                            frameData[i] = FloatToS16(_data[i]);
                         }
 
                         // Don't play the audio locally
-                        Array.Clear(data, 0, data.Length);
+                        Array.Clear(_data, 0, _data.Length);
 
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
                         using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
