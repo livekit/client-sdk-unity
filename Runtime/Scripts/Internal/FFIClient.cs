@@ -170,17 +170,17 @@ namespace LiveKit.Internal
                     using var memory = memoryPool.Memory(request);
                     var data = memory.Span();
                     request.WriteTo(data);
-                    UIntPtr dataInLen = new UIntPtr((UInt64)data.Length);
+
                     fixed (byte* requestDataPtr = data)
                     {
                         var handle = NativeMethods.FfiNewRequest(
                             requestDataPtr,
-                            dataInLen,
+                            data.Length,
                             out byte* dataPtr,
-                            out UIntPtr dataLen
+                            out int dataLen
                         );
 
-                        var dataSpan = new Span<byte>(dataPtr, (int)dataLen.ToUInt32());
+                        var dataSpan = new Span<byte>(dataPtr, dataLen);
                         var response = responseParser.ParseFrom(dataSpan)!;
                         NativeMethods.FfiDropHandle(handle);
                         return response;
@@ -198,7 +198,7 @@ namespace LiveKit.Internal
 
 
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
-        static unsafe void FFICallback(IntPtr data, UIntPtr size)
+        static unsafe void FFICallback(IntPtr data, int size)
         { 
 #if NO_LIVEKIT_MODE
             return;
@@ -206,7 +206,7 @@ namespace LiveKit.Internal
 
             if (_isDisposed) return;
 
-            var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt32());
+            var respData = new Span<byte>(data.ToPointer()!, size);
             var response = FfiEvent.Parser!.ParseFrom(respData);
 
             // Run on the main thread, the order of execution is guaranteed by Unity
