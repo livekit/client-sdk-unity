@@ -90,10 +90,8 @@ namespace LiveKit
                 }
                 // Don't play the audio locally
                 Array.Clear(data, 0, data.Length);
-
-                _frameQueue.Enqueue(frame);
             }
-
+            _frameQueue.Enqueue(frame);
         }
 
 
