@@ -49,6 +49,7 @@ namespace LiveKit
             _readAudioThread.Start();
 
             _audioFilter.AudioRead += OnAudioRead;
+            while (!(Microphone.GetPosition(null) > 0)) { }
             _audioSource.Play();
         }
 
