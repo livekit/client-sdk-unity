@@ -16,7 +16,7 @@
 - [x] Windows
 - [x] MacOS
 - [x] Linux
-- [ ] iOS
+- [x] iOS
 - [x] Android
 - [ ] WebGL
 
