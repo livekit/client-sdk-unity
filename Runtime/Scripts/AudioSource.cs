@@ -34,6 +34,7 @@ namespace LiveKit
             newAudioSource.Options.EchoCancellation = true;
             newAudioSource.Options.AutoGainControl = true;
             newAudioSource.Options.NoiseSuppression = true;
+            newAudioSource.Options.EnableQueue = false;
             using var response = request.Send();
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
