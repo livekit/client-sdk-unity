@@ -62,19 +62,20 @@ namespace LiveKit.Proto {
             "AyABKAsyHS5saXZla2l0LnByb3RvLkF1ZGlvU3RyZWFtRU9TSABCCQoHbWVz",
             "c2FnZSJJChJBdWRpb0ZyYW1lUmVjZWl2ZWQSMwoFZnJhbWUYASABKAsyJC5s",
             "aXZla2l0LnByb3RvLk93bmVkQXVkaW9GcmFtZUJ1ZmZlciIQCg5BdWRpb1N0",
-            "cmVhbUVPUyJlChJBdWRpb1NvdXJjZU9wdGlvbnMSGQoRZWNob19jYW5jZWxs",
+            "cmVhbUVPUyJ7ChJBdWRpb1NvdXJjZU9wdGlvbnMSGQoRZWNob19jYW5jZWxs",
             "YXRpb24YASABKAgSGQoRbm9pc2Vfc3VwcHJlc3Npb24YAiABKAgSGQoRYXV0",
-            "b19nYWluX2NvbnRyb2wYAyABKAgiPwoPQXVkaW9Tb3VyY2VJbmZvEiwKBHR5",
-            "cGUYAiABKA4yHi5saXZla2l0LnByb3RvLkF1ZGlvU291cmNlVHlwZSJvChBP",
-            "d25lZEF1ZGlvU291cmNlEi0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJv",
-            "dG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAEoCzIeLmxpdmVraXQucHJv",
-            "dG8uQXVkaW9Tb3VyY2VJbmZvIhQKEkF1ZGlvUmVzYW1wbGVySW5mbyJ1ChNP",
-            "d25lZEF1ZGlvUmVzYW1wbGVyEi0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQu",
-            "cHJvdG8uRmZpT3duZWRIYW5kbGUSLwoEaW5mbxgCIAEoCzIhLmxpdmVraXQu",
-            "cHJvdG8uQXVkaW9SZXNhbXBsZXJJbmZvKkEKD0F1ZGlvU3RyZWFtVHlwZRIX",
-            "ChNBVURJT19TVFJFQU1fTkFUSVZFEAASFQoRQVVESU9fU1RSRUFNX0hUTUwQ",
-            "ASoqCg9BdWRpb1NvdXJjZVR5cGUSFwoTQVVESU9fU09VUkNFX05BVElWRRAA",
-            "QhCqAg1MaXZlS2l0LlByb3RvYgZwcm90bzM="));
+            "b19nYWluX2NvbnRyb2wYAyABKAgSFAoMZW5hYmxlX3F1ZXVlGAQgASgIIj8K",
+            "D0F1ZGlvU291cmNlSW5mbxIsCgR0eXBlGAIgASgOMh4ubGl2ZWtpdC5wcm90",
+            "by5BdWRpb1NvdXJjZVR5cGUibwoQT3duZWRBdWRpb1NvdXJjZRItCgZoYW5k",
+            "bGUYASABKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGlu",
+            "Zm8YAiABKAsyHi5saXZla2l0LnByb3RvLkF1ZGlvU291cmNlSW5mbyIUChJB",
+            "dWRpb1Jlc2FtcGxlckluZm8idQoTT3duZWRBdWRpb1Jlc2FtcGxlchItCgZo",
+            "YW5kbGUYASABKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEi8K",
+            "BGluZm8YAiABKAsyIS5saXZla2l0LnByb3RvLkF1ZGlvUmVzYW1wbGVySW5m",
+            "bypBCg9BdWRpb1N0cmVhbVR5cGUSFwoTQVVESU9fU1RSRUFNX05BVElWRRAA",
+            "EhUKEUFVRElPX1NUUkVBTV9IVE1MEAEqKgoPQXVkaW9Tb3VyY2VUeXBlEhcK",
+            "E0FVRElPX1NPVVJDRV9OQVRJVkUQAEIQqgINTGl2ZUtpdC5Qcm90b2IGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.AudioStreamType), typeof(global::LiveKit.Proto.AudioSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -96,7 +97,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioStreamEvent), global::LiveKit.Proto.AudioStreamEvent.Parser, new[]{ "StreamHandle", "FrameReceived", "Eos" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioFrameReceived), global::LiveKit.Proto.AudioFrameReceived.Parser, new[]{ "Frame" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioStreamEOS), global::LiveKit.Proto.AudioStreamEOS.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioSourceOptions), global::LiveKit.Proto.AudioSourceOptions.Parser, new[]{ "EchoCancellation", "NoiseSuppression", "AutoGainControl" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioSourceOptions), global::LiveKit.Proto.AudioSourceOptions.Parser, new[]{ "EchoCancellation", "NoiseSuppression", "AutoGainControl", "EnableQueue" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioSourceInfo), global::LiveKit.Proto.AudioSourceInfo.Parser, new[]{ "Type" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedAudioSource), global::LiveKit.Proto.OwnedAudioSource.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioResamplerInfo), global::LiveKit.Proto.AudioResamplerInfo.Parser, null, null, null, null, null),
@@ -4296,6 +4297,7 @@ namespace LiveKit.Proto {
       echoCancellation_ = other.echoCancellation_;
       noiseSuppression_ = other.noiseSuppression_;
       autoGainControl_ = other.autoGainControl_;
+      enableQueue_ = other.enableQueue_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4341,6 +4343,18 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "enable_queue" field.</summary>
+    public const int EnableQueueFieldNumber = 4;
+    private bool enableQueue_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool EnableQueue {
+      get { return enableQueue_; }
+      set {
+        enableQueue_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -4359,6 +4373,7 @@ namespace LiveKit.Proto {
       if (EchoCancellation != other.EchoCancellation) return false;
       if (NoiseSuppression != other.NoiseSuppression) return false;
       if (AutoGainControl != other.AutoGainControl) return false;
+      if (EnableQueue != other.EnableQueue) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4369,6 +4384,7 @@ namespace LiveKit.Proto {
       if (EchoCancellation != false) hash ^= EchoCancellation.GetHashCode();
       if (NoiseSuppression != false) hash ^= NoiseSuppression.GetHashCode();
       if (AutoGainControl != false) hash ^= AutoGainControl.GetHashCode();
+      if (EnableQueue != false) hash ^= EnableQueue.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4399,6 +4415,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteBool(AutoGainControl);
       }
+      if (EnableQueue != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(EnableQueue);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4421,6 +4441,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteBool(AutoGainControl);
       }
+      if (EnableQueue != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(EnableQueue);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4438,6 +4462,9 @@ namespace LiveKit.Proto {
         size += 1 + 1;
       }
       if (AutoGainControl != false) {
+        size += 1 + 1;
+      }
+      if (EnableQueue != false) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -4460,6 +4487,9 @@ namespace LiveKit.Proto {
       }
       if (other.AutoGainControl != false) {
         AutoGainControl = other.AutoGainControl;
+      }
+      if (other.EnableQueue != false) {
+        EnableQueue = other.EnableQueue;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4488,6 +4518,10 @@ namespace LiveKit.Proto {
             AutoGainControl = input.ReadBool();
             break;
           }
+          case 32: {
+            EnableQueue = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -4513,6 +4547,10 @@ namespace LiveKit.Proto {
           }
           case 24: {
             AutoGainControl = input.ReadBool();
+            break;
+          }
+          case 32: {
+            EnableQueue = input.ReadBool();
             break;
           }
         }
