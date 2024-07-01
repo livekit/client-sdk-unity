@@ -7,7 +7,7 @@ PluginImporter:
   executionOrder: {}
   defineConstraints: []
   isPreloaded: 0
-  isOverridable: 0
+  isOverridable: 1
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
@@ -41,9 +41,9 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-        CPU: x86_64
+        CPU: AnyCPU
         DefaultValueInitialized: true
-        OS: OSX
+        OS: AnyOS
   - first:
       Standalone: Linux64
     second:
@@ -68,6 +68,11 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: None
+  - first:
+      WebGL: WebGL
+    second:
+      enabled: 0
+      settings: {}
   - first:
       iPhone: iOS
     second:
