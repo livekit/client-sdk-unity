@@ -248,6 +248,7 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.CaptureAudioFrame:
                         break;
                     case FfiEvent.MessageOneofCase.GetStats:
+                    case FfiEvent.MessageOneofCase.Panic:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException($"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");
