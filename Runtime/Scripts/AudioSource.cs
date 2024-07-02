@@ -8,14 +8,32 @@ using System.Collections.Generic;
 
 namespace LiveKit
 {
+    public enum RtcAudioSourceType
+    {
+        AudioSourceCustom = 0
+        // if the source is a microphone,
+        // we don't want to play the audio locally
+        AudioSourceMicrophone = 1,
+    }
+
     public class RtcAudioSource
     {
 #if UNITY_IOS
-        public static uint DefaultSampleRate = 24000;
+        // iOS microphone sample rate is 24k,
+        // please make sure when you using 
+        // sourceType is AudioSourceMicrophone
+        public static uint DefaultMirophoneSampleRate = 24000;
+
+        public static uint DefaultSampleRate = 48000;
 #else
         public static uint DefaultSampleRate = 48000;
+        public static uint DefaultMirophoneSampleRate = DefaultSampleRate;
 #endif
         public static uint DefaultChannels = 2;
+
+        private RtcAudioSourceType _sourceType;
+
+        public RtcAudioSourceType SourceType => _sourceType;
 
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
@@ -27,13 +45,22 @@ namespace LiveKit
         private Thread _readAudioThread;
         private ThreadSafeQueue<AudioFrame> _frameQueue = new ThreadSafeQueue<AudioFrame>();
 
-        public RtcAudioSource(AudioSource source)
+        public RtcAudioSource(AudioSource source, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
         {
+            _sourceType = audioSourceType;
+
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = DefaultChannels;
-            newAudioSource.SampleRate = DefaultSampleRate;
+            if(_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
+            {
+                newAudioSource.SampleRate = DefaultMirophoneSampleRate;
+            }
+            else
+            {
+                newAudioSource.SampleRate = DefaultSampleRate;
+            }
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;
             newAudioSource.Options.AutoGainControl = true;
@@ -93,8 +120,11 @@ namespace LiveKit
                 {
                     frameData[i] = FloatToS16(data[i]);
                 }
-                // Don't play the audio locally
-                Array.Clear(data, 0, data.Length);
+                if (_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
+                {
+                   // Don't play the audio locally, to avoid echo.
+                    Array.Clear(data, 0, data.Length);
+                }
             }
             _frameQueue.Enqueue(frame);
         }
