@@ -44,7 +44,11 @@ select `Unity-iPhone` -> `TARGETS` -> `UnityFramework` -> `General` -> `Framewor
 
 add the following frameworks:
 
-`OpenGLES.framework` `MetalKit.framework`
+`OpenGLES.framework` `MetalKit.framework` `GLKit.framework` `MetalKit.framework` `VideoToolBox.framework` `Network.framework`
+
+add other linker flags:
+
+`-ObjC`
 
 Since `libiPhone-lib.a` has built-in old versions of `celt` and `libvpx` (This will cause the opus and vp8/vp9 codecs to not be called correctly and cause a crash.), so you need to adjust the link order to ensure that it is linked to `liblivekit_ffi.a` first.
 
