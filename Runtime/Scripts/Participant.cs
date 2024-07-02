@@ -84,18 +84,18 @@ namespace LiveKit
             return new PublishTrackInstruction(res.PublishTrack.AsyncId);
         }
 
-        public void PublishData(byte[] data, IReadOnlyCollection<string> destination_sids = null, bool reliable = true, string topic = null)
+        public void PublishData(byte[] data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
-            PublishData(new Span<byte>(data), destination_sids, reliable, topic);
+            PublishData(new Span<byte>(data), destination_identities, reliable, topic);
         }
 
-        public void PublishData(Span<byte> data, IReadOnlyCollection<string> destination_sids = null, bool reliable = true, string topic = null)
+        public void PublishData(Span<byte> data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
             unsafe
             {
                 fixed (byte* pointer = data)
                 {
-                    PublishData(pointer, data.Length, destination_sids, reliable, topic);
+                    PublishData(pointer, data.Length, destination_identities, reliable, topic);
                 }   
             }
         }
@@ -116,7 +116,7 @@ namespace LiveKit
             var resp = request.Send();
         }
 
-        private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_sids = null, bool reliable = true, string topic = null)
+        private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
@@ -125,10 +125,10 @@ namespace LiveKit
 
             var publish = request.request;
             publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
-            publish.Kind = reliable ? DataPacketKind.KindReliable : DataPacketKind.KindLossy;
+            publish.Reliable = reliable;
 
-            if (destination_sids is not null) {
-                publish.DestinationSids.AddRange(destination_sids);
+            if (destination_identities is not null) {
+                publish.DestinationIdentities.AddRange(destination_identities);
             }
 
             if (topic is not null)
