@@ -24,10 +24,31 @@ We plan to support all Unity platforms with this SDK. WebGL is currently support
 
 ## Installation
 
-Follow this [unity tutorial](https://docs.unity3d.com/Manual/upm-ui-giturl.html) using the `https://github.com/livekit/client-sdk-unity.git` link.
-You can then directly import the samples into the package manager.
+Follow this [unity tutorial](https://docs.unity3d.com/Manual/upm-ui-giturl.html),
 
-This repo uses [Git LFS](https://git-lfs.com/), please ensure it's installed when cloning the repo.
+clone this repo and download the ffi binaries.
+
+```sh
+git clone https://github.com/livekit/client-sdk-unity.git
+cd client-sdk-unity
+python3 install.py
+```
+
+You can use the package manager to import `client-sdk-unity` into your Unity project.
+
+### iOS
+
+Add dependent frameworks to your Unity project
+
+select `Unity-iPhone` -> `TARGETS` -> `UnityFramework` -> `General` -> `Frameworks and Libraries` -> `+`
+
+add the following frameworks:
+
+`OpenGLES.framework` `MetalKit.framework`
+
+Since `libiPhone-lib.a` has built-in old versions of `celt` and `libvpx` (This will cause the opus and vp8/vp9 codecs to not be called correctly and cause a crash.), so you need to adjust the link order to ensure that it is linked to `liblivekit_ffi.a` first.
+
+The fix is ​​to remove and re-add `libiPhone-lib.a` from `Frameworks and Libraries`, making sure to link after `liblivekit_ffi.a`.
 
 ## Examples
 
