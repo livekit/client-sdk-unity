@@ -56,7 +56,8 @@ The fix is ​​to remove and re-add `libiPhone-lib.a` from `Frameworks and Lib
 
 ## Examples
 
-You can find examples in the [unity-example](https://github.com/livekit-examples/unity-example.git).
+And you can also follow the example app in the [unity-example](https://github.com/livekit-examples/unity-example.git) to see how to use the SDK.
+
 
 ### Connect to a room
 
@@ -81,15 +82,18 @@ IEnumerator Start()
 
 ```cs
 // Publish Microphone
-var source = GetComponent<AudioSource>();
-source.clip = Microphone.Start("MacBook Pro Microphone", true, 2, 48000);
+var localSid = "my-audio-source";
+GameObject audObject = new GameObject(localSid);
+var source = audObject.AddComponent<AudioSource>();
+source.clip = Microphone.Start(Microphone.devices[0], true, 2, (int)RtcAudioSource.DefaultSampleRate);
 source.loop = true;
-Ssurce.Play();
 
-var rtcSource = new RtcAudioSource(Source);
-var track = LocalAudioTrack.CreateAudioTrack("my-track", rtcSource);
+var rtcSource = new RtcAudioSource(source);
+var track = LocalAudioTrack.CreateAudioTrack("my-audio-track", rtcSource, room);
 
 var options = new TrackPublishOptions();
+options.AudioEncoding = new AudioEncoding();
+options.AudioEncoding.MaxBitrate = 64000;
 options.Source = TrackSource.SourceMicrophone;
 
 var publish = room.LocalParticipant.PublishTrack(track, options);
@@ -99,6 +103,8 @@ if (!publish.IsError)
 {
     Debug.Log("Track published!");
 }
+
+rtcSource.Start();
 ```
 
 ### Publishing a texture (e.g Unity Camera)
@@ -109,19 +115,27 @@ rt.Create();
 Camera.main.targetTexture = rt;
 
 var source = new TextureVideoSource(rt);
-var track = LocalVideoTrack.CreateVideoTrack("my-track", source);
+var track = LocalVideoTrack.CreateVideoTrack("my-video-track", source, room);
 
 var options = new TrackPublishOptions();
-options.VideoCodec = VideoCodec.H264;
+options.VideoCodec = VideoCodec.Vp8;
+var videoCoding = new VideoEncoding();
+videoCoding.MaxBitrate = 512000;
+videoCoding.MaxFramerate = frameRate;
+options.VideoEncoding = videoCoding;
+options.Simulcast = true;
 options.Source = TrackSource.SourceCamera;
 
-var publish = _room.LocalParticipant.PublishTrack(track, options);
+var publish = room.LocalParticipant.PublishTrack(track, options);
 yield return publish;
 
 if (!publish.IsError)
 {
     Debug.Log("Track published!");
 }
+
+source.Start();
+StartCoroutine(source.Update());
 ```
 
 ### Receiving tracks
@@ -153,7 +167,8 @@ void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, Rem
     }
     else if (track is RemoteAudioTrack audioTrack)
     {
-        var source = GetComponent<AudioSource>();
+        GameObject audObject = new GameObject(audioTrack.Sid);
+        var source = audObject.AddComponent<AudioSource>();
         var stream = new AudioStream(audioTrack, source);
         // Audio is being played on the source ..
     }
