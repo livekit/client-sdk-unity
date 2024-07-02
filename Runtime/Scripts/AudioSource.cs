@@ -10,7 +10,11 @@ namespace LiveKit
 {
     public class RtcAudioSource
     {
+#if UNITY_IOS
+        public static uint DefaultSampleRate = 24000;
+#else
         public static uint DefaultSampleRate = 48000;
+#endif
         public static uint DefaultChannels = 2;
 
         private AudioSource _audioSource;
@@ -38,7 +42,6 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
-            //TODO pooling handles
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
             UpdateSource(source);
         }

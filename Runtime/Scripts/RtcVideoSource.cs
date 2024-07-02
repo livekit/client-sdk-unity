@@ -41,6 +41,9 @@ namespace LiveKit
             _bufferType = bufferType;
             using var request = FFIBridge.Instance.NewRequest<NewVideoSourceRequest>();
             var newVideoSource = request.request;
+            newVideoSource.Resolution = request.TempResource<VideoSourceResolution>();
+            newVideoSource.Resolution.Width = 1280;
+            newVideoSource.Resolution.Height = 720;
             newVideoSource.Type = VideoSourceType.VideoSourceNative;
             using var response = request.Send();
             FfiResponse res = response;

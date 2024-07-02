@@ -170,17 +170,15 @@ namespace LiveKit.Internal
                     using var memory = memoryPool.Memory(request);
                     var data = memory.Span();
                     request.WriteTo(data);
-
                     fixed (byte* requestDataPtr = data)
                     {
                         var handle = NativeMethods.FfiNewRequest(
                             requestDataPtr,
                             data.Length,
                             out byte* dataPtr,
-                            out int dataLen
+                            out UIntPtr dataLen
                         );
-
-                        var dataSpan = new Span<byte>(dataPtr, dataLen);
+                        var dataSpan = new Span<byte>(dataPtr, (int)dataLen.ToUInt64());
                         var response = responseParser.ParseFrom(dataSpan)!;
                         NativeMethods.FfiDropHandle(handle);
                         return response;
@@ -198,7 +196,7 @@ namespace LiveKit.Internal
 
 
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
-        static unsafe void FFICallback(IntPtr data, int size)
+        static unsafe void FFICallback(UIntPtr data, UIntPtr size)
         { 
 #if NO_LIVEKIT_MODE
             return;
@@ -206,7 +204,7 @@ namespace LiveKit.Internal
 
             if (_isDisposed) return;
 
-            var respData = new Span<byte>(data.ToPointer()!, size);
+            var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
 
             // Run on the main thread, the order of execution is guaranteed by Unity
@@ -239,9 +237,8 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.Disconnect:
                         Instance.DisconnectReceived?.Invoke(r.Disconnect!);
                         break;
-                    /*case FfiEvent.MessageOneofCase. ParticipantEvent:
-                            Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                            break;*/
+                    case FfiEvent.MessageOneofCase.PublishTranscription:
+                        break;
                     case FfiEvent.MessageOneofCase.VideoStreamEvent:
                         Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
                         break;
@@ -250,6 +247,7 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.CaptureAudioFrame:
                         break;
+                    case FfiEvent.MessageOneofCase.GetStats:
                     case FfiEvent.MessageOneofCase.Panic:
                         break;
                     default:
