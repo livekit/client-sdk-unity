@@ -76,7 +76,7 @@ PluginImporter:
         AddToEmbeddedBinaries: false
         CPU: ARM64
         CompileFlags: 
-        FrameworkDependencies: OpenGLES;MetalKit;
+        FrameworkDependencies: OpenGLES;MetalKit;VideoToolbox;
   userData: 
   assetBundleName: 
   assetBundleVariant: 
