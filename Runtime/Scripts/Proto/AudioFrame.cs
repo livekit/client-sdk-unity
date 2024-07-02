@@ -97,7 +97,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioStreamEvent), global::LiveKit.Proto.AudioStreamEvent.Parser, new[]{ "StreamHandle", "FrameReceived", "Eos" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioFrameReceived), global::LiveKit.Proto.AudioFrameReceived.Parser, new[]{ "Frame" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioStreamEOS), global::LiveKit.Proto.AudioStreamEOS.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioSourceOptions), global::LiveKit.Proto.AudioSourceOptions.Parser, new[]{ "EchoCancellation", "NoiseSuppression", "AutoGainControl", "EnableQueue" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioSourceOptions), global::LiveKit.Proto.AudioSourceOptions.Parser, new[]{ "EchoCancellation", "NoiseSuppression", "AutoGainControl" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioSourceInfo), global::LiveKit.Proto.AudioSourceInfo.Parser, new[]{ "Type" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedAudioSource), global::LiveKit.Proto.OwnedAudioSource.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioResamplerInfo), global::LiveKit.Proto.AudioResamplerInfo.Parser, null, null, null, null, null),
@@ -4351,7 +4351,6 @@ namespace LiveKit.Proto {
       echoCancellation_ = other.echoCancellation_;
       noiseSuppression_ = other.noiseSuppression_;
       autoGainControl_ = other.autoGainControl_;
-      enableQueue_ = other.enableQueue_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4397,18 +4396,6 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "enable_queue" field.</summary>
-    public const int EnableQueueFieldNumber = 4;
-    private bool enableQueue_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool EnableQueue {
-      get { return enableQueue_; }
-      set {
-        enableQueue_ = value;
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -4427,7 +4414,6 @@ namespace LiveKit.Proto {
       if (EchoCancellation != other.EchoCancellation) return false;
       if (NoiseSuppression != other.NoiseSuppression) return false;
       if (AutoGainControl != other.AutoGainControl) return false;
-      if (EnableQueue != other.EnableQueue) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4438,7 +4424,6 @@ namespace LiveKit.Proto {
       if (EchoCancellation != false) hash ^= EchoCancellation.GetHashCode();
       if (NoiseSuppression != false) hash ^= NoiseSuppression.GetHashCode();
       if (AutoGainControl != false) hash ^= AutoGainControl.GetHashCode();
-      if (EnableQueue != false) hash ^= EnableQueue.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4469,10 +4454,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteBool(AutoGainControl);
       }
-      if (EnableQueue != false) {
-        output.WriteRawTag(32);
-        output.WriteBool(EnableQueue);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4495,10 +4476,6 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteBool(AutoGainControl);
       }
-      if (EnableQueue != false) {
-        output.WriteRawTag(32);
-        output.WriteBool(EnableQueue);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4516,9 +4493,6 @@ namespace LiveKit.Proto {
         size += 1 + 1;
       }
       if (AutoGainControl != false) {
-        size += 1 + 1;
-      }
-      if (EnableQueue != false) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -4541,9 +4515,6 @@ namespace LiveKit.Proto {
       }
       if (other.AutoGainControl != false) {
         AutoGainControl = other.AutoGainControl;
-      }
-      if (other.EnableQueue != false) {
-        EnableQueue = other.EnableQueue;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4572,10 +4543,6 @@ namespace LiveKit.Proto {
             AutoGainControl = input.ReadBool();
             break;
           }
-          case 32: {
-            EnableQueue = input.ReadBool();
-            break;
-          }
         }
       }
     #endif
@@ -4601,10 +4568,6 @@ namespace LiveKit.Proto {
           }
           case 24: {
             AutoGainControl = input.ReadBool();
-            break;
-          }
-          case 32: {
-            EnableQueue = input.ReadBool();
             break;
           }
         }
