@@ -110,10 +110,19 @@ rtcSource.Start();
 ### Publishing a texture (e.g Unity Camera)
 
 ```cs
+// publish a WebCamera
+//var source = new TextureVideoSource(webCamTexture);
+
+// Publish the entire screen
+//var source = new ScreenVideoSource();
+
+// Publishing a Unity Camera
+//Camera.main.enabled = true;
+//var source = new CameraVideoSource(Camera.main);
+
 var rt = new UnityEngine.RenderTexture(1920, 1080, 24, RenderTextureFormat.ARGB32);
 rt.Create();
 Camera.main.targetTexture = rt;
-
 var source = new TextureVideoSource(rt);
 var track = LocalVideoTrack.CreateVideoTrack("my-video-track", source, room);
 
