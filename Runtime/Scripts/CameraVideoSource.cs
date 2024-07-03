@@ -28,6 +28,8 @@ namespace LiveKit
             _dest = new RenderTexture(GetWidth(), GetHeight(), 0, targetFormat);
             camera.targetTexture = _dest as RenderTexture;
             _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(bufferType), Allocator.Persistent);
+
+            base.Init();
         }
 
         ~CameraVideoSource()

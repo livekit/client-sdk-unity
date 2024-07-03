@@ -24,8 +24,8 @@ namespace LiveKit
         {
             Texture = texture;
             _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(bufferType), Allocator.Persistent);
+            base.Init();
         }
-
 
         ~TextureVideoSource()
         {

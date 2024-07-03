@@ -15,6 +15,8 @@ namespace LiveKit
 {
     public class ScreenVideoSource : RtcVideoSource
     {
+        private TextureFormat _textureFormat;
+
         public override int GetWidth()
         {
             return Screen.width;
@@ -28,6 +30,7 @@ namespace LiveKit
         public ScreenVideoSource(VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Screen, bufferType)
         {
             _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(bufferType), Allocator.Persistent);
+            base.Init();
         }
 
         public override void Stop()
@@ -57,13 +60,23 @@ namespace LiveKit
             if (_reading)
                 return;
             _reading = true;
-            if (_dest == null)
+            try
             {
-                var targetFormat = Utils.GetSupportedGraphicsFormat(SystemInfo.graphicsDeviceType);
-                _dest = new RenderTexture(GetWidth(), GetHeight(), 0, targetFormat);
+                if (_dest == null)
+                {
+                    var targetFormat = Utils.GetSupportedGraphicsFormat(SystemInfo.graphicsDeviceType);
+                    var compatibleFormat = SystemInfo.GetCompatibleFormat(targetFormat, FormatUsage.ReadPixels);
+                    _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
+                    _bufferType = GetVideoBufferType(_textureFormat);
+                    _dest = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
+                }
+                ScreenCapture.CaptureScreenshotIntoRenderTexture(_dest as RenderTexture);
+                AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, _textureFormat, OnReadback);
             }
-            ScreenCapture.CaptureScreenshotIntoRenderTexture(_dest as RenderTexture);
-            AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, GetTextureFormat(_bufferType), OnReadback);
+            catch (Exception e)
+            {
+                Utils.Error(e);
+            }
         }
 
         protected override bool SendFrame()
