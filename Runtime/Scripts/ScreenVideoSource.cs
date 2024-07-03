@@ -4,12 +4,7 @@ using LiveKit.Proto;
 using LiveKit.Internal;
 using UnityEngine.Rendering;
 using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
-using System.Threading;
-using LiveKit.Internal.FFIClients.Requests;
 using UnityEngine.Experimental.Rendering;
-using UnityEngine.UI;
-using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -29,7 +24,6 @@ namespace LiveKit
 
         public ScreenVideoSource(VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Screen, bufferType)
         {
-            _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(bufferType), Allocator.Persistent);
             base.Init();
         }
 
@@ -62,13 +56,14 @@ namespace LiveKit
             _reading = true;
             try
             {
-                if (_dest == null)
+                if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight())
                 {
                     var targetFormat = Utils.GetSupportedGraphicsFormat(SystemInfo.graphicsDeviceType);
                     var compatibleFormat = SystemInfo.GetCompatibleFormat(targetFormat, FormatUsage.ReadPixels);
                     _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
                     _bufferType = GetVideoBufferType(_textureFormat);
                     _dest = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
+                    _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
                 }
                 ScreenCapture.CaptureScreenshotIntoRenderTexture(_dest as RenderTexture);
                 AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, _textureFormat, OnReadback);
