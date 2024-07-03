@@ -10,7 +10,7 @@ namespace LiveKit
 {
     public enum RtcAudioSourceType
     {
-        AudioSourceCustom = 0
+        AudioSourceCustom = 0,
         // if the source is a microphone,
         // we don't want to play the audio locally
         AudioSourceMicrophone = 1,
