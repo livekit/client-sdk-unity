@@ -7,6 +7,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using LiveKit.Internal.FFIClients.Requests;
 using System.Collections;
+using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
@@ -19,7 +20,8 @@ namespace LiveKit
             Camera = 2
         }
 
-        internal FfiHandle Handle { get; }
+        
+        internal FfiHandle Handle { get; set; }
 
         public abstract int GetWidth();
         public abstract int GetHeight();
@@ -34,21 +36,29 @@ namespace LiveKit
         protected bool isDisposed = true;
         protected bool _playing = false;
 
-        public RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
+        internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
             isDisposed = false;
             _sourceType = sourceType;
             _bufferType = bufferType;
-            using var request = FFIBridge.Instance.NewRequest<NewVideoSourceRequest>();
-            var newVideoSource = request.request;
-            newVideoSource.Resolution = request.TempResource<VideoSourceResolution>();
-            newVideoSource.Resolution.Width = 1280;
-            newVideoSource.Resolution.Height = 720;
-            newVideoSource.Type = VideoSourceType.VideoSourceNative;
-            using var response = request.Send();
-            FfiResponse res = response;
-            _info = res.NewVideoSource.Source.Info;
-            Handle = FfiHandle.FromOwnedHandle(res.NewVideoSource.Source.Handle);
+            Handle = null;
+        }
+
+        protected void Init()
+        {
+            if (Handle == null)
+            {
+                using var request = FFIBridge.Instance.NewRequest<NewVideoSourceRequest>();
+                var newVideoSource = request.request;
+                newVideoSource.Resolution = request.TempResource<VideoSourceResolution>();
+                newVideoSource.Resolution.Width = (uint)GetWidth();
+                newVideoSource.Resolution.Height = (uint)GetHeight();
+                newVideoSource.Type = VideoSourceType.VideoSourceNative;
+                using var response = request.Send();
+                FfiResponse res = response;
+                _info = res.NewVideoSource.Source.Info;
+                Handle = FfiHandle.FromOwnedHandle(res.NewVideoSource.Source.Handle);
+            }
         }
 
         protected TextureFormat GetTextureFormat(VideoBufferType type)
@@ -59,6 +69,27 @@ namespace LiveKit
                     return TextureFormat.RGBA32;
                 case VideoBufferType.Argb:
                     return TextureFormat.ARGB32;
+                case VideoBufferType.Bgra:
+                    return TextureFormat.BGRA32;
+                case VideoBufferType.Rgb24:
+                    return TextureFormat.RGB24;
+                default:
+                    throw new NotImplementedException("TODO: Add TextureFormat support for type: " + type);
+            }
+        }
+
+        protected VideoBufferType GetVideoBufferType(TextureFormat type)
+        {
+            switch (type)
+            {
+                case  TextureFormat.RGBA32:
+                    return VideoBufferType.Rgba;
+                case TextureFormat.ARGB32:
+                    return VideoBufferType.Argb;
+                case TextureFormat.BGRA32:
+                    return VideoBufferType.Bgra;
+                case TextureFormat.RGB24:
+                    return VideoBufferType.Rgb24;
                 default:
                     throw new NotImplementedException("TODO: Add TextureFormat support for type: " + type);
             }
@@ -70,7 +101,10 @@ namespace LiveKit
             {
                 case VideoBufferType.Rgba:
                 case VideoBufferType.Argb:
+                case VideoBufferType.Bgra:
                     return 4;
+                case VideoBufferType.Rgb24:
+                    return 3;
                 default:
                     throw new NotImplementedException("TODO: Add stride support for type: " + type);
             }

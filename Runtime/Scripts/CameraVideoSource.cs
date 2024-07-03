@@ -2,12 +2,16 @@ using UnityEngine;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using UnityEngine.Rendering;
+using UnityEngine.Experimental.Rendering;
+using System;
 using Unity.Collections;
 
 namespace LiveKit
 {
     public class CameraVideoSource : RtcVideoSource
     {
+        private TextureFormat _textureFormat;
+
         public Camera Camera { get; }
 
         public override int GetWidth()
@@ -23,11 +27,7 @@ namespace LiveKit
         public CameraVideoSource(Camera camera,   VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Screen, bufferType)
         {
             Camera = camera;
-
-            var targetFormat = Utils.GetSupportedGraphicsFormat(SystemInfo.graphicsDeviceType);
-            _dest = new RenderTexture(GetWidth(), GetHeight(), 0, targetFormat);
-            camera.targetTexture = _dest as RenderTexture;
-            _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(bufferType), Allocator.Persistent);
+            base.Init();
         }
 
         ~CameraVideoSource()
@@ -57,7 +57,27 @@ namespace LiveKit
             if (_reading)
                 return;
             _reading = true;
-            AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, GetTextureFormat(_bufferType), OnReadback);
+
+            try
+            {
+                if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight())
+                {
+                    var targetFormat = Utils.GetSupportedGraphicsFormat(SystemInfo.graphicsDeviceType);
+                    var compatibleFormat = SystemInfo.GetCompatibleFormat(targetFormat, FormatUsage.ReadPixels);
+                    _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
+                    _bufferType = GetVideoBufferType(_textureFormat);
+                    _dest = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
+                    Camera.targetTexture = _dest as RenderTexture;
+                    _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
+                }
+                ScreenCapture.CaptureScreenshotIntoRenderTexture(_dest as RenderTexture);
+                AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, _textureFormat, OnReadback);
+            }
+            catch (Exception e)
+            {
+                Utils.Error(e);
+            }
+        
         }
     }
 }
