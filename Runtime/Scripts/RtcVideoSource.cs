@@ -39,7 +39,7 @@ namespace LiveKit
         protected bool _requestPending = false;
         protected bool isDisposed = true;
         protected bool _playing = false;
-        private Texture2D texture2D = null;
+        private Texture2D _texture2D = null;
 
         internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
@@ -144,19 +144,15 @@ namespace LiveKit
                 yield return null;
                 var textureChanged = ReadBuffer();
 
-                if(textureChanged || texture2D == null)
+                if(textureChanged || _texture2D == null)
                 {
-                    if(texture2D == null)
-                    {
-                        texture2D = new Texture2D(_dest.width, _dest.height, TextureFormat.RGB24, false);
-                    }
-
-                    TextureReceived?.Invoke(texture2D);
+                    _texture2D = new Texture2D(_dest.width, _dest.height, TextureFormat.RGB24, false);
+                    TextureReceived?.Invoke(_texture2D);
                 }
 
                 if(TextureReceived.GetInvocationList().Length > 0)
                 {
-                    LoadToTexture2D(texture2D, _dest as RenderTexture);
+                    LoadToTexture2D(_texture2D, _dest as RenderTexture);
                 }
 
                 SendFrame();
