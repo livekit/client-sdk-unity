@@ -26,6 +26,10 @@ namespace LiveKit
         public abstract int GetWidth();
         public abstract int GetHeight();
 
+        public delegate void TextureReceiveDelegate(Texture2D tex2d);
+        /// Called when we receive a new texture (first texture or the resolution changed)
+        public event TextureReceiveDelegate TextureReceived;
+
         protected Texture _dest;
         protected NativeArray<byte> _data;
         protected VideoStreamSource _sourceType;
@@ -35,6 +39,7 @@ namespace LiveKit
         protected bool _requestPending = false;
         protected bool isDisposed = true;
         protected bool _playing = false;
+        private Texture2D texture2D = null;
 
         internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
@@ -121,12 +126,39 @@ namespace LiveKit
             _playing = false; 
         }
 
+        private void LoadToTexture2D(Texture2D tex, RenderTexture rTex)
+        {
+            var old_rt = RenderTexture.active;
+            RenderTexture.active = rTex;
+
+            tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
+            tex.Apply();
+
+            RenderTexture.active = old_rt;
+        }
+
         public IEnumerator Update()
         {
             while (_playing)
             {
                 yield return null;
-                ReadBuffer();
+                var textureChanged = ReadBuffer();
+
+                if(textureChanged || texture2D == null)
+                {
+                    if(texture2D == null)
+                    {
+                        texture2D = new Texture2D(_dest.width, _dest.height, TextureFormat.RGB24, false);
+                    }
+
+                    TextureReceived?.Invoke(texture2D);
+                }
+
+                if(TextureReceived.GetInvocationList().Length > 0)
+                {
+                    LoadToTexture2D(texture2D, _dest as RenderTexture);
+                }
+
                 SendFrame();
             }
 
@@ -142,7 +174,7 @@ namespace LiveKit
             }
         }
 
-        protected abstract void ReadBuffer();
+        protected abstract bool ReadBuffer();
 
         protected virtual bool SendFrame()
         {
