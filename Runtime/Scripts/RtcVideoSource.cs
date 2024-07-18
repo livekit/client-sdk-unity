@@ -144,9 +144,15 @@ namespace LiveKit
                 yield return null;
                 var textureChanged = ReadBuffer();
 
-                if(textureChanged || _texture2D == null)
+                if(textureChanged)
                 {
-                    _texture2D = new Texture2D(_dest.width, _dest.height, TextureFormat.RGB24, false);
+                    if (_texture2D == null)
+                    {
+                        _texture2D = new Texture2D(_dest.width, _dest.height, TextureFormat.RGB24, false);
+                    } else
+                    {
+                        _texture2D.Reinitialize(_dest.width, _dest.height);
+                    }
                     TextureReceived?.Invoke(_texture2D);
                 }
 
