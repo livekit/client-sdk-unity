@@ -169,6 +169,8 @@ namespace LiveKit
         
         public void Disconnect()
         {
+            if (this.RoomHandle == null)
+                return;
             using var response = FFIBridge.Instance.SendDisconnectRequest(this);
             Utils.Debug($"Disconnect.... {RoomHandle}");
             FfiResponse resp = response;
@@ -356,14 +358,18 @@ namespace LiveKit
                                     var dataInfo = e.DataPacketReceived.User;
                                     var data = new byte[dataInfo.Data.Data.DataLen];
                                     Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
+#pragma warning disable CS0612 // Type or member is obsolete
                                     var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
+#pragma warning restore CS0612 // Type or member is obsolete
                                     DataReceived?.Invoke(data, participant, e.DataPacketReceived.Kind, dataInfo.Topic);
                                 }
                                 break;
                             case DataPacketReceived.ValueOneofCase.SipDtmf:
                                 {
                                     var dtmfInfo = e.DataPacketReceived.SipDtmf;
+#pragma warning disable CS0612 // Type or member is obsolete
                                     var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
+#pragma warning restore CS0612 // Type or member is obsolete
                                     SipDtmfReceived?.Invoke(participant, dtmfInfo.Code, dtmfInfo.Digit);
                                 }
                                 break;

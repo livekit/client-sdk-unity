@@ -12,6 +12,9 @@ namespace LiveKit.Internal
     internal delegate void PublishTrackDelegate(PublishTrackCallback e);
 
 
+    internal delegate void UnpublishTrackDelegate(UnpublishTrackCallback e);
+
+
     internal delegate void ConnectReceivedDelegate(ConnectCallback e);
 
 
