@@ -170,8 +170,9 @@ namespace LiveKit
         public virtual void Dispose()
         {
             if (!isDisposed)
-            { 
-                _data.Dispose();
+            {
+                if (_data != null) _data.Dispose();
+                if (_texture2D != null) UnityEngine.Object.Destroy(_texture2D);
                 isDisposed = true;
             }
         }
