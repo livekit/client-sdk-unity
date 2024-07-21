@@ -46,7 +46,7 @@ add the following frameworks:
 
 `OpenGLES.framework` `MetalKit.framework` `GLKit.framework` `MetalKit.framework` `VideoToolBox.framework` `Network.framework`
 
-add other linker flags:
+add other linker flags to `UnityFramework`:
 
 `-ObjC`
 
