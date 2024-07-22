@@ -72,7 +72,7 @@ namespace LiveKit
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
 
-            var track = (Track)localTrack;            
+            var track = (Track)localTrack;
             
             using var request = FFIBridge.Instance.NewRequest<PublishTrackRequest>();
             var publish = request.request;
@@ -81,7 +81,23 @@ namespace LiveKit
             publish.Options = options;
             using var response = request.Send();
             FfiResponse res = response;
-            return new PublishTrackInstruction(res.PublishTrack.AsyncId);
+            return new PublishTrackInstruction(res.PublishTrack.AsyncId, localTrack, _tracks);
+        }
+
+        public UnpublishTrackInstruction UnpublishTrack(ILocalTrack localTrack, bool stopOnUnpublish)
+        {
+            if (!Room.TryGetTarget(out var room))
+                throw new Exception("room is invalid");
+
+            using var request = FFIBridge.Instance.NewRequest<UnpublishTrackRequest>();
+            var unpublish = request.request;
+            unpublish.LocalParticipantHandle = (ulong) Handle.DangerousGetHandle();
+            unpublish.StopOnUnpublish = false;
+            unpublish.TrackSid = localTrack.Sid;
+            using var response = request.Send();
+            FfiResponse res = response;
+            _tracks.Remove (localTrack.Sid);
+            return new UnpublishTrackInstruction(res.UnpublishTrack.AsyncId);
         }
 
         public void PublishData(byte[] data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
@@ -156,10 +172,14 @@ namespace LiveKit
     public sealed class PublishTrackInstruction : YieldInstruction
     {
         private ulong _asyncId;
+        private Dictionary<string, TrackPublication> _internalTracks;
+        private ILocalTrack _localTrack;
 
-        internal PublishTrackInstruction(ulong asyncId)
+        internal PublishTrackInstruction(ulong asyncId, ILocalTrack localTrack, Dictionary<string, TrackPublication> internalTracks)
         {
             _asyncId = asyncId;
+            _internalTracks = internalTracks;
+            _localTrack = localTrack;
             FfiClient.Instance.PublishTrackReceived += OnPublish;
         }
 
@@ -170,7 +190,29 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
+            var publication = new LocalTrackPublication (e.Publication.Info);
+            publication.UpdateTrack (_localTrack as Track);
+            _localTrack.UpdateSid(publication.Sid);
+            _internalTracks.Add (e.Publication.Info.Sid, publication);
             FfiClient.Instance.PublishTrackReceived -= OnPublish;
+        }
+    }
+    public sealed class UnpublishTrackInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+
+        internal UnpublishTrackInstruction(ulong asyncId) {
+            _asyncId = asyncId;
+            FfiClient.Instance.UnpublishTrackReceived += OnUnpublish;
+        }
+
+        internal void OnUnpublish(UnpublishTrackCallback e) {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            IsError = !string.IsNullOrEmpty(e.Error);
+            IsDone = true;
+            FfiClient.Instance.UnpublishTrackReceived -= OnUnpublish;
         }
     }
 }

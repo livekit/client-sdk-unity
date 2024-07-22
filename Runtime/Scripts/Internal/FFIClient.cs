@@ -32,6 +32,7 @@ namespace LiveKit.Internal
         private readonly IMemoryPool memoryPool;
 
         public event PublishTrackDelegate? PublishTrackReceived;
+        public event UnpublishTrackDelegate? UnpublishTrackReceived;
         public event ConnectReceivedDelegate? ConnectReceived;
         public event DisconnectReceivedDelegate? DisconnectReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
@@ -227,6 +228,9 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.PublishTrack:
                         Instance.PublishTrackReceived?.Invoke(r.PublishTrack!);
+                        break;
+                    case FfiEvent.MessageOneofCase.UnpublishTrack:
+                        Instance.UnpublishTrackReceived?.Invoke(r.UnpublishTrack!);
                         break;
                     case FfiEvent.MessageOneofCase.RoomEvent:
                         Instance.RoomEventReceived?.Invoke(r.RoomEvent);
