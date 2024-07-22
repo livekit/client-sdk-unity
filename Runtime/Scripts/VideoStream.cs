@@ -71,7 +71,7 @@ namespace LiveKit
             {
                 if (disposing)
                     VideoBuffer?.Dispose();
-
+                if (Texture != null) UnityEngine.Object.Destroy(Texture);
                 _disposed = true;
             }
         }
@@ -106,7 +106,7 @@ namespace LiveKit
                 var textureChanged = false;
                 if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
                 {
-                   if (Texture != null) UnityEngine.Object.Destroy(Texture);
+                    if (Texture != null) UnityEngine.Object.Destroy(Texture);
                     Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
                     Texture.ignoreMipmapLimit = false;
                     textureChanged = true;
