@@ -7,7 +7,7 @@ namespace LiveKit
 {
     public interface ITrack
     {
-        string Sid { get; protected set; }
+        string Sid { get; }
         string Name { get; }
         TrackKind Kind { get; }
         StreamState StreamState { get; }
@@ -19,14 +19,28 @@ namespace LiveKit
 
     public interface ILocalTrack : ITrack
     {
-        public void UpdateSid (string sid) {
-            Sid = sid;
+        public void SetMute(bool muted)
+        {
+            using var request = FFIBridge.Instance.NewRequest<LocalTrackMuteRequest>();
+            var createTrack = request.request;
+            createTrack.Mute = muted;
+            createTrack.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var resp = request.Send();
+            FfiResponse res = resp;
         }
     }
 
     public interface IRemoteTrack : ITrack
     {
-
+        public void SetEnabled(bool enabled)
+        {
+            using var request = FFIBridge.Instance.NewRequest<EnableRemoteTrackRequest>();
+            var req = request.request;
+            req.Enabled = enabled;
+            req.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var resp = request.Send();
+            FfiResponse res = resp;
+        }
     }
 
     public interface IAudioTrack : ITrack
@@ -56,8 +70,6 @@ namespace LiveKit
         public readonly FfiHandle Handle;
 
         FfiHandle ITrack.TrackHandle => Handle;
-
-        string ITrack.Sid { get => _info.Sid; set => _info.Sid = value; }
 
         internal Track(OwnedTrack track, Room room, Participant participant)
         {

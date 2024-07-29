@@ -25,15 +25,18 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFwYXJ0aWNpcGFudC5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvIlAKD1BhcnRpY2lwYW50SW5mbxILCgNzaWQYASABKAkSDAoEbmFtZRgC",
-            "IAEoCRIQCghpZGVudGl0eRgDIAEoCRIQCghtZXRhZGF0YRgEIAEoCSJvChBP",
-            "d25lZFBhcnRpY2lwYW50Ei0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJv",
-            "dG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAEoCzIeLmxpdmVraXQucHJv",
-            "dG8uUGFydGljaXBhbnRJbmZvQhCqAg1MaXZlS2l0LlByb3RvYgZwcm90bzM="));
+            "b3RvIscBCg9QYXJ0aWNpcGFudEluZm8SCwoDc2lkGAEgASgJEgwKBG5hbWUY",
+            "AiABKAkSEAoIaWRlbnRpdHkYAyABKAkSEAoIbWV0YWRhdGEYBCABKAkSQgoK",
+            "YXR0cmlidXRlcxgFIAMoCzIuLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRJ",
+            "bmZvLkF0dHJpYnV0ZXNFbnRyeRoxCg9BdHRyaWJ1dGVzRW50cnkSCwoDa2V5",
+            "GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJvChBPd25lZFBhcnRpY2lwYW50",
+            "Ei0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5k",
+            "bGUSLAoEaW5mbxgCIAEoCzIeLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRJ",
+            "bmZvQhCqAg1MaXZlS2l0LlByb3RvYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Attributes" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null)
           }));
     }
@@ -80,6 +83,7 @@ namespace LiveKit.Proto {
       name_ = other.name_;
       identity_ = other.identity_;
       metadata_ = other.metadata_;
+      attributes_ = other.attributes_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -137,6 +141,17 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "attributes" field.</summary>
+    public const int AttributesFieldNumber = 5;
+    private static readonly pbc::MapField<string, string>.Codec _map_attributes_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 42);
+    private readonly pbc::MapField<string, string> attributes_ = new pbc::MapField<string, string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> Attributes {
+      get { return attributes_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -156,6 +171,7 @@ namespace LiveKit.Proto {
       if (Name != other.Name) return false;
       if (Identity != other.Identity) return false;
       if (Metadata != other.Metadata) return false;
+      if (!Attributes.Equals(other.Attributes)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -167,6 +183,7 @@ namespace LiveKit.Proto {
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Identity.Length != 0) hash ^= Identity.GetHashCode();
       if (Metadata.Length != 0) hash ^= Metadata.GetHashCode();
+      hash ^= Attributes.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -201,6 +218,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(34);
         output.WriteString(Metadata);
       }
+      attributes_.WriteTo(output, _map_attributes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -227,6 +245,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(34);
         output.WriteString(Metadata);
       }
+      attributes_.WriteTo(ref output, _map_attributes_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -249,6 +268,7 @@ namespace LiveKit.Proto {
       if (Metadata.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Metadata);
       }
+      size += attributes_.CalculateSize(_map_attributes_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -273,6 +293,7 @@ namespace LiveKit.Proto {
       if (other.Metadata.Length != 0) {
         Metadata = other.Metadata;
       }
+      attributes_.MergeFrom(other.attributes_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -284,7 +305,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -304,6 +329,10 @@ namespace LiveKit.Proto {
             Metadata = input.ReadString();
             break;
           }
+          case 42: {
+            attributes_.AddEntriesFrom(input, _map_attributes_codec);
+            break;
+          }
         }
       }
     #endif
@@ -315,7 +344,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -333,6 +366,10 @@ namespace LiveKit.Proto {
           }
           case 34: {
             Metadata = input.ReadString();
+            break;
+          }
+          case 42: {
+            attributes_.AddEntriesFrom(ref input, _map_attributes_codec);
             break;
           }
         }
@@ -533,7 +570,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -562,7 +603,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
