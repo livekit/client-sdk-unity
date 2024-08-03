@@ -52,12 +52,12 @@ namespace LiveKit
         }
 
         // Read the texture data into a native array asynchronously
-        protected override void ReadBuffer()
+        protected override bool ReadBuffer()
         {
             if (_reading)
-                return;
+                return false;
             _reading = true;
-
+            var textureChanged = false;
             try
             {
                 if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight())
@@ -69,6 +69,7 @@ namespace LiveKit
                     _dest = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
                     Camera.targetTexture = _dest as RenderTexture;
                     _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
+                    textureChanged = true;
                 }
                 ScreenCapture.CaptureScreenshotIntoRenderTexture(_dest as RenderTexture);
                 AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, _textureFormat, OnReadback);
@@ -77,7 +78,7 @@ namespace LiveKit
             {
                 Utils.Error(e);
             }
-        
+            return textureChanged;
         }
     }
 }
