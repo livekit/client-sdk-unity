@@ -22,11 +22,29 @@ namespace LiveKit
         public void UpdateSid (string sid) {
             Sid = sid;
         }
+
+        public void SetMute(bool muted)
+        {
+            using var request = FFIBridge.Instance.NewRequest<LocalTrackMuteRequest>();
+            var createTrack = request.request;
+            createTrack.Mute = muted;
+            createTrack.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var resp = request.Send();
+            FfiResponse res = resp;
+        }
     }
 
     public interface IRemoteTrack : ITrack
     {
-
+        public void SetEnabled(bool enabled)
+        {
+            using var request = FFIBridge.Instance.NewRequest<EnableRemoteTrackRequest>();
+            var req = request.request;
+            req.Enabled = enabled;
+            req.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var resp = request.Send();
+            FfiResponse res = resp;
+        }
     }
 
     public interface IAudioTrack : ITrack
