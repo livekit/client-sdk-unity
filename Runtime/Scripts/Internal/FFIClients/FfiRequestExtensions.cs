@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using Google.Protobuf;
 using LiveKit.Proto;
 
 namespace LiveKit.Internal.FFIClients
@@ -7,7 +8,7 @@ namespace LiveKit.Internal.FFIClients
     public static class FfiRequestExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Inject<T>(this FfiRequest ffiRequest, T request)
+        public static void Inject<T>(this FfiRequest ffiRequest, T request) where T : class, IMessage<T>
         {
             switch (request)
             {
@@ -33,14 +34,23 @@ namespace LiveKit.Internal.FFIClients
                 case SetSubscribedRequest setSubscribedRequest:
                     ffiRequest.SetSubscribed = setSubscribedRequest;
                     break;
-                case UpdateLocalMetadataRequest updateLocalMetadataRequest:
-                    ffiRequest.UpdateLocalMetadata = updateLocalMetadataRequest;
+                case SetLocalMetadataRequest setLocalMetadataRequest:
+                    ffiRequest.SetLocalMetadata = setLocalMetadataRequest;
                     break;
-                case UpdateLocalNameRequest updateLocalNameRequest:
-                    ffiRequest.UpdateLocalName = updateLocalNameRequest;
+                case SetLocalNameRequest setLocalNameRequest:
+                    ffiRequest.SetLocalName = setLocalNameRequest;
+                    break;
+                case SetLocalAttributesRequest setLocalAttributesRequest:
+                    ffiRequest.SetLocalAttributes = setLocalAttributesRequest;
                     break;
                 case GetSessionStatsRequest getSessionStatsRequest:
                     ffiRequest.GetSessionStats = getSessionStatsRequest;
+                    break;
+                case PublishTranscriptionRequest publishTranscriptionRequest:
+                    ffiRequest.PublishTranscription = publishTranscriptionRequest;
+                    break;
+                case PublishSipDtmfRequest publishSipDtmfRequest:
+                    ffiRequest.PublishSipDtmf = publishSipDtmfRequest;
                     break;
                 // Track
                 case CreateVideoTrackRequest createVideoTrackRequest:
@@ -106,9 +116,12 @@ namespace LiveKit.Internal.FFIClients
                 || request.UnpublishTrack != null
                 || request.PublishData != null
                 || request.SetSubscribed != null
-                || request.UpdateLocalMetadata != null
-                || request.UpdateLocalName != null
+                || request.SetLocalMetadata != null
+                || request.SetLocalName != null
+                || request.SetLocalAttributes != null
                 || request.GetSessionStats != null
+                || request.PublishTranscription != null
+                || request.PublishSipDtmf != null
                 ||
 
                 // Track
@@ -155,9 +168,12 @@ namespace LiveKit.Internal.FFIClients
                 || response.UnpublishTrack != null
                 || response.PublishData != null
                 || response.SetSubscribed != null
-                || response.UpdateLocalMetadata != null
-                || response.UpdateLocalName != null
+                || response.SetLocalMetadata != null
+                || response.SetLocalName != null
+                || response.SetLocalAttributes != null
                 || response.GetSessionStats != null
+                || response.PublishTranscription != null
+                || response.PublishSipDtmf != null
                 ||
 
                 // Track

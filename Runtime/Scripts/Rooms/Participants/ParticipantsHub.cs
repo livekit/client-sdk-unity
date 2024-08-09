@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace LiveKit.Rooms.Participants
@@ -12,18 +13,18 @@ namespace LiveKit.Rooms.Participants
         public Participant LocalParticipant()
         {
             return local
-                   ?? throw new System.InvalidOperationException(
+                   ?? throw new InvalidOperationException(
                        "Local participant not assigned yet"
                    );
         }
 
-        public Participant? RemoteParticipant(string sid)
+        public Participant? RemoteParticipant(string identity)
         {
-            remoteParticipants.TryGetValue(sid, out var remoteParticipant);
+            remoteParticipants.TryGetValue(identity, out var remoteParticipant);
             return remoteParticipant;
         }
 
-        public IReadOnlyCollection<string> RemoteParticipantSids()
+        public IReadOnlyCollection<string> RemoteParticipantIdentities()
         {
             return remoteParticipants.Keys;
         }
@@ -35,12 +36,12 @@ namespace LiveKit.Rooms.Participants
 
         public void AddRemote(Participant participant)
         {
-            remoteParticipants.Add(participant.Sid, participant);
+            remoteParticipants.Add(participant.Identity, participant);
         }
 
         public void RemoveRemote(Participant participant)
         {
-            remoteParticipants.Remove(participant.Sid);
+            remoteParticipants.Remove(participant.Identity);
         }
 
         public void NotifyParticipantUpdate(Participant participant, UpdateFromParticipant update)

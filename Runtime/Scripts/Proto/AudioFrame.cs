@@ -28,59 +28,60 @@ namespace LiveKit.Proto {
             "b3RvIlsKFU5ld0F1ZGlvU3RyZWFtUmVxdWVzdBIUCgx0cmFja19oYW5kbGUY",
             "ASABKAQSLAoEdHlwZRgCIAEoDjIeLmxpdmVraXQucHJvdG8uQXVkaW9TdHJl",
             "YW1UeXBlIkkKFk5ld0F1ZGlvU3RyZWFtUmVzcG9uc2USLwoGc3RyZWFtGAEg",
-            "ASgLMh8ubGl2ZWtpdC5wcm90by5Pd25lZEF1ZGlvU3RyZWFtIrUBChVOZXdB",
+            "ASgLMh8ubGl2ZWtpdC5wcm90by5Pd25lZEF1ZGlvU3RyZWFtIuEBChVOZXdB",
             "dWRpb1NvdXJjZVJlcXVlc3QSLAoEdHlwZRgBIAEoDjIeLmxpdmVraXQucHJv",
             "dG8uQXVkaW9Tb3VyY2VUeXBlEjcKB29wdGlvbnMYAiABKAsyIS5saXZla2l0",
             "LnByb3RvLkF1ZGlvU291cmNlT3B0aW9uc0gAiAEBEhMKC3NhbXBsZV9yYXRl",
-            "GAMgASgNEhQKDG51bV9jaGFubmVscxgEIAEoDUIKCghfb3B0aW9ucyJJChZO",
-            "ZXdBdWRpb1NvdXJjZVJlc3BvbnNlEi8KBnNvdXJjZRgBIAEoCzIfLmxpdmVr",
-            "aXQucHJvdG8uT3duZWRBdWRpb1NvdXJjZSJmChhDYXB0dXJlQXVkaW9GcmFt",
-            "ZVJlcXVlc3QSFQoNc291cmNlX2hhbmRsZRgBIAEoBBIzCgZidWZmZXIYAiAB",
-            "KAsyIy5saXZla2l0LnByb3RvLkF1ZGlvRnJhbWVCdWZmZXJJbmZvIi0KGUNh",
-            "cHR1cmVBdWRpb0ZyYW1lUmVzcG9uc2USEAoIYXN5bmNfaWQYASABKAQiSwoZ",
-            "Q2FwdHVyZUF1ZGlvRnJhbWVDYWxsYmFjaxIQCghhc3luY19pZBgBIAEoBBIS",
-            "CgVlcnJvchgCIAEoCUgAiAEBQggKBl9lcnJvciIaChhOZXdBdWRpb1Jlc2Ft",
-            "cGxlclJlcXVlc3QiUgoZTmV3QXVkaW9SZXNhbXBsZXJSZXNwb25zZRI1Cgly",
-            "ZXNhbXBsZXIYASABKAsyIi5saXZla2l0LnByb3RvLk93bmVkQXVkaW9SZXNh",
-            "bXBsZXIikwEKF1JlbWl4QW5kUmVzYW1wbGVSZXF1ZXN0EhgKEHJlc2FtcGxl",
-            "cl9oYW5kbGUYASABKAQSMwoGYnVmZmVyGAIgASgLMiMubGl2ZWtpdC5wcm90",
-            "by5BdWRpb0ZyYW1lQnVmZmVySW5mbxIUCgxudW1fY2hhbm5lbHMYAyABKA0S",
-            "EwoLc2FtcGxlX3JhdGUYBCABKA0iUAoYUmVtaXhBbmRSZXNhbXBsZVJlc3Bv",
-            "bnNlEjQKBmJ1ZmZlchgBIAEoCzIkLmxpdmVraXQucHJvdG8uT3duZWRBdWRp",
-            "b0ZyYW1lQnVmZmVyInAKFEF1ZGlvRnJhbWVCdWZmZXJJbmZvEhAKCGRhdGFf",
-            "cHRyGAEgASgEEhQKDG51bV9jaGFubmVscxgCIAEoDRITCgtzYW1wbGVfcmF0",
-            "ZRgDIAEoDRIbChNzYW1wbGVzX3Blcl9jaGFubmVsGAQgASgNInkKFU93bmVk",
-            "QXVkaW9GcmFtZUJ1ZmZlchItCgZoYW5kbGUYASABKAsyHS5saXZla2l0LnBy",
-            "b3RvLkZmaU93bmVkSGFuZGxlEjEKBGluZm8YAiABKAsyIy5saXZla2l0LnBy",
-            "b3RvLkF1ZGlvRnJhbWVCdWZmZXJJbmZvIj8KD0F1ZGlvU3RyZWFtSW5mbxIs",
-            "CgR0eXBlGAEgASgOMh4ubGl2ZWtpdC5wcm90by5BdWRpb1N0cmVhbVR5cGUi",
-            "bwoQT3duZWRBdWRpb1N0cmVhbRItCgZoYW5kbGUYASABKAsyHS5saXZla2l0",
-            "LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiABKAsyHi5saXZla2l0",
-            "LnByb3RvLkF1ZGlvU3RyZWFtSW5mbyKfAQoQQXVkaW9TdHJlYW1FdmVudBIV",
-            "Cg1zdHJlYW1faGFuZGxlGAEgASgEEjsKDmZyYW1lX3JlY2VpdmVkGAIgASgL",
-            "MiEubGl2ZWtpdC5wcm90by5BdWRpb0ZyYW1lUmVjZWl2ZWRIABIsCgNlb3MY",
-            "AyABKAsyHS5saXZla2l0LnByb3RvLkF1ZGlvU3RyZWFtRU9TSABCCQoHbWVz",
-            "c2FnZSJJChJBdWRpb0ZyYW1lUmVjZWl2ZWQSMwoFZnJhbWUYASABKAsyJC5s",
-            "aXZla2l0LnByb3RvLk93bmVkQXVkaW9GcmFtZUJ1ZmZlciIQCg5BdWRpb1N0",
-            "cmVhbUVPUyJlChJBdWRpb1NvdXJjZU9wdGlvbnMSGQoRZWNob19jYW5jZWxs",
-            "YXRpb24YASABKAgSGQoRbm9pc2Vfc3VwcHJlc3Npb24YAiABKAgSGQoRYXV0",
-            "b19nYWluX2NvbnRyb2wYAyABKAgiPwoPQXVkaW9Tb3VyY2VJbmZvEiwKBHR5",
-            "cGUYAiABKA4yHi5saXZla2l0LnByb3RvLkF1ZGlvU291cmNlVHlwZSJvChBP",
-            "d25lZEF1ZGlvU291cmNlEi0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJv",
-            "dG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAEoCzIeLmxpdmVraXQucHJv",
-            "dG8uQXVkaW9Tb3VyY2VJbmZvIhQKEkF1ZGlvUmVzYW1wbGVySW5mbyJ1ChNP",
-            "d25lZEF1ZGlvUmVzYW1wbGVyEi0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQu",
-            "cHJvdG8uRmZpT3duZWRIYW5kbGUSLwoEaW5mbxgCIAEoCzIhLmxpdmVraXQu",
-            "cHJvdG8uQXVkaW9SZXNhbXBsZXJJbmZvKkEKD0F1ZGlvU3RyZWFtVHlwZRIX",
-            "ChNBVURJT19TVFJFQU1fTkFUSVZFEAASFQoRQVVESU9fU1RSRUFNX0hUTUwQ",
-            "ASoqCg9BdWRpb1NvdXJjZVR5cGUSFwoTQVVESU9fU09VUkNFX05BVElWRRAA",
-            "QhCqAg1MaXZlS2l0LlByb3RvYgZwcm90bzM="));
+            "GAMgASgNEhQKDG51bV9jaGFubmVscxgEIAEoDRIZCgxlbmFibGVfcXVldWUY",
+            "BSABKAhIAYgBAUIKCghfb3B0aW9uc0IPCg1fZW5hYmxlX3F1ZXVlIkkKFk5l",
+            "d0F1ZGlvU291cmNlUmVzcG9uc2USLwoGc291cmNlGAEgASgLMh8ubGl2ZWtp",
+            "dC5wcm90by5Pd25lZEF1ZGlvU291cmNlImYKGENhcHR1cmVBdWRpb0ZyYW1l",
+            "UmVxdWVzdBIVCg1zb3VyY2VfaGFuZGxlGAEgASgEEjMKBmJ1ZmZlchgCIAEo",
+            "CzIjLmxpdmVraXQucHJvdG8uQXVkaW9GcmFtZUJ1ZmZlckluZm8iLQoZQ2Fw",
+            "dHVyZUF1ZGlvRnJhbWVSZXNwb25zZRIQCghhc3luY19pZBgBIAEoBCJLChlD",
+            "YXB0dXJlQXVkaW9GcmFtZUNhbGxiYWNrEhAKCGFzeW5jX2lkGAEgASgEEhIK",
+            "BWVycm9yGAIgASgJSACIAQFCCAoGX2Vycm9yIhoKGE5ld0F1ZGlvUmVzYW1w",
+            "bGVyUmVxdWVzdCJSChlOZXdBdWRpb1Jlc2FtcGxlclJlc3BvbnNlEjUKCXJl",
+            "c2FtcGxlchgBIAEoCzIiLmxpdmVraXQucHJvdG8uT3duZWRBdWRpb1Jlc2Ft",
+            "cGxlciKTAQoXUmVtaXhBbmRSZXNhbXBsZVJlcXVlc3QSGAoQcmVzYW1wbGVy",
+            "X2hhbmRsZRgBIAEoBBIzCgZidWZmZXIYAiABKAsyIy5saXZla2l0LnByb3Rv",
+            "LkF1ZGlvRnJhbWVCdWZmZXJJbmZvEhQKDG51bV9jaGFubmVscxgDIAEoDRIT",
+            "CgtzYW1wbGVfcmF0ZRgEIAEoDSJQChhSZW1peEFuZFJlc2FtcGxlUmVzcG9u",
+            "c2USNAoGYnVmZmVyGAEgASgLMiQubGl2ZWtpdC5wcm90by5Pd25lZEF1ZGlv",
+            "RnJhbWVCdWZmZXIicAoUQXVkaW9GcmFtZUJ1ZmZlckluZm8SEAoIZGF0YV9w",
+            "dHIYASABKAQSFAoMbnVtX2NoYW5uZWxzGAIgASgNEhMKC3NhbXBsZV9yYXRl",
+            "GAMgASgNEhsKE3NhbXBsZXNfcGVyX2NoYW5uZWwYBCABKA0ieQoVT3duZWRB",
+            "dWRpb0ZyYW1lQnVmZmVyEi0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJv",
+            "dG8uRmZpT3duZWRIYW5kbGUSMQoEaW5mbxgCIAEoCzIjLmxpdmVraXQucHJv",
+            "dG8uQXVkaW9GcmFtZUJ1ZmZlckluZm8iPwoPQXVkaW9TdHJlYW1JbmZvEiwK",
+            "BHR5cGUYASABKA4yHi5saXZla2l0LnByb3RvLkF1ZGlvU3RyZWFtVHlwZSJv",
+            "ChBPd25lZEF1ZGlvU3RyZWFtEi0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQu",
+            "cHJvdG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAEoCzIeLmxpdmVraXQu",
+            "cHJvdG8uQXVkaW9TdHJlYW1JbmZvIp8BChBBdWRpb1N0cmVhbUV2ZW50EhUK",
+            "DXN0cmVhbV9oYW5kbGUYASABKAQSOwoOZnJhbWVfcmVjZWl2ZWQYAiABKAsy",
+            "IS5saXZla2l0LnByb3RvLkF1ZGlvRnJhbWVSZWNlaXZlZEgAEiwKA2VvcxgD",
+            "IAEoCzIdLmxpdmVraXQucHJvdG8uQXVkaW9TdHJlYW1FT1NIAEIJCgdtZXNz",
+            "YWdlIkkKEkF1ZGlvRnJhbWVSZWNlaXZlZBIzCgVmcmFtZRgBIAEoCzIkLmxp",
+            "dmVraXQucHJvdG8uT3duZWRBdWRpb0ZyYW1lQnVmZmVyIhAKDkF1ZGlvU3Ry",
+            "ZWFtRU9TImUKEkF1ZGlvU291cmNlT3B0aW9ucxIZChFlY2hvX2NhbmNlbGxh",
+            "dGlvbhgBIAEoCBIZChFub2lzZV9zdXBwcmVzc2lvbhgCIAEoCBIZChFhdXRv",
+            "X2dhaW5fY29udHJvbBgDIAEoCCI/Cg9BdWRpb1NvdXJjZUluZm8SLAoEdHlw",
+            "ZRgCIAEoDjIeLmxpdmVraXQucHJvdG8uQXVkaW9Tb3VyY2VUeXBlIm8KEE93",
+            "bmVkQXVkaW9Tb3VyY2USLQoGaGFuZGxlGAEgASgLMh0ubGl2ZWtpdC5wcm90",
+            "by5GZmlPd25lZEhhbmRsZRIsCgRpbmZvGAIgASgLMh4ubGl2ZWtpdC5wcm90",
+            "by5BdWRpb1NvdXJjZUluZm8iFAoSQXVkaW9SZXNhbXBsZXJJbmZvInUKE093",
+            "bmVkQXVkaW9SZXNhbXBsZXISLQoGaGFuZGxlGAEgASgLMh0ubGl2ZWtpdC5w",
+            "cm90by5GZmlPd25lZEhhbmRsZRIvCgRpbmZvGAIgASgLMiEubGl2ZWtpdC5w",
+            "cm90by5BdWRpb1Jlc2FtcGxlckluZm8qQQoPQXVkaW9TdHJlYW1UeXBlEhcK",
+            "E0FVRElPX1NUUkVBTV9OQVRJVkUQABIVChFBVURJT19TVFJFQU1fSFRNTBAB",
+            "KioKD0F1ZGlvU291cmNlVHlwZRIXChNBVURJT19TT1VSQ0VfTkFUSVZFEABC",
+            "EKoCDUxpdmVLaXQuUHJvdG9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.AudioStreamType), typeof(global::LiveKit.Proto.AudioSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewAudioStreamRequest), global::LiveKit.Proto.NewAudioStreamRequest.Parser, new[]{ "TrackHandle", "Type" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewAudioStreamResponse), global::LiveKit.Proto.NewAudioStreamResponse.Parser, new[]{ "Stream" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewAudioSourceRequest), global::LiveKit.Proto.NewAudioSourceRequest.Parser, new[]{ "Type", "Options", "SampleRate", "NumChannels" }, new[]{ "Options" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewAudioSourceRequest), global::LiveKit.Proto.NewAudioSourceRequest.Parser, new[]{ "Type", "Options", "SampleRate", "NumChannels", "EnableQueue" }, new[]{ "Options", "EnableQueue" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewAudioSourceResponse), global::LiveKit.Proto.NewAudioSourceResponse.Parser, new[]{ "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureAudioFrameRequest), global::LiveKit.Proto.CaptureAudioFrameRequest.Parser, new[]{ "SourceHandle", "Buffer" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureAudioFrameResponse), global::LiveKit.Proto.CaptureAudioFrameResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
@@ -123,7 +124,6 @@ namespace LiveKit.Proto {
   /// Create a new AudioStream
   /// AudioStream is used to receive audio frames from a track
   /// </summary>
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NewAudioStreamRequest : pb::IMessage<NewAudioStreamRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -350,7 +350,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NewAudioStreamResponse : pb::IMessage<NewAudioStreamResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -552,7 +551,6 @@ namespace LiveKit.Proto {
   /// <summary>
   /// Create a new AudioSource
   /// </summary>
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NewAudioSourceRequest : pb::IMessage<NewAudioSourceRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -560,6 +558,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<NewAudioSourceRequest> _parser = new pb::MessageParser<NewAudioSourceRequest>(() => new NewAudioSourceRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<NewAudioSourceRequest> Parser { get { return _parser; } }
@@ -587,10 +586,12 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NewAudioSourceRequest(NewAudioSourceRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       type_ = other.type_;
       options_ = other.options_ != null ? other.options_.Clone() : null;
       sampleRate_ = other.sampleRate_;
       numChannels_ = other.numChannels_;
+      enableQueue_ = other.enableQueue_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -648,6 +649,33 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "enable_queue" field.</summary>
+    public const int EnableQueueFieldNumber = 5;
+    private readonly static bool EnableQueueDefaultValue = false;
+
+    private bool enableQueue_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool EnableQueue {
+      get { if ((_hasBits0 & 1) != 0) { return enableQueue_; } else { return EnableQueueDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        enableQueue_ = value;
+      }
+    }
+    /// <summary>Gets whether the "enable_queue" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEnableQueue {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "enable_queue" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEnableQueue() {
+      _hasBits0 &= ~1;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -667,6 +695,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(Options, other.Options)) return false;
       if (SampleRate != other.SampleRate) return false;
       if (NumChannels != other.NumChannels) return false;
+      if (EnableQueue != other.EnableQueue) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -678,6 +707,7 @@ namespace LiveKit.Proto {
       if (options_ != null) hash ^= Options.GetHashCode();
       if (SampleRate != 0) hash ^= SampleRate.GetHashCode();
       if (NumChannels != 0) hash ^= NumChannels.GetHashCode();
+      if (HasEnableQueue) hash ^= EnableQueue.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -712,6 +742,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteUInt32(NumChannels);
       }
+      if (HasEnableQueue) {
+        output.WriteRawTag(40);
+        output.WriteBool(EnableQueue);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -738,6 +772,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteUInt32(NumChannels);
       }
+      if (HasEnableQueue) {
+        output.WriteRawTag(40);
+        output.WriteBool(EnableQueue);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -759,6 +797,9 @@ namespace LiveKit.Proto {
       }
       if (NumChannels != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(NumChannels);
+      }
+      if (HasEnableQueue) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -786,6 +827,9 @@ namespace LiveKit.Proto {
       }
       if (other.NumChannels != 0) {
         NumChannels = other.NumChannels;
+      }
+      if (other.HasEnableQueue) {
+        EnableQueue = other.EnableQueue;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -819,6 +863,10 @@ namespace LiveKit.Proto {
           }
           case 32: {
             NumChannels = input.ReadUInt32();
+            break;
+          }
+          case 40: {
+            EnableQueue = input.ReadBool();
             break;
           }
         }
@@ -855,6 +903,10 @@ namespace LiveKit.Proto {
             NumChannels = input.ReadUInt32();
             break;
           }
+          case 40: {
+            EnableQueue = input.ReadBool();
+            break;
+          }
         }
       }
     }
@@ -862,7 +914,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NewAudioSourceResponse : pb::IMessage<NewAudioSourceResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1065,7 +1116,6 @@ namespace LiveKit.Proto {
   /// Push a frame to an AudioSource 
   /// The data provided must be available as long as the client receive the callback.
   /// </summary>
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CaptureAudioFrameRequest : pb::IMessage<CaptureAudioFrameRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1301,7 +1351,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CaptureAudioFrameResponse : pb::IMessage<CaptureAudioFrameResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1491,7 +1540,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CaptureAudioFrameCallback : pb::IMessage<CaptureAudioFrameCallback>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1735,7 +1783,6 @@ namespace LiveKit.Proto {
   /// <summary>
   /// Create a new AudioResampler
   /// </summary>
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NewAudioResamplerRequest : pb::IMessage<NewAudioResamplerRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1888,7 +1935,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class NewAudioResamplerResponse : pb::IMessage<NewAudioResamplerResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2090,7 +2136,6 @@ namespace LiveKit.Proto {
   /// <summary>
   /// Remix and resample an audio frame
   /// </summary>
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RemixAndResampleRequest : pb::IMessage<RemixAndResampleRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2400,7 +2445,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class RemixAndResampleResponse : pb::IMessage<RemixAndResampleResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2599,7 +2643,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioFrameBufferInfo : pb::IMessage<AudioFrameBufferInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2903,7 +2946,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class OwnedAudioFrameBuffer : pb::IMessage<OwnedAudioFrameBuffer>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3148,7 +3190,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioStreamInfo : pb::IMessage<AudioStreamInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3338,7 +3379,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class OwnedAudioStream : pb::IMessage<OwnedAudioStream>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3583,7 +3623,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioStreamEvent : pb::IMessage<AudioStreamEvent>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3906,7 +3945,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioFrameReceived : pb::IMessage<AudioFrameReceived>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -4105,7 +4143,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioStreamEOS : pb::IMessage<AudioStreamEOS>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -4258,7 +4295,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioSourceOptions : pb::IMessage<AudioSourceOptions>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -4522,7 +4558,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioSourceInfo : pb::IMessage<AudioSourceInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -4712,7 +4747,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class OwnedAudioSource : pb::IMessage<OwnedAudioSource>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -4957,7 +4991,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class AudioResamplerInfo : pb::IMessage<AudioResamplerInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -5110,7 +5143,6 @@ namespace LiveKit.Proto {
 
   }
 
-  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class OwnedAudioResampler : pb::IMessage<OwnedAudioResampler>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

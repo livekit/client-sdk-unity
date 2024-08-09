@@ -5,17 +5,17 @@ namespace LiveKit.Rooms
 {
     public static class RoomExtensions
     {
-        public static Participant ParticipantEnsured(this Room room, string sid)
+        public static Participant ParticipantEnsured(this Room room, string identity)
         {
-            return room.Participant(sid) ?? throw new Exception("Participant not found");
+            return room.Participant(identity) ?? throw new Exception("Participant not found");
         }
 
-        public static Participant? Participant(this Room room, string sid)
+        public static Participant? Participant(this Room room, string identity)
         {
-            if (sid == room.Participants.LocalParticipant().Sid)
+            if (identity == room.Participants.LocalParticipant().Identity)
                 return room.Participants.LocalParticipant();
 
-            return room.Participants.RemoteParticipant(sid);
+            return room.Participants.RemoteParticipant(identity);
         }
         
         public static Participant RemoteParticipantEnsured(this IParticipantsHub hub, string sid)

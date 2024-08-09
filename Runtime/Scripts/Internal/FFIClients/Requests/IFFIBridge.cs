@@ -1,3 +1,5 @@
+using Google.Protobuf;
+
 namespace LiveKit.Internal.FFIClients.Requests
 {
     /// <summary>
@@ -5,6 +7,6 @@ namespace LiveKit.Internal.FFIClients.Requests
     /// </summary>
     public interface IFFIBridge
     {
-        FfiRequestWrap<T> NewRequest<T>() where T : class, new();
+        FfiRequestWrap<T> NewRequest<T>() where T : class, IMessage<T>, new();
     }
 }

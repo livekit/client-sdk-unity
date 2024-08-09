@@ -8,6 +8,7 @@ using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.AsyncInstractions;
 using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
+using UnityEngine;
 
 namespace LiveKit.Rooms.Participants
 {
@@ -23,9 +24,9 @@ namespace LiveKit.Rooms.Participants
         public string Identity => info.Identity!;
         public string Name => info.Name!;
         public string Metadata => info.Metadata!;
+        public IReadOnlyDictionary<string, string> Attributes => info.Attributes;
         
         public bool Speaking { get; private set; }
-
         public float AudioLevel { get; private set; }
 
         public ConnectionQuality ConnectionQuality { get; private set; }
@@ -41,6 +42,7 @@ namespace LiveKit.Rooms.Participants
         public Room Room { get; private set; }= null!;
 
         private readonly Dictionary<string, TrackPublication> tracks = new();
+        
         private ParticipantInfo info = null!;
 
         internal void Construct(ParticipantInfo info, Room room, FfiHandle handle, Origin origin)
@@ -88,6 +90,20 @@ namespace LiveKit.Rooms.Participants
             info.Metadata = meta;
         }
 
+        public void UpdateName(string name)
+        {
+            info.Name = name;
+        }
+
+        public void UpdateAttributes(IReadOnlyDictionary<string, string> attributes)
+        {
+            info.Attributes.Clear();
+            foreach (var (key, value) in attributes)
+            {
+                info.Attributes.Add(key, value);
+            }
+        }
+
         public PublishTrackInstruction PublishTrack(
             ITrack localTrack,
             TrackPublishOptions options,
@@ -120,7 +136,7 @@ namespace LiveKit.Rooms.Participants
             publish.StopOnUnpublish = stopOnUnpublish;
             using var response = request.Send();
             FfiResponse res = response;
-            UnityEngine.Debug.LogError("UnpublishTrack Response:: " + res);
+            Debug.LogError("UnpublishTrack Response:: " + res);
         }
     }
 }

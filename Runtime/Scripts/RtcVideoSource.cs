@@ -58,6 +58,10 @@ namespace LiveKit
                     return TextureFormat.RGBA32;
                 case VideoBufferType.Argb:
                     return TextureFormat.ARGB32;
+                case VideoBufferType.Bgra:
+                    return TextureFormat.BGRA32;
+                case VideoBufferType.Rgb24:
+                    return TextureFormat.RGB24;
                 default:
                     throw new NotImplementedException("TODO: Add TextureFormat support for type: " + type);
             }
@@ -69,7 +73,10 @@ namespace LiveKit
             {
                 case VideoBufferType.Rgba:
                 case VideoBufferType.Argb:
+                case VideoBufferType.Bgra:
                     return 4;
+                case VideoBufferType.Rgb24:
+                    return 3;
                 default:
                     throw new NotImplementedException("TODO: Add stride support for type: " + type);
             }

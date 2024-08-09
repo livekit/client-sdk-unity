@@ -8,6 +8,8 @@ namespace LiveKit.Rooms.Participants
     {
         Connected,
         MetadataChanged,
+        NameChanged,
+        AttributesChanged,
         Disconnected
     }
     
@@ -17,9 +19,9 @@ namespace LiveKit.Rooms.Participants
         
         Participant LocalParticipant();
 
-        Participant? RemoteParticipant(string sid);
-        
-        IReadOnlyCollection<string> RemoteParticipantSids();
+        Participant? RemoteParticipant(string identity);
+
+        IReadOnlyCollection<string> RemoteParticipantIdentities();
     }
 
     public interface IMutableParticipantsHub : IParticipantsHub

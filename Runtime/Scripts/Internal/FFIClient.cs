@@ -1,4 +1,5 @@
 using System;
+using AOT;
 using LiveKit.Proto;
 using UnityEngine;
 using Google.Protobuf;
@@ -29,6 +30,7 @@ namespace LiveKit.Internal
         private readonly IMemoryPool memoryPool;
 
         public event PublishTrackDelegate? PublishTrackReceived;
+        public event UnpublishTrackDelegate? UnpublishTrackReceived;
         public event ConnectReceivedDelegate? ConnectReceived;
         public event DisconnectReceivedDelegate? DisconnectReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
@@ -176,16 +178,18 @@ namespace LiveKit.Internal
                     var data = memory.Span();
                     request.WriteTo(data);
 
+                    var dataInLen = new UIntPtr((ulong)data.Length);
+
                     fixed (byte* requestDataPtr = data)
                     {
                         var handle = NativeMethods.FfiNewRequest(
                             requestDataPtr,
-                            data.Length,
+                            dataInLen,
                             out byte* dataPtr,
-                            out int dataLen
+                            out var dataLen
                         );
 
-                        var dataSpan = new Span<byte>(dataPtr, dataLen);
+                        var dataSpan = new Span<byte>(dataPtr, (int)dataLen.ToUInt32());
                         var response = responseParser.ParseFrom(dataSpan)!;
                         NativeMethods.FfiDropHandle(handle);
                         
@@ -206,15 +210,15 @@ namespace LiveKit.Internal
             }
         }
 
-        [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
-        private static unsafe void FFICallback(IntPtr data, int size)
+        [MonoPInvokeCallback(typeof(FFICallbackDelegate))]
+        private static unsafe void FFICallback(IntPtr data, UIntPtr size)
         {
             #if NO_LIVEKIT_MODE
             return;
             #endif
 
             if (isDisposed) return;
-            var respData = new Span<byte>(data.ToPointer()!, size);
+            var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt32());
             var response = FfiEvent.Parser!.ParseFrom(respData);
             
             #if LK_VERBOSE
@@ -235,6 +239,9 @@ namespace LiveKit.Internal
                 case FfiEvent.MessageOneofCase.PublishTrack:
                     Instance.PublishTrackReceived?.Invoke(response.PublishTrack!);
                     break;
+                case FfiEvent.MessageOneofCase.UnpublishTrack:
+                    Instance.UnpublishTrackReceived?.Invoke(response.UnpublishTrack!);
+                    break;
                 case FfiEvent.MessageOneofCase.RoomEvent:
                     Instance.RoomEventReceived?.Invoke(response.RoomEvent);
                     break;
@@ -244,9 +251,8 @@ namespace LiveKit.Internal
                 case FfiEvent.MessageOneofCase.Disconnect:
                     Instance.DisconnectReceived?.Invoke(response.Disconnect!);
                     break;
-                /*case FfiEvent.MessageOneofCase. ParticipantEvent:
-                        Instance.ParticipantEventReceived?.Invoke(response.ParticipantEvent);
-                        break;*/
+                case FfiEvent.MessageOneofCase.PublishTranscription:
+                    break;
                 case FfiEvent.MessageOneofCase.VideoStreamEvent:
                     Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent!);
                     break;
@@ -254,6 +260,8 @@ namespace LiveKit.Internal
                     Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
                     break;
                 case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                    break;
+                case FfiEvent.MessageOneofCase.GetStats:
                     break;
                 case FfiEvent.MessageOneofCase.Panic:
                     Debug.LogError($"Panic received from FFI: {response.Panic?.Message}");
@@ -276,9 +284,12 @@ namespace LiveKit.Internal
                 FfiResponse.MessageOneofCase.UnpublishTrack => response.UnpublishTrack!.AsyncId,
                 FfiResponse.MessageOneofCase.PublishData => response.PublishData!.AsyncId,
                 FfiResponse.MessageOneofCase.SetSubscribed => 0,
-                FfiResponse.MessageOneofCase.UpdateLocalMetadata => response.UpdateLocalMetadata!.AsyncId,
-                FfiResponse.MessageOneofCase.UpdateLocalName => response.UpdateLocalName!.AsyncId,
+                FfiResponse.MessageOneofCase.SetLocalMetadata => response.SetLocalMetadata!.AsyncId,
+                FfiResponse.MessageOneofCase.SetLocalName => response.SetLocalName!.AsyncId,
+                FfiResponse.MessageOneofCase.SetLocalAttributes => response.SetLocalAttributes!.AsyncId,
                 FfiResponse.MessageOneofCase.GetSessionStats => response.GetSessionStats!.AsyncId,
+                FfiResponse.MessageOneofCase.PublishTranscription => response.PublishTranscription!.AsyncId,
+                FfiResponse.MessageOneofCase.PublishSipDtmf => response.PublishSipDtmf!.AsyncId,
                 FfiResponse.MessageOneofCase.CreateVideoTrack => 0,
                 FfiResponse.MessageOneofCase.CreateAudioTrack => 0,
                 FfiResponse.MessageOneofCase.GetStats => response.GetStats!.AsyncId,

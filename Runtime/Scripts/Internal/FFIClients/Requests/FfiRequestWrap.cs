@@ -6,7 +6,7 @@ using LiveKit.Proto;
 
 namespace LiveKit.Internal.FFIClients.Requests
 {
-    public struct FfiRequestWrap<T> : IDisposable where T : class, new()
+    public struct FfiRequestWrap<T> : IDisposable where T : class, IMessage<T>, new()
     {
         public readonly T request;
         private readonly IMultiPool multiPool;

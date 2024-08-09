@@ -16,7 +16,7 @@ namespace LiveKit.Rooms.DataPipes
         public void PublishData(
             Span<byte> data,
             string topic,
-            IReadOnlyCollection<string> sids,
+            IReadOnlyCollection<string> identities,
             DataPacketKind kind = DataPacketKind.KindLossy
         )
         {
@@ -24,7 +24,7 @@ namespace LiveKit.Rooms.DataPipes
             {
                 fixed (byte* pointer = data)
                 {
-                    PublishData(pointer, data.Length, topic, sids, kind);
+                    PublishData(pointer, data.Length, topic, identities, kind);
                 }
             }
         }
@@ -33,17 +33,17 @@ namespace LiveKit.Rooms.DataPipes
             byte* data,
             int len,
             string topic,
-            IReadOnlyCollection<string> sids,
+            IReadOnlyCollection<string> identities,
             DataPacketKind kind = DataPacketKind.KindLossy
         )
         {
             using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
             var dataRequest = request.request;
-            dataRequest.DestinationSids!.Clear();
-            dataRequest.DestinationSids.AddRange(sids);
+            dataRequest.DestinationIdentities!.Clear();
+            dataRequest.DestinationIdentities.AddRange(identities);
             dataRequest.DataLen = (ulong)len;
             dataRequest.DataPtr = (ulong)data;
-            dataRequest.Kind = kind;
+            dataRequest.Reliable = kind == DataPacketKind.KindReliable;
             dataRequest.Topic = topic;
             dataRequest.LocalParticipantHandle = (ulong)participantsHub.LocalParticipant().Handle.DangerousGetHandle();
             Utils.Debug("Sending message: " + topic);

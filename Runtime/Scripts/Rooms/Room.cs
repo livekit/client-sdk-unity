@@ -24,11 +24,33 @@ namespace LiveKit.Rooms
     public class Room : IRoom
     {
         public delegate void MetaDelegate(string metaData);
+
+        public delegate void SidDelegate(string sid);
+
         public delegate void RemoteParticipantDelegate(Participant participant);
+
+        private readonly IMemoryPool memoryPool;
+        private readonly IMutableActiveSpeakers activeSpeakers;
+        private readonly IMutableParticipantsHub participantsHub;
+        private readonly ITracksFactory tracksFactory;
+        private readonly IFfiHandleFactory ffiHandleFactory;
+        private readonly IParticipantFactory participantFactory;
+        private readonly ITrackPublicationFactory trackPublicationFactory;
+        private readonly IMutableDataPipe dataPipe;
+        private readonly IMutableRoomInfo roomInfo;
+
+        public IActiveSpeakers ActiveSpeakers => activeSpeakers;
+
+        public IParticipantsHub Participants => participantsHub;
+
+        public IDataPipe DataPipe => dataPipe;
+
+        public IRoomInfo Info => roomInfo;
 
         internal FfiHandle Handle { get; private set; } = null!;
 
         public event MetaDelegate? RoomMetadataChanged;
+        public event SidDelegate? RoomSidChanged;
         public event LocalPublishDelegate? LocalTrackPublished;
         public event LocalPublishDelegate? LocalTrackUnpublished;
         public event PublishDelegate? TrackPublished;
@@ -41,39 +63,24 @@ namespace LiveKit.Rooms
         public event ConnectionStateChangeDelegate? ConnectionStateChanged;
         public event ConnectionDelegate? ConnectionUpdated;
 
-        public IActiveSpeakers ActiveSpeakers => activeSpeakers;
-
-        public IParticipantsHub Participants => participantsHub;
-
-        public IDataPipe DataPipe => dataPipe;
-
-        public IRoomInfo Info => roomInfo;
-        
-        private readonly IMemoryPool memoryPool;
-        private readonly IMutableActiveSpeakers activeSpeakers;
-        private readonly IMutableParticipantsHub participantsHub;
-        private readonly ITracksFactory tracksFactory;
-        private readonly IFfiHandleFactory ffiHandleFactory;
-        private readonly IParticipantFactory participantFactory;
-        private readonly ITrackPublicationFactory trackPublicationFactory;
-        private readonly IMutableDataPipe dataPipe;
-        private readonly IMutableRoomInfo roomInfo;
-
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
             new DefaultActiveSpeakers(),
             new ParticipantsHub(),
-            new TracksFactory(), 
-            IFfiHandleFactory.Default, 
-            IParticipantFactory.Default, 
-            ITrackPublicationFactory.Default, 
-            new DataPipe(), 
+            new TracksFactory(),
+            IFfiHandleFactory.Default,
+            IParticipantFactory.Default,
+            ITrackPublicationFactory.Default,
+            new DataPipe(),
             new MemoryRoomInfo()
         )
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers, IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory, IParticipantFactory participantFactory, ITrackPublicationFactory trackPublicationFactory, IMutableDataPipe dataPipe, IMutableRoomInfo roomInfo)
+        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers,
+            IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory,
+            IParticipantFactory participantFactory, ITrackPublicationFactory trackPublicationFactory,
+            IMutableDataPipe dataPipe, IMutableRoomInfo roomInfo)
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
@@ -89,8 +96,15 @@ namespace LiveKit.Rooms
 
         public void UpdateLocalMetadata(string metadata)
         {
-            using var request = FFIBridge.Instance.NewRequest<UpdateLocalMetadataRequest>();
+            using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
             request.request.Metadata = metadata;
+            using var response = request.Send();
+        }
+
+        public void SetLocalName(string name)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
+            request.request.Name = name;
             using var response = request.Send();
         }
 
@@ -118,29 +132,47 @@ namespace LiveKit.Rooms
                 Utils.Debug("Ignoring. Different Room... " + e);
                 return;
             }
-            Utils.Debug($"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)Handle.DangerousGetHandle()})");
+
+            Utils.Debug(
+                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)Handle.DangerousGetHandle()})");
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.RoomMetadataChanged:
-                {
-                        roomInfo.UpdateMetadata(e.RoomMetadataChanged!.Metadata!);
-                        RoomMetadataChanged?.Invoke(roomInfo.Metadata);
-                    }
+                    roomInfo.UpdateMetadata(e.RoomMetadataChanged!.Metadata!);
+                    RoomMetadataChanged?.Invoke(roomInfo.Metadata);
+                    break;
+                case RoomEvent.MessageOneofCase.RoomSidChanged:
+                    roomInfo.UpdateSid(e.RoomSidChanged!.Sid!);
+                    RoomSidChanged?.Invoke(roomInfo.Sid);
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantMetadataChanged:
-                    {
-                        var participant = this.ParticipantEnsured(e.ParticipantNameChanged!.ParticipantSid!);
-                        participant.UpdateMeta(e.ParticipantMetadataChanged!.Metadata!);
-                        participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.MetadataChanged);
-                    }
+                {
+                    var participant = this.ParticipantEnsured(e.ParticipantNameChanged!.ParticipantIdentity!);
+                    participant.UpdateMeta(e.ParticipantMetadataChanged!.Metadata!);
+                    participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.MetadataChanged);
+                }
+                    break;
+                case RoomEvent.MessageOneofCase.ParticipantNameChanged:
+                {
+                    var participant = this.ParticipantEnsured(e.ParticipantNameChanged!.ParticipantIdentity!);
+                    participant.UpdateName(e.ParticipantNameChanged!.Name!);
+                    participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.NameChanged);
+                }
+                    break;
+                case RoomEvent.MessageOneofCase.ParticipantAttributesChanged:
+                {
+                    var participant = this.ParticipantEnsured(e.ParticipantAttributesChanged!.ParticipantIdentity!);
+                    participant.UpdateAttributes(e.ParticipantAttributesChanged.Attributes);
+                    participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.AttributesChanged);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
                 {
                     var participant = participantFactory.NewRemote(
                         this,
-                            e.ParticipantConnected!.Info!.Info!,
-                            null,
-                            ffiHandleFactory.NewFfiHandle(e.ParticipantConnected.Info.Handle!.Id
+                        e.ParticipantConnected!.Info!.Info!,
+                        null,
+                        ffiHandleFactory.NewFfiHandle(e.ParticipantConnected.Info.Handle!.Id
                         )
                     );
                     participantsHub.AddRemote(participant);
@@ -148,110 +180,120 @@ namespace LiveKit.Rooms
                 }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
-                    {
-                        var info = e.ParticipantDisconnected!;
-                        var participant = participantsHub.RemoteParticipantEnsured(info.ParticipantSid!);
-                        participantsHub.RemoveRemote(participant);
-                        participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.Disconnected);
-                    }
+                {
+                    var info = e.ParticipantDisconnected!;
+                    var participant = participantsHub.RemoteParticipantEnsured(info.ParticipantIdentity!);
+                    participantsHub.RemoveRemote(participant);
+                    participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.Disconnected);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.LocalTrackUnpublished:
+                {
+                    if (Participants.LocalParticipant().Tracks.ContainsKey(e.LocalTrackUnpublished!.PublicationSid))
                     {
-                        if (Participants.LocalParticipant().Tracks.ContainsKey(e.LocalTrackUnpublished!.PublicationSid))
-                        {
-                            var publication = Participants.LocalParticipant().TrackPublication(e.LocalTrackUnpublished.PublicationSid!);
-                            LocalTrackUnpublished?.Invoke(publication, Participants.LocalParticipant());
-                        }
-                        else
-                        {
-                            Utils.Debug("Unable to find local track after unpublish: " + e.LocalTrackPublished!.TrackSid);
-                        }
+                        var publication = Participants.LocalParticipant()
+                            .TrackPublication(e.LocalTrackUnpublished.PublicationSid!);
+                        LocalTrackUnpublished?.Invoke(publication, Participants.LocalParticipant());
                     }
+                    else
+                    {
+                        Utils.Debug("Unable to find local track after unpublish: " + e.LocalTrackPublished!.TrackSid);
+                    }
+                }
                     break;
                 case RoomEvent.MessageOneofCase.LocalTrackPublished:
+                {
+                    if (Participants.LocalParticipant().Tracks.ContainsKey(e.LocalTrackPublished!.TrackSid))
                     {
-                        if(Participants.LocalParticipant().Tracks.ContainsKey(e.LocalTrackPublished!.TrackSid))
-                        {
-                            var publication = Participants.LocalParticipant().TrackPublication(e.LocalTrackPublished.TrackSid!);
-                            LocalTrackPublished?.Invoke(publication, Participants.LocalParticipant());
-                        } else
-                        {
-                            Utils.Debug("Unable to find local track after publish: " + e.LocalTrackPublished.TrackSid);
-                        }
+                        var publication = Participants.LocalParticipant()
+                            .TrackPublication(e.LocalTrackPublished.TrackSid!);
+                        LocalTrackPublished?.Invoke(publication, Participants.LocalParticipant());
                     }
+                    else
+                    {
+                        Utils.Debug("Unable to find local track after publish: " + e.LocalTrackPublished.TrackSid);
+                    }
+                }
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
-                    {
-                        var participant = participantsHub.RemoteParticipantEnsured(e.TrackPublished!.ParticipantSid!);
-                        var publication = trackPublicationFactory.NewTrackPublication(e.TrackPublished.Publication!.Handle, e.TrackPublished.Publication!.Info!);
-                        participant.Publish(publication);
-                        TrackPublished?.Invoke(publication, participant);
-                    }
+                {
+                    var participant = participantsHub.RemoteParticipantEnsured(e.TrackPublished!.ParticipantIdentity!);
+                    var publication = trackPublicationFactory.NewTrackPublication(e.TrackPublished.Publication!.Handle,
+                        e.TrackPublished.Publication!.Info!);
+                    participant.Publish(publication);
+                    TrackPublished?.Invoke(publication, participant);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnpublished:
-                    {
-                        var participant = participantsHub.RemoteParticipantEnsured(e.TrackUnpublished!.ParticipantSid!);
-                        participant.UnPublish(e.TrackUnpublished.PublicationSid!, out var unpublishedTrack);
-                        TrackUnpublished?.Invoke(unpublishedTrack, participant);
-                    }
+                {
+                    var participant =
+                        participantsHub.RemoteParticipantEnsured(e.TrackUnpublished!.ParticipantIdentity!);
+                    participant.UnPublish(e.TrackUnpublished.PublicationSid!, out var unpublishedTrack);
+                    TrackUnpublished?.Invoke(unpublishedTrack, participant);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.TrackSubscribed:
-                    {
-                        var info = e.TrackSubscribed!.Track!.Info!;
-                        var participant = participantsHub.RemoteParticipantEnsured(e.TrackSubscribed.ParticipantSid!);
-                        var publication = participant.TrackPublication(info.Sid!);
-                        var trackHandle = ffiHandleFactory.NewFfiHandle((IntPtr)e.TrackSubscribed.Track.Handle.Id);
+                {
+                    var info = e.TrackSubscribed!.Track!.Info!;
+                    var participant = participantsHub.RemoteParticipantEnsured(e.TrackSubscribed.ParticipantIdentity!);
+                    var publication = participant.TrackPublication(info.Sid!);
+                    var trackHandle = ffiHandleFactory.NewFfiHandle((IntPtr)e.TrackSubscribed.Track.Handle.Id);
 
-                        var track = tracksFactory.NewTrack(trackHandle, info, this, participant);
-                        publication.UpdateTrack(track);
-                        TrackSubscribed?.Invoke(track, publication, participant);
-                    }
+                    var track = tracksFactory.NewTrack(trackHandle, info, this, participant);
+                    publication.UpdateTrack(track);
+                    TrackSubscribed?.Invoke(track, publication, participant);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnsubscribed:
-                    {
-                        var participant = this.ParticipantEnsured(e.TrackUnsubscribed!.ParticipantSid!);
-                        var publication = participant.TrackPublication(e.TrackUnsubscribed.TrackSid!);
-                        publication.RemoveTrack(out var removedTrack);
-                        TrackUnsubscribed?.Invoke(removedTrack!, publication, participant);
-                    }
+                {
+                    var participant = this.ParticipantEnsured(e.TrackUnsubscribed!.ParticipantIdentity!);
+                    var publication = participant.TrackPublication(e.TrackUnsubscribed.TrackSid!);
+                    publication.RemoveTrack(out var removedTrack);
+                    TrackUnsubscribed?.Invoke(removedTrack!, publication, participant);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.TrackMuted:
-                    {
-                        var trackMuted = e.TrackMuted!;
-                        var participant = this.ParticipantEnsured(trackMuted.ParticipantSid!);
-                        var publication = participant.TrackPublication(trackMuted.TrackSid!);
-                        publication.UpdateMuted(true);
-                        TrackMuted?.Invoke(publication, participant);
-                    }
+                {
+                    var trackMuted = e.TrackMuted!;
+                    var participant = this.ParticipantEnsured(trackMuted.ParticipantIdentity!);
+                    var publication = participant.TrackPublication(trackMuted.TrackSid!);
+                    publication.UpdateMuted(true);
+                    TrackMuted?.Invoke(publication, participant);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnmuted:
-                    {
-                        var trackUnmuted = e.TrackUnmuted!;
-                        var participant = this.ParticipantEnsured(trackUnmuted.ParticipantSid!);
-                        var publication = participant.TrackPublication(trackUnmuted.TrackSid!);
-                        publication.UpdateMuted(false);
-                        TrackUnmuted?.Invoke(publication, participant);
-                    }
+                {
+                    var trackUnmuted = e.TrackUnmuted!;
+                    var participant = this.ParticipantEnsured(trackUnmuted.ParticipantIdentity!);
+                    var publication = participant.TrackPublication(trackUnmuted.TrackSid!);
+                    publication.UpdateMuted(false);
+                    TrackUnmuted?.Invoke(publication, participant);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.ActiveSpeakersChanged:
-                    {
-                        activeSpeakers.UpdateCurrentActives(e.ActiveSpeakersChanged!.ParticipantSids!);
-                    }
+                {
+                    activeSpeakers.UpdateCurrentActives(e.ActiveSpeakersChanged!.ParticipantIdentities!);
+                }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionQualityChanged:
-                    {
-                        var participant = this.ParticipantEnsured(e.ConnectionQualityChanged!.ParticipantSid!);
-                        var quality = e.ConnectionQualityChanged.Quality;
-                        ConnectionQualityChanged?.Invoke(quality, participant);
-                    }
+                {
+                    var participant = this.ParticipantEnsured(e.ConnectionQualityChanged!.ParticipantIdentity!);
+                    var quality = e.ConnectionQualityChanged.Quality;
+                    ConnectionQualityChanged?.Invoke(quality, participant);
+                }
                     break;
-                case RoomEvent.MessageOneofCase.DataReceived:
+                case RoomEvent.MessageOneofCase.DataPacketReceived:
+                {
+                    var dataReceivedPacket = e.DataPacketReceived;
+
+                    if (dataReceivedPacket.ValueCase == DataPacketReceived.ValueOneofCase.User)
                     {
-                        var dataInfo = e.DataReceived!.Data!;
+                        var dataInfo = dataReceivedPacket.User!.Data!;
                         using var memory = dataInfo.ReadAndDispose(memoryPool);
-                        var participant = this.ParticipantEnsured(e.DataReceived.ParticipantSid!);
-                        dataPipe.Notify(memory.Span(), participant, e.DataReceived.Kind);
+                        var participant = this.ParticipantEnsured(dataReceivedPacket.ParticipantIdentity!);
+                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.Kind);
                     }
+                }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     roomInfo.UpdateConnectionState(e.ConnectionStateChanged!.State);
@@ -276,18 +318,19 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.TrackSubscriptionFailed:
                     //ignore
                     break;
-                case RoomEvent.MessageOneofCase.ParticipantNameChanged:
-                    //ignore
-                    break;
                 case RoomEvent.MessageOneofCase.E2EeStateChanged:
                     //ignore
                     break;
+                case RoomEvent.MessageOneofCase.TranscriptionReceived:
+                    //ignore
+                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(e), e.MessageCase.ToString());
             }
         }
 
-        internal void OnConnect(FfiOwnedHandle roomHandle, RoomInfo info, OwnedParticipant participant, RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
+        internal void OnConnect(FfiOwnedHandle roomHandle, RoomInfo info, OwnedParticipant participant,
+            RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle!.Id}");
             Utils.Debug(info);

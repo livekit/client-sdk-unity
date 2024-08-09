@@ -1,4 +1,5 @@
 using System;
+using Google.Protobuf;
 using LiveKit.Internal.FFIClients.Pools;
 
 namespace LiveKit.Internal.FFIClients.Requests
@@ -25,7 +26,7 @@ namespace LiveKit.Internal.FFIClients.Requests
         }
 
 
-        public FfiRequestWrap<T> NewRequest<T>() where T : class, new()
+        public FfiRequestWrap<T> NewRequest<T>() where T : class, IMessage<T>, new()
         {
             return new FfiRequestWrap<T>(ffiClient, multiPool);
         }

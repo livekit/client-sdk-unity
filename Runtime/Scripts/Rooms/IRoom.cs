@@ -22,6 +22,8 @@ namespace LiveKit.Rooms
 
         void UpdateLocalMetadata(string metadata);
 
+        void SetLocalName(string name);
+
         Task<bool> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
 
         Task DisconnectAsync(CancellationToken cancellationToken);
