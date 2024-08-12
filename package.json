@@ -1,6 +1,6 @@
 {
   "name": "com.decentraland.livekit-sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2021.3",
