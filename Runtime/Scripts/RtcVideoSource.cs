@@ -156,7 +156,7 @@ namespace LiveKit
                     TextureReceived?.Invoke(_texture2D);
                 }
 
-                if(TextureReceived.GetInvocationList().Length > 0)
+                if(TextureReceived != null && TextureReceived.GetInvocationList().Length > 0)
                 {
                     LoadToTexture2D(_texture2D, _dest as RenderTexture);
                 }
@@ -171,7 +171,6 @@ namespace LiveKit
         {
             if (!isDisposed)
             {
-                if (_data != null) _data.Dispose();
                 if (_texture2D != null) UnityEngine.Object.Destroy(_texture2D);
                 isDisposed = true;
             }
