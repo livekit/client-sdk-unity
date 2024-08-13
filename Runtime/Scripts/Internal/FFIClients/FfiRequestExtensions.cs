@@ -33,11 +33,11 @@ namespace LiveKit.Internal.FFIClients
                 case SetSubscribedRequest setSubscribedRequest:
                     ffiRequest.SetSubscribed = setSubscribedRequest;
                     break;
-                case UpdateLocalMetadataRequest updateLocalMetadataRequest:
-                    ffiRequest.UpdateLocalMetadata = updateLocalMetadataRequest;
+                case SetLocalMetadataRequest updateLocalMetadataRequest:
+                    ffiRequest.SetLocalMetadata = updateLocalMetadataRequest;
                     break;
-                case UpdateLocalNameRequest updateLocalNameRequest:
-                    ffiRequest.UpdateLocalName = updateLocalNameRequest;
+                case SetLocalNameRequest updateLocalNameRequest:
+                    ffiRequest.SetLocalName = updateLocalNameRequest;
                     break;
                 case GetSessionStatsRequest getSessionStatsRequest:
                     ffiRequest.GetSessionStats = getSessionStatsRequest;
@@ -106,8 +106,9 @@ namespace LiveKit.Internal.FFIClients
                 || request.UnpublishTrack != null
                 || request.PublishData != null
                 || request.SetSubscribed != null
-                || request.UpdateLocalMetadata != null
-                || request.UpdateLocalName != null
+                || request.SetLocalMetadata != null
+                || request.SetLocalName != null
+                || request.SetLocalAttributes != null
                 || request.GetSessionStats != null
                 ||
 
@@ -154,8 +155,9 @@ namespace LiveKit.Internal.FFIClients
                 || response.UnpublishTrack != null
                 || response.PublishData != null
                 || response.SetSubscribed != null
-                || response.UpdateLocalMetadata != null
-                || response.UpdateLocalName != null
+                || response.SetLocalMetadata != null
+                || response.SetLocalName != null
+                || response.SetLocalAttributes != null
                 || response.GetSessionStats != null
                 ||
 

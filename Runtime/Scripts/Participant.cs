@@ -118,7 +118,7 @@ namespace LiveKit
 
         public void UpdateMetadata(string metadata)
         {
-            using var request = FFIBridge.Instance.NewRequest<UpdateLocalMetadataRequest>();
+            using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
             var updateReq = request.request;
             updateReq.Metadata = metadata;
             var resp = request.Send();
@@ -126,7 +126,7 @@ namespace LiveKit
 
         public void UpdateName(string name)
         {
-            using var request = FFIBridge.Instance.NewRequest<UpdateLocalNameRequest>();
+            using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
             var updateReq = request.request;
             updateReq.Name = name;
             var resp = request.Send();

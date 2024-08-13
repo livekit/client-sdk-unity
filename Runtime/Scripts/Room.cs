@@ -200,21 +200,21 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantMetadataChanged:
                     {
-                        var participant = GetParticipant(e.ParticipantMetadataChanged.ParticipantSid);
+                        var participant = GetParticipant(e.ParticipantMetadataChanged.ParticipantIdentity);
                         if (participant != null)
                         {
                             ParticipantMetadataChanged?.Invoke(participant);
                             participant.SetMeta(e.ParticipantMetadataChanged.Metadata);
                         }
-                        else Utils.Debug("Unable to find participant: " + e.ParticipantMetadataChanged.ParticipantSid + " in Meta data Change Event");
+                        else Utils.Debug("Unable to find participant: " + e.ParticipantMetadataChanged.ParticipantIdentity + " in Meta data Change Event");
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantNameChanged:
                     {
-                        var participant = GetParticipant(e.ParticipantNameChanged.ParticipantSid);
+                        var participant = GetParticipant(e.ParticipantNameChanged.ParticipantIdentity);
                         participant.SetName(e.ParticipantNameChanged.Name);
                         if (participant != null) ParticipantNameChanged?.Invoke(participant);
-                        else Utils.Debug("Unable to find participant: " + e.ParticipantNameChanged.ParticipantSid + " in Meta data Change Event");
+                        else Utils.Debug("Unable to find participant: " + e.ParticipantNameChanged.ParticipantIdentity + " in Meta data Change Event");
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
@@ -225,7 +225,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
-                        var sid = e.ParticipantDisconnected.ParticipantSid;
+                        var sid = e.ParticipantDisconnected.ParticipantIdentity;
                         var participant = RemoteParticipants[sid];
                         _participants.Remove(sid);
                         ParticipantDisconnected?.Invoke(participant);
@@ -233,7 +233,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
-                        var participant = RemoteParticipants[e.TrackPublished.ParticipantSid];
+                        var participant = RemoteParticipants[e.TrackPublished.ParticipantIdentity];
                         var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info, FfiHandle.FromOwnedHandle(e.TrackPublished.Publication.Handle));
                         participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
@@ -242,7 +242,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnpublished:
                     {
-                        var participant = RemoteParticipants[e.TrackUnpublished.ParticipantSid];
+                        var participant = RemoteParticipants[e.TrackUnpublished.ParticipantIdentity];
                         var publication = participant.Tracks[e.TrackUnpublished.PublicationSid];
                         participant._tracks.Remove(publication.Sid);
                         participant.OnTrackUnpublished(publication);
@@ -253,7 +253,7 @@ namespace LiveKit
                     {
                         var track = e.TrackSubscribed.Track;
                         var info = track.Info;
-                        var participant = RemoteParticipants[e.TrackSubscribed.ParticipantSid];
+                        var participant = RemoteParticipants[e.TrackSubscribed.ParticipantIdentity];
                         var publication = participant.Tracks[info.Sid];
 
                         if(publication == null)
@@ -277,7 +277,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnsubscribed:
                     {
-                        var participant = RemoteParticipants[e.TrackUnsubscribed.ParticipantSid];
+                        var participant = RemoteParticipants[e.TrackUnsubscribed.ParticipantIdentity];
                         var publication = participant.Tracks[e.TrackUnsubscribed.TrackSid];
                         var track = publication.Track;
                         publication.UpdateTrack(null);
@@ -312,7 +312,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackMuted:
                     {
-                        var participant = GetParticipant(e.TrackMuted.ParticipantSid);
+                        var participant = GetParticipant(e.TrackMuted.ParticipantIdentity);
                         var publication = participant.Tracks[e.TrackMuted.TrackSid];
                         publication.UpdateMuted(true);
                         TrackMuted?.Invoke(publication, participant);
@@ -320,7 +320,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnmuted:
                     {
-                        var participant = GetParticipant(e.TrackUnmuted.ParticipantSid);
+                        var participant = GetParticipant(e.TrackUnmuted.ParticipantIdentity);
                         var publication = participant.Tracks[e.TrackUnmuted.TrackSid];
                         publication.UpdateMuted(false);
                         TrackUnmuted?.Invoke(publication, participant);
@@ -328,18 +328,18 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.ActiveSpeakersChanged:
                     {
-                        var sids = e.ActiveSpeakersChanged.ParticipantSids;
-                        var speakers = new List<Participant>(sids.Count);
+                        var identities = e.ActiveSpeakersChanged.ParticipantIdentities;
+                        var speakers = new List<Participant>(identities.Count);
 
-                        foreach (var sid in sids)
-                            speakers.Add(GetParticipant(sid));
+                        foreach (var id in identities)
+                            speakers.Add(GetParticipant(id));
 
                         ActiveSpeakersChanged?.Invoke(speakers);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionQualityChanged:
                     {
-                        var participant = GetParticipant(e.ConnectionQualityChanged.ParticipantSid);
+                        var participant = GetParticipant(e.ConnectionQualityChanged.ParticipantIdentity);
                         var quality = e.ConnectionQualityChanged.Quality;
                         participant.ConnectionQuality = quality;
                         ConnectionQualityChanged?.Invoke(quality, participant);
@@ -359,7 +359,7 @@ namespace LiveKit
                                     var data = new byte[dataInfo.Data.Data.DataLen];
                                     Marshal.Copy((IntPtr)dataInfo.Data.Data.DataPtr, data, 0, data.Length);
 #pragma warning disable CS0612 // Type or member is obsolete
-                                    var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
+                                    var participant = GetParticipant(e.DataPacketReceived.ParticipantIdentity);
 #pragma warning restore CS0612 // Type or member is obsolete
                                     DataReceived?.Invoke(data, participant, e.DataPacketReceived.Kind, dataInfo.Topic);
                                 }
@@ -368,7 +368,7 @@ namespace LiveKit
                                 {
                                     var dtmfInfo = e.DataPacketReceived.SipDtmf;
 #pragma warning disable CS0612 // Type or member is obsolete
-                                    var participant = GetParticipant(e.DataPacketReceived.ParticipantSid);
+                                    var participant = GetParticipant(e.DataPacketReceived.ParticipantIdentity);
 #pragma warning restore CS0612 // Type or member is obsolete
                                     SipDtmfReceived?.Invoke(participant, dtmfInfo.Code, dtmfInfo.Digit);
                                 }
@@ -392,7 +392,7 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.E2EeStateChanged:
                     {
-                        var participant = GetParticipant(e.E2EeStateChanged.ParticipantSid);
+                        var participant = GetParticipant(e.E2EeStateChanged.ParticipantIdentity);
                         E2EeStateChanged?.Invoke(participant, e.E2EeStateChanged.State);
                     }
                     break;
@@ -431,7 +431,7 @@ namespace LiveKit
             var participant = item.Participant;
             var publications = item.Publications;
             var newParticipant = new RemoteParticipant(participant, this);
-            _participants.Add(participant.Info.Sid, newParticipant);
+            _participants.Add(participant.Info.Identity, newParticipant);
             foreach (var pub in publications)
             {
                 var publication = new RemoteTrackPublication(pub.Info, FfiHandle.FromOwnedHandle(pub.Handle));
@@ -444,16 +444,16 @@ namespace LiveKit
         internal RemoteParticipant CreateRemoteParticipant(OwnedParticipant participant)
         {
             var newParticipant = new RemoteParticipant(participant, this);
-            _participants.Add(participant.Info.Sid, newParticipant);
+            _participants.Add(participant.Info.Identity, newParticipant);
             return newParticipant;
         }
 
-        internal Participant GetParticipant(string sid)
+        internal Participant GetParticipant(string identity)
         {
-            if (sid == LocalParticipant.Sid)
+            if (identity == LocalParticipant.Identity)
                 return LocalParticipant;
 
-            RemoteParticipants.TryGetValue(sid, out var remoteParticipant);
+            RemoteParticipants.TryGetValue(identity, out var remoteParticipant);
             return remoteParticipant;
         }
     }
