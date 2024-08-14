@@ -259,6 +259,10 @@ namespace LiveKit.Internal
                 case FfiEvent.MessageOneofCase.AudioStreamEvent:
                     Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
                     break;
+                case FfiEvent.MessageOneofCase.SetLocalMetadata:
+                case FfiEvent.MessageOneofCase.SetLocalName:
+                case FfiEvent.MessageOneofCase.SetLocalAttributes:
+                    break;
                 case FfiEvent.MessageOneofCase.CaptureAudioFrame:
                     break;
                 case FfiEvent.MessageOneofCase.GetStats:

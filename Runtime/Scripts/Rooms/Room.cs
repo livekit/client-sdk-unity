@@ -97,14 +97,28 @@ namespace LiveKit.Rooms
         public void UpdateLocalMetadata(string metadata)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
+            
+            var localParticipant = participantsHub.LocalParticipant();
+            
+            request.request.LocalParticipantHandle = (uint) localParticipant.Handle.DangerousGetHandle();
             request.request.Metadata = metadata;
+            
+            localParticipant.UpdateMeta(metadata);
+            
             using var response = request.Send();
         }
 
         public void SetLocalName(string name)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
+            
+            var localParticipant = participantsHub.LocalParticipant();
+
+            request.request.LocalParticipantHandle = (uint) localParticipant.Handle.DangerousGetHandle();
             request.request.Name = name;
+
+            localParticipant.UpdateName(name);
+            
             using var response = request.Send();
         }
 
