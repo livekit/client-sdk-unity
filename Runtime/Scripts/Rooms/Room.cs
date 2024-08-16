@@ -293,6 +293,7 @@ namespace LiveKit.Rooms
                 {
                     var participant = this.ParticipantEnsured(e.ConnectionQualityChanged!.ParticipantIdentity!);
                     var quality = e.ConnectionQualityChanged.Quality;
+                    participant.UpdateQuality(quality);
                     ConnectionQualityChanged?.Invoke(quality, participant);
                 }
                     break;

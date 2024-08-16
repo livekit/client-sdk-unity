@@ -95,6 +95,11 @@ namespace LiveKit.Rooms.Participants
             info.Name = name;
         }
 
+        public void UpdateQuality(ConnectionQuality connectionQuality)
+        {
+            ConnectionQuality = connectionQuality;
+        }
+
         public void UpdateAttributes(IReadOnlyDictionary<string, string> attributes)
         {
             info.Attributes.Clear();
