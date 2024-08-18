@@ -130,10 +130,19 @@ namespace LiveKit
         {
             var old_rt = RenderTexture.active;
             RenderTexture.active = rTex;
-
             tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
-            tex.Apply();
 
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            // Flip the texture for OSX
+            var pixels = tex.GetPixels();
+            var flippedPixels = new Color[pixels.Length];
+            for (int i = 0; i < rTex.height; i++)
+            {
+                Array.Copy(pixels, i * rTex.width, flippedPixels, (rTex.height - i - 1) * rTex.width, rTex.width);
+            }
+            tex.SetPixels(flippedPixels);
+#endif
+            tex.Apply();
             RenderTexture.active = old_rt;
         }
 
