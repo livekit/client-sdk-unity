@@ -128,6 +128,11 @@ namespace LiveKit
 
         private void LoadToTexture2D(Texture2D tex, RenderTexture rTex)
         {
+            if (tex == null || rTex == null)
+            {
+                return;
+            }
+
             var old_rt = RenderTexture.active;
             RenderTexture.active = rTex;
             tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
