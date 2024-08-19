@@ -47,6 +47,8 @@ namespace LiveKit
 
         private bool _muted = false;
 
+        public override bool Muted => _muted;
+
         public RtcAudioSource(AudioSource source, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
         {
             _sourceType = audioSourceType;
@@ -173,7 +175,6 @@ namespace LiveKit
             _audioSource = source;
             _audioFilter = source.gameObject.AddComponent<AudioFilter>();
         }
-
 
         public override void SetMute(bool muted)
         {

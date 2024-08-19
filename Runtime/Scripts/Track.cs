@@ -20,7 +20,7 @@ namespace LiveKit
 
     public interface ILocalTrack : ITrack
     {
-        RtcSource source { get; }
+        IRtcSource source { get; }
 
         public void UpdateSid (string sid) {
             Sid = sid;
@@ -104,7 +104,7 @@ namespace LiveKit
     {
         RtcAudioSource _source;
 
-        RtcSource ILocalTrack.source { get => _source; }
+        IRtcSource ILocalTrack.source { get => _source; }
 
         internal LocalAudioTrack(OwnedTrack track, Room room, RtcAudioSource source) : base(track, room, room?.LocalParticipant) {
             _source = source;
@@ -129,7 +129,7 @@ namespace LiveKit
     {
         RtcVideoSource _source;
 
-        RtcSource ILocalTrack.source { get => _source; }
+        IRtcSource ILocalTrack.source { get => _source; }
 
         internal LocalVideoTrack(OwnedTrack track, Room room, RtcVideoSource source) : base(track, room, room?.LocalParticipant) {
             _source = source;

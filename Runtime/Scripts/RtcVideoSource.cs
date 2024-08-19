@@ -41,6 +41,7 @@ namespace LiveKit
         protected bool _playing = false;
         private Texture2D _texture2D = null;
         private bool _muted = false;
+        public override bool Muted => _muted;
 
         internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
