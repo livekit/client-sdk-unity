@@ -11,7 +11,7 @@ using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
-    public abstract class RtcVideoSource
+    public abstract class RtcVideoSource : IRtcSource
     {
         public enum VideoStreamSource
         {
@@ -40,6 +40,7 @@ namespace LiveKit
         protected bool isDisposed = true;
         protected bool _playing = false;
         private Texture2D _texture2D = null;
+        private bool _muted = false;
 
         internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
@@ -174,11 +175,19 @@ namespace LiveKit
                 {
                     LoadToTexture2D(_texture2D, _dest as RenderTexture);
                 }
-
+                if(_muted)
+                {
+                    continue;
+                }
                 SendFrame();
             }
 
             yield break;
+        }
+
+        public override void SetMute(bool muted)
+        {
+            _muted = muted;
         }
 
         public virtual void Dispose()
