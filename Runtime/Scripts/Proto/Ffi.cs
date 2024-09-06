@@ -26,7 +26,7 @@ namespace LiveKit.Proto {
           string.Concat(
             "CglmZmkucHJvdG8SDWxpdmVraXQucHJvdG8aCmUyZWUucHJvdG8aC3RyYWNr",
             "LnByb3RvGgpyb29tLnByb3RvGhF2aWRlb19mcmFtZS5wcm90bxoRYXVkaW9f",
-            "ZnJhbWUucHJvdG8ipg4KCkZmaVJlcXVlc3QSMAoHZGlzcG9zZRgCIAEoCzId",
+            "ZnJhbWUucHJvdG8i3A8KCkZmaVJlcXVlc3QSMAoHZGlzcG9zZRgCIAEoCzId",
             "LmxpdmVraXQucHJvdG8uRGlzcG9zZVJlcXVlc3RIABIwCgdjb25uZWN0GAMg",
             "ASgLMh0ubGl2ZWtpdC5wcm90by5Db25uZWN0UmVxdWVzdEgAEjYKCmRpc2Nv",
             "bm5lY3QYBCABKAsyIC5saXZla2l0LnByb3RvLkRpc2Nvbm5lY3RSZXF1ZXN0",
@@ -58,100 +58,108 @@ namespace LiveKit.Proto {
             "ZXN0SAASRgoTY2FwdHVyZV92aWRlb19mcmFtZRgWIAEoCzInLmxpdmVraXQu",
             "cHJvdG8uQ2FwdHVyZVZpZGVvRnJhbWVSZXF1ZXN0SAASOwoNdmlkZW9fY29u",
             "dmVydBgXIAEoCzIiLmxpdmVraXQucHJvdG8uVmlkZW9Db252ZXJ0UmVxdWVz",
-            "dEgAEkAKEG5ld19hdWRpb19zdHJlYW0YGCABKAsyJC5saXZla2l0LnByb3Rv",
-            "Lk5ld0F1ZGlvU3RyZWFtUmVxdWVzdEgAEkAKEG5ld19hdWRpb19zb3VyY2UY",
-            "GSABKAsyJC5saXZla2l0LnByb3RvLk5ld0F1ZGlvU291cmNlUmVxdWVzdEgA",
-            "EkYKE2NhcHR1cmVfYXVkaW9fZnJhbWUYGiABKAsyJy5saXZla2l0LnByb3Rv",
-            "LkNhcHR1cmVBdWRpb0ZyYW1lUmVxdWVzdEgAEkYKE25ld19hdWRpb19yZXNh",
-            "bXBsZXIYGyABKAsyJy5saXZla2l0LnByb3RvLk5ld0F1ZGlvUmVzYW1wbGVy",
-            "UmVxdWVzdEgAEkQKEnJlbWl4X2FuZF9yZXNhbXBsZRgcIAEoCzImLmxpdmVr",
-            "aXQucHJvdG8uUmVtaXhBbmRSZXNhbXBsZVJlcXVlc3RIABIqCgRlMmVlGB0g",
-            "ASgLMhoubGl2ZWtpdC5wcm90by5FMmVlUmVxdWVzdEgAQgkKB21lc3NhZ2Ui",
-            "ww4KC0ZmaVJlc3BvbnNlEjEKB2Rpc3Bvc2UYAiABKAsyHi5saXZla2l0LnBy",
-            "b3RvLkRpc3Bvc2VSZXNwb25zZUgAEjEKB2Nvbm5lY3QYAyABKAsyHi5saXZl",
-            "a2l0LnByb3RvLkNvbm5lY3RSZXNwb25zZUgAEjcKCmRpc2Nvbm5lY3QYBCAB",
-            "KAsyIS5saXZla2l0LnByb3RvLkRpc2Nvbm5lY3RSZXNwb25zZUgAEjwKDXB1",
-            "Ymxpc2hfdHJhY2sYBSABKAsyIy5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFj",
-            "a1Jlc3BvbnNlSAASQAoPdW5wdWJsaXNoX3RyYWNrGAYgASgLMiUubGl2ZWtp",
-            "dC5wcm90by5VbnB1Ymxpc2hUcmFja1Jlc3BvbnNlSAASOgoMcHVibGlzaF9k",
-            "YXRhGAcgASgLMiIubGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YVJlc3BvbnNl",
-            "SAASPgoOc2V0X3N1YnNjcmliZWQYCCABKAsyJC5saXZla2l0LnByb3RvLlNl",
-            "dFN1YnNjcmliZWRSZXNwb25zZUgAEkUKEnNldF9sb2NhbF9tZXRhZGF0YRgJ",
-            "IAEoCzInLmxpdmVraXQucHJvdG8uU2V0TG9jYWxNZXRhZGF0YVJlc3BvbnNl",
-            "SAASPQoOc2V0X2xvY2FsX25hbWUYCiABKAsyIy5saXZla2l0LnByb3RvLlNl",
-            "dExvY2FsTmFtZVJlc3BvbnNlSAASSQoUc2V0X2xvY2FsX2F0dHJpYnV0ZXMY",
-            "CyABKAsyKS5saXZla2l0LnByb3RvLlNldExvY2FsQXR0cmlidXRlc1Jlc3Bv",
-            "bnNlSAASQwoRZ2V0X3Nlc3Npb25fc3RhdHMYDCABKAsyJi5saXZla2l0LnBy",
-            "b3RvLkdldFNlc3Npb25TdGF0c1Jlc3BvbnNlSAASTAoVcHVibGlzaF90cmFu",
-            "c2NyaXB0aW9uGA0gASgLMisubGl2ZWtpdC5wcm90by5QdWJsaXNoVHJhbnNj",
-            "cmlwdGlvblJlc3BvbnNlSAASQQoQcHVibGlzaF9zaXBfZHRtZhgOIAEoCzIl",
-            "LmxpdmVraXQucHJvdG8uUHVibGlzaFNpcER0bWZSZXNwb25zZUgAEkUKEmNy",
-            "ZWF0ZV92aWRlb190cmFjaxgPIAEoCzInLmxpdmVraXQucHJvdG8uQ3JlYXRl",
-            "VmlkZW9UcmFja1Jlc3BvbnNlSAASRQoSY3JlYXRlX2F1ZGlvX3RyYWNrGBAg",
-            "ASgLMicubGl2ZWtpdC5wcm90by5DcmVhdGVBdWRpb1RyYWNrUmVzcG9uc2VI",
-            "ABJBChBsb2NhbF90cmFja19tdXRlGBEgASgLMiUubGl2ZWtpdC5wcm90by5M",
-            "b2NhbFRyYWNrTXV0ZVJlc3BvbnNlSAASRwoTZW5hYmxlX3JlbW90ZV90cmFj",
-            "axgSIAEoCzIoLmxpdmVraXQucHJvdG8uRW5hYmxlUmVtb3RlVHJhY2tSZXNw",
-            "b25zZUgAEjQKCWdldF9zdGF0cxgTIAEoCzIfLmxpdmVraXQucHJvdG8uR2V0",
-            "U3RhdHNSZXNwb25zZUgAEkEKEG5ld192aWRlb19zdHJlYW0YFCABKAsyJS5s",
-            "aXZla2l0LnByb3RvLk5ld1ZpZGVvU3RyZWFtUmVzcG9uc2VIABJBChBuZXdf",
-            "dmlkZW9fc291cmNlGBUgASgLMiUubGl2ZWtpdC5wcm90by5OZXdWaWRlb1Nv",
-            "dXJjZVJlc3BvbnNlSAASRwoTY2FwdHVyZV92aWRlb19mcmFtZRgWIAEoCzIo",
-            "LmxpdmVraXQucHJvdG8uQ2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZUgAEjwK",
-            "DXZpZGVvX2NvbnZlcnQYFyABKAsyIy5saXZla2l0LnByb3RvLlZpZGVvQ29u",
-            "dmVydFJlc3BvbnNlSAASQQoQbmV3X2F1ZGlvX3N0cmVhbRgYIAEoCzIlLmxp",
-            "dmVraXQucHJvdG8uTmV3QXVkaW9TdHJlYW1SZXNwb25zZUgAEkEKEG5ld19h",
-            "dWRpb19zb3VyY2UYGSABKAsyJS5saXZla2l0LnByb3RvLk5ld0F1ZGlvU291",
-            "cmNlUmVzcG9uc2VIABJHChNjYXB0dXJlX2F1ZGlvX2ZyYW1lGBogASgLMigu",
-            "bGl2ZWtpdC5wcm90by5DYXB0dXJlQXVkaW9GcmFtZVJlc3BvbnNlSAASRwoT",
-            "bmV3X2F1ZGlvX3Jlc2FtcGxlchgbIAEoCzIoLmxpdmVraXQucHJvdG8uTmV3",
-            "QXVkaW9SZXNhbXBsZXJSZXNwb25zZUgAEkUKEnJlbWl4X2FuZF9yZXNhbXBs",
-            "ZRgcIAEoCzInLmxpdmVraXQucHJvdG8uUmVtaXhBbmRSZXNhbXBsZVJlc3Bv",
-            "bnNlSAASKwoEZTJlZRgdIAEoCzIbLmxpdmVraXQucHJvdG8uRTJlZVJlc3Bv",
-            "bnNlSABCCQoHbWVzc2FnZSLGCQoIRmZpRXZlbnQSLgoKcm9vbV9ldmVudBgB",
-            "IAEoCzIYLmxpdmVraXQucHJvdG8uUm9vbUV2ZW50SAASMAoLdHJhY2tfZXZl",
-            "bnQYAiABKAsyGS5saXZla2l0LnByb3RvLlRyYWNrRXZlbnRIABI9ChJ2aWRl",
-            "b19zdHJlYW1fZXZlbnQYAyABKAsyHy5saXZla2l0LnByb3RvLlZpZGVvU3Ry",
-            "ZWFtRXZlbnRIABI9ChJhdWRpb19zdHJlYW1fZXZlbnQYBCABKAsyHy5saXZl",
-            "a2l0LnByb3RvLkF1ZGlvU3RyZWFtRXZlbnRIABIxCgdjb25uZWN0GAUgASgL",
-            "Mh4ubGl2ZWtpdC5wcm90by5Db25uZWN0Q2FsbGJhY2tIABI3CgpkaXNjb25u",
-            "ZWN0GAcgASgLMiEubGl2ZWtpdC5wcm90by5EaXNjb25uZWN0Q2FsbGJhY2tI",
-            "ABIxCgdkaXNwb3NlGAggASgLMh4ubGl2ZWtpdC5wcm90by5EaXNwb3NlQ2Fs",
-            "bGJhY2tIABI8Cg1wdWJsaXNoX3RyYWNrGAkgASgLMiMubGl2ZWtpdC5wcm90",
-            "by5QdWJsaXNoVHJhY2tDYWxsYmFja0gAEkAKD3VucHVibGlzaF90cmFjaxgK",
-            "IAEoCzIlLmxpdmVraXQucHJvdG8uVW5wdWJsaXNoVHJhY2tDYWxsYmFja0gA",
-            "EjoKDHB1Ymxpc2hfZGF0YRgLIAEoCzIiLmxpdmVraXQucHJvdG8uUHVibGlz",
-            "aERhdGFDYWxsYmFja0gAEkwKFXB1Ymxpc2hfdHJhbnNjcmlwdGlvbhgMIAEo",
-            "CzIrLmxpdmVraXQucHJvdG8uUHVibGlzaFRyYW5zY3JpcHRpb25DYWxsYmFj",
-            "a0gAEkcKE2NhcHR1cmVfYXVkaW9fZnJhbWUYDSABKAsyKC5saXZla2l0LnBy",
-            "b3RvLkNhcHR1cmVBdWRpb0ZyYW1lQ2FsbGJhY2tIABJFChJzZXRfbG9jYWxf",
-            "bWV0YWRhdGEYDiABKAsyJy5saXZla2l0LnByb3RvLlNldExvY2FsTWV0YWRh",
-            "dGFDYWxsYmFja0gAEj0KDnNldF9sb2NhbF9uYW1lGA8gASgLMiMubGl2ZWtp",
-            "dC5wcm90by5TZXRMb2NhbE5hbWVDYWxsYmFja0gAEkkKFHNldF9sb2NhbF9h",
-            "dHRyaWJ1dGVzGBAgASgLMikubGl2ZWtpdC5wcm90by5TZXRMb2NhbEF0dHJp",
-            "YnV0ZXNDYWxsYmFja0gAEjQKCWdldF9zdGF0cxgRIAEoCzIfLmxpdmVraXQu",
-            "cHJvdG8uR2V0U3RhdHNDYWxsYmFja0gAEicKBGxvZ3MYEiABKAsyFy5saXZl",
-            "a2l0LnByb3RvLkxvZ0JhdGNoSAASQwoRZ2V0X3Nlc3Npb25fc3RhdHMYEyAB",
-            "KAsyJi5saXZla2l0LnByb3RvLkdldFNlc3Npb25TdGF0c0NhbGxiYWNrSAAS",
-            "JQoFcGFuaWMYFCABKAsyFC5saXZla2l0LnByb3RvLlBhbmljSAASQQoQcHVi",
-            "bGlzaF9zaXBfZHRtZhgVIAEoCzIlLmxpdmVraXQucHJvdG8uUHVibGlzaFNp",
-            "cER0bWZDYWxsYmFja0gAQgkKB21lc3NhZ2UiHwoORGlzcG9zZVJlcXVlc3QS",
-            "DQoFYXN5bmMYASABKAgiNQoPRGlzcG9zZVJlc3BvbnNlEhUKCGFzeW5jX2lk",
-            "GAEgASgESACIAQFCCwoJX2FzeW5jX2lkIiMKD0Rpc3Bvc2VDYWxsYmFjaxIQ",
-            "Cghhc3luY19pZBgBIAEoBCK2AQoJTG9nUmVjb3JkEiYKBWxldmVsGAEgASgO",
-            "MhcubGl2ZWtpdC5wcm90by5Mb2dMZXZlbBIOCgZ0YXJnZXQYAiABKAkSGAoL",
-            "bW9kdWxlX3BhdGgYAyABKAlIAIgBARIRCgRmaWxlGAQgASgJSAGIAQESEQoE",
-            "bGluZRgFIAEoDUgCiAEBEg8KB21lc3NhZ2UYBiABKAlCDgoMX21vZHVsZV9w",
-            "YXRoQgcKBV9maWxlQgcKBV9saW5lIjUKCExvZ0JhdGNoEikKB3JlY29yZHMY",
-            "ASADKAsyGC5saXZla2l0LnByb3RvLkxvZ1JlY29yZCIYCgVQYW5pYxIPCgdt",
-            "ZXNzYWdlGAEgASgJKlMKCExvZ0xldmVsEg0KCUxPR19FUlJPUhAAEgwKCExP",
-            "R19XQVJOEAESDAoITE9HX0lORk8QAhINCglMT0dfREVCVUcQAxINCglMT0df",
-            "VFJBQ0UQBEIQqgINTGl2ZUtpdC5Qcm90b2IGcHJvdG8z"));
+            "dEgAElkKHXZpZGVvX3N0cmVhbV9mcm9tX3BhcnRpY2lwYW50GBggASgLMjAu",
+            "bGl2ZWtpdC5wcm90by5WaWRlb1N0cmVhbUZyb21QYXJ0aWNpcGFudFJlcXVl",
+            "c3RIABJAChBuZXdfYXVkaW9fc3RyZWFtGBkgASgLMiQubGl2ZWtpdC5wcm90",
+            "by5OZXdBdWRpb1N0cmVhbVJlcXVlc3RIABJAChBuZXdfYXVkaW9fc291cmNl",
+            "GBogASgLMiQubGl2ZWtpdC5wcm90by5OZXdBdWRpb1NvdXJjZVJlcXVlc3RI",
+            "ABJGChNjYXB0dXJlX2F1ZGlvX2ZyYW1lGBsgASgLMicubGl2ZWtpdC5wcm90",
+            "by5DYXB0dXJlQXVkaW9GcmFtZVJlcXVlc3RIABJGChNuZXdfYXVkaW9fcmVz",
+            "YW1wbGVyGBwgASgLMicubGl2ZWtpdC5wcm90by5OZXdBdWRpb1Jlc2FtcGxl",
+            "clJlcXVlc3RIABJEChJyZW1peF9hbmRfcmVzYW1wbGUYHSABKAsyJi5saXZl",
+            "a2l0LnByb3RvLlJlbWl4QW5kUmVzYW1wbGVSZXF1ZXN0SAASKgoEZTJlZRge",
+            "IAEoCzIaLmxpdmVraXQucHJvdG8uRTJlZVJlcXVlc3RIABJZCh1hdWRpb19z",
+            "dHJlYW1fZnJvbV9wYXJ0aWNpcGFudBgfIAEoCzIwLmxpdmVraXQucHJvdG8u",
+            "QXVkaW9TdHJlYW1Gcm9tUGFydGljaXBhbnRSZXF1ZXN0SABCCQoHbWVzc2Fn",
+            "ZSL7DwoLRmZpUmVzcG9uc2USMQoHZGlzcG9zZRgCIAEoCzIeLmxpdmVraXQu",
+            "cHJvdG8uRGlzcG9zZVJlc3BvbnNlSAASMQoHY29ubmVjdBgDIAEoCzIeLmxp",
+            "dmVraXQucHJvdG8uQ29ubmVjdFJlc3BvbnNlSAASNwoKZGlzY29ubmVjdBgE",
+            "IAEoCzIhLmxpdmVraXQucHJvdG8uRGlzY29ubmVjdFJlc3BvbnNlSAASPAoN",
+            "cHVibGlzaF90cmFjaxgFIAEoCzIjLmxpdmVraXQucHJvdG8uUHVibGlzaFRy",
+            "YWNrUmVzcG9uc2VIABJACg91bnB1Ymxpc2hfdHJhY2sYBiABKAsyJS5saXZl",
+            "a2l0LnByb3RvLlVucHVibGlzaFRyYWNrUmVzcG9uc2VIABI6CgxwdWJsaXNo",
+            "X2RhdGEYByABKAsyIi5saXZla2l0LnByb3RvLlB1Ymxpc2hEYXRhUmVzcG9u",
+            "c2VIABI+Cg5zZXRfc3Vic2NyaWJlZBgIIAEoCzIkLmxpdmVraXQucHJvdG8u",
+            "U2V0U3Vic2NyaWJlZFJlc3BvbnNlSAASRQoSc2V0X2xvY2FsX21ldGFkYXRh",
+            "GAkgASgLMicubGl2ZWtpdC5wcm90by5TZXRMb2NhbE1ldGFkYXRhUmVzcG9u",
+            "c2VIABI9Cg5zZXRfbG9jYWxfbmFtZRgKIAEoCzIjLmxpdmVraXQucHJvdG8u",
+            "U2V0TG9jYWxOYW1lUmVzcG9uc2VIABJJChRzZXRfbG9jYWxfYXR0cmlidXRl",
+            "cxgLIAEoCzIpLmxpdmVraXQucHJvdG8uU2V0TG9jYWxBdHRyaWJ1dGVzUmVz",
+            "cG9uc2VIABJDChFnZXRfc2Vzc2lvbl9zdGF0cxgMIAEoCzImLmxpdmVraXQu",
+            "cHJvdG8uR2V0U2Vzc2lvblN0YXRzUmVzcG9uc2VIABJMChVwdWJsaXNoX3Ry",
+            "YW5zY3JpcHRpb24YDSABKAsyKy5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFu",
+            "c2NyaXB0aW9uUmVzcG9uc2VIABJBChBwdWJsaXNoX3NpcF9kdG1mGA4gASgL",
+            "MiUubGl2ZWtpdC5wcm90by5QdWJsaXNoU2lwRHRtZlJlc3BvbnNlSAASRQoS",
+            "Y3JlYXRlX3ZpZGVvX3RyYWNrGA8gASgLMicubGl2ZWtpdC5wcm90by5DcmVh",
+            "dGVWaWRlb1RyYWNrUmVzcG9uc2VIABJFChJjcmVhdGVfYXVkaW9fdHJhY2sY",
+            "ECABKAsyJy5saXZla2l0LnByb3RvLkNyZWF0ZUF1ZGlvVHJhY2tSZXNwb25z",
+            "ZUgAEkEKEGxvY2FsX3RyYWNrX211dGUYESABKAsyJS5saXZla2l0LnByb3Rv",
+            "LkxvY2FsVHJhY2tNdXRlUmVzcG9uc2VIABJHChNlbmFibGVfcmVtb3RlX3Ry",
+            "YWNrGBIgASgLMigubGl2ZWtpdC5wcm90by5FbmFibGVSZW1vdGVUcmFja1Jl",
+            "c3BvbnNlSAASNAoJZ2V0X3N0YXRzGBMgASgLMh8ubGl2ZWtpdC5wcm90by5H",
+            "ZXRTdGF0c1Jlc3BvbnNlSAASQQoQbmV3X3ZpZGVvX3N0cmVhbRgUIAEoCzIl",
+            "LmxpdmVraXQucHJvdG8uTmV3VmlkZW9TdHJlYW1SZXNwb25zZUgAEkEKEG5l",
+            "d192aWRlb19zb3VyY2UYFSABKAsyJS5saXZla2l0LnByb3RvLk5ld1ZpZGVv",
+            "U291cmNlUmVzcG9uc2VIABJHChNjYXB0dXJlX3ZpZGVvX2ZyYW1lGBYgASgL",
+            "MigubGl2ZWtpdC5wcm90by5DYXB0dXJlVmlkZW9GcmFtZVJlc3BvbnNlSAAS",
+            "PAoNdmlkZW9fY29udmVydBgXIAEoCzIjLmxpdmVraXQucHJvdG8uVmlkZW9D",
+            "b252ZXJ0UmVzcG9uc2VIABJaCh12aWRlb19zdHJlYW1fZnJvbV9wYXJ0aWNp",
+            "cGFudBgYIAEoCzIxLmxpdmVraXQucHJvdG8uVmlkZW9TdHJlYW1Gcm9tUGFy",
+            "dGljaXBhbnRSZXNwb25zZUgAEkEKEG5ld19hdWRpb19zdHJlYW0YGSABKAsy",
+            "JS5saXZla2l0LnByb3RvLk5ld0F1ZGlvU3RyZWFtUmVzcG9uc2VIABJBChBu",
+            "ZXdfYXVkaW9fc291cmNlGBogASgLMiUubGl2ZWtpdC5wcm90by5OZXdBdWRp",
+            "b1NvdXJjZVJlc3BvbnNlSAASRwoTY2FwdHVyZV9hdWRpb19mcmFtZRgbIAEo",
+            "CzIoLmxpdmVraXQucHJvdG8uQ2FwdHVyZUF1ZGlvRnJhbWVSZXNwb25zZUgA",
+            "EkcKE25ld19hdWRpb19yZXNhbXBsZXIYHCABKAsyKC5saXZla2l0LnByb3Rv",
+            "Lk5ld0F1ZGlvUmVzYW1wbGVyUmVzcG9uc2VIABJFChJyZW1peF9hbmRfcmVz",
+            "YW1wbGUYHSABKAsyJy5saXZla2l0LnByb3RvLlJlbWl4QW5kUmVzYW1wbGVS",
+            "ZXNwb25zZUgAEloKHWF1ZGlvX3N0cmVhbV9mcm9tX3BhcnRpY2lwYW50GB4g",
+            "ASgLMjEubGl2ZWtpdC5wcm90by5BdWRpb1N0cmVhbUZyb21QYXJ0aWNpcGFu",
+            "dFJlc3BvbnNlSAASKwoEZTJlZRgfIAEoCzIbLmxpdmVraXQucHJvdG8uRTJl",
+            "ZVJlc3BvbnNlSABCCQoHbWVzc2FnZSLGCQoIRmZpRXZlbnQSLgoKcm9vbV9l",
+            "dmVudBgBIAEoCzIYLmxpdmVraXQucHJvdG8uUm9vbUV2ZW50SAASMAoLdHJh",
+            "Y2tfZXZlbnQYAiABKAsyGS5saXZla2l0LnByb3RvLlRyYWNrRXZlbnRIABI9",
+            "ChJ2aWRlb19zdHJlYW1fZXZlbnQYAyABKAsyHy5saXZla2l0LnByb3RvLlZp",
+            "ZGVvU3RyZWFtRXZlbnRIABI9ChJhdWRpb19zdHJlYW1fZXZlbnQYBCABKAsy",
+            "Hy5saXZla2l0LnByb3RvLkF1ZGlvU3RyZWFtRXZlbnRIABIxCgdjb25uZWN0",
+            "GAUgASgLMh4ubGl2ZWtpdC5wcm90by5Db25uZWN0Q2FsbGJhY2tIABI3Cgpk",
+            "aXNjb25uZWN0GAcgASgLMiEubGl2ZWtpdC5wcm90by5EaXNjb25uZWN0Q2Fs",
+            "bGJhY2tIABIxCgdkaXNwb3NlGAggASgLMh4ubGl2ZWtpdC5wcm90by5EaXNw",
+            "b3NlQ2FsbGJhY2tIABI8Cg1wdWJsaXNoX3RyYWNrGAkgASgLMiMubGl2ZWtp",
+            "dC5wcm90by5QdWJsaXNoVHJhY2tDYWxsYmFja0gAEkAKD3VucHVibGlzaF90",
+            "cmFjaxgKIAEoCzIlLmxpdmVraXQucHJvdG8uVW5wdWJsaXNoVHJhY2tDYWxs",
+            "YmFja0gAEjoKDHB1Ymxpc2hfZGF0YRgLIAEoCzIiLmxpdmVraXQucHJvdG8u",
+            "UHVibGlzaERhdGFDYWxsYmFja0gAEkwKFXB1Ymxpc2hfdHJhbnNjcmlwdGlv",
+            "bhgMIAEoCzIrLmxpdmVraXQucHJvdG8uUHVibGlzaFRyYW5zY3JpcHRpb25D",
+            "YWxsYmFja0gAEkcKE2NhcHR1cmVfYXVkaW9fZnJhbWUYDSABKAsyKC5saXZl",
+            "a2l0LnByb3RvLkNhcHR1cmVBdWRpb0ZyYW1lQ2FsbGJhY2tIABJFChJzZXRf",
+            "bG9jYWxfbWV0YWRhdGEYDiABKAsyJy5saXZla2l0LnByb3RvLlNldExvY2Fs",
+            "TWV0YWRhdGFDYWxsYmFja0gAEj0KDnNldF9sb2NhbF9uYW1lGA8gASgLMiMu",
+            "bGl2ZWtpdC5wcm90by5TZXRMb2NhbE5hbWVDYWxsYmFja0gAEkkKFHNldF9s",
+            "b2NhbF9hdHRyaWJ1dGVzGBAgASgLMikubGl2ZWtpdC5wcm90by5TZXRMb2Nh",
+            "bEF0dHJpYnV0ZXNDYWxsYmFja0gAEjQKCWdldF9zdGF0cxgRIAEoCzIfLmxp",
+            "dmVraXQucHJvdG8uR2V0U3RhdHNDYWxsYmFja0gAEicKBGxvZ3MYEiABKAsy",
+            "Fy5saXZla2l0LnByb3RvLkxvZ0JhdGNoSAASQwoRZ2V0X3Nlc3Npb25fc3Rh",
+            "dHMYEyABKAsyJi5saXZla2l0LnByb3RvLkdldFNlc3Npb25TdGF0c0NhbGxi",
+            "YWNrSAASJQoFcGFuaWMYFCABKAsyFC5saXZla2l0LnByb3RvLlBhbmljSAAS",
+            "QQoQcHVibGlzaF9zaXBfZHRtZhgVIAEoCzIlLmxpdmVraXQucHJvdG8uUHVi",
+            "bGlzaFNpcER0bWZDYWxsYmFja0gAQgkKB21lc3NhZ2UiHwoORGlzcG9zZVJl",
+            "cXVlc3QSDQoFYXN5bmMYASABKAgiNQoPRGlzcG9zZVJlc3BvbnNlEhUKCGFz",
+            "eW5jX2lkGAEgASgESACIAQFCCwoJX2FzeW5jX2lkIiMKD0Rpc3Bvc2VDYWxs",
+            "YmFjaxIQCghhc3luY19pZBgBIAEoBCK2AQoJTG9nUmVjb3JkEiYKBWxldmVs",
+            "GAEgASgOMhcubGl2ZWtpdC5wcm90by5Mb2dMZXZlbBIOCgZ0YXJnZXQYAiAB",
+            "KAkSGAoLbW9kdWxlX3BhdGgYAyABKAlIAIgBARIRCgRmaWxlGAQgASgJSAGI",
+            "AQESEQoEbGluZRgFIAEoDUgCiAEBEg8KB21lc3NhZ2UYBiABKAlCDgoMX21v",
+            "ZHVsZV9wYXRoQgcKBV9maWxlQgcKBV9saW5lIjUKCExvZ0JhdGNoEikKB3Jl",
+            "Y29yZHMYASADKAsyGC5saXZla2l0LnByb3RvLkxvZ1JlY29yZCIYCgVQYW5p",
+            "YxIPCgdtZXNzYWdlGAEgASgJKlMKCExvZ0xldmVsEg0KCUxPR19FUlJPUhAA",
+            "EgwKCExPR19XQVJOEAESDAoITE9HX0lORk8QAhINCglMT0dfREVCVUcQAxIN",
+            "CglMT0dfVFJBQ0UQBEIQqgINTGl2ZUtpdC5Qcm90b2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, global::LiveKit.Proto.RoomReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.AudioFrameReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.LogLevel), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "E2Ee", "AudioStreamFromParticipant" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "NewAudioResampler", "RemixAndResample", "AudioStreamFromParticipant", "E2Ee" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "PublishTranscription", "CaptureAudioFrame", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetStats", "Logs", "GetSessionStats", "Panic", "PublishSipDtmf" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeRequest), global::LiveKit.Proto.DisposeRequest.Parser, new[]{ "Async" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeResponse), global::LiveKit.Proto.DisposeResponse.Parser, new[]{ "AsyncId" }, new[]{ "AsyncId" }, null, null, null),
@@ -282,6 +290,9 @@ namespace LiveKit.Proto {
         case MessageOneofCase.VideoConvert:
           VideoConvert = other.VideoConvert.Clone();
           break;
+        case MessageOneofCase.VideoStreamFromParticipant:
+          VideoStreamFromParticipant = other.VideoStreamFromParticipant.Clone();
+          break;
         case MessageOneofCase.NewAudioStream:
           NewAudioStream = other.NewAudioStream.Clone();
           break;
@@ -299,6 +310,9 @@ namespace LiveKit.Proto {
           break;
         case MessageOneofCase.E2Ee:
           E2Ee = other.E2Ee.Clone();
+          break;
+        case MessageOneofCase.AudioStreamFromParticipant:
+          AudioStreamFromParticipant = other.AudioStreamFromParticipant.Clone();
           break;
       }
 
@@ -584,8 +598,20 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "video_stream_from_participant" field.</summary>
+    public const int VideoStreamFromParticipantFieldNumber = 24;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.VideoStreamFromParticipantRequest VideoStreamFromParticipant {
+      get { return messageCase_ == MessageOneofCase.VideoStreamFromParticipant ? (global::LiveKit.Proto.VideoStreamFromParticipantRequest) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.VideoStreamFromParticipant;
+      }
+    }
+
     /// <summary>Field number for the "new_audio_stream" field.</summary>
-    public const int NewAudioStreamFieldNumber = 24;
+    public const int NewAudioStreamFieldNumber = 25;
     /// <summary>
     /// Audio
     /// </summary>
@@ -600,7 +626,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "new_audio_source" field.</summary>
-    public const int NewAudioSourceFieldNumber = 25;
+    public const int NewAudioSourceFieldNumber = 26;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewAudioSourceRequest NewAudioSource {
@@ -612,7 +638,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "capture_audio_frame" field.</summary>
-    public const int CaptureAudioFrameFieldNumber = 26;
+    public const int CaptureAudioFrameFieldNumber = 27;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.CaptureAudioFrameRequest CaptureAudioFrame {
@@ -624,7 +650,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "new_audio_resampler" field.</summary>
-    public const int NewAudioResamplerFieldNumber = 27;
+    public const int NewAudioResamplerFieldNumber = 28;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewAudioResamplerRequest NewAudioResampler {
@@ -636,7 +662,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "remix_and_resample" field.</summary>
-    public const int RemixAndResampleFieldNumber = 28;
+    public const int RemixAndResampleFieldNumber = 29;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.RemixAndResampleRequest RemixAndResample {
@@ -648,7 +674,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "e2ee" field.</summary>
-    public const int E2EeFieldNumber = 29;
+    public const int E2EeFieldNumber = 30;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.E2eeRequest E2Ee {
@@ -656,6 +682,18 @@ namespace LiveKit.Proto {
       set {
         message_ = value;
         messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.E2Ee;
+      }
+    }
+
+    /// <summary>Field number for the "audio_stream_from_participant" field.</summary>
+    public const int AudioStreamFromParticipantFieldNumber = 31;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.AudioStreamFromParticipantRequest AudioStreamFromParticipant {
+      get { return messageCase_ == MessageOneofCase.AudioStreamFromParticipant ? (global::LiveKit.Proto.AudioStreamFromParticipantRequest) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.AudioStreamFromParticipant;
       }
     }
 
@@ -685,12 +723,14 @@ namespace LiveKit.Proto {
       NewVideoSource = 21,
       CaptureVideoFrame = 22,
       VideoConvert = 23,
-      NewAudioStream = 24,
-      NewAudioSource = 25,
-      CaptureAudioFrame = 26,
-      NewAudioResampler = 27,
-      RemixAndResample = 28,
-      E2Ee = 29,
+      VideoStreamFromParticipant = 24,
+      NewAudioStream = 25,
+      NewAudioSource = 26,
+      CaptureAudioFrame = 27,
+      NewAudioResampler = 28,
+      RemixAndResample = 29,
+      E2Ee = 30,
+      AudioStreamFromParticipant = 31,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -743,12 +783,14 @@ namespace LiveKit.Proto {
       if (!object.Equals(NewVideoSource, other.NewVideoSource)) return false;
       if (!object.Equals(CaptureVideoFrame, other.CaptureVideoFrame)) return false;
       if (!object.Equals(VideoConvert, other.VideoConvert)) return false;
+      if (!object.Equals(VideoStreamFromParticipant, other.VideoStreamFromParticipant)) return false;
       if (!object.Equals(NewAudioStream, other.NewAudioStream)) return false;
       if (!object.Equals(NewAudioSource, other.NewAudioSource)) return false;
       if (!object.Equals(CaptureAudioFrame, other.CaptureAudioFrame)) return false;
       if (!object.Equals(NewAudioResampler, other.NewAudioResampler)) return false;
       if (!object.Equals(RemixAndResample, other.RemixAndResample)) return false;
       if (!object.Equals(E2Ee, other.E2Ee)) return false;
+      if (!object.Equals(AudioStreamFromParticipant, other.AudioStreamFromParticipant)) return false;
       if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -779,12 +821,14 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.NewVideoSource) hash ^= NewVideoSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureVideoFrame) hash ^= CaptureVideoFrame.GetHashCode();
       if (messageCase_ == MessageOneofCase.VideoConvert) hash ^= VideoConvert.GetHashCode();
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) hash ^= VideoStreamFromParticipant.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioStream) hash ^= NewAudioStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioSource) hash ^= NewAudioSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) hash ^= CaptureAudioFrame.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioResampler) hash ^= NewAudioResampler.GetHashCode();
       if (messageCase_ == MessageOneofCase.RemixAndResample) hash ^= RemixAndResample.GetHashCode();
       if (messageCase_ == MessageOneofCase.E2Ee) hash ^= E2Ee.GetHashCode();
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) hash ^= AudioStreamFromParticipant.GetHashCode();
       hash ^= (int) messageCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -892,29 +936,37 @@ namespace LiveKit.Proto {
         output.WriteRawTag(186, 1);
         output.WriteMessage(VideoConvert);
       }
-      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
         output.WriteRawTag(194, 1);
+        output.WriteMessage(VideoStreamFromParticipant);
+      }
+      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+        output.WriteRawTag(202, 1);
         output.WriteMessage(NewAudioStream);
       }
       if (messageCase_ == MessageOneofCase.NewAudioSource) {
-        output.WriteRawTag(202, 1);
+        output.WriteRawTag(210, 1);
         output.WriteMessage(NewAudioSource);
       }
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
-        output.WriteRawTag(210, 1);
+        output.WriteRawTag(218, 1);
         output.WriteMessage(CaptureAudioFrame);
       }
       if (messageCase_ == MessageOneofCase.NewAudioResampler) {
-        output.WriteRawTag(218, 1);
+        output.WriteRawTag(226, 1);
         output.WriteMessage(NewAudioResampler);
       }
       if (messageCase_ == MessageOneofCase.RemixAndResample) {
-        output.WriteRawTag(226, 1);
+        output.WriteRawTag(234, 1);
         output.WriteMessage(RemixAndResample);
       }
       if (messageCase_ == MessageOneofCase.E2Ee) {
-        output.WriteRawTag(234, 1);
+        output.WriteRawTag(242, 1);
         output.WriteMessage(E2Ee);
+      }
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+        output.WriteRawTag(250, 1);
+        output.WriteMessage(AudioStreamFromParticipant);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1014,29 +1066,37 @@ namespace LiveKit.Proto {
         output.WriteRawTag(186, 1);
         output.WriteMessage(VideoConvert);
       }
-      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
         output.WriteRawTag(194, 1);
+        output.WriteMessage(VideoStreamFromParticipant);
+      }
+      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+        output.WriteRawTag(202, 1);
         output.WriteMessage(NewAudioStream);
       }
       if (messageCase_ == MessageOneofCase.NewAudioSource) {
-        output.WriteRawTag(202, 1);
+        output.WriteRawTag(210, 1);
         output.WriteMessage(NewAudioSource);
       }
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
-        output.WriteRawTag(210, 1);
+        output.WriteRawTag(218, 1);
         output.WriteMessage(CaptureAudioFrame);
       }
       if (messageCase_ == MessageOneofCase.NewAudioResampler) {
-        output.WriteRawTag(218, 1);
+        output.WriteRawTag(226, 1);
         output.WriteMessage(NewAudioResampler);
       }
       if (messageCase_ == MessageOneofCase.RemixAndResample) {
-        output.WriteRawTag(226, 1);
+        output.WriteRawTag(234, 1);
         output.WriteMessage(RemixAndResample);
       }
       if (messageCase_ == MessageOneofCase.E2Ee) {
-        output.WriteRawTag(234, 1);
+        output.WriteRawTag(242, 1);
         output.WriteMessage(E2Ee);
+      }
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+        output.WriteRawTag(250, 1);
+        output.WriteMessage(AudioStreamFromParticipant);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1114,6 +1174,9 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.VideoConvert) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(VideoConvert);
       }
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(VideoStreamFromParticipant);
+      }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(NewAudioStream);
       }
@@ -1131,6 +1194,9 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.E2Ee) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(E2Ee);
+      }
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(AudioStreamFromParticipant);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1277,6 +1343,12 @@ namespace LiveKit.Proto {
           }
           VideoConvert.MergeFrom(other.VideoConvert);
           break;
+        case MessageOneofCase.VideoStreamFromParticipant:
+          if (VideoStreamFromParticipant == null) {
+            VideoStreamFromParticipant = new global::LiveKit.Proto.VideoStreamFromParticipantRequest();
+          }
+          VideoStreamFromParticipant.MergeFrom(other.VideoStreamFromParticipant);
+          break;
         case MessageOneofCase.NewAudioStream:
           if (NewAudioStream == null) {
             NewAudioStream = new global::LiveKit.Proto.NewAudioStreamRequest();
@@ -1312,6 +1384,12 @@ namespace LiveKit.Proto {
             E2Ee = new global::LiveKit.Proto.E2eeRequest();
           }
           E2Ee.MergeFrom(other.E2Ee);
+          break;
+        case MessageOneofCase.AudioStreamFromParticipant:
+          if (AudioStreamFromParticipant == null) {
+            AudioStreamFromParticipant = new global::LiveKit.Proto.AudioStreamFromParticipantRequest();
+          }
+          AudioStreamFromParticipant.MergeFrom(other.AudioStreamFromParticipant);
           break;
       }
 
@@ -1529,6 +1607,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 194: {
+            global::LiveKit.Proto.VideoStreamFromParticipantRequest subBuilder = new global::LiveKit.Proto.VideoStreamFromParticipantRequest();
+            if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
+              subBuilder.MergeFrom(VideoStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            VideoStreamFromParticipant = subBuilder;
+            break;
+          }
+          case 202: {
             global::LiveKit.Proto.NewAudioStreamRequest subBuilder = new global::LiveKit.Proto.NewAudioStreamRequest();
             if (messageCase_ == MessageOneofCase.NewAudioStream) {
               subBuilder.MergeFrom(NewAudioStream);
@@ -1537,7 +1624,7 @@ namespace LiveKit.Proto {
             NewAudioStream = subBuilder;
             break;
           }
-          case 202: {
+          case 210: {
             global::LiveKit.Proto.NewAudioSourceRequest subBuilder = new global::LiveKit.Proto.NewAudioSourceRequest();
             if (messageCase_ == MessageOneofCase.NewAudioSource) {
               subBuilder.MergeFrom(NewAudioSource);
@@ -1546,7 +1633,7 @@ namespace LiveKit.Proto {
             NewAudioSource = subBuilder;
             break;
           }
-          case 210: {
+          case 218: {
             global::LiveKit.Proto.CaptureAudioFrameRequest subBuilder = new global::LiveKit.Proto.CaptureAudioFrameRequest();
             if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
               subBuilder.MergeFrom(CaptureAudioFrame);
@@ -1555,7 +1642,7 @@ namespace LiveKit.Proto {
             CaptureAudioFrame = subBuilder;
             break;
           }
-          case 218: {
+          case 226: {
             global::LiveKit.Proto.NewAudioResamplerRequest subBuilder = new global::LiveKit.Proto.NewAudioResamplerRequest();
             if (messageCase_ == MessageOneofCase.NewAudioResampler) {
               subBuilder.MergeFrom(NewAudioResampler);
@@ -1564,7 +1651,7 @@ namespace LiveKit.Proto {
             NewAudioResampler = subBuilder;
             break;
           }
-          case 226: {
+          case 234: {
             global::LiveKit.Proto.RemixAndResampleRequest subBuilder = new global::LiveKit.Proto.RemixAndResampleRequest();
             if (messageCase_ == MessageOneofCase.RemixAndResample) {
               subBuilder.MergeFrom(RemixAndResample);
@@ -1573,13 +1660,22 @@ namespace LiveKit.Proto {
             RemixAndResample = subBuilder;
             break;
           }
-          case 234: {
+          case 242: {
             global::LiveKit.Proto.E2eeRequest subBuilder = new global::LiveKit.Proto.E2eeRequest();
             if (messageCase_ == MessageOneofCase.E2Ee) {
               subBuilder.MergeFrom(E2Ee);
             }
             input.ReadMessage(subBuilder);
             E2Ee = subBuilder;
+            break;
+          }
+          case 250: {
+            global::LiveKit.Proto.AudioStreamFromParticipantRequest subBuilder = new global::LiveKit.Proto.AudioStreamFromParticipantRequest();
+            if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+              subBuilder.MergeFrom(AudioStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            AudioStreamFromParticipant = subBuilder;
             break;
           }
         }
@@ -1796,6 +1892,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 194: {
+            global::LiveKit.Proto.VideoStreamFromParticipantRequest subBuilder = new global::LiveKit.Proto.VideoStreamFromParticipantRequest();
+            if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
+              subBuilder.MergeFrom(VideoStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            VideoStreamFromParticipant = subBuilder;
+            break;
+          }
+          case 202: {
             global::LiveKit.Proto.NewAudioStreamRequest subBuilder = new global::LiveKit.Proto.NewAudioStreamRequest();
             if (messageCase_ == MessageOneofCase.NewAudioStream) {
               subBuilder.MergeFrom(NewAudioStream);
@@ -1804,7 +1909,7 @@ namespace LiveKit.Proto {
             NewAudioStream = subBuilder;
             break;
           }
-          case 202: {
+          case 210: {
             global::LiveKit.Proto.NewAudioSourceRequest subBuilder = new global::LiveKit.Proto.NewAudioSourceRequest();
             if (messageCase_ == MessageOneofCase.NewAudioSource) {
               subBuilder.MergeFrom(NewAudioSource);
@@ -1813,7 +1918,7 @@ namespace LiveKit.Proto {
             NewAudioSource = subBuilder;
             break;
           }
-          case 210: {
+          case 218: {
             global::LiveKit.Proto.CaptureAudioFrameRequest subBuilder = new global::LiveKit.Proto.CaptureAudioFrameRequest();
             if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
               subBuilder.MergeFrom(CaptureAudioFrame);
@@ -1822,7 +1927,7 @@ namespace LiveKit.Proto {
             CaptureAudioFrame = subBuilder;
             break;
           }
-          case 218: {
+          case 226: {
             global::LiveKit.Proto.NewAudioResamplerRequest subBuilder = new global::LiveKit.Proto.NewAudioResamplerRequest();
             if (messageCase_ == MessageOneofCase.NewAudioResampler) {
               subBuilder.MergeFrom(NewAudioResampler);
@@ -1831,7 +1936,7 @@ namespace LiveKit.Proto {
             NewAudioResampler = subBuilder;
             break;
           }
-          case 226: {
+          case 234: {
             global::LiveKit.Proto.RemixAndResampleRequest subBuilder = new global::LiveKit.Proto.RemixAndResampleRequest();
             if (messageCase_ == MessageOneofCase.RemixAndResample) {
               subBuilder.MergeFrom(RemixAndResample);
@@ -1840,13 +1945,22 @@ namespace LiveKit.Proto {
             RemixAndResample = subBuilder;
             break;
           }
-          case 234: {
+          case 242: {
             global::LiveKit.Proto.E2eeRequest subBuilder = new global::LiveKit.Proto.E2eeRequest();
             if (messageCase_ == MessageOneofCase.E2Ee) {
               subBuilder.MergeFrom(E2Ee);
             }
             input.ReadMessage(subBuilder);
             E2Ee = subBuilder;
+            break;
+          }
+          case 250: {
+            global::LiveKit.Proto.AudioStreamFromParticipantRequest subBuilder = new global::LiveKit.Proto.AudioStreamFromParticipantRequest();
+            if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+              subBuilder.MergeFrom(AudioStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            AudioStreamFromParticipant = subBuilder;
             break;
           }
         }
@@ -1961,6 +2075,9 @@ namespace LiveKit.Proto {
         case MessageOneofCase.VideoConvert:
           VideoConvert = other.VideoConvert.Clone();
           break;
+        case MessageOneofCase.VideoStreamFromParticipant:
+          VideoStreamFromParticipant = other.VideoStreamFromParticipant.Clone();
+          break;
         case MessageOneofCase.NewAudioStream:
           NewAudioStream = other.NewAudioStream.Clone();
           break;
@@ -1975,6 +2092,9 @@ namespace LiveKit.Proto {
           break;
         case MessageOneofCase.RemixAndResample:
           RemixAndResample = other.RemixAndResample.Clone();
+          break;
+        case MessageOneofCase.AudioStreamFromParticipant:
+          AudioStreamFromParticipant = other.AudioStreamFromParticipant.Clone();
           break;
         case MessageOneofCase.E2Ee:
           E2Ee = other.E2Ee.Clone();
@@ -2263,8 +2383,20 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "video_stream_from_participant" field.</summary>
+    public const int VideoStreamFromParticipantFieldNumber = 24;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.VideoStreamFromParticipantResponse VideoStreamFromParticipant {
+      get { return messageCase_ == MessageOneofCase.VideoStreamFromParticipant ? (global::LiveKit.Proto.VideoStreamFromParticipantResponse) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.VideoStreamFromParticipant;
+      }
+    }
+
     /// <summary>Field number for the "new_audio_stream" field.</summary>
-    public const int NewAudioStreamFieldNumber = 24;
+    public const int NewAudioStreamFieldNumber = 25;
     /// <summary>
     /// Audio
     /// </summary>
@@ -2279,7 +2411,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "new_audio_source" field.</summary>
-    public const int NewAudioSourceFieldNumber = 25;
+    public const int NewAudioSourceFieldNumber = 26;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewAudioSourceResponse NewAudioSource {
@@ -2291,7 +2423,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "capture_audio_frame" field.</summary>
-    public const int CaptureAudioFrameFieldNumber = 26;
+    public const int CaptureAudioFrameFieldNumber = 27;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.CaptureAudioFrameResponse CaptureAudioFrame {
@@ -2303,7 +2435,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "new_audio_resampler" field.</summary>
-    public const int NewAudioResamplerFieldNumber = 27;
+    public const int NewAudioResamplerFieldNumber = 28;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.NewAudioResamplerResponse NewAudioResampler {
@@ -2315,7 +2447,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "remix_and_resample" field.</summary>
-    public const int RemixAndResampleFieldNumber = 28;
+    public const int RemixAndResampleFieldNumber = 29;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.RemixAndResampleResponse RemixAndResample {
@@ -2326,8 +2458,20 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "audio_stream_from_participant" field.</summary>
+    public const int AudioStreamFromParticipantFieldNumber = 30;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.AudioStreamFromParticipantResponse AudioStreamFromParticipant {
+      get { return messageCase_ == MessageOneofCase.AudioStreamFromParticipant ? (global::LiveKit.Proto.AudioStreamFromParticipantResponse) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.AudioStreamFromParticipant;
+      }
+    }
+
     /// <summary>Field number for the "e2ee" field.</summary>
-    public const int E2EeFieldNumber = 29;
+    public const int E2EeFieldNumber = 31;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.E2eeResponse E2Ee {
@@ -2364,12 +2508,14 @@ namespace LiveKit.Proto {
       NewVideoSource = 21,
       CaptureVideoFrame = 22,
       VideoConvert = 23,
-      NewAudioStream = 24,
-      NewAudioSource = 25,
-      CaptureAudioFrame = 26,
-      NewAudioResampler = 27,
-      RemixAndResample = 28,
-      E2Ee = 29,
+      VideoStreamFromParticipant = 24,
+      NewAudioStream = 25,
+      NewAudioSource = 26,
+      CaptureAudioFrame = 27,
+      NewAudioResampler = 28,
+      RemixAndResample = 29,
+      AudioStreamFromParticipant = 30,
+      E2Ee = 31,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2422,11 +2568,13 @@ namespace LiveKit.Proto {
       if (!object.Equals(NewVideoSource, other.NewVideoSource)) return false;
       if (!object.Equals(CaptureVideoFrame, other.CaptureVideoFrame)) return false;
       if (!object.Equals(VideoConvert, other.VideoConvert)) return false;
+      if (!object.Equals(VideoStreamFromParticipant, other.VideoStreamFromParticipant)) return false;
       if (!object.Equals(NewAudioStream, other.NewAudioStream)) return false;
       if (!object.Equals(NewAudioSource, other.NewAudioSource)) return false;
       if (!object.Equals(CaptureAudioFrame, other.CaptureAudioFrame)) return false;
       if (!object.Equals(NewAudioResampler, other.NewAudioResampler)) return false;
       if (!object.Equals(RemixAndResample, other.RemixAndResample)) return false;
+      if (!object.Equals(AudioStreamFromParticipant, other.AudioStreamFromParticipant)) return false;
       if (!object.Equals(E2Ee, other.E2Ee)) return false;
       if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -2458,11 +2606,13 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.NewVideoSource) hash ^= NewVideoSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureVideoFrame) hash ^= CaptureVideoFrame.GetHashCode();
       if (messageCase_ == MessageOneofCase.VideoConvert) hash ^= VideoConvert.GetHashCode();
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) hash ^= VideoStreamFromParticipant.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioStream) hash ^= NewAudioStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioSource) hash ^= NewAudioSource.GetHashCode();
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) hash ^= CaptureAudioFrame.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewAudioResampler) hash ^= NewAudioResampler.GetHashCode();
       if (messageCase_ == MessageOneofCase.RemixAndResample) hash ^= RemixAndResample.GetHashCode();
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) hash ^= AudioStreamFromParticipant.GetHashCode();
       if (messageCase_ == MessageOneofCase.E2Ee) hash ^= E2Ee.GetHashCode();
       hash ^= (int) messageCase_;
       if (_unknownFields != null) {
@@ -2571,28 +2721,36 @@ namespace LiveKit.Proto {
         output.WriteRawTag(186, 1);
         output.WriteMessage(VideoConvert);
       }
-      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
         output.WriteRawTag(194, 1);
+        output.WriteMessage(VideoStreamFromParticipant);
+      }
+      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+        output.WriteRawTag(202, 1);
         output.WriteMessage(NewAudioStream);
       }
       if (messageCase_ == MessageOneofCase.NewAudioSource) {
-        output.WriteRawTag(202, 1);
+        output.WriteRawTag(210, 1);
         output.WriteMessage(NewAudioSource);
       }
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
-        output.WriteRawTag(210, 1);
+        output.WriteRawTag(218, 1);
         output.WriteMessage(CaptureAudioFrame);
       }
       if (messageCase_ == MessageOneofCase.NewAudioResampler) {
-        output.WriteRawTag(218, 1);
+        output.WriteRawTag(226, 1);
         output.WriteMessage(NewAudioResampler);
       }
       if (messageCase_ == MessageOneofCase.RemixAndResample) {
-        output.WriteRawTag(226, 1);
+        output.WriteRawTag(234, 1);
         output.WriteMessage(RemixAndResample);
       }
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+        output.WriteRawTag(242, 1);
+        output.WriteMessage(AudioStreamFromParticipant);
+      }
       if (messageCase_ == MessageOneofCase.E2Ee) {
-        output.WriteRawTag(234, 1);
+        output.WriteRawTag(250, 1);
         output.WriteMessage(E2Ee);
       }
       if (_unknownFields != null) {
@@ -2693,28 +2851,36 @@ namespace LiveKit.Proto {
         output.WriteRawTag(186, 1);
         output.WriteMessage(VideoConvert);
       }
-      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
         output.WriteRawTag(194, 1);
+        output.WriteMessage(VideoStreamFromParticipant);
+      }
+      if (messageCase_ == MessageOneofCase.NewAudioStream) {
+        output.WriteRawTag(202, 1);
         output.WriteMessage(NewAudioStream);
       }
       if (messageCase_ == MessageOneofCase.NewAudioSource) {
-        output.WriteRawTag(202, 1);
+        output.WriteRawTag(210, 1);
         output.WriteMessage(NewAudioSource);
       }
       if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
-        output.WriteRawTag(210, 1);
+        output.WriteRawTag(218, 1);
         output.WriteMessage(CaptureAudioFrame);
       }
       if (messageCase_ == MessageOneofCase.NewAudioResampler) {
-        output.WriteRawTag(218, 1);
+        output.WriteRawTag(226, 1);
         output.WriteMessage(NewAudioResampler);
       }
       if (messageCase_ == MessageOneofCase.RemixAndResample) {
-        output.WriteRawTag(226, 1);
+        output.WriteRawTag(234, 1);
         output.WriteMessage(RemixAndResample);
       }
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+        output.WriteRawTag(242, 1);
+        output.WriteMessage(AudioStreamFromParticipant);
+      }
       if (messageCase_ == MessageOneofCase.E2Ee) {
-        output.WriteRawTag(234, 1);
+        output.WriteRawTag(250, 1);
         output.WriteMessage(E2Ee);
       }
       if (_unknownFields != null) {
@@ -2793,6 +2959,9 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.VideoConvert) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(VideoConvert);
       }
+      if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(VideoStreamFromParticipant);
+      }
       if (messageCase_ == MessageOneofCase.NewAudioStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(NewAudioStream);
       }
@@ -2807,6 +2976,9 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.RemixAndResample) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(RemixAndResample);
+      }
+      if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(AudioStreamFromParticipant);
       }
       if (messageCase_ == MessageOneofCase.E2Ee) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(E2Ee);
@@ -2956,6 +3128,12 @@ namespace LiveKit.Proto {
           }
           VideoConvert.MergeFrom(other.VideoConvert);
           break;
+        case MessageOneofCase.VideoStreamFromParticipant:
+          if (VideoStreamFromParticipant == null) {
+            VideoStreamFromParticipant = new global::LiveKit.Proto.VideoStreamFromParticipantResponse();
+          }
+          VideoStreamFromParticipant.MergeFrom(other.VideoStreamFromParticipant);
+          break;
         case MessageOneofCase.NewAudioStream:
           if (NewAudioStream == null) {
             NewAudioStream = new global::LiveKit.Proto.NewAudioStreamResponse();
@@ -2985,6 +3163,12 @@ namespace LiveKit.Proto {
             RemixAndResample = new global::LiveKit.Proto.RemixAndResampleResponse();
           }
           RemixAndResample.MergeFrom(other.RemixAndResample);
+          break;
+        case MessageOneofCase.AudioStreamFromParticipant:
+          if (AudioStreamFromParticipant == null) {
+            AudioStreamFromParticipant = new global::LiveKit.Proto.AudioStreamFromParticipantResponse();
+          }
+          AudioStreamFromParticipant.MergeFrom(other.AudioStreamFromParticipant);
           break;
         case MessageOneofCase.E2Ee:
           if (E2Ee == null) {
@@ -3208,6 +3392,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 194: {
+            global::LiveKit.Proto.VideoStreamFromParticipantResponse subBuilder = new global::LiveKit.Proto.VideoStreamFromParticipantResponse();
+            if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
+              subBuilder.MergeFrom(VideoStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            VideoStreamFromParticipant = subBuilder;
+            break;
+          }
+          case 202: {
             global::LiveKit.Proto.NewAudioStreamResponse subBuilder = new global::LiveKit.Proto.NewAudioStreamResponse();
             if (messageCase_ == MessageOneofCase.NewAudioStream) {
               subBuilder.MergeFrom(NewAudioStream);
@@ -3216,7 +3409,7 @@ namespace LiveKit.Proto {
             NewAudioStream = subBuilder;
             break;
           }
-          case 202: {
+          case 210: {
             global::LiveKit.Proto.NewAudioSourceResponse subBuilder = new global::LiveKit.Proto.NewAudioSourceResponse();
             if (messageCase_ == MessageOneofCase.NewAudioSource) {
               subBuilder.MergeFrom(NewAudioSource);
@@ -3225,7 +3418,7 @@ namespace LiveKit.Proto {
             NewAudioSource = subBuilder;
             break;
           }
-          case 210: {
+          case 218: {
             global::LiveKit.Proto.CaptureAudioFrameResponse subBuilder = new global::LiveKit.Proto.CaptureAudioFrameResponse();
             if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
               subBuilder.MergeFrom(CaptureAudioFrame);
@@ -3234,7 +3427,7 @@ namespace LiveKit.Proto {
             CaptureAudioFrame = subBuilder;
             break;
           }
-          case 218: {
+          case 226: {
             global::LiveKit.Proto.NewAudioResamplerResponse subBuilder = new global::LiveKit.Proto.NewAudioResamplerResponse();
             if (messageCase_ == MessageOneofCase.NewAudioResampler) {
               subBuilder.MergeFrom(NewAudioResampler);
@@ -3243,7 +3436,7 @@ namespace LiveKit.Proto {
             NewAudioResampler = subBuilder;
             break;
           }
-          case 226: {
+          case 234: {
             global::LiveKit.Proto.RemixAndResampleResponse subBuilder = new global::LiveKit.Proto.RemixAndResampleResponse();
             if (messageCase_ == MessageOneofCase.RemixAndResample) {
               subBuilder.MergeFrom(RemixAndResample);
@@ -3252,7 +3445,16 @@ namespace LiveKit.Proto {
             RemixAndResample = subBuilder;
             break;
           }
-          case 234: {
+          case 242: {
+            global::LiveKit.Proto.AudioStreamFromParticipantResponse subBuilder = new global::LiveKit.Proto.AudioStreamFromParticipantResponse();
+            if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+              subBuilder.MergeFrom(AudioStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            AudioStreamFromParticipant = subBuilder;
+            break;
+          }
+          case 250: {
             global::LiveKit.Proto.E2eeResponse subBuilder = new global::LiveKit.Proto.E2eeResponse();
             if (messageCase_ == MessageOneofCase.E2Ee) {
               subBuilder.MergeFrom(E2Ee);
@@ -3475,6 +3677,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 194: {
+            global::LiveKit.Proto.VideoStreamFromParticipantResponse subBuilder = new global::LiveKit.Proto.VideoStreamFromParticipantResponse();
+            if (messageCase_ == MessageOneofCase.VideoStreamFromParticipant) {
+              subBuilder.MergeFrom(VideoStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            VideoStreamFromParticipant = subBuilder;
+            break;
+          }
+          case 202: {
             global::LiveKit.Proto.NewAudioStreamResponse subBuilder = new global::LiveKit.Proto.NewAudioStreamResponse();
             if (messageCase_ == MessageOneofCase.NewAudioStream) {
               subBuilder.MergeFrom(NewAudioStream);
@@ -3483,7 +3694,7 @@ namespace LiveKit.Proto {
             NewAudioStream = subBuilder;
             break;
           }
-          case 202: {
+          case 210: {
             global::LiveKit.Proto.NewAudioSourceResponse subBuilder = new global::LiveKit.Proto.NewAudioSourceResponse();
             if (messageCase_ == MessageOneofCase.NewAudioSource) {
               subBuilder.MergeFrom(NewAudioSource);
@@ -3492,7 +3703,7 @@ namespace LiveKit.Proto {
             NewAudioSource = subBuilder;
             break;
           }
-          case 210: {
+          case 218: {
             global::LiveKit.Proto.CaptureAudioFrameResponse subBuilder = new global::LiveKit.Proto.CaptureAudioFrameResponse();
             if (messageCase_ == MessageOneofCase.CaptureAudioFrame) {
               subBuilder.MergeFrom(CaptureAudioFrame);
@@ -3501,7 +3712,7 @@ namespace LiveKit.Proto {
             CaptureAudioFrame = subBuilder;
             break;
           }
-          case 218: {
+          case 226: {
             global::LiveKit.Proto.NewAudioResamplerResponse subBuilder = new global::LiveKit.Proto.NewAudioResamplerResponse();
             if (messageCase_ == MessageOneofCase.NewAudioResampler) {
               subBuilder.MergeFrom(NewAudioResampler);
@@ -3510,7 +3721,7 @@ namespace LiveKit.Proto {
             NewAudioResampler = subBuilder;
             break;
           }
-          case 226: {
+          case 234: {
             global::LiveKit.Proto.RemixAndResampleResponse subBuilder = new global::LiveKit.Proto.RemixAndResampleResponse();
             if (messageCase_ == MessageOneofCase.RemixAndResample) {
               subBuilder.MergeFrom(RemixAndResample);
@@ -3519,7 +3730,16 @@ namespace LiveKit.Proto {
             RemixAndResample = subBuilder;
             break;
           }
-          case 234: {
+          case 242: {
+            global::LiveKit.Proto.AudioStreamFromParticipantResponse subBuilder = new global::LiveKit.Proto.AudioStreamFromParticipantResponse();
+            if (messageCase_ == MessageOneofCase.AudioStreamFromParticipant) {
+              subBuilder.MergeFrom(AudioStreamFromParticipant);
+            }
+            input.ReadMessage(subBuilder);
+            AudioStreamFromParticipant = subBuilder;
+            break;
+          }
+          case 250: {
             global::LiveKit.Proto.E2eeResponse subBuilder = new global::LiveKit.Proto.E2eeResponse();
             if (messageCase_ == MessageOneofCase.E2Ee) {
               subBuilder.MergeFrom(E2Ee);
