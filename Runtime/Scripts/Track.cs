@@ -2,7 +2,6 @@ using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
-using UnityEditor.iOS;
 
 namespace LiveKit
 {
