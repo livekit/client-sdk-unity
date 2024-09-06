@@ -7,7 +7,7 @@ import zipfile
 def show_progress(block_num, block_size, total_size):
     print(round(block_num * block_size / total_size *100,2), end="\r")
 
-platforms = ['android', 'ios', 'macos', 'linux', 'windows']
+platforms = ['ios', 'macos', 'linux', 'windows']
 download_dir = 'downloads~'
 
 def main():
