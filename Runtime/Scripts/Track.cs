@@ -19,14 +19,35 @@ namespace LiveKit
 
     public interface ILocalTrack : ITrack
     {
+        IRtcSource source { get; }
+
         public void UpdateSid (string sid) {
             Sid = sid;
+        }
+
+        public void SetMute(bool muted)
+        {
+            using var request = FFIBridge.Instance.NewRequest<LocalTrackMuteRequest>();
+            var createTrack = request.request;
+            createTrack.Mute = muted;
+            createTrack.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var resp = request.Send();
+            FfiResponse res = resp;
+            source.SetMute(muted);
         }
     }
 
     public interface IRemoteTrack : ITrack
     {
-
+        public void SetEnabled(bool enabled)
+        {
+            using var request = FFIBridge.Instance.NewRequest<EnableRemoteTrackRequest>();
+            var req = request.request;
+            req.Enabled = enabled;
+            req.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var resp = request.Send();
+            FfiResponse res = resp;
+        }
     }
 
     public interface IAudioTrack : ITrack
@@ -80,7 +101,13 @@ namespace LiveKit
 
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
     {
-        internal LocalAudioTrack(OwnedTrack track, Room room) : base(track, room, room?.LocalParticipant) { }
+        RtcAudioSource _source;
+
+        IRtcSource ILocalTrack.source { get => _source; }
+
+        internal LocalAudioTrack(OwnedTrack track, Room room, RtcAudioSource source) : base(track, room, room?.LocalParticipant) {
+            _source = source;
+        }
 
         public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source, Room room)
         {
@@ -92,14 +119,20 @@ namespace LiveKit
             using var resp = request.Send();
             FfiResponse res = resp;
             var trackInfo = res.CreateAudioTrack.Track;
-            var track = new LocalAudioTrack(trackInfo, room);
+            var track = new LocalAudioTrack(trackInfo, room, source);
             return track;
         }
     }
 
     public sealed class LocalVideoTrack : Track, ILocalTrack, IVideoTrack
     {
-        internal LocalVideoTrack(OwnedTrack track, Room room) : base(track, room, room?.LocalParticipant) { }
+        RtcVideoSource _source;
+
+        IRtcSource ILocalTrack.source { get => _source; }
+
+        internal LocalVideoTrack(OwnedTrack track, Room room, RtcVideoSource source) : base(track, room, room?.LocalParticipant) {
+            _source = source;
+        }
 
         public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source, Room room)
         {
@@ -110,7 +143,7 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             var trackInfo = res.CreateVideoTrack.Track;
-            var track = new LocalVideoTrack(trackInfo, room);
+            var track = new LocalVideoTrack(trackInfo, room, source);
             return track;
         }
     }

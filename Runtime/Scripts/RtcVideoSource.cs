@@ -11,7 +11,7 @@ using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
-    public abstract class RtcVideoSource
+    public abstract class RtcVideoSource : IRtcSource
     {
         public enum VideoStreamSource
         {
@@ -40,6 +40,8 @@ namespace LiveKit
         protected bool isDisposed = true;
         protected bool _playing = false;
         private Texture2D _texture2D = null;
+        private bool _muted = false;
+        public override bool Muted => _muted;
 
         internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
@@ -128,12 +130,26 @@ namespace LiveKit
 
         private void LoadToTexture2D(Texture2D tex, RenderTexture rTex)
         {
+            if (tex == null || rTex == null)
+            {
+                return;
+            }
+
             var old_rt = RenderTexture.active;
             RenderTexture.active = rTex;
-
             tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
-            tex.Apply();
 
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            // Flip the texture for OSX
+            var pixels = tex.GetPixels();
+            var flippedPixels = new Color[pixels.Length];
+            for (int i = 0; i < rTex.height; i++)
+            {
+                Array.Copy(pixels, i * rTex.width, flippedPixels, (rTex.height - i - 1) * rTex.width, rTex.width);
+            }
+            tex.SetPixels(flippedPixels);
+#endif
+            tex.Apply();
             RenderTexture.active = old_rt;
         }
 
@@ -160,11 +176,19 @@ namespace LiveKit
                 {
                     LoadToTexture2D(_texture2D, _dest as RenderTexture);
                 }
-
+                if(_muted)
+                {
+                    continue;
+                }
                 SendFrame();
             }
 
             yield break;
+        }
+
+        public override void SetMute(bool muted)
+        {
+            _muted = muted;
         }
 
         public virtual void Dispose()

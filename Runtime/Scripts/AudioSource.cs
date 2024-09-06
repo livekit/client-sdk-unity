@@ -16,7 +16,7 @@ namespace LiveKit
         AudioSourceMicrophone = 1,
     }
 
-    public class RtcAudioSource
+    public class RtcAudioSource : IRtcSource
     {
 #if UNITY_IOS
         // iOS microphone sample rate is 24k,
@@ -44,6 +44,10 @@ namespace LiveKit
         // Used on the AudioThread
         private Thread _readAudioThread;
         private ThreadSafeQueue<AudioFrame> _frameQueue = new ThreadSafeQueue<AudioFrame>();
+
+        private bool _muted = false;
+
+        public override bool Muted => _muted;
 
         public RtcAudioSource(AudioSource source, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
         {
@@ -137,6 +141,11 @@ namespace LiveKit
                 try
                 {
                     AudioFrame frame = _frameQueue.Dequeue();
+
+                    if(_muted)
+                    {
+                        continue;
+                    }
                     unsafe
                     {
                         using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
@@ -165,6 +174,11 @@ namespace LiveKit
         {
             _audioSource = source;
             _audioFilter = source.gameObject.AddComponent<AudioFilter>();
+        }
+
+        public override void SetMute(bool muted)
+        {
+            _muted = muted;
         }
     }
 }
