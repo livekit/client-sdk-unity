@@ -31,10 +31,13 @@ clone this repo and download the ffi binaries.
 ```sh
 git clone https://github.com/livekit/client-sdk-unity.git
 cd client-sdk-unity
-python3 install.py
 ```
 
-You can use the package manager to import `client-sdk-unity` into your Unity project.
+You can use the package manager to import local `client-sdk-unity` into your Unity project.
+
+Or you can import the git url `https://github.com/livekit/client-sdk-unity.git` from the package manager.
+
+
 
 ### iOS
 
