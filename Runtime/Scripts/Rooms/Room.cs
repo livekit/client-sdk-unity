@@ -161,7 +161,7 @@ namespace LiveKit.Rooms
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantMetadataChanged:
                 {
-                    var participant = this.ParticipantEnsured(e.ParticipantNameChanged!.ParticipantIdentity!);
+                    var participant = this.ParticipantEnsured(e.ParticipantMetadataChanged!.ParticipantIdentity!);
                     participant.UpdateMeta(e.ParticipantMetadataChanged!.Metadata!);
                     participantsHub.NotifyParticipantUpdate(participant, UpdateFromParticipant.MetadataChanged);
                 }
