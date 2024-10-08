@@ -4,14 +4,16 @@ using UnityEngine.Rendering;
 using Unity.Collections;
 using UnityEngine.Experimental.Rendering;
 using System;
+using System.Runtime.InteropServices;
 
 namespace LiveKit
 {
-    public class TextureVideoSource : RtcVideoSource
+    // VideoSource for Unity WebCamTexture
+    public class WebCameraSource : RtcVideoSource
     {
         TextureFormat _textureFormat;
 
-        public Texture Texture { get; }
+        public WebCamTexture Texture { get; }
 
         public override int GetWidth()
         {
@@ -25,38 +27,45 @@ namespace LiveKit
 
         protected override VideoRotation GetVideoRotation()
         {
-            return VideoRotation._0;
+            return VideoRotation._180;
         }
 
-        public TextureVideoSource(Texture texture, VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Texture, bufferType)
+        public WebCameraSource(WebCamTexture texture, VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Texture, bufferType)
         {
             Texture = texture;
             base.Init();
         }
 
-        ~TextureVideoSource()
+        ~WebCameraSource()
         {
-            Dispose(); 
+            Dispose();
         }
 
         // Read the texture data into a native array asynchronously
         protected override bool ReadBuffer()
         {
-            if (_reading)
+            if (_reading && !Texture.isPlaying)
                 return false;
             _reading = true;
             var textureChanged = false;
 
-            if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight()) {
+            if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight())
+            {
                 var compatibleFormat = SystemInfo.GetCompatibleFormat(Texture.graphicsFormat, FormatUsage.ReadPixels);
                 _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
                 _bufferType = GetVideoBufferType(_textureFormat);
                 _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
-                _dest = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
+                _dest = new Texture2D(GetWidth(), GetHeight(), TextureFormat.BGRA32, false);
                 textureChanged = true;
             }
+
+            Color32[] pixels = new Color32[GetWidth() * GetHeight()];
+            Texture.GetPixels32(pixels);
+            var bytes = MemoryMarshal.Cast<Color32, byte>(pixels);
+            _data.CopyFrom(bytes.ToArray());
+            _requestPending = true;
             Graphics.CopyTexture(Texture, _dest);
-            AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, _textureFormat, OnReadback);
+
             return textureChanged;
         }
     }
