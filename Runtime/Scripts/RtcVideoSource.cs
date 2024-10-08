@@ -26,11 +26,13 @@ namespace LiveKit
         public abstract int GetWidth();
         public abstract int GetHeight();
 
+        protected abstract VideoRotation GetVideoRotation();
+
         public delegate void TextureReceiveDelegate(Texture2D tex2d);
         /// Called when we receive a new texture (first texture or the resolution changed)
         public event TextureReceiveDelegate TextureReceived;
 
-        protected Texture _dest;
+        protected Texture2D _dest;
         protected NativeArray<byte> _data;
         protected VideoStreamSource _sourceType;
         protected VideoBufferType _bufferType;
@@ -39,7 +41,6 @@ namespace LiveKit
         protected bool _requestPending = false;
         protected bool isDisposed = true;
         protected bool _playing = false;
-        private Texture2D _texture2D = null;
         private bool _muted = false;
         public override bool Muted => _muted;
 
@@ -128,31 +129,6 @@ namespace LiveKit
             _playing = false; 
         }
 
-        private void LoadToTexture2D(Texture2D tex, RenderTexture rTex)
-        {
-            if (tex == null || rTex == null)
-            {
-                return;
-            }
-
-            var old_rt = RenderTexture.active;
-            RenderTexture.active = rTex;
-            tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
-
-#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-            // Flip the texture for OSX
-            var pixels = tex.GetPixels();
-            var flippedPixels = new Color[pixels.Length];
-            for (int i = 0; i < rTex.height; i++)
-            {
-                Array.Copy(pixels, i * rTex.width, flippedPixels, (rTex.height - i - 1) * rTex.width, rTex.width);
-            }
-            tex.SetPixels(flippedPixels);
-#endif
-            tex.Apply();
-            RenderTexture.active = old_rt;
-        }
-
         public IEnumerator Update()
         {
             while (_playing)
@@ -162,20 +138,9 @@ namespace LiveKit
 
                 if(textureChanged)
                 {
-                    if (_texture2D == null)
-                    {
-                        _texture2D = new Texture2D(_dest.width, _dest.height, TextureFormat.RGB24, false);
-                    } else
-                    {
-                        _texture2D.Reinitialize(_dest.width, _dest.height);
-                    }
-                    TextureReceived?.Invoke(_texture2D);
+                    TextureReceived?.Invoke(_dest);
                 }
 
-                if(TextureReceived != null && TextureReceived.GetInvocationList().Length > 0)
-                {
-                    LoadToTexture2D(_texture2D, _dest as RenderTexture);
-                }
                 if(_muted)
                 {
                     continue;
@@ -195,7 +160,7 @@ namespace LiveKit
         {
             if (!isDisposed)
             {
-                if (_texture2D != null) UnityEngine.Object.Destroy(_texture2D);
+                if (_dest != null) UnityEngine.Object.Destroy(_dest);
                 isDisposed = true;
             }
         }
@@ -222,7 +187,7 @@ namespace LiveKit
                 using var request = FFIBridge.Instance.NewRequest<CaptureVideoFrameRequest>();
                 var capture = request.request;
                 capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
-                capture.Rotation = VideoRotation._0;
+                capture.Rotation = GetVideoRotation();
                 capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 capture.Buffer = buffer;
                 using var response = request.Send();
