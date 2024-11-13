@@ -37,6 +37,8 @@ namespace LiveKit.Internal
         public event DisconnectReceivedDelegate? DisconnectReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
         public event TrackEventReceivedDelegate? TrackEventReceived;
+        public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
+
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
@@ -237,6 +239,9 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.TrackEvent:
                         Instance.TrackEventReceived?.Invoke(r.TrackEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.RpcMethodInvocation:
+                        Instance.RpcMethodInvocationReceived?.Invoke(r.RpcMethodInvocation);
                         break;
                     case FfiEvent.MessageOneofCase.Disconnect:
                         Instance.DisconnectReceived?.Invoke(r.Disconnect!);

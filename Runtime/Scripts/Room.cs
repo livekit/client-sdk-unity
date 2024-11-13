@@ -184,7 +184,19 @@ namespace LiveKit
             Metadata = info.Metadata;
         }
 
-
+        internal void OnRpcMethodInvocationReceived(RpcMethodInvocation e)
+        {
+            if (e.LocalParticipantHandle == LocalParticipant.Handle.DangerousGetHandle())
+            {
+                LocalParticipant.HandleRpcMethodInvocation(
+                    e.InvocationId,
+                    e.Method,
+                    e.RequestId,
+                    e.CallerIdentity,
+                    e.Payload,
+                    e.ResponseTimeoutMs);
+            }
+        }
         internal void OnEventReceived(RoomEvent e)
         {
             if (e.RoomHandle != (ulong)RoomHandle.DangerousGetHandle())
@@ -412,6 +424,7 @@ namespace LiveKit
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
+            FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
             Connected?.Invoke(this);
         }
 
