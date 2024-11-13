@@ -132,6 +132,33 @@ namespace LiveKit
             var resp = request.Send();
         }
 
+        public async Task<string> PerformRpc(PerformRpcParams params)
+        {
+            using var request = FFIBridge.Instance.NewRequest<PerformRpcRequest>();
+            var rpcReq = request.request;
+            rpcReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            rpcReq.DestinationIdentity = params.DestinationIdentity;
+            rpcReq.Method = params.Method;
+            rpcReq.Payload = params.Payload;
+            rpcReq.ResponseTimeoutMs = (int)(params.ResponseTimeout * 1000);
+
+            var response = request.Send();
+            var asyncId = response.PerformRpc.AsyncId;
+
+            // Wait for callback
+            var callback = await FfiClient.Instance.WaitForEvent<PerformRpcCallback>(
+                evt => evt.MessageCase == FfiEvent.MessageOneofCase.PerformRpc && 
+                       evt.PerformRpc.AsyncId == asyncId
+            );
+
+            if (callback.Error != null)
+            {
+                throw RpcError.FromProto(callback.Error);
+            }
+
+            return callback.Payload;
+        }
+
         private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
             if (!Room.TryGetTarget(out var room))
