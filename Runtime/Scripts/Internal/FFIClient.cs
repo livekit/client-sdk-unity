@@ -7,7 +7,6 @@ using LiveKit.Internal.FFIClients;
 using LiveKit.Internal.FFIClients.Pools;
 using LiveKit.Internal.FFIClients.Pools.Memory;
 using UnityEngine.Pool;
-using UnityEditor.PackageManager;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -123,7 +122,7 @@ namespace LiveKit.Internal
             const bool captureLogs = false;
 #endif
 
-            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", GetSDKVersion());
+            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", ""); // TODO: Get SDK version
 
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
@@ -259,12 +258,6 @@ namespace LiveKit.Internal
                         throw new ArgumentOutOfRangeException($"Unknown message type: {r?.MessageCase.ToString() ?? "null"}");
                 }
             }, response);
-        }
-
-        private string GetSDKVersion()
-        {
-            var packageInfo = PackageInfo.FindForAssetPath("Packages/io.livekit.livekit-sdk");
-            return packageInfo?.version ?? "";
         }
     }
 }
