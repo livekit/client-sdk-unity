@@ -46,189 +46,186 @@ namespace LiveKit.Proto {
             "bmRpZGF0ZUgAEjoKC2NlcnRpZmljYXRlGBAgASgLMiMubGl2ZWtpdC5wcm90",
             "by5SdGNTdGF0cy5DZXJ0aWZpY2F0ZUgAEi4KBXRyYWNrGBEgASgLMh0ubGl2",
             "ZWtpdC5wcm90by5SdGNTdGF0cy5UcmFja0gAGlsKBUNvZGVjEigKA3J0YxgB",
-            "IAEoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEigKBWNvZGVjGAIg",
-            "ASgLMhkubGl2ZWtpdC5wcm90by5Db2RlY1N0YXRzGtUBCgpJbmJvdW5kUnRw",
-            "EigKA3J0YxgBIAEoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEi0K",
-            "BnN0cmVhbRgCIAEoCzIdLmxpdmVraXQucHJvdG8uUnRwU3RyZWFtU3RhdHMS",
-            "NwoIcmVjZWl2ZWQYAyABKAsyJS5saXZla2l0LnByb3RvLlJlY2VpdmVkUnRw",
-            "U3RyZWFtU3RhdHMSNQoHaW5ib3VuZBgEIAEoCzIkLmxpdmVraXQucHJvdG8u",
+            "IAIoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEigKBWNvZGVjGAIg",
+            "AigLMhkubGl2ZWtpdC5wcm90by5Db2RlY1N0YXRzGtUBCgpJbmJvdW5kUnRw",
+            "EigKA3J0YxgBIAIoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEi0K",
+            "BnN0cmVhbRgCIAIoCzIdLmxpdmVraXQucHJvdG8uUnRwU3RyZWFtU3RhdHMS",
+            "NwoIcmVjZWl2ZWQYAyACKAsyJS5saXZla2l0LnByb3RvLlJlY2VpdmVkUnRw",
+            "U3RyZWFtU3RhdHMSNQoHaW5ib3VuZBgEIAIoCzIkLmxpdmVraXQucHJvdG8u",
             "SW5ib3VuZFJ0cFN0cmVhbVN0YXRzGtABCgtPdXRib3VuZFJ0cBIoCgNydGMY",
-            "ASABKAsyGy5saXZla2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRItCgZzdHJlYW0Y",
-            "AiABKAsyHS5saXZla2l0LnByb3RvLlJ0cFN0cmVhbVN0YXRzEi8KBHNlbnQY",
-            "AyABKAsyIS5saXZla2l0LnByb3RvLlNlbnRSdHBTdHJlYW1TdGF0cxI3Cghv",
-            "dXRib3VuZBgEIAEoCzIlLmxpdmVraXQucHJvdG8uT3V0Ym91bmRSdHBTdHJl",
-            "YW1TdGF0cxroAQoQUmVtb3RlSW5ib3VuZFJ0cBIoCgNydGMYASABKAsyGy5s",
-            "aXZla2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRItCgZzdHJlYW0YAiABKAsyHS5s",
-            "aXZla2l0LnByb3RvLlJ0cFN0cmVhbVN0YXRzEjcKCHJlY2VpdmVkGAMgASgL",
+            "ASACKAsyGy5saXZla2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRItCgZzdHJlYW0Y",
+            "AiACKAsyHS5saXZla2l0LnByb3RvLlJ0cFN0cmVhbVN0YXRzEi8KBHNlbnQY",
+            "AyACKAsyIS5saXZla2l0LnByb3RvLlNlbnRSdHBTdHJlYW1TdGF0cxI3Cghv",
+            "dXRib3VuZBgEIAIoCzIlLmxpdmVraXQucHJvdG8uT3V0Ym91bmRSdHBTdHJl",
+            "YW1TdGF0cxroAQoQUmVtb3RlSW5ib3VuZFJ0cBIoCgNydGMYASACKAsyGy5s",
+            "aXZla2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRItCgZzdHJlYW0YAiACKAsyHS5s",
+            "aXZla2l0LnByb3RvLlJ0cFN0cmVhbVN0YXRzEjcKCHJlY2VpdmVkGAMgAigL",
             "MiUubGl2ZWtpdC5wcm90by5SZWNlaXZlZFJ0cFN0cmVhbVN0YXRzEkIKDnJl",
-            "bW90ZV9pbmJvdW5kGAQgASgLMioubGl2ZWtpdC5wcm90by5SZW1vdGVJbmJv",
+            "bW90ZV9pbmJvdW5kGAQgAigLMioubGl2ZWtpdC5wcm90by5SZW1vdGVJbmJv",
             "dW5kUnRwU3RyZWFtU3RhdHMa4wEKEVJlbW90ZU91dGJvdW5kUnRwEigKA3J0",
-            "YxgBIAEoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEi0KBnN0cmVh",
-            "bRgCIAEoCzIdLmxpdmVraXQucHJvdG8uUnRwU3RyZWFtU3RhdHMSLwoEc2Vu",
-            "dBgDIAEoCzIhLmxpdmVraXQucHJvdG8uU2VudFJ0cFN0cmVhbVN0YXRzEkQK",
-            "D3JlbW90ZV9vdXRib3VuZBgEIAEoCzIrLmxpdmVraXQucHJvdG8uUmVtb3Rl",
+            "YxgBIAIoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEi0KBnN0cmVh",
+            "bRgCIAIoCzIdLmxpdmVraXQucHJvdG8uUnRwU3RyZWFtU3RhdHMSLwoEc2Vu",
+            "dBgDIAIoCzIhLmxpdmVraXQucHJvdG8uU2VudFJ0cFN0cmVhbVN0YXRzEkQK",
+            "D3JlbW90ZV9vdXRib3VuZBgEIAIoCzIrLmxpdmVraXQucHJvdG8uUmVtb3Rl",
             "T3V0Ym91bmRSdHBTdHJlYW1TdGF0cxrIAQoLTWVkaWFTb3VyY2USKAoDcnRj",
-            "GAEgASgLMhsubGl2ZWtpdC5wcm90by5SdGNTdGF0c0RhdGESLwoGc291cmNl",
-            "GAIgASgLMh8ubGl2ZWtpdC5wcm90by5NZWRpYVNvdXJjZVN0YXRzEi4KBWF1",
-            "ZGlvGAMgASgLMh8ubGl2ZWtpdC5wcm90by5BdWRpb1NvdXJjZVN0YXRzEi4K",
-            "BXZpZGVvGAQgASgLMh8ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZVN0YXRz",
-            "GnEKDE1lZGlhUGxheW91dBIoCgNydGMYASABKAsyGy5saXZla2l0LnByb3Rv",
-            "LlJ0Y1N0YXRzRGF0YRI3Cg1hdWRpb19wbGF5b3V0GAIgASgLMiAubGl2ZWtp",
+            "GAEgAigLMhsubGl2ZWtpdC5wcm90by5SdGNTdGF0c0RhdGESLwoGc291cmNl",
+            "GAIgAigLMh8ubGl2ZWtpdC5wcm90by5NZWRpYVNvdXJjZVN0YXRzEi4KBWF1",
+            "ZGlvGAMgAigLMh8ubGl2ZWtpdC5wcm90by5BdWRpb1NvdXJjZVN0YXRzEi4K",
+            "BXZpZGVvGAQgAigLMh8ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZVN0YXRz",
+            "GnEKDE1lZGlhUGxheW91dBIoCgNydGMYASACKAsyGy5saXZla2l0LnByb3Rv",
+            "LlJ0Y1N0YXRzRGF0YRI3Cg1hdWRpb19wbGF5b3V0GAIgAigLMiAubGl2ZWtp",
             "dC5wcm90by5BdWRpb1BsYXlvdXRTdGF0cxpqCg5QZWVyQ29ubmVjdGlvbhIo",
-            "CgNydGMYASABKAsyGy5saXZla2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRIuCgJw",
-            "YxgCIAEoCzIiLmxpdmVraXQucHJvdG8uUGVlckNvbm5lY3Rpb25TdGF0cxpk",
-            "CgtEYXRhQ2hhbm5lbBIoCgNydGMYASABKAsyGy5saXZla2l0LnByb3RvLlJ0",
-            "Y1N0YXRzRGF0YRIrCgJkYxgCIAEoCzIfLmxpdmVraXQucHJvdG8uRGF0YUNo",
-            "YW5uZWxTdGF0cxpnCglUcmFuc3BvcnQSKAoDcnRjGAEgASgLMhsubGl2ZWtp",
-            "dC5wcm90by5SdGNTdGF0c0RhdGESMAoJdHJhbnNwb3J0GAIgASgLMh0ubGl2",
+            "CgNydGMYASACKAsyGy5saXZla2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRIuCgJw",
+            "YxgCIAIoCzIiLmxpdmVraXQucHJvdG8uUGVlckNvbm5lY3Rpb25TdGF0cxpk",
+            "CgtEYXRhQ2hhbm5lbBIoCgNydGMYASACKAsyGy5saXZla2l0LnByb3RvLlJ0",
+            "Y1N0YXRzRGF0YRIrCgJkYxgCIAIoCzIfLmxpdmVraXQucHJvdG8uRGF0YUNo",
+            "YW5uZWxTdGF0cxpnCglUcmFuc3BvcnQSKAoDcnRjGAEgAigLMhsubGl2ZWtp",
+            "dC5wcm90by5SdGNTdGF0c0RhdGESMAoJdHJhbnNwb3J0GAIgAigLMh0ubGl2",
             "ZWtpdC5wcm90by5UcmFuc3BvcnRTdGF0cxp0Cg1DYW5kaWRhdGVQYWlyEigK",
-            "A3J0YxgBIAEoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEjkKDmNh",
-            "bmRpZGF0ZV9wYWlyGAIgASgLMiEubGl2ZWtpdC5wcm90by5DYW5kaWRhdGVQ",
-            "YWlyU3RhdHMabwoOTG9jYWxDYW5kaWRhdGUSKAoDcnRjGAEgASgLMhsubGl2",
-            "ZWtpdC5wcm90by5SdGNTdGF0c0RhdGESMwoJY2FuZGlkYXRlGAIgASgLMiAu",
+            "A3J0YxgBIAIoCzIbLmxpdmVraXQucHJvdG8uUnRjU3RhdHNEYXRhEjkKDmNh",
+            "bmRpZGF0ZV9wYWlyGAIgAigLMiEubGl2ZWtpdC5wcm90by5DYW5kaWRhdGVQ",
+            "YWlyU3RhdHMabwoOTG9jYWxDYW5kaWRhdGUSKAoDcnRjGAEgAigLMhsubGl2",
+            "ZWtpdC5wcm90by5SdGNTdGF0c0RhdGESMwoJY2FuZGlkYXRlGAIgAigLMiAu",
             "bGl2ZWtpdC5wcm90by5JY2VDYW5kaWRhdGVTdGF0cxpwCg9SZW1vdGVDYW5k",
-            "aWRhdGUSKAoDcnRjGAEgASgLMhsubGl2ZWtpdC5wcm90by5SdGNTdGF0c0Rh",
-            "dGESMwoJY2FuZGlkYXRlGAIgASgLMiAubGl2ZWtpdC5wcm90by5JY2VDYW5k",
-            "aWRhdGVTdGF0cxptCgtDZXJ0aWZpY2F0ZRIoCgNydGMYASABKAsyGy5saXZl",
-            "a2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRI0CgtjZXJ0aWZpY2F0ZRgCIAEoCzIf",
+            "aWRhdGUSKAoDcnRjGAEgAigLMhsubGl2ZWtpdC5wcm90by5SdGNTdGF0c0Rh",
+            "dGESMwoJY2FuZGlkYXRlGAIgAigLMiAubGl2ZWtpdC5wcm90by5JY2VDYW5k",
+            "aWRhdGVTdGF0cxptCgtDZXJ0aWZpY2F0ZRIoCgNydGMYASACKAsyGy5saXZl",
+            "a2l0LnByb3RvLlJ0Y1N0YXRzRGF0YRI0CgtjZXJ0aWZpY2F0ZRgCIAIoCzIf",
             "LmxpdmVraXQucHJvdG8uQ2VydGlmaWNhdGVTdGF0cxoHCgVUcmFja0IHCgVz",
-            "dGF0cyItCgxSdGNTdGF0c0RhdGESCgoCaWQYASABKAkSEQoJdGltZXN0YW1w",
-            "GAIgASgDIogBCgpDb2RlY1N0YXRzEhQKDHBheWxvYWRfdHlwZRgBIAEoDRIU",
-            "Cgx0cmFuc3BvcnRfaWQYAiABKAkSEQoJbWltZV90eXBlGAMgASgJEhIKCmNs",
-            "b2NrX3JhdGUYBCABKA0SEAoIY2hhbm5lbHMYBSABKA0SFQoNc2RwX2ZtdHBf",
-            "bGluZRgGIAEoCSJUCg5SdHBTdHJlYW1TdGF0cxIMCgRzc3JjGAEgASgNEgwK",
-            "BGtpbmQYAiABKAkSFAoMdHJhbnNwb3J0X2lkGAMgASgJEhAKCGNvZGVjX2lk",
-            "GAQgASgJIlgKFlJlY2VpdmVkUnRwU3RyZWFtU3RhdHMSGAoQcGFja2V0c19y",
-            "ZWNlaXZlZBgBIAEoBBIUCgxwYWNrZXRzX2xvc3QYAiABKAMSDgoGaml0dGVy",
-            "GAMgASgBIoIMChVJbmJvdW5kUnRwU3RyZWFtU3RhdHMSGAoQdHJhY2tfaWRl",
-            "bnRpZmllchgBIAEoCRILCgNtaWQYAiABKAkSEQoJcmVtb3RlX2lkGAMgASgJ",
-            "EhYKDmZyYW1lc19kZWNvZGVkGAQgASgNEhoKEmtleV9mcmFtZXNfZGVjb2Rl",
-            "ZBgFIAEoDRIXCg9mcmFtZXNfcmVuZGVyZWQYBiABKA0SFgoOZnJhbWVzX2Ry",
-            "b3BwZWQYByABKA0SEwoLZnJhbWVfd2lkdGgYCCABKA0SFAoMZnJhbWVfaGVp",
-            "Z2h0GAkgASgNEhkKEWZyYW1lc19wZXJfc2Vjb25kGAogASgBEg4KBnFwX3N1",
-            "bRgLIAEoBBIZChF0b3RhbF9kZWNvZGVfdGltZRgMIAEoARIfChd0b3RhbF9p",
-            "bnRlcl9mcmFtZV9kZWxheRgNIAEoARInCh90b3RhbF9zcXVhcmVkX2ludGVy",
-            "X2ZyYW1lX2RlbGF5GA4gASgBEhMKC3BhdXNlX2NvdW50GA8gASgNEhwKFHRv",
-            "dGFsX3BhdXNlX2R1cmF0aW9uGBAgASgBEhQKDGZyZWV6ZV9jb3VudBgRIAEo",
-            "DRIdChV0b3RhbF9mcmVlemVfZHVyYXRpb24YEiABKAESJgoebGFzdF9wYWNr",
-            "ZXRfcmVjZWl2ZWRfdGltZXN0YW1wGBMgASgBEh0KFWhlYWRlcl9ieXRlc19y",
-            "ZWNlaXZlZBgUIAEoBBIZChFwYWNrZXRzX2Rpc2NhcmRlZBgVIAEoBBIaChJm",
-            "ZWNfYnl0ZXNfcmVjZWl2ZWQYFiABKAQSHAoUZmVjX3BhY2tldHNfcmVjZWl2",
-            "ZWQYFyABKAQSHQoVZmVjX3BhY2tldHNfZGlzY2FyZGVkGBggASgEEhYKDmJ5",
-            "dGVzX3JlY2VpdmVkGBkgASgEEhIKCm5hY2tfY291bnQYGiABKA0SEQoJZmly",
-            "X2NvdW50GBsgASgNEhEKCXBsaV9jb3VudBgcIAEoDRIeChZ0b3RhbF9wcm9j",
-            "ZXNzaW5nX2RlbGF5GB0gASgBEiMKG2VzdGltYXRlZF9wbGF5b3V0X3RpbWVz",
-            "dGFtcBgeIAEoARIbChNqaXR0ZXJfYnVmZmVyX2RlbGF5GB8gASgBEiIKGmpp",
-            "dHRlcl9idWZmZXJfdGFyZ2V0X2RlbGF5GCAgASgBEiMKG2ppdHRlcl9idWZm",
-            "ZXJfZW1pdHRlZF9jb3VudBghIAEoBBIjChtqaXR0ZXJfYnVmZmVyX21pbmlt",
-            "dW1fZGVsYXkYIiABKAESHgoWdG90YWxfc2FtcGxlc19yZWNlaXZlZBgjIAEo",
-            "BBIZChFjb25jZWFsZWRfc2FtcGxlcxgkIAEoBBIgChhzaWxlbnRfY29uY2Vh",
-            "bGVkX3NhbXBsZXMYJSABKAQSGgoSY29uY2VhbG1lbnRfZXZlbnRzGCYgASgE",
-            "EikKIWluc2VydGVkX3NhbXBsZXNfZm9yX2RlY2VsZXJhdGlvbhgnIAEoBBIo",
-            "CiByZW1vdmVkX3NhbXBsZXNfZm9yX2FjY2VsZXJhdGlvbhgoIAEoBBITCgth",
-            "dWRpb19sZXZlbBgpIAEoARIaChJ0b3RhbF9hdWRpb19lbmVyZ3kYKiABKAES",
-            "HgoWdG90YWxfc2FtcGxlc19kdXJhdGlvbhgrIAEoARIXCg9mcmFtZXNfcmVj",
-            "ZWl2ZWQYLCABKAQSHgoWZGVjb2Rlcl9pbXBsZW1lbnRhdGlvbhgtIAEoCRIS",
-            "CgpwbGF5b3V0X2lkGC4gASgJEh8KF3Bvd2VyX2VmZmljaWVudF9kZWNvZGVy",
-            "GC8gASgIEi4KJmZyYW1lc19hc3NlbWJsZWRfZnJvbV9tdWx0aXBsZV9wYWNr",
-            "ZXRzGDAgASgEEhsKE3RvdGFsX2Fzc2VtYmx5X3RpbWUYMSABKAESJgoecmV0",
-            "cmFuc21pdHRlZF9wYWNrZXRzX3JlY2VpdmVkGDIgASgEEiQKHHJldHJhbnNt",
-            "aXR0ZWRfYnl0ZXNfcmVjZWl2ZWQYMyABKAQSEAoIcnR4X3NzcmMYNCABKA0S",
-            "EAoIZmVjX3NzcmMYNSABKA0iPgoSU2VudFJ0cFN0cmVhbVN0YXRzEhQKDHBh",
-            "Y2tldHNfc2VudBgBIAEoBBISCgpieXRlc19zZW50GAIgASgEItEHChZPdXRi",
-            "b3VuZFJ0cFN0cmVhbVN0YXRzEgsKA21pZBgBIAEoCRIXCg9tZWRpYV9zb3Vy",
-            "Y2VfaWQYAiABKAkSEQoJcmVtb3RlX2lkGAMgASgJEgsKA3JpZBgEIAEoCRIZ",
-            "ChFoZWFkZXJfYnl0ZXNfc2VudBgFIAEoBBIiChpyZXRyYW5zbWl0dGVkX3Bh",
-            "Y2tldHNfc2VudBgGIAEoBBIgChhyZXRyYW5zbWl0dGVkX2J5dGVzX3NlbnQY",
-            "ByABKAQSEAoIcnR4X3NzcmMYCCABKA0SFgoOdGFyZ2V0X2JpdHJhdGUYCSAB",
-            "KAESIgoadG90YWxfZW5jb2RlZF9ieXRlc190YXJnZXQYCiABKAQSEwoLZnJh",
-            "bWVfd2lkdGgYCyABKA0SFAoMZnJhbWVfaGVpZ2h0GAwgASgNEhkKEWZyYW1l",
-            "c19wZXJfc2Vjb25kGA0gASgBEhMKC2ZyYW1lc19zZW50GA4gASgNEhgKEGh1",
-            "Z2VfZnJhbWVzX3NlbnQYDyABKA0SFgoOZnJhbWVzX2VuY29kZWQYECABKA0S",
-            "GgoSa2V5X2ZyYW1lc19lbmNvZGVkGBEgASgNEg4KBnFwX3N1bRgSIAEoBBIZ",
-            "ChF0b3RhbF9lbmNvZGVfdGltZRgTIAEoARIfChd0b3RhbF9wYWNrZXRfc2Vu",
-            "ZF9kZWxheRgUIAEoARJJChlxdWFsaXR5X2xpbWl0YXRpb25fcmVhc29uGBUg",
-            "ASgOMiYubGl2ZWtpdC5wcm90by5RdWFsaXR5TGltaXRhdGlvblJlYXNvbhJr",
+            "dGF0cyItCgxSdGNTdGF0c0RhdGESCgoCaWQYASACKAkSEQoJdGltZXN0YW1w",
+            "GAIgAigDIogBCgpDb2RlY1N0YXRzEhQKDHBheWxvYWRfdHlwZRgBIAIoDRIU",
+            "Cgx0cmFuc3BvcnRfaWQYAiACKAkSEQoJbWltZV90eXBlGAMgAigJEhIKCmNs",
+            "b2NrX3JhdGUYBCACKA0SEAoIY2hhbm5lbHMYBSACKA0SFQoNc2RwX2ZtdHBf",
+            "bGluZRgGIAIoCSJUCg5SdHBTdHJlYW1TdGF0cxIMCgRzc3JjGAEgAigNEgwK",
+            "BGtpbmQYAiACKAkSFAoMdHJhbnNwb3J0X2lkGAMgAigJEhAKCGNvZGVjX2lk",
+            "GAQgAigJIlgKFlJlY2VpdmVkUnRwU3RyZWFtU3RhdHMSGAoQcGFja2V0c19y",
+            "ZWNlaXZlZBgBIAIoBBIUCgxwYWNrZXRzX2xvc3QYAiACKAMSDgoGaml0dGVy",
+            "GAMgAigBIoIMChVJbmJvdW5kUnRwU3RyZWFtU3RhdHMSGAoQdHJhY2tfaWRl",
+            "bnRpZmllchgBIAIoCRILCgNtaWQYAiACKAkSEQoJcmVtb3RlX2lkGAMgAigJ",
+            "EhYKDmZyYW1lc19kZWNvZGVkGAQgAigNEhoKEmtleV9mcmFtZXNfZGVjb2Rl",
+            "ZBgFIAIoDRIXCg9mcmFtZXNfcmVuZGVyZWQYBiACKA0SFgoOZnJhbWVzX2Ry",
+            "b3BwZWQYByACKA0SEwoLZnJhbWVfd2lkdGgYCCACKA0SFAoMZnJhbWVfaGVp",
+            "Z2h0GAkgAigNEhkKEWZyYW1lc19wZXJfc2Vjb25kGAogAigBEg4KBnFwX3N1",
+            "bRgLIAIoBBIZChF0b3RhbF9kZWNvZGVfdGltZRgMIAIoARIfChd0b3RhbF9p",
+            "bnRlcl9mcmFtZV9kZWxheRgNIAIoARInCh90b3RhbF9zcXVhcmVkX2ludGVy",
+            "X2ZyYW1lX2RlbGF5GA4gAigBEhMKC3BhdXNlX2NvdW50GA8gAigNEhwKFHRv",
+            "dGFsX3BhdXNlX2R1cmF0aW9uGBAgAigBEhQKDGZyZWV6ZV9jb3VudBgRIAIo",
+            "DRIdChV0b3RhbF9mcmVlemVfZHVyYXRpb24YEiACKAESJgoebGFzdF9wYWNr",
+            "ZXRfcmVjZWl2ZWRfdGltZXN0YW1wGBMgAigBEh0KFWhlYWRlcl9ieXRlc19y",
+            "ZWNlaXZlZBgUIAIoBBIZChFwYWNrZXRzX2Rpc2NhcmRlZBgVIAIoBBIaChJm",
+            "ZWNfYnl0ZXNfcmVjZWl2ZWQYFiACKAQSHAoUZmVjX3BhY2tldHNfcmVjZWl2",
+            "ZWQYFyACKAQSHQoVZmVjX3BhY2tldHNfZGlzY2FyZGVkGBggAigEEhYKDmJ5",
+            "dGVzX3JlY2VpdmVkGBkgAigEEhIKCm5hY2tfY291bnQYGiACKA0SEQoJZmly",
+            "X2NvdW50GBsgAigNEhEKCXBsaV9jb3VudBgcIAIoDRIeChZ0b3RhbF9wcm9j",
+            "ZXNzaW5nX2RlbGF5GB0gAigBEiMKG2VzdGltYXRlZF9wbGF5b3V0X3RpbWVz",
+            "dGFtcBgeIAIoARIbChNqaXR0ZXJfYnVmZmVyX2RlbGF5GB8gAigBEiIKGmpp",
+            "dHRlcl9idWZmZXJfdGFyZ2V0X2RlbGF5GCAgAigBEiMKG2ppdHRlcl9idWZm",
+            "ZXJfZW1pdHRlZF9jb3VudBghIAIoBBIjChtqaXR0ZXJfYnVmZmVyX21pbmlt",
+            "dW1fZGVsYXkYIiACKAESHgoWdG90YWxfc2FtcGxlc19yZWNlaXZlZBgjIAIo",
+            "BBIZChFjb25jZWFsZWRfc2FtcGxlcxgkIAIoBBIgChhzaWxlbnRfY29uY2Vh",
+            "bGVkX3NhbXBsZXMYJSACKAQSGgoSY29uY2VhbG1lbnRfZXZlbnRzGCYgAigE",
+            "EikKIWluc2VydGVkX3NhbXBsZXNfZm9yX2RlY2VsZXJhdGlvbhgnIAIoBBIo",
+            "CiByZW1vdmVkX3NhbXBsZXNfZm9yX2FjY2VsZXJhdGlvbhgoIAIoBBITCgth",
+            "dWRpb19sZXZlbBgpIAIoARIaChJ0b3RhbF9hdWRpb19lbmVyZ3kYKiACKAES",
+            "HgoWdG90YWxfc2FtcGxlc19kdXJhdGlvbhgrIAIoARIXCg9mcmFtZXNfcmVj",
+            "ZWl2ZWQYLCACKAQSHgoWZGVjb2Rlcl9pbXBsZW1lbnRhdGlvbhgtIAIoCRIS",
+            "CgpwbGF5b3V0X2lkGC4gAigJEh8KF3Bvd2VyX2VmZmljaWVudF9kZWNvZGVy",
+            "GC8gAigIEi4KJmZyYW1lc19hc3NlbWJsZWRfZnJvbV9tdWx0aXBsZV9wYWNr",
+            "ZXRzGDAgAigEEhsKE3RvdGFsX2Fzc2VtYmx5X3RpbWUYMSACKAESJgoecmV0",
+            "cmFuc21pdHRlZF9wYWNrZXRzX3JlY2VpdmVkGDIgAigEEiQKHHJldHJhbnNt",
+            "aXR0ZWRfYnl0ZXNfcmVjZWl2ZWQYMyACKAQSEAoIcnR4X3NzcmMYNCACKA0S",
+            "EAoIZmVjX3NzcmMYNSACKA0iPgoSU2VudFJ0cFN0cmVhbVN0YXRzEhQKDHBh",
+            "Y2tldHNfc2VudBgBIAIoBBISCgpieXRlc19zZW50GAIgAigEItEHChZPdXRi",
+            "b3VuZFJ0cFN0cmVhbVN0YXRzEgsKA21pZBgBIAIoCRIXCg9tZWRpYV9zb3Vy",
+            "Y2VfaWQYAiACKAkSEQoJcmVtb3RlX2lkGAMgAigJEgsKA3JpZBgEIAIoCRIZ",
+            "ChFoZWFkZXJfYnl0ZXNfc2VudBgFIAIoBBIiChpyZXRyYW5zbWl0dGVkX3Bh",
+            "Y2tldHNfc2VudBgGIAIoBBIgChhyZXRyYW5zbWl0dGVkX2J5dGVzX3NlbnQY",
+            "ByACKAQSEAoIcnR4X3NzcmMYCCACKA0SFgoOdGFyZ2V0X2JpdHJhdGUYCSAC",
+            "KAESIgoadG90YWxfZW5jb2RlZF9ieXRlc190YXJnZXQYCiACKAQSEwoLZnJh",
+            "bWVfd2lkdGgYCyACKA0SFAoMZnJhbWVfaGVpZ2h0GAwgAigNEhkKEWZyYW1l",
+            "c19wZXJfc2Vjb25kGA0gAigBEhMKC2ZyYW1lc19zZW50GA4gAigNEhgKEGh1",
+            "Z2VfZnJhbWVzX3NlbnQYDyACKA0SFgoOZnJhbWVzX2VuY29kZWQYECACKA0S",
+            "GgoSa2V5X2ZyYW1lc19lbmNvZGVkGBEgAigNEg4KBnFwX3N1bRgSIAIoBBIZ",
+            "ChF0b3RhbF9lbmNvZGVfdGltZRgTIAIoARIfChd0b3RhbF9wYWNrZXRfc2Vu",
+            "ZF9kZWxheRgUIAIoARJJChlxdWFsaXR5X2xpbWl0YXRpb25fcmVhc29uGBUg",
+            "AigOMiYubGl2ZWtpdC5wcm90by5RdWFsaXR5TGltaXRhdGlvblJlYXNvbhJr",
             "ChxxdWFsaXR5X2xpbWl0YXRpb25fZHVyYXRpb25zGBYgAygLMkUubGl2ZWtp",
             "dC5wcm90by5PdXRib3VuZFJ0cFN0cmVhbVN0YXRzLlF1YWxpdHlMaW1pdGF0",
             "aW9uRHVyYXRpb25zRW50cnkSLQolcXVhbGl0eV9saW1pdGF0aW9uX3Jlc29s",
-            "dXRpb25fY2hhbmdlcxgXIAEoDRISCgpuYWNrX2NvdW50GBggASgNEhEKCWZp",
-            "cl9jb3VudBgZIAEoDRIRCglwbGlfY291bnQYGiABKA0SHgoWZW5jb2Rlcl9p",
-            "bXBsZW1lbnRhdGlvbhgbIAEoCRIfChdwb3dlcl9lZmZpY2llbnRfZW5jb2Rl",
-            "chgcIAEoCBIOCgZhY3RpdmUYHSABKAgSGAoQc2NhbGliaWxpdHlfbW9kZRge",
-            "IAEoCRpBCh9RdWFsaXR5TGltaXRhdGlvbkR1cmF0aW9uc0VudHJ5EgsKA2tl",
+            "dXRpb25fY2hhbmdlcxgXIAIoDRISCgpuYWNrX2NvdW50GBggAigNEhEKCWZp",
+            "cl9jb3VudBgZIAIoDRIRCglwbGlfY291bnQYGiACKA0SHgoWZW5jb2Rlcl9p",
+            "bXBsZW1lbnRhdGlvbhgbIAIoCRIfChdwb3dlcl9lZmZpY2llbnRfZW5jb2Rl",
+            "chgcIAIoCBIOCgZhY3RpdmUYHSACKAgSGAoQc2NhbGFiaWxpdHlfbW9kZRge",
+            "IAIoCRpBCh9RdWFsaXR5TGltaXRhdGlvbkR1cmF0aW9uc0VudHJ5EgsKA2tl",
             "eRgBIAEoCRINCgV2YWx1ZRgCIAEoAToCOAEipAEKG1JlbW90ZUluYm91bmRS",
-            "dHBTdHJlYW1TdGF0cxIQCghsb2NhbF9pZBgBIAEoCRIXCg9yb3VuZF90cmlw",
-            "X3RpbWUYAiABKAESHQoVdG90YWxfcm91bmRfdHJpcF90aW1lGAMgASgBEhUK",
-            "DWZyYWN0aW9uX2xvc3QYBCABKAESJAoccm91bmRfdHJpcF90aW1lX21lYXN1",
-            "cmVtZW50cxgFIAEoBCK+AQocUmVtb3RlT3V0Ym91bmRSdHBTdHJlYW1TdGF0",
-            "cxIQCghsb2NhbF9pZBgBIAEoCRIYChByZW1vdGVfdGltZXN0YW1wGAIgASgB",
-            "EhQKDHJlcG9ydHNfc2VudBgDIAEoBBIXCg9yb3VuZF90cmlwX3RpbWUYBCAB",
-            "KAESHQoVdG90YWxfcm91bmRfdHJpcF90aW1lGAUgASgBEiQKHHJvdW5kX3Ry",
-            "aXBfdGltZV9tZWFzdXJlbWVudHMYBiABKAQiOgoQTWVkaWFTb3VyY2VTdGF0",
-            "cxIYChB0cmFja19pZGVudGlmaWVyGAEgASgJEgwKBGtpbmQYAiABKAkiogIK",
-            "EEF1ZGlvU291cmNlU3RhdHMSEwoLYXVkaW9fbGV2ZWwYASABKAESGgoSdG90",
-            "YWxfYXVkaW9fZW5lcmd5GAIgASgBEh4KFnRvdGFsX3NhbXBsZXNfZHVyYXRp",
-            "b24YAyABKAESGAoQZWNob19yZXR1cm5fbG9zcxgEIAEoARIkChxlY2hvX3Jl",
-            "dHVybl9sb3NzX2VuaGFuY2VtZW50GAUgASgBEiAKGGRyb3BwZWRfc2FtcGxl",
-            "c19kdXJhdGlvbhgGIAEoARIeChZkcm9wcGVkX3NhbXBsZXNfZXZlbnRzGAcg",
-            "ASgNEhsKE3RvdGFsX2NhcHR1cmVfZGVsYXkYCCABKAESHgoWdG90YWxfc2Ft",
-            "cGxlc19jYXB0dXJlZBgJIAEoBCJcChBWaWRlb1NvdXJjZVN0YXRzEg0KBXdp",
-            "ZHRoGAEgASgNEg4KBmhlaWdodBgCIAEoDRIOCgZmcmFtZXMYAyABKA0SGQoR",
-            "ZnJhbWVzX3Blcl9zZWNvbmQYBCABKAEixQEKEUF1ZGlvUGxheW91dFN0YXRz",
-            "EgwKBGtpbmQYASABKAkSJAocc3ludGhlc2l6ZWRfc2FtcGxlc19kdXJhdGlv",
-            "bhgCIAEoARIiChpzeW50aGVzaXplZF9zYW1wbGVzX2V2ZW50cxgDIAEoDRIe",
-            "ChZ0b3RhbF9zYW1wbGVzX2R1cmF0aW9uGAQgASgBEhsKE3RvdGFsX3BsYXlv",
-            "dXRfZGVsYXkYBSABKAESGwoTdG90YWxfc2FtcGxlc19jb3VudBgGIAEoBCJR",
+            "dHBTdHJlYW1TdGF0cxIQCghsb2NhbF9pZBgBIAIoCRIXCg9yb3VuZF90cmlw",
+            "X3RpbWUYAiACKAESHQoVdG90YWxfcm91bmRfdHJpcF90aW1lGAMgAigBEhUK",
+            "DWZyYWN0aW9uX2xvc3QYBCACKAESJAoccm91bmRfdHJpcF90aW1lX21lYXN1",
+            "cmVtZW50cxgFIAIoBCK+AQocUmVtb3RlT3V0Ym91bmRSdHBTdHJlYW1TdGF0",
+            "cxIQCghsb2NhbF9pZBgBIAIoCRIYChByZW1vdGVfdGltZXN0YW1wGAIgAigB",
+            "EhQKDHJlcG9ydHNfc2VudBgDIAIoBBIXCg9yb3VuZF90cmlwX3RpbWUYBCAC",
+            "KAESHQoVdG90YWxfcm91bmRfdHJpcF90aW1lGAUgAigBEiQKHHJvdW5kX3Ry",
+            "aXBfdGltZV9tZWFzdXJlbWVudHMYBiACKAQiOgoQTWVkaWFTb3VyY2VTdGF0",
+            "cxIYChB0cmFja19pZGVudGlmaWVyGAEgAigJEgwKBGtpbmQYAiACKAkiogIK",
+            "EEF1ZGlvU291cmNlU3RhdHMSEwoLYXVkaW9fbGV2ZWwYASACKAESGgoSdG90",
+            "YWxfYXVkaW9fZW5lcmd5GAIgAigBEh4KFnRvdGFsX3NhbXBsZXNfZHVyYXRp",
+            "b24YAyACKAESGAoQZWNob19yZXR1cm5fbG9zcxgEIAIoARIkChxlY2hvX3Jl",
+            "dHVybl9sb3NzX2VuaGFuY2VtZW50GAUgAigBEiAKGGRyb3BwZWRfc2FtcGxl",
+            "c19kdXJhdGlvbhgGIAIoARIeChZkcm9wcGVkX3NhbXBsZXNfZXZlbnRzGAcg",
+            "AigNEhsKE3RvdGFsX2NhcHR1cmVfZGVsYXkYCCACKAESHgoWdG90YWxfc2Ft",
+            "cGxlc19jYXB0dXJlZBgJIAIoBCJcChBWaWRlb1NvdXJjZVN0YXRzEg0KBXdp",
+            "ZHRoGAEgAigNEg4KBmhlaWdodBgCIAIoDRIOCgZmcmFtZXMYAyACKA0SGQoR",
+            "ZnJhbWVzX3Blcl9zZWNvbmQYBCACKAEixQEKEUF1ZGlvUGxheW91dFN0YXRz",
+            "EgwKBGtpbmQYASACKAkSJAocc3ludGhlc2l6ZWRfc2FtcGxlc19kdXJhdGlv",
+            "bhgCIAIoARIiChpzeW50aGVzaXplZF9zYW1wbGVzX2V2ZW50cxgDIAIoDRIe",
+            "ChZ0b3RhbF9zYW1wbGVzX2R1cmF0aW9uGAQgAigBEhsKE3RvdGFsX3BsYXlv",
+            "dXRfZGVsYXkYBSACKAESGwoTdG90YWxfc2FtcGxlc19jb3VudBgGIAIoBCJR",
             "ChNQZWVyQ29ubmVjdGlvblN0YXRzEhwKFGRhdGFfY2hhbm5lbHNfb3BlbmVk",
-            "GAEgASgNEhwKFGRhdGFfY2hhbm5lbHNfY2xvc2VkGAIgASgNIvEBChBEYXRh",
-            "Q2hhbm5lbFN0YXRzEg0KBWxhYmVsGAEgASgJEhAKCHByb3RvY29sGAIgASgJ",
-            "Eh8KF2RhdGFfY2hhbm5lbF9pZGVudGlmaWVyGAMgASgFEjMKBXN0YXRlGAQg",
-            "ASgOMh8ubGl2ZWtpdC5wcm90by5EYXRhQ2hhbm5lbFN0YXRlSACIAQESFQoN",
-            "bWVzc2FnZXNfc2VudBgFIAEoDRISCgpieXRlc19zZW50GAYgASgEEhkKEW1l",
-            "c3NhZ2VzX3JlY2VpdmVkGAcgASgNEhYKDmJ5dGVzX3JlY2VpdmVkGAggASgE",
-            "QggKBl9zdGF0ZSLDBAoOVHJhbnNwb3J0U3RhdHMSFAoMcGFja2V0c19zZW50",
-            "GAEgASgEEhgKEHBhY2tldHNfcmVjZWl2ZWQYAiABKAQSEgoKYnl0ZXNfc2Vu",
-            "dBgDIAEoBBIWCg5ieXRlc19yZWNlaXZlZBgEIAEoBBIoCghpY2Vfcm9sZRgF",
-            "IAEoDjIWLmxpdmVraXQucHJvdG8uSWNlUm9sZRIjChtpY2VfbG9jYWxfdXNl",
-            "cm5hbWVfZnJhZ21lbnQYBiABKAkSOgoKZHRsc19zdGF0ZRgHIAEoDjIhLmxp",
-            "dmVraXQucHJvdG8uRHRsc1RyYW5zcG9ydFN0YXRlSACIAQESOAoJaWNlX3N0",
-            "YXRlGAggASgOMiAubGl2ZWtpdC5wcm90by5JY2VUcmFuc3BvcnRTdGF0ZUgB",
-            "iAEBEiIKGnNlbGVjdGVkX2NhbmRpZGF0ZV9wYWlyX2lkGAkgASgJEhwKFGxv",
-            "Y2FsX2NlcnRpZmljYXRlX2lkGAogASgJEh0KFXJlbW90ZV9jZXJ0aWZpY2F0",
-            "ZV9pZBgLIAEoCRITCgt0bHNfdmVyc2lvbhgMIAEoCRITCgtkdGxzX2NpcGhl",
-            "chgNIAEoCRIqCglkdGxzX3JvbGUYDiABKA4yFy5saXZla2l0LnByb3RvLkR0",
-            "bHNSb2xlEhMKC3NydHBfY2lwaGVyGA8gASgJEicKH3NlbGVjdGVkX2NhbmRp",
-            "ZGF0ZV9wYWlyX2NoYW5nZXMYECABKA1CDQoLX2R0bHNfc3RhdGVCDAoKX2lj",
-            "ZV9zdGF0ZSKzBQoSQ2FuZGlkYXRlUGFpclN0YXRzEhQKDHRyYW5zcG9ydF9p",
-            "ZBgBIAEoCRIaChJsb2NhbF9jYW5kaWRhdGVfaWQYAiABKAkSGwoTcmVtb3Rl",
-            "X2NhbmRpZGF0ZV9pZBgDIAEoCRI4CgVzdGF0ZRgEIAEoDjIkLmxpdmVraXQu",
-            "cHJvdG8uSWNlQ2FuZGlkYXRlUGFpclN0YXRlSACIAQESEQoJbm9taW5hdGVk",
-            "GAUgASgIEhQKDHBhY2tldHNfc2VudBgGIAEoBBIYChBwYWNrZXRzX3JlY2Vp",
-            "dmVkGAcgASgEEhIKCmJ5dGVzX3NlbnQYCCABKAQSFgoOYnl0ZXNfcmVjZWl2",
-            "ZWQYCSABKAQSIgoabGFzdF9wYWNrZXRfc2VudF90aW1lc3RhbXAYCiABKAES",
-            "JgoebGFzdF9wYWNrZXRfcmVjZWl2ZWRfdGltZXN0YW1wGAsgASgBEh0KFXRv",
-            "dGFsX3JvdW5kX3RyaXBfdGltZRgMIAEoARIfChdjdXJyZW50X3JvdW5kX3Ry",
-            "aXBfdGltZRgNIAEoARIiChphdmFpbGFibGVfb3V0Z29pbmdfYml0cmF0ZRgO",
-            "IAEoARIiChphdmFpbGFibGVfaW5jb21pbmdfYml0cmF0ZRgPIAEoARIZChFy",
-            "ZXF1ZXN0c19yZWNlaXZlZBgQIAEoBBIVCg1yZXF1ZXN0c19zZW50GBEgASgE",
-            "EhoKEnJlc3BvbnNlc19yZWNlaXZlZBgSIAEoBBIWCg5yZXNwb25zZXNfc2Vu",
-            "dBgTIAEoBBIdChVjb25zZW50X3JlcXVlc3RzX3NlbnQYFCABKAQSIQoZcGFj",
-            "a2V0c19kaXNjYXJkZWRfb25fc2VuZBgVIAEoDRIfChdieXRlc19kaXNjYXJk",
-            "ZWRfb25fc2VuZBgWIAEoBEIICgZfc3RhdGUiywMKEUljZUNhbmRpZGF0ZVN0",
-            "YXRzEhQKDHRyYW5zcG9ydF9pZBgBIAEoCRIPCgdhZGRyZXNzGAIgASgJEgwK",
-            "BHBvcnQYAyABKAUSEAoIcHJvdG9jb2wYBCABKAkSPAoOY2FuZGlkYXRlX3R5",
-            "cGUYBSABKA4yHy5saXZla2l0LnByb3RvLkljZUNhbmRpZGF0ZVR5cGVIAIgB",
-            "ARIQCghwcmlvcml0eRgGIAEoBRILCgN1cmwYByABKAkSRgoOcmVsYXlfcHJv",
-            "dG9jb2wYCCABKA4yKS5saXZla2l0LnByb3RvLkljZVNlcnZlclRyYW5zcG9y",
-            "dFByb3RvY29sSAGIAQESEgoKZm91bmRhdGlvbhgJIAEoCRIXCg9yZWxhdGVk",
-            "X2FkZHJlc3MYCiABKAkSFAoMcmVsYXRlZF9wb3J0GAsgASgFEhkKEXVzZXJu",
-            "YW1lX2ZyYWdtZW50GAwgASgJEjkKCHRjcF90eXBlGA0gASgOMiIubGl2ZWtp",
-            "dC5wcm90by5JY2VUY3BDYW5kaWRhdGVUeXBlSAKIAQFCEQoPX2NhbmRpZGF0",
-            "ZV90eXBlQhEKD19yZWxheV9wcm90b2NvbEILCglfdGNwX3R5cGUigQEKEENl",
-            "cnRpZmljYXRlU3RhdHMSEwoLZmluZ2VycHJpbnQYASABKAkSHQoVZmluZ2Vy",
-            "cHJpbnRfYWxnb3JpdGhtGAIgASgJEhoKEmJhc2U2NF9jZXJ0aWZpY2F0ZRgD",
-            "IAEoCRIdChVpc3N1ZXJfY2VydGlmaWNhdGVfaWQYBCABKAkqUQoQRGF0YUNo",
+            "GAEgAigNEhwKFGRhdGFfY2hhbm5lbHNfY2xvc2VkGAIgAigNIuIBChBEYXRh",
+            "Q2hhbm5lbFN0YXRzEg0KBWxhYmVsGAEgAigJEhAKCHByb3RvY29sGAIgAigJ",
+            "Eh8KF2RhdGFfY2hhbm5lbF9pZGVudGlmaWVyGAMgAigFEi4KBXN0YXRlGAQg",
+            "ASgOMh8ubGl2ZWtpdC5wcm90by5EYXRhQ2hhbm5lbFN0YXRlEhUKDW1lc3Nh",
+            "Z2VzX3NlbnQYBSACKA0SEgoKYnl0ZXNfc2VudBgGIAIoBBIZChFtZXNzYWdl",
+            "c19yZWNlaXZlZBgHIAIoDRIWCg5ieXRlc19yZWNlaXZlZBgIIAIoBCKcBAoO",
+            "VHJhbnNwb3J0U3RhdHMSFAoMcGFja2V0c19zZW50GAEgAigEEhgKEHBhY2tl",
+            "dHNfcmVjZWl2ZWQYAiACKAQSEgoKYnl0ZXNfc2VudBgDIAIoBBIWCg5ieXRl",
+            "c19yZWNlaXZlZBgEIAIoBBIoCghpY2Vfcm9sZRgFIAIoDjIWLmxpdmVraXQu",
+            "cHJvdG8uSWNlUm9sZRIjChtpY2VfbG9jYWxfdXNlcm5hbWVfZnJhZ21lbnQY",
+            "BiACKAkSNQoKZHRsc19zdGF0ZRgHIAEoDjIhLmxpdmVraXQucHJvdG8uRHRs",
+            "c1RyYW5zcG9ydFN0YXRlEjMKCWljZV9zdGF0ZRgIIAEoDjIgLmxpdmVraXQu",
+            "cHJvdG8uSWNlVHJhbnNwb3J0U3RhdGUSIgoac2VsZWN0ZWRfY2FuZGlkYXRl",
+            "X3BhaXJfaWQYCSACKAkSHAoUbG9jYWxfY2VydGlmaWNhdGVfaWQYCiACKAkS",
+            "HQoVcmVtb3RlX2NlcnRpZmljYXRlX2lkGAsgAigJEhMKC3Rsc192ZXJzaW9u",
+            "GAwgAigJEhMKC2R0bHNfY2lwaGVyGA0gAigJEioKCWR0bHNfcm9sZRgOIAIo",
+            "DjIXLmxpdmVraXQucHJvdG8uRHRsc1JvbGUSEwoLc3J0cF9jaXBoZXIYDyAC",
+            "KAkSJwofc2VsZWN0ZWRfY2FuZGlkYXRlX3BhaXJfY2hhbmdlcxgQIAIoDSKk",
+            "BQoSQ2FuZGlkYXRlUGFpclN0YXRzEhQKDHRyYW5zcG9ydF9pZBgBIAIoCRIa",
+            "ChJsb2NhbF9jYW5kaWRhdGVfaWQYAiACKAkSGwoTcmVtb3RlX2NhbmRpZGF0",
+            "ZV9pZBgDIAIoCRIzCgVzdGF0ZRgEIAEoDjIkLmxpdmVraXQucHJvdG8uSWNl",
+            "Q2FuZGlkYXRlUGFpclN0YXRlEhEKCW5vbWluYXRlZBgFIAIoCBIUCgxwYWNr",
+            "ZXRzX3NlbnQYBiACKAQSGAoQcGFja2V0c19yZWNlaXZlZBgHIAIoBBISCgpi",
+            "eXRlc19zZW50GAggAigEEhYKDmJ5dGVzX3JlY2VpdmVkGAkgAigEEiIKGmxh",
+            "c3RfcGFja2V0X3NlbnRfdGltZXN0YW1wGAogAigBEiYKHmxhc3RfcGFja2V0",
+            "X3JlY2VpdmVkX3RpbWVzdGFtcBgLIAIoARIdChV0b3RhbF9yb3VuZF90cmlw",
+            "X3RpbWUYDCACKAESHwoXY3VycmVudF9yb3VuZF90cmlwX3RpbWUYDSACKAES",
+            "IgoaYXZhaWxhYmxlX291dGdvaW5nX2JpdHJhdGUYDiACKAESIgoaYXZhaWxh",
+            "YmxlX2luY29taW5nX2JpdHJhdGUYDyACKAESGQoRcmVxdWVzdHNfcmVjZWl2",
+            "ZWQYECACKAQSFQoNcmVxdWVzdHNfc2VudBgRIAIoBBIaChJyZXNwb25zZXNf",
+            "cmVjZWl2ZWQYEiACKAQSFgoOcmVzcG9uc2VzX3NlbnQYEyACKAQSHQoVY29u",
+            "c2VudF9yZXF1ZXN0c19zZW50GBQgAigEEiEKGXBhY2tldHNfZGlzY2FyZGVk",
+            "X29uX3NlbmQYFSACKA0SHwoXYnl0ZXNfZGlzY2FyZGVkX29uX3NlbmQYFiAC",
+            "KAQiiQMKEUljZUNhbmRpZGF0ZVN0YXRzEhQKDHRyYW5zcG9ydF9pZBgBIAIo",
+            "CRIPCgdhZGRyZXNzGAIgAigJEgwKBHBvcnQYAyACKAUSEAoIcHJvdG9jb2wY",
+            "BCACKAkSNwoOY2FuZGlkYXRlX3R5cGUYBSABKA4yHy5saXZla2l0LnByb3Rv",
+            "LkljZUNhbmRpZGF0ZVR5cGUSEAoIcHJpb3JpdHkYBiACKAUSCwoDdXJsGAcg",
+            "AigJEkEKDnJlbGF5X3Byb3RvY29sGAggASgOMikubGl2ZWtpdC5wcm90by5J",
+            "Y2VTZXJ2ZXJUcmFuc3BvcnRQcm90b2NvbBISCgpmb3VuZGF0aW9uGAkgAigJ",
+            "EhcKD3JlbGF0ZWRfYWRkcmVzcxgKIAIoCRIUCgxyZWxhdGVkX3BvcnQYCyAC",
+            "KAUSGQoRdXNlcm5hbWVfZnJhZ21lbnQYDCACKAkSNAoIdGNwX3R5cGUYDSAB",
+            "KA4yIi5saXZla2l0LnByb3RvLkljZVRjcENhbmRpZGF0ZVR5cGUigQEKEENl",
+            "cnRpZmljYXRlU3RhdHMSEwoLZmluZ2VycHJpbnQYASACKAkSHQoVZmluZ2Vy",
+            "cHJpbnRfYWxnb3JpdGhtGAIgAigJEhoKEmJhc2U2NF9jZXJ0aWZpY2F0ZRgD",
+            "IAIoCRIdChVpc3N1ZXJfY2VydGlmaWNhdGVfaWQYBCACKAkqUQoQRGF0YUNo",
             "YW5uZWxTdGF0ZRIRCg1EQ19DT05ORUNUSU5HEAASCwoHRENfT1BFThABEg4K",
             "CkRDX0NMT1NJTkcQAhINCglEQ19DTE9TRUQQAypyChdRdWFsaXR5TGltaXRh",
             "dGlvblJlYXNvbhITCg9MSU1JVEFUSU9OX05PTkUQABISCg5MSU1JVEFUSU9O",
@@ -252,7 +249,7 @@ namespace LiveKit.Proto {
             "b3J0UHJvdG9jb2wSEQoNVFJBTlNQT1JUX1VEUBAAEhEKDVRSQU5TUE9SVF9U",
             "Q1AQARIRCg1UUkFOU1BPUlRfVExTEAIqVAoTSWNlVGNwQ2FuZGlkYXRlVHlw",
             "ZRIUChBDQU5ESURBVEVfQUNUSVZFEAASFQoRQ0FORElEQVRFX1BBU1NJVkUQ",
-            "ARIQCgxDQU5ESURBVEVfU08QAkIQqgINTGl2ZUtpdC5Qcm90b2IGcHJvdG8z"));
+            "ARIQCgxDQU5ESURBVEVfU08QAkIQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.DataChannelState), typeof(global::LiveKit.Proto.QualityLimitationReason), typeof(global::LiveKit.Proto.IceRole), typeof(global::LiveKit.Proto.DtlsTransportState), typeof(global::LiveKit.Proto.IceTransportState), typeof(global::LiveKit.Proto.DtlsRole), typeof(global::LiveKit.Proto.IceCandidatePairState), typeof(global::LiveKit.Proto.IceCandidateType), typeof(global::LiveKit.Proto.IceServerTransportProtocol), typeof(global::LiveKit.Proto.IceTcpCandidateType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -277,7 +274,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ReceivedRtpStreamStats), global::LiveKit.Proto.ReceivedRtpStreamStats.Parser, new[]{ "PacketsReceived", "PacketsLost", "Jitter" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.InboundRtpStreamStats), global::LiveKit.Proto.InboundRtpStreamStats.Parser, new[]{ "TrackIdentifier", "Mid", "RemoteId", "FramesDecoded", "KeyFramesDecoded", "FramesRendered", "FramesDropped", "FrameWidth", "FrameHeight", "FramesPerSecond", "QpSum", "TotalDecodeTime", "TotalInterFrameDelay", "TotalSquaredInterFrameDelay", "PauseCount", "TotalPauseDuration", "FreezeCount", "TotalFreezeDuration", "LastPacketReceivedTimestamp", "HeaderBytesReceived", "PacketsDiscarded", "FecBytesReceived", "FecPacketsReceived", "FecPacketsDiscarded", "BytesReceived", "NackCount", "FirCount", "PliCount", "TotalProcessingDelay", "EstimatedPlayoutTimestamp", "JitterBufferDelay", "JitterBufferTargetDelay", "JitterBufferEmittedCount", "JitterBufferMinimumDelay", "TotalSamplesReceived", "ConcealedSamples", "SilentConcealedSamples", "ConcealmentEvents", "InsertedSamplesForDeceleration", "RemovedSamplesForAcceleration", "AudioLevel", "TotalAudioEnergy", "TotalSamplesDuration", "FramesReceived", "DecoderImplementation", "PlayoutId", "PowerEfficientDecoder", "FramesAssembledFromMultiplePackets", "TotalAssemblyTime", "RetransmittedPacketsReceived", "RetransmittedBytesReceived", "RtxSsrc", "FecSsrc" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SentRtpStreamStats), global::LiveKit.Proto.SentRtpStreamStats.Parser, new[]{ "PacketsSent", "BytesSent" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OutboundRtpStreamStats), global::LiveKit.Proto.OutboundRtpStreamStats.Parser, new[]{ "Mid", "MediaSourceId", "RemoteId", "Rid", "HeaderBytesSent", "RetransmittedPacketsSent", "RetransmittedBytesSent", "RtxSsrc", "TargetBitrate", "TotalEncodedBytesTarget", "FrameWidth", "FrameHeight", "FramesPerSecond", "FramesSent", "HugeFramesSent", "FramesEncoded", "KeyFramesEncoded", "QpSum", "TotalEncodeTime", "TotalPacketSendDelay", "QualityLimitationReason", "QualityLimitationDurations", "QualityLimitationResolutionChanges", "NackCount", "FirCount", "PliCount", "EncoderImplementation", "PowerEfficientEncoder", "Active", "ScalibilityMode" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OutboundRtpStreamStats), global::LiveKit.Proto.OutboundRtpStreamStats.Parser, new[]{ "Mid", "MediaSourceId", "RemoteId", "Rid", "HeaderBytesSent", "RetransmittedPacketsSent", "RetransmittedBytesSent", "RtxSsrc", "TargetBitrate", "TotalEncodedBytesTarget", "FrameWidth", "FrameHeight", "FramesPerSecond", "FramesSent", "HugeFramesSent", "FramesEncoded", "KeyFramesEncoded", "QpSum", "TotalEncodeTime", "TotalPacketSendDelay", "QualityLimitationReason", "QualityLimitationDurations", "QualityLimitationResolutionChanges", "NackCount", "FirCount", "PliCount", "EncoderImplementation", "PowerEfficientEncoder", "Active", "ScalabilityMode" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RemoteInboundRtpStreamStats), global::LiveKit.Proto.RemoteInboundRtpStreamStats.Parser, new[]{ "LocalId", "RoundTripTime", "TotalRoundTripTime", "FractionLost", "RoundTripTimeMeasurements" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RemoteOutboundRtpStreamStats), global::LiveKit.Proto.RemoteOutboundRtpStreamStats.Parser, new[]{ "LocalId", "RemoteTimestamp", "ReportsSent", "RoundTripTime", "TotalRoundTripTime", "RoundTripTimeMeasurements" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.MediaSourceStats), global::LiveKit.Proto.MediaSourceStats.Parser, new[]{ "TrackIdentifier", "Kind" }, null, null, null, null),
@@ -285,10 +282,10 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoSourceStats), global::LiveKit.Proto.VideoSourceStats.Parser, new[]{ "Width", "Height", "Frames", "FramesPerSecond" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioPlayoutStats), global::LiveKit.Proto.AudioPlayoutStats.Parser, new[]{ "Kind", "SynthesizedSamplesDuration", "SynthesizedSamplesEvents", "TotalSamplesDuration", "TotalPlayoutDelay", "TotalSamplesCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PeerConnectionStats), global::LiveKit.Proto.PeerConnectionStats.Parser, new[]{ "DataChannelsOpened", "DataChannelsClosed" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataChannelStats), global::LiveKit.Proto.DataChannelStats.Parser, new[]{ "Label", "Protocol", "DataChannelIdentifier", "State", "MessagesSent", "BytesSent", "MessagesReceived", "BytesReceived" }, new[]{ "State" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TransportStats), global::LiveKit.Proto.TransportStats.Parser, new[]{ "PacketsSent", "PacketsReceived", "BytesSent", "BytesReceived", "IceRole", "IceLocalUsernameFragment", "DtlsState", "IceState", "SelectedCandidatePairId", "LocalCertificateId", "RemoteCertificateId", "TlsVersion", "DtlsCipher", "DtlsRole", "SrtpCipher", "SelectedCandidatePairChanges" }, new[]{ "DtlsState", "IceState" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CandidatePairStats), global::LiveKit.Proto.CandidatePairStats.Parser, new[]{ "TransportId", "LocalCandidateId", "RemoteCandidateId", "State", "Nominated", "PacketsSent", "PacketsReceived", "BytesSent", "BytesReceived", "LastPacketSentTimestamp", "LastPacketReceivedTimestamp", "TotalRoundTripTime", "CurrentRoundTripTime", "AvailableOutgoingBitrate", "AvailableIncomingBitrate", "RequestsReceived", "RequestsSent", "ResponsesReceived", "ResponsesSent", "ConsentRequestsSent", "PacketsDiscardedOnSend", "BytesDiscardedOnSend" }, new[]{ "State" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.IceCandidateStats), global::LiveKit.Proto.IceCandidateStats.Parser, new[]{ "TransportId", "Address", "Port", "Protocol", "CandidateType", "Priority", "Url", "RelayProtocol", "Foundation", "RelatedAddress", "RelatedPort", "UsernameFragment", "TcpType" }, new[]{ "CandidateType", "RelayProtocol", "TcpType" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataChannelStats), global::LiveKit.Proto.DataChannelStats.Parser, new[]{ "Label", "Protocol", "DataChannelIdentifier", "State", "MessagesSent", "BytesSent", "MessagesReceived", "BytesReceived" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TransportStats), global::LiveKit.Proto.TransportStats.Parser, new[]{ "PacketsSent", "PacketsReceived", "BytesSent", "BytesReceived", "IceRole", "IceLocalUsernameFragment", "DtlsState", "IceState", "SelectedCandidatePairId", "LocalCertificateId", "RemoteCertificateId", "TlsVersion", "DtlsCipher", "DtlsRole", "SrtpCipher", "SelectedCandidatePairChanges" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CandidatePairStats), global::LiveKit.Proto.CandidatePairStats.Parser, new[]{ "TransportId", "LocalCandidateId", "RemoteCandidateId", "State", "Nominated", "PacketsSent", "PacketsReceived", "BytesSent", "BytesReceived", "LastPacketSentTimestamp", "LastPacketReceivedTimestamp", "TotalRoundTripTime", "CurrentRoundTripTime", "AvailableOutgoingBitrate", "AvailableIncomingBitrate", "RequestsReceived", "RequestsSent", "ResponsesReceived", "ResponsesSent", "ConsentRequestsSent", "PacketsDiscardedOnSend", "BytesDiscardedOnSend" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.IceCandidateStats), global::LiveKit.Proto.IceCandidateStats.Parser, new[]{ "TransportId", "Address", "Port", "Protocol", "CandidateType", "Priority", "Url", "RelayProtocol", "Foundation", "RelatedAddress", "RelatedPort", "UsernameFragment", "TcpType" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CertificateStats), global::LiveKit.Proto.CertificateStats.Parser, new[]{ "Fingerprint", "FingerprintAlgorithm", "Base64Certificate", "IssuerCertificateId" }, null, null, null, null)
           }));
     }
@@ -1049,7 +1046,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1199,7 +1200,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1539,7 +1544,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -1568,7 +1577,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -1848,7 +1861,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -1891,7 +1908,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -2185,7 +2206,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -2228,7 +2253,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -2522,7 +2551,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -2565,7 +2598,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -2859,7 +2896,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -2902,7 +2943,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -3196,7 +3241,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -3239,7 +3288,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -3469,7 +3522,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -3498,7 +3555,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -3714,7 +3775,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -3743,7 +3808,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -3959,7 +4028,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -3988,7 +4061,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -4204,7 +4281,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -4233,7 +4314,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -4449,7 +4534,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -4478,7 +4567,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -4694,7 +4787,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -4723,7 +4820,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -4939,7 +5040,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -4968,7 +5073,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -5184,7 +5293,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -5213,7 +5326,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -5368,7 +5485,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -5383,7 +5504,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -5407,6 +5532,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<RtcStatsData> _parser = new pb::MessageParser<RtcStatsData>(() => new RtcStatsData());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RtcStatsData> Parser { get { return _parser; } }
@@ -5434,6 +5560,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RtcStatsData(RtcStatsData other) : this() {
+      _hasBits0 = other._hasBits0;
       id_ = other.id_;
       timestamp_ = other.timestamp_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -5447,26 +5574,55 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "id" field.</summary>
     public const int IdFieldNumber = 1;
-    private string id_ = "";
+    private readonly static string IdDefaultValue = "";
+
+    private string id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Id {
-      get { return id_; }
+      get { return id_ ?? IdDefaultValue; }
       set {
         id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasId {
+      get { return id_ != null; }
+    }
+    /// <summary>Clears the value of the "id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearId() {
+      id_ = null;
+    }
 
     /// <summary>Field number for the "timestamp" field.</summary>
     public const int TimestampFieldNumber = 2;
+    private readonly static long TimestampDefaultValue = 0L;
+
     private long timestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long Timestamp {
-      get { return timestamp_; }
+      get { if ((_hasBits0 & 1) != 0) { return timestamp_; } else { return TimestampDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         timestamp_ = value;
       }
+    }
+    /// <summary>Gets whether the "timestamp" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTimestamp {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "timestamp" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTimestamp() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5493,8 +5649,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Id.Length != 0) hash ^= Id.GetHashCode();
-      if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
+      if (HasId) hash ^= Id.GetHashCode();
+      if (HasTimestamp) hash ^= Timestamp.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5513,11 +5669,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Id.Length != 0) {
+      if (HasId) {
         output.WriteRawTag(10);
         output.WriteString(Id);
       }
-      if (Timestamp != 0L) {
+      if (HasTimestamp) {
         output.WriteRawTag(16);
         output.WriteInt64(Timestamp);
       }
@@ -5531,11 +5687,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Id.Length != 0) {
+      if (HasId) {
         output.WriteRawTag(10);
         output.WriteString(Id);
       }
-      if (Timestamp != 0L) {
+      if (HasTimestamp) {
         output.WriteRawTag(16);
         output.WriteInt64(Timestamp);
       }
@@ -5549,10 +5705,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Id.Length != 0) {
+      if (HasId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
       }
-      if (Timestamp != 0L) {
+      if (HasTimestamp) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
       }
       if (_unknownFields != null) {
@@ -5567,10 +5723,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Id.Length != 0) {
+      if (other.HasId) {
         Id = other.Id;
       }
-      if (other.Timestamp != 0L) {
+      if (other.HasTimestamp) {
         Timestamp = other.Timestamp;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -5584,7 +5740,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5607,7 +5767,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -5634,6 +5798,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<CodecStats> _parser = new pb::MessageParser<CodecStats>(() => new CodecStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<CodecStats> Parser { get { return _parser; } }
@@ -5661,6 +5826,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CodecStats(CodecStats other) : this() {
+      _hasBits0 = other._hasBits0;
       payloadType_ = other.payloadType_;
       transportId_ = other.transportId_;
       mimeType_ = other.mimeType_;
@@ -5678,74 +5844,161 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "payload_type" field.</summary>
     public const int PayloadTypeFieldNumber = 1;
+    private readonly static uint PayloadTypeDefaultValue = 0;
+
     private uint payloadType_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint PayloadType {
-      get { return payloadType_; }
+      get { if ((_hasBits0 & 1) != 0) { return payloadType_; } else { return PayloadTypeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         payloadType_ = value;
       }
+    }
+    /// <summary>Gets whether the "payload_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPayloadType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "payload_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPayloadType() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "transport_id" field.</summary>
     public const int TransportIdFieldNumber = 2;
-    private string transportId_ = "";
+    private readonly static string TransportIdDefaultValue = "";
+
+    private string transportId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TransportId {
-      get { return transportId_; }
+      get { return transportId_ ?? TransportIdDefaultValue; }
       set {
         transportId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "transport_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTransportId {
+      get { return transportId_ != null; }
+    }
+    /// <summary>Clears the value of the "transport_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTransportId() {
+      transportId_ = null;
+    }
 
     /// <summary>Field number for the "mime_type" field.</summary>
     public const int MimeTypeFieldNumber = 3;
-    private string mimeType_ = "";
+    private readonly static string MimeTypeDefaultValue = "";
+
+    private string mimeType_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string MimeType {
-      get { return mimeType_; }
+      get { return mimeType_ ?? MimeTypeDefaultValue; }
       set {
         mimeType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "mime_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMimeType {
+      get { return mimeType_ != null; }
+    }
+    /// <summary>Clears the value of the "mime_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMimeType() {
+      mimeType_ = null;
+    }
 
     /// <summary>Field number for the "clock_rate" field.</summary>
     public const int ClockRateFieldNumber = 4;
+    private readonly static uint ClockRateDefaultValue = 0;
+
     private uint clockRate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint ClockRate {
-      get { return clockRate_; }
+      get { if ((_hasBits0 & 2) != 0) { return clockRate_; } else { return ClockRateDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         clockRate_ = value;
       }
+    }
+    /// <summary>Gets whether the "clock_rate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasClockRate {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "clock_rate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearClockRate() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "channels" field.</summary>
     public const int ChannelsFieldNumber = 5;
+    private readonly static uint ChannelsDefaultValue = 0;
+
     private uint channels_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Channels {
-      get { return channels_; }
+      get { if ((_hasBits0 & 4) != 0) { return channels_; } else { return ChannelsDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         channels_ = value;
       }
+    }
+    /// <summary>Gets whether the "channels" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasChannels {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "channels" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearChannels() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "sdp_fmtp_line" field.</summary>
     public const int SdpFmtpLineFieldNumber = 6;
-    private string sdpFmtpLine_ = "";
+    private readonly static string SdpFmtpLineDefaultValue = "";
+
+    private string sdpFmtpLine_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string SdpFmtpLine {
-      get { return sdpFmtpLine_; }
+      get { return sdpFmtpLine_ ?? SdpFmtpLineDefaultValue; }
       set {
         sdpFmtpLine_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "sdp_fmtp_line" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSdpFmtpLine {
+      get { return sdpFmtpLine_ != null; }
+    }
+    /// <summary>Clears the value of the "sdp_fmtp_line" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSdpFmtpLine() {
+      sdpFmtpLine_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5776,12 +6029,12 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (PayloadType != 0) hash ^= PayloadType.GetHashCode();
-      if (TransportId.Length != 0) hash ^= TransportId.GetHashCode();
-      if (MimeType.Length != 0) hash ^= MimeType.GetHashCode();
-      if (ClockRate != 0) hash ^= ClockRate.GetHashCode();
-      if (Channels != 0) hash ^= Channels.GetHashCode();
-      if (SdpFmtpLine.Length != 0) hash ^= SdpFmtpLine.GetHashCode();
+      if (HasPayloadType) hash ^= PayloadType.GetHashCode();
+      if (HasTransportId) hash ^= TransportId.GetHashCode();
+      if (HasMimeType) hash ^= MimeType.GetHashCode();
+      if (HasClockRate) hash ^= ClockRate.GetHashCode();
+      if (HasChannels) hash ^= Channels.GetHashCode();
+      if (HasSdpFmtpLine) hash ^= SdpFmtpLine.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5800,27 +6053,27 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (PayloadType != 0) {
+      if (HasPayloadType) {
         output.WriteRawTag(8);
         output.WriteUInt32(PayloadType);
       }
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(18);
         output.WriteString(TransportId);
       }
-      if (MimeType.Length != 0) {
+      if (HasMimeType) {
         output.WriteRawTag(26);
         output.WriteString(MimeType);
       }
-      if (ClockRate != 0) {
+      if (HasClockRate) {
         output.WriteRawTag(32);
         output.WriteUInt32(ClockRate);
       }
-      if (Channels != 0) {
+      if (HasChannels) {
         output.WriteRawTag(40);
         output.WriteUInt32(Channels);
       }
-      if (SdpFmtpLine.Length != 0) {
+      if (HasSdpFmtpLine) {
         output.WriteRawTag(50);
         output.WriteString(SdpFmtpLine);
       }
@@ -5834,27 +6087,27 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (PayloadType != 0) {
+      if (HasPayloadType) {
         output.WriteRawTag(8);
         output.WriteUInt32(PayloadType);
       }
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(18);
         output.WriteString(TransportId);
       }
-      if (MimeType.Length != 0) {
+      if (HasMimeType) {
         output.WriteRawTag(26);
         output.WriteString(MimeType);
       }
-      if (ClockRate != 0) {
+      if (HasClockRate) {
         output.WriteRawTag(32);
         output.WriteUInt32(ClockRate);
       }
-      if (Channels != 0) {
+      if (HasChannels) {
         output.WriteRawTag(40);
         output.WriteUInt32(Channels);
       }
-      if (SdpFmtpLine.Length != 0) {
+      if (HasSdpFmtpLine) {
         output.WriteRawTag(50);
         output.WriteString(SdpFmtpLine);
       }
@@ -5868,22 +6121,22 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (PayloadType != 0) {
+      if (HasPayloadType) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(PayloadType);
       }
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TransportId);
       }
-      if (MimeType.Length != 0) {
+      if (HasMimeType) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(MimeType);
       }
-      if (ClockRate != 0) {
+      if (HasClockRate) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ClockRate);
       }
-      if (Channels != 0) {
+      if (HasChannels) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Channels);
       }
-      if (SdpFmtpLine.Length != 0) {
+      if (HasSdpFmtpLine) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SdpFmtpLine);
       }
       if (_unknownFields != null) {
@@ -5898,22 +6151,22 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.PayloadType != 0) {
+      if (other.HasPayloadType) {
         PayloadType = other.PayloadType;
       }
-      if (other.TransportId.Length != 0) {
+      if (other.HasTransportId) {
         TransportId = other.TransportId;
       }
-      if (other.MimeType.Length != 0) {
+      if (other.HasMimeType) {
         MimeType = other.MimeType;
       }
-      if (other.ClockRate != 0) {
+      if (other.HasClockRate) {
         ClockRate = other.ClockRate;
       }
-      if (other.Channels != 0) {
+      if (other.HasChannels) {
         Channels = other.Channels;
       }
-      if (other.SdpFmtpLine.Length != 0) {
+      if (other.HasSdpFmtpLine) {
         SdpFmtpLine = other.SdpFmtpLine;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -5927,7 +6180,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5966,7 +6223,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -6009,6 +6270,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<RtpStreamStats> _parser = new pb::MessageParser<RtpStreamStats>(() => new RtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RtpStreamStats> Parser { get { return _parser; } }
@@ -6036,6 +6298,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RtpStreamStats(RtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
       ssrc_ = other.ssrc_;
       kind_ = other.kind_;
       transportId_ = other.transportId_;
@@ -6051,50 +6314,107 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "ssrc" field.</summary>
     public const int SsrcFieldNumber = 1;
+    private readonly static uint SsrcDefaultValue = 0;
+
     private uint ssrc_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Ssrc {
-      get { return ssrc_; }
+      get { if ((_hasBits0 & 1) != 0) { return ssrc_; } else { return SsrcDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         ssrc_ = value;
       }
+    }
+    /// <summary>Gets whether the "ssrc" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSsrc {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "ssrc" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSsrc() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "kind" field.</summary>
     public const int KindFieldNumber = 2;
-    private string kind_ = "";
+    private readonly static string KindDefaultValue = "";
+
+    private string kind_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Kind {
-      get { return kind_; }
+      get { return kind_ ?? KindDefaultValue; }
       set {
         kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "kind" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKind {
+      get { return kind_ != null; }
+    }
+    /// <summary>Clears the value of the "kind" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKind() {
+      kind_ = null;
+    }
 
     /// <summary>Field number for the "transport_id" field.</summary>
     public const int TransportIdFieldNumber = 3;
-    private string transportId_ = "";
+    private readonly static string TransportIdDefaultValue = "";
+
+    private string transportId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TransportId {
-      get { return transportId_; }
+      get { return transportId_ ?? TransportIdDefaultValue; }
       set {
         transportId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "transport_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTransportId {
+      get { return transportId_ != null; }
+    }
+    /// <summary>Clears the value of the "transport_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTransportId() {
+      transportId_ = null;
+    }
 
     /// <summary>Field number for the "codec_id" field.</summary>
     public const int CodecIdFieldNumber = 4;
-    private string codecId_ = "";
+    private readonly static string CodecIdDefaultValue = "";
+
+    private string codecId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string CodecId {
-      get { return codecId_; }
+      get { return codecId_ ?? CodecIdDefaultValue; }
       set {
         codecId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "codec_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCodecId {
+      get { return codecId_ != null; }
+    }
+    /// <summary>Clears the value of the "codec_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCodecId() {
+      codecId_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6123,10 +6443,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Ssrc != 0) hash ^= Ssrc.GetHashCode();
-      if (Kind.Length != 0) hash ^= Kind.GetHashCode();
-      if (TransportId.Length != 0) hash ^= TransportId.GetHashCode();
-      if (CodecId.Length != 0) hash ^= CodecId.GetHashCode();
+      if (HasSsrc) hash ^= Ssrc.GetHashCode();
+      if (HasKind) hash ^= Kind.GetHashCode();
+      if (HasTransportId) hash ^= TransportId.GetHashCode();
+      if (HasCodecId) hash ^= CodecId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6145,19 +6465,19 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Ssrc != 0) {
+      if (HasSsrc) {
         output.WriteRawTag(8);
         output.WriteUInt32(Ssrc);
       }
-      if (Kind.Length != 0) {
+      if (HasKind) {
         output.WriteRawTag(18);
         output.WriteString(Kind);
       }
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(26);
         output.WriteString(TransportId);
       }
-      if (CodecId.Length != 0) {
+      if (HasCodecId) {
         output.WriteRawTag(34);
         output.WriteString(CodecId);
       }
@@ -6171,19 +6491,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Ssrc != 0) {
+      if (HasSsrc) {
         output.WriteRawTag(8);
         output.WriteUInt32(Ssrc);
       }
-      if (Kind.Length != 0) {
+      if (HasKind) {
         output.WriteRawTag(18);
         output.WriteString(Kind);
       }
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(26);
         output.WriteString(TransportId);
       }
-      if (CodecId.Length != 0) {
+      if (HasCodecId) {
         output.WriteRawTag(34);
         output.WriteString(CodecId);
       }
@@ -6197,16 +6517,16 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Ssrc != 0) {
+      if (HasSsrc) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Ssrc);
       }
-      if (Kind.Length != 0) {
+      if (HasKind) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Kind);
       }
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TransportId);
       }
-      if (CodecId.Length != 0) {
+      if (HasCodecId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(CodecId);
       }
       if (_unknownFields != null) {
@@ -6221,16 +6541,16 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Ssrc != 0) {
+      if (other.HasSsrc) {
         Ssrc = other.Ssrc;
       }
-      if (other.Kind.Length != 0) {
+      if (other.HasKind) {
         Kind = other.Kind;
       }
-      if (other.TransportId.Length != 0) {
+      if (other.HasTransportId) {
         TransportId = other.TransportId;
       }
-      if (other.CodecId.Length != 0) {
+      if (other.HasCodecId) {
         CodecId = other.CodecId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -6244,7 +6564,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -6275,7 +6599,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -6310,6 +6638,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<ReceivedRtpStreamStats> _parser = new pb::MessageParser<ReceivedRtpStreamStats>(() => new ReceivedRtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<ReceivedRtpStreamStats> Parser { get { return _parser; } }
@@ -6337,6 +6666,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ReceivedRtpStreamStats(ReceivedRtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
       packetsReceived_ = other.packetsReceived_;
       packetsLost_ = other.packetsLost_;
       jitter_ = other.jitter_;
@@ -6351,38 +6681,83 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "packets_received" field.</summary>
     public const int PacketsReceivedFieldNumber = 1;
+    private readonly static ulong PacketsReceivedDefaultValue = 0UL;
+
     private ulong packetsReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsReceived {
-      get { return packetsReceived_; }
+      get { if ((_hasBits0 & 1) != 0) { return packetsReceived_; } else { return PacketsReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         packetsReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsReceived {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsReceived() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "packets_lost" field.</summary>
     public const int PacketsLostFieldNumber = 2;
+    private readonly static long PacketsLostDefaultValue = 0L;
+
     private long packetsLost_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long PacketsLost {
-      get { return packetsLost_; }
+      get { if ((_hasBits0 & 2) != 0) { return packetsLost_; } else { return PacketsLostDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         packetsLost_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_lost" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsLost {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_lost" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsLost() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "jitter" field.</summary>
     public const int JitterFieldNumber = 3;
+    private readonly static double JitterDefaultValue = 0D;
+
     private double jitter_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double Jitter {
-      get { return jitter_; }
+      get { if ((_hasBits0 & 4) != 0) { return jitter_; } else { return JitterDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         jitter_ = value;
       }
+    }
+    /// <summary>Gets whether the "jitter" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJitter {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "jitter" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJitter() {
+      _hasBits0 &= ~4;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6410,9 +6785,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (PacketsReceived != 0UL) hash ^= PacketsReceived.GetHashCode();
-      if (PacketsLost != 0L) hash ^= PacketsLost.GetHashCode();
-      if (Jitter != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Jitter);
+      if (HasPacketsReceived) hash ^= PacketsReceived.GetHashCode();
+      if (HasPacketsLost) hash ^= PacketsLost.GetHashCode();
+      if (HasJitter) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Jitter);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6431,15 +6806,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         output.WriteRawTag(8);
         output.WriteUInt64(PacketsReceived);
       }
-      if (PacketsLost != 0L) {
+      if (HasPacketsLost) {
         output.WriteRawTag(16);
         output.WriteInt64(PacketsLost);
       }
-      if (Jitter != 0D) {
+      if (HasJitter) {
         output.WriteRawTag(25);
         output.WriteDouble(Jitter);
       }
@@ -6453,15 +6828,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         output.WriteRawTag(8);
         output.WriteUInt64(PacketsReceived);
       }
-      if (PacketsLost != 0L) {
+      if (HasPacketsLost) {
         output.WriteRawTag(16);
         output.WriteInt64(PacketsLost);
       }
-      if (Jitter != 0D) {
+      if (HasJitter) {
         output.WriteRawTag(25);
         output.WriteDouble(Jitter);
       }
@@ -6475,13 +6850,13 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PacketsReceived);
       }
-      if (PacketsLost != 0L) {
+      if (HasPacketsLost) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(PacketsLost);
       }
-      if (Jitter != 0D) {
+      if (HasJitter) {
         size += 1 + 8;
       }
       if (_unknownFields != null) {
@@ -6496,13 +6871,13 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.PacketsReceived != 0UL) {
+      if (other.HasPacketsReceived) {
         PacketsReceived = other.PacketsReceived;
       }
-      if (other.PacketsLost != 0L) {
+      if (other.HasPacketsLost) {
         PacketsLost = other.PacketsLost;
       }
-      if (other.Jitter != 0D) {
+      if (other.HasJitter) {
         Jitter = other.Jitter;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -6516,7 +6891,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -6543,7 +6922,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -6574,6 +6957,8 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<InboundRtpStreamStats> _parser = new pb::MessageParser<InboundRtpStreamStats>(() => new InboundRtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    private int _hasBits1;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<InboundRtpStreamStats> Parser { get { return _parser; } }
@@ -6601,6 +6986,8 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public InboundRtpStreamStats(InboundRtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
+      _hasBits1 = other._hasBits1;
       trackIdentifier_ = other.trackIdentifier_;
       mid_ = other.mid_;
       remoteId_ = other.remoteId_;
@@ -6665,638 +7052,1428 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track_identifier" field.</summary>
     public const int TrackIdentifierFieldNumber = 1;
-    private string trackIdentifier_ = "";
+    private readonly static string TrackIdentifierDefaultValue = "";
+
+    private string trackIdentifier_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TrackIdentifier {
-      get { return trackIdentifier_; }
+      get { return trackIdentifier_ ?? TrackIdentifierDefaultValue; }
       set {
         trackIdentifier_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "track_identifier" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackIdentifier {
+      get { return trackIdentifier_ != null; }
+    }
+    /// <summary>Clears the value of the "track_identifier" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackIdentifier() {
+      trackIdentifier_ = null;
+    }
 
     /// <summary>Field number for the "mid" field.</summary>
     public const int MidFieldNumber = 2;
-    private string mid_ = "";
+    private readonly static string MidDefaultValue = "";
+
+    private string mid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Mid {
-      get { return mid_; }
+      get { return mid_ ?? MidDefaultValue; }
       set {
         mid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "mid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMid {
+      get { return mid_ != null; }
+    }
+    /// <summary>Clears the value of the "mid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMid() {
+      mid_ = null;
+    }
 
     /// <summary>Field number for the "remote_id" field.</summary>
     public const int RemoteIdFieldNumber = 3;
-    private string remoteId_ = "";
+    private readonly static string RemoteIdDefaultValue = "";
+
+    private string remoteId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RemoteId {
-      get { return remoteId_; }
+      get { return remoteId_ ?? RemoteIdDefaultValue; }
       set {
         remoteId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "remote_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemoteId {
+      get { return remoteId_ != null; }
+    }
+    /// <summary>Clears the value of the "remote_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemoteId() {
+      remoteId_ = null;
+    }
 
     /// <summary>Field number for the "frames_decoded" field.</summary>
     public const int FramesDecodedFieldNumber = 4;
+    private readonly static uint FramesDecodedDefaultValue = 0;
+
     private uint framesDecoded_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FramesDecoded {
-      get { return framesDecoded_; }
+      get { if ((_hasBits0 & 1) != 0) { return framesDecoded_; } else { return FramesDecodedDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         framesDecoded_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_decoded" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesDecoded {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_decoded" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesDecoded() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "key_frames_decoded" field.</summary>
     public const int KeyFramesDecodedFieldNumber = 5;
+    private readonly static uint KeyFramesDecodedDefaultValue = 0;
+
     private uint keyFramesDecoded_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint KeyFramesDecoded {
-      get { return keyFramesDecoded_; }
+      get { if ((_hasBits0 & 2) != 0) { return keyFramesDecoded_; } else { return KeyFramesDecodedDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         keyFramesDecoded_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_frames_decoded" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyFramesDecoded {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "key_frames_decoded" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyFramesDecoded() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "frames_rendered" field.</summary>
     public const int FramesRenderedFieldNumber = 6;
+    private readonly static uint FramesRenderedDefaultValue = 0;
+
     private uint framesRendered_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FramesRendered {
-      get { return framesRendered_; }
+      get { if ((_hasBits0 & 4) != 0) { return framesRendered_; } else { return FramesRenderedDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         framesRendered_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_rendered" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesRendered {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_rendered" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesRendered() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "frames_dropped" field.</summary>
     public const int FramesDroppedFieldNumber = 7;
+    private readonly static uint FramesDroppedDefaultValue = 0;
+
     private uint framesDropped_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FramesDropped {
-      get { return framesDropped_; }
+      get { if ((_hasBits0 & 8) != 0) { return framesDropped_; } else { return FramesDroppedDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         framesDropped_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_dropped" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesDropped {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_dropped" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesDropped() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "frame_width" field.</summary>
     public const int FrameWidthFieldNumber = 8;
+    private readonly static uint FrameWidthDefaultValue = 0;
+
     private uint frameWidth_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FrameWidth {
-      get { return frameWidth_; }
+      get { if ((_hasBits0 & 16) != 0) { return frameWidth_; } else { return FrameWidthDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         frameWidth_ = value;
       }
+    }
+    /// <summary>Gets whether the "frame_width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrameWidth {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "frame_width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrameWidth() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "frame_height" field.</summary>
     public const int FrameHeightFieldNumber = 9;
+    private readonly static uint FrameHeightDefaultValue = 0;
+
     private uint frameHeight_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FrameHeight {
-      get { return frameHeight_; }
+      get { if ((_hasBits0 & 32) != 0) { return frameHeight_; } else { return FrameHeightDefaultValue; } }
       set {
+        _hasBits0 |= 32;
         frameHeight_ = value;
       }
+    }
+    /// <summary>Gets whether the "frame_height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrameHeight {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "frame_height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrameHeight() {
+      _hasBits0 &= ~32;
     }
 
     /// <summary>Field number for the "frames_per_second" field.</summary>
     public const int FramesPerSecondFieldNumber = 10;
+    private readonly static double FramesPerSecondDefaultValue = 0D;
+
     private double framesPerSecond_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double FramesPerSecond {
-      get { return framesPerSecond_; }
+      get { if ((_hasBits0 & 64) != 0) { return framesPerSecond_; } else { return FramesPerSecondDefaultValue; } }
       set {
+        _hasBits0 |= 64;
         framesPerSecond_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_per_second" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesPerSecond {
+      get { return (_hasBits0 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_per_second" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesPerSecond() {
+      _hasBits0 &= ~64;
     }
 
     /// <summary>Field number for the "qp_sum" field.</summary>
     public const int QpSumFieldNumber = 11;
+    private readonly static ulong QpSumDefaultValue = 0UL;
+
     private ulong qpSum_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong QpSum {
-      get { return qpSum_; }
+      get { if ((_hasBits0 & 128) != 0) { return qpSum_; } else { return QpSumDefaultValue; } }
       set {
+        _hasBits0 |= 128;
         qpSum_ = value;
       }
+    }
+    /// <summary>Gets whether the "qp_sum" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQpSum {
+      get { return (_hasBits0 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "qp_sum" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQpSum() {
+      _hasBits0 &= ~128;
     }
 
     /// <summary>Field number for the "total_decode_time" field.</summary>
     public const int TotalDecodeTimeFieldNumber = 12;
+    private readonly static double TotalDecodeTimeDefaultValue = 0D;
+
     private double totalDecodeTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalDecodeTime {
-      get { return totalDecodeTime_; }
+      get { if ((_hasBits0 & 256) != 0) { return totalDecodeTime_; } else { return TotalDecodeTimeDefaultValue; } }
       set {
+        _hasBits0 |= 256;
         totalDecodeTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_decode_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalDecodeTime {
+      get { return (_hasBits0 & 256) != 0; }
+    }
+    /// <summary>Clears the value of the "total_decode_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalDecodeTime() {
+      _hasBits0 &= ~256;
     }
 
     /// <summary>Field number for the "total_inter_frame_delay" field.</summary>
     public const int TotalInterFrameDelayFieldNumber = 13;
+    private readonly static double TotalInterFrameDelayDefaultValue = 0D;
+
     private double totalInterFrameDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalInterFrameDelay {
-      get { return totalInterFrameDelay_; }
+      get { if ((_hasBits0 & 512) != 0) { return totalInterFrameDelay_; } else { return TotalInterFrameDelayDefaultValue; } }
       set {
+        _hasBits0 |= 512;
         totalInterFrameDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_inter_frame_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalInterFrameDelay {
+      get { return (_hasBits0 & 512) != 0; }
+    }
+    /// <summary>Clears the value of the "total_inter_frame_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalInterFrameDelay() {
+      _hasBits0 &= ~512;
     }
 
     /// <summary>Field number for the "total_squared_inter_frame_delay" field.</summary>
     public const int TotalSquaredInterFrameDelayFieldNumber = 14;
+    private readonly static double TotalSquaredInterFrameDelayDefaultValue = 0D;
+
     private double totalSquaredInterFrameDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalSquaredInterFrameDelay {
-      get { return totalSquaredInterFrameDelay_; }
+      get { if ((_hasBits0 & 1024) != 0) { return totalSquaredInterFrameDelay_; } else { return TotalSquaredInterFrameDelayDefaultValue; } }
       set {
+        _hasBits0 |= 1024;
         totalSquaredInterFrameDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_squared_inter_frame_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSquaredInterFrameDelay {
+      get { return (_hasBits0 & 1024) != 0; }
+    }
+    /// <summary>Clears the value of the "total_squared_inter_frame_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSquaredInterFrameDelay() {
+      _hasBits0 &= ~1024;
     }
 
     /// <summary>Field number for the "pause_count" field.</summary>
     public const int PauseCountFieldNumber = 15;
+    private readonly static uint PauseCountDefaultValue = 0;
+
     private uint pauseCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint PauseCount {
-      get { return pauseCount_; }
+      get { if ((_hasBits0 & 2048) != 0) { return pauseCount_; } else { return PauseCountDefaultValue; } }
       set {
+        _hasBits0 |= 2048;
         pauseCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "pause_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPauseCount {
+      get { return (_hasBits0 & 2048) != 0; }
+    }
+    /// <summary>Clears the value of the "pause_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPauseCount() {
+      _hasBits0 &= ~2048;
     }
 
     /// <summary>Field number for the "total_pause_duration" field.</summary>
     public const int TotalPauseDurationFieldNumber = 16;
+    private readonly static double TotalPauseDurationDefaultValue = 0D;
+
     private double totalPauseDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalPauseDuration {
-      get { return totalPauseDuration_; }
+      get { if ((_hasBits0 & 4096) != 0) { return totalPauseDuration_; } else { return TotalPauseDurationDefaultValue; } }
       set {
+        _hasBits0 |= 4096;
         totalPauseDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_pause_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalPauseDuration {
+      get { return (_hasBits0 & 4096) != 0; }
+    }
+    /// <summary>Clears the value of the "total_pause_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalPauseDuration() {
+      _hasBits0 &= ~4096;
     }
 
     /// <summary>Field number for the "freeze_count" field.</summary>
     public const int FreezeCountFieldNumber = 17;
+    private readonly static uint FreezeCountDefaultValue = 0;
+
     private uint freezeCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FreezeCount {
-      get { return freezeCount_; }
+      get { if ((_hasBits0 & 8192) != 0) { return freezeCount_; } else { return FreezeCountDefaultValue; } }
       set {
+        _hasBits0 |= 8192;
         freezeCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "freeze_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFreezeCount {
+      get { return (_hasBits0 & 8192) != 0; }
+    }
+    /// <summary>Clears the value of the "freeze_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFreezeCount() {
+      _hasBits0 &= ~8192;
     }
 
     /// <summary>Field number for the "total_freeze_duration" field.</summary>
     public const int TotalFreezeDurationFieldNumber = 18;
+    private readonly static double TotalFreezeDurationDefaultValue = 0D;
+
     private double totalFreezeDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalFreezeDuration {
-      get { return totalFreezeDuration_; }
+      get { if ((_hasBits0 & 16384) != 0) { return totalFreezeDuration_; } else { return TotalFreezeDurationDefaultValue; } }
       set {
+        _hasBits0 |= 16384;
         totalFreezeDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_freeze_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalFreezeDuration {
+      get { return (_hasBits0 & 16384) != 0; }
+    }
+    /// <summary>Clears the value of the "total_freeze_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalFreezeDuration() {
+      _hasBits0 &= ~16384;
     }
 
     /// <summary>Field number for the "last_packet_received_timestamp" field.</summary>
     public const int LastPacketReceivedTimestampFieldNumber = 19;
+    private readonly static double LastPacketReceivedTimestampDefaultValue = 0D;
+
     private double lastPacketReceivedTimestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double LastPacketReceivedTimestamp {
-      get { return lastPacketReceivedTimestamp_; }
+      get { if ((_hasBits0 & 32768) != 0) { return lastPacketReceivedTimestamp_; } else { return LastPacketReceivedTimestampDefaultValue; } }
       set {
+        _hasBits0 |= 32768;
         lastPacketReceivedTimestamp_ = value;
       }
+    }
+    /// <summary>Gets whether the "last_packet_received_timestamp" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLastPacketReceivedTimestamp {
+      get { return (_hasBits0 & 32768) != 0; }
+    }
+    /// <summary>Clears the value of the "last_packet_received_timestamp" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLastPacketReceivedTimestamp() {
+      _hasBits0 &= ~32768;
     }
 
     /// <summary>Field number for the "header_bytes_received" field.</summary>
     public const int HeaderBytesReceivedFieldNumber = 20;
+    private readonly static ulong HeaderBytesReceivedDefaultValue = 0UL;
+
     private ulong headerBytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong HeaderBytesReceived {
-      get { return headerBytesReceived_; }
+      get { if ((_hasBits0 & 65536) != 0) { return headerBytesReceived_; } else { return HeaderBytesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 65536;
         headerBytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "header_bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeaderBytesReceived {
+      get { return (_hasBits0 & 65536) != 0; }
+    }
+    /// <summary>Clears the value of the "header_bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeaderBytesReceived() {
+      _hasBits0 &= ~65536;
     }
 
     /// <summary>Field number for the "packets_discarded" field.</summary>
     public const int PacketsDiscardedFieldNumber = 21;
+    private readonly static ulong PacketsDiscardedDefaultValue = 0UL;
+
     private ulong packetsDiscarded_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsDiscarded {
-      get { return packetsDiscarded_; }
+      get { if ((_hasBits0 & 131072) != 0) { return packetsDiscarded_; } else { return PacketsDiscardedDefaultValue; } }
       set {
+        _hasBits0 |= 131072;
         packetsDiscarded_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_discarded" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsDiscarded {
+      get { return (_hasBits0 & 131072) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_discarded" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsDiscarded() {
+      _hasBits0 &= ~131072;
     }
 
     /// <summary>Field number for the "fec_bytes_received" field.</summary>
     public const int FecBytesReceivedFieldNumber = 22;
+    private readonly static ulong FecBytesReceivedDefaultValue = 0UL;
+
     private ulong fecBytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong FecBytesReceived {
-      get { return fecBytesReceived_; }
+      get { if ((_hasBits0 & 262144) != 0) { return fecBytesReceived_; } else { return FecBytesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 262144;
         fecBytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "fec_bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFecBytesReceived {
+      get { return (_hasBits0 & 262144) != 0; }
+    }
+    /// <summary>Clears the value of the "fec_bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFecBytesReceived() {
+      _hasBits0 &= ~262144;
     }
 
     /// <summary>Field number for the "fec_packets_received" field.</summary>
     public const int FecPacketsReceivedFieldNumber = 23;
+    private readonly static ulong FecPacketsReceivedDefaultValue = 0UL;
+
     private ulong fecPacketsReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong FecPacketsReceived {
-      get { return fecPacketsReceived_; }
+      get { if ((_hasBits0 & 524288) != 0) { return fecPacketsReceived_; } else { return FecPacketsReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 524288;
         fecPacketsReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "fec_packets_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFecPacketsReceived {
+      get { return (_hasBits0 & 524288) != 0; }
+    }
+    /// <summary>Clears the value of the "fec_packets_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFecPacketsReceived() {
+      _hasBits0 &= ~524288;
     }
 
     /// <summary>Field number for the "fec_packets_discarded" field.</summary>
     public const int FecPacketsDiscardedFieldNumber = 24;
+    private readonly static ulong FecPacketsDiscardedDefaultValue = 0UL;
+
     private ulong fecPacketsDiscarded_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong FecPacketsDiscarded {
-      get { return fecPacketsDiscarded_; }
+      get { if ((_hasBits0 & 1048576) != 0) { return fecPacketsDiscarded_; } else { return FecPacketsDiscardedDefaultValue; } }
       set {
+        _hasBits0 |= 1048576;
         fecPacketsDiscarded_ = value;
       }
+    }
+    /// <summary>Gets whether the "fec_packets_discarded" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFecPacketsDiscarded {
+      get { return (_hasBits0 & 1048576) != 0; }
+    }
+    /// <summary>Clears the value of the "fec_packets_discarded" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFecPacketsDiscarded() {
+      _hasBits0 &= ~1048576;
     }
 
     /// <summary>Field number for the "bytes_received" field.</summary>
     public const int BytesReceivedFieldNumber = 25;
+    private readonly static ulong BytesReceivedDefaultValue = 0UL;
+
     private ulong bytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesReceived {
-      get { return bytesReceived_; }
+      get { if ((_hasBits0 & 2097152) != 0) { return bytesReceived_; } else { return BytesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 2097152;
         bytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesReceived {
+      get { return (_hasBits0 & 2097152) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesReceived() {
+      _hasBits0 &= ~2097152;
     }
 
     /// <summary>Field number for the "nack_count" field.</summary>
     public const int NackCountFieldNumber = 26;
+    private readonly static uint NackCountDefaultValue = 0;
+
     private uint nackCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint NackCount {
-      get { return nackCount_; }
+      get { if ((_hasBits0 & 4194304) != 0) { return nackCount_; } else { return NackCountDefaultValue; } }
       set {
+        _hasBits0 |= 4194304;
         nackCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "nack_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasNackCount {
+      get { return (_hasBits0 & 4194304) != 0; }
+    }
+    /// <summary>Clears the value of the "nack_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearNackCount() {
+      _hasBits0 &= ~4194304;
     }
 
     /// <summary>Field number for the "fir_count" field.</summary>
     public const int FirCountFieldNumber = 27;
+    private readonly static uint FirCountDefaultValue = 0;
+
     private uint firCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FirCount {
-      get { return firCount_; }
+      get { if ((_hasBits0 & 8388608) != 0) { return firCount_; } else { return FirCountDefaultValue; } }
       set {
+        _hasBits0 |= 8388608;
         firCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "fir_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFirCount {
+      get { return (_hasBits0 & 8388608) != 0; }
+    }
+    /// <summary>Clears the value of the "fir_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFirCount() {
+      _hasBits0 &= ~8388608;
     }
 
     /// <summary>Field number for the "pli_count" field.</summary>
     public const int PliCountFieldNumber = 28;
+    private readonly static uint PliCountDefaultValue = 0;
+
     private uint pliCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint PliCount {
-      get { return pliCount_; }
+      get { if ((_hasBits0 & 16777216) != 0) { return pliCount_; } else { return PliCountDefaultValue; } }
       set {
+        _hasBits0 |= 16777216;
         pliCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "pli_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPliCount {
+      get { return (_hasBits0 & 16777216) != 0; }
+    }
+    /// <summary>Clears the value of the "pli_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPliCount() {
+      _hasBits0 &= ~16777216;
     }
 
     /// <summary>Field number for the "total_processing_delay" field.</summary>
     public const int TotalProcessingDelayFieldNumber = 29;
+    private readonly static double TotalProcessingDelayDefaultValue = 0D;
+
     private double totalProcessingDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalProcessingDelay {
-      get { return totalProcessingDelay_; }
+      get { if ((_hasBits0 & 33554432) != 0) { return totalProcessingDelay_; } else { return TotalProcessingDelayDefaultValue; } }
       set {
+        _hasBits0 |= 33554432;
         totalProcessingDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_processing_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalProcessingDelay {
+      get { return (_hasBits0 & 33554432) != 0; }
+    }
+    /// <summary>Clears the value of the "total_processing_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalProcessingDelay() {
+      _hasBits0 &= ~33554432;
     }
 
     /// <summary>Field number for the "estimated_playout_timestamp" field.</summary>
     public const int EstimatedPlayoutTimestampFieldNumber = 30;
+    private readonly static double EstimatedPlayoutTimestampDefaultValue = 0D;
+
     private double estimatedPlayoutTimestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double EstimatedPlayoutTimestamp {
-      get { return estimatedPlayoutTimestamp_; }
+      get { if ((_hasBits0 & 67108864) != 0) { return estimatedPlayoutTimestamp_; } else { return EstimatedPlayoutTimestampDefaultValue; } }
       set {
+        _hasBits0 |= 67108864;
         estimatedPlayoutTimestamp_ = value;
       }
+    }
+    /// <summary>Gets whether the "estimated_playout_timestamp" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEstimatedPlayoutTimestamp {
+      get { return (_hasBits0 & 67108864) != 0; }
+    }
+    /// <summary>Clears the value of the "estimated_playout_timestamp" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEstimatedPlayoutTimestamp() {
+      _hasBits0 &= ~67108864;
     }
 
     /// <summary>Field number for the "jitter_buffer_delay" field.</summary>
     public const int JitterBufferDelayFieldNumber = 31;
+    private readonly static double JitterBufferDelayDefaultValue = 0D;
+
     private double jitterBufferDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double JitterBufferDelay {
-      get { return jitterBufferDelay_; }
+      get { if ((_hasBits0 & 134217728) != 0) { return jitterBufferDelay_; } else { return JitterBufferDelayDefaultValue; } }
       set {
+        _hasBits0 |= 134217728;
         jitterBufferDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "jitter_buffer_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJitterBufferDelay {
+      get { return (_hasBits0 & 134217728) != 0; }
+    }
+    /// <summary>Clears the value of the "jitter_buffer_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJitterBufferDelay() {
+      _hasBits0 &= ~134217728;
     }
 
     /// <summary>Field number for the "jitter_buffer_target_delay" field.</summary>
     public const int JitterBufferTargetDelayFieldNumber = 32;
+    private readonly static double JitterBufferTargetDelayDefaultValue = 0D;
+
     private double jitterBufferTargetDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double JitterBufferTargetDelay {
-      get { return jitterBufferTargetDelay_; }
+      get { if ((_hasBits0 & 268435456) != 0) { return jitterBufferTargetDelay_; } else { return JitterBufferTargetDelayDefaultValue; } }
       set {
+        _hasBits0 |= 268435456;
         jitterBufferTargetDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "jitter_buffer_target_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJitterBufferTargetDelay {
+      get { return (_hasBits0 & 268435456) != 0; }
+    }
+    /// <summary>Clears the value of the "jitter_buffer_target_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJitterBufferTargetDelay() {
+      _hasBits0 &= ~268435456;
     }
 
     /// <summary>Field number for the "jitter_buffer_emitted_count" field.</summary>
     public const int JitterBufferEmittedCountFieldNumber = 33;
+    private readonly static ulong JitterBufferEmittedCountDefaultValue = 0UL;
+
     private ulong jitterBufferEmittedCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong JitterBufferEmittedCount {
-      get { return jitterBufferEmittedCount_; }
+      get { if ((_hasBits0 & 536870912) != 0) { return jitterBufferEmittedCount_; } else { return JitterBufferEmittedCountDefaultValue; } }
       set {
+        _hasBits0 |= 536870912;
         jitterBufferEmittedCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "jitter_buffer_emitted_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJitterBufferEmittedCount {
+      get { return (_hasBits0 & 536870912) != 0; }
+    }
+    /// <summary>Clears the value of the "jitter_buffer_emitted_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJitterBufferEmittedCount() {
+      _hasBits0 &= ~536870912;
     }
 
     /// <summary>Field number for the "jitter_buffer_minimum_delay" field.</summary>
     public const int JitterBufferMinimumDelayFieldNumber = 34;
+    private readonly static double JitterBufferMinimumDelayDefaultValue = 0D;
+
     private double jitterBufferMinimumDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double JitterBufferMinimumDelay {
-      get { return jitterBufferMinimumDelay_; }
+      get { if ((_hasBits0 & 1073741824) != 0) { return jitterBufferMinimumDelay_; } else { return JitterBufferMinimumDelayDefaultValue; } }
       set {
+        _hasBits0 |= 1073741824;
         jitterBufferMinimumDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "jitter_buffer_minimum_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJitterBufferMinimumDelay {
+      get { return (_hasBits0 & 1073741824) != 0; }
+    }
+    /// <summary>Clears the value of the "jitter_buffer_minimum_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJitterBufferMinimumDelay() {
+      _hasBits0 &= ~1073741824;
     }
 
     /// <summary>Field number for the "total_samples_received" field.</summary>
     public const int TotalSamplesReceivedFieldNumber = 35;
+    private readonly static ulong TotalSamplesReceivedDefaultValue = 0UL;
+
     private ulong totalSamplesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TotalSamplesReceived {
-      get { return totalSamplesReceived_; }
+      get { if ((_hasBits0 & -2147483648) != 0) { return totalSamplesReceived_; } else { return TotalSamplesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= -2147483648;
         totalSamplesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_samples_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSamplesReceived {
+      get { return (_hasBits0 & -2147483648) != 0; }
+    }
+    /// <summary>Clears the value of the "total_samples_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSamplesReceived() {
+      _hasBits0 &= ~-2147483648;
     }
 
     /// <summary>Field number for the "concealed_samples" field.</summary>
     public const int ConcealedSamplesFieldNumber = 36;
+    private readonly static ulong ConcealedSamplesDefaultValue = 0UL;
+
     private ulong concealedSamples_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ConcealedSamples {
-      get { return concealedSamples_; }
+      get { if ((_hasBits1 & 1) != 0) { return concealedSamples_; } else { return ConcealedSamplesDefaultValue; } }
       set {
+        _hasBits1 |= 1;
         concealedSamples_ = value;
       }
+    }
+    /// <summary>Gets whether the "concealed_samples" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasConcealedSamples {
+      get { return (_hasBits1 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "concealed_samples" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearConcealedSamples() {
+      _hasBits1 &= ~1;
     }
 
     /// <summary>Field number for the "silent_concealed_samples" field.</summary>
     public const int SilentConcealedSamplesFieldNumber = 37;
+    private readonly static ulong SilentConcealedSamplesDefaultValue = 0UL;
+
     private ulong silentConcealedSamples_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong SilentConcealedSamples {
-      get { return silentConcealedSamples_; }
+      get { if ((_hasBits1 & 2) != 0) { return silentConcealedSamples_; } else { return SilentConcealedSamplesDefaultValue; } }
       set {
+        _hasBits1 |= 2;
         silentConcealedSamples_ = value;
       }
+    }
+    /// <summary>Gets whether the "silent_concealed_samples" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSilentConcealedSamples {
+      get { return (_hasBits1 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "silent_concealed_samples" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSilentConcealedSamples() {
+      _hasBits1 &= ~2;
     }
 
     /// <summary>Field number for the "concealment_events" field.</summary>
     public const int ConcealmentEventsFieldNumber = 38;
+    private readonly static ulong ConcealmentEventsDefaultValue = 0UL;
+
     private ulong concealmentEvents_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ConcealmentEvents {
-      get { return concealmentEvents_; }
+      get { if ((_hasBits1 & 4) != 0) { return concealmentEvents_; } else { return ConcealmentEventsDefaultValue; } }
       set {
+        _hasBits1 |= 4;
         concealmentEvents_ = value;
       }
+    }
+    /// <summary>Gets whether the "concealment_events" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasConcealmentEvents {
+      get { return (_hasBits1 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "concealment_events" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearConcealmentEvents() {
+      _hasBits1 &= ~4;
     }
 
     /// <summary>Field number for the "inserted_samples_for_deceleration" field.</summary>
     public const int InsertedSamplesForDecelerationFieldNumber = 39;
+    private readonly static ulong InsertedSamplesForDecelerationDefaultValue = 0UL;
+
     private ulong insertedSamplesForDeceleration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong InsertedSamplesForDeceleration {
-      get { return insertedSamplesForDeceleration_; }
+      get { if ((_hasBits1 & 8) != 0) { return insertedSamplesForDeceleration_; } else { return InsertedSamplesForDecelerationDefaultValue; } }
       set {
+        _hasBits1 |= 8;
         insertedSamplesForDeceleration_ = value;
       }
+    }
+    /// <summary>Gets whether the "inserted_samples_for_deceleration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasInsertedSamplesForDeceleration {
+      get { return (_hasBits1 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "inserted_samples_for_deceleration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearInsertedSamplesForDeceleration() {
+      _hasBits1 &= ~8;
     }
 
     /// <summary>Field number for the "removed_samples_for_acceleration" field.</summary>
     public const int RemovedSamplesForAccelerationFieldNumber = 40;
+    private readonly static ulong RemovedSamplesForAccelerationDefaultValue = 0UL;
+
     private ulong removedSamplesForAcceleration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RemovedSamplesForAcceleration {
-      get { return removedSamplesForAcceleration_; }
+      get { if ((_hasBits1 & 16) != 0) { return removedSamplesForAcceleration_; } else { return RemovedSamplesForAccelerationDefaultValue; } }
       set {
+        _hasBits1 |= 16;
         removedSamplesForAcceleration_ = value;
       }
+    }
+    /// <summary>Gets whether the "removed_samples_for_acceleration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemovedSamplesForAcceleration {
+      get { return (_hasBits1 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "removed_samples_for_acceleration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemovedSamplesForAcceleration() {
+      _hasBits1 &= ~16;
     }
 
     /// <summary>Field number for the "audio_level" field.</summary>
     public const int AudioLevelFieldNumber = 41;
+    private readonly static double AudioLevelDefaultValue = 0D;
+
     private double audioLevel_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double AudioLevel {
-      get { return audioLevel_; }
+      get { if ((_hasBits1 & 32) != 0) { return audioLevel_; } else { return AudioLevelDefaultValue; } }
       set {
+        _hasBits1 |= 32;
         audioLevel_ = value;
       }
+    }
+    /// <summary>Gets whether the "audio_level" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAudioLevel {
+      get { return (_hasBits1 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "audio_level" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAudioLevel() {
+      _hasBits1 &= ~32;
     }
 
     /// <summary>Field number for the "total_audio_energy" field.</summary>
     public const int TotalAudioEnergyFieldNumber = 42;
+    private readonly static double TotalAudioEnergyDefaultValue = 0D;
+
     private double totalAudioEnergy_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalAudioEnergy {
-      get { return totalAudioEnergy_; }
+      get { if ((_hasBits1 & 64) != 0) { return totalAudioEnergy_; } else { return TotalAudioEnergyDefaultValue; } }
       set {
+        _hasBits1 |= 64;
         totalAudioEnergy_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_audio_energy" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalAudioEnergy {
+      get { return (_hasBits1 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "total_audio_energy" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalAudioEnergy() {
+      _hasBits1 &= ~64;
     }
 
     /// <summary>Field number for the "total_samples_duration" field.</summary>
     public const int TotalSamplesDurationFieldNumber = 43;
+    private readonly static double TotalSamplesDurationDefaultValue = 0D;
+
     private double totalSamplesDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalSamplesDuration {
-      get { return totalSamplesDuration_; }
+      get { if ((_hasBits1 & 128) != 0) { return totalSamplesDuration_; } else { return TotalSamplesDurationDefaultValue; } }
       set {
+        _hasBits1 |= 128;
         totalSamplesDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_samples_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSamplesDuration {
+      get { return (_hasBits1 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "total_samples_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSamplesDuration() {
+      _hasBits1 &= ~128;
     }
 
     /// <summary>Field number for the "frames_received" field.</summary>
     public const int FramesReceivedFieldNumber = 44;
+    private readonly static ulong FramesReceivedDefaultValue = 0UL;
+
     private ulong framesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong FramesReceived {
-      get { return framesReceived_; }
+      get { if ((_hasBits1 & 256) != 0) { return framesReceived_; } else { return FramesReceivedDefaultValue; } }
       set {
+        _hasBits1 |= 256;
         framesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesReceived {
+      get { return (_hasBits1 & 256) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesReceived() {
+      _hasBits1 &= ~256;
     }
 
     /// <summary>Field number for the "decoder_implementation" field.</summary>
     public const int DecoderImplementationFieldNumber = 45;
-    private string decoderImplementation_ = "";
+    private readonly static string DecoderImplementationDefaultValue = "";
+
+    private string decoderImplementation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string DecoderImplementation {
-      get { return decoderImplementation_; }
+      get { return decoderImplementation_ ?? DecoderImplementationDefaultValue; }
       set {
         decoderImplementation_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "decoder_implementation" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDecoderImplementation {
+      get { return decoderImplementation_ != null; }
+    }
+    /// <summary>Clears the value of the "decoder_implementation" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDecoderImplementation() {
+      decoderImplementation_ = null;
+    }
 
     /// <summary>Field number for the "playout_id" field.</summary>
     public const int PlayoutIdFieldNumber = 46;
-    private string playoutId_ = "";
+    private readonly static string PlayoutIdDefaultValue = "";
+
+    private string playoutId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string PlayoutId {
-      get { return playoutId_; }
+      get { return playoutId_ ?? PlayoutIdDefaultValue; }
       set {
         playoutId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "playout_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPlayoutId {
+      get { return playoutId_ != null; }
+    }
+    /// <summary>Clears the value of the "playout_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPlayoutId() {
+      playoutId_ = null;
+    }
 
     /// <summary>Field number for the "power_efficient_decoder" field.</summary>
     public const int PowerEfficientDecoderFieldNumber = 47;
+    private readonly static bool PowerEfficientDecoderDefaultValue = false;
+
     private bool powerEfficientDecoder_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool PowerEfficientDecoder {
-      get { return powerEfficientDecoder_; }
+      get { if ((_hasBits1 & 512) != 0) { return powerEfficientDecoder_; } else { return PowerEfficientDecoderDefaultValue; } }
       set {
+        _hasBits1 |= 512;
         powerEfficientDecoder_ = value;
       }
+    }
+    /// <summary>Gets whether the "power_efficient_decoder" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPowerEfficientDecoder {
+      get { return (_hasBits1 & 512) != 0; }
+    }
+    /// <summary>Clears the value of the "power_efficient_decoder" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPowerEfficientDecoder() {
+      _hasBits1 &= ~512;
     }
 
     /// <summary>Field number for the "frames_assembled_from_multiple_packets" field.</summary>
     public const int FramesAssembledFromMultiplePacketsFieldNumber = 48;
+    private readonly static ulong FramesAssembledFromMultiplePacketsDefaultValue = 0UL;
+
     private ulong framesAssembledFromMultiplePackets_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong FramesAssembledFromMultiplePackets {
-      get { return framesAssembledFromMultiplePackets_; }
+      get { if ((_hasBits1 & 1024) != 0) { return framesAssembledFromMultiplePackets_; } else { return FramesAssembledFromMultiplePacketsDefaultValue; } }
       set {
+        _hasBits1 |= 1024;
         framesAssembledFromMultiplePackets_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_assembled_from_multiple_packets" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesAssembledFromMultiplePackets {
+      get { return (_hasBits1 & 1024) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_assembled_from_multiple_packets" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesAssembledFromMultiplePackets() {
+      _hasBits1 &= ~1024;
     }
 
     /// <summary>Field number for the "total_assembly_time" field.</summary>
     public const int TotalAssemblyTimeFieldNumber = 49;
+    private readonly static double TotalAssemblyTimeDefaultValue = 0D;
+
     private double totalAssemblyTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalAssemblyTime {
-      get { return totalAssemblyTime_; }
+      get { if ((_hasBits1 & 2048) != 0) { return totalAssemblyTime_; } else { return TotalAssemblyTimeDefaultValue; } }
       set {
+        _hasBits1 |= 2048;
         totalAssemblyTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_assembly_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalAssemblyTime {
+      get { return (_hasBits1 & 2048) != 0; }
+    }
+    /// <summary>Clears the value of the "total_assembly_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalAssemblyTime() {
+      _hasBits1 &= ~2048;
     }
 
     /// <summary>Field number for the "retransmitted_packets_received" field.</summary>
     public const int RetransmittedPacketsReceivedFieldNumber = 50;
+    private readonly static ulong RetransmittedPacketsReceivedDefaultValue = 0UL;
+
     private ulong retransmittedPacketsReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RetransmittedPacketsReceived {
-      get { return retransmittedPacketsReceived_; }
+      get { if ((_hasBits1 & 4096) != 0) { return retransmittedPacketsReceived_; } else { return RetransmittedPacketsReceivedDefaultValue; } }
       set {
+        _hasBits1 |= 4096;
         retransmittedPacketsReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "retransmitted_packets_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRetransmittedPacketsReceived {
+      get { return (_hasBits1 & 4096) != 0; }
+    }
+    /// <summary>Clears the value of the "retransmitted_packets_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRetransmittedPacketsReceived() {
+      _hasBits1 &= ~4096;
     }
 
     /// <summary>Field number for the "retransmitted_bytes_received" field.</summary>
     public const int RetransmittedBytesReceivedFieldNumber = 51;
+    private readonly static ulong RetransmittedBytesReceivedDefaultValue = 0UL;
+
     private ulong retransmittedBytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RetransmittedBytesReceived {
-      get { return retransmittedBytesReceived_; }
+      get { if ((_hasBits1 & 8192) != 0) { return retransmittedBytesReceived_; } else { return RetransmittedBytesReceivedDefaultValue; } }
       set {
+        _hasBits1 |= 8192;
         retransmittedBytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "retransmitted_bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRetransmittedBytesReceived {
+      get { return (_hasBits1 & 8192) != 0; }
+    }
+    /// <summary>Clears the value of the "retransmitted_bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRetransmittedBytesReceived() {
+      _hasBits1 &= ~8192;
     }
 
     /// <summary>Field number for the "rtx_ssrc" field.</summary>
     public const int RtxSsrcFieldNumber = 52;
+    private readonly static uint RtxSsrcDefaultValue = 0;
+
     private uint rtxSsrc_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint RtxSsrc {
-      get { return rtxSsrc_; }
+      get { if ((_hasBits1 & 16384) != 0) { return rtxSsrc_; } else { return RtxSsrcDefaultValue; } }
       set {
+        _hasBits1 |= 16384;
         rtxSsrc_ = value;
       }
+    }
+    /// <summary>Gets whether the "rtx_ssrc" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRtxSsrc {
+      get { return (_hasBits1 & 16384) != 0; }
+    }
+    /// <summary>Clears the value of the "rtx_ssrc" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRtxSsrc() {
+      _hasBits1 &= ~16384;
     }
 
     /// <summary>Field number for the "fec_ssrc" field.</summary>
     public const int FecSsrcFieldNumber = 53;
+    private readonly static uint FecSsrcDefaultValue = 0;
+
     private uint fecSsrc_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FecSsrc {
-      get { return fecSsrc_; }
+      get { if ((_hasBits1 & 32768) != 0) { return fecSsrc_; } else { return FecSsrcDefaultValue; } }
       set {
+        _hasBits1 |= 32768;
         fecSsrc_ = value;
       }
+    }
+    /// <summary>Gets whether the "fec_ssrc" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFecSsrc {
+      get { return (_hasBits1 & 32768) != 0; }
+    }
+    /// <summary>Clears the value of the "fec_ssrc" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFecSsrc() {
+      _hasBits1 &= ~32768;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -7374,59 +8551,59 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackIdentifier.Length != 0) hash ^= TrackIdentifier.GetHashCode();
-      if (Mid.Length != 0) hash ^= Mid.GetHashCode();
-      if (RemoteId.Length != 0) hash ^= RemoteId.GetHashCode();
-      if (FramesDecoded != 0) hash ^= FramesDecoded.GetHashCode();
-      if (KeyFramesDecoded != 0) hash ^= KeyFramesDecoded.GetHashCode();
-      if (FramesRendered != 0) hash ^= FramesRendered.GetHashCode();
-      if (FramesDropped != 0) hash ^= FramesDropped.GetHashCode();
-      if (FrameWidth != 0) hash ^= FrameWidth.GetHashCode();
-      if (FrameHeight != 0) hash ^= FrameHeight.GetHashCode();
-      if (FramesPerSecond != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramesPerSecond);
-      if (QpSum != 0UL) hash ^= QpSum.GetHashCode();
-      if (TotalDecodeTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalDecodeTime);
-      if (TotalInterFrameDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalInterFrameDelay);
-      if (TotalSquaredInterFrameDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSquaredInterFrameDelay);
-      if (PauseCount != 0) hash ^= PauseCount.GetHashCode();
-      if (TotalPauseDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalPauseDuration);
-      if (FreezeCount != 0) hash ^= FreezeCount.GetHashCode();
-      if (TotalFreezeDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalFreezeDuration);
-      if (LastPacketReceivedTimestamp != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(LastPacketReceivedTimestamp);
-      if (HeaderBytesReceived != 0UL) hash ^= HeaderBytesReceived.GetHashCode();
-      if (PacketsDiscarded != 0UL) hash ^= PacketsDiscarded.GetHashCode();
-      if (FecBytesReceived != 0UL) hash ^= FecBytesReceived.GetHashCode();
-      if (FecPacketsReceived != 0UL) hash ^= FecPacketsReceived.GetHashCode();
-      if (FecPacketsDiscarded != 0UL) hash ^= FecPacketsDiscarded.GetHashCode();
-      if (BytesReceived != 0UL) hash ^= BytesReceived.GetHashCode();
-      if (NackCount != 0) hash ^= NackCount.GetHashCode();
-      if (FirCount != 0) hash ^= FirCount.GetHashCode();
-      if (PliCount != 0) hash ^= PliCount.GetHashCode();
-      if (TotalProcessingDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalProcessingDelay);
-      if (EstimatedPlayoutTimestamp != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(EstimatedPlayoutTimestamp);
-      if (JitterBufferDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(JitterBufferDelay);
-      if (JitterBufferTargetDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(JitterBufferTargetDelay);
-      if (JitterBufferEmittedCount != 0UL) hash ^= JitterBufferEmittedCount.GetHashCode();
-      if (JitterBufferMinimumDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(JitterBufferMinimumDelay);
-      if (TotalSamplesReceived != 0UL) hash ^= TotalSamplesReceived.GetHashCode();
-      if (ConcealedSamples != 0UL) hash ^= ConcealedSamples.GetHashCode();
-      if (SilentConcealedSamples != 0UL) hash ^= SilentConcealedSamples.GetHashCode();
-      if (ConcealmentEvents != 0UL) hash ^= ConcealmentEvents.GetHashCode();
-      if (InsertedSamplesForDeceleration != 0UL) hash ^= InsertedSamplesForDeceleration.GetHashCode();
-      if (RemovedSamplesForAcceleration != 0UL) hash ^= RemovedSamplesForAcceleration.GetHashCode();
-      if (AudioLevel != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AudioLevel);
-      if (TotalAudioEnergy != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalAudioEnergy);
-      if (TotalSamplesDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSamplesDuration);
-      if (FramesReceived != 0UL) hash ^= FramesReceived.GetHashCode();
-      if (DecoderImplementation.Length != 0) hash ^= DecoderImplementation.GetHashCode();
-      if (PlayoutId.Length != 0) hash ^= PlayoutId.GetHashCode();
-      if (PowerEfficientDecoder != false) hash ^= PowerEfficientDecoder.GetHashCode();
-      if (FramesAssembledFromMultiplePackets != 0UL) hash ^= FramesAssembledFromMultiplePackets.GetHashCode();
-      if (TotalAssemblyTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalAssemblyTime);
-      if (RetransmittedPacketsReceived != 0UL) hash ^= RetransmittedPacketsReceived.GetHashCode();
-      if (RetransmittedBytesReceived != 0UL) hash ^= RetransmittedBytesReceived.GetHashCode();
-      if (RtxSsrc != 0) hash ^= RtxSsrc.GetHashCode();
-      if (FecSsrc != 0) hash ^= FecSsrc.GetHashCode();
+      if (HasTrackIdentifier) hash ^= TrackIdentifier.GetHashCode();
+      if (HasMid) hash ^= Mid.GetHashCode();
+      if (HasRemoteId) hash ^= RemoteId.GetHashCode();
+      if (HasFramesDecoded) hash ^= FramesDecoded.GetHashCode();
+      if (HasKeyFramesDecoded) hash ^= KeyFramesDecoded.GetHashCode();
+      if (HasFramesRendered) hash ^= FramesRendered.GetHashCode();
+      if (HasFramesDropped) hash ^= FramesDropped.GetHashCode();
+      if (HasFrameWidth) hash ^= FrameWidth.GetHashCode();
+      if (HasFrameHeight) hash ^= FrameHeight.GetHashCode();
+      if (HasFramesPerSecond) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramesPerSecond);
+      if (HasQpSum) hash ^= QpSum.GetHashCode();
+      if (HasTotalDecodeTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalDecodeTime);
+      if (HasTotalInterFrameDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalInterFrameDelay);
+      if (HasTotalSquaredInterFrameDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSquaredInterFrameDelay);
+      if (HasPauseCount) hash ^= PauseCount.GetHashCode();
+      if (HasTotalPauseDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalPauseDuration);
+      if (HasFreezeCount) hash ^= FreezeCount.GetHashCode();
+      if (HasTotalFreezeDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalFreezeDuration);
+      if (HasLastPacketReceivedTimestamp) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(LastPacketReceivedTimestamp);
+      if (HasHeaderBytesReceived) hash ^= HeaderBytesReceived.GetHashCode();
+      if (HasPacketsDiscarded) hash ^= PacketsDiscarded.GetHashCode();
+      if (HasFecBytesReceived) hash ^= FecBytesReceived.GetHashCode();
+      if (HasFecPacketsReceived) hash ^= FecPacketsReceived.GetHashCode();
+      if (HasFecPacketsDiscarded) hash ^= FecPacketsDiscarded.GetHashCode();
+      if (HasBytesReceived) hash ^= BytesReceived.GetHashCode();
+      if (HasNackCount) hash ^= NackCount.GetHashCode();
+      if (HasFirCount) hash ^= FirCount.GetHashCode();
+      if (HasPliCount) hash ^= PliCount.GetHashCode();
+      if (HasTotalProcessingDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalProcessingDelay);
+      if (HasEstimatedPlayoutTimestamp) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(EstimatedPlayoutTimestamp);
+      if (HasJitterBufferDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(JitterBufferDelay);
+      if (HasJitterBufferTargetDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(JitterBufferTargetDelay);
+      if (HasJitterBufferEmittedCount) hash ^= JitterBufferEmittedCount.GetHashCode();
+      if (HasJitterBufferMinimumDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(JitterBufferMinimumDelay);
+      if (HasTotalSamplesReceived) hash ^= TotalSamplesReceived.GetHashCode();
+      if (HasConcealedSamples) hash ^= ConcealedSamples.GetHashCode();
+      if (HasSilentConcealedSamples) hash ^= SilentConcealedSamples.GetHashCode();
+      if (HasConcealmentEvents) hash ^= ConcealmentEvents.GetHashCode();
+      if (HasInsertedSamplesForDeceleration) hash ^= InsertedSamplesForDeceleration.GetHashCode();
+      if (HasRemovedSamplesForAcceleration) hash ^= RemovedSamplesForAcceleration.GetHashCode();
+      if (HasAudioLevel) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AudioLevel);
+      if (HasTotalAudioEnergy) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalAudioEnergy);
+      if (HasTotalSamplesDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSamplesDuration);
+      if (HasFramesReceived) hash ^= FramesReceived.GetHashCode();
+      if (HasDecoderImplementation) hash ^= DecoderImplementation.GetHashCode();
+      if (HasPlayoutId) hash ^= PlayoutId.GetHashCode();
+      if (HasPowerEfficientDecoder) hash ^= PowerEfficientDecoder.GetHashCode();
+      if (HasFramesAssembledFromMultiplePackets) hash ^= FramesAssembledFromMultiplePackets.GetHashCode();
+      if (HasTotalAssemblyTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalAssemblyTime);
+      if (HasRetransmittedPacketsReceived) hash ^= RetransmittedPacketsReceived.GetHashCode();
+      if (HasRetransmittedBytesReceived) hash ^= RetransmittedBytesReceived.GetHashCode();
+      if (HasRtxSsrc) hash ^= RtxSsrc.GetHashCode();
+      if (HasFecSsrc) hash ^= FecSsrc.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7445,215 +8622,215 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackIdentifier.Length != 0) {
+      if (HasTrackIdentifier) {
         output.WriteRawTag(10);
         output.WriteString(TrackIdentifier);
       }
-      if (Mid.Length != 0) {
+      if (HasMid) {
         output.WriteRawTag(18);
         output.WriteString(Mid);
       }
-      if (RemoteId.Length != 0) {
+      if (HasRemoteId) {
         output.WriteRawTag(26);
         output.WriteString(RemoteId);
       }
-      if (FramesDecoded != 0) {
+      if (HasFramesDecoded) {
         output.WriteRawTag(32);
         output.WriteUInt32(FramesDecoded);
       }
-      if (KeyFramesDecoded != 0) {
+      if (HasKeyFramesDecoded) {
         output.WriteRawTag(40);
         output.WriteUInt32(KeyFramesDecoded);
       }
-      if (FramesRendered != 0) {
+      if (HasFramesRendered) {
         output.WriteRawTag(48);
         output.WriteUInt32(FramesRendered);
       }
-      if (FramesDropped != 0) {
+      if (HasFramesDropped) {
         output.WriteRawTag(56);
         output.WriteUInt32(FramesDropped);
       }
-      if (FrameWidth != 0) {
+      if (HasFrameWidth) {
         output.WriteRawTag(64);
         output.WriteUInt32(FrameWidth);
       }
-      if (FrameHeight != 0) {
+      if (HasFrameHeight) {
         output.WriteRawTag(72);
         output.WriteUInt32(FrameHeight);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         output.WriteRawTag(81);
         output.WriteDouble(FramesPerSecond);
       }
-      if (QpSum != 0UL) {
+      if (HasQpSum) {
         output.WriteRawTag(88);
         output.WriteUInt64(QpSum);
       }
-      if (TotalDecodeTime != 0D) {
+      if (HasTotalDecodeTime) {
         output.WriteRawTag(97);
         output.WriteDouble(TotalDecodeTime);
       }
-      if (TotalInterFrameDelay != 0D) {
+      if (HasTotalInterFrameDelay) {
         output.WriteRawTag(105);
         output.WriteDouble(TotalInterFrameDelay);
       }
-      if (TotalSquaredInterFrameDelay != 0D) {
+      if (HasTotalSquaredInterFrameDelay) {
         output.WriteRawTag(113);
         output.WriteDouble(TotalSquaredInterFrameDelay);
       }
-      if (PauseCount != 0) {
+      if (HasPauseCount) {
         output.WriteRawTag(120);
         output.WriteUInt32(PauseCount);
       }
-      if (TotalPauseDuration != 0D) {
+      if (HasTotalPauseDuration) {
         output.WriteRawTag(129, 1);
         output.WriteDouble(TotalPauseDuration);
       }
-      if (FreezeCount != 0) {
+      if (HasFreezeCount) {
         output.WriteRawTag(136, 1);
         output.WriteUInt32(FreezeCount);
       }
-      if (TotalFreezeDuration != 0D) {
+      if (HasTotalFreezeDuration) {
         output.WriteRawTag(145, 1);
         output.WriteDouble(TotalFreezeDuration);
       }
-      if (LastPacketReceivedTimestamp != 0D) {
+      if (HasLastPacketReceivedTimestamp) {
         output.WriteRawTag(153, 1);
         output.WriteDouble(LastPacketReceivedTimestamp);
       }
-      if (HeaderBytesReceived != 0UL) {
+      if (HasHeaderBytesReceived) {
         output.WriteRawTag(160, 1);
         output.WriteUInt64(HeaderBytesReceived);
       }
-      if (PacketsDiscarded != 0UL) {
+      if (HasPacketsDiscarded) {
         output.WriteRawTag(168, 1);
         output.WriteUInt64(PacketsDiscarded);
       }
-      if (FecBytesReceived != 0UL) {
+      if (HasFecBytesReceived) {
         output.WriteRawTag(176, 1);
         output.WriteUInt64(FecBytesReceived);
       }
-      if (FecPacketsReceived != 0UL) {
+      if (HasFecPacketsReceived) {
         output.WriteRawTag(184, 1);
         output.WriteUInt64(FecPacketsReceived);
       }
-      if (FecPacketsDiscarded != 0UL) {
+      if (HasFecPacketsDiscarded) {
         output.WriteRawTag(192, 1);
         output.WriteUInt64(FecPacketsDiscarded);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(200, 1);
         output.WriteUInt64(BytesReceived);
       }
-      if (NackCount != 0) {
+      if (HasNackCount) {
         output.WriteRawTag(208, 1);
         output.WriteUInt32(NackCount);
       }
-      if (FirCount != 0) {
+      if (HasFirCount) {
         output.WriteRawTag(216, 1);
         output.WriteUInt32(FirCount);
       }
-      if (PliCount != 0) {
+      if (HasPliCount) {
         output.WriteRawTag(224, 1);
         output.WriteUInt32(PliCount);
       }
-      if (TotalProcessingDelay != 0D) {
+      if (HasTotalProcessingDelay) {
         output.WriteRawTag(233, 1);
         output.WriteDouble(TotalProcessingDelay);
       }
-      if (EstimatedPlayoutTimestamp != 0D) {
+      if (HasEstimatedPlayoutTimestamp) {
         output.WriteRawTag(241, 1);
         output.WriteDouble(EstimatedPlayoutTimestamp);
       }
-      if (JitterBufferDelay != 0D) {
+      if (HasJitterBufferDelay) {
         output.WriteRawTag(249, 1);
         output.WriteDouble(JitterBufferDelay);
       }
-      if (JitterBufferTargetDelay != 0D) {
+      if (HasJitterBufferTargetDelay) {
         output.WriteRawTag(129, 2);
         output.WriteDouble(JitterBufferTargetDelay);
       }
-      if (JitterBufferEmittedCount != 0UL) {
+      if (HasJitterBufferEmittedCount) {
         output.WriteRawTag(136, 2);
         output.WriteUInt64(JitterBufferEmittedCount);
       }
-      if (JitterBufferMinimumDelay != 0D) {
+      if (HasJitterBufferMinimumDelay) {
         output.WriteRawTag(145, 2);
         output.WriteDouble(JitterBufferMinimumDelay);
       }
-      if (TotalSamplesReceived != 0UL) {
+      if (HasTotalSamplesReceived) {
         output.WriteRawTag(152, 2);
         output.WriteUInt64(TotalSamplesReceived);
       }
-      if (ConcealedSamples != 0UL) {
+      if (HasConcealedSamples) {
         output.WriteRawTag(160, 2);
         output.WriteUInt64(ConcealedSamples);
       }
-      if (SilentConcealedSamples != 0UL) {
+      if (HasSilentConcealedSamples) {
         output.WriteRawTag(168, 2);
         output.WriteUInt64(SilentConcealedSamples);
       }
-      if (ConcealmentEvents != 0UL) {
+      if (HasConcealmentEvents) {
         output.WriteRawTag(176, 2);
         output.WriteUInt64(ConcealmentEvents);
       }
-      if (InsertedSamplesForDeceleration != 0UL) {
+      if (HasInsertedSamplesForDeceleration) {
         output.WriteRawTag(184, 2);
         output.WriteUInt64(InsertedSamplesForDeceleration);
       }
-      if (RemovedSamplesForAcceleration != 0UL) {
+      if (HasRemovedSamplesForAcceleration) {
         output.WriteRawTag(192, 2);
         output.WriteUInt64(RemovedSamplesForAcceleration);
       }
-      if (AudioLevel != 0D) {
+      if (HasAudioLevel) {
         output.WriteRawTag(201, 2);
         output.WriteDouble(AudioLevel);
       }
-      if (TotalAudioEnergy != 0D) {
+      if (HasTotalAudioEnergy) {
         output.WriteRawTag(209, 2);
         output.WriteDouble(TotalAudioEnergy);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         output.WriteRawTag(217, 2);
         output.WriteDouble(TotalSamplesDuration);
       }
-      if (FramesReceived != 0UL) {
+      if (HasFramesReceived) {
         output.WriteRawTag(224, 2);
         output.WriteUInt64(FramesReceived);
       }
-      if (DecoderImplementation.Length != 0) {
+      if (HasDecoderImplementation) {
         output.WriteRawTag(234, 2);
         output.WriteString(DecoderImplementation);
       }
-      if (PlayoutId.Length != 0) {
+      if (HasPlayoutId) {
         output.WriteRawTag(242, 2);
         output.WriteString(PlayoutId);
       }
-      if (PowerEfficientDecoder != false) {
+      if (HasPowerEfficientDecoder) {
         output.WriteRawTag(248, 2);
         output.WriteBool(PowerEfficientDecoder);
       }
-      if (FramesAssembledFromMultiplePackets != 0UL) {
+      if (HasFramesAssembledFromMultiplePackets) {
         output.WriteRawTag(128, 3);
         output.WriteUInt64(FramesAssembledFromMultiplePackets);
       }
-      if (TotalAssemblyTime != 0D) {
+      if (HasTotalAssemblyTime) {
         output.WriteRawTag(137, 3);
         output.WriteDouble(TotalAssemblyTime);
       }
-      if (RetransmittedPacketsReceived != 0UL) {
+      if (HasRetransmittedPacketsReceived) {
         output.WriteRawTag(144, 3);
         output.WriteUInt64(RetransmittedPacketsReceived);
       }
-      if (RetransmittedBytesReceived != 0UL) {
+      if (HasRetransmittedBytesReceived) {
         output.WriteRawTag(152, 3);
         output.WriteUInt64(RetransmittedBytesReceived);
       }
-      if (RtxSsrc != 0) {
+      if (HasRtxSsrc) {
         output.WriteRawTag(160, 3);
         output.WriteUInt32(RtxSsrc);
       }
-      if (FecSsrc != 0) {
+      if (HasFecSsrc) {
         output.WriteRawTag(168, 3);
         output.WriteUInt32(FecSsrc);
       }
@@ -7667,215 +8844,215 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackIdentifier.Length != 0) {
+      if (HasTrackIdentifier) {
         output.WriteRawTag(10);
         output.WriteString(TrackIdentifier);
       }
-      if (Mid.Length != 0) {
+      if (HasMid) {
         output.WriteRawTag(18);
         output.WriteString(Mid);
       }
-      if (RemoteId.Length != 0) {
+      if (HasRemoteId) {
         output.WriteRawTag(26);
         output.WriteString(RemoteId);
       }
-      if (FramesDecoded != 0) {
+      if (HasFramesDecoded) {
         output.WriteRawTag(32);
         output.WriteUInt32(FramesDecoded);
       }
-      if (KeyFramesDecoded != 0) {
+      if (HasKeyFramesDecoded) {
         output.WriteRawTag(40);
         output.WriteUInt32(KeyFramesDecoded);
       }
-      if (FramesRendered != 0) {
+      if (HasFramesRendered) {
         output.WriteRawTag(48);
         output.WriteUInt32(FramesRendered);
       }
-      if (FramesDropped != 0) {
+      if (HasFramesDropped) {
         output.WriteRawTag(56);
         output.WriteUInt32(FramesDropped);
       }
-      if (FrameWidth != 0) {
+      if (HasFrameWidth) {
         output.WriteRawTag(64);
         output.WriteUInt32(FrameWidth);
       }
-      if (FrameHeight != 0) {
+      if (HasFrameHeight) {
         output.WriteRawTag(72);
         output.WriteUInt32(FrameHeight);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         output.WriteRawTag(81);
         output.WriteDouble(FramesPerSecond);
       }
-      if (QpSum != 0UL) {
+      if (HasQpSum) {
         output.WriteRawTag(88);
         output.WriteUInt64(QpSum);
       }
-      if (TotalDecodeTime != 0D) {
+      if (HasTotalDecodeTime) {
         output.WriteRawTag(97);
         output.WriteDouble(TotalDecodeTime);
       }
-      if (TotalInterFrameDelay != 0D) {
+      if (HasTotalInterFrameDelay) {
         output.WriteRawTag(105);
         output.WriteDouble(TotalInterFrameDelay);
       }
-      if (TotalSquaredInterFrameDelay != 0D) {
+      if (HasTotalSquaredInterFrameDelay) {
         output.WriteRawTag(113);
         output.WriteDouble(TotalSquaredInterFrameDelay);
       }
-      if (PauseCount != 0) {
+      if (HasPauseCount) {
         output.WriteRawTag(120);
         output.WriteUInt32(PauseCount);
       }
-      if (TotalPauseDuration != 0D) {
+      if (HasTotalPauseDuration) {
         output.WriteRawTag(129, 1);
         output.WriteDouble(TotalPauseDuration);
       }
-      if (FreezeCount != 0) {
+      if (HasFreezeCount) {
         output.WriteRawTag(136, 1);
         output.WriteUInt32(FreezeCount);
       }
-      if (TotalFreezeDuration != 0D) {
+      if (HasTotalFreezeDuration) {
         output.WriteRawTag(145, 1);
         output.WriteDouble(TotalFreezeDuration);
       }
-      if (LastPacketReceivedTimestamp != 0D) {
+      if (HasLastPacketReceivedTimestamp) {
         output.WriteRawTag(153, 1);
         output.WriteDouble(LastPacketReceivedTimestamp);
       }
-      if (HeaderBytesReceived != 0UL) {
+      if (HasHeaderBytesReceived) {
         output.WriteRawTag(160, 1);
         output.WriteUInt64(HeaderBytesReceived);
       }
-      if (PacketsDiscarded != 0UL) {
+      if (HasPacketsDiscarded) {
         output.WriteRawTag(168, 1);
         output.WriteUInt64(PacketsDiscarded);
       }
-      if (FecBytesReceived != 0UL) {
+      if (HasFecBytesReceived) {
         output.WriteRawTag(176, 1);
         output.WriteUInt64(FecBytesReceived);
       }
-      if (FecPacketsReceived != 0UL) {
+      if (HasFecPacketsReceived) {
         output.WriteRawTag(184, 1);
         output.WriteUInt64(FecPacketsReceived);
       }
-      if (FecPacketsDiscarded != 0UL) {
+      if (HasFecPacketsDiscarded) {
         output.WriteRawTag(192, 1);
         output.WriteUInt64(FecPacketsDiscarded);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(200, 1);
         output.WriteUInt64(BytesReceived);
       }
-      if (NackCount != 0) {
+      if (HasNackCount) {
         output.WriteRawTag(208, 1);
         output.WriteUInt32(NackCount);
       }
-      if (FirCount != 0) {
+      if (HasFirCount) {
         output.WriteRawTag(216, 1);
         output.WriteUInt32(FirCount);
       }
-      if (PliCount != 0) {
+      if (HasPliCount) {
         output.WriteRawTag(224, 1);
         output.WriteUInt32(PliCount);
       }
-      if (TotalProcessingDelay != 0D) {
+      if (HasTotalProcessingDelay) {
         output.WriteRawTag(233, 1);
         output.WriteDouble(TotalProcessingDelay);
       }
-      if (EstimatedPlayoutTimestamp != 0D) {
+      if (HasEstimatedPlayoutTimestamp) {
         output.WriteRawTag(241, 1);
         output.WriteDouble(EstimatedPlayoutTimestamp);
       }
-      if (JitterBufferDelay != 0D) {
+      if (HasJitterBufferDelay) {
         output.WriteRawTag(249, 1);
         output.WriteDouble(JitterBufferDelay);
       }
-      if (JitterBufferTargetDelay != 0D) {
+      if (HasJitterBufferTargetDelay) {
         output.WriteRawTag(129, 2);
         output.WriteDouble(JitterBufferTargetDelay);
       }
-      if (JitterBufferEmittedCount != 0UL) {
+      if (HasJitterBufferEmittedCount) {
         output.WriteRawTag(136, 2);
         output.WriteUInt64(JitterBufferEmittedCount);
       }
-      if (JitterBufferMinimumDelay != 0D) {
+      if (HasJitterBufferMinimumDelay) {
         output.WriteRawTag(145, 2);
         output.WriteDouble(JitterBufferMinimumDelay);
       }
-      if (TotalSamplesReceived != 0UL) {
+      if (HasTotalSamplesReceived) {
         output.WriteRawTag(152, 2);
         output.WriteUInt64(TotalSamplesReceived);
       }
-      if (ConcealedSamples != 0UL) {
+      if (HasConcealedSamples) {
         output.WriteRawTag(160, 2);
         output.WriteUInt64(ConcealedSamples);
       }
-      if (SilentConcealedSamples != 0UL) {
+      if (HasSilentConcealedSamples) {
         output.WriteRawTag(168, 2);
         output.WriteUInt64(SilentConcealedSamples);
       }
-      if (ConcealmentEvents != 0UL) {
+      if (HasConcealmentEvents) {
         output.WriteRawTag(176, 2);
         output.WriteUInt64(ConcealmentEvents);
       }
-      if (InsertedSamplesForDeceleration != 0UL) {
+      if (HasInsertedSamplesForDeceleration) {
         output.WriteRawTag(184, 2);
         output.WriteUInt64(InsertedSamplesForDeceleration);
       }
-      if (RemovedSamplesForAcceleration != 0UL) {
+      if (HasRemovedSamplesForAcceleration) {
         output.WriteRawTag(192, 2);
         output.WriteUInt64(RemovedSamplesForAcceleration);
       }
-      if (AudioLevel != 0D) {
+      if (HasAudioLevel) {
         output.WriteRawTag(201, 2);
         output.WriteDouble(AudioLevel);
       }
-      if (TotalAudioEnergy != 0D) {
+      if (HasTotalAudioEnergy) {
         output.WriteRawTag(209, 2);
         output.WriteDouble(TotalAudioEnergy);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         output.WriteRawTag(217, 2);
         output.WriteDouble(TotalSamplesDuration);
       }
-      if (FramesReceived != 0UL) {
+      if (HasFramesReceived) {
         output.WriteRawTag(224, 2);
         output.WriteUInt64(FramesReceived);
       }
-      if (DecoderImplementation.Length != 0) {
+      if (HasDecoderImplementation) {
         output.WriteRawTag(234, 2);
         output.WriteString(DecoderImplementation);
       }
-      if (PlayoutId.Length != 0) {
+      if (HasPlayoutId) {
         output.WriteRawTag(242, 2);
         output.WriteString(PlayoutId);
       }
-      if (PowerEfficientDecoder != false) {
+      if (HasPowerEfficientDecoder) {
         output.WriteRawTag(248, 2);
         output.WriteBool(PowerEfficientDecoder);
       }
-      if (FramesAssembledFromMultiplePackets != 0UL) {
+      if (HasFramesAssembledFromMultiplePackets) {
         output.WriteRawTag(128, 3);
         output.WriteUInt64(FramesAssembledFromMultiplePackets);
       }
-      if (TotalAssemblyTime != 0D) {
+      if (HasTotalAssemblyTime) {
         output.WriteRawTag(137, 3);
         output.WriteDouble(TotalAssemblyTime);
       }
-      if (RetransmittedPacketsReceived != 0UL) {
+      if (HasRetransmittedPacketsReceived) {
         output.WriteRawTag(144, 3);
         output.WriteUInt64(RetransmittedPacketsReceived);
       }
-      if (RetransmittedBytesReceived != 0UL) {
+      if (HasRetransmittedBytesReceived) {
         output.WriteRawTag(152, 3);
         output.WriteUInt64(RetransmittedBytesReceived);
       }
-      if (RtxSsrc != 0) {
+      if (HasRtxSsrc) {
         output.WriteRawTag(160, 3);
         output.WriteUInt32(RtxSsrc);
       }
-      if (FecSsrc != 0) {
+      if (HasFecSsrc) {
         output.WriteRawTag(168, 3);
         output.WriteUInt32(FecSsrc);
       }
@@ -7889,163 +9066,163 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackIdentifier.Length != 0) {
+      if (HasTrackIdentifier) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TrackIdentifier);
       }
-      if (Mid.Length != 0) {
+      if (HasMid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Mid);
       }
-      if (RemoteId.Length != 0) {
+      if (HasRemoteId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RemoteId);
       }
-      if (FramesDecoded != 0) {
+      if (HasFramesDecoded) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FramesDecoded);
       }
-      if (KeyFramesDecoded != 0) {
+      if (HasKeyFramesDecoded) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(KeyFramesDecoded);
       }
-      if (FramesRendered != 0) {
+      if (HasFramesRendered) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FramesRendered);
       }
-      if (FramesDropped != 0) {
+      if (HasFramesDropped) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FramesDropped);
       }
-      if (FrameWidth != 0) {
+      if (HasFrameWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameWidth);
       }
-      if (FrameHeight != 0) {
+      if (HasFrameHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameHeight);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         size += 1 + 8;
       }
-      if (QpSum != 0UL) {
+      if (HasQpSum) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(QpSum);
       }
-      if (TotalDecodeTime != 0D) {
+      if (HasTotalDecodeTime) {
         size += 1 + 8;
       }
-      if (TotalInterFrameDelay != 0D) {
+      if (HasTotalInterFrameDelay) {
         size += 1 + 8;
       }
-      if (TotalSquaredInterFrameDelay != 0D) {
+      if (HasTotalSquaredInterFrameDelay) {
         size += 1 + 8;
       }
-      if (PauseCount != 0) {
+      if (HasPauseCount) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(PauseCount);
       }
-      if (TotalPauseDuration != 0D) {
+      if (HasTotalPauseDuration) {
         size += 2 + 8;
       }
-      if (FreezeCount != 0) {
+      if (HasFreezeCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(FreezeCount);
       }
-      if (TotalFreezeDuration != 0D) {
+      if (HasTotalFreezeDuration) {
         size += 2 + 8;
       }
-      if (LastPacketReceivedTimestamp != 0D) {
+      if (HasLastPacketReceivedTimestamp) {
         size += 2 + 8;
       }
-      if (HeaderBytesReceived != 0UL) {
+      if (HasHeaderBytesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(HeaderBytesReceived);
       }
-      if (PacketsDiscarded != 0UL) {
+      if (HasPacketsDiscarded) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(PacketsDiscarded);
       }
-      if (FecBytesReceived != 0UL) {
+      if (HasFecBytesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(FecBytesReceived);
       }
-      if (FecPacketsReceived != 0UL) {
+      if (HasFecPacketsReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(FecPacketsReceived);
       }
-      if (FecPacketsDiscarded != 0UL) {
+      if (HasFecPacketsDiscarded) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(FecPacketsDiscarded);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(BytesReceived);
       }
-      if (NackCount != 0) {
+      if (HasNackCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(NackCount);
       }
-      if (FirCount != 0) {
+      if (HasFirCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(FirCount);
       }
-      if (PliCount != 0) {
+      if (HasPliCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(PliCount);
       }
-      if (TotalProcessingDelay != 0D) {
+      if (HasTotalProcessingDelay) {
         size += 2 + 8;
       }
-      if (EstimatedPlayoutTimestamp != 0D) {
+      if (HasEstimatedPlayoutTimestamp) {
         size += 2 + 8;
       }
-      if (JitterBufferDelay != 0D) {
+      if (HasJitterBufferDelay) {
         size += 2 + 8;
       }
-      if (JitterBufferTargetDelay != 0D) {
+      if (HasJitterBufferTargetDelay) {
         size += 2 + 8;
       }
-      if (JitterBufferEmittedCount != 0UL) {
+      if (HasJitterBufferEmittedCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(JitterBufferEmittedCount);
       }
-      if (JitterBufferMinimumDelay != 0D) {
+      if (HasJitterBufferMinimumDelay) {
         size += 2 + 8;
       }
-      if (TotalSamplesReceived != 0UL) {
+      if (HasTotalSamplesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(TotalSamplesReceived);
       }
-      if (ConcealedSamples != 0UL) {
+      if (HasConcealedSamples) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(ConcealedSamples);
       }
-      if (SilentConcealedSamples != 0UL) {
+      if (HasSilentConcealedSamples) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(SilentConcealedSamples);
       }
-      if (ConcealmentEvents != 0UL) {
+      if (HasConcealmentEvents) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(ConcealmentEvents);
       }
-      if (InsertedSamplesForDeceleration != 0UL) {
+      if (HasInsertedSamplesForDeceleration) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(InsertedSamplesForDeceleration);
       }
-      if (RemovedSamplesForAcceleration != 0UL) {
+      if (HasRemovedSamplesForAcceleration) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(RemovedSamplesForAcceleration);
       }
-      if (AudioLevel != 0D) {
+      if (HasAudioLevel) {
         size += 2 + 8;
       }
-      if (TotalAudioEnergy != 0D) {
+      if (HasTotalAudioEnergy) {
         size += 2 + 8;
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         size += 2 + 8;
       }
-      if (FramesReceived != 0UL) {
+      if (HasFramesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(FramesReceived);
       }
-      if (DecoderImplementation.Length != 0) {
+      if (HasDecoderImplementation) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(DecoderImplementation);
       }
-      if (PlayoutId.Length != 0) {
+      if (HasPlayoutId) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(PlayoutId);
       }
-      if (PowerEfficientDecoder != false) {
+      if (HasPowerEfficientDecoder) {
         size += 2 + 1;
       }
-      if (FramesAssembledFromMultiplePackets != 0UL) {
+      if (HasFramesAssembledFromMultiplePackets) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(FramesAssembledFromMultiplePackets);
       }
-      if (TotalAssemblyTime != 0D) {
+      if (HasTotalAssemblyTime) {
         size += 2 + 8;
       }
-      if (RetransmittedPacketsReceived != 0UL) {
+      if (HasRetransmittedPacketsReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(RetransmittedPacketsReceived);
       }
-      if (RetransmittedBytesReceived != 0UL) {
+      if (HasRetransmittedBytesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(RetransmittedBytesReceived);
       }
-      if (RtxSsrc != 0) {
+      if (HasRtxSsrc) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(RtxSsrc);
       }
-      if (FecSsrc != 0) {
+      if (HasFecSsrc) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(FecSsrc);
       }
       if (_unknownFields != null) {
@@ -8060,163 +9237,163 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TrackIdentifier.Length != 0) {
+      if (other.HasTrackIdentifier) {
         TrackIdentifier = other.TrackIdentifier;
       }
-      if (other.Mid.Length != 0) {
+      if (other.HasMid) {
         Mid = other.Mid;
       }
-      if (other.RemoteId.Length != 0) {
+      if (other.HasRemoteId) {
         RemoteId = other.RemoteId;
       }
-      if (other.FramesDecoded != 0) {
+      if (other.HasFramesDecoded) {
         FramesDecoded = other.FramesDecoded;
       }
-      if (other.KeyFramesDecoded != 0) {
+      if (other.HasKeyFramesDecoded) {
         KeyFramesDecoded = other.KeyFramesDecoded;
       }
-      if (other.FramesRendered != 0) {
+      if (other.HasFramesRendered) {
         FramesRendered = other.FramesRendered;
       }
-      if (other.FramesDropped != 0) {
+      if (other.HasFramesDropped) {
         FramesDropped = other.FramesDropped;
       }
-      if (other.FrameWidth != 0) {
+      if (other.HasFrameWidth) {
         FrameWidth = other.FrameWidth;
       }
-      if (other.FrameHeight != 0) {
+      if (other.HasFrameHeight) {
         FrameHeight = other.FrameHeight;
       }
-      if (other.FramesPerSecond != 0D) {
+      if (other.HasFramesPerSecond) {
         FramesPerSecond = other.FramesPerSecond;
       }
-      if (other.QpSum != 0UL) {
+      if (other.HasQpSum) {
         QpSum = other.QpSum;
       }
-      if (other.TotalDecodeTime != 0D) {
+      if (other.HasTotalDecodeTime) {
         TotalDecodeTime = other.TotalDecodeTime;
       }
-      if (other.TotalInterFrameDelay != 0D) {
+      if (other.HasTotalInterFrameDelay) {
         TotalInterFrameDelay = other.TotalInterFrameDelay;
       }
-      if (other.TotalSquaredInterFrameDelay != 0D) {
+      if (other.HasTotalSquaredInterFrameDelay) {
         TotalSquaredInterFrameDelay = other.TotalSquaredInterFrameDelay;
       }
-      if (other.PauseCount != 0) {
+      if (other.HasPauseCount) {
         PauseCount = other.PauseCount;
       }
-      if (other.TotalPauseDuration != 0D) {
+      if (other.HasTotalPauseDuration) {
         TotalPauseDuration = other.TotalPauseDuration;
       }
-      if (other.FreezeCount != 0) {
+      if (other.HasFreezeCount) {
         FreezeCount = other.FreezeCount;
       }
-      if (other.TotalFreezeDuration != 0D) {
+      if (other.HasTotalFreezeDuration) {
         TotalFreezeDuration = other.TotalFreezeDuration;
       }
-      if (other.LastPacketReceivedTimestamp != 0D) {
+      if (other.HasLastPacketReceivedTimestamp) {
         LastPacketReceivedTimestamp = other.LastPacketReceivedTimestamp;
       }
-      if (other.HeaderBytesReceived != 0UL) {
+      if (other.HasHeaderBytesReceived) {
         HeaderBytesReceived = other.HeaderBytesReceived;
       }
-      if (other.PacketsDiscarded != 0UL) {
+      if (other.HasPacketsDiscarded) {
         PacketsDiscarded = other.PacketsDiscarded;
       }
-      if (other.FecBytesReceived != 0UL) {
+      if (other.HasFecBytesReceived) {
         FecBytesReceived = other.FecBytesReceived;
       }
-      if (other.FecPacketsReceived != 0UL) {
+      if (other.HasFecPacketsReceived) {
         FecPacketsReceived = other.FecPacketsReceived;
       }
-      if (other.FecPacketsDiscarded != 0UL) {
+      if (other.HasFecPacketsDiscarded) {
         FecPacketsDiscarded = other.FecPacketsDiscarded;
       }
-      if (other.BytesReceived != 0UL) {
+      if (other.HasBytesReceived) {
         BytesReceived = other.BytesReceived;
       }
-      if (other.NackCount != 0) {
+      if (other.HasNackCount) {
         NackCount = other.NackCount;
       }
-      if (other.FirCount != 0) {
+      if (other.HasFirCount) {
         FirCount = other.FirCount;
       }
-      if (other.PliCount != 0) {
+      if (other.HasPliCount) {
         PliCount = other.PliCount;
       }
-      if (other.TotalProcessingDelay != 0D) {
+      if (other.HasTotalProcessingDelay) {
         TotalProcessingDelay = other.TotalProcessingDelay;
       }
-      if (other.EstimatedPlayoutTimestamp != 0D) {
+      if (other.HasEstimatedPlayoutTimestamp) {
         EstimatedPlayoutTimestamp = other.EstimatedPlayoutTimestamp;
       }
-      if (other.JitterBufferDelay != 0D) {
+      if (other.HasJitterBufferDelay) {
         JitterBufferDelay = other.JitterBufferDelay;
       }
-      if (other.JitterBufferTargetDelay != 0D) {
+      if (other.HasJitterBufferTargetDelay) {
         JitterBufferTargetDelay = other.JitterBufferTargetDelay;
       }
-      if (other.JitterBufferEmittedCount != 0UL) {
+      if (other.HasJitterBufferEmittedCount) {
         JitterBufferEmittedCount = other.JitterBufferEmittedCount;
       }
-      if (other.JitterBufferMinimumDelay != 0D) {
+      if (other.HasJitterBufferMinimumDelay) {
         JitterBufferMinimumDelay = other.JitterBufferMinimumDelay;
       }
-      if (other.TotalSamplesReceived != 0UL) {
+      if (other.HasTotalSamplesReceived) {
         TotalSamplesReceived = other.TotalSamplesReceived;
       }
-      if (other.ConcealedSamples != 0UL) {
+      if (other.HasConcealedSamples) {
         ConcealedSamples = other.ConcealedSamples;
       }
-      if (other.SilentConcealedSamples != 0UL) {
+      if (other.HasSilentConcealedSamples) {
         SilentConcealedSamples = other.SilentConcealedSamples;
       }
-      if (other.ConcealmentEvents != 0UL) {
+      if (other.HasConcealmentEvents) {
         ConcealmentEvents = other.ConcealmentEvents;
       }
-      if (other.InsertedSamplesForDeceleration != 0UL) {
+      if (other.HasInsertedSamplesForDeceleration) {
         InsertedSamplesForDeceleration = other.InsertedSamplesForDeceleration;
       }
-      if (other.RemovedSamplesForAcceleration != 0UL) {
+      if (other.HasRemovedSamplesForAcceleration) {
         RemovedSamplesForAcceleration = other.RemovedSamplesForAcceleration;
       }
-      if (other.AudioLevel != 0D) {
+      if (other.HasAudioLevel) {
         AudioLevel = other.AudioLevel;
       }
-      if (other.TotalAudioEnergy != 0D) {
+      if (other.HasTotalAudioEnergy) {
         TotalAudioEnergy = other.TotalAudioEnergy;
       }
-      if (other.TotalSamplesDuration != 0D) {
+      if (other.HasTotalSamplesDuration) {
         TotalSamplesDuration = other.TotalSamplesDuration;
       }
-      if (other.FramesReceived != 0UL) {
+      if (other.HasFramesReceived) {
         FramesReceived = other.FramesReceived;
       }
-      if (other.DecoderImplementation.Length != 0) {
+      if (other.HasDecoderImplementation) {
         DecoderImplementation = other.DecoderImplementation;
       }
-      if (other.PlayoutId.Length != 0) {
+      if (other.HasPlayoutId) {
         PlayoutId = other.PlayoutId;
       }
-      if (other.PowerEfficientDecoder != false) {
+      if (other.HasPowerEfficientDecoder) {
         PowerEfficientDecoder = other.PowerEfficientDecoder;
       }
-      if (other.FramesAssembledFromMultiplePackets != 0UL) {
+      if (other.HasFramesAssembledFromMultiplePackets) {
         FramesAssembledFromMultiplePackets = other.FramesAssembledFromMultiplePackets;
       }
-      if (other.TotalAssemblyTime != 0D) {
+      if (other.HasTotalAssemblyTime) {
         TotalAssemblyTime = other.TotalAssemblyTime;
       }
-      if (other.RetransmittedPacketsReceived != 0UL) {
+      if (other.HasRetransmittedPacketsReceived) {
         RetransmittedPacketsReceived = other.RetransmittedPacketsReceived;
       }
-      if (other.RetransmittedBytesReceived != 0UL) {
+      if (other.HasRetransmittedBytesReceived) {
         RetransmittedBytesReceived = other.RetransmittedBytesReceived;
       }
-      if (other.RtxSsrc != 0) {
+      if (other.HasRtxSsrc) {
         RtxSsrc = other.RtxSsrc;
       }
-      if (other.FecSsrc != 0) {
+      if (other.HasFecSsrc) {
         FecSsrc = other.FecSsrc;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -8230,7 +9407,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -8457,7 +9638,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -8688,6 +9873,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<SentRtpStreamStats> _parser = new pb::MessageParser<SentRtpStreamStats>(() => new SentRtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<SentRtpStreamStats> Parser { get { return _parser; } }
@@ -8715,6 +9901,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SentRtpStreamStats(SentRtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
       packetsSent_ = other.packetsSent_;
       bytesSent_ = other.bytesSent_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -8728,26 +9915,56 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "packets_sent" field.</summary>
     public const int PacketsSentFieldNumber = 1;
+    private readonly static ulong PacketsSentDefaultValue = 0UL;
+
     private ulong packetsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsSent {
-      get { return packetsSent_; }
+      get { if ((_hasBits0 & 1) != 0) { return packetsSent_; } else { return PacketsSentDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         packetsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsSent {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsSent() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "bytes_sent" field.</summary>
     public const int BytesSentFieldNumber = 2;
+    private readonly static ulong BytesSentDefaultValue = 0UL;
+
     private ulong bytesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesSent {
-      get { return bytesSent_; }
+      get { if ((_hasBits0 & 2) != 0) { return bytesSent_; } else { return BytesSentDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         bytesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesSent {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesSent() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -8774,8 +9991,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (PacketsSent != 0UL) hash ^= PacketsSent.GetHashCode();
-      if (BytesSent != 0UL) hash ^= BytesSent.GetHashCode();
+      if (HasPacketsSent) hash ^= PacketsSent.GetHashCode();
+      if (HasBytesSent) hash ^= BytesSent.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -8794,11 +10011,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         output.WriteRawTag(8);
         output.WriteUInt64(PacketsSent);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(16);
         output.WriteUInt64(BytesSent);
       }
@@ -8812,11 +10029,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         output.WriteRawTag(8);
         output.WriteUInt64(PacketsSent);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(16);
         output.WriteUInt64(BytesSent);
       }
@@ -8830,10 +10047,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PacketsSent);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesSent);
       }
       if (_unknownFields != null) {
@@ -8848,10 +10065,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.PacketsSent != 0UL) {
+      if (other.HasPacketsSent) {
         PacketsSent = other.PacketsSent;
       }
-      if (other.BytesSent != 0UL) {
+      if (other.HasBytesSent) {
         BytesSent = other.BytesSent;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -8865,7 +10082,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -8888,7 +10109,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -8915,6 +10140,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<OutboundRtpStreamStats> _parser = new pb::MessageParser<OutboundRtpStreamStats>(() => new OutboundRtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<OutboundRtpStreamStats> Parser { get { return _parser; } }
@@ -8942,6 +10168,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OutboundRtpStreamStats(OutboundRtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
       mid_ = other.mid_;
       mediaSourceId_ = other.mediaSourceId_;
       remoteId_ = other.remoteId_;
@@ -8971,7 +10198,7 @@ namespace LiveKit.Proto {
       encoderImplementation_ = other.encoderImplementation_;
       powerEfficientEncoder_ = other.powerEfficientEncoder_;
       active_ = other.active_;
-      scalibilityMode_ = other.scalibilityMode_;
+      scalabilityMode_ = other.scalabilityMode_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -8983,254 +10210,565 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "mid" field.</summary>
     public const int MidFieldNumber = 1;
-    private string mid_ = "";
+    private readonly static string MidDefaultValue = "";
+
+    private string mid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Mid {
-      get { return mid_; }
+      get { return mid_ ?? MidDefaultValue; }
       set {
         mid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "mid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMid {
+      get { return mid_ != null; }
+    }
+    /// <summary>Clears the value of the "mid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMid() {
+      mid_ = null;
+    }
 
     /// <summary>Field number for the "media_source_id" field.</summary>
     public const int MediaSourceIdFieldNumber = 2;
-    private string mediaSourceId_ = "";
+    private readonly static string MediaSourceIdDefaultValue = "";
+
+    private string mediaSourceId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string MediaSourceId {
-      get { return mediaSourceId_; }
+      get { return mediaSourceId_ ?? MediaSourceIdDefaultValue; }
       set {
         mediaSourceId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "media_source_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMediaSourceId {
+      get { return mediaSourceId_ != null; }
+    }
+    /// <summary>Clears the value of the "media_source_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMediaSourceId() {
+      mediaSourceId_ = null;
+    }
 
     /// <summary>Field number for the "remote_id" field.</summary>
     public const int RemoteIdFieldNumber = 3;
-    private string remoteId_ = "";
+    private readonly static string RemoteIdDefaultValue = "";
+
+    private string remoteId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RemoteId {
-      get { return remoteId_; }
+      get { return remoteId_ ?? RemoteIdDefaultValue; }
       set {
         remoteId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "remote_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemoteId {
+      get { return remoteId_ != null; }
+    }
+    /// <summary>Clears the value of the "remote_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemoteId() {
+      remoteId_ = null;
+    }
 
     /// <summary>Field number for the "rid" field.</summary>
     public const int RidFieldNumber = 4;
-    private string rid_ = "";
+    private readonly static string RidDefaultValue = "";
+
+    private string rid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Rid {
-      get { return rid_; }
+      get { return rid_ ?? RidDefaultValue; }
       set {
         rid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "rid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRid {
+      get { return rid_ != null; }
+    }
+    /// <summary>Clears the value of the "rid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRid() {
+      rid_ = null;
+    }
 
     /// <summary>Field number for the "header_bytes_sent" field.</summary>
     public const int HeaderBytesSentFieldNumber = 5;
+    private readonly static ulong HeaderBytesSentDefaultValue = 0UL;
+
     private ulong headerBytesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong HeaderBytesSent {
-      get { return headerBytesSent_; }
+      get { if ((_hasBits0 & 1) != 0) { return headerBytesSent_; } else { return HeaderBytesSentDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         headerBytesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "header_bytes_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeaderBytesSent {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "header_bytes_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeaderBytesSent() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "retransmitted_packets_sent" field.</summary>
     public const int RetransmittedPacketsSentFieldNumber = 6;
+    private readonly static ulong RetransmittedPacketsSentDefaultValue = 0UL;
+
     private ulong retransmittedPacketsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RetransmittedPacketsSent {
-      get { return retransmittedPacketsSent_; }
+      get { if ((_hasBits0 & 2) != 0) { return retransmittedPacketsSent_; } else { return RetransmittedPacketsSentDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         retransmittedPacketsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "retransmitted_packets_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRetransmittedPacketsSent {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "retransmitted_packets_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRetransmittedPacketsSent() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "retransmitted_bytes_sent" field.</summary>
     public const int RetransmittedBytesSentFieldNumber = 7;
+    private readonly static ulong RetransmittedBytesSentDefaultValue = 0UL;
+
     private ulong retransmittedBytesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RetransmittedBytesSent {
-      get { return retransmittedBytesSent_; }
+      get { if ((_hasBits0 & 4) != 0) { return retransmittedBytesSent_; } else { return RetransmittedBytesSentDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         retransmittedBytesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "retransmitted_bytes_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRetransmittedBytesSent {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "retransmitted_bytes_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRetransmittedBytesSent() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "rtx_ssrc" field.</summary>
     public const int RtxSsrcFieldNumber = 8;
+    private readonly static uint RtxSsrcDefaultValue = 0;
+
     private uint rtxSsrc_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint RtxSsrc {
-      get { return rtxSsrc_; }
+      get { if ((_hasBits0 & 8) != 0) { return rtxSsrc_; } else { return RtxSsrcDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         rtxSsrc_ = value;
       }
+    }
+    /// <summary>Gets whether the "rtx_ssrc" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRtxSsrc {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "rtx_ssrc" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRtxSsrc() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "target_bitrate" field.</summary>
     public const int TargetBitrateFieldNumber = 9;
+    private readonly static double TargetBitrateDefaultValue = 0D;
+
     private double targetBitrate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TargetBitrate {
-      get { return targetBitrate_; }
+      get { if ((_hasBits0 & 16) != 0) { return targetBitrate_; } else { return TargetBitrateDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         targetBitrate_ = value;
       }
+    }
+    /// <summary>Gets whether the "target_bitrate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTargetBitrate {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "target_bitrate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTargetBitrate() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "total_encoded_bytes_target" field.</summary>
     public const int TotalEncodedBytesTargetFieldNumber = 10;
+    private readonly static ulong TotalEncodedBytesTargetDefaultValue = 0UL;
+
     private ulong totalEncodedBytesTarget_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TotalEncodedBytesTarget {
-      get { return totalEncodedBytesTarget_; }
+      get { if ((_hasBits0 & 32) != 0) { return totalEncodedBytesTarget_; } else { return TotalEncodedBytesTargetDefaultValue; } }
       set {
+        _hasBits0 |= 32;
         totalEncodedBytesTarget_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_encoded_bytes_target" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalEncodedBytesTarget {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "total_encoded_bytes_target" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalEncodedBytesTarget() {
+      _hasBits0 &= ~32;
     }
 
     /// <summary>Field number for the "frame_width" field.</summary>
     public const int FrameWidthFieldNumber = 11;
+    private readonly static uint FrameWidthDefaultValue = 0;
+
     private uint frameWidth_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FrameWidth {
-      get { return frameWidth_; }
+      get { if ((_hasBits0 & 64) != 0) { return frameWidth_; } else { return FrameWidthDefaultValue; } }
       set {
+        _hasBits0 |= 64;
         frameWidth_ = value;
       }
+    }
+    /// <summary>Gets whether the "frame_width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrameWidth {
+      get { return (_hasBits0 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "frame_width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrameWidth() {
+      _hasBits0 &= ~64;
     }
 
     /// <summary>Field number for the "frame_height" field.</summary>
     public const int FrameHeightFieldNumber = 12;
+    private readonly static uint FrameHeightDefaultValue = 0;
+
     private uint frameHeight_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FrameHeight {
-      get { return frameHeight_; }
+      get { if ((_hasBits0 & 128) != 0) { return frameHeight_; } else { return FrameHeightDefaultValue; } }
       set {
+        _hasBits0 |= 128;
         frameHeight_ = value;
       }
+    }
+    /// <summary>Gets whether the "frame_height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrameHeight {
+      get { return (_hasBits0 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "frame_height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrameHeight() {
+      _hasBits0 &= ~128;
     }
 
     /// <summary>Field number for the "frames_per_second" field.</summary>
     public const int FramesPerSecondFieldNumber = 13;
+    private readonly static double FramesPerSecondDefaultValue = 0D;
+
     private double framesPerSecond_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double FramesPerSecond {
-      get { return framesPerSecond_; }
+      get { if ((_hasBits0 & 256) != 0) { return framesPerSecond_; } else { return FramesPerSecondDefaultValue; } }
       set {
+        _hasBits0 |= 256;
         framesPerSecond_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_per_second" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesPerSecond {
+      get { return (_hasBits0 & 256) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_per_second" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesPerSecond() {
+      _hasBits0 &= ~256;
     }
 
     /// <summary>Field number for the "frames_sent" field.</summary>
     public const int FramesSentFieldNumber = 14;
+    private readonly static uint FramesSentDefaultValue = 0;
+
     private uint framesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FramesSent {
-      get { return framesSent_; }
+      get { if ((_hasBits0 & 512) != 0) { return framesSent_; } else { return FramesSentDefaultValue; } }
       set {
+        _hasBits0 |= 512;
         framesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesSent {
+      get { return (_hasBits0 & 512) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesSent() {
+      _hasBits0 &= ~512;
     }
 
     /// <summary>Field number for the "huge_frames_sent" field.</summary>
     public const int HugeFramesSentFieldNumber = 15;
+    private readonly static uint HugeFramesSentDefaultValue = 0;
+
     private uint hugeFramesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint HugeFramesSent {
-      get { return hugeFramesSent_; }
+      get { if ((_hasBits0 & 1024) != 0) { return hugeFramesSent_; } else { return HugeFramesSentDefaultValue; } }
       set {
+        _hasBits0 |= 1024;
         hugeFramesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "huge_frames_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHugeFramesSent {
+      get { return (_hasBits0 & 1024) != 0; }
+    }
+    /// <summary>Clears the value of the "huge_frames_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHugeFramesSent() {
+      _hasBits0 &= ~1024;
     }
 
     /// <summary>Field number for the "frames_encoded" field.</summary>
     public const int FramesEncodedFieldNumber = 16;
+    private readonly static uint FramesEncodedDefaultValue = 0;
+
     private uint framesEncoded_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FramesEncoded {
-      get { return framesEncoded_; }
+      get { if ((_hasBits0 & 2048) != 0) { return framesEncoded_; } else { return FramesEncodedDefaultValue; } }
       set {
+        _hasBits0 |= 2048;
         framesEncoded_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_encoded" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesEncoded {
+      get { return (_hasBits0 & 2048) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_encoded" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesEncoded() {
+      _hasBits0 &= ~2048;
     }
 
     /// <summary>Field number for the "key_frames_encoded" field.</summary>
     public const int KeyFramesEncodedFieldNumber = 17;
+    private readonly static uint KeyFramesEncodedDefaultValue = 0;
+
     private uint keyFramesEncoded_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint KeyFramesEncoded {
-      get { return keyFramesEncoded_; }
+      get { if ((_hasBits0 & 4096) != 0) { return keyFramesEncoded_; } else { return KeyFramesEncodedDefaultValue; } }
       set {
+        _hasBits0 |= 4096;
         keyFramesEncoded_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_frames_encoded" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyFramesEncoded {
+      get { return (_hasBits0 & 4096) != 0; }
+    }
+    /// <summary>Clears the value of the "key_frames_encoded" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyFramesEncoded() {
+      _hasBits0 &= ~4096;
     }
 
     /// <summary>Field number for the "qp_sum" field.</summary>
     public const int QpSumFieldNumber = 18;
+    private readonly static ulong QpSumDefaultValue = 0UL;
+
     private ulong qpSum_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong QpSum {
-      get { return qpSum_; }
+      get { if ((_hasBits0 & 8192) != 0) { return qpSum_; } else { return QpSumDefaultValue; } }
       set {
+        _hasBits0 |= 8192;
         qpSum_ = value;
       }
+    }
+    /// <summary>Gets whether the "qp_sum" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQpSum {
+      get { return (_hasBits0 & 8192) != 0; }
+    }
+    /// <summary>Clears the value of the "qp_sum" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQpSum() {
+      _hasBits0 &= ~8192;
     }
 
     /// <summary>Field number for the "total_encode_time" field.</summary>
     public const int TotalEncodeTimeFieldNumber = 19;
+    private readonly static double TotalEncodeTimeDefaultValue = 0D;
+
     private double totalEncodeTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalEncodeTime {
-      get { return totalEncodeTime_; }
+      get { if ((_hasBits0 & 16384) != 0) { return totalEncodeTime_; } else { return TotalEncodeTimeDefaultValue; } }
       set {
+        _hasBits0 |= 16384;
         totalEncodeTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_encode_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalEncodeTime {
+      get { return (_hasBits0 & 16384) != 0; }
+    }
+    /// <summary>Clears the value of the "total_encode_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalEncodeTime() {
+      _hasBits0 &= ~16384;
     }
 
     /// <summary>Field number for the "total_packet_send_delay" field.</summary>
     public const int TotalPacketSendDelayFieldNumber = 20;
+    private readonly static double TotalPacketSendDelayDefaultValue = 0D;
+
     private double totalPacketSendDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalPacketSendDelay {
-      get { return totalPacketSendDelay_; }
+      get { if ((_hasBits0 & 32768) != 0) { return totalPacketSendDelay_; } else { return TotalPacketSendDelayDefaultValue; } }
       set {
+        _hasBits0 |= 32768;
         totalPacketSendDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_packet_send_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalPacketSendDelay {
+      get { return (_hasBits0 & 32768) != 0; }
+    }
+    /// <summary>Clears the value of the "total_packet_send_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalPacketSendDelay() {
+      _hasBits0 &= ~32768;
     }
 
     /// <summary>Field number for the "quality_limitation_reason" field.</summary>
     public const int QualityLimitationReasonFieldNumber = 21;
-    private global::LiveKit.Proto.QualityLimitationReason qualityLimitationReason_ = global::LiveKit.Proto.QualityLimitationReason.LimitationNone;
+    private readonly static global::LiveKit.Proto.QualityLimitationReason QualityLimitationReasonDefaultValue = global::LiveKit.Proto.QualityLimitationReason.LimitationNone;
+
+    private global::LiveKit.Proto.QualityLimitationReason qualityLimitationReason_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.QualityLimitationReason QualityLimitationReason {
-      get { return qualityLimitationReason_; }
+      get { if ((_hasBits0 & 65536) != 0) { return qualityLimitationReason_; } else { return QualityLimitationReasonDefaultValue; } }
       set {
+        _hasBits0 |= 65536;
         qualityLimitationReason_ = value;
       }
+    }
+    /// <summary>Gets whether the "quality_limitation_reason" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQualityLimitationReason {
+      get { return (_hasBits0 & 65536) != 0; }
+    }
+    /// <summary>Clears the value of the "quality_limitation_reason" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQualityLimitationReason() {
+      _hasBits0 &= ~65536;
     }
 
     /// <summary>Field number for the "quality_limitation_durations" field.</summary>
@@ -9246,98 +10784,216 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "quality_limitation_resolution_changes" field.</summary>
     public const int QualityLimitationResolutionChangesFieldNumber = 23;
+    private readonly static uint QualityLimitationResolutionChangesDefaultValue = 0;
+
     private uint qualityLimitationResolutionChanges_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint QualityLimitationResolutionChanges {
-      get { return qualityLimitationResolutionChanges_; }
+      get { if ((_hasBits0 & 131072) != 0) { return qualityLimitationResolutionChanges_; } else { return QualityLimitationResolutionChangesDefaultValue; } }
       set {
+        _hasBits0 |= 131072;
         qualityLimitationResolutionChanges_ = value;
       }
+    }
+    /// <summary>Gets whether the "quality_limitation_resolution_changes" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQualityLimitationResolutionChanges {
+      get { return (_hasBits0 & 131072) != 0; }
+    }
+    /// <summary>Clears the value of the "quality_limitation_resolution_changes" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQualityLimitationResolutionChanges() {
+      _hasBits0 &= ~131072;
     }
 
     /// <summary>Field number for the "nack_count" field.</summary>
     public const int NackCountFieldNumber = 24;
+    private readonly static uint NackCountDefaultValue = 0;
+
     private uint nackCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint NackCount {
-      get { return nackCount_; }
+      get { if ((_hasBits0 & 262144) != 0) { return nackCount_; } else { return NackCountDefaultValue; } }
       set {
+        _hasBits0 |= 262144;
         nackCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "nack_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasNackCount {
+      get { return (_hasBits0 & 262144) != 0; }
+    }
+    /// <summary>Clears the value of the "nack_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearNackCount() {
+      _hasBits0 &= ~262144;
     }
 
     /// <summary>Field number for the "fir_count" field.</summary>
     public const int FirCountFieldNumber = 25;
+    private readonly static uint FirCountDefaultValue = 0;
+
     private uint firCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint FirCount {
-      get { return firCount_; }
+      get { if ((_hasBits0 & 524288) != 0) { return firCount_; } else { return FirCountDefaultValue; } }
       set {
+        _hasBits0 |= 524288;
         firCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "fir_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFirCount {
+      get { return (_hasBits0 & 524288) != 0; }
+    }
+    /// <summary>Clears the value of the "fir_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFirCount() {
+      _hasBits0 &= ~524288;
     }
 
     /// <summary>Field number for the "pli_count" field.</summary>
     public const int PliCountFieldNumber = 26;
+    private readonly static uint PliCountDefaultValue = 0;
+
     private uint pliCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint PliCount {
-      get { return pliCount_; }
+      get { if ((_hasBits0 & 1048576) != 0) { return pliCount_; } else { return PliCountDefaultValue; } }
       set {
+        _hasBits0 |= 1048576;
         pliCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "pli_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPliCount {
+      get { return (_hasBits0 & 1048576) != 0; }
+    }
+    /// <summary>Clears the value of the "pli_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPliCount() {
+      _hasBits0 &= ~1048576;
     }
 
     /// <summary>Field number for the "encoder_implementation" field.</summary>
     public const int EncoderImplementationFieldNumber = 27;
-    private string encoderImplementation_ = "";
+    private readonly static string EncoderImplementationDefaultValue = "";
+
+    private string encoderImplementation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string EncoderImplementation {
-      get { return encoderImplementation_; }
+      get { return encoderImplementation_ ?? EncoderImplementationDefaultValue; }
       set {
         encoderImplementation_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "encoder_implementation" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEncoderImplementation {
+      get { return encoderImplementation_ != null; }
+    }
+    /// <summary>Clears the value of the "encoder_implementation" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEncoderImplementation() {
+      encoderImplementation_ = null;
+    }
 
     /// <summary>Field number for the "power_efficient_encoder" field.</summary>
     public const int PowerEfficientEncoderFieldNumber = 28;
+    private readonly static bool PowerEfficientEncoderDefaultValue = false;
+
     private bool powerEfficientEncoder_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool PowerEfficientEncoder {
-      get { return powerEfficientEncoder_; }
+      get { if ((_hasBits0 & 2097152) != 0) { return powerEfficientEncoder_; } else { return PowerEfficientEncoderDefaultValue; } }
       set {
+        _hasBits0 |= 2097152;
         powerEfficientEncoder_ = value;
       }
+    }
+    /// <summary>Gets whether the "power_efficient_encoder" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPowerEfficientEncoder {
+      get { return (_hasBits0 & 2097152) != 0; }
+    }
+    /// <summary>Clears the value of the "power_efficient_encoder" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPowerEfficientEncoder() {
+      _hasBits0 &= ~2097152;
     }
 
     /// <summary>Field number for the "active" field.</summary>
     public const int ActiveFieldNumber = 29;
+    private readonly static bool ActiveDefaultValue = false;
+
     private bool active_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Active {
-      get { return active_; }
+      get { if ((_hasBits0 & 4194304) != 0) { return active_; } else { return ActiveDefaultValue; } }
       set {
+        _hasBits0 |= 4194304;
         active_ = value;
       }
     }
-
-    /// <summary>Field number for the "scalibility_mode" field.</summary>
-    public const int ScalibilityModeFieldNumber = 30;
-    private string scalibilityMode_ = "";
+    /// <summary>Gets whether the "active" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string ScalibilityMode {
-      get { return scalibilityMode_; }
+    public bool HasActive {
+      get { return (_hasBits0 & 4194304) != 0; }
+    }
+    /// <summary>Clears the value of the "active" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearActive() {
+      _hasBits0 &= ~4194304;
+    }
+
+    /// <summary>Field number for the "scalability_mode" field.</summary>
+    public const int ScalabilityModeFieldNumber = 30;
+    private readonly static string ScalabilityModeDefaultValue = "";
+
+    private string scalabilityMode_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ScalabilityMode {
+      get { return scalabilityMode_ ?? ScalabilityModeDefaultValue; }
       set {
-        scalibilityMode_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        scalabilityMode_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "scalability_mode" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasScalabilityMode {
+      get { return scalabilityMode_ != null; }
+    }
+    /// <summary>Clears the value of the "scalability_mode" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearScalabilityMode() {
+      scalabilityMode_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -9384,7 +11040,7 @@ namespace LiveKit.Proto {
       if (EncoderImplementation != other.EncoderImplementation) return false;
       if (PowerEfficientEncoder != other.PowerEfficientEncoder) return false;
       if (Active != other.Active) return false;
-      if (ScalibilityMode != other.ScalibilityMode) return false;
+      if (ScalabilityMode != other.ScalabilityMode) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -9392,36 +11048,36 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Mid.Length != 0) hash ^= Mid.GetHashCode();
-      if (MediaSourceId.Length != 0) hash ^= MediaSourceId.GetHashCode();
-      if (RemoteId.Length != 0) hash ^= RemoteId.GetHashCode();
-      if (Rid.Length != 0) hash ^= Rid.GetHashCode();
-      if (HeaderBytesSent != 0UL) hash ^= HeaderBytesSent.GetHashCode();
-      if (RetransmittedPacketsSent != 0UL) hash ^= RetransmittedPacketsSent.GetHashCode();
-      if (RetransmittedBytesSent != 0UL) hash ^= RetransmittedBytesSent.GetHashCode();
-      if (RtxSsrc != 0) hash ^= RtxSsrc.GetHashCode();
-      if (TargetBitrate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TargetBitrate);
-      if (TotalEncodedBytesTarget != 0UL) hash ^= TotalEncodedBytesTarget.GetHashCode();
-      if (FrameWidth != 0) hash ^= FrameWidth.GetHashCode();
-      if (FrameHeight != 0) hash ^= FrameHeight.GetHashCode();
-      if (FramesPerSecond != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramesPerSecond);
-      if (FramesSent != 0) hash ^= FramesSent.GetHashCode();
-      if (HugeFramesSent != 0) hash ^= HugeFramesSent.GetHashCode();
-      if (FramesEncoded != 0) hash ^= FramesEncoded.GetHashCode();
-      if (KeyFramesEncoded != 0) hash ^= KeyFramesEncoded.GetHashCode();
-      if (QpSum != 0UL) hash ^= QpSum.GetHashCode();
-      if (TotalEncodeTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalEncodeTime);
-      if (TotalPacketSendDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalPacketSendDelay);
-      if (QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) hash ^= QualityLimitationReason.GetHashCode();
+      if (HasMid) hash ^= Mid.GetHashCode();
+      if (HasMediaSourceId) hash ^= MediaSourceId.GetHashCode();
+      if (HasRemoteId) hash ^= RemoteId.GetHashCode();
+      if (HasRid) hash ^= Rid.GetHashCode();
+      if (HasHeaderBytesSent) hash ^= HeaderBytesSent.GetHashCode();
+      if (HasRetransmittedPacketsSent) hash ^= RetransmittedPacketsSent.GetHashCode();
+      if (HasRetransmittedBytesSent) hash ^= RetransmittedBytesSent.GetHashCode();
+      if (HasRtxSsrc) hash ^= RtxSsrc.GetHashCode();
+      if (HasTargetBitrate) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TargetBitrate);
+      if (HasTotalEncodedBytesTarget) hash ^= TotalEncodedBytesTarget.GetHashCode();
+      if (HasFrameWidth) hash ^= FrameWidth.GetHashCode();
+      if (HasFrameHeight) hash ^= FrameHeight.GetHashCode();
+      if (HasFramesPerSecond) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramesPerSecond);
+      if (HasFramesSent) hash ^= FramesSent.GetHashCode();
+      if (HasHugeFramesSent) hash ^= HugeFramesSent.GetHashCode();
+      if (HasFramesEncoded) hash ^= FramesEncoded.GetHashCode();
+      if (HasKeyFramesEncoded) hash ^= KeyFramesEncoded.GetHashCode();
+      if (HasQpSum) hash ^= QpSum.GetHashCode();
+      if (HasTotalEncodeTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalEncodeTime);
+      if (HasTotalPacketSendDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalPacketSendDelay);
+      if (HasQualityLimitationReason) hash ^= QualityLimitationReason.GetHashCode();
       hash ^= QualityLimitationDurations.GetHashCode();
-      if (QualityLimitationResolutionChanges != 0) hash ^= QualityLimitationResolutionChanges.GetHashCode();
-      if (NackCount != 0) hash ^= NackCount.GetHashCode();
-      if (FirCount != 0) hash ^= FirCount.GetHashCode();
-      if (PliCount != 0) hash ^= PliCount.GetHashCode();
-      if (EncoderImplementation.Length != 0) hash ^= EncoderImplementation.GetHashCode();
-      if (PowerEfficientEncoder != false) hash ^= PowerEfficientEncoder.GetHashCode();
-      if (Active != false) hash ^= Active.GetHashCode();
-      if (ScalibilityMode.Length != 0) hash ^= ScalibilityMode.GetHashCode();
+      if (HasQualityLimitationResolutionChanges) hash ^= QualityLimitationResolutionChanges.GetHashCode();
+      if (HasNackCount) hash ^= NackCount.GetHashCode();
+      if (HasFirCount) hash ^= FirCount.GetHashCode();
+      if (HasPliCount) hash ^= PliCount.GetHashCode();
+      if (HasEncoderImplementation) hash ^= EncoderImplementation.GetHashCode();
+      if (HasPowerEfficientEncoder) hash ^= PowerEfficientEncoder.GetHashCode();
+      if (HasActive) hash ^= Active.GetHashCode();
+      if (HasScalabilityMode) hash ^= ScalabilityMode.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -9440,122 +11096,122 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Mid.Length != 0) {
+      if (HasMid) {
         output.WriteRawTag(10);
         output.WriteString(Mid);
       }
-      if (MediaSourceId.Length != 0) {
+      if (HasMediaSourceId) {
         output.WriteRawTag(18);
         output.WriteString(MediaSourceId);
       }
-      if (RemoteId.Length != 0) {
+      if (HasRemoteId) {
         output.WriteRawTag(26);
         output.WriteString(RemoteId);
       }
-      if (Rid.Length != 0) {
+      if (HasRid) {
         output.WriteRawTag(34);
         output.WriteString(Rid);
       }
-      if (HeaderBytesSent != 0UL) {
+      if (HasHeaderBytesSent) {
         output.WriteRawTag(40);
         output.WriteUInt64(HeaderBytesSent);
       }
-      if (RetransmittedPacketsSent != 0UL) {
+      if (HasRetransmittedPacketsSent) {
         output.WriteRawTag(48);
         output.WriteUInt64(RetransmittedPacketsSent);
       }
-      if (RetransmittedBytesSent != 0UL) {
+      if (HasRetransmittedBytesSent) {
         output.WriteRawTag(56);
         output.WriteUInt64(RetransmittedBytesSent);
       }
-      if (RtxSsrc != 0) {
+      if (HasRtxSsrc) {
         output.WriteRawTag(64);
         output.WriteUInt32(RtxSsrc);
       }
-      if (TargetBitrate != 0D) {
+      if (HasTargetBitrate) {
         output.WriteRawTag(73);
         output.WriteDouble(TargetBitrate);
       }
-      if (TotalEncodedBytesTarget != 0UL) {
+      if (HasTotalEncodedBytesTarget) {
         output.WriteRawTag(80);
         output.WriteUInt64(TotalEncodedBytesTarget);
       }
-      if (FrameWidth != 0) {
+      if (HasFrameWidth) {
         output.WriteRawTag(88);
         output.WriteUInt32(FrameWidth);
       }
-      if (FrameHeight != 0) {
+      if (HasFrameHeight) {
         output.WriteRawTag(96);
         output.WriteUInt32(FrameHeight);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         output.WriteRawTag(105);
         output.WriteDouble(FramesPerSecond);
       }
-      if (FramesSent != 0) {
+      if (HasFramesSent) {
         output.WriteRawTag(112);
         output.WriteUInt32(FramesSent);
       }
-      if (HugeFramesSent != 0) {
+      if (HasHugeFramesSent) {
         output.WriteRawTag(120);
         output.WriteUInt32(HugeFramesSent);
       }
-      if (FramesEncoded != 0) {
+      if (HasFramesEncoded) {
         output.WriteRawTag(128, 1);
         output.WriteUInt32(FramesEncoded);
       }
-      if (KeyFramesEncoded != 0) {
+      if (HasKeyFramesEncoded) {
         output.WriteRawTag(136, 1);
         output.WriteUInt32(KeyFramesEncoded);
       }
-      if (QpSum != 0UL) {
+      if (HasQpSum) {
         output.WriteRawTag(144, 1);
         output.WriteUInt64(QpSum);
       }
-      if (TotalEncodeTime != 0D) {
+      if (HasTotalEncodeTime) {
         output.WriteRawTag(153, 1);
         output.WriteDouble(TotalEncodeTime);
       }
-      if (TotalPacketSendDelay != 0D) {
+      if (HasTotalPacketSendDelay) {
         output.WriteRawTag(161, 1);
         output.WriteDouble(TotalPacketSendDelay);
       }
-      if (QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) {
+      if (HasQualityLimitationReason) {
         output.WriteRawTag(168, 1);
         output.WriteEnum((int) QualityLimitationReason);
       }
       qualityLimitationDurations_.WriteTo(output, _map_qualityLimitationDurations_codec);
-      if (QualityLimitationResolutionChanges != 0) {
+      if (HasQualityLimitationResolutionChanges) {
         output.WriteRawTag(184, 1);
         output.WriteUInt32(QualityLimitationResolutionChanges);
       }
-      if (NackCount != 0) {
+      if (HasNackCount) {
         output.WriteRawTag(192, 1);
         output.WriteUInt32(NackCount);
       }
-      if (FirCount != 0) {
+      if (HasFirCount) {
         output.WriteRawTag(200, 1);
         output.WriteUInt32(FirCount);
       }
-      if (PliCount != 0) {
+      if (HasPliCount) {
         output.WriteRawTag(208, 1);
         output.WriteUInt32(PliCount);
       }
-      if (EncoderImplementation.Length != 0) {
+      if (HasEncoderImplementation) {
         output.WriteRawTag(218, 1);
         output.WriteString(EncoderImplementation);
       }
-      if (PowerEfficientEncoder != false) {
+      if (HasPowerEfficientEncoder) {
         output.WriteRawTag(224, 1);
         output.WriteBool(PowerEfficientEncoder);
       }
-      if (Active != false) {
+      if (HasActive) {
         output.WriteRawTag(232, 1);
         output.WriteBool(Active);
       }
-      if (ScalibilityMode.Length != 0) {
+      if (HasScalabilityMode) {
         output.WriteRawTag(242, 1);
-        output.WriteString(ScalibilityMode);
+        output.WriteString(ScalabilityMode);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -9567,122 +11223,122 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Mid.Length != 0) {
+      if (HasMid) {
         output.WriteRawTag(10);
         output.WriteString(Mid);
       }
-      if (MediaSourceId.Length != 0) {
+      if (HasMediaSourceId) {
         output.WriteRawTag(18);
         output.WriteString(MediaSourceId);
       }
-      if (RemoteId.Length != 0) {
+      if (HasRemoteId) {
         output.WriteRawTag(26);
         output.WriteString(RemoteId);
       }
-      if (Rid.Length != 0) {
+      if (HasRid) {
         output.WriteRawTag(34);
         output.WriteString(Rid);
       }
-      if (HeaderBytesSent != 0UL) {
+      if (HasHeaderBytesSent) {
         output.WriteRawTag(40);
         output.WriteUInt64(HeaderBytesSent);
       }
-      if (RetransmittedPacketsSent != 0UL) {
+      if (HasRetransmittedPacketsSent) {
         output.WriteRawTag(48);
         output.WriteUInt64(RetransmittedPacketsSent);
       }
-      if (RetransmittedBytesSent != 0UL) {
+      if (HasRetransmittedBytesSent) {
         output.WriteRawTag(56);
         output.WriteUInt64(RetransmittedBytesSent);
       }
-      if (RtxSsrc != 0) {
+      if (HasRtxSsrc) {
         output.WriteRawTag(64);
         output.WriteUInt32(RtxSsrc);
       }
-      if (TargetBitrate != 0D) {
+      if (HasTargetBitrate) {
         output.WriteRawTag(73);
         output.WriteDouble(TargetBitrate);
       }
-      if (TotalEncodedBytesTarget != 0UL) {
+      if (HasTotalEncodedBytesTarget) {
         output.WriteRawTag(80);
         output.WriteUInt64(TotalEncodedBytesTarget);
       }
-      if (FrameWidth != 0) {
+      if (HasFrameWidth) {
         output.WriteRawTag(88);
         output.WriteUInt32(FrameWidth);
       }
-      if (FrameHeight != 0) {
+      if (HasFrameHeight) {
         output.WriteRawTag(96);
         output.WriteUInt32(FrameHeight);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         output.WriteRawTag(105);
         output.WriteDouble(FramesPerSecond);
       }
-      if (FramesSent != 0) {
+      if (HasFramesSent) {
         output.WriteRawTag(112);
         output.WriteUInt32(FramesSent);
       }
-      if (HugeFramesSent != 0) {
+      if (HasHugeFramesSent) {
         output.WriteRawTag(120);
         output.WriteUInt32(HugeFramesSent);
       }
-      if (FramesEncoded != 0) {
+      if (HasFramesEncoded) {
         output.WriteRawTag(128, 1);
         output.WriteUInt32(FramesEncoded);
       }
-      if (KeyFramesEncoded != 0) {
+      if (HasKeyFramesEncoded) {
         output.WriteRawTag(136, 1);
         output.WriteUInt32(KeyFramesEncoded);
       }
-      if (QpSum != 0UL) {
+      if (HasQpSum) {
         output.WriteRawTag(144, 1);
         output.WriteUInt64(QpSum);
       }
-      if (TotalEncodeTime != 0D) {
+      if (HasTotalEncodeTime) {
         output.WriteRawTag(153, 1);
         output.WriteDouble(TotalEncodeTime);
       }
-      if (TotalPacketSendDelay != 0D) {
+      if (HasTotalPacketSendDelay) {
         output.WriteRawTag(161, 1);
         output.WriteDouble(TotalPacketSendDelay);
       }
-      if (QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) {
+      if (HasQualityLimitationReason) {
         output.WriteRawTag(168, 1);
         output.WriteEnum((int) QualityLimitationReason);
       }
       qualityLimitationDurations_.WriteTo(ref output, _map_qualityLimitationDurations_codec);
-      if (QualityLimitationResolutionChanges != 0) {
+      if (HasQualityLimitationResolutionChanges) {
         output.WriteRawTag(184, 1);
         output.WriteUInt32(QualityLimitationResolutionChanges);
       }
-      if (NackCount != 0) {
+      if (HasNackCount) {
         output.WriteRawTag(192, 1);
         output.WriteUInt32(NackCount);
       }
-      if (FirCount != 0) {
+      if (HasFirCount) {
         output.WriteRawTag(200, 1);
         output.WriteUInt32(FirCount);
       }
-      if (PliCount != 0) {
+      if (HasPliCount) {
         output.WriteRawTag(208, 1);
         output.WriteUInt32(PliCount);
       }
-      if (EncoderImplementation.Length != 0) {
+      if (HasEncoderImplementation) {
         output.WriteRawTag(218, 1);
         output.WriteString(EncoderImplementation);
       }
-      if (PowerEfficientEncoder != false) {
+      if (HasPowerEfficientEncoder) {
         output.WriteRawTag(224, 1);
         output.WriteBool(PowerEfficientEncoder);
       }
-      if (Active != false) {
+      if (HasActive) {
         output.WriteRawTag(232, 1);
         output.WriteBool(Active);
       }
-      if (ScalibilityMode.Length != 0) {
+      if (HasScalabilityMode) {
         output.WriteRawTag(242, 1);
-        output.WriteString(ScalibilityMode);
+        output.WriteString(ScalabilityMode);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -9694,93 +11350,93 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Mid.Length != 0) {
+      if (HasMid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Mid);
       }
-      if (MediaSourceId.Length != 0) {
+      if (HasMediaSourceId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(MediaSourceId);
       }
-      if (RemoteId.Length != 0) {
+      if (HasRemoteId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RemoteId);
       }
-      if (Rid.Length != 0) {
+      if (HasRid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Rid);
       }
-      if (HeaderBytesSent != 0UL) {
+      if (HasHeaderBytesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(HeaderBytesSent);
       }
-      if (RetransmittedPacketsSent != 0UL) {
+      if (HasRetransmittedPacketsSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RetransmittedPacketsSent);
       }
-      if (RetransmittedBytesSent != 0UL) {
+      if (HasRetransmittedBytesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RetransmittedBytesSent);
       }
-      if (RtxSsrc != 0) {
+      if (HasRtxSsrc) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(RtxSsrc);
       }
-      if (TargetBitrate != 0D) {
+      if (HasTargetBitrate) {
         size += 1 + 8;
       }
-      if (TotalEncodedBytesTarget != 0UL) {
+      if (HasTotalEncodedBytesTarget) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TotalEncodedBytesTarget);
       }
-      if (FrameWidth != 0) {
+      if (HasFrameWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameWidth);
       }
-      if (FrameHeight != 0) {
+      if (HasFrameHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameHeight);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         size += 1 + 8;
       }
-      if (FramesSent != 0) {
+      if (HasFramesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FramesSent);
       }
-      if (HugeFramesSent != 0) {
+      if (HasHugeFramesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(HugeFramesSent);
       }
-      if (FramesEncoded != 0) {
+      if (HasFramesEncoded) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(FramesEncoded);
       }
-      if (KeyFramesEncoded != 0) {
+      if (HasKeyFramesEncoded) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(KeyFramesEncoded);
       }
-      if (QpSum != 0UL) {
+      if (HasQpSum) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(QpSum);
       }
-      if (TotalEncodeTime != 0D) {
+      if (HasTotalEncodeTime) {
         size += 2 + 8;
       }
-      if (TotalPacketSendDelay != 0D) {
+      if (HasTotalPacketSendDelay) {
         size += 2 + 8;
       }
-      if (QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) {
+      if (HasQualityLimitationReason) {
         size += 2 + pb::CodedOutputStream.ComputeEnumSize((int) QualityLimitationReason);
       }
       size += qualityLimitationDurations_.CalculateSize(_map_qualityLimitationDurations_codec);
-      if (QualityLimitationResolutionChanges != 0) {
+      if (HasQualityLimitationResolutionChanges) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(QualityLimitationResolutionChanges);
       }
-      if (NackCount != 0) {
+      if (HasNackCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(NackCount);
       }
-      if (FirCount != 0) {
+      if (HasFirCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(FirCount);
       }
-      if (PliCount != 0) {
+      if (HasPliCount) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(PliCount);
       }
-      if (EncoderImplementation.Length != 0) {
+      if (HasEncoderImplementation) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(EncoderImplementation);
       }
-      if (PowerEfficientEncoder != false) {
+      if (HasPowerEfficientEncoder) {
         size += 2 + 1;
       }
-      if (Active != false) {
+      if (HasActive) {
         size += 2 + 1;
       }
-      if (ScalibilityMode.Length != 0) {
-        size += 2 + pb::CodedOutputStream.ComputeStringSize(ScalibilityMode);
+      if (HasScalabilityMode) {
+        size += 2 + pb::CodedOutputStream.ComputeStringSize(ScalabilityMode);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -9794,93 +11450,93 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Mid.Length != 0) {
+      if (other.HasMid) {
         Mid = other.Mid;
       }
-      if (other.MediaSourceId.Length != 0) {
+      if (other.HasMediaSourceId) {
         MediaSourceId = other.MediaSourceId;
       }
-      if (other.RemoteId.Length != 0) {
+      if (other.HasRemoteId) {
         RemoteId = other.RemoteId;
       }
-      if (other.Rid.Length != 0) {
+      if (other.HasRid) {
         Rid = other.Rid;
       }
-      if (other.HeaderBytesSent != 0UL) {
+      if (other.HasHeaderBytesSent) {
         HeaderBytesSent = other.HeaderBytesSent;
       }
-      if (other.RetransmittedPacketsSent != 0UL) {
+      if (other.HasRetransmittedPacketsSent) {
         RetransmittedPacketsSent = other.RetransmittedPacketsSent;
       }
-      if (other.RetransmittedBytesSent != 0UL) {
+      if (other.HasRetransmittedBytesSent) {
         RetransmittedBytesSent = other.RetransmittedBytesSent;
       }
-      if (other.RtxSsrc != 0) {
+      if (other.HasRtxSsrc) {
         RtxSsrc = other.RtxSsrc;
       }
-      if (other.TargetBitrate != 0D) {
+      if (other.HasTargetBitrate) {
         TargetBitrate = other.TargetBitrate;
       }
-      if (other.TotalEncodedBytesTarget != 0UL) {
+      if (other.HasTotalEncodedBytesTarget) {
         TotalEncodedBytesTarget = other.TotalEncodedBytesTarget;
       }
-      if (other.FrameWidth != 0) {
+      if (other.HasFrameWidth) {
         FrameWidth = other.FrameWidth;
       }
-      if (other.FrameHeight != 0) {
+      if (other.HasFrameHeight) {
         FrameHeight = other.FrameHeight;
       }
-      if (other.FramesPerSecond != 0D) {
+      if (other.HasFramesPerSecond) {
         FramesPerSecond = other.FramesPerSecond;
       }
-      if (other.FramesSent != 0) {
+      if (other.HasFramesSent) {
         FramesSent = other.FramesSent;
       }
-      if (other.HugeFramesSent != 0) {
+      if (other.HasHugeFramesSent) {
         HugeFramesSent = other.HugeFramesSent;
       }
-      if (other.FramesEncoded != 0) {
+      if (other.HasFramesEncoded) {
         FramesEncoded = other.FramesEncoded;
       }
-      if (other.KeyFramesEncoded != 0) {
+      if (other.HasKeyFramesEncoded) {
         KeyFramesEncoded = other.KeyFramesEncoded;
       }
-      if (other.QpSum != 0UL) {
+      if (other.HasQpSum) {
         QpSum = other.QpSum;
       }
-      if (other.TotalEncodeTime != 0D) {
+      if (other.HasTotalEncodeTime) {
         TotalEncodeTime = other.TotalEncodeTime;
       }
-      if (other.TotalPacketSendDelay != 0D) {
+      if (other.HasTotalPacketSendDelay) {
         TotalPacketSendDelay = other.TotalPacketSendDelay;
       }
-      if (other.QualityLimitationReason != global::LiveKit.Proto.QualityLimitationReason.LimitationNone) {
+      if (other.HasQualityLimitationReason) {
         QualityLimitationReason = other.QualityLimitationReason;
       }
       qualityLimitationDurations_.MergeFrom(other.qualityLimitationDurations_);
-      if (other.QualityLimitationResolutionChanges != 0) {
+      if (other.HasQualityLimitationResolutionChanges) {
         QualityLimitationResolutionChanges = other.QualityLimitationResolutionChanges;
       }
-      if (other.NackCount != 0) {
+      if (other.HasNackCount) {
         NackCount = other.NackCount;
       }
-      if (other.FirCount != 0) {
+      if (other.HasFirCount) {
         FirCount = other.FirCount;
       }
-      if (other.PliCount != 0) {
+      if (other.HasPliCount) {
         PliCount = other.PliCount;
       }
-      if (other.EncoderImplementation.Length != 0) {
+      if (other.HasEncoderImplementation) {
         EncoderImplementation = other.EncoderImplementation;
       }
-      if (other.PowerEfficientEncoder != false) {
+      if (other.HasPowerEfficientEncoder) {
         PowerEfficientEncoder = other.PowerEfficientEncoder;
       }
-      if (other.Active != false) {
+      if (other.HasActive) {
         Active = other.Active;
       }
-      if (other.ScalibilityMode.Length != 0) {
-        ScalibilityMode = other.ScalibilityMode;
+      if (other.HasScalabilityMode) {
+        ScalabilityMode = other.ScalabilityMode;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -9893,7 +11549,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -10014,7 +11674,7 @@ namespace LiveKit.Proto {
             break;
           }
           case 242: {
-            ScalibilityMode = input.ReadString();
+            ScalabilityMode = input.ReadString();
             break;
           }
         }
@@ -10028,7 +11688,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -10149,7 +11813,7 @@ namespace LiveKit.Proto {
             break;
           }
           case 242: {
-            ScalibilityMode = input.ReadString();
+            ScalabilityMode = input.ReadString();
             break;
           }
         }
@@ -10167,6 +11831,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<RemoteInboundRtpStreamStats> _parser = new pb::MessageParser<RemoteInboundRtpStreamStats>(() => new RemoteInboundRtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RemoteInboundRtpStreamStats> Parser { get { return _parser; } }
@@ -10194,6 +11859,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RemoteInboundRtpStreamStats(RemoteInboundRtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
       localId_ = other.localId_;
       roundTripTime_ = other.roundTripTime_;
       totalRoundTripTime_ = other.totalRoundTripTime_;
@@ -10210,62 +11876,136 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "local_id" field.</summary>
     public const int LocalIdFieldNumber = 1;
-    private string localId_ = "";
+    private readonly static string LocalIdDefaultValue = "";
+
+    private string localId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string LocalId {
-      get { return localId_; }
+      get { return localId_ ?? LocalIdDefaultValue; }
       set {
         localId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "local_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLocalId {
+      get { return localId_ != null; }
+    }
+    /// <summary>Clears the value of the "local_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLocalId() {
+      localId_ = null;
+    }
 
     /// <summary>Field number for the "round_trip_time" field.</summary>
     public const int RoundTripTimeFieldNumber = 2;
+    private readonly static double RoundTripTimeDefaultValue = 0D;
+
     private double roundTripTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double RoundTripTime {
-      get { return roundTripTime_; }
+      get { if ((_hasBits0 & 1) != 0) { return roundTripTime_; } else { return RoundTripTimeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         roundTripTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "round_trip_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRoundTripTime {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "round_trip_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRoundTripTime() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "total_round_trip_time" field.</summary>
     public const int TotalRoundTripTimeFieldNumber = 3;
+    private readonly static double TotalRoundTripTimeDefaultValue = 0D;
+
     private double totalRoundTripTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalRoundTripTime {
-      get { return totalRoundTripTime_; }
+      get { if ((_hasBits0 & 2) != 0) { return totalRoundTripTime_; } else { return TotalRoundTripTimeDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         totalRoundTripTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_round_trip_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalRoundTripTime {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "total_round_trip_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalRoundTripTime() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "fraction_lost" field.</summary>
     public const int FractionLostFieldNumber = 4;
+    private readonly static double FractionLostDefaultValue = 0D;
+
     private double fractionLost_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double FractionLost {
-      get { return fractionLost_; }
+      get { if ((_hasBits0 & 4) != 0) { return fractionLost_; } else { return FractionLostDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         fractionLost_ = value;
       }
+    }
+    /// <summary>Gets whether the "fraction_lost" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFractionLost {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "fraction_lost" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFractionLost() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "round_trip_time_measurements" field.</summary>
     public const int RoundTripTimeMeasurementsFieldNumber = 5;
+    private readonly static ulong RoundTripTimeMeasurementsDefaultValue = 0UL;
+
     private ulong roundTripTimeMeasurements_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RoundTripTimeMeasurements {
-      get { return roundTripTimeMeasurements_; }
+      get { if ((_hasBits0 & 8) != 0) { return roundTripTimeMeasurements_; } else { return RoundTripTimeMeasurementsDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         roundTripTimeMeasurements_ = value;
       }
+    }
+    /// <summary>Gets whether the "round_trip_time_measurements" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRoundTripTimeMeasurements {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "round_trip_time_measurements" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRoundTripTimeMeasurements() {
+      _hasBits0 &= ~8;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10295,11 +12035,11 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (LocalId.Length != 0) hash ^= LocalId.GetHashCode();
-      if (RoundTripTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RoundTripTime);
-      if (TotalRoundTripTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalRoundTripTime);
-      if (FractionLost != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FractionLost);
-      if (RoundTripTimeMeasurements != 0UL) hash ^= RoundTripTimeMeasurements.GetHashCode();
+      if (HasLocalId) hash ^= LocalId.GetHashCode();
+      if (HasRoundTripTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RoundTripTime);
+      if (HasTotalRoundTripTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalRoundTripTime);
+      if (HasFractionLost) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FractionLost);
+      if (HasRoundTripTimeMeasurements) hash ^= RoundTripTimeMeasurements.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -10318,23 +12058,23 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (LocalId.Length != 0) {
+      if (HasLocalId) {
         output.WriteRawTag(10);
         output.WriteString(LocalId);
       }
-      if (RoundTripTime != 0D) {
+      if (HasRoundTripTime) {
         output.WriteRawTag(17);
         output.WriteDouble(RoundTripTime);
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         output.WriteRawTag(25);
         output.WriteDouble(TotalRoundTripTime);
       }
-      if (FractionLost != 0D) {
+      if (HasFractionLost) {
         output.WriteRawTag(33);
         output.WriteDouble(FractionLost);
       }
-      if (RoundTripTimeMeasurements != 0UL) {
+      if (HasRoundTripTimeMeasurements) {
         output.WriteRawTag(40);
         output.WriteUInt64(RoundTripTimeMeasurements);
       }
@@ -10348,23 +12088,23 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (LocalId.Length != 0) {
+      if (HasLocalId) {
         output.WriteRawTag(10);
         output.WriteString(LocalId);
       }
-      if (RoundTripTime != 0D) {
+      if (HasRoundTripTime) {
         output.WriteRawTag(17);
         output.WriteDouble(RoundTripTime);
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         output.WriteRawTag(25);
         output.WriteDouble(TotalRoundTripTime);
       }
-      if (FractionLost != 0D) {
+      if (HasFractionLost) {
         output.WriteRawTag(33);
         output.WriteDouble(FractionLost);
       }
-      if (RoundTripTimeMeasurements != 0UL) {
+      if (HasRoundTripTimeMeasurements) {
         output.WriteRawTag(40);
         output.WriteUInt64(RoundTripTimeMeasurements);
       }
@@ -10378,19 +12118,19 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (LocalId.Length != 0) {
+      if (HasLocalId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LocalId);
       }
-      if (RoundTripTime != 0D) {
+      if (HasRoundTripTime) {
         size += 1 + 8;
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         size += 1 + 8;
       }
-      if (FractionLost != 0D) {
+      if (HasFractionLost) {
         size += 1 + 8;
       }
-      if (RoundTripTimeMeasurements != 0UL) {
+      if (HasRoundTripTimeMeasurements) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RoundTripTimeMeasurements);
       }
       if (_unknownFields != null) {
@@ -10405,19 +12145,19 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.LocalId.Length != 0) {
+      if (other.HasLocalId) {
         LocalId = other.LocalId;
       }
-      if (other.RoundTripTime != 0D) {
+      if (other.HasRoundTripTime) {
         RoundTripTime = other.RoundTripTime;
       }
-      if (other.TotalRoundTripTime != 0D) {
+      if (other.HasTotalRoundTripTime) {
         TotalRoundTripTime = other.TotalRoundTripTime;
       }
-      if (other.FractionLost != 0D) {
+      if (other.HasFractionLost) {
         FractionLost = other.FractionLost;
       }
-      if (other.RoundTripTimeMeasurements != 0UL) {
+      if (other.HasRoundTripTimeMeasurements) {
         RoundTripTimeMeasurements = other.RoundTripTimeMeasurements;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -10431,7 +12171,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -10466,7 +12210,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -10505,6 +12253,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<RemoteOutboundRtpStreamStats> _parser = new pb::MessageParser<RemoteOutboundRtpStreamStats>(() => new RemoteOutboundRtpStreamStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RemoteOutboundRtpStreamStats> Parser { get { return _parser; } }
@@ -10532,6 +12281,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RemoteOutboundRtpStreamStats(RemoteOutboundRtpStreamStats other) : this() {
+      _hasBits0 = other._hasBits0;
       localId_ = other.localId_;
       remoteTimestamp_ = other.remoteTimestamp_;
       reportsSent_ = other.reportsSent_;
@@ -10549,74 +12299,163 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "local_id" field.</summary>
     public const int LocalIdFieldNumber = 1;
-    private string localId_ = "";
+    private readonly static string LocalIdDefaultValue = "";
+
+    private string localId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string LocalId {
-      get { return localId_; }
+      get { return localId_ ?? LocalIdDefaultValue; }
       set {
         localId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "local_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLocalId {
+      get { return localId_ != null; }
+    }
+    /// <summary>Clears the value of the "local_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLocalId() {
+      localId_ = null;
+    }
 
     /// <summary>Field number for the "remote_timestamp" field.</summary>
     public const int RemoteTimestampFieldNumber = 2;
+    private readonly static double RemoteTimestampDefaultValue = 0D;
+
     private double remoteTimestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double RemoteTimestamp {
-      get { return remoteTimestamp_; }
+      get { if ((_hasBits0 & 1) != 0) { return remoteTimestamp_; } else { return RemoteTimestampDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         remoteTimestamp_ = value;
       }
+    }
+    /// <summary>Gets whether the "remote_timestamp" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemoteTimestamp {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "remote_timestamp" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemoteTimestamp() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "reports_sent" field.</summary>
     public const int ReportsSentFieldNumber = 3;
+    private readonly static ulong ReportsSentDefaultValue = 0UL;
+
     private ulong reportsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ReportsSent {
-      get { return reportsSent_; }
+      get { if ((_hasBits0 & 2) != 0) { return reportsSent_; } else { return ReportsSentDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         reportsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "reports_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasReportsSent {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "reports_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearReportsSent() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "round_trip_time" field.</summary>
     public const int RoundTripTimeFieldNumber = 4;
+    private readonly static double RoundTripTimeDefaultValue = 0D;
+
     private double roundTripTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double RoundTripTime {
-      get { return roundTripTime_; }
+      get { if ((_hasBits0 & 4) != 0) { return roundTripTime_; } else { return RoundTripTimeDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         roundTripTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "round_trip_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRoundTripTime {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "round_trip_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRoundTripTime() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "total_round_trip_time" field.</summary>
     public const int TotalRoundTripTimeFieldNumber = 5;
+    private readonly static double TotalRoundTripTimeDefaultValue = 0D;
+
     private double totalRoundTripTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalRoundTripTime {
-      get { return totalRoundTripTime_; }
+      get { if ((_hasBits0 & 8) != 0) { return totalRoundTripTime_; } else { return TotalRoundTripTimeDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         totalRoundTripTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_round_trip_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalRoundTripTime {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "total_round_trip_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalRoundTripTime() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "round_trip_time_measurements" field.</summary>
     public const int RoundTripTimeMeasurementsFieldNumber = 6;
+    private readonly static ulong RoundTripTimeMeasurementsDefaultValue = 0UL;
+
     private ulong roundTripTimeMeasurements_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RoundTripTimeMeasurements {
-      get { return roundTripTimeMeasurements_; }
+      get { if ((_hasBits0 & 16) != 0) { return roundTripTimeMeasurements_; } else { return RoundTripTimeMeasurementsDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         roundTripTimeMeasurements_ = value;
       }
+    }
+    /// <summary>Gets whether the "round_trip_time_measurements" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRoundTripTimeMeasurements {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "round_trip_time_measurements" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRoundTripTimeMeasurements() {
+      _hasBits0 &= ~16;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10647,12 +12486,12 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (LocalId.Length != 0) hash ^= LocalId.GetHashCode();
-      if (RemoteTimestamp != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RemoteTimestamp);
-      if (ReportsSent != 0UL) hash ^= ReportsSent.GetHashCode();
-      if (RoundTripTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RoundTripTime);
-      if (TotalRoundTripTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalRoundTripTime);
-      if (RoundTripTimeMeasurements != 0UL) hash ^= RoundTripTimeMeasurements.GetHashCode();
+      if (HasLocalId) hash ^= LocalId.GetHashCode();
+      if (HasRemoteTimestamp) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RemoteTimestamp);
+      if (HasReportsSent) hash ^= ReportsSent.GetHashCode();
+      if (HasRoundTripTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RoundTripTime);
+      if (HasTotalRoundTripTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalRoundTripTime);
+      if (HasRoundTripTimeMeasurements) hash ^= RoundTripTimeMeasurements.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -10671,27 +12510,27 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (LocalId.Length != 0) {
+      if (HasLocalId) {
         output.WriteRawTag(10);
         output.WriteString(LocalId);
       }
-      if (RemoteTimestamp != 0D) {
+      if (HasRemoteTimestamp) {
         output.WriteRawTag(17);
         output.WriteDouble(RemoteTimestamp);
       }
-      if (ReportsSent != 0UL) {
+      if (HasReportsSent) {
         output.WriteRawTag(24);
         output.WriteUInt64(ReportsSent);
       }
-      if (RoundTripTime != 0D) {
+      if (HasRoundTripTime) {
         output.WriteRawTag(33);
         output.WriteDouble(RoundTripTime);
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         output.WriteRawTag(41);
         output.WriteDouble(TotalRoundTripTime);
       }
-      if (RoundTripTimeMeasurements != 0UL) {
+      if (HasRoundTripTimeMeasurements) {
         output.WriteRawTag(48);
         output.WriteUInt64(RoundTripTimeMeasurements);
       }
@@ -10705,27 +12544,27 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (LocalId.Length != 0) {
+      if (HasLocalId) {
         output.WriteRawTag(10);
         output.WriteString(LocalId);
       }
-      if (RemoteTimestamp != 0D) {
+      if (HasRemoteTimestamp) {
         output.WriteRawTag(17);
         output.WriteDouble(RemoteTimestamp);
       }
-      if (ReportsSent != 0UL) {
+      if (HasReportsSent) {
         output.WriteRawTag(24);
         output.WriteUInt64(ReportsSent);
       }
-      if (RoundTripTime != 0D) {
+      if (HasRoundTripTime) {
         output.WriteRawTag(33);
         output.WriteDouble(RoundTripTime);
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         output.WriteRawTag(41);
         output.WriteDouble(TotalRoundTripTime);
       }
-      if (RoundTripTimeMeasurements != 0UL) {
+      if (HasRoundTripTimeMeasurements) {
         output.WriteRawTag(48);
         output.WriteUInt64(RoundTripTimeMeasurements);
       }
@@ -10739,22 +12578,22 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (LocalId.Length != 0) {
+      if (HasLocalId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LocalId);
       }
-      if (RemoteTimestamp != 0D) {
+      if (HasRemoteTimestamp) {
         size += 1 + 8;
       }
-      if (ReportsSent != 0UL) {
+      if (HasReportsSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ReportsSent);
       }
-      if (RoundTripTime != 0D) {
+      if (HasRoundTripTime) {
         size += 1 + 8;
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         size += 1 + 8;
       }
-      if (RoundTripTimeMeasurements != 0UL) {
+      if (HasRoundTripTimeMeasurements) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RoundTripTimeMeasurements);
       }
       if (_unknownFields != null) {
@@ -10769,22 +12608,22 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.LocalId.Length != 0) {
+      if (other.HasLocalId) {
         LocalId = other.LocalId;
       }
-      if (other.RemoteTimestamp != 0D) {
+      if (other.HasRemoteTimestamp) {
         RemoteTimestamp = other.RemoteTimestamp;
       }
-      if (other.ReportsSent != 0UL) {
+      if (other.HasReportsSent) {
         ReportsSent = other.ReportsSent;
       }
-      if (other.RoundTripTime != 0D) {
+      if (other.HasRoundTripTime) {
         RoundTripTime = other.RoundTripTime;
       }
-      if (other.TotalRoundTripTime != 0D) {
+      if (other.HasTotalRoundTripTime) {
         TotalRoundTripTime = other.TotalRoundTripTime;
       }
-      if (other.RoundTripTimeMeasurements != 0UL) {
+      if (other.HasRoundTripTimeMeasurements) {
         RoundTripTimeMeasurements = other.RoundTripTimeMeasurements;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -10798,7 +12637,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -10837,7 +12680,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -10920,26 +12767,54 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track_identifier" field.</summary>
     public const int TrackIdentifierFieldNumber = 1;
-    private string trackIdentifier_ = "";
+    private readonly static string TrackIdentifierDefaultValue = "";
+
+    private string trackIdentifier_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TrackIdentifier {
-      get { return trackIdentifier_; }
+      get { return trackIdentifier_ ?? TrackIdentifierDefaultValue; }
       set {
         trackIdentifier_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "track_identifier" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackIdentifier {
+      get { return trackIdentifier_ != null; }
+    }
+    /// <summary>Clears the value of the "track_identifier" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackIdentifier() {
+      trackIdentifier_ = null;
+    }
 
     /// <summary>Field number for the "kind" field.</summary>
     public const int KindFieldNumber = 2;
-    private string kind_ = "";
+    private readonly static string KindDefaultValue = "";
+
+    private string kind_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Kind {
-      get { return kind_; }
+      get { return kind_ ?? KindDefaultValue; }
       set {
         kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "kind" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKind {
+      get { return kind_ != null; }
+    }
+    /// <summary>Clears the value of the "kind" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKind() {
+      kind_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -10966,8 +12841,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackIdentifier.Length != 0) hash ^= TrackIdentifier.GetHashCode();
-      if (Kind.Length != 0) hash ^= Kind.GetHashCode();
+      if (HasTrackIdentifier) hash ^= TrackIdentifier.GetHashCode();
+      if (HasKind) hash ^= Kind.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -10986,11 +12861,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackIdentifier.Length != 0) {
+      if (HasTrackIdentifier) {
         output.WriteRawTag(10);
         output.WriteString(TrackIdentifier);
       }
-      if (Kind.Length != 0) {
+      if (HasKind) {
         output.WriteRawTag(18);
         output.WriteString(Kind);
       }
@@ -11004,11 +12879,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackIdentifier.Length != 0) {
+      if (HasTrackIdentifier) {
         output.WriteRawTag(10);
         output.WriteString(TrackIdentifier);
       }
-      if (Kind.Length != 0) {
+      if (HasKind) {
         output.WriteRawTag(18);
         output.WriteString(Kind);
       }
@@ -11022,10 +12897,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackIdentifier.Length != 0) {
+      if (HasTrackIdentifier) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TrackIdentifier);
       }
-      if (Kind.Length != 0) {
+      if (HasKind) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Kind);
       }
       if (_unknownFields != null) {
@@ -11040,10 +12915,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TrackIdentifier.Length != 0) {
+      if (other.HasTrackIdentifier) {
         TrackIdentifier = other.TrackIdentifier;
       }
-      if (other.Kind.Length != 0) {
+      if (other.HasKind) {
         Kind = other.Kind;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -11057,7 +12932,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -11080,7 +12959,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -11107,6 +12990,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<AudioSourceStats> _parser = new pb::MessageParser<AudioSourceStats>(() => new AudioSourceStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<AudioSourceStats> Parser { get { return _parser; } }
@@ -11134,6 +13018,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AudioSourceStats(AudioSourceStats other) : this() {
+      _hasBits0 = other._hasBits0;
       audioLevel_ = other.audioLevel_;
       totalAudioEnergy_ = other.totalAudioEnergy_;
       totalSamplesDuration_ = other.totalSamplesDuration_;
@@ -11154,110 +13039,245 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "audio_level" field.</summary>
     public const int AudioLevelFieldNumber = 1;
+    private readonly static double AudioLevelDefaultValue = 0D;
+
     private double audioLevel_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double AudioLevel {
-      get { return audioLevel_; }
+      get { if ((_hasBits0 & 1) != 0) { return audioLevel_; } else { return AudioLevelDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         audioLevel_ = value;
       }
+    }
+    /// <summary>Gets whether the "audio_level" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAudioLevel {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "audio_level" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAudioLevel() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "total_audio_energy" field.</summary>
     public const int TotalAudioEnergyFieldNumber = 2;
+    private readonly static double TotalAudioEnergyDefaultValue = 0D;
+
     private double totalAudioEnergy_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalAudioEnergy {
-      get { return totalAudioEnergy_; }
+      get { if ((_hasBits0 & 2) != 0) { return totalAudioEnergy_; } else { return TotalAudioEnergyDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         totalAudioEnergy_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_audio_energy" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalAudioEnergy {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "total_audio_energy" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalAudioEnergy() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "total_samples_duration" field.</summary>
     public const int TotalSamplesDurationFieldNumber = 3;
+    private readonly static double TotalSamplesDurationDefaultValue = 0D;
+
     private double totalSamplesDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalSamplesDuration {
-      get { return totalSamplesDuration_; }
+      get { if ((_hasBits0 & 4) != 0) { return totalSamplesDuration_; } else { return TotalSamplesDurationDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         totalSamplesDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_samples_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSamplesDuration {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "total_samples_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSamplesDuration() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "echo_return_loss" field.</summary>
     public const int EchoReturnLossFieldNumber = 4;
+    private readonly static double EchoReturnLossDefaultValue = 0D;
+
     private double echoReturnLoss_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double EchoReturnLoss {
-      get { return echoReturnLoss_; }
+      get { if ((_hasBits0 & 8) != 0) { return echoReturnLoss_; } else { return EchoReturnLossDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         echoReturnLoss_ = value;
       }
+    }
+    /// <summary>Gets whether the "echo_return_loss" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEchoReturnLoss {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "echo_return_loss" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEchoReturnLoss() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "echo_return_loss_enhancement" field.</summary>
     public const int EchoReturnLossEnhancementFieldNumber = 5;
+    private readonly static double EchoReturnLossEnhancementDefaultValue = 0D;
+
     private double echoReturnLossEnhancement_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double EchoReturnLossEnhancement {
-      get { return echoReturnLossEnhancement_; }
+      get { if ((_hasBits0 & 16) != 0) { return echoReturnLossEnhancement_; } else { return EchoReturnLossEnhancementDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         echoReturnLossEnhancement_ = value;
       }
+    }
+    /// <summary>Gets whether the "echo_return_loss_enhancement" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEchoReturnLossEnhancement {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "echo_return_loss_enhancement" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEchoReturnLossEnhancement() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "dropped_samples_duration" field.</summary>
     public const int DroppedSamplesDurationFieldNumber = 6;
+    private readonly static double DroppedSamplesDurationDefaultValue = 0D;
+
     private double droppedSamplesDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double DroppedSamplesDuration {
-      get { return droppedSamplesDuration_; }
+      get { if ((_hasBits0 & 32) != 0) { return droppedSamplesDuration_; } else { return DroppedSamplesDurationDefaultValue; } }
       set {
+        _hasBits0 |= 32;
         droppedSamplesDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "dropped_samples_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDroppedSamplesDuration {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "dropped_samples_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDroppedSamplesDuration() {
+      _hasBits0 &= ~32;
     }
 
     /// <summary>Field number for the "dropped_samples_events" field.</summary>
     public const int DroppedSamplesEventsFieldNumber = 7;
+    private readonly static uint DroppedSamplesEventsDefaultValue = 0;
+
     private uint droppedSamplesEvents_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint DroppedSamplesEvents {
-      get { return droppedSamplesEvents_; }
+      get { if ((_hasBits0 & 64) != 0) { return droppedSamplesEvents_; } else { return DroppedSamplesEventsDefaultValue; } }
       set {
+        _hasBits0 |= 64;
         droppedSamplesEvents_ = value;
       }
+    }
+    /// <summary>Gets whether the "dropped_samples_events" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDroppedSamplesEvents {
+      get { return (_hasBits0 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "dropped_samples_events" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDroppedSamplesEvents() {
+      _hasBits0 &= ~64;
     }
 
     /// <summary>Field number for the "total_capture_delay" field.</summary>
     public const int TotalCaptureDelayFieldNumber = 8;
+    private readonly static double TotalCaptureDelayDefaultValue = 0D;
+
     private double totalCaptureDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalCaptureDelay {
-      get { return totalCaptureDelay_; }
+      get { if ((_hasBits0 & 128) != 0) { return totalCaptureDelay_; } else { return TotalCaptureDelayDefaultValue; } }
       set {
+        _hasBits0 |= 128;
         totalCaptureDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_capture_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalCaptureDelay {
+      get { return (_hasBits0 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "total_capture_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalCaptureDelay() {
+      _hasBits0 &= ~128;
     }
 
     /// <summary>Field number for the "total_samples_captured" field.</summary>
     public const int TotalSamplesCapturedFieldNumber = 9;
+    private readonly static ulong TotalSamplesCapturedDefaultValue = 0UL;
+
     private ulong totalSamplesCaptured_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TotalSamplesCaptured {
-      get { return totalSamplesCaptured_; }
+      get { if ((_hasBits0 & 256) != 0) { return totalSamplesCaptured_; } else { return TotalSamplesCapturedDefaultValue; } }
       set {
+        _hasBits0 |= 256;
         totalSamplesCaptured_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_samples_captured" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSamplesCaptured {
+      get { return (_hasBits0 & 256) != 0; }
+    }
+    /// <summary>Clears the value of the "total_samples_captured" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSamplesCaptured() {
+      _hasBits0 &= ~256;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -11291,15 +13311,15 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (AudioLevel != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AudioLevel);
-      if (TotalAudioEnergy != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalAudioEnergy);
-      if (TotalSamplesDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSamplesDuration);
-      if (EchoReturnLoss != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(EchoReturnLoss);
-      if (EchoReturnLossEnhancement != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(EchoReturnLossEnhancement);
-      if (DroppedSamplesDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(DroppedSamplesDuration);
-      if (DroppedSamplesEvents != 0) hash ^= DroppedSamplesEvents.GetHashCode();
-      if (TotalCaptureDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalCaptureDelay);
-      if (TotalSamplesCaptured != 0UL) hash ^= TotalSamplesCaptured.GetHashCode();
+      if (HasAudioLevel) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AudioLevel);
+      if (HasTotalAudioEnergy) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalAudioEnergy);
+      if (HasTotalSamplesDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSamplesDuration);
+      if (HasEchoReturnLoss) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(EchoReturnLoss);
+      if (HasEchoReturnLossEnhancement) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(EchoReturnLossEnhancement);
+      if (HasDroppedSamplesDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(DroppedSamplesDuration);
+      if (HasDroppedSamplesEvents) hash ^= DroppedSamplesEvents.GetHashCode();
+      if (HasTotalCaptureDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalCaptureDelay);
+      if (HasTotalSamplesCaptured) hash ^= TotalSamplesCaptured.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -11318,39 +13338,39 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (AudioLevel != 0D) {
+      if (HasAudioLevel) {
         output.WriteRawTag(9);
         output.WriteDouble(AudioLevel);
       }
-      if (TotalAudioEnergy != 0D) {
+      if (HasTotalAudioEnergy) {
         output.WriteRawTag(17);
         output.WriteDouble(TotalAudioEnergy);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         output.WriteRawTag(25);
         output.WriteDouble(TotalSamplesDuration);
       }
-      if (EchoReturnLoss != 0D) {
+      if (HasEchoReturnLoss) {
         output.WriteRawTag(33);
         output.WriteDouble(EchoReturnLoss);
       }
-      if (EchoReturnLossEnhancement != 0D) {
+      if (HasEchoReturnLossEnhancement) {
         output.WriteRawTag(41);
         output.WriteDouble(EchoReturnLossEnhancement);
       }
-      if (DroppedSamplesDuration != 0D) {
+      if (HasDroppedSamplesDuration) {
         output.WriteRawTag(49);
         output.WriteDouble(DroppedSamplesDuration);
       }
-      if (DroppedSamplesEvents != 0) {
+      if (HasDroppedSamplesEvents) {
         output.WriteRawTag(56);
         output.WriteUInt32(DroppedSamplesEvents);
       }
-      if (TotalCaptureDelay != 0D) {
+      if (HasTotalCaptureDelay) {
         output.WriteRawTag(65);
         output.WriteDouble(TotalCaptureDelay);
       }
-      if (TotalSamplesCaptured != 0UL) {
+      if (HasTotalSamplesCaptured) {
         output.WriteRawTag(72);
         output.WriteUInt64(TotalSamplesCaptured);
       }
@@ -11364,39 +13384,39 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (AudioLevel != 0D) {
+      if (HasAudioLevel) {
         output.WriteRawTag(9);
         output.WriteDouble(AudioLevel);
       }
-      if (TotalAudioEnergy != 0D) {
+      if (HasTotalAudioEnergy) {
         output.WriteRawTag(17);
         output.WriteDouble(TotalAudioEnergy);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         output.WriteRawTag(25);
         output.WriteDouble(TotalSamplesDuration);
       }
-      if (EchoReturnLoss != 0D) {
+      if (HasEchoReturnLoss) {
         output.WriteRawTag(33);
         output.WriteDouble(EchoReturnLoss);
       }
-      if (EchoReturnLossEnhancement != 0D) {
+      if (HasEchoReturnLossEnhancement) {
         output.WriteRawTag(41);
         output.WriteDouble(EchoReturnLossEnhancement);
       }
-      if (DroppedSamplesDuration != 0D) {
+      if (HasDroppedSamplesDuration) {
         output.WriteRawTag(49);
         output.WriteDouble(DroppedSamplesDuration);
       }
-      if (DroppedSamplesEvents != 0) {
+      if (HasDroppedSamplesEvents) {
         output.WriteRawTag(56);
         output.WriteUInt32(DroppedSamplesEvents);
       }
-      if (TotalCaptureDelay != 0D) {
+      if (HasTotalCaptureDelay) {
         output.WriteRawTag(65);
         output.WriteDouble(TotalCaptureDelay);
       }
-      if (TotalSamplesCaptured != 0UL) {
+      if (HasTotalSamplesCaptured) {
         output.WriteRawTag(72);
         output.WriteUInt64(TotalSamplesCaptured);
       }
@@ -11410,31 +13430,31 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (AudioLevel != 0D) {
+      if (HasAudioLevel) {
         size += 1 + 8;
       }
-      if (TotalAudioEnergy != 0D) {
+      if (HasTotalAudioEnergy) {
         size += 1 + 8;
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         size += 1 + 8;
       }
-      if (EchoReturnLoss != 0D) {
+      if (HasEchoReturnLoss) {
         size += 1 + 8;
       }
-      if (EchoReturnLossEnhancement != 0D) {
+      if (HasEchoReturnLossEnhancement) {
         size += 1 + 8;
       }
-      if (DroppedSamplesDuration != 0D) {
+      if (HasDroppedSamplesDuration) {
         size += 1 + 8;
       }
-      if (DroppedSamplesEvents != 0) {
+      if (HasDroppedSamplesEvents) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DroppedSamplesEvents);
       }
-      if (TotalCaptureDelay != 0D) {
+      if (HasTotalCaptureDelay) {
         size += 1 + 8;
       }
-      if (TotalSamplesCaptured != 0UL) {
+      if (HasTotalSamplesCaptured) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TotalSamplesCaptured);
       }
       if (_unknownFields != null) {
@@ -11449,31 +13469,31 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.AudioLevel != 0D) {
+      if (other.HasAudioLevel) {
         AudioLevel = other.AudioLevel;
       }
-      if (other.TotalAudioEnergy != 0D) {
+      if (other.HasTotalAudioEnergy) {
         TotalAudioEnergy = other.TotalAudioEnergy;
       }
-      if (other.TotalSamplesDuration != 0D) {
+      if (other.HasTotalSamplesDuration) {
         TotalSamplesDuration = other.TotalSamplesDuration;
       }
-      if (other.EchoReturnLoss != 0D) {
+      if (other.HasEchoReturnLoss) {
         EchoReturnLoss = other.EchoReturnLoss;
       }
-      if (other.EchoReturnLossEnhancement != 0D) {
+      if (other.HasEchoReturnLossEnhancement) {
         EchoReturnLossEnhancement = other.EchoReturnLossEnhancement;
       }
-      if (other.DroppedSamplesDuration != 0D) {
+      if (other.HasDroppedSamplesDuration) {
         DroppedSamplesDuration = other.DroppedSamplesDuration;
       }
-      if (other.DroppedSamplesEvents != 0) {
+      if (other.HasDroppedSamplesEvents) {
         DroppedSamplesEvents = other.DroppedSamplesEvents;
       }
-      if (other.TotalCaptureDelay != 0D) {
+      if (other.HasTotalCaptureDelay) {
         TotalCaptureDelay = other.TotalCaptureDelay;
       }
-      if (other.TotalSamplesCaptured != 0UL) {
+      if (other.HasTotalSamplesCaptured) {
         TotalSamplesCaptured = other.TotalSamplesCaptured;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -11487,7 +13507,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -11538,7 +13562,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -11593,6 +13621,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoSourceStats> _parser = new pb::MessageParser<VideoSourceStats>(() => new VideoSourceStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoSourceStats> Parser { get { return _parser; } }
@@ -11620,6 +13649,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoSourceStats(VideoSourceStats other) : this() {
+      _hasBits0 = other._hasBits0;
       width_ = other.width_;
       height_ = other.height_;
       frames_ = other.frames_;
@@ -11635,50 +13665,110 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "width" field.</summary>
     public const int WidthFieldNumber = 1;
+    private readonly static uint WidthDefaultValue = 0;
+
     private uint width_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Width {
-      get { return width_; }
+      get { if ((_hasBits0 & 1) != 0) { return width_; } else { return WidthDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         width_ = value;
       }
+    }
+    /// <summary>Gets whether the "width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWidth {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWidth() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "height" field.</summary>
     public const int HeightFieldNumber = 2;
+    private readonly static uint HeightDefaultValue = 0;
+
     private uint height_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Height {
-      get { return height_; }
+      get { if ((_hasBits0 & 2) != 0) { return height_; } else { return HeightDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         height_ = value;
       }
+    }
+    /// <summary>Gets whether the "height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeight {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeight() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "frames" field.</summary>
     public const int FramesFieldNumber = 3;
+    private readonly static uint FramesDefaultValue = 0;
+
     private uint frames_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Frames {
-      get { return frames_; }
+      get { if ((_hasBits0 & 4) != 0) { return frames_; } else { return FramesDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         frames_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrames {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "frames" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrames() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "frames_per_second" field.</summary>
     public const int FramesPerSecondFieldNumber = 4;
+    private readonly static double FramesPerSecondDefaultValue = 0D;
+
     private double framesPerSecond_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double FramesPerSecond {
-      get { return framesPerSecond_; }
+      get { if ((_hasBits0 & 8) != 0) { return framesPerSecond_; } else { return FramesPerSecondDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         framesPerSecond_ = value;
       }
+    }
+    /// <summary>Gets whether the "frames_per_second" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramesPerSecond {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "frames_per_second" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramesPerSecond() {
+      _hasBits0 &= ~8;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -11707,10 +13797,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Width != 0) hash ^= Width.GetHashCode();
-      if (Height != 0) hash ^= Height.GetHashCode();
-      if (Frames != 0) hash ^= Frames.GetHashCode();
-      if (FramesPerSecond != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramesPerSecond);
+      if (HasWidth) hash ^= Width.GetHashCode();
+      if (HasHeight) hash ^= Height.GetHashCode();
+      if (HasFrames) hash ^= Frames.GetHashCode();
+      if (HasFramesPerSecond) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramesPerSecond);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -11729,19 +13819,19 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(8);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(16);
         output.WriteUInt32(Height);
       }
-      if (Frames != 0) {
+      if (HasFrames) {
         output.WriteRawTag(24);
         output.WriteUInt32(Frames);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         output.WriteRawTag(33);
         output.WriteDouble(FramesPerSecond);
       }
@@ -11755,19 +13845,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(8);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(16);
         output.WriteUInt32(Height);
       }
-      if (Frames != 0) {
+      if (HasFrames) {
         output.WriteRawTag(24);
         output.WriteUInt32(Frames);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         output.WriteRawTag(33);
         output.WriteDouble(FramesPerSecond);
       }
@@ -11781,16 +13871,16 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Width != 0) {
+      if (HasWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
       }
-      if (Frames != 0) {
+      if (HasFrames) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Frames);
       }
-      if (FramesPerSecond != 0D) {
+      if (HasFramesPerSecond) {
         size += 1 + 8;
       }
       if (_unknownFields != null) {
@@ -11805,16 +13895,16 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Width != 0) {
+      if (other.HasWidth) {
         Width = other.Width;
       }
-      if (other.Height != 0) {
+      if (other.HasHeight) {
         Height = other.Height;
       }
-      if (other.Frames != 0) {
+      if (other.HasFrames) {
         Frames = other.Frames;
       }
-      if (other.FramesPerSecond != 0D) {
+      if (other.HasFramesPerSecond) {
         FramesPerSecond = other.FramesPerSecond;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -11828,7 +13918,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -11859,7 +13953,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -11894,6 +13992,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<AudioPlayoutStats> _parser = new pb::MessageParser<AudioPlayoutStats>(() => new AudioPlayoutStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<AudioPlayoutStats> Parser { get { return _parser; } }
@@ -11921,6 +14020,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AudioPlayoutStats(AudioPlayoutStats other) : this() {
+      _hasBits0 = other._hasBits0;
       kind_ = other.kind_;
       synthesizedSamplesDuration_ = other.synthesizedSamplesDuration_;
       synthesizedSamplesEvents_ = other.synthesizedSamplesEvents_;
@@ -11938,74 +14038,163 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "kind" field.</summary>
     public const int KindFieldNumber = 1;
-    private string kind_ = "";
+    private readonly static string KindDefaultValue = "";
+
+    private string kind_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Kind {
-      get { return kind_; }
+      get { return kind_ ?? KindDefaultValue; }
       set {
         kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "kind" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKind {
+      get { return kind_ != null; }
+    }
+    /// <summary>Clears the value of the "kind" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKind() {
+      kind_ = null;
+    }
 
     /// <summary>Field number for the "synthesized_samples_duration" field.</summary>
     public const int SynthesizedSamplesDurationFieldNumber = 2;
+    private readonly static double SynthesizedSamplesDurationDefaultValue = 0D;
+
     private double synthesizedSamplesDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double SynthesizedSamplesDuration {
-      get { return synthesizedSamplesDuration_; }
+      get { if ((_hasBits0 & 1) != 0) { return synthesizedSamplesDuration_; } else { return SynthesizedSamplesDurationDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         synthesizedSamplesDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "synthesized_samples_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSynthesizedSamplesDuration {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "synthesized_samples_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSynthesizedSamplesDuration() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "synthesized_samples_events" field.</summary>
     public const int SynthesizedSamplesEventsFieldNumber = 3;
+    private readonly static uint SynthesizedSamplesEventsDefaultValue = 0;
+
     private uint synthesizedSamplesEvents_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint SynthesizedSamplesEvents {
-      get { return synthesizedSamplesEvents_; }
+      get { if ((_hasBits0 & 2) != 0) { return synthesizedSamplesEvents_; } else { return SynthesizedSamplesEventsDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         synthesizedSamplesEvents_ = value;
       }
+    }
+    /// <summary>Gets whether the "synthesized_samples_events" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSynthesizedSamplesEvents {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "synthesized_samples_events" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSynthesizedSamplesEvents() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "total_samples_duration" field.</summary>
     public const int TotalSamplesDurationFieldNumber = 4;
+    private readonly static double TotalSamplesDurationDefaultValue = 0D;
+
     private double totalSamplesDuration_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalSamplesDuration {
-      get { return totalSamplesDuration_; }
+      get { if ((_hasBits0 & 4) != 0) { return totalSamplesDuration_; } else { return TotalSamplesDurationDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         totalSamplesDuration_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_samples_duration" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSamplesDuration {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "total_samples_duration" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSamplesDuration() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "total_playout_delay" field.</summary>
     public const int TotalPlayoutDelayFieldNumber = 5;
+    private readonly static double TotalPlayoutDelayDefaultValue = 0D;
+
     private double totalPlayoutDelay_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalPlayoutDelay {
-      get { return totalPlayoutDelay_; }
+      get { if ((_hasBits0 & 8) != 0) { return totalPlayoutDelay_; } else { return TotalPlayoutDelayDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         totalPlayoutDelay_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_playout_delay" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalPlayoutDelay {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "total_playout_delay" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalPlayoutDelay() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "total_samples_count" field.</summary>
     public const int TotalSamplesCountFieldNumber = 6;
+    private readonly static ulong TotalSamplesCountDefaultValue = 0UL;
+
     private ulong totalSamplesCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TotalSamplesCount {
-      get { return totalSamplesCount_; }
+      get { if ((_hasBits0 & 16) != 0) { return totalSamplesCount_; } else { return TotalSamplesCountDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         totalSamplesCount_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_samples_count" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalSamplesCount {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "total_samples_count" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalSamplesCount() {
+      _hasBits0 &= ~16;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -12036,12 +14225,12 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Kind.Length != 0) hash ^= Kind.GetHashCode();
-      if (SynthesizedSamplesDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(SynthesizedSamplesDuration);
-      if (SynthesizedSamplesEvents != 0) hash ^= SynthesizedSamplesEvents.GetHashCode();
-      if (TotalSamplesDuration != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSamplesDuration);
-      if (TotalPlayoutDelay != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalPlayoutDelay);
-      if (TotalSamplesCount != 0UL) hash ^= TotalSamplesCount.GetHashCode();
+      if (HasKind) hash ^= Kind.GetHashCode();
+      if (HasSynthesizedSamplesDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(SynthesizedSamplesDuration);
+      if (HasSynthesizedSamplesEvents) hash ^= SynthesizedSamplesEvents.GetHashCode();
+      if (HasTotalSamplesDuration) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalSamplesDuration);
+      if (HasTotalPlayoutDelay) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalPlayoutDelay);
+      if (HasTotalSamplesCount) hash ^= TotalSamplesCount.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -12060,27 +14249,27 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Kind.Length != 0) {
+      if (HasKind) {
         output.WriteRawTag(10);
         output.WriteString(Kind);
       }
-      if (SynthesizedSamplesDuration != 0D) {
+      if (HasSynthesizedSamplesDuration) {
         output.WriteRawTag(17);
         output.WriteDouble(SynthesizedSamplesDuration);
       }
-      if (SynthesizedSamplesEvents != 0) {
+      if (HasSynthesizedSamplesEvents) {
         output.WriteRawTag(24);
         output.WriteUInt32(SynthesizedSamplesEvents);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         output.WriteRawTag(33);
         output.WriteDouble(TotalSamplesDuration);
       }
-      if (TotalPlayoutDelay != 0D) {
+      if (HasTotalPlayoutDelay) {
         output.WriteRawTag(41);
         output.WriteDouble(TotalPlayoutDelay);
       }
-      if (TotalSamplesCount != 0UL) {
+      if (HasTotalSamplesCount) {
         output.WriteRawTag(48);
         output.WriteUInt64(TotalSamplesCount);
       }
@@ -12094,27 +14283,27 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Kind.Length != 0) {
+      if (HasKind) {
         output.WriteRawTag(10);
         output.WriteString(Kind);
       }
-      if (SynthesizedSamplesDuration != 0D) {
+      if (HasSynthesizedSamplesDuration) {
         output.WriteRawTag(17);
         output.WriteDouble(SynthesizedSamplesDuration);
       }
-      if (SynthesizedSamplesEvents != 0) {
+      if (HasSynthesizedSamplesEvents) {
         output.WriteRawTag(24);
         output.WriteUInt32(SynthesizedSamplesEvents);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         output.WriteRawTag(33);
         output.WriteDouble(TotalSamplesDuration);
       }
-      if (TotalPlayoutDelay != 0D) {
+      if (HasTotalPlayoutDelay) {
         output.WriteRawTag(41);
         output.WriteDouble(TotalPlayoutDelay);
       }
-      if (TotalSamplesCount != 0UL) {
+      if (HasTotalSamplesCount) {
         output.WriteRawTag(48);
         output.WriteUInt64(TotalSamplesCount);
       }
@@ -12128,22 +14317,22 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Kind.Length != 0) {
+      if (HasKind) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Kind);
       }
-      if (SynthesizedSamplesDuration != 0D) {
+      if (HasSynthesizedSamplesDuration) {
         size += 1 + 8;
       }
-      if (SynthesizedSamplesEvents != 0) {
+      if (HasSynthesizedSamplesEvents) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(SynthesizedSamplesEvents);
       }
-      if (TotalSamplesDuration != 0D) {
+      if (HasTotalSamplesDuration) {
         size += 1 + 8;
       }
-      if (TotalPlayoutDelay != 0D) {
+      if (HasTotalPlayoutDelay) {
         size += 1 + 8;
       }
-      if (TotalSamplesCount != 0UL) {
+      if (HasTotalSamplesCount) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TotalSamplesCount);
       }
       if (_unknownFields != null) {
@@ -12158,22 +14347,22 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Kind.Length != 0) {
+      if (other.HasKind) {
         Kind = other.Kind;
       }
-      if (other.SynthesizedSamplesDuration != 0D) {
+      if (other.HasSynthesizedSamplesDuration) {
         SynthesizedSamplesDuration = other.SynthesizedSamplesDuration;
       }
-      if (other.SynthesizedSamplesEvents != 0) {
+      if (other.HasSynthesizedSamplesEvents) {
         SynthesizedSamplesEvents = other.SynthesizedSamplesEvents;
       }
-      if (other.TotalSamplesDuration != 0D) {
+      if (other.HasTotalSamplesDuration) {
         TotalSamplesDuration = other.TotalSamplesDuration;
       }
-      if (other.TotalPlayoutDelay != 0D) {
+      if (other.HasTotalPlayoutDelay) {
         TotalPlayoutDelay = other.TotalPlayoutDelay;
       }
-      if (other.TotalSamplesCount != 0UL) {
+      if (other.HasTotalSamplesCount) {
         TotalSamplesCount = other.TotalSamplesCount;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -12187,7 +14376,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -12226,7 +14419,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -12269,6 +14466,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<PeerConnectionStats> _parser = new pb::MessageParser<PeerConnectionStats>(() => new PeerConnectionStats());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<PeerConnectionStats> Parser { get { return _parser; } }
@@ -12296,6 +14494,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public PeerConnectionStats(PeerConnectionStats other) : this() {
+      _hasBits0 = other._hasBits0;
       dataChannelsOpened_ = other.dataChannelsOpened_;
       dataChannelsClosed_ = other.dataChannelsClosed_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -12309,26 +14508,56 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "data_channels_opened" field.</summary>
     public const int DataChannelsOpenedFieldNumber = 1;
+    private readonly static uint DataChannelsOpenedDefaultValue = 0;
+
     private uint dataChannelsOpened_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint DataChannelsOpened {
-      get { return dataChannelsOpened_; }
+      get { if ((_hasBits0 & 1) != 0) { return dataChannelsOpened_; } else { return DataChannelsOpenedDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         dataChannelsOpened_ = value;
       }
+    }
+    /// <summary>Gets whether the "data_channels_opened" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDataChannelsOpened {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "data_channels_opened" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDataChannelsOpened() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "data_channels_closed" field.</summary>
     public const int DataChannelsClosedFieldNumber = 2;
+    private readonly static uint DataChannelsClosedDefaultValue = 0;
+
     private uint dataChannelsClosed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint DataChannelsClosed {
-      get { return dataChannelsClosed_; }
+      get { if ((_hasBits0 & 2) != 0) { return dataChannelsClosed_; } else { return DataChannelsClosedDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         dataChannelsClosed_ = value;
       }
+    }
+    /// <summary>Gets whether the "data_channels_closed" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDataChannelsClosed {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "data_channels_closed" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDataChannelsClosed() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -12355,8 +14584,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (DataChannelsOpened != 0) hash ^= DataChannelsOpened.GetHashCode();
-      if (DataChannelsClosed != 0) hash ^= DataChannelsClosed.GetHashCode();
+      if (HasDataChannelsOpened) hash ^= DataChannelsOpened.GetHashCode();
+      if (HasDataChannelsClosed) hash ^= DataChannelsClosed.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -12375,11 +14604,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (DataChannelsOpened != 0) {
+      if (HasDataChannelsOpened) {
         output.WriteRawTag(8);
         output.WriteUInt32(DataChannelsOpened);
       }
-      if (DataChannelsClosed != 0) {
+      if (HasDataChannelsClosed) {
         output.WriteRawTag(16);
         output.WriteUInt32(DataChannelsClosed);
       }
@@ -12393,11 +14622,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (DataChannelsOpened != 0) {
+      if (HasDataChannelsOpened) {
         output.WriteRawTag(8);
         output.WriteUInt32(DataChannelsOpened);
       }
-      if (DataChannelsClosed != 0) {
+      if (HasDataChannelsClosed) {
         output.WriteRawTag(16);
         output.WriteUInt32(DataChannelsClosed);
       }
@@ -12411,10 +14640,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (DataChannelsOpened != 0) {
+      if (HasDataChannelsOpened) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DataChannelsOpened);
       }
-      if (DataChannelsClosed != 0) {
+      if (HasDataChannelsClosed) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DataChannelsClosed);
       }
       if (_unknownFields != null) {
@@ -12429,10 +14658,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.DataChannelsOpened != 0) {
+      if (other.HasDataChannelsOpened) {
         DataChannelsOpened = other.DataChannelsOpened;
       }
-      if (other.DataChannelsClosed != 0) {
+      if (other.HasDataChannelsClosed) {
         DataChannelsClosed = other.DataChannelsClosed;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -12446,7 +14675,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -12469,7 +14702,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -12544,38 +14781,81 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "label" field.</summary>
     public const int LabelFieldNumber = 1;
-    private string label_ = "";
+    private readonly static string LabelDefaultValue = "";
+
+    private string label_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Label {
-      get { return label_; }
+      get { return label_ ?? LabelDefaultValue; }
       set {
         label_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "label" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLabel {
+      get { return label_ != null; }
+    }
+    /// <summary>Clears the value of the "label" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLabel() {
+      label_ = null;
+    }
 
     /// <summary>Field number for the "protocol" field.</summary>
     public const int ProtocolFieldNumber = 2;
-    private string protocol_ = "";
+    private readonly static string ProtocolDefaultValue = "";
+
+    private string protocol_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Protocol {
-      get { return protocol_; }
+      get { return protocol_ ?? ProtocolDefaultValue; }
       set {
         protocol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "protocol" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasProtocol {
+      get { return protocol_ != null; }
+    }
+    /// <summary>Clears the value of the "protocol" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearProtocol() {
+      protocol_ = null;
+    }
 
     /// <summary>Field number for the "data_channel_identifier" field.</summary>
     public const int DataChannelIdentifierFieldNumber = 3;
+    private readonly static int DataChannelIdentifierDefaultValue = 0;
+
     private int dataChannelIdentifier_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int DataChannelIdentifier {
-      get { return dataChannelIdentifier_; }
+      get { if ((_hasBits0 & 1) != 0) { return dataChannelIdentifier_; } else { return DataChannelIdentifierDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         dataChannelIdentifier_ = value;
       }
+    }
+    /// <summary>Gets whether the "data_channel_identifier" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDataChannelIdentifier {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "data_channel_identifier" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDataChannelIdentifier() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "state" field.</summary>
@@ -12586,9 +14866,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.DataChannelState State {
-      get { if ((_hasBits0 & 1) != 0) { return state_; } else { return StateDefaultValue; } }
+      get { if ((_hasBits0 & 2) != 0) { return state_; } else { return StateDefaultValue; } }
       set {
-        _hasBits0 |= 1;
+        _hasBits0 |= 2;
         state_ = value;
       }
     }
@@ -12596,61 +14876,121 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasState {
-      get { return (_hasBits0 & 1) != 0; }
+      get { return (_hasBits0 & 2) != 0; }
     }
     /// <summary>Clears the value of the "state" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearState() {
-      _hasBits0 &= ~1;
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "messages_sent" field.</summary>
     public const int MessagesSentFieldNumber = 5;
+    private readonly static uint MessagesSentDefaultValue = 0;
+
     private uint messagesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint MessagesSent {
-      get { return messagesSent_; }
+      get { if ((_hasBits0 & 4) != 0) { return messagesSent_; } else { return MessagesSentDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         messagesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "messages_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMessagesSent {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "messages_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMessagesSent() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "bytes_sent" field.</summary>
     public const int BytesSentFieldNumber = 6;
+    private readonly static ulong BytesSentDefaultValue = 0UL;
+
     private ulong bytesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesSent {
-      get { return bytesSent_; }
+      get { if ((_hasBits0 & 8) != 0) { return bytesSent_; } else { return BytesSentDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         bytesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesSent {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesSent() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "messages_received" field.</summary>
     public const int MessagesReceivedFieldNumber = 7;
+    private readonly static uint MessagesReceivedDefaultValue = 0;
+
     private uint messagesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint MessagesReceived {
-      get { return messagesReceived_; }
+      get { if ((_hasBits0 & 16) != 0) { return messagesReceived_; } else { return MessagesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         messagesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "messages_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMessagesReceived {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "messages_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMessagesReceived() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "bytes_received" field.</summary>
     public const int BytesReceivedFieldNumber = 8;
+    private readonly static ulong BytesReceivedDefaultValue = 0UL;
+
     private ulong bytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesReceived {
-      get { return bytesReceived_; }
+      get { if ((_hasBits0 & 32) != 0) { return bytesReceived_; } else { return BytesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 32;
         bytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesReceived {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesReceived() {
+      _hasBits0 &= ~32;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -12683,14 +15023,14 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Label.Length != 0) hash ^= Label.GetHashCode();
-      if (Protocol.Length != 0) hash ^= Protocol.GetHashCode();
-      if (DataChannelIdentifier != 0) hash ^= DataChannelIdentifier.GetHashCode();
+      if (HasLabel) hash ^= Label.GetHashCode();
+      if (HasProtocol) hash ^= Protocol.GetHashCode();
+      if (HasDataChannelIdentifier) hash ^= DataChannelIdentifier.GetHashCode();
       if (HasState) hash ^= State.GetHashCode();
-      if (MessagesSent != 0) hash ^= MessagesSent.GetHashCode();
-      if (BytesSent != 0UL) hash ^= BytesSent.GetHashCode();
-      if (MessagesReceived != 0) hash ^= MessagesReceived.GetHashCode();
-      if (BytesReceived != 0UL) hash ^= BytesReceived.GetHashCode();
+      if (HasMessagesSent) hash ^= MessagesSent.GetHashCode();
+      if (HasBytesSent) hash ^= BytesSent.GetHashCode();
+      if (HasMessagesReceived) hash ^= MessagesReceived.GetHashCode();
+      if (HasBytesReceived) hash ^= BytesReceived.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -12709,15 +15049,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Label.Length != 0) {
+      if (HasLabel) {
         output.WriteRawTag(10);
         output.WriteString(Label);
       }
-      if (Protocol.Length != 0) {
+      if (HasProtocol) {
         output.WriteRawTag(18);
         output.WriteString(Protocol);
       }
-      if (DataChannelIdentifier != 0) {
+      if (HasDataChannelIdentifier) {
         output.WriteRawTag(24);
         output.WriteInt32(DataChannelIdentifier);
       }
@@ -12725,19 +15065,19 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteEnum((int) State);
       }
-      if (MessagesSent != 0) {
+      if (HasMessagesSent) {
         output.WriteRawTag(40);
         output.WriteUInt32(MessagesSent);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(48);
         output.WriteUInt64(BytesSent);
       }
-      if (MessagesReceived != 0) {
+      if (HasMessagesReceived) {
         output.WriteRawTag(56);
         output.WriteUInt32(MessagesReceived);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(64);
         output.WriteUInt64(BytesReceived);
       }
@@ -12751,15 +15091,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Label.Length != 0) {
+      if (HasLabel) {
         output.WriteRawTag(10);
         output.WriteString(Label);
       }
-      if (Protocol.Length != 0) {
+      if (HasProtocol) {
         output.WriteRawTag(18);
         output.WriteString(Protocol);
       }
-      if (DataChannelIdentifier != 0) {
+      if (HasDataChannelIdentifier) {
         output.WriteRawTag(24);
         output.WriteInt32(DataChannelIdentifier);
       }
@@ -12767,19 +15107,19 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteEnum((int) State);
       }
-      if (MessagesSent != 0) {
+      if (HasMessagesSent) {
         output.WriteRawTag(40);
         output.WriteUInt32(MessagesSent);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(48);
         output.WriteUInt64(BytesSent);
       }
-      if (MessagesReceived != 0) {
+      if (HasMessagesReceived) {
         output.WriteRawTag(56);
         output.WriteUInt32(MessagesReceived);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(64);
         output.WriteUInt64(BytesReceived);
       }
@@ -12793,28 +15133,28 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Label.Length != 0) {
+      if (HasLabel) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Label);
       }
-      if (Protocol.Length != 0) {
+      if (HasProtocol) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Protocol);
       }
-      if (DataChannelIdentifier != 0) {
+      if (HasDataChannelIdentifier) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(DataChannelIdentifier);
       }
       if (HasState) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
       }
-      if (MessagesSent != 0) {
+      if (HasMessagesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MessagesSent);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesSent);
       }
-      if (MessagesReceived != 0) {
+      if (HasMessagesReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MessagesReceived);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesReceived);
       }
       if (_unknownFields != null) {
@@ -12829,28 +15169,28 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Label.Length != 0) {
+      if (other.HasLabel) {
         Label = other.Label;
       }
-      if (other.Protocol.Length != 0) {
+      if (other.HasProtocol) {
         Protocol = other.Protocol;
       }
-      if (other.DataChannelIdentifier != 0) {
+      if (other.HasDataChannelIdentifier) {
         DataChannelIdentifier = other.DataChannelIdentifier;
       }
       if (other.HasState) {
         State = other.State;
       }
-      if (other.MessagesSent != 0) {
+      if (other.HasMessagesSent) {
         MessagesSent = other.MessagesSent;
       }
-      if (other.BytesSent != 0UL) {
+      if (other.HasBytesSent) {
         BytesSent = other.BytesSent;
       }
-      if (other.MessagesReceived != 0) {
+      if (other.HasMessagesReceived) {
         MessagesReceived = other.MessagesReceived;
       }
-      if (other.BytesReceived != 0UL) {
+      if (other.HasBytesReceived) {
         BytesReceived = other.BytesReceived;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -12864,7 +15204,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -12911,7 +15255,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -13018,74 +15366,163 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "packets_sent" field.</summary>
     public const int PacketsSentFieldNumber = 1;
+    private readonly static ulong PacketsSentDefaultValue = 0UL;
+
     private ulong packetsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsSent {
-      get { return packetsSent_; }
+      get { if ((_hasBits0 & 1) != 0) { return packetsSent_; } else { return PacketsSentDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         packetsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsSent {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsSent() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "packets_received" field.</summary>
     public const int PacketsReceivedFieldNumber = 2;
+    private readonly static ulong PacketsReceivedDefaultValue = 0UL;
+
     private ulong packetsReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsReceived {
-      get { return packetsReceived_; }
+      get { if ((_hasBits0 & 2) != 0) { return packetsReceived_; } else { return PacketsReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         packetsReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsReceived {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsReceived() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "bytes_sent" field.</summary>
     public const int BytesSentFieldNumber = 3;
+    private readonly static ulong BytesSentDefaultValue = 0UL;
+
     private ulong bytesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesSent {
-      get { return bytesSent_; }
+      get { if ((_hasBits0 & 4) != 0) { return bytesSent_; } else { return BytesSentDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         bytesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesSent {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesSent() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "bytes_received" field.</summary>
     public const int BytesReceivedFieldNumber = 4;
+    private readonly static ulong BytesReceivedDefaultValue = 0UL;
+
     private ulong bytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesReceived {
-      get { return bytesReceived_; }
+      get { if ((_hasBits0 & 8) != 0) { return bytesReceived_; } else { return BytesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         bytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesReceived {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesReceived() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "ice_role" field.</summary>
     public const int IceRoleFieldNumber = 5;
-    private global::LiveKit.Proto.IceRole iceRole_ = global::LiveKit.Proto.IceRole.IceUnknown;
+    private readonly static global::LiveKit.Proto.IceRole IceRoleDefaultValue = global::LiveKit.Proto.IceRole.IceUnknown;
+
+    private global::LiveKit.Proto.IceRole iceRole_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.IceRole IceRole {
-      get { return iceRole_; }
+      get { if ((_hasBits0 & 16) != 0) { return iceRole_; } else { return IceRoleDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         iceRole_ = value;
       }
+    }
+    /// <summary>Gets whether the "ice_role" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasIceRole {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "ice_role" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearIceRole() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "ice_local_username_fragment" field.</summary>
     public const int IceLocalUsernameFragmentFieldNumber = 6;
-    private string iceLocalUsernameFragment_ = "";
+    private readonly static string IceLocalUsernameFragmentDefaultValue = "";
+
+    private string iceLocalUsernameFragment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string IceLocalUsernameFragment {
-      get { return iceLocalUsernameFragment_; }
+      get { return iceLocalUsernameFragment_ ?? IceLocalUsernameFragmentDefaultValue; }
       set {
         iceLocalUsernameFragment_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "ice_local_username_fragment" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasIceLocalUsernameFragment {
+      get { return iceLocalUsernameFragment_ != null; }
+    }
+    /// <summary>Clears the value of the "ice_local_username_fragment" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearIceLocalUsernameFragment() {
+      iceLocalUsernameFragment_ = null;
     }
 
     /// <summary>Field number for the "dtls_state" field.</summary>
@@ -13096,9 +15533,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.DtlsTransportState DtlsState {
-      get { if ((_hasBits0 & 1) != 0) { return dtlsState_; } else { return DtlsStateDefaultValue; } }
+      get { if ((_hasBits0 & 32) != 0) { return dtlsState_; } else { return DtlsStateDefaultValue; } }
       set {
-        _hasBits0 |= 1;
+        _hasBits0 |= 32;
         dtlsState_ = value;
       }
     }
@@ -13106,13 +15543,13 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasDtlsState {
-      get { return (_hasBits0 & 1) != 0; }
+      get { return (_hasBits0 & 32) != 0; }
     }
     /// <summary>Clears the value of the "dtls_state" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearDtlsState() {
-      _hasBits0 &= ~1;
+      _hasBits0 &= ~32;
     }
 
     /// <summary>Field number for the "ice_state" field.</summary>
@@ -13123,9 +15560,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.IceTransportState IceState {
-      get { if ((_hasBits0 & 2) != 0) { return iceState_; } else { return IceStateDefaultValue; } }
+      get { if ((_hasBits0 & 64) != 0) { return iceState_; } else { return IceStateDefaultValue; } }
       set {
-        _hasBits0 |= 2;
+        _hasBits0 |= 64;
         iceState_ = value;
       }
     }
@@ -13133,109 +15570,223 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasIceState {
-      get { return (_hasBits0 & 2) != 0; }
+      get { return (_hasBits0 & 64) != 0; }
     }
     /// <summary>Clears the value of the "ice_state" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearIceState() {
-      _hasBits0 &= ~2;
+      _hasBits0 &= ~64;
     }
 
     /// <summary>Field number for the "selected_candidate_pair_id" field.</summary>
     public const int SelectedCandidatePairIdFieldNumber = 9;
-    private string selectedCandidatePairId_ = "";
+    private readonly static string SelectedCandidatePairIdDefaultValue = "";
+
+    private string selectedCandidatePairId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string SelectedCandidatePairId {
-      get { return selectedCandidatePairId_; }
+      get { return selectedCandidatePairId_ ?? SelectedCandidatePairIdDefaultValue; }
       set {
         selectedCandidatePairId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "selected_candidate_pair_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSelectedCandidatePairId {
+      get { return selectedCandidatePairId_ != null; }
+    }
+    /// <summary>Clears the value of the "selected_candidate_pair_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSelectedCandidatePairId() {
+      selectedCandidatePairId_ = null;
+    }
 
     /// <summary>Field number for the "local_certificate_id" field.</summary>
     public const int LocalCertificateIdFieldNumber = 10;
-    private string localCertificateId_ = "";
+    private readonly static string LocalCertificateIdDefaultValue = "";
+
+    private string localCertificateId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string LocalCertificateId {
-      get { return localCertificateId_; }
+      get { return localCertificateId_ ?? LocalCertificateIdDefaultValue; }
       set {
         localCertificateId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "local_certificate_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLocalCertificateId {
+      get { return localCertificateId_ != null; }
+    }
+    /// <summary>Clears the value of the "local_certificate_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLocalCertificateId() {
+      localCertificateId_ = null;
+    }
 
     /// <summary>Field number for the "remote_certificate_id" field.</summary>
     public const int RemoteCertificateIdFieldNumber = 11;
-    private string remoteCertificateId_ = "";
+    private readonly static string RemoteCertificateIdDefaultValue = "";
+
+    private string remoteCertificateId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RemoteCertificateId {
-      get { return remoteCertificateId_; }
+      get { return remoteCertificateId_ ?? RemoteCertificateIdDefaultValue; }
       set {
         remoteCertificateId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "remote_certificate_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemoteCertificateId {
+      get { return remoteCertificateId_ != null; }
+    }
+    /// <summary>Clears the value of the "remote_certificate_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemoteCertificateId() {
+      remoteCertificateId_ = null;
+    }
 
     /// <summary>Field number for the "tls_version" field.</summary>
     public const int TlsVersionFieldNumber = 12;
-    private string tlsVersion_ = "";
+    private readonly static string TlsVersionDefaultValue = "";
+
+    private string tlsVersion_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TlsVersion {
-      get { return tlsVersion_; }
+      get { return tlsVersion_ ?? TlsVersionDefaultValue; }
       set {
         tlsVersion_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "tls_version" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTlsVersion {
+      get { return tlsVersion_ != null; }
+    }
+    /// <summary>Clears the value of the "tls_version" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTlsVersion() {
+      tlsVersion_ = null;
+    }
 
     /// <summary>Field number for the "dtls_cipher" field.</summary>
     public const int DtlsCipherFieldNumber = 13;
-    private string dtlsCipher_ = "";
+    private readonly static string DtlsCipherDefaultValue = "";
+
+    private string dtlsCipher_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string DtlsCipher {
-      get { return dtlsCipher_; }
+      get { return dtlsCipher_ ?? DtlsCipherDefaultValue; }
       set {
         dtlsCipher_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "dtls_cipher" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDtlsCipher {
+      get { return dtlsCipher_ != null; }
+    }
+    /// <summary>Clears the value of the "dtls_cipher" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDtlsCipher() {
+      dtlsCipher_ = null;
+    }
 
     /// <summary>Field number for the "dtls_role" field.</summary>
     public const int DtlsRoleFieldNumber = 14;
-    private global::LiveKit.Proto.DtlsRole dtlsRole_ = global::LiveKit.Proto.DtlsRole.DtlsClient;
+    private readonly static global::LiveKit.Proto.DtlsRole DtlsRoleDefaultValue = global::LiveKit.Proto.DtlsRole.DtlsClient;
+
+    private global::LiveKit.Proto.DtlsRole dtlsRole_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.DtlsRole DtlsRole {
-      get { return dtlsRole_; }
+      get { if ((_hasBits0 & 128) != 0) { return dtlsRole_; } else { return DtlsRoleDefaultValue; } }
       set {
+        _hasBits0 |= 128;
         dtlsRole_ = value;
       }
+    }
+    /// <summary>Gets whether the "dtls_role" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDtlsRole {
+      get { return (_hasBits0 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "dtls_role" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDtlsRole() {
+      _hasBits0 &= ~128;
     }
 
     /// <summary>Field number for the "srtp_cipher" field.</summary>
     public const int SrtpCipherFieldNumber = 15;
-    private string srtpCipher_ = "";
+    private readonly static string SrtpCipherDefaultValue = "";
+
+    private string srtpCipher_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string SrtpCipher {
-      get { return srtpCipher_; }
+      get { return srtpCipher_ ?? SrtpCipherDefaultValue; }
       set {
         srtpCipher_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "srtp_cipher" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSrtpCipher {
+      get { return srtpCipher_ != null; }
+    }
+    /// <summary>Clears the value of the "srtp_cipher" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSrtpCipher() {
+      srtpCipher_ = null;
+    }
 
     /// <summary>Field number for the "selected_candidate_pair_changes" field.</summary>
     public const int SelectedCandidatePairChangesFieldNumber = 16;
+    private readonly static uint SelectedCandidatePairChangesDefaultValue = 0;
+
     private uint selectedCandidatePairChanges_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint SelectedCandidatePairChanges {
-      get { return selectedCandidatePairChanges_; }
+      get { if ((_hasBits0 & 256) != 0) { return selectedCandidatePairChanges_; } else { return SelectedCandidatePairChangesDefaultValue; } }
       set {
+        _hasBits0 |= 256;
         selectedCandidatePairChanges_ = value;
       }
+    }
+    /// <summary>Gets whether the "selected_candidate_pair_changes" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSelectedCandidatePairChanges {
+      get { return (_hasBits0 & 256) != 0; }
+    }
+    /// <summary>Clears the value of the "selected_candidate_pair_changes" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSelectedCandidatePairChanges() {
+      _hasBits0 &= ~256;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -13276,22 +15827,22 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (PacketsSent != 0UL) hash ^= PacketsSent.GetHashCode();
-      if (PacketsReceived != 0UL) hash ^= PacketsReceived.GetHashCode();
-      if (BytesSent != 0UL) hash ^= BytesSent.GetHashCode();
-      if (BytesReceived != 0UL) hash ^= BytesReceived.GetHashCode();
-      if (IceRole != global::LiveKit.Proto.IceRole.IceUnknown) hash ^= IceRole.GetHashCode();
-      if (IceLocalUsernameFragment.Length != 0) hash ^= IceLocalUsernameFragment.GetHashCode();
+      if (HasPacketsSent) hash ^= PacketsSent.GetHashCode();
+      if (HasPacketsReceived) hash ^= PacketsReceived.GetHashCode();
+      if (HasBytesSent) hash ^= BytesSent.GetHashCode();
+      if (HasBytesReceived) hash ^= BytesReceived.GetHashCode();
+      if (HasIceRole) hash ^= IceRole.GetHashCode();
+      if (HasIceLocalUsernameFragment) hash ^= IceLocalUsernameFragment.GetHashCode();
       if (HasDtlsState) hash ^= DtlsState.GetHashCode();
       if (HasIceState) hash ^= IceState.GetHashCode();
-      if (SelectedCandidatePairId.Length != 0) hash ^= SelectedCandidatePairId.GetHashCode();
-      if (LocalCertificateId.Length != 0) hash ^= LocalCertificateId.GetHashCode();
-      if (RemoteCertificateId.Length != 0) hash ^= RemoteCertificateId.GetHashCode();
-      if (TlsVersion.Length != 0) hash ^= TlsVersion.GetHashCode();
-      if (DtlsCipher.Length != 0) hash ^= DtlsCipher.GetHashCode();
-      if (DtlsRole != global::LiveKit.Proto.DtlsRole.DtlsClient) hash ^= DtlsRole.GetHashCode();
-      if (SrtpCipher.Length != 0) hash ^= SrtpCipher.GetHashCode();
-      if (SelectedCandidatePairChanges != 0) hash ^= SelectedCandidatePairChanges.GetHashCode();
+      if (HasSelectedCandidatePairId) hash ^= SelectedCandidatePairId.GetHashCode();
+      if (HasLocalCertificateId) hash ^= LocalCertificateId.GetHashCode();
+      if (HasRemoteCertificateId) hash ^= RemoteCertificateId.GetHashCode();
+      if (HasTlsVersion) hash ^= TlsVersion.GetHashCode();
+      if (HasDtlsCipher) hash ^= DtlsCipher.GetHashCode();
+      if (HasDtlsRole) hash ^= DtlsRole.GetHashCode();
+      if (HasSrtpCipher) hash ^= SrtpCipher.GetHashCode();
+      if (HasSelectedCandidatePairChanges) hash ^= SelectedCandidatePairChanges.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -13310,27 +15861,27 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         output.WriteRawTag(8);
         output.WriteUInt64(PacketsSent);
       }
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         output.WriteRawTag(16);
         output.WriteUInt64(PacketsReceived);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(24);
         output.WriteUInt64(BytesSent);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(32);
         output.WriteUInt64(BytesReceived);
       }
-      if (IceRole != global::LiveKit.Proto.IceRole.IceUnknown) {
+      if (HasIceRole) {
         output.WriteRawTag(40);
         output.WriteEnum((int) IceRole);
       }
-      if (IceLocalUsernameFragment.Length != 0) {
+      if (HasIceLocalUsernameFragment) {
         output.WriteRawTag(50);
         output.WriteString(IceLocalUsernameFragment);
       }
@@ -13342,35 +15893,35 @@ namespace LiveKit.Proto {
         output.WriteRawTag(64);
         output.WriteEnum((int) IceState);
       }
-      if (SelectedCandidatePairId.Length != 0) {
+      if (HasSelectedCandidatePairId) {
         output.WriteRawTag(74);
         output.WriteString(SelectedCandidatePairId);
       }
-      if (LocalCertificateId.Length != 0) {
+      if (HasLocalCertificateId) {
         output.WriteRawTag(82);
         output.WriteString(LocalCertificateId);
       }
-      if (RemoteCertificateId.Length != 0) {
+      if (HasRemoteCertificateId) {
         output.WriteRawTag(90);
         output.WriteString(RemoteCertificateId);
       }
-      if (TlsVersion.Length != 0) {
+      if (HasTlsVersion) {
         output.WriteRawTag(98);
         output.WriteString(TlsVersion);
       }
-      if (DtlsCipher.Length != 0) {
+      if (HasDtlsCipher) {
         output.WriteRawTag(106);
         output.WriteString(DtlsCipher);
       }
-      if (DtlsRole != global::LiveKit.Proto.DtlsRole.DtlsClient) {
+      if (HasDtlsRole) {
         output.WriteRawTag(112);
         output.WriteEnum((int) DtlsRole);
       }
-      if (SrtpCipher.Length != 0) {
+      if (HasSrtpCipher) {
         output.WriteRawTag(122);
         output.WriteString(SrtpCipher);
       }
-      if (SelectedCandidatePairChanges != 0) {
+      if (HasSelectedCandidatePairChanges) {
         output.WriteRawTag(128, 1);
         output.WriteUInt32(SelectedCandidatePairChanges);
       }
@@ -13384,27 +15935,27 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         output.WriteRawTag(8);
         output.WriteUInt64(PacketsSent);
       }
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         output.WriteRawTag(16);
         output.WriteUInt64(PacketsReceived);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(24);
         output.WriteUInt64(BytesSent);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(32);
         output.WriteUInt64(BytesReceived);
       }
-      if (IceRole != global::LiveKit.Proto.IceRole.IceUnknown) {
+      if (HasIceRole) {
         output.WriteRawTag(40);
         output.WriteEnum((int) IceRole);
       }
-      if (IceLocalUsernameFragment.Length != 0) {
+      if (HasIceLocalUsernameFragment) {
         output.WriteRawTag(50);
         output.WriteString(IceLocalUsernameFragment);
       }
@@ -13416,35 +15967,35 @@ namespace LiveKit.Proto {
         output.WriteRawTag(64);
         output.WriteEnum((int) IceState);
       }
-      if (SelectedCandidatePairId.Length != 0) {
+      if (HasSelectedCandidatePairId) {
         output.WriteRawTag(74);
         output.WriteString(SelectedCandidatePairId);
       }
-      if (LocalCertificateId.Length != 0) {
+      if (HasLocalCertificateId) {
         output.WriteRawTag(82);
         output.WriteString(LocalCertificateId);
       }
-      if (RemoteCertificateId.Length != 0) {
+      if (HasRemoteCertificateId) {
         output.WriteRawTag(90);
         output.WriteString(RemoteCertificateId);
       }
-      if (TlsVersion.Length != 0) {
+      if (HasTlsVersion) {
         output.WriteRawTag(98);
         output.WriteString(TlsVersion);
       }
-      if (DtlsCipher.Length != 0) {
+      if (HasDtlsCipher) {
         output.WriteRawTag(106);
         output.WriteString(DtlsCipher);
       }
-      if (DtlsRole != global::LiveKit.Proto.DtlsRole.DtlsClient) {
+      if (HasDtlsRole) {
         output.WriteRawTag(112);
         output.WriteEnum((int) DtlsRole);
       }
-      if (SrtpCipher.Length != 0) {
+      if (HasSrtpCipher) {
         output.WriteRawTag(122);
         output.WriteString(SrtpCipher);
       }
-      if (SelectedCandidatePairChanges != 0) {
+      if (HasSelectedCandidatePairChanges) {
         output.WriteRawTag(128, 1);
         output.WriteUInt32(SelectedCandidatePairChanges);
       }
@@ -13458,22 +16009,22 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PacketsSent);
       }
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PacketsReceived);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesSent);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesReceived);
       }
-      if (IceRole != global::LiveKit.Proto.IceRole.IceUnknown) {
+      if (HasIceRole) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) IceRole);
       }
-      if (IceLocalUsernameFragment.Length != 0) {
+      if (HasIceLocalUsernameFragment) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(IceLocalUsernameFragment);
       }
       if (HasDtlsState) {
@@ -13482,28 +16033,28 @@ namespace LiveKit.Proto {
       if (HasIceState) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) IceState);
       }
-      if (SelectedCandidatePairId.Length != 0) {
+      if (HasSelectedCandidatePairId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SelectedCandidatePairId);
       }
-      if (LocalCertificateId.Length != 0) {
+      if (HasLocalCertificateId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LocalCertificateId);
       }
-      if (RemoteCertificateId.Length != 0) {
+      if (HasRemoteCertificateId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RemoteCertificateId);
       }
-      if (TlsVersion.Length != 0) {
+      if (HasTlsVersion) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TlsVersion);
       }
-      if (DtlsCipher.Length != 0) {
+      if (HasDtlsCipher) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(DtlsCipher);
       }
-      if (DtlsRole != global::LiveKit.Proto.DtlsRole.DtlsClient) {
+      if (HasDtlsRole) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) DtlsRole);
       }
-      if (SrtpCipher.Length != 0) {
+      if (HasSrtpCipher) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SrtpCipher);
       }
-      if (SelectedCandidatePairChanges != 0) {
+      if (HasSelectedCandidatePairChanges) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(SelectedCandidatePairChanges);
       }
       if (_unknownFields != null) {
@@ -13518,22 +16069,22 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.PacketsSent != 0UL) {
+      if (other.HasPacketsSent) {
         PacketsSent = other.PacketsSent;
       }
-      if (other.PacketsReceived != 0UL) {
+      if (other.HasPacketsReceived) {
         PacketsReceived = other.PacketsReceived;
       }
-      if (other.BytesSent != 0UL) {
+      if (other.HasBytesSent) {
         BytesSent = other.BytesSent;
       }
-      if (other.BytesReceived != 0UL) {
+      if (other.HasBytesReceived) {
         BytesReceived = other.BytesReceived;
       }
-      if (other.IceRole != global::LiveKit.Proto.IceRole.IceUnknown) {
+      if (other.HasIceRole) {
         IceRole = other.IceRole;
       }
-      if (other.IceLocalUsernameFragment.Length != 0) {
+      if (other.HasIceLocalUsernameFragment) {
         IceLocalUsernameFragment = other.IceLocalUsernameFragment;
       }
       if (other.HasDtlsState) {
@@ -13542,28 +16093,28 @@ namespace LiveKit.Proto {
       if (other.HasIceState) {
         IceState = other.IceState;
       }
-      if (other.SelectedCandidatePairId.Length != 0) {
+      if (other.HasSelectedCandidatePairId) {
         SelectedCandidatePairId = other.SelectedCandidatePairId;
       }
-      if (other.LocalCertificateId.Length != 0) {
+      if (other.HasLocalCertificateId) {
         LocalCertificateId = other.LocalCertificateId;
       }
-      if (other.RemoteCertificateId.Length != 0) {
+      if (other.HasRemoteCertificateId) {
         RemoteCertificateId = other.RemoteCertificateId;
       }
-      if (other.TlsVersion.Length != 0) {
+      if (other.HasTlsVersion) {
         TlsVersion = other.TlsVersion;
       }
-      if (other.DtlsCipher.Length != 0) {
+      if (other.HasDtlsCipher) {
         DtlsCipher = other.DtlsCipher;
       }
-      if (other.DtlsRole != global::LiveKit.Proto.DtlsRole.DtlsClient) {
+      if (other.HasDtlsRole) {
         DtlsRole = other.DtlsRole;
       }
-      if (other.SrtpCipher.Length != 0) {
+      if (other.HasSrtpCipher) {
         SrtpCipher = other.SrtpCipher;
       }
-      if (other.SelectedCandidatePairChanges != 0) {
+      if (other.HasSelectedCandidatePairChanges) {
         SelectedCandidatePairChanges = other.SelectedCandidatePairChanges;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -13577,7 +16128,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -13656,7 +16211,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -13801,38 +16360,80 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "transport_id" field.</summary>
     public const int TransportIdFieldNumber = 1;
-    private string transportId_ = "";
+    private readonly static string TransportIdDefaultValue = "";
+
+    private string transportId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TransportId {
-      get { return transportId_; }
+      get { return transportId_ ?? TransportIdDefaultValue; }
       set {
         transportId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "transport_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTransportId {
+      get { return transportId_ != null; }
+    }
+    /// <summary>Clears the value of the "transport_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTransportId() {
+      transportId_ = null;
+    }
 
     /// <summary>Field number for the "local_candidate_id" field.</summary>
     public const int LocalCandidateIdFieldNumber = 2;
-    private string localCandidateId_ = "";
+    private readonly static string LocalCandidateIdDefaultValue = "";
+
+    private string localCandidateId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string LocalCandidateId {
-      get { return localCandidateId_; }
+      get { return localCandidateId_ ?? LocalCandidateIdDefaultValue; }
       set {
         localCandidateId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "local_candidate_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLocalCandidateId {
+      get { return localCandidateId_ != null; }
+    }
+    /// <summary>Clears the value of the "local_candidate_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLocalCandidateId() {
+      localCandidateId_ = null;
+    }
 
     /// <summary>Field number for the "remote_candidate_id" field.</summary>
     public const int RemoteCandidateIdFieldNumber = 3;
-    private string remoteCandidateId_ = "";
+    private readonly static string RemoteCandidateIdDefaultValue = "";
+
+    private string remoteCandidateId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RemoteCandidateId {
-      get { return remoteCandidateId_; }
+      get { return remoteCandidateId_ ?? RemoteCandidateIdDefaultValue; }
       set {
         remoteCandidateId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "remote_candidate_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemoteCandidateId {
+      get { return remoteCandidateId_ != null; }
+    }
+    /// <summary>Clears the value of the "remote_candidate_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemoteCandidateId() {
+      remoteCandidateId_ = null;
     }
 
     /// <summary>Field number for the "state" field.</summary>
@@ -13864,218 +16465,488 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "nominated" field.</summary>
     public const int NominatedFieldNumber = 5;
+    private readonly static bool NominatedDefaultValue = false;
+
     private bool nominated_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Nominated {
-      get { return nominated_; }
+      get { if ((_hasBits0 & 2) != 0) { return nominated_; } else { return NominatedDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         nominated_ = value;
       }
+    }
+    /// <summary>Gets whether the "nominated" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasNominated {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "nominated" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearNominated() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "packets_sent" field.</summary>
     public const int PacketsSentFieldNumber = 6;
+    private readonly static ulong PacketsSentDefaultValue = 0UL;
+
     private ulong packetsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsSent {
-      get { return packetsSent_; }
+      get { if ((_hasBits0 & 4) != 0) { return packetsSent_; } else { return PacketsSentDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         packetsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsSent {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsSent() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "packets_received" field.</summary>
     public const int PacketsReceivedFieldNumber = 7;
+    private readonly static ulong PacketsReceivedDefaultValue = 0UL;
+
     private ulong packetsReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong PacketsReceived {
-      get { return packetsReceived_; }
+      get { if ((_hasBits0 & 8) != 0) { return packetsReceived_; } else { return PacketsReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         packetsReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsReceived {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsReceived() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "bytes_sent" field.</summary>
     public const int BytesSentFieldNumber = 8;
+    private readonly static ulong BytesSentDefaultValue = 0UL;
+
     private ulong bytesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesSent {
-      get { return bytesSent_; }
+      get { if ((_hasBits0 & 16) != 0) { return bytesSent_; } else { return BytesSentDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         bytesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesSent {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesSent() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "bytes_received" field.</summary>
     public const int BytesReceivedFieldNumber = 9;
+    private readonly static ulong BytesReceivedDefaultValue = 0UL;
+
     private ulong bytesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesReceived {
-      get { return bytesReceived_; }
+      get { if ((_hasBits0 & 32) != 0) { return bytesReceived_; } else { return BytesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 32;
         bytesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesReceived {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesReceived() {
+      _hasBits0 &= ~32;
     }
 
     /// <summary>Field number for the "last_packet_sent_timestamp" field.</summary>
     public const int LastPacketSentTimestampFieldNumber = 10;
+    private readonly static double LastPacketSentTimestampDefaultValue = 0D;
+
     private double lastPacketSentTimestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double LastPacketSentTimestamp {
-      get { return lastPacketSentTimestamp_; }
+      get { if ((_hasBits0 & 64) != 0) { return lastPacketSentTimestamp_; } else { return LastPacketSentTimestampDefaultValue; } }
       set {
+        _hasBits0 |= 64;
         lastPacketSentTimestamp_ = value;
       }
+    }
+    /// <summary>Gets whether the "last_packet_sent_timestamp" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLastPacketSentTimestamp {
+      get { return (_hasBits0 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "last_packet_sent_timestamp" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLastPacketSentTimestamp() {
+      _hasBits0 &= ~64;
     }
 
     /// <summary>Field number for the "last_packet_received_timestamp" field.</summary>
     public const int LastPacketReceivedTimestampFieldNumber = 11;
+    private readonly static double LastPacketReceivedTimestampDefaultValue = 0D;
+
     private double lastPacketReceivedTimestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double LastPacketReceivedTimestamp {
-      get { return lastPacketReceivedTimestamp_; }
+      get { if ((_hasBits0 & 128) != 0) { return lastPacketReceivedTimestamp_; } else { return LastPacketReceivedTimestampDefaultValue; } }
       set {
+        _hasBits0 |= 128;
         lastPacketReceivedTimestamp_ = value;
       }
+    }
+    /// <summary>Gets whether the "last_packet_received_timestamp" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLastPacketReceivedTimestamp {
+      get { return (_hasBits0 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "last_packet_received_timestamp" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLastPacketReceivedTimestamp() {
+      _hasBits0 &= ~128;
     }
 
     /// <summary>Field number for the "total_round_trip_time" field.</summary>
     public const int TotalRoundTripTimeFieldNumber = 12;
+    private readonly static double TotalRoundTripTimeDefaultValue = 0D;
+
     private double totalRoundTripTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double TotalRoundTripTime {
-      get { return totalRoundTripTime_; }
+      get { if ((_hasBits0 & 256) != 0) { return totalRoundTripTime_; } else { return TotalRoundTripTimeDefaultValue; } }
       set {
+        _hasBits0 |= 256;
         totalRoundTripTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "total_round_trip_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTotalRoundTripTime {
+      get { return (_hasBits0 & 256) != 0; }
+    }
+    /// <summary>Clears the value of the "total_round_trip_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTotalRoundTripTime() {
+      _hasBits0 &= ~256;
     }
 
     /// <summary>Field number for the "current_round_trip_time" field.</summary>
     public const int CurrentRoundTripTimeFieldNumber = 13;
+    private readonly static double CurrentRoundTripTimeDefaultValue = 0D;
+
     private double currentRoundTripTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double CurrentRoundTripTime {
-      get { return currentRoundTripTime_; }
+      get { if ((_hasBits0 & 512) != 0) { return currentRoundTripTime_; } else { return CurrentRoundTripTimeDefaultValue; } }
       set {
+        _hasBits0 |= 512;
         currentRoundTripTime_ = value;
       }
+    }
+    /// <summary>Gets whether the "current_round_trip_time" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCurrentRoundTripTime {
+      get { return (_hasBits0 & 512) != 0; }
+    }
+    /// <summary>Clears the value of the "current_round_trip_time" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCurrentRoundTripTime() {
+      _hasBits0 &= ~512;
     }
 
     /// <summary>Field number for the "available_outgoing_bitrate" field.</summary>
     public const int AvailableOutgoingBitrateFieldNumber = 14;
+    private readonly static double AvailableOutgoingBitrateDefaultValue = 0D;
+
     private double availableOutgoingBitrate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double AvailableOutgoingBitrate {
-      get { return availableOutgoingBitrate_; }
+      get { if ((_hasBits0 & 1024) != 0) { return availableOutgoingBitrate_; } else { return AvailableOutgoingBitrateDefaultValue; } }
       set {
+        _hasBits0 |= 1024;
         availableOutgoingBitrate_ = value;
       }
+    }
+    /// <summary>Gets whether the "available_outgoing_bitrate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAvailableOutgoingBitrate {
+      get { return (_hasBits0 & 1024) != 0; }
+    }
+    /// <summary>Clears the value of the "available_outgoing_bitrate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAvailableOutgoingBitrate() {
+      _hasBits0 &= ~1024;
     }
 
     /// <summary>Field number for the "available_incoming_bitrate" field.</summary>
     public const int AvailableIncomingBitrateFieldNumber = 15;
+    private readonly static double AvailableIncomingBitrateDefaultValue = 0D;
+
     private double availableIncomingBitrate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double AvailableIncomingBitrate {
-      get { return availableIncomingBitrate_; }
+      get { if ((_hasBits0 & 2048) != 0) { return availableIncomingBitrate_; } else { return AvailableIncomingBitrateDefaultValue; } }
       set {
+        _hasBits0 |= 2048;
         availableIncomingBitrate_ = value;
       }
+    }
+    /// <summary>Gets whether the "available_incoming_bitrate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAvailableIncomingBitrate {
+      get { return (_hasBits0 & 2048) != 0; }
+    }
+    /// <summary>Clears the value of the "available_incoming_bitrate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAvailableIncomingBitrate() {
+      _hasBits0 &= ~2048;
     }
 
     /// <summary>Field number for the "requests_received" field.</summary>
     public const int RequestsReceivedFieldNumber = 16;
+    private readonly static ulong RequestsReceivedDefaultValue = 0UL;
+
     private ulong requestsReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RequestsReceived {
-      get { return requestsReceived_; }
+      get { if ((_hasBits0 & 4096) != 0) { return requestsReceived_; } else { return RequestsReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 4096;
         requestsReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "requests_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRequestsReceived {
+      get { return (_hasBits0 & 4096) != 0; }
+    }
+    /// <summary>Clears the value of the "requests_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRequestsReceived() {
+      _hasBits0 &= ~4096;
     }
 
     /// <summary>Field number for the "requests_sent" field.</summary>
     public const int RequestsSentFieldNumber = 17;
+    private readonly static ulong RequestsSentDefaultValue = 0UL;
+
     private ulong requestsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RequestsSent {
-      get { return requestsSent_; }
+      get { if ((_hasBits0 & 8192) != 0) { return requestsSent_; } else { return RequestsSentDefaultValue; } }
       set {
+        _hasBits0 |= 8192;
         requestsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "requests_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRequestsSent {
+      get { return (_hasBits0 & 8192) != 0; }
+    }
+    /// <summary>Clears the value of the "requests_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRequestsSent() {
+      _hasBits0 &= ~8192;
     }
 
     /// <summary>Field number for the "responses_received" field.</summary>
     public const int ResponsesReceivedFieldNumber = 18;
+    private readonly static ulong ResponsesReceivedDefaultValue = 0UL;
+
     private ulong responsesReceived_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ResponsesReceived {
-      get { return responsesReceived_; }
+      get { if ((_hasBits0 & 16384) != 0) { return responsesReceived_; } else { return ResponsesReceivedDefaultValue; } }
       set {
+        _hasBits0 |= 16384;
         responsesReceived_ = value;
       }
+    }
+    /// <summary>Gets whether the "responses_received" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasResponsesReceived {
+      get { return (_hasBits0 & 16384) != 0; }
+    }
+    /// <summary>Clears the value of the "responses_received" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearResponsesReceived() {
+      _hasBits0 &= ~16384;
     }
 
     /// <summary>Field number for the "responses_sent" field.</summary>
     public const int ResponsesSentFieldNumber = 19;
+    private readonly static ulong ResponsesSentDefaultValue = 0UL;
+
     private ulong responsesSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ResponsesSent {
-      get { return responsesSent_; }
+      get { if ((_hasBits0 & 32768) != 0) { return responsesSent_; } else { return ResponsesSentDefaultValue; } }
       set {
+        _hasBits0 |= 32768;
         responsesSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "responses_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasResponsesSent {
+      get { return (_hasBits0 & 32768) != 0; }
+    }
+    /// <summary>Clears the value of the "responses_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearResponsesSent() {
+      _hasBits0 &= ~32768;
     }
 
     /// <summary>Field number for the "consent_requests_sent" field.</summary>
     public const int ConsentRequestsSentFieldNumber = 20;
+    private readonly static ulong ConsentRequestsSentDefaultValue = 0UL;
+
     private ulong consentRequestsSent_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ConsentRequestsSent {
-      get { return consentRequestsSent_; }
+      get { if ((_hasBits0 & 65536) != 0) { return consentRequestsSent_; } else { return ConsentRequestsSentDefaultValue; } }
       set {
+        _hasBits0 |= 65536;
         consentRequestsSent_ = value;
       }
+    }
+    /// <summary>Gets whether the "consent_requests_sent" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasConsentRequestsSent {
+      get { return (_hasBits0 & 65536) != 0; }
+    }
+    /// <summary>Clears the value of the "consent_requests_sent" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearConsentRequestsSent() {
+      _hasBits0 &= ~65536;
     }
 
     /// <summary>Field number for the "packets_discarded_on_send" field.</summary>
     public const int PacketsDiscardedOnSendFieldNumber = 21;
+    private readonly static uint PacketsDiscardedOnSendDefaultValue = 0;
+
     private uint packetsDiscardedOnSend_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint PacketsDiscardedOnSend {
-      get { return packetsDiscardedOnSend_; }
+      get { if ((_hasBits0 & 131072) != 0) { return packetsDiscardedOnSend_; } else { return PacketsDiscardedOnSendDefaultValue; } }
       set {
+        _hasBits0 |= 131072;
         packetsDiscardedOnSend_ = value;
       }
+    }
+    /// <summary>Gets whether the "packets_discarded_on_send" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPacketsDiscardedOnSend {
+      get { return (_hasBits0 & 131072) != 0; }
+    }
+    /// <summary>Clears the value of the "packets_discarded_on_send" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPacketsDiscardedOnSend() {
+      _hasBits0 &= ~131072;
     }
 
     /// <summary>Field number for the "bytes_discarded_on_send" field.</summary>
     public const int BytesDiscardedOnSendFieldNumber = 22;
+    private readonly static ulong BytesDiscardedOnSendDefaultValue = 0UL;
+
     private ulong bytesDiscardedOnSend_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong BytesDiscardedOnSend {
-      get { return bytesDiscardedOnSend_; }
+      get { if ((_hasBits0 & 262144) != 0) { return bytesDiscardedOnSend_; } else { return BytesDiscardedOnSendDefaultValue; } }
       set {
+        _hasBits0 |= 262144;
         bytesDiscardedOnSend_ = value;
       }
+    }
+    /// <summary>Gets whether the "bytes_discarded_on_send" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBytesDiscardedOnSend {
+      get { return (_hasBits0 & 262144) != 0; }
+    }
+    /// <summary>Clears the value of the "bytes_discarded_on_send" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBytesDiscardedOnSend() {
+      _hasBits0 &= ~262144;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -14122,28 +16993,28 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TransportId.Length != 0) hash ^= TransportId.GetHashCode();
-      if (LocalCandidateId.Length != 0) hash ^= LocalCandidateId.GetHashCode();
-      if (RemoteCandidateId.Length != 0) hash ^= RemoteCandidateId.GetHashCode();
+      if (HasTransportId) hash ^= TransportId.GetHashCode();
+      if (HasLocalCandidateId) hash ^= LocalCandidateId.GetHashCode();
+      if (HasRemoteCandidateId) hash ^= RemoteCandidateId.GetHashCode();
       if (HasState) hash ^= State.GetHashCode();
-      if (Nominated != false) hash ^= Nominated.GetHashCode();
-      if (PacketsSent != 0UL) hash ^= PacketsSent.GetHashCode();
-      if (PacketsReceived != 0UL) hash ^= PacketsReceived.GetHashCode();
-      if (BytesSent != 0UL) hash ^= BytesSent.GetHashCode();
-      if (BytesReceived != 0UL) hash ^= BytesReceived.GetHashCode();
-      if (LastPacketSentTimestamp != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(LastPacketSentTimestamp);
-      if (LastPacketReceivedTimestamp != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(LastPacketReceivedTimestamp);
-      if (TotalRoundTripTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalRoundTripTime);
-      if (CurrentRoundTripTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(CurrentRoundTripTime);
-      if (AvailableOutgoingBitrate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AvailableOutgoingBitrate);
-      if (AvailableIncomingBitrate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AvailableIncomingBitrate);
-      if (RequestsReceived != 0UL) hash ^= RequestsReceived.GetHashCode();
-      if (RequestsSent != 0UL) hash ^= RequestsSent.GetHashCode();
-      if (ResponsesReceived != 0UL) hash ^= ResponsesReceived.GetHashCode();
-      if (ResponsesSent != 0UL) hash ^= ResponsesSent.GetHashCode();
-      if (ConsentRequestsSent != 0UL) hash ^= ConsentRequestsSent.GetHashCode();
-      if (PacketsDiscardedOnSend != 0) hash ^= PacketsDiscardedOnSend.GetHashCode();
-      if (BytesDiscardedOnSend != 0UL) hash ^= BytesDiscardedOnSend.GetHashCode();
+      if (HasNominated) hash ^= Nominated.GetHashCode();
+      if (HasPacketsSent) hash ^= PacketsSent.GetHashCode();
+      if (HasPacketsReceived) hash ^= PacketsReceived.GetHashCode();
+      if (HasBytesSent) hash ^= BytesSent.GetHashCode();
+      if (HasBytesReceived) hash ^= BytesReceived.GetHashCode();
+      if (HasLastPacketSentTimestamp) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(LastPacketSentTimestamp);
+      if (HasLastPacketReceivedTimestamp) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(LastPacketReceivedTimestamp);
+      if (HasTotalRoundTripTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(TotalRoundTripTime);
+      if (HasCurrentRoundTripTime) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(CurrentRoundTripTime);
+      if (HasAvailableOutgoingBitrate) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AvailableOutgoingBitrate);
+      if (HasAvailableIncomingBitrate) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(AvailableIncomingBitrate);
+      if (HasRequestsReceived) hash ^= RequestsReceived.GetHashCode();
+      if (HasRequestsSent) hash ^= RequestsSent.GetHashCode();
+      if (HasResponsesReceived) hash ^= ResponsesReceived.GetHashCode();
+      if (HasResponsesSent) hash ^= ResponsesSent.GetHashCode();
+      if (HasConsentRequestsSent) hash ^= ConsentRequestsSent.GetHashCode();
+      if (HasPacketsDiscardedOnSend) hash ^= PacketsDiscardedOnSend.GetHashCode();
+      if (HasBytesDiscardedOnSend) hash ^= BytesDiscardedOnSend.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -14162,15 +17033,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(10);
         output.WriteString(TransportId);
       }
-      if (LocalCandidateId.Length != 0) {
+      if (HasLocalCandidateId) {
         output.WriteRawTag(18);
         output.WriteString(LocalCandidateId);
       }
-      if (RemoteCandidateId.Length != 0) {
+      if (HasRemoteCandidateId) {
         output.WriteRawTag(26);
         output.WriteString(RemoteCandidateId);
       }
@@ -14178,75 +17049,75 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteEnum((int) State);
       }
-      if (Nominated != false) {
+      if (HasNominated) {
         output.WriteRawTag(40);
         output.WriteBool(Nominated);
       }
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         output.WriteRawTag(48);
         output.WriteUInt64(PacketsSent);
       }
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         output.WriteRawTag(56);
         output.WriteUInt64(PacketsReceived);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(64);
         output.WriteUInt64(BytesSent);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(72);
         output.WriteUInt64(BytesReceived);
       }
-      if (LastPacketSentTimestamp != 0D) {
+      if (HasLastPacketSentTimestamp) {
         output.WriteRawTag(81);
         output.WriteDouble(LastPacketSentTimestamp);
       }
-      if (LastPacketReceivedTimestamp != 0D) {
+      if (HasLastPacketReceivedTimestamp) {
         output.WriteRawTag(89);
         output.WriteDouble(LastPacketReceivedTimestamp);
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         output.WriteRawTag(97);
         output.WriteDouble(TotalRoundTripTime);
       }
-      if (CurrentRoundTripTime != 0D) {
+      if (HasCurrentRoundTripTime) {
         output.WriteRawTag(105);
         output.WriteDouble(CurrentRoundTripTime);
       }
-      if (AvailableOutgoingBitrate != 0D) {
+      if (HasAvailableOutgoingBitrate) {
         output.WriteRawTag(113);
         output.WriteDouble(AvailableOutgoingBitrate);
       }
-      if (AvailableIncomingBitrate != 0D) {
+      if (HasAvailableIncomingBitrate) {
         output.WriteRawTag(121);
         output.WriteDouble(AvailableIncomingBitrate);
       }
-      if (RequestsReceived != 0UL) {
+      if (HasRequestsReceived) {
         output.WriteRawTag(128, 1);
         output.WriteUInt64(RequestsReceived);
       }
-      if (RequestsSent != 0UL) {
+      if (HasRequestsSent) {
         output.WriteRawTag(136, 1);
         output.WriteUInt64(RequestsSent);
       }
-      if (ResponsesReceived != 0UL) {
+      if (HasResponsesReceived) {
         output.WriteRawTag(144, 1);
         output.WriteUInt64(ResponsesReceived);
       }
-      if (ResponsesSent != 0UL) {
+      if (HasResponsesSent) {
         output.WriteRawTag(152, 1);
         output.WriteUInt64(ResponsesSent);
       }
-      if (ConsentRequestsSent != 0UL) {
+      if (HasConsentRequestsSent) {
         output.WriteRawTag(160, 1);
         output.WriteUInt64(ConsentRequestsSent);
       }
-      if (PacketsDiscardedOnSend != 0) {
+      if (HasPacketsDiscardedOnSend) {
         output.WriteRawTag(168, 1);
         output.WriteUInt32(PacketsDiscardedOnSend);
       }
-      if (BytesDiscardedOnSend != 0UL) {
+      if (HasBytesDiscardedOnSend) {
         output.WriteRawTag(176, 1);
         output.WriteUInt64(BytesDiscardedOnSend);
       }
@@ -14260,15 +17131,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(10);
         output.WriteString(TransportId);
       }
-      if (LocalCandidateId.Length != 0) {
+      if (HasLocalCandidateId) {
         output.WriteRawTag(18);
         output.WriteString(LocalCandidateId);
       }
-      if (RemoteCandidateId.Length != 0) {
+      if (HasRemoteCandidateId) {
         output.WriteRawTag(26);
         output.WriteString(RemoteCandidateId);
       }
@@ -14276,75 +17147,75 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteEnum((int) State);
       }
-      if (Nominated != false) {
+      if (HasNominated) {
         output.WriteRawTag(40);
         output.WriteBool(Nominated);
       }
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         output.WriteRawTag(48);
         output.WriteUInt64(PacketsSent);
       }
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         output.WriteRawTag(56);
         output.WriteUInt64(PacketsReceived);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         output.WriteRawTag(64);
         output.WriteUInt64(BytesSent);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         output.WriteRawTag(72);
         output.WriteUInt64(BytesReceived);
       }
-      if (LastPacketSentTimestamp != 0D) {
+      if (HasLastPacketSentTimestamp) {
         output.WriteRawTag(81);
         output.WriteDouble(LastPacketSentTimestamp);
       }
-      if (LastPacketReceivedTimestamp != 0D) {
+      if (HasLastPacketReceivedTimestamp) {
         output.WriteRawTag(89);
         output.WriteDouble(LastPacketReceivedTimestamp);
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         output.WriteRawTag(97);
         output.WriteDouble(TotalRoundTripTime);
       }
-      if (CurrentRoundTripTime != 0D) {
+      if (HasCurrentRoundTripTime) {
         output.WriteRawTag(105);
         output.WriteDouble(CurrentRoundTripTime);
       }
-      if (AvailableOutgoingBitrate != 0D) {
+      if (HasAvailableOutgoingBitrate) {
         output.WriteRawTag(113);
         output.WriteDouble(AvailableOutgoingBitrate);
       }
-      if (AvailableIncomingBitrate != 0D) {
+      if (HasAvailableIncomingBitrate) {
         output.WriteRawTag(121);
         output.WriteDouble(AvailableIncomingBitrate);
       }
-      if (RequestsReceived != 0UL) {
+      if (HasRequestsReceived) {
         output.WriteRawTag(128, 1);
         output.WriteUInt64(RequestsReceived);
       }
-      if (RequestsSent != 0UL) {
+      if (HasRequestsSent) {
         output.WriteRawTag(136, 1);
         output.WriteUInt64(RequestsSent);
       }
-      if (ResponsesReceived != 0UL) {
+      if (HasResponsesReceived) {
         output.WriteRawTag(144, 1);
         output.WriteUInt64(ResponsesReceived);
       }
-      if (ResponsesSent != 0UL) {
+      if (HasResponsesSent) {
         output.WriteRawTag(152, 1);
         output.WriteUInt64(ResponsesSent);
       }
-      if (ConsentRequestsSent != 0UL) {
+      if (HasConsentRequestsSent) {
         output.WriteRawTag(160, 1);
         output.WriteUInt64(ConsentRequestsSent);
       }
-      if (PacketsDiscardedOnSend != 0) {
+      if (HasPacketsDiscardedOnSend) {
         output.WriteRawTag(168, 1);
         output.WriteUInt32(PacketsDiscardedOnSend);
       }
-      if (BytesDiscardedOnSend != 0UL) {
+      if (HasBytesDiscardedOnSend) {
         output.WriteRawTag(176, 1);
         output.WriteUInt64(BytesDiscardedOnSend);
       }
@@ -14358,70 +17229,70 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TransportId);
       }
-      if (LocalCandidateId.Length != 0) {
+      if (HasLocalCandidateId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(LocalCandidateId);
       }
-      if (RemoteCandidateId.Length != 0) {
+      if (HasRemoteCandidateId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RemoteCandidateId);
       }
       if (HasState) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
       }
-      if (Nominated != false) {
+      if (HasNominated) {
         size += 1 + 1;
       }
-      if (PacketsSent != 0UL) {
+      if (HasPacketsSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PacketsSent);
       }
-      if (PacketsReceived != 0UL) {
+      if (HasPacketsReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(PacketsReceived);
       }
-      if (BytesSent != 0UL) {
+      if (HasBytesSent) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesSent);
       }
-      if (BytesReceived != 0UL) {
+      if (HasBytesReceived) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(BytesReceived);
       }
-      if (LastPacketSentTimestamp != 0D) {
+      if (HasLastPacketSentTimestamp) {
         size += 1 + 8;
       }
-      if (LastPacketReceivedTimestamp != 0D) {
+      if (HasLastPacketReceivedTimestamp) {
         size += 1 + 8;
       }
-      if (TotalRoundTripTime != 0D) {
+      if (HasTotalRoundTripTime) {
         size += 1 + 8;
       }
-      if (CurrentRoundTripTime != 0D) {
+      if (HasCurrentRoundTripTime) {
         size += 1 + 8;
       }
-      if (AvailableOutgoingBitrate != 0D) {
+      if (HasAvailableOutgoingBitrate) {
         size += 1 + 8;
       }
-      if (AvailableIncomingBitrate != 0D) {
+      if (HasAvailableIncomingBitrate) {
         size += 1 + 8;
       }
-      if (RequestsReceived != 0UL) {
+      if (HasRequestsReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(RequestsReceived);
       }
-      if (RequestsSent != 0UL) {
+      if (HasRequestsSent) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(RequestsSent);
       }
-      if (ResponsesReceived != 0UL) {
+      if (HasResponsesReceived) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(ResponsesReceived);
       }
-      if (ResponsesSent != 0UL) {
+      if (HasResponsesSent) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(ResponsesSent);
       }
-      if (ConsentRequestsSent != 0UL) {
+      if (HasConsentRequestsSent) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(ConsentRequestsSent);
       }
-      if (PacketsDiscardedOnSend != 0) {
+      if (HasPacketsDiscardedOnSend) {
         size += 2 + pb::CodedOutputStream.ComputeUInt32Size(PacketsDiscardedOnSend);
       }
-      if (BytesDiscardedOnSend != 0UL) {
+      if (HasBytesDiscardedOnSend) {
         size += 2 + pb::CodedOutputStream.ComputeUInt64Size(BytesDiscardedOnSend);
       }
       if (_unknownFields != null) {
@@ -14436,70 +17307,70 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TransportId.Length != 0) {
+      if (other.HasTransportId) {
         TransportId = other.TransportId;
       }
-      if (other.LocalCandidateId.Length != 0) {
+      if (other.HasLocalCandidateId) {
         LocalCandidateId = other.LocalCandidateId;
       }
-      if (other.RemoteCandidateId.Length != 0) {
+      if (other.HasRemoteCandidateId) {
         RemoteCandidateId = other.RemoteCandidateId;
       }
       if (other.HasState) {
         State = other.State;
       }
-      if (other.Nominated != false) {
+      if (other.HasNominated) {
         Nominated = other.Nominated;
       }
-      if (other.PacketsSent != 0UL) {
+      if (other.HasPacketsSent) {
         PacketsSent = other.PacketsSent;
       }
-      if (other.PacketsReceived != 0UL) {
+      if (other.HasPacketsReceived) {
         PacketsReceived = other.PacketsReceived;
       }
-      if (other.BytesSent != 0UL) {
+      if (other.HasBytesSent) {
         BytesSent = other.BytesSent;
       }
-      if (other.BytesReceived != 0UL) {
+      if (other.HasBytesReceived) {
         BytesReceived = other.BytesReceived;
       }
-      if (other.LastPacketSentTimestamp != 0D) {
+      if (other.HasLastPacketSentTimestamp) {
         LastPacketSentTimestamp = other.LastPacketSentTimestamp;
       }
-      if (other.LastPacketReceivedTimestamp != 0D) {
+      if (other.HasLastPacketReceivedTimestamp) {
         LastPacketReceivedTimestamp = other.LastPacketReceivedTimestamp;
       }
-      if (other.TotalRoundTripTime != 0D) {
+      if (other.HasTotalRoundTripTime) {
         TotalRoundTripTime = other.TotalRoundTripTime;
       }
-      if (other.CurrentRoundTripTime != 0D) {
+      if (other.HasCurrentRoundTripTime) {
         CurrentRoundTripTime = other.CurrentRoundTripTime;
       }
-      if (other.AvailableOutgoingBitrate != 0D) {
+      if (other.HasAvailableOutgoingBitrate) {
         AvailableOutgoingBitrate = other.AvailableOutgoingBitrate;
       }
-      if (other.AvailableIncomingBitrate != 0D) {
+      if (other.HasAvailableIncomingBitrate) {
         AvailableIncomingBitrate = other.AvailableIncomingBitrate;
       }
-      if (other.RequestsReceived != 0UL) {
+      if (other.HasRequestsReceived) {
         RequestsReceived = other.RequestsReceived;
       }
-      if (other.RequestsSent != 0UL) {
+      if (other.HasRequestsSent) {
         RequestsSent = other.RequestsSent;
       }
-      if (other.ResponsesReceived != 0UL) {
+      if (other.HasResponsesReceived) {
         ResponsesReceived = other.ResponsesReceived;
       }
-      if (other.ResponsesSent != 0UL) {
+      if (other.HasResponsesSent) {
         ResponsesSent = other.ResponsesSent;
       }
-      if (other.ConsentRequestsSent != 0UL) {
+      if (other.HasConsentRequestsSent) {
         ConsentRequestsSent = other.ConsentRequestsSent;
       }
-      if (other.PacketsDiscardedOnSend != 0) {
+      if (other.HasPacketsDiscardedOnSend) {
         PacketsDiscardedOnSend = other.PacketsDiscardedOnSend;
       }
-      if (other.BytesDiscardedOnSend != 0UL) {
+      if (other.HasBytesDiscardedOnSend) {
         BytesDiscardedOnSend = other.BytesDiscardedOnSend;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -14513,7 +17384,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -14616,7 +17491,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -14776,50 +17655,107 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "transport_id" field.</summary>
     public const int TransportIdFieldNumber = 1;
-    private string transportId_ = "";
+    private readonly static string TransportIdDefaultValue = "";
+
+    private string transportId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TransportId {
-      get { return transportId_; }
+      get { return transportId_ ?? TransportIdDefaultValue; }
       set {
         transportId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "transport_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTransportId {
+      get { return transportId_ != null; }
+    }
+    /// <summary>Clears the value of the "transport_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTransportId() {
+      transportId_ = null;
+    }
 
     /// <summary>Field number for the "address" field.</summary>
     public const int AddressFieldNumber = 2;
-    private string address_ = "";
+    private readonly static string AddressDefaultValue = "";
+
+    private string address_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Address {
-      get { return address_; }
+      get { return address_ ?? AddressDefaultValue; }
       set {
         address_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "address" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAddress {
+      get { return address_ != null; }
+    }
+    /// <summary>Clears the value of the "address" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAddress() {
+      address_ = null;
+    }
 
     /// <summary>Field number for the "port" field.</summary>
     public const int PortFieldNumber = 3;
+    private readonly static int PortDefaultValue = 0;
+
     private int port_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int Port {
-      get { return port_; }
+      get { if ((_hasBits0 & 1) != 0) { return port_; } else { return PortDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         port_ = value;
       }
+    }
+    /// <summary>Gets whether the "port" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPort {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "port" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPort() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "protocol" field.</summary>
     public const int ProtocolFieldNumber = 4;
-    private string protocol_ = "";
+    private readonly static string ProtocolDefaultValue = "";
+
+    private string protocol_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Protocol {
-      get { return protocol_; }
+      get { return protocol_ ?? ProtocolDefaultValue; }
       set {
         protocol_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "protocol" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasProtocol {
+      get { return protocol_ != null; }
+    }
+    /// <summary>Clears the value of the "protocol" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearProtocol() {
+      protocol_ = null;
     }
 
     /// <summary>Field number for the "candidate_type" field.</summary>
@@ -14830,9 +17766,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.IceCandidateType CandidateType {
-      get { if ((_hasBits0 & 1) != 0) { return candidateType_; } else { return CandidateTypeDefaultValue; } }
+      get { if ((_hasBits0 & 2) != 0) { return candidateType_; } else { return CandidateTypeDefaultValue; } }
       set {
-        _hasBits0 |= 1;
+        _hasBits0 |= 2;
         candidateType_ = value;
       }
     }
@@ -14840,37 +17776,66 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasCandidateType {
-      get { return (_hasBits0 & 1) != 0; }
+      get { return (_hasBits0 & 2) != 0; }
     }
     /// <summary>Clears the value of the "candidate_type" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearCandidateType() {
-      _hasBits0 &= ~1;
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "priority" field.</summary>
     public const int PriorityFieldNumber = 6;
+    private readonly static int PriorityDefaultValue = 0;
+
     private int priority_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int Priority {
-      get { return priority_; }
+      get { if ((_hasBits0 & 4) != 0) { return priority_; } else { return PriorityDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         priority_ = value;
       }
+    }
+    /// <summary>Gets whether the "priority" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPriority {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "priority" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPriority() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "url" field.</summary>
     public const int UrlFieldNumber = 7;
-    private string url_ = "";
+    private readonly static string UrlDefaultValue = "";
+
+    private string url_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Url {
-      get { return url_; }
+      get { return url_ ?? UrlDefaultValue; }
       set {
         url_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "url" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasUrl {
+      get { return url_ != null; }
+    }
+    /// <summary>Clears the value of the "url" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearUrl() {
+      url_ = null;
     }
 
     /// <summary>Field number for the "relay_protocol" field.</summary>
@@ -14881,9 +17846,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.IceServerTransportProtocol RelayProtocol {
-      get { if ((_hasBits0 & 2) != 0) { return relayProtocol_; } else { return RelayProtocolDefaultValue; } }
+      get { if ((_hasBits0 & 8) != 0) { return relayProtocol_; } else { return RelayProtocolDefaultValue; } }
       set {
-        _hasBits0 |= 2;
+        _hasBits0 |= 8;
         relayProtocol_ = value;
       }
     }
@@ -14891,61 +17856,118 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasRelayProtocol {
-      get { return (_hasBits0 & 2) != 0; }
+      get { return (_hasBits0 & 8) != 0; }
     }
     /// <summary>Clears the value of the "relay_protocol" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearRelayProtocol() {
-      _hasBits0 &= ~2;
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "foundation" field.</summary>
     public const int FoundationFieldNumber = 9;
-    private string foundation_ = "";
+    private readonly static string FoundationDefaultValue = "";
+
+    private string foundation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Foundation {
-      get { return foundation_; }
+      get { return foundation_ ?? FoundationDefaultValue; }
       set {
         foundation_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "foundation" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFoundation {
+      get { return foundation_ != null; }
+    }
+    /// <summary>Clears the value of the "foundation" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFoundation() {
+      foundation_ = null;
+    }
 
     /// <summary>Field number for the "related_address" field.</summary>
     public const int RelatedAddressFieldNumber = 10;
-    private string relatedAddress_ = "";
+    private readonly static string RelatedAddressDefaultValue = "";
+
+    private string relatedAddress_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string RelatedAddress {
-      get { return relatedAddress_; }
+      get { return relatedAddress_ ?? RelatedAddressDefaultValue; }
       set {
         relatedAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "related_address" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRelatedAddress {
+      get { return relatedAddress_ != null; }
+    }
+    /// <summary>Clears the value of the "related_address" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRelatedAddress() {
+      relatedAddress_ = null;
+    }
 
     /// <summary>Field number for the "related_port" field.</summary>
     public const int RelatedPortFieldNumber = 11;
+    private readonly static int RelatedPortDefaultValue = 0;
+
     private int relatedPort_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int RelatedPort {
-      get { return relatedPort_; }
+      get { if ((_hasBits0 & 16) != 0) { return relatedPort_; } else { return RelatedPortDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         relatedPort_ = value;
       }
+    }
+    /// <summary>Gets whether the "related_port" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRelatedPort {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "related_port" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRelatedPort() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "username_fragment" field.</summary>
     public const int UsernameFragmentFieldNumber = 12;
-    private string usernameFragment_ = "";
+    private readonly static string UsernameFragmentDefaultValue = "";
+
+    private string usernameFragment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string UsernameFragment {
-      get { return usernameFragment_; }
+      get { return usernameFragment_ ?? UsernameFragmentDefaultValue; }
       set {
         usernameFragment_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "username_fragment" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasUsernameFragment {
+      get { return usernameFragment_ != null; }
+    }
+    /// <summary>Clears the value of the "username_fragment" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearUsernameFragment() {
+      usernameFragment_ = null;
     }
 
     /// <summary>Field number for the "tcp_type" field.</summary>
@@ -14956,9 +17978,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.IceTcpCandidateType TcpType {
-      get { if ((_hasBits0 & 4) != 0) { return tcpType_; } else { return TcpTypeDefaultValue; } }
+      get { if ((_hasBits0 & 32) != 0) { return tcpType_; } else { return TcpTypeDefaultValue; } }
       set {
-        _hasBits0 |= 4;
+        _hasBits0 |= 32;
         tcpType_ = value;
       }
     }
@@ -14966,13 +17988,13 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasTcpType {
-      get { return (_hasBits0 & 4) != 0; }
+      get { return (_hasBits0 & 32) != 0; }
     }
     /// <summary>Clears the value of the "tcp_type" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearTcpType() {
-      _hasBits0 &= ~4;
+      _hasBits0 &= ~32;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -15010,18 +18032,18 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TransportId.Length != 0) hash ^= TransportId.GetHashCode();
-      if (Address.Length != 0) hash ^= Address.GetHashCode();
-      if (Port != 0) hash ^= Port.GetHashCode();
-      if (Protocol.Length != 0) hash ^= Protocol.GetHashCode();
+      if (HasTransportId) hash ^= TransportId.GetHashCode();
+      if (HasAddress) hash ^= Address.GetHashCode();
+      if (HasPort) hash ^= Port.GetHashCode();
+      if (HasProtocol) hash ^= Protocol.GetHashCode();
       if (HasCandidateType) hash ^= CandidateType.GetHashCode();
-      if (Priority != 0) hash ^= Priority.GetHashCode();
-      if (Url.Length != 0) hash ^= Url.GetHashCode();
+      if (HasPriority) hash ^= Priority.GetHashCode();
+      if (HasUrl) hash ^= Url.GetHashCode();
       if (HasRelayProtocol) hash ^= RelayProtocol.GetHashCode();
-      if (Foundation.Length != 0) hash ^= Foundation.GetHashCode();
-      if (RelatedAddress.Length != 0) hash ^= RelatedAddress.GetHashCode();
-      if (RelatedPort != 0) hash ^= RelatedPort.GetHashCode();
-      if (UsernameFragment.Length != 0) hash ^= UsernameFragment.GetHashCode();
+      if (HasFoundation) hash ^= Foundation.GetHashCode();
+      if (HasRelatedAddress) hash ^= RelatedAddress.GetHashCode();
+      if (HasRelatedPort) hash ^= RelatedPort.GetHashCode();
+      if (HasUsernameFragment) hash ^= UsernameFragment.GetHashCode();
       if (HasTcpType) hash ^= TcpType.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -15041,19 +18063,19 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(10);
         output.WriteString(TransportId);
       }
-      if (Address.Length != 0) {
+      if (HasAddress) {
         output.WriteRawTag(18);
         output.WriteString(Address);
       }
-      if (Port != 0) {
+      if (HasPort) {
         output.WriteRawTag(24);
         output.WriteInt32(Port);
       }
-      if (Protocol.Length != 0) {
+      if (HasProtocol) {
         output.WriteRawTag(34);
         output.WriteString(Protocol);
       }
@@ -15061,11 +18083,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(40);
         output.WriteEnum((int) CandidateType);
       }
-      if (Priority != 0) {
+      if (HasPriority) {
         output.WriteRawTag(48);
         output.WriteInt32(Priority);
       }
-      if (Url.Length != 0) {
+      if (HasUrl) {
         output.WriteRawTag(58);
         output.WriteString(Url);
       }
@@ -15073,19 +18095,19 @@ namespace LiveKit.Proto {
         output.WriteRawTag(64);
         output.WriteEnum((int) RelayProtocol);
       }
-      if (Foundation.Length != 0) {
+      if (HasFoundation) {
         output.WriteRawTag(74);
         output.WriteString(Foundation);
       }
-      if (RelatedAddress.Length != 0) {
+      if (HasRelatedAddress) {
         output.WriteRawTag(82);
         output.WriteString(RelatedAddress);
       }
-      if (RelatedPort != 0) {
+      if (HasRelatedPort) {
         output.WriteRawTag(88);
         output.WriteInt32(RelatedPort);
       }
-      if (UsernameFragment.Length != 0) {
+      if (HasUsernameFragment) {
         output.WriteRawTag(98);
         output.WriteString(UsernameFragment);
       }
@@ -15103,19 +18125,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         output.WriteRawTag(10);
         output.WriteString(TransportId);
       }
-      if (Address.Length != 0) {
+      if (HasAddress) {
         output.WriteRawTag(18);
         output.WriteString(Address);
       }
-      if (Port != 0) {
+      if (HasPort) {
         output.WriteRawTag(24);
         output.WriteInt32(Port);
       }
-      if (Protocol.Length != 0) {
+      if (HasProtocol) {
         output.WriteRawTag(34);
         output.WriteString(Protocol);
       }
@@ -15123,11 +18145,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(40);
         output.WriteEnum((int) CandidateType);
       }
-      if (Priority != 0) {
+      if (HasPriority) {
         output.WriteRawTag(48);
         output.WriteInt32(Priority);
       }
-      if (Url.Length != 0) {
+      if (HasUrl) {
         output.WriteRawTag(58);
         output.WriteString(Url);
       }
@@ -15135,19 +18157,19 @@ namespace LiveKit.Proto {
         output.WriteRawTag(64);
         output.WriteEnum((int) RelayProtocol);
       }
-      if (Foundation.Length != 0) {
+      if (HasFoundation) {
         output.WriteRawTag(74);
         output.WriteString(Foundation);
       }
-      if (RelatedAddress.Length != 0) {
+      if (HasRelatedAddress) {
         output.WriteRawTag(82);
         output.WriteString(RelatedAddress);
       }
-      if (RelatedPort != 0) {
+      if (HasRelatedPort) {
         output.WriteRawTag(88);
         output.WriteInt32(RelatedPort);
       }
-      if (UsernameFragment.Length != 0) {
+      if (HasUsernameFragment) {
         output.WriteRawTag(98);
         output.WriteString(UsernameFragment);
       }
@@ -15165,40 +18187,40 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TransportId.Length != 0) {
+      if (HasTransportId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TransportId);
       }
-      if (Address.Length != 0) {
+      if (HasAddress) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Address);
       }
-      if (Port != 0) {
+      if (HasPort) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Port);
       }
-      if (Protocol.Length != 0) {
+      if (HasProtocol) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Protocol);
       }
       if (HasCandidateType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) CandidateType);
       }
-      if (Priority != 0) {
+      if (HasPriority) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Priority);
       }
-      if (Url.Length != 0) {
+      if (HasUrl) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Url);
       }
       if (HasRelayProtocol) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) RelayProtocol);
       }
-      if (Foundation.Length != 0) {
+      if (HasFoundation) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Foundation);
       }
-      if (RelatedAddress.Length != 0) {
+      if (HasRelatedAddress) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(RelatedAddress);
       }
-      if (RelatedPort != 0) {
+      if (HasRelatedPort) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RelatedPort);
       }
-      if (UsernameFragment.Length != 0) {
+      if (HasUsernameFragment) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UsernameFragment);
       }
       if (HasTcpType) {
@@ -15216,40 +18238,40 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TransportId.Length != 0) {
+      if (other.HasTransportId) {
         TransportId = other.TransportId;
       }
-      if (other.Address.Length != 0) {
+      if (other.HasAddress) {
         Address = other.Address;
       }
-      if (other.Port != 0) {
+      if (other.HasPort) {
         Port = other.Port;
       }
-      if (other.Protocol.Length != 0) {
+      if (other.HasProtocol) {
         Protocol = other.Protocol;
       }
       if (other.HasCandidateType) {
         CandidateType = other.CandidateType;
       }
-      if (other.Priority != 0) {
+      if (other.HasPriority) {
         Priority = other.Priority;
       }
-      if (other.Url.Length != 0) {
+      if (other.HasUrl) {
         Url = other.Url;
       }
       if (other.HasRelayProtocol) {
         RelayProtocol = other.RelayProtocol;
       }
-      if (other.Foundation.Length != 0) {
+      if (other.HasFoundation) {
         Foundation = other.Foundation;
       }
-      if (other.RelatedAddress.Length != 0) {
+      if (other.HasRelatedAddress) {
         RelatedAddress = other.RelatedAddress;
       }
-      if (other.RelatedPort != 0) {
+      if (other.HasRelatedPort) {
         RelatedPort = other.RelatedPort;
       }
-      if (other.UsernameFragment.Length != 0) {
+      if (other.HasUsernameFragment) {
         UsernameFragment = other.UsernameFragment;
       }
       if (other.HasTcpType) {
@@ -15266,7 +18288,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -15333,7 +18359,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -15446,50 +18476,106 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "fingerprint" field.</summary>
     public const int FingerprintFieldNumber = 1;
-    private string fingerprint_ = "";
+    private readonly static string FingerprintDefaultValue = "";
+
+    private string fingerprint_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Fingerprint {
-      get { return fingerprint_; }
+      get { return fingerprint_ ?? FingerprintDefaultValue; }
       set {
         fingerprint_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "fingerprint" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFingerprint {
+      get { return fingerprint_ != null; }
+    }
+    /// <summary>Clears the value of the "fingerprint" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFingerprint() {
+      fingerprint_ = null;
+    }
 
     /// <summary>Field number for the "fingerprint_algorithm" field.</summary>
     public const int FingerprintAlgorithmFieldNumber = 2;
-    private string fingerprintAlgorithm_ = "";
+    private readonly static string FingerprintAlgorithmDefaultValue = "";
+
+    private string fingerprintAlgorithm_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string FingerprintAlgorithm {
-      get { return fingerprintAlgorithm_; }
+      get { return fingerprintAlgorithm_ ?? FingerprintAlgorithmDefaultValue; }
       set {
         fingerprintAlgorithm_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "fingerprint_algorithm" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFingerprintAlgorithm {
+      get { return fingerprintAlgorithm_ != null; }
+    }
+    /// <summary>Clears the value of the "fingerprint_algorithm" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFingerprintAlgorithm() {
+      fingerprintAlgorithm_ = null;
+    }
 
     /// <summary>Field number for the "base64_certificate" field.</summary>
     public const int Base64CertificateFieldNumber = 3;
-    private string base64Certificate_ = "";
+    private readonly static string Base64CertificateDefaultValue = "";
+
+    private string base64Certificate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Base64Certificate {
-      get { return base64Certificate_; }
+      get { return base64Certificate_ ?? Base64CertificateDefaultValue; }
       set {
         base64Certificate_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "base64_certificate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBase64Certificate {
+      get { return base64Certificate_ != null; }
+    }
+    /// <summary>Clears the value of the "base64_certificate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBase64Certificate() {
+      base64Certificate_ = null;
+    }
 
     /// <summary>Field number for the "issuer_certificate_id" field.</summary>
     public const int IssuerCertificateIdFieldNumber = 4;
-    private string issuerCertificateId_ = "";
+    private readonly static string IssuerCertificateIdDefaultValue = "";
+
+    private string issuerCertificateId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string IssuerCertificateId {
-      get { return issuerCertificateId_; }
+      get { return issuerCertificateId_ ?? IssuerCertificateIdDefaultValue; }
       set {
         issuerCertificateId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
+    }
+    /// <summary>Gets whether the "issuer_certificate_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasIssuerCertificateId {
+      get { return issuerCertificateId_ != null; }
+    }
+    /// <summary>Clears the value of the "issuer_certificate_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearIssuerCertificateId() {
+      issuerCertificateId_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -15518,10 +18604,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Fingerprint.Length != 0) hash ^= Fingerprint.GetHashCode();
-      if (FingerprintAlgorithm.Length != 0) hash ^= FingerprintAlgorithm.GetHashCode();
-      if (Base64Certificate.Length != 0) hash ^= Base64Certificate.GetHashCode();
-      if (IssuerCertificateId.Length != 0) hash ^= IssuerCertificateId.GetHashCode();
+      if (HasFingerprint) hash ^= Fingerprint.GetHashCode();
+      if (HasFingerprintAlgorithm) hash ^= FingerprintAlgorithm.GetHashCode();
+      if (HasBase64Certificate) hash ^= Base64Certificate.GetHashCode();
+      if (HasIssuerCertificateId) hash ^= IssuerCertificateId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -15540,19 +18626,19 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Fingerprint.Length != 0) {
+      if (HasFingerprint) {
         output.WriteRawTag(10);
         output.WriteString(Fingerprint);
       }
-      if (FingerprintAlgorithm.Length != 0) {
+      if (HasFingerprintAlgorithm) {
         output.WriteRawTag(18);
         output.WriteString(FingerprintAlgorithm);
       }
-      if (Base64Certificate.Length != 0) {
+      if (HasBase64Certificate) {
         output.WriteRawTag(26);
         output.WriteString(Base64Certificate);
       }
-      if (IssuerCertificateId.Length != 0) {
+      if (HasIssuerCertificateId) {
         output.WriteRawTag(34);
         output.WriteString(IssuerCertificateId);
       }
@@ -15566,19 +18652,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Fingerprint.Length != 0) {
+      if (HasFingerprint) {
         output.WriteRawTag(10);
         output.WriteString(Fingerprint);
       }
-      if (FingerprintAlgorithm.Length != 0) {
+      if (HasFingerprintAlgorithm) {
         output.WriteRawTag(18);
         output.WriteString(FingerprintAlgorithm);
       }
-      if (Base64Certificate.Length != 0) {
+      if (HasBase64Certificate) {
         output.WriteRawTag(26);
         output.WriteString(Base64Certificate);
       }
-      if (IssuerCertificateId.Length != 0) {
+      if (HasIssuerCertificateId) {
         output.WriteRawTag(34);
         output.WriteString(IssuerCertificateId);
       }
@@ -15592,16 +18678,16 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Fingerprint.Length != 0) {
+      if (HasFingerprint) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Fingerprint);
       }
-      if (FingerprintAlgorithm.Length != 0) {
+      if (HasFingerprintAlgorithm) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(FingerprintAlgorithm);
       }
-      if (Base64Certificate.Length != 0) {
+      if (HasBase64Certificate) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Base64Certificate);
       }
-      if (IssuerCertificateId.Length != 0) {
+      if (HasIssuerCertificateId) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(IssuerCertificateId);
       }
       if (_unknownFields != null) {
@@ -15616,16 +18702,16 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Fingerprint.Length != 0) {
+      if (other.HasFingerprint) {
         Fingerprint = other.Fingerprint;
       }
-      if (other.FingerprintAlgorithm.Length != 0) {
+      if (other.HasFingerprintAlgorithm) {
         FingerprintAlgorithm = other.FingerprintAlgorithm;
       }
-      if (other.Base64Certificate.Length != 0) {
+      if (other.HasBase64Certificate) {
         Base64Certificate = other.Base64Certificate;
       }
-      if (other.IssuerCertificateId.Length != 0) {
+      if (other.HasIssuerCertificateId) {
         IssuerCertificateId = other.IssuerCertificateId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -15639,7 +18725,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -15670,7 +18760,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;

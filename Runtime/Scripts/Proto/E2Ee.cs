@@ -25,80 +25,78 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgplMmVlLnByb3RvEg1saXZla2l0LnByb3RvImMKDEZyYW1lQ3J5cHRvchIc",
-            "ChRwYXJ0aWNpcGFudF9pZGVudGl0eRgBIAEoCRIRCgl0cmFja19zaWQYAiAB",
-            "KAkSEQoJa2V5X2luZGV4GAMgASgFEg8KB2VuYWJsZWQYBCABKAgiigEKEktl",
-            "eVByb3ZpZGVyT3B0aW9ucxIXCgpzaGFyZWRfa2V5GAEgASgMSACIAQESGwoT",
-            "cmF0Y2hldF93aW5kb3dfc2l6ZRgCIAEoBRIUCgxyYXRjaGV0X3NhbHQYAyAB",
-            "KAwSGQoRZmFpbHVyZV90b2xlcmFuY2UYBCABKAVCDQoLX3NoYXJlZF9rZXki",
-            "hgEKC0UyZWVPcHRpb25zEjYKD2VuY3J5cHRpb25fdHlwZRgBIAEoDjIdLmxp",
-            "dmVraXQucHJvdG8uRW5jcnlwdGlvblR5cGUSPwoUa2V5X3Byb3ZpZGVyX29w",
-            "dGlvbnMYAiABKAsyIS5saXZla2l0LnByb3RvLktleVByb3ZpZGVyT3B0aW9u",
-            "cyIvChxFMmVlTWFuYWdlclNldEVuYWJsZWRSZXF1ZXN0Eg8KB2VuYWJsZWQY",
-            "ASABKAgiHwodRTJlZU1hbmFnZXJTZXRFbmFibGVkUmVzcG9uc2UiJAoiRTJl",
-            "ZU1hbmFnZXJHZXRGcmFtZUNyeXB0b3JzUmVxdWVzdCJaCiNFMmVlTWFuYWdl",
-            "ckdldEZyYW1lQ3J5cHRvcnNSZXNwb25zZRIzCg5mcmFtZV9jcnlwdG9ycxgB",
-            "IAMoCzIbLmxpdmVraXQucHJvdG8uRnJhbWVDcnlwdG9yImEKHUZyYW1lQ3J5",
-            "cHRvclNldEVuYWJsZWRSZXF1ZXN0EhwKFHBhcnRpY2lwYW50X2lkZW50aXR5",
-            "GAEgASgJEhEKCXRyYWNrX3NpZBgCIAEoCRIPCgdlbmFibGVkGAMgASgIIiAK",
-            "HkZyYW1lQ3J5cHRvclNldEVuYWJsZWRSZXNwb25zZSJkCh5GcmFtZUNyeXB0",
-            "b3JTZXRLZXlJbmRleFJlcXVlc3QSHAoUcGFydGljaXBhbnRfaWRlbnRpdHkY",
-            "ASABKAkSEQoJdHJhY2tfc2lkGAIgASgJEhEKCWtleV9pbmRleBgDIAEoBSIh",
-            "Ch9GcmFtZUNyeXB0b3JTZXRLZXlJbmRleFJlc3BvbnNlIjwKE1NldFNoYXJl",
-            "ZEtleVJlcXVlc3QSEgoKc2hhcmVkX2tleRgBIAEoDBIRCglrZXlfaW5kZXgY",
-            "AiABKAUiFgoUU2V0U2hhcmVkS2V5UmVzcG9uc2UiLAoXUmF0Y2hldFNoYXJl",
-            "ZEtleVJlcXVlc3QSEQoJa2V5X2luZGV4GAEgASgFIjwKGFJhdGNoZXRTaGFy",
-            "ZWRLZXlSZXNwb25zZRIUCgduZXdfa2V5GAEgASgMSACIAQFCCgoIX25ld19r",
-            "ZXkiKAoTR2V0U2hhcmVkS2V5UmVxdWVzdBIRCglrZXlfaW5kZXgYASABKAUi",
-            "MAoUR2V0U2hhcmVkS2V5UmVzcG9uc2USEAoDa2V5GAEgASgMSACIAQFCBgoE",
-            "X2tleSJNCg1TZXRLZXlSZXF1ZXN0EhwKFHBhcnRpY2lwYW50X2lkZW50aXR5",
-            "GAEgASgJEgsKA2tleRgCIAEoDBIRCglrZXlfaW5kZXgYAyABKAUiEAoOU2V0",
-            "S2V5UmVzcG9uc2UiRAoRUmF0Y2hldEtleVJlcXVlc3QSHAoUcGFydGljaXBh",
-            "bnRfaWRlbnRpdHkYASABKAkSEQoJa2V5X2luZGV4GAIgASgFIjYKElJhdGNo",
-            "ZXRLZXlSZXNwb25zZRIUCgduZXdfa2V5GAEgASgMSACIAQFCCgoIX25ld19r",
-            "ZXkiQAoNR2V0S2V5UmVxdWVzdBIcChRwYXJ0aWNpcGFudF9pZGVudGl0eRgB",
-            "IAEoCRIRCglrZXlfaW5kZXgYAiABKAUiKgoOR2V0S2V5UmVzcG9uc2USEAoD",
-            "a2V5GAEgASgMSACIAQFCBgoEX2tleSLMBQoLRTJlZVJlcXVlc3QSEwoLcm9v",
-            "bV9oYW5kbGUYASABKAQSSgoTbWFuYWdlcl9zZXRfZW5hYmxlZBgCIAEoCzIr",
-            "LmxpdmVraXQucHJvdG8uRTJlZU1hbmFnZXJTZXRFbmFibGVkUmVxdWVzdEgA",
-            "ElcKGm1hbmFnZXJfZ2V0X2ZyYW1lX2NyeXB0b3JzGAMgASgLMjEubGl2ZWtp",
-            "dC5wcm90by5FMmVlTWFuYWdlckdldEZyYW1lQ3J5cHRvcnNSZXF1ZXN0SAAS",
-            "SwoTY3J5cHRvcl9zZXRfZW5hYmxlZBgEIAEoCzIsLmxpdmVraXQucHJvdG8u",
-            "RnJhbWVDcnlwdG9yU2V0RW5hYmxlZFJlcXVlc3RIABJOChVjcnlwdG9yX3Nl",
-            "dF9rZXlfaW5kZXgYBSABKAsyLS5saXZla2l0LnByb3RvLkZyYW1lQ3J5cHRv",
-            "clNldEtleUluZGV4UmVxdWVzdEgAEjwKDnNldF9zaGFyZWRfa2V5GAYgASgL",
-            "MiIubGl2ZWtpdC5wcm90by5TZXRTaGFyZWRLZXlSZXF1ZXN0SAASRAoScmF0",
-            "Y2hldF9zaGFyZWRfa2V5GAcgASgLMiYubGl2ZWtpdC5wcm90by5SYXRjaGV0",
-            "U2hhcmVkS2V5UmVxdWVzdEgAEjwKDmdldF9zaGFyZWRfa2V5GAggASgLMiIu",
-            "bGl2ZWtpdC5wcm90by5HZXRTaGFyZWRLZXlSZXF1ZXN0SAASLwoHc2V0X2tl",
-            "eRgJIAEoCzIcLmxpdmVraXQucHJvdG8uU2V0S2V5UmVxdWVzdEgAEjcKC3Jh",
-            "dGNoZXRfa2V5GAogASgLMiAubGl2ZWtpdC5wcm90by5SYXRjaGV0S2V5UmVx",
-            "dWVzdEgAEi8KB2dldF9rZXkYCyABKAsyHC5saXZla2l0LnByb3RvLkdldEtl",
-            "eVJlcXVlc3RIAEIJCgdtZXNzYWdlIsIFCgxFMmVlUmVzcG9uc2USSwoTbWFu",
-            "YWdlcl9zZXRfZW5hYmxlZBgBIAEoCzIsLmxpdmVraXQucHJvdG8uRTJlZU1h",
-            "bmFnZXJTZXRFbmFibGVkUmVzcG9uc2VIABJYChptYW5hZ2VyX2dldF9mcmFt",
-            "ZV9jcnlwdG9ycxgCIAEoCzIyLmxpdmVraXQucHJvdG8uRTJlZU1hbmFnZXJH",
-            "ZXRGcmFtZUNyeXB0b3JzUmVzcG9uc2VIABJMChNjcnlwdG9yX3NldF9lbmFi",
-            "bGVkGAMgASgLMi0ubGl2ZWtpdC5wcm90by5GcmFtZUNyeXB0b3JTZXRFbmFi",
-            "bGVkUmVzcG9uc2VIABJPChVjcnlwdG9yX3NldF9rZXlfaW5kZXgYBCABKAsy",
-            "Li5saXZla2l0LnByb3RvLkZyYW1lQ3J5cHRvclNldEtleUluZGV4UmVzcG9u",
-            "c2VIABI9Cg5zZXRfc2hhcmVkX2tleRgFIAEoCzIjLmxpdmVraXQucHJvdG8u",
-            "U2V0U2hhcmVkS2V5UmVzcG9uc2VIABJFChJyYXRjaGV0X3NoYXJlZF9rZXkY",
-            "BiABKAsyJy5saXZla2l0LnByb3RvLlJhdGNoZXRTaGFyZWRLZXlSZXNwb25z",
-            "ZUgAEj0KDmdldF9zaGFyZWRfa2V5GAcgASgLMiMubGl2ZWtpdC5wcm90by5H",
-            "ZXRTaGFyZWRLZXlSZXNwb25zZUgAEjAKB3NldF9rZXkYCCABKAsyHS5saXZl",
-            "a2l0LnByb3RvLlNldEtleVJlc3BvbnNlSAASOAoLcmF0Y2hldF9rZXkYCSAB",
-            "KAsyIS5saXZla2l0LnByb3RvLlJhdGNoZXRLZXlSZXNwb25zZUgAEjAKB2dl",
-            "dF9rZXkYCiABKAsyHS5saXZla2l0LnByb3RvLkdldEtleVJlc3BvbnNlSABC",
-            "CQoHbWVzc2FnZSovCg5FbmNyeXB0aW9uVHlwZRIICgROT05FEAASBwoDR0NN",
-            "EAESCgoGQ1VTVE9NEAIqiAEKD0VuY3J5cHRpb25TdGF0ZRIHCgNORVcQABIG",
-            "CgJPSxABEhUKEUVOQ1JZUFRJT05fRkFJTEVEEAISFQoRREVDUllQVElPTl9G",
-            "QUlMRUQQAxIPCgtNSVNTSU5HX0tFWRAEEhEKDUtFWV9SQVRDSEVURUQQBRIS",
-            "Cg5JTlRFUk5BTF9FUlJPUhAGQhCqAg1MaXZlS2l0LlByb3RvYgZwcm90bzM="));
+            "ChRwYXJ0aWNpcGFudF9pZGVudGl0eRgBIAIoCRIRCgl0cmFja19zaWQYAiAC",
+            "KAkSEQoJa2V5X2luZGV4GAMgAigFEg8KB2VuYWJsZWQYBCACKAgidgoSS2V5",
+            "UHJvdmlkZXJPcHRpb25zEhIKCnNoYXJlZF9rZXkYASABKAwSGwoTcmF0Y2hl",
+            "dF93aW5kb3dfc2l6ZRgCIAIoBRIUCgxyYXRjaGV0X3NhbHQYAyACKAwSGQoR",
+            "ZmFpbHVyZV90b2xlcmFuY2UYBCACKAUihgEKC0UyZWVPcHRpb25zEjYKD2Vu",
+            "Y3J5cHRpb25fdHlwZRgBIAIoDjIdLmxpdmVraXQucHJvdG8uRW5jcnlwdGlv",
+            "blR5cGUSPwoUa2V5X3Byb3ZpZGVyX29wdGlvbnMYAiACKAsyIS5saXZla2l0",
+            "LnByb3RvLktleVByb3ZpZGVyT3B0aW9ucyIvChxFMmVlTWFuYWdlclNldEVu",
+            "YWJsZWRSZXF1ZXN0Eg8KB2VuYWJsZWQYASACKAgiHwodRTJlZU1hbmFnZXJT",
+            "ZXRFbmFibGVkUmVzcG9uc2UiJAoiRTJlZU1hbmFnZXJHZXRGcmFtZUNyeXB0",
+            "b3JzUmVxdWVzdCJaCiNFMmVlTWFuYWdlckdldEZyYW1lQ3J5cHRvcnNSZXNw",
+            "b25zZRIzCg5mcmFtZV9jcnlwdG9ycxgBIAMoCzIbLmxpdmVraXQucHJvdG8u",
+            "RnJhbWVDcnlwdG9yImEKHUZyYW1lQ3J5cHRvclNldEVuYWJsZWRSZXF1ZXN0",
+            "EhwKFHBhcnRpY2lwYW50X2lkZW50aXR5GAEgAigJEhEKCXRyYWNrX3NpZBgC",
+            "IAIoCRIPCgdlbmFibGVkGAMgAigIIiAKHkZyYW1lQ3J5cHRvclNldEVuYWJs",
+            "ZWRSZXNwb25zZSJkCh5GcmFtZUNyeXB0b3JTZXRLZXlJbmRleFJlcXVlc3QS",
+            "HAoUcGFydGljaXBhbnRfaWRlbnRpdHkYASACKAkSEQoJdHJhY2tfc2lkGAIg",
+            "AigJEhEKCWtleV9pbmRleBgDIAIoBSIhCh9GcmFtZUNyeXB0b3JTZXRLZXlJ",
+            "bmRleFJlc3BvbnNlIjwKE1NldFNoYXJlZEtleVJlcXVlc3QSEgoKc2hhcmVk",
+            "X2tleRgBIAIoDBIRCglrZXlfaW5kZXgYAiACKAUiFgoUU2V0U2hhcmVkS2V5",
+            "UmVzcG9uc2UiLAoXUmF0Y2hldFNoYXJlZEtleVJlcXVlc3QSEQoJa2V5X2lu",
+            "ZGV4GAEgAigFIisKGFJhdGNoZXRTaGFyZWRLZXlSZXNwb25zZRIPCgduZXdf",
+            "a2V5GAEgASgMIigKE0dldFNoYXJlZEtleVJlcXVlc3QSEQoJa2V5X2luZGV4",
+            "GAEgAigFIiMKFEdldFNoYXJlZEtleVJlc3BvbnNlEgsKA2tleRgBIAEoDCJN",
+            "Cg1TZXRLZXlSZXF1ZXN0EhwKFHBhcnRpY2lwYW50X2lkZW50aXR5GAEgAigJ",
+            "EgsKA2tleRgCIAIoDBIRCglrZXlfaW5kZXgYAyACKAUiEAoOU2V0S2V5UmVz",
+            "cG9uc2UiRAoRUmF0Y2hldEtleVJlcXVlc3QSHAoUcGFydGljaXBhbnRfaWRl",
+            "bnRpdHkYASACKAkSEQoJa2V5X2luZGV4GAIgAigFIiUKElJhdGNoZXRLZXlS",
+            "ZXNwb25zZRIPCgduZXdfa2V5GAEgASgMIkAKDUdldEtleVJlcXVlc3QSHAoU",
+            "cGFydGljaXBhbnRfaWRlbnRpdHkYASACKAkSEQoJa2V5X2luZGV4GAIgAigF",
+            "Ih0KDkdldEtleVJlc3BvbnNlEgsKA2tleRgBIAEoDCLMBQoLRTJlZVJlcXVl",
+            "c3QSEwoLcm9vbV9oYW5kbGUYASACKAQSSgoTbWFuYWdlcl9zZXRfZW5hYmxl",
+            "ZBgCIAEoCzIrLmxpdmVraXQucHJvdG8uRTJlZU1hbmFnZXJTZXRFbmFibGVk",
+            "UmVxdWVzdEgAElcKGm1hbmFnZXJfZ2V0X2ZyYW1lX2NyeXB0b3JzGAMgASgL",
+            "MjEubGl2ZWtpdC5wcm90by5FMmVlTWFuYWdlckdldEZyYW1lQ3J5cHRvcnNS",
+            "ZXF1ZXN0SAASSwoTY3J5cHRvcl9zZXRfZW5hYmxlZBgEIAEoCzIsLmxpdmVr",
+            "aXQucHJvdG8uRnJhbWVDcnlwdG9yU2V0RW5hYmxlZFJlcXVlc3RIABJOChVj",
+            "cnlwdG9yX3NldF9rZXlfaW5kZXgYBSABKAsyLS5saXZla2l0LnByb3RvLkZy",
+            "YW1lQ3J5cHRvclNldEtleUluZGV4UmVxdWVzdEgAEjwKDnNldF9zaGFyZWRf",
+            "a2V5GAYgASgLMiIubGl2ZWtpdC5wcm90by5TZXRTaGFyZWRLZXlSZXF1ZXN0",
+            "SAASRAoScmF0Y2hldF9zaGFyZWRfa2V5GAcgASgLMiYubGl2ZWtpdC5wcm90",
+            "by5SYXRjaGV0U2hhcmVkS2V5UmVxdWVzdEgAEjwKDmdldF9zaGFyZWRfa2V5",
+            "GAggASgLMiIubGl2ZWtpdC5wcm90by5HZXRTaGFyZWRLZXlSZXF1ZXN0SAAS",
+            "LwoHc2V0X2tleRgJIAEoCzIcLmxpdmVraXQucHJvdG8uU2V0S2V5UmVxdWVz",
+            "dEgAEjcKC3JhdGNoZXRfa2V5GAogASgLMiAubGl2ZWtpdC5wcm90by5SYXRj",
+            "aGV0S2V5UmVxdWVzdEgAEi8KB2dldF9rZXkYCyABKAsyHC5saXZla2l0LnBy",
+            "b3RvLkdldEtleVJlcXVlc3RIAEIJCgdtZXNzYWdlIsIFCgxFMmVlUmVzcG9u",
+            "c2USSwoTbWFuYWdlcl9zZXRfZW5hYmxlZBgBIAEoCzIsLmxpdmVraXQucHJv",
+            "dG8uRTJlZU1hbmFnZXJTZXRFbmFibGVkUmVzcG9uc2VIABJYChptYW5hZ2Vy",
+            "X2dldF9mcmFtZV9jcnlwdG9ycxgCIAEoCzIyLmxpdmVraXQucHJvdG8uRTJl",
+            "ZU1hbmFnZXJHZXRGcmFtZUNyeXB0b3JzUmVzcG9uc2VIABJMChNjcnlwdG9y",
+            "X3NldF9lbmFibGVkGAMgASgLMi0ubGl2ZWtpdC5wcm90by5GcmFtZUNyeXB0",
+            "b3JTZXRFbmFibGVkUmVzcG9uc2VIABJPChVjcnlwdG9yX3NldF9rZXlfaW5k",
+            "ZXgYBCABKAsyLi5saXZla2l0LnByb3RvLkZyYW1lQ3J5cHRvclNldEtleUlu",
+            "ZGV4UmVzcG9uc2VIABI9Cg5zZXRfc2hhcmVkX2tleRgFIAEoCzIjLmxpdmVr",
+            "aXQucHJvdG8uU2V0U2hhcmVkS2V5UmVzcG9uc2VIABJFChJyYXRjaGV0X3No",
+            "YXJlZF9rZXkYBiABKAsyJy5saXZla2l0LnByb3RvLlJhdGNoZXRTaGFyZWRL",
+            "ZXlSZXNwb25zZUgAEj0KDmdldF9zaGFyZWRfa2V5GAcgASgLMiMubGl2ZWtp",
+            "dC5wcm90by5HZXRTaGFyZWRLZXlSZXNwb25zZUgAEjAKB3NldF9rZXkYCCAB",
+            "KAsyHS5saXZla2l0LnByb3RvLlNldEtleVJlc3BvbnNlSAASOAoLcmF0Y2hl",
+            "dF9rZXkYCSABKAsyIS5saXZla2l0LnByb3RvLlJhdGNoZXRLZXlSZXNwb25z",
+            "ZUgAEjAKB2dldF9rZXkYCiABKAsyHS5saXZla2l0LnByb3RvLkdldEtleVJl",
+            "c3BvbnNlSABCCQoHbWVzc2FnZSovCg5FbmNyeXB0aW9uVHlwZRIICgROT05F",
+            "EAASBwoDR0NNEAESCgoGQ1VTVE9NEAIqiAEKD0VuY3J5cHRpb25TdGF0ZRIH",
+            "CgNORVcQABIGCgJPSxABEhUKEUVOQ1JZUFRJT05fRkFJTEVEEAISFQoRREVD",
+            "UllQVElPTl9GQUlMRUQQAxIPCgtNSVNTSU5HX0tFWRAEEhEKDUtFWV9SQVRD",
+            "SEVURUQQBRISCg5JTlRFUk5BTF9FUlJPUhAGQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.EncryptionType), typeof(global::LiveKit.Proto.EncryptionState), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FrameCryptor), global::LiveKit.Proto.FrameCryptor.Parser, new[]{ "ParticipantIdentity", "TrackSid", "KeyIndex", "Enabled" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.KeyProviderOptions), global::LiveKit.Proto.KeyProviderOptions.Parser, new[]{ "SharedKey", "RatchetWindowSize", "RatchetSalt", "FailureTolerance" }, new[]{ "SharedKey" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.KeyProviderOptions), global::LiveKit.Proto.KeyProviderOptions.Parser, new[]{ "SharedKey", "RatchetWindowSize", "RatchetSalt", "FailureTolerance" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeOptions), global::LiveKit.Proto.E2eeOptions.Parser, new[]{ "EncryptionType", "KeyProviderOptions" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeManagerSetEnabledRequest), global::LiveKit.Proto.E2eeManagerSetEnabledRequest.Parser, new[]{ "Enabled" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeManagerSetEnabledResponse), global::LiveKit.Proto.E2eeManagerSetEnabledResponse.Parser, null, null, null, null, null),
@@ -111,15 +109,15 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetSharedKeyRequest), global::LiveKit.Proto.SetSharedKeyRequest.Parser, new[]{ "SharedKey", "KeyIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetSharedKeyResponse), global::LiveKit.Proto.SetSharedKeyResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RatchetSharedKeyRequest), global::LiveKit.Proto.RatchetSharedKeyRequest.Parser, new[]{ "KeyIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RatchetSharedKeyResponse), global::LiveKit.Proto.RatchetSharedKeyResponse.Parser, new[]{ "NewKey" }, new[]{ "NewKey" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RatchetSharedKeyResponse), global::LiveKit.Proto.RatchetSharedKeyResponse.Parser, new[]{ "NewKey" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetSharedKeyRequest), global::LiveKit.Proto.GetSharedKeyRequest.Parser, new[]{ "KeyIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetSharedKeyResponse), global::LiveKit.Proto.GetSharedKeyResponse.Parser, new[]{ "Key" }, new[]{ "Key" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetSharedKeyResponse), global::LiveKit.Proto.GetSharedKeyResponse.Parser, new[]{ "Key" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetKeyRequest), global::LiveKit.Proto.SetKeyRequest.Parser, new[]{ "ParticipantIdentity", "Key", "KeyIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetKeyResponse), global::LiveKit.Proto.SetKeyResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RatchetKeyRequest), global::LiveKit.Proto.RatchetKeyRequest.Parser, new[]{ "ParticipantIdentity", "KeyIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RatchetKeyResponse), global::LiveKit.Proto.RatchetKeyResponse.Parser, new[]{ "NewKey" }, new[]{ "NewKey" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RatchetKeyResponse), global::LiveKit.Proto.RatchetKeyResponse.Parser, new[]{ "NewKey" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetKeyRequest), global::LiveKit.Proto.GetKeyRequest.Parser, new[]{ "ParticipantIdentity", "KeyIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetKeyResponse), global::LiveKit.Proto.GetKeyResponse.Parser, new[]{ "Key" }, new[]{ "Key" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetKeyResponse), global::LiveKit.Proto.GetKeyResponse.Parser, new[]{ "Key" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeRequest), global::LiveKit.Proto.E2eeRequest.Parser, new[]{ "RoomHandle", "ManagerSetEnabled", "ManagerGetFrameCryptors", "CryptorSetEnabled", "CryptorSetKeyIndex", "SetSharedKey", "RatchetSharedKey", "GetSharedKey", "SetKey", "RatchetKey", "GetKey" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeResponse), global::LiveKit.Proto.E2eeResponse.Parser, new[]{ "ManagerSetEnabled", "ManagerGetFrameCryptors", "CryptorSetEnabled", "CryptorSetKeyIndex", "SetSharedKey", "RatchetSharedKey", "GetSharedKey", "SetKey", "RatchetKey", "GetKey" }, new[]{ "Message" }, null, null, null)
           }));
@@ -155,6 +153,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<FrameCryptor> _parser = new pb::MessageParser<FrameCryptor>(() => new FrameCryptor());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<FrameCryptor> Parser { get { return _parser; } }
@@ -182,6 +181,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FrameCryptor(FrameCryptor other) : this() {
+      _hasBits0 = other._hasBits0;
       participantIdentity_ = other.participantIdentity_;
       trackSid_ = other.trackSid_;
       keyIndex_ = other.keyIndex_;
@@ -197,50 +197,108 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_identity" field.</summary>
     public const int ParticipantIdentityFieldNumber = 1;
-    private string participantIdentity_ = "";
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string ParticipantIdentity {
-      get { return participantIdentity_; }
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
       set {
         participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
 
     /// <summary>Field number for the "track_sid" field.</summary>
     public const int TrackSidFieldNumber = 2;
-    private string trackSid_ = "";
+    private readonly static string TrackSidDefaultValue = "";
+
+    private string trackSid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TrackSid {
-      get { return trackSid_; }
+      get { return trackSid_ ?? TrackSidDefaultValue; }
       set {
         trackSid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "track_sid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackSid {
+      get { return trackSid_ != null; }
+    }
+    /// <summary>Clears the value of the "track_sid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackSid() {
+      trackSid_ = null;
+    }
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 3;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "enabled" field.</summary>
     public const int EnabledFieldNumber = 4;
+    private readonly static bool EnabledDefaultValue = false;
+
     private bool enabled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Enabled {
-      get { return enabled_; }
+      get { if ((_hasBits0 & 2) != 0) { return enabled_; } else { return EnabledDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         enabled_ = value;
       }
+    }
+    /// <summary>Gets whether the "enabled" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEnabled {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "enabled" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEnabled() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -269,10 +327,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantIdentity.Length != 0) hash ^= ParticipantIdentity.GetHashCode();
-      if (TrackSid.Length != 0) hash ^= TrackSid.GetHashCode();
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
-      if (Enabled != false) hash ^= Enabled.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasTrackSid) hash ^= TrackSid.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
+      if (HasEnabled) hash ^= Enabled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -291,19 +349,19 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         output.WriteRawTag(18);
         output.WriteString(TrackSid);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(24);
         output.WriteInt32(KeyIndex);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(32);
         output.WriteBool(Enabled);
       }
@@ -317,19 +375,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         output.WriteRawTag(18);
         output.WriteString(TrackSid);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(24);
         output.WriteInt32(KeyIndex);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(32);
         output.WriteBool(Enabled);
       }
@@ -343,16 +401,16 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TrackSid);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -367,16 +425,16 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantIdentity.Length != 0) {
+      if (other.HasParticipantIdentity) {
         ParticipantIdentity = other.ParticipantIdentity;
       }
-      if (other.TrackSid.Length != 0) {
+      if (other.HasTrackSid) {
         TrackSid = other.TrackSid;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
-      if (other.Enabled != false) {
+      if (other.HasEnabled) {
         Enabled = other.Enabled;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -390,7 +448,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -421,7 +483,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -456,6 +522,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<KeyProviderOptions> _parser = new pb::MessageParser<KeyProviderOptions>(() => new KeyProviderOptions());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<KeyProviderOptions> Parser { get { return _parser; } }
@@ -483,6 +550,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public KeyProviderOptions(KeyProviderOptions other) : this() {
+      _hasBits0 = other._hasBits0;
       sharedKey_ = other.sharedKey_;
       ratchetWindowSize_ = other.ratchetWindowSize_;
       ratchetSalt_ = other.ratchetSalt_;
@@ -527,41 +595,85 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "ratchet_window_size" field.</summary>
     public const int RatchetWindowSizeFieldNumber = 2;
+    private readonly static int RatchetWindowSizeDefaultValue = 0;
+
     private int ratchetWindowSize_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int RatchetWindowSize {
-      get { return ratchetWindowSize_; }
+      get { if ((_hasBits0 & 1) != 0) { return ratchetWindowSize_; } else { return RatchetWindowSizeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         ratchetWindowSize_ = value;
       }
+    }
+    /// <summary>Gets whether the "ratchet_window_size" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRatchetWindowSize {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "ratchet_window_size" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRatchetWindowSize() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "ratchet_salt" field.</summary>
     public const int RatchetSaltFieldNumber = 3;
-    private pb::ByteString ratchetSalt_ = pb::ByteString.Empty;
+    private readonly static pb::ByteString RatchetSaltDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString ratchetSalt_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pb::ByteString RatchetSalt {
-      get { return ratchetSalt_; }
+      get { return ratchetSalt_ ?? RatchetSaltDefaultValue; }
       set {
         ratchetSalt_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "ratchet_salt" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRatchetSalt {
+      get { return ratchetSalt_ != null; }
+    }
+    /// <summary>Clears the value of the "ratchet_salt" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRatchetSalt() {
+      ratchetSalt_ = null;
+    }
 
     /// <summary>Field number for the "failure_tolerance" field.</summary>
     public const int FailureToleranceFieldNumber = 4;
+    private readonly static int FailureToleranceDefaultValue = 0;
+
     private int failureTolerance_;
     /// <summary>
-    /// -1 = no tolerence
+    /// -1 = no tolerance
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int FailureTolerance {
-      get { return failureTolerance_; }
+      get { if ((_hasBits0 & 2) != 0) { return failureTolerance_; } else { return FailureToleranceDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         failureTolerance_ = value;
       }
+    }
+    /// <summary>Gets whether the "failure_tolerance" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFailureTolerance {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "failure_tolerance" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFailureTolerance() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -591,9 +703,9 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (HasSharedKey) hash ^= SharedKey.GetHashCode();
-      if (RatchetWindowSize != 0) hash ^= RatchetWindowSize.GetHashCode();
-      if (RatchetSalt.Length != 0) hash ^= RatchetSalt.GetHashCode();
-      if (FailureTolerance != 0) hash ^= FailureTolerance.GetHashCode();
+      if (HasRatchetWindowSize) hash ^= RatchetWindowSize.GetHashCode();
+      if (HasRatchetSalt) hash ^= RatchetSalt.GetHashCode();
+      if (HasFailureTolerance) hash ^= FailureTolerance.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -616,15 +728,15 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteBytes(SharedKey);
       }
-      if (RatchetWindowSize != 0) {
+      if (HasRatchetWindowSize) {
         output.WriteRawTag(16);
         output.WriteInt32(RatchetWindowSize);
       }
-      if (RatchetSalt.Length != 0) {
+      if (HasRatchetSalt) {
         output.WriteRawTag(26);
         output.WriteBytes(RatchetSalt);
       }
-      if (FailureTolerance != 0) {
+      if (HasFailureTolerance) {
         output.WriteRawTag(32);
         output.WriteInt32(FailureTolerance);
       }
@@ -642,15 +754,15 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteBytes(SharedKey);
       }
-      if (RatchetWindowSize != 0) {
+      if (HasRatchetWindowSize) {
         output.WriteRawTag(16);
         output.WriteInt32(RatchetWindowSize);
       }
-      if (RatchetSalt.Length != 0) {
+      if (HasRatchetSalt) {
         output.WriteRawTag(26);
         output.WriteBytes(RatchetSalt);
       }
-      if (FailureTolerance != 0) {
+      if (HasFailureTolerance) {
         output.WriteRawTag(32);
         output.WriteInt32(FailureTolerance);
       }
@@ -667,13 +779,13 @@ namespace LiveKit.Proto {
       if (HasSharedKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(SharedKey);
       }
-      if (RatchetWindowSize != 0) {
+      if (HasRatchetWindowSize) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(RatchetWindowSize);
       }
-      if (RatchetSalt.Length != 0) {
+      if (HasRatchetSalt) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(RatchetSalt);
       }
-      if (FailureTolerance != 0) {
+      if (HasFailureTolerance) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(FailureTolerance);
       }
       if (_unknownFields != null) {
@@ -691,13 +803,13 @@ namespace LiveKit.Proto {
       if (other.HasSharedKey) {
         SharedKey = other.SharedKey;
       }
-      if (other.RatchetWindowSize != 0) {
+      if (other.HasRatchetWindowSize) {
         RatchetWindowSize = other.RatchetWindowSize;
       }
-      if (other.RatchetSalt.Length != 0) {
+      if (other.HasRatchetSalt) {
         RatchetSalt = other.RatchetSalt;
       }
-      if (other.FailureTolerance != 0) {
+      if (other.HasFailureTolerance) {
         FailureTolerance = other.FailureTolerance;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -711,7 +823,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -742,7 +858,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -777,6 +897,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<E2eeOptions> _parser = new pb::MessageParser<E2eeOptions>(() => new E2eeOptions());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<E2eeOptions> Parser { get { return _parser; } }
@@ -804,6 +925,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public E2eeOptions(E2eeOptions other) : this() {
+      _hasBits0 = other._hasBits0;
       encryptionType_ = other.encryptionType_;
       keyProviderOptions_ = other.keyProviderOptions_ != null ? other.keyProviderOptions_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -817,14 +939,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "encryption_type" field.</summary>
     public const int EncryptionTypeFieldNumber = 1;
-    private global::LiveKit.Proto.EncryptionType encryptionType_ = global::LiveKit.Proto.EncryptionType.None;
+    private readonly static global::LiveKit.Proto.EncryptionType EncryptionTypeDefaultValue = global::LiveKit.Proto.EncryptionType.None;
+
+    private global::LiveKit.Proto.EncryptionType encryptionType_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.EncryptionType EncryptionType {
-      get { return encryptionType_; }
+      get { if ((_hasBits0 & 1) != 0) { return encryptionType_; } else { return EncryptionTypeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         encryptionType_ = value;
       }
+    }
+    /// <summary>Gets whether the "encryption_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEncryptionType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "encryption_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEncryptionType() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "key_provider_options" field.</summary>
@@ -863,7 +1000,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) hash ^= EncryptionType.GetHashCode();
+      if (HasEncryptionType) hash ^= EncryptionType.GetHashCode();
       if (keyProviderOptions_ != null) hash ^= KeyProviderOptions.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -883,7 +1020,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (HasEncryptionType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) EncryptionType);
       }
@@ -901,7 +1038,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (HasEncryptionType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) EncryptionType);
       }
@@ -919,7 +1056,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (HasEncryptionType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) EncryptionType);
       }
       if (keyProviderOptions_ != null) {
@@ -937,7 +1074,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (other.HasEncryptionType) {
         EncryptionType = other.EncryptionType;
       }
       if (other.keyProviderOptions_ != null) {
@@ -957,7 +1094,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -983,7 +1124,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1013,6 +1158,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<E2eeManagerSetEnabledRequest> _parser = new pb::MessageParser<E2eeManagerSetEnabledRequest>(() => new E2eeManagerSetEnabledRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<E2eeManagerSetEnabledRequest> Parser { get { return _parser; } }
@@ -1040,6 +1186,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public E2eeManagerSetEnabledRequest(E2eeManagerSetEnabledRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       enabled_ = other.enabled_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1052,14 +1199,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "enabled" field.</summary>
     public const int EnabledFieldNumber = 1;
+    private readonly static bool EnabledDefaultValue = false;
+
     private bool enabled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Enabled {
-      get { return enabled_; }
+      get { if ((_hasBits0 & 1) != 0) { return enabled_; } else { return EnabledDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         enabled_ = value;
       }
+    }
+    /// <summary>Gets whether the "enabled" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEnabled {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "enabled" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEnabled() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1085,7 +1247,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Enabled != false) hash ^= Enabled.GetHashCode();
+      if (HasEnabled) hash ^= Enabled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1104,7 +1266,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(8);
         output.WriteBool(Enabled);
       }
@@ -1118,7 +1280,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(8);
         output.WriteBool(Enabled);
       }
@@ -1132,7 +1294,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Enabled != false) {
+      if (HasEnabled) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -1147,7 +1309,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Enabled != false) {
+      if (other.HasEnabled) {
         Enabled = other.Enabled;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1161,7 +1323,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1180,7 +1346,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1322,7 +1492,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1337,7 +1511,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1475,7 +1653,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1490,7 +1672,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1646,7 +1832,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1665,7 +1855,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1688,6 +1882,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<FrameCryptorSetEnabledRequest> _parser = new pb::MessageParser<FrameCryptorSetEnabledRequest>(() => new FrameCryptorSetEnabledRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<FrameCryptorSetEnabledRequest> Parser { get { return _parser; } }
@@ -1715,6 +1910,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FrameCryptorSetEnabledRequest(FrameCryptorSetEnabledRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       participantIdentity_ = other.participantIdentity_;
       trackSid_ = other.trackSid_;
       enabled_ = other.enabled_;
@@ -1729,38 +1925,81 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_identity" field.</summary>
     public const int ParticipantIdentityFieldNumber = 1;
-    private string participantIdentity_ = "";
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string ParticipantIdentity {
-      get { return participantIdentity_; }
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
       set {
         participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
 
     /// <summary>Field number for the "track_sid" field.</summary>
     public const int TrackSidFieldNumber = 2;
-    private string trackSid_ = "";
+    private readonly static string TrackSidDefaultValue = "";
+
+    private string trackSid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TrackSid {
-      get { return trackSid_; }
+      get { return trackSid_ ?? TrackSidDefaultValue; }
       set {
         trackSid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "track_sid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackSid {
+      get { return trackSid_ != null; }
+    }
+    /// <summary>Clears the value of the "track_sid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackSid() {
+      trackSid_ = null;
+    }
 
     /// <summary>Field number for the "enabled" field.</summary>
     public const int EnabledFieldNumber = 3;
+    private readonly static bool EnabledDefaultValue = false;
+
     private bool enabled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Enabled {
-      get { return enabled_; }
+      get { if ((_hasBits0 & 1) != 0) { return enabled_; } else { return EnabledDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         enabled_ = value;
       }
+    }
+    /// <summary>Gets whether the "enabled" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEnabled {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "enabled" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEnabled() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1788,9 +2027,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantIdentity.Length != 0) hash ^= ParticipantIdentity.GetHashCode();
-      if (TrackSid.Length != 0) hash ^= TrackSid.GetHashCode();
-      if (Enabled != false) hash ^= Enabled.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasTrackSid) hash ^= TrackSid.GetHashCode();
+      if (HasEnabled) hash ^= Enabled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1809,15 +2048,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         output.WriteRawTag(18);
         output.WriteString(TrackSid);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(24);
         output.WriteBool(Enabled);
       }
@@ -1831,15 +2070,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         output.WriteRawTag(18);
         output.WriteString(TrackSid);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(24);
         output.WriteBool(Enabled);
       }
@@ -1853,13 +2092,13 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TrackSid);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -1874,13 +2113,13 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantIdentity.Length != 0) {
+      if (other.HasParticipantIdentity) {
         ParticipantIdentity = other.ParticipantIdentity;
       }
-      if (other.TrackSid.Length != 0) {
+      if (other.HasTrackSid) {
         TrackSid = other.TrackSid;
       }
-      if (other.Enabled != false) {
+      if (other.HasEnabled) {
         Enabled = other.Enabled;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1894,7 +2133,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1921,7 +2164,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2071,7 +2318,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2086,7 +2337,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2105,6 +2360,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<FrameCryptorSetKeyIndexRequest> _parser = new pb::MessageParser<FrameCryptorSetKeyIndexRequest>(() => new FrameCryptorSetKeyIndexRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<FrameCryptorSetKeyIndexRequest> Parser { get { return _parser; } }
@@ -2132,6 +2388,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FrameCryptorSetKeyIndexRequest(FrameCryptorSetKeyIndexRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       participantIdentity_ = other.participantIdentity_;
       trackSid_ = other.trackSid_;
       keyIndex_ = other.keyIndex_;
@@ -2146,38 +2403,81 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_identity" field.</summary>
     public const int ParticipantIdentityFieldNumber = 1;
-    private string participantIdentity_ = "";
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string ParticipantIdentity {
-      get { return participantIdentity_; }
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
       set {
         participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
 
     /// <summary>Field number for the "track_sid" field.</summary>
     public const int TrackSidFieldNumber = 2;
-    private string trackSid_ = "";
+    private readonly static string TrackSidDefaultValue = "";
+
+    private string trackSid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string TrackSid {
-      get { return trackSid_; }
+      get { return trackSid_ ?? TrackSidDefaultValue; }
       set {
         trackSid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "track_sid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackSid {
+      get { return trackSid_ != null; }
+    }
+    /// <summary>Clears the value of the "track_sid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackSid() {
+      trackSid_ = null;
+    }
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 3;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2205,9 +2505,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantIdentity.Length != 0) hash ^= ParticipantIdentity.GetHashCode();
-      if (TrackSid.Length != 0) hash ^= TrackSid.GetHashCode();
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasTrackSid) hash ^= TrackSid.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2226,15 +2526,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         output.WriteRawTag(18);
         output.WriteString(TrackSid);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(24);
         output.WriteInt32(KeyIndex);
       }
@@ -2248,15 +2548,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         output.WriteRawTag(18);
         output.WriteString(TrackSid);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(24);
         output.WriteInt32(KeyIndex);
       }
@@ -2270,13 +2570,13 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
       }
-      if (TrackSid.Length != 0) {
+      if (HasTrackSid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(TrackSid);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -2291,13 +2591,13 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantIdentity.Length != 0) {
+      if (other.HasParticipantIdentity) {
         ParticipantIdentity = other.ParticipantIdentity;
       }
-      if (other.TrackSid.Length != 0) {
+      if (other.HasTrackSid) {
         TrackSid = other.TrackSid;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2311,7 +2611,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2338,7 +2642,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2488,7 +2796,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2503,7 +2815,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2522,6 +2838,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<SetSharedKeyRequest> _parser = new pb::MessageParser<SetSharedKeyRequest>(() => new SetSharedKeyRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<SetSharedKeyRequest> Parser { get { return _parser; } }
@@ -2549,6 +2866,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SetSharedKeyRequest(SetSharedKeyRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       sharedKey_ = other.sharedKey_;
       keyIndex_ = other.keyIndex_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -2562,26 +2880,55 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "shared_key" field.</summary>
     public const int SharedKeyFieldNumber = 1;
-    private pb::ByteString sharedKey_ = pb::ByteString.Empty;
+    private readonly static pb::ByteString SharedKeyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString sharedKey_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pb::ByteString SharedKey {
-      get { return sharedKey_; }
+      get { return sharedKey_ ?? SharedKeyDefaultValue; }
       set {
         sharedKey_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "shared_key" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSharedKey {
+      get { return sharedKey_ != null; }
+    }
+    /// <summary>Clears the value of the "shared_key" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSharedKey() {
+      sharedKey_ = null;
+    }
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 2;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2608,8 +2955,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (SharedKey.Length != 0) hash ^= SharedKey.GetHashCode();
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasSharedKey) hash ^= SharedKey.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2628,11 +2975,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (SharedKey.Length != 0) {
+      if (HasSharedKey) {
         output.WriteRawTag(10);
         output.WriteBytes(SharedKey);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(16);
         output.WriteInt32(KeyIndex);
       }
@@ -2646,11 +2993,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (SharedKey.Length != 0) {
+      if (HasSharedKey) {
         output.WriteRawTag(10);
         output.WriteBytes(SharedKey);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(16);
         output.WriteInt32(KeyIndex);
       }
@@ -2664,10 +3011,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (SharedKey.Length != 0) {
+      if (HasSharedKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(SharedKey);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -2682,10 +3029,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.SharedKey.Length != 0) {
+      if (other.HasSharedKey) {
         SharedKey = other.SharedKey;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2699,7 +3046,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2722,7 +3073,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2868,7 +3223,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2883,7 +3242,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2902,6 +3265,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<RatchetSharedKeyRequest> _parser = new pb::MessageParser<RatchetSharedKeyRequest>(() => new RatchetSharedKeyRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RatchetSharedKeyRequest> Parser { get { return _parser; } }
@@ -2929,6 +3293,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RatchetSharedKeyRequest(RatchetSharedKeyRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       keyIndex_ = other.keyIndex_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -2941,14 +3306,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 1;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2974,7 +3354,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2993,7 +3373,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(8);
         output.WriteInt32(KeyIndex);
       }
@@ -3007,7 +3387,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(8);
         output.WriteInt32(KeyIndex);
       }
@@ -3021,7 +3401,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -3036,7 +3416,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3050,7 +3430,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3069,7 +3453,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3254,7 +3642,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3273,7 +3665,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3296,6 +3692,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<GetSharedKeyRequest> _parser = new pb::MessageParser<GetSharedKeyRequest>(() => new GetSharedKeyRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<GetSharedKeyRequest> Parser { get { return _parser; } }
@@ -3323,6 +3720,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetSharedKeyRequest(GetSharedKeyRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       keyIndex_ = other.keyIndex_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -3335,14 +3733,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 1;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3368,7 +3781,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3387,7 +3800,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(8);
         output.WriteInt32(KeyIndex);
       }
@@ -3401,7 +3814,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(8);
         output.WriteInt32(KeyIndex);
       }
@@ -3415,7 +3828,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -3430,7 +3843,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3444,7 +3857,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3463,7 +3880,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3648,7 +4069,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3667,7 +4092,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3690,6 +4119,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<SetKeyRequest> _parser = new pb::MessageParser<SetKeyRequest>(() => new SetKeyRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<SetKeyRequest> Parser { get { return _parser; } }
@@ -3717,6 +4147,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SetKeyRequest(SetKeyRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       participantIdentity_ = other.participantIdentity_;
       key_ = other.key_;
       keyIndex_ = other.keyIndex_;
@@ -3731,38 +4162,81 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_identity" field.</summary>
     public const int ParticipantIdentityFieldNumber = 1;
-    private string participantIdentity_ = "";
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string ParticipantIdentity {
-      get { return participantIdentity_; }
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
       set {
         participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
 
     /// <summary>Field number for the "key" field.</summary>
     public const int KeyFieldNumber = 2;
-    private pb::ByteString key_ = pb::ByteString.Empty;
+    private readonly static pb::ByteString KeyDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString key_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pb::ByteString Key {
-      get { return key_; }
+      get { return key_ ?? KeyDefaultValue; }
       set {
         key_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "key" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKey {
+      get { return key_ != null; }
+    }
+    /// <summary>Clears the value of the "key" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKey() {
+      key_ = null;
+    }
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 3;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3790,9 +4264,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantIdentity.Length != 0) hash ^= ParticipantIdentity.GetHashCode();
-      if (Key.Length != 0) hash ^= Key.GetHashCode();
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasKey) hash ^= Key.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3811,15 +4285,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (Key.Length != 0) {
+      if (HasKey) {
         output.WriteRawTag(18);
         output.WriteBytes(Key);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(24);
         output.WriteInt32(KeyIndex);
       }
@@ -3833,15 +4307,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (Key.Length != 0) {
+      if (HasKey) {
         output.WriteRawTag(18);
         output.WriteBytes(Key);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(24);
         output.WriteInt32(KeyIndex);
       }
@@ -3855,13 +4329,13 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
       }
-      if (Key.Length != 0) {
+      if (HasKey) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Key);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -3876,13 +4350,13 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantIdentity.Length != 0) {
+      if (other.HasParticipantIdentity) {
         ParticipantIdentity = other.ParticipantIdentity;
       }
-      if (other.Key.Length != 0) {
+      if (other.HasKey) {
         Key = other.Key;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3896,7 +4370,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3923,7 +4401,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4073,7 +4555,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4088,7 +4574,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4107,6 +4597,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<RatchetKeyRequest> _parser = new pb::MessageParser<RatchetKeyRequest>(() => new RatchetKeyRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<RatchetKeyRequest> Parser { get { return _parser; } }
@@ -4134,6 +4625,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RatchetKeyRequest(RatchetKeyRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       participantIdentity_ = other.participantIdentity_;
       keyIndex_ = other.keyIndex_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -4147,26 +4639,55 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_identity" field.</summary>
     public const int ParticipantIdentityFieldNumber = 1;
-    private string participantIdentity_ = "";
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string ParticipantIdentity {
-      get { return participantIdentity_; }
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
       set {
         participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 2;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4193,8 +4714,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantIdentity.Length != 0) hash ^= ParticipantIdentity.GetHashCode();
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4213,11 +4734,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(16);
         output.WriteInt32(KeyIndex);
       }
@@ -4231,11 +4752,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(16);
         output.WriteInt32(KeyIndex);
       }
@@ -4249,10 +4770,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -4267,10 +4788,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantIdentity.Length != 0) {
+      if (other.HasParticipantIdentity) {
         ParticipantIdentity = other.ParticipantIdentity;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -4284,7 +4805,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4307,7 +4832,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4496,7 +5025,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4515,7 +5048,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4538,6 +5075,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<GetKeyRequest> _parser = new pb::MessageParser<GetKeyRequest>(() => new GetKeyRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<GetKeyRequest> Parser { get { return _parser; } }
@@ -4565,6 +5103,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetKeyRequest(GetKeyRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       participantIdentity_ = other.participantIdentity_;
       keyIndex_ = other.keyIndex_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -4578,26 +5117,55 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_identity" field.</summary>
     public const int ParticipantIdentityFieldNumber = 1;
-    private string participantIdentity_ = "";
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string ParticipantIdentity {
-      get { return participantIdentity_; }
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
       set {
         participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
 
     /// <summary>Field number for the "key_index" field.</summary>
     public const int KeyIndexFieldNumber = 2;
+    private readonly static int KeyIndexDefaultValue = 0;
+
     private int keyIndex_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int KeyIndex {
-      get { return keyIndex_; }
+      get { if ((_hasBits0 & 1) != 0) { return keyIndex_; } else { return KeyIndexDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         keyIndex_ = value;
       }
+    }
+    /// <summary>Gets whether the "key_index" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyIndex {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "key_index" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyIndex() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4624,8 +5192,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantIdentity.Length != 0) hash ^= ParticipantIdentity.GetHashCode();
-      if (KeyIndex != 0) hash ^= KeyIndex.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasKeyIndex) hash ^= KeyIndex.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4644,11 +5212,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(16);
         output.WriteInt32(KeyIndex);
       }
@@ -4662,11 +5230,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         output.WriteRawTag(10);
         output.WriteString(ParticipantIdentity);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         output.WriteRawTag(16);
         output.WriteInt32(KeyIndex);
       }
@@ -4680,10 +5248,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantIdentity.Length != 0) {
+      if (HasParticipantIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
       }
-      if (KeyIndex != 0) {
+      if (HasKeyIndex) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyIndex);
       }
       if (_unknownFields != null) {
@@ -4698,10 +5266,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantIdentity.Length != 0) {
+      if (other.HasParticipantIdentity) {
         ParticipantIdentity = other.ParticipantIdentity;
       }
-      if (other.KeyIndex != 0) {
+      if (other.HasKeyIndex) {
         KeyIndex = other.KeyIndex;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -4715,7 +5283,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4738,7 +5310,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4927,7 +5503,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4946,7 +5526,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4969,6 +5553,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<E2eeRequest> _parser = new pb::MessageParser<E2eeRequest>(() => new E2eeRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<E2eeRequest> Parser { get { return _parser; } }
@@ -4996,6 +5581,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public E2eeRequest(E2eeRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       roomHandle_ = other.roomHandle_;
       switch (other.MessageCase) {
         case MessageOneofCase.ManagerSetEnabled:
@@ -5041,14 +5627,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "room_handle" field.</summary>
     public const int RoomHandleFieldNumber = 1;
+    private readonly static ulong RoomHandleDefaultValue = 0UL;
+
     private ulong roomHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong RoomHandle {
-      get { return roomHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return roomHandle_; } else { return RoomHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         roomHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "room_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRoomHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "room_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRoomHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "manager_set_enabled" field.</summary>
@@ -5234,7 +5835,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (RoomHandle != 0UL) hash ^= RoomHandle.GetHashCode();
+      if (HasRoomHandle) hash ^= RoomHandle.GetHashCode();
       if (messageCase_ == MessageOneofCase.ManagerSetEnabled) hash ^= ManagerSetEnabled.GetHashCode();
       if (messageCase_ == MessageOneofCase.ManagerGetFrameCryptors) hash ^= ManagerGetFrameCryptors.GetHashCode();
       if (messageCase_ == MessageOneofCase.CryptorSetEnabled) hash ^= CryptorSetEnabled.GetHashCode();
@@ -5264,7 +5865,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (RoomHandle != 0UL) {
+      if (HasRoomHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(RoomHandle);
       }
@@ -5318,7 +5919,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (RoomHandle != 0UL) {
+      if (HasRoomHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(RoomHandle);
       }
@@ -5372,7 +5973,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (RoomHandle != 0UL) {
+      if (HasRoomHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RoomHandle);
       }
       if (messageCase_ == MessageOneofCase.ManagerSetEnabled) {
@@ -5417,7 +6018,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.RoomHandle != 0UL) {
+      if (other.HasRoomHandle) {
         RoomHandle = other.RoomHandle;
       }
       switch (other.MessageCase) {
@@ -5494,7 +6095,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5603,7 +6208,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -6212,7 +6821,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -6317,7 +6930,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;

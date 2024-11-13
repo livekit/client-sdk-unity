@@ -26,43 +26,42 @@ namespace LiveKit.Proto {
           string.Concat(
             "Cgt0cmFjay5wcm90bxINbGl2ZWtpdC5wcm90bxoKZTJlZS5wcm90bxoMaGFu",
             "ZGxlLnByb3RvGgtzdGF0cy5wcm90byI+ChdDcmVhdGVWaWRlb1RyYWNrUmVx",
-            "dWVzdBIMCgRuYW1lGAEgASgJEhUKDXNvdXJjZV9oYW5kbGUYAiABKAQiRAoY",
-            "Q3JlYXRlVmlkZW9UcmFja1Jlc3BvbnNlEigKBXRyYWNrGAEgASgLMhkubGl2",
+            "dWVzdBIMCgRuYW1lGAEgAigJEhUKDXNvdXJjZV9oYW5kbGUYAiACKAQiRAoY",
+            "Q3JlYXRlVmlkZW9UcmFja1Jlc3BvbnNlEigKBXRyYWNrGAEgAigLMhkubGl2",
             "ZWtpdC5wcm90by5Pd25lZFRyYWNrIj4KF0NyZWF0ZUF1ZGlvVHJhY2tSZXF1",
-            "ZXN0EgwKBG5hbWUYASABKAkSFQoNc291cmNlX2hhbmRsZRgCIAEoBCJEChhD",
-            "cmVhdGVBdWRpb1RyYWNrUmVzcG9uc2USKAoFdHJhY2sYASABKAsyGS5saXZl",
+            "ZXN0EgwKBG5hbWUYASACKAkSFQoNc291cmNlX2hhbmRsZRgCIAIoBCJEChhD",
+            "cmVhdGVBdWRpb1RyYWNrUmVzcG9uc2USKAoFdHJhY2sYASACKAsyGS5saXZl",
             "a2l0LnByb3RvLk93bmVkVHJhY2siJwoPR2V0U3RhdHNSZXF1ZXN0EhQKDHRy",
-            "YWNrX2hhbmRsZRgBIAEoBCIkChBHZXRTdGF0c1Jlc3BvbnNlEhAKCGFzeW5j",
-            "X2lkGAEgASgEImoKEEdldFN0YXRzQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASAB",
-            "KAQSEgoFZXJyb3IYAiABKAlIAIgBARImCgVzdGF0cxgDIAMoCzIXLmxpdmVr",
-            "aXQucHJvdG8uUnRjU3RhdHNCCAoGX2Vycm9yIgwKClRyYWNrRXZlbnQiowIK",
-            "FFRyYWNrUHVibGljYXRpb25JbmZvEgsKA3NpZBgBIAEoCRIMCgRuYW1lGAIg",
-            "ASgJEiYKBGtpbmQYAyABKA4yGC5saXZla2l0LnByb3RvLlRyYWNrS2luZBIq",
-            "CgZzb3VyY2UYBCABKA4yGi5saXZla2l0LnByb3RvLlRyYWNrU291cmNlEhMK",
-            "C3NpbXVsY2FzdGVkGAUgASgIEg0KBXdpZHRoGAYgASgNEg4KBmhlaWdodBgH",
-            "IAEoDRIRCgltaW1lX3R5cGUYCCABKAkSDQoFbXV0ZWQYCSABKAgSDgoGcmVt",
-            "b3RlGAogASgIEjYKD2VuY3J5cHRpb25fdHlwZRgLIAEoDjIdLmxpdmVraXQu",
-            "cHJvdG8uRW5jcnlwdGlvblR5cGUieQoVT3duZWRUcmFja1B1YmxpY2F0aW9u",
-            "Ei0KBmhhbmRsZRgBIAEoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5k",
-            "bGUSMQoEaW5mbxgCIAEoCzIjLmxpdmVraXQucHJvdG8uVHJhY2tQdWJsaWNh",
-            "dGlvbkluZm8inwEKCVRyYWNrSW5mbxILCgNzaWQYASABKAkSDAoEbmFtZRgC",
-            "IAEoCRImCgRraW5kGAMgASgOMhgubGl2ZWtpdC5wcm90by5UcmFja0tpbmQS",
-            "MAoMc3RyZWFtX3N0YXRlGAQgASgOMhoubGl2ZWtpdC5wcm90by5TdHJlYW1T",
-            "dGF0ZRINCgVtdXRlZBgFIAEoCBIOCgZyZW1vdGUYBiABKAgiYwoKT3duZWRU",
-            "cmFjaxItCgZoYW5kbGUYASABKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVk",
-            "SGFuZGxlEiYKBGluZm8YAiABKAsyGC5saXZla2l0LnByb3RvLlRyYWNrSW5m",
-            "byI7ChVMb2NhbFRyYWNrTXV0ZVJlcXVlc3QSFAoMdHJhY2tfaGFuZGxlGAEg",
-            "ASgEEgwKBG11dGUYAiABKAgiJwoWTG9jYWxUcmFja011dGVSZXNwb25zZRIN",
-            "CgVtdXRlZBgBIAEoCCJBChhFbmFibGVSZW1vdGVUcmFja1JlcXVlc3QSFAoM",
-            "dHJhY2tfaGFuZGxlGAEgASgEEg8KB2VuYWJsZWQYAiABKAgiLAoZRW5hYmxl",
-            "UmVtb3RlVHJhY2tSZXNwb25zZRIPCgdlbmFibGVkGAEgASgIKj0KCVRyYWNr",
-            "S2luZBIQCgxLSU5EX1VOS05PV04QABIOCgpLSU5EX0FVRElPEAESDgoKS0lO",
-            "RF9WSURFTxACKoEBCgtUcmFja1NvdXJjZRISCg5TT1VSQ0VfVU5LTk9XThAA",
-            "EhEKDVNPVVJDRV9DQU1FUkEQARIVChFTT1VSQ0VfTUlDUk9QSE9ORRACEhYK",
-            "ElNPVVJDRV9TQ1JFRU5TSEFSRRADEhwKGFNPVVJDRV9TQ1JFRU5TSEFSRV9B",
-            "VURJTxAEKkQKC1N0cmVhbVN0YXRlEhEKDVNUQVRFX1VOS05PV04QABIQCgxT",
-            "VEFURV9BQ1RJVkUQARIQCgxTVEFURV9QQVVTRUQQAkIQqgINTGl2ZUtpdC5Q",
-            "cm90b2IGcHJvdG8z"));
+            "YWNrX2hhbmRsZRgBIAIoBCIkChBHZXRTdGF0c1Jlc3BvbnNlEhAKCGFzeW5j",
+            "X2lkGAEgAigEIlsKEEdldFN0YXRzQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASAC",
+            "KAQSDQoFZXJyb3IYAiABKAkSJgoFc3RhdHMYAyADKAsyFy5saXZla2l0LnBy",
+            "b3RvLlJ0Y1N0YXRzIgwKClRyYWNrRXZlbnQiowIKFFRyYWNrUHVibGljYXRp",
+            "b25JbmZvEgsKA3NpZBgBIAIoCRIMCgRuYW1lGAIgAigJEiYKBGtpbmQYAyAC",
+            "KA4yGC5saXZla2l0LnByb3RvLlRyYWNrS2luZBIqCgZzb3VyY2UYBCACKA4y",
+            "Gi5saXZla2l0LnByb3RvLlRyYWNrU291cmNlEhMKC3NpbXVsY2FzdGVkGAUg",
+            "AigIEg0KBXdpZHRoGAYgAigNEg4KBmhlaWdodBgHIAIoDRIRCgltaW1lX3R5",
+            "cGUYCCACKAkSDQoFbXV0ZWQYCSACKAgSDgoGcmVtb3RlGAogAigIEjYKD2Vu",
+            "Y3J5cHRpb25fdHlwZRgLIAIoDjIdLmxpdmVraXQucHJvdG8uRW5jcnlwdGlv",
+            "blR5cGUieQoVT3duZWRUcmFja1B1YmxpY2F0aW9uEi0KBmhhbmRsZRgBIAIo",
+            "CzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSMQoEaW5mbxgCIAIo",
+            "CzIjLmxpdmVraXQucHJvdG8uVHJhY2tQdWJsaWNhdGlvbkluZm8inwEKCVRy",
+            "YWNrSW5mbxILCgNzaWQYASACKAkSDAoEbmFtZRgCIAIoCRImCgRraW5kGAMg",
+            "AigOMhgubGl2ZWtpdC5wcm90by5UcmFja0tpbmQSMAoMc3RyZWFtX3N0YXRl",
+            "GAQgAigOMhoubGl2ZWtpdC5wcm90by5TdHJlYW1TdGF0ZRINCgVtdXRlZBgF",
+            "IAIoCBIOCgZyZW1vdGUYBiACKAgiYwoKT3duZWRUcmFjaxItCgZoYW5kbGUY",
+            "ASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiYKBGluZm8Y",
+            "AiACKAsyGC5saXZla2l0LnByb3RvLlRyYWNrSW5mbyI7ChVMb2NhbFRyYWNr",
+            "TXV0ZVJlcXVlc3QSFAoMdHJhY2tfaGFuZGxlGAEgAigEEgwKBG11dGUYAiAC",
+            "KAgiJwoWTG9jYWxUcmFja011dGVSZXNwb25zZRINCgVtdXRlZBgBIAIoCCJB",
+            "ChhFbmFibGVSZW1vdGVUcmFja1JlcXVlc3QSFAoMdHJhY2tfaGFuZGxlGAEg",
+            "AigEEg8KB2VuYWJsZWQYAiACKAgiLAoZRW5hYmxlUmVtb3RlVHJhY2tSZXNw",
+            "b25zZRIPCgdlbmFibGVkGAEgAigIKj0KCVRyYWNrS2luZBIQCgxLSU5EX1VO",
+            "S05PV04QABIOCgpLSU5EX0FVRElPEAESDgoKS0lORF9WSURFTxACKoEBCgtU",
+            "cmFja1NvdXJjZRISCg5TT1VSQ0VfVU5LTk9XThAAEhEKDVNPVVJDRV9DQU1F",
+            "UkEQARIVChFTT1VSQ0VfTUlDUk9QSE9ORRACEhYKElNPVVJDRV9TQ1JFRU5T",
+            "SEFSRRADEhwKGFNPVVJDRV9TQ1JFRU5TSEFSRV9BVURJTxAEKkQKC1N0cmVh",
+            "bVN0YXRlEhEKDVNUQVRFX1VOS05PV04QABIQCgxTVEFURV9BQ1RJVkUQARIQ",
+            "CgxTVEFURV9QQVVTRUQQAkIQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.StatsReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.TrackKind), typeof(global::LiveKit.Proto.TrackSource), typeof(global::LiveKit.Proto.StreamState), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -72,7 +71,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateAudioTrackResponse), global::LiveKit.Proto.CreateAudioTrackResponse.Parser, new[]{ "Track" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsRequest), global::LiveKit.Proto.GetStatsRequest.Parser, new[]{ "TrackHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsResponse), global::LiveKit.Proto.GetStatsResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsCallback), global::LiveKit.Proto.GetStatsCallback.Parser, new[]{ "AsyncId", "Error", "Stats" }, new[]{ "Error" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsCallback), global::LiveKit.Proto.GetStatsCallback.Parser, new[]{ "AsyncId", "Error", "Stats" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackEvent), global::LiveKit.Proto.TrackEvent.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackPublicationInfo), global::LiveKit.Proto.TrackPublicationInfo.Parser, new[]{ "Sid", "Name", "Kind", "Source", "Simulcasted", "Width", "Height", "MimeType", "Muted", "Remote", "EncryptionType" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedTrackPublication), global::LiveKit.Proto.OwnedTrackPublication.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
@@ -122,6 +121,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<CreateVideoTrackRequest> _parser = new pb::MessageParser<CreateVideoTrackRequest>(() => new CreateVideoTrackRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<CreateVideoTrackRequest> Parser { get { return _parser; } }
@@ -149,6 +149,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CreateVideoTrackRequest(CreateVideoTrackRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       name_ = other.name_;
       sourceHandle_ = other.sourceHandle_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -162,26 +163,55 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 1;
-    private string name_ = "";
+    private readonly static string NameDefaultValue = "";
+
+    private string name_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Name {
-      get { return name_; }
+      get { return name_ ?? NameDefaultValue; }
       set {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasName {
+      get { return name_ != null; }
+    }
+    /// <summary>Clears the value of the "name" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearName() {
+      name_ = null;
+    }
 
     /// <summary>Field number for the "source_handle" field.</summary>
     public const int SourceHandleFieldNumber = 2;
+    private readonly static ulong SourceHandleDefaultValue = 0UL;
+
     private ulong sourceHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong SourceHandle {
-      get { return sourceHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return sourceHandle_; } else { return SourceHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         sourceHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "source_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSourceHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "source_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSourceHandle() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -208,8 +238,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (SourceHandle != 0UL) hash ^= SourceHandle.GetHashCode();
+      if (HasName) hash ^= Name.GetHashCode();
+      if (HasSourceHandle) hash ^= SourceHandle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -228,11 +258,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         output.WriteRawTag(16);
         output.WriteUInt64(SourceHandle);
       }
@@ -246,11 +276,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         output.WriteRawTag(16);
         output.WriteUInt64(SourceHandle);
       }
@@ -264,10 +294,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Name.Length != 0) {
+      if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
       }
       if (_unknownFields != null) {
@@ -282,10 +312,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Name.Length != 0) {
+      if (other.HasName) {
         Name = other.Name;
       }
-      if (other.SourceHandle != 0UL) {
+      if (other.HasSourceHandle) {
         SourceHandle = other.SourceHandle;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -299,7 +329,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -322,7 +356,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -500,7 +538,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -522,7 +564,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -551,6 +597,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<CreateAudioTrackRequest> _parser = new pb::MessageParser<CreateAudioTrackRequest>(() => new CreateAudioTrackRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<CreateAudioTrackRequest> Parser { get { return _parser; } }
@@ -578,6 +625,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CreateAudioTrackRequest(CreateAudioTrackRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       name_ = other.name_;
       sourceHandle_ = other.sourceHandle_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -591,26 +639,55 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 1;
-    private string name_ = "";
+    private readonly static string NameDefaultValue = "";
+
+    private string name_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Name {
-      get { return name_; }
+      get { return name_ ?? NameDefaultValue; }
       set {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasName {
+      get { return name_ != null; }
+    }
+    /// <summary>Clears the value of the "name" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearName() {
+      name_ = null;
+    }
 
     /// <summary>Field number for the "source_handle" field.</summary>
     public const int SourceHandleFieldNumber = 2;
+    private readonly static ulong SourceHandleDefaultValue = 0UL;
+
     private ulong sourceHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong SourceHandle {
-      get { return sourceHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return sourceHandle_; } else { return SourceHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         sourceHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "source_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSourceHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "source_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSourceHandle() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -637,8 +714,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (SourceHandle != 0UL) hash ^= SourceHandle.GetHashCode();
+      if (HasName) hash ^= Name.GetHashCode();
+      if (HasSourceHandle) hash ^= SourceHandle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -657,11 +734,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         output.WriteRawTag(16);
         output.WriteUInt64(SourceHandle);
       }
@@ -675,11 +752,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         output.WriteRawTag(16);
         output.WriteUInt64(SourceHandle);
       }
@@ -693,10 +770,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Name.Length != 0) {
+      if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
       }
       if (_unknownFields != null) {
@@ -711,10 +788,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Name.Length != 0) {
+      if (other.HasName) {
         Name = other.Name;
       }
-      if (other.SourceHandle != 0UL) {
+      if (other.HasSourceHandle) {
         SourceHandle = other.SourceHandle;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -728,7 +805,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -751,7 +832,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -929,7 +1014,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -951,7 +1040,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -977,6 +1070,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<GetStatsRequest> _parser = new pb::MessageParser<GetStatsRequest>(() => new GetStatsRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<GetStatsRequest> Parser { get { return _parser; } }
@@ -1004,6 +1098,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetStatsRequest(GetStatsRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       trackHandle_ = other.trackHandle_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1016,14 +1111,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track_handle" field.</summary>
     public const int TrackHandleFieldNumber = 1;
+    private readonly static ulong TrackHandleDefaultValue = 0UL;
+
     private ulong trackHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TrackHandle {
-      get { return trackHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return trackHandle_; } else { return TrackHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         trackHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "track_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "track_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackHandle() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1049,7 +1159,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackHandle != 0UL) hash ^= TrackHandle.GetHashCode();
+      if (HasTrackHandle) hash ^= TrackHandle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1068,7 +1178,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
@@ -1082,7 +1192,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
@@ -1096,7 +1206,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TrackHandle);
       }
       if (_unknownFields != null) {
@@ -1111,7 +1221,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TrackHandle != 0UL) {
+      if (other.HasTrackHandle) {
         TrackHandle = other.TrackHandle;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1125,7 +1235,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1144,7 +1258,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1167,6 +1285,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<GetStatsResponse> _parser = new pb::MessageParser<GetStatsResponse>(() => new GetStatsResponse());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<GetStatsResponse> Parser { get { return _parser; } }
@@ -1194,6 +1313,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetStatsResponse(GetStatsResponse other) : this() {
+      _hasBits0 = other._hasBits0;
       asyncId_ = other.asyncId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1206,14 +1326,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "async_id" field.</summary>
     public const int AsyncIdFieldNumber = 1;
+    private readonly static ulong AsyncIdDefaultValue = 0UL;
+
     private ulong asyncId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong AsyncId {
-      get { return asyncId_; }
+      get { if ((_hasBits0 & 1) != 0) { return asyncId_; } else { return AsyncIdDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         asyncId_ = value;
       }
+    }
+    /// <summary>Gets whether the "async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAsyncId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAsyncId() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1239,7 +1374,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (AsyncId != 0UL) hash ^= AsyncId.GetHashCode();
+      if (HasAsyncId) hash ^= AsyncId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1258,7 +1393,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (AsyncId != 0UL) {
+      if (HasAsyncId) {
         output.WriteRawTag(8);
         output.WriteUInt64(AsyncId);
       }
@@ -1272,7 +1407,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (AsyncId != 0UL) {
+      if (HasAsyncId) {
         output.WriteRawTag(8);
         output.WriteUInt64(AsyncId);
       }
@@ -1286,7 +1421,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (AsyncId != 0UL) {
+      if (HasAsyncId) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
       }
       if (_unknownFields != null) {
@@ -1301,7 +1436,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.AsyncId != 0UL) {
+      if (other.HasAsyncId) {
         AsyncId = other.AsyncId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1315,7 +1450,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1334,7 +1473,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1357,6 +1500,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<GetStatsCallback> _parser = new pb::MessageParser<GetStatsCallback>(() => new GetStatsCallback());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<GetStatsCallback> Parser { get { return _parser; } }
@@ -1384,6 +1528,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetStatsCallback(GetStatsCallback other) : this() {
+      _hasBits0 = other._hasBits0;
       asyncId_ = other.asyncId_;
       error_ = other.error_;
       stats_ = other.stats_.Clone();
@@ -1398,14 +1543,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "async_id" field.</summary>
     public const int AsyncIdFieldNumber = 1;
+    private readonly static ulong AsyncIdDefaultValue = 0UL;
+
     private ulong asyncId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong AsyncId {
-      get { return asyncId_; }
+      get { if ((_hasBits0 & 1) != 0) { return asyncId_; } else { return AsyncIdDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         asyncId_ = value;
       }
+    }
+    /// <summary>Gets whether the "async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAsyncId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAsyncId() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "error" field.</summary>
@@ -1470,7 +1630,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (AsyncId != 0UL) hash ^= AsyncId.GetHashCode();
+      if (HasAsyncId) hash ^= AsyncId.GetHashCode();
       if (HasError) hash ^= Error.GetHashCode();
       hash ^= stats_.GetHashCode();
       if (_unknownFields != null) {
@@ -1491,7 +1651,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (AsyncId != 0UL) {
+      if (HasAsyncId) {
         output.WriteRawTag(8);
         output.WriteUInt64(AsyncId);
       }
@@ -1510,7 +1670,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (AsyncId != 0UL) {
+      if (HasAsyncId) {
         output.WriteRawTag(8);
         output.WriteUInt64(AsyncId);
       }
@@ -1529,7 +1689,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (AsyncId != 0UL) {
+      if (HasAsyncId) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
       }
       if (HasError) {
@@ -1548,7 +1708,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.AsyncId != 0UL) {
+      if (other.HasAsyncId) {
         AsyncId = other.AsyncId;
       }
       if (other.HasError) {
@@ -1566,7 +1726,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1593,7 +1757,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1743,7 +1911,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1758,7 +1930,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1777,6 +1953,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<TrackPublicationInfo> _parser = new pb::MessageParser<TrackPublicationInfo>(() => new TrackPublicationInfo());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<TrackPublicationInfo> Parser { get { return _parser; } }
@@ -1804,6 +1981,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TrackPublicationInfo(TrackPublicationInfo other) : this() {
+      _hasBits0 = other._hasBits0;
       sid_ = other.sid_;
       name_ = other.name_;
       kind_ = other.kind_;
@@ -1826,134 +2004,296 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "sid" field.</summary>
     public const int SidFieldNumber = 1;
-    private string sid_ = "";
+    private readonly static string SidDefaultValue = "";
+
+    private string sid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Sid {
-      get { return sid_; }
+      get { return sid_ ?? SidDefaultValue; }
       set {
         sid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "sid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSid {
+      get { return sid_ != null; }
+    }
+    /// <summary>Clears the value of the "sid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSid() {
+      sid_ = null;
+    }
 
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 2;
-    private string name_ = "";
+    private readonly static string NameDefaultValue = "";
+
+    private string name_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Name {
-      get { return name_; }
+      get { return name_ ?? NameDefaultValue; }
       set {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasName {
+      get { return name_ != null; }
+    }
+    /// <summary>Clears the value of the "name" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearName() {
+      name_ = null;
+    }
 
     /// <summary>Field number for the "kind" field.</summary>
     public const int KindFieldNumber = 3;
-    private global::LiveKit.Proto.TrackKind kind_ = global::LiveKit.Proto.TrackKind.KindUnknown;
+    private readonly static global::LiveKit.Proto.TrackKind KindDefaultValue = global::LiveKit.Proto.TrackKind.KindUnknown;
+
+    private global::LiveKit.Proto.TrackKind kind_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TrackKind Kind {
-      get { return kind_; }
+      get { if ((_hasBits0 & 1) != 0) { return kind_; } else { return KindDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         kind_ = value;
       }
+    }
+    /// <summary>Gets whether the "kind" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKind {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "kind" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKind() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "source" field.</summary>
     public const int SourceFieldNumber = 4;
-    private global::LiveKit.Proto.TrackSource source_ = global::LiveKit.Proto.TrackSource.SourceUnknown;
+    private readonly static global::LiveKit.Proto.TrackSource SourceDefaultValue = global::LiveKit.Proto.TrackSource.SourceUnknown;
+
+    private global::LiveKit.Proto.TrackSource source_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TrackSource Source {
-      get { return source_; }
+      get { if ((_hasBits0 & 2) != 0) { return source_; } else { return SourceDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         source_ = value;
       }
+    }
+    /// <summary>Gets whether the "source" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSource {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "source" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSource() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "simulcasted" field.</summary>
     public const int SimulcastedFieldNumber = 5;
+    private readonly static bool SimulcastedDefaultValue = false;
+
     private bool simulcasted_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Simulcasted {
-      get { return simulcasted_; }
+      get { if ((_hasBits0 & 4) != 0) { return simulcasted_; } else { return SimulcastedDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         simulcasted_ = value;
       }
+    }
+    /// <summary>Gets whether the "simulcasted" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSimulcasted {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "simulcasted" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSimulcasted() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "width" field.</summary>
     public const int WidthFieldNumber = 6;
+    private readonly static uint WidthDefaultValue = 0;
+
     private uint width_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Width {
-      get { return width_; }
+      get { if ((_hasBits0 & 8) != 0) { return width_; } else { return WidthDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         width_ = value;
       }
+    }
+    /// <summary>Gets whether the "width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWidth {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWidth() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "height" field.</summary>
     public const int HeightFieldNumber = 7;
+    private readonly static uint HeightDefaultValue = 0;
+
     private uint height_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Height {
-      get { return height_; }
+      get { if ((_hasBits0 & 16) != 0) { return height_; } else { return HeightDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         height_ = value;
       }
+    }
+    /// <summary>Gets whether the "height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeight {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeight() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "mime_type" field.</summary>
     public const int MimeTypeFieldNumber = 8;
-    private string mimeType_ = "";
+    private readonly static string MimeTypeDefaultValue = "";
+
+    private string mimeType_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string MimeType {
-      get { return mimeType_; }
+      get { return mimeType_ ?? MimeTypeDefaultValue; }
       set {
         mimeType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "mime_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMimeType {
+      get { return mimeType_ != null; }
+    }
+    /// <summary>Clears the value of the "mime_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMimeType() {
+      mimeType_ = null;
+    }
 
     /// <summary>Field number for the "muted" field.</summary>
     public const int MutedFieldNumber = 9;
+    private readonly static bool MutedDefaultValue = false;
+
     private bool muted_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Muted {
-      get { return muted_; }
+      get { if ((_hasBits0 & 32) != 0) { return muted_; } else { return MutedDefaultValue; } }
       set {
+        _hasBits0 |= 32;
         muted_ = value;
       }
+    }
+    /// <summary>Gets whether the "muted" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMuted {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "muted" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMuted() {
+      _hasBits0 &= ~32;
     }
 
     /// <summary>Field number for the "remote" field.</summary>
     public const int RemoteFieldNumber = 10;
+    private readonly static bool RemoteDefaultValue = false;
+
     private bool remote_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Remote {
-      get { return remote_; }
+      get { if ((_hasBits0 & 64) != 0) { return remote_; } else { return RemoteDefaultValue; } }
       set {
+        _hasBits0 |= 64;
         remote_ = value;
       }
+    }
+    /// <summary>Gets whether the "remote" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemote {
+      get { return (_hasBits0 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "remote" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemote() {
+      _hasBits0 &= ~64;
     }
 
     /// <summary>Field number for the "encryption_type" field.</summary>
     public const int EncryptionTypeFieldNumber = 11;
-    private global::LiveKit.Proto.EncryptionType encryptionType_ = global::LiveKit.Proto.EncryptionType.None;
+    private readonly static global::LiveKit.Proto.EncryptionType EncryptionTypeDefaultValue = global::LiveKit.Proto.EncryptionType.None;
+
+    private global::LiveKit.Proto.EncryptionType encryptionType_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.EncryptionType EncryptionType {
-      get { return encryptionType_; }
+      get { if ((_hasBits0 & 128) != 0) { return encryptionType_; } else { return EncryptionTypeDefaultValue; } }
       set {
+        _hasBits0 |= 128;
         encryptionType_ = value;
       }
+    }
+    /// <summary>Gets whether the "encryption_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEncryptionType {
+      get { return (_hasBits0 & 128) != 0; }
+    }
+    /// <summary>Clears the value of the "encryption_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEncryptionType() {
+      _hasBits0 &= ~128;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1989,17 +2329,17 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Sid.Length != 0) hash ^= Sid.GetHashCode();
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) hash ^= Kind.GetHashCode();
-      if (Source != global::LiveKit.Proto.TrackSource.SourceUnknown) hash ^= Source.GetHashCode();
-      if (Simulcasted != false) hash ^= Simulcasted.GetHashCode();
-      if (Width != 0) hash ^= Width.GetHashCode();
-      if (Height != 0) hash ^= Height.GetHashCode();
-      if (MimeType.Length != 0) hash ^= MimeType.GetHashCode();
-      if (Muted != false) hash ^= Muted.GetHashCode();
-      if (Remote != false) hash ^= Remote.GetHashCode();
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) hash ^= EncryptionType.GetHashCode();
+      if (HasSid) hash ^= Sid.GetHashCode();
+      if (HasName) hash ^= Name.GetHashCode();
+      if (HasKind) hash ^= Kind.GetHashCode();
+      if (HasSource) hash ^= Source.GetHashCode();
+      if (HasSimulcasted) hash ^= Simulcasted.GetHashCode();
+      if (HasWidth) hash ^= Width.GetHashCode();
+      if (HasHeight) hash ^= Height.GetHashCode();
+      if (HasMimeType) hash ^= MimeType.GetHashCode();
+      if (HasMuted) hash ^= Muted.GetHashCode();
+      if (HasRemote) hash ^= Remote.GetHashCode();
+      if (HasEncryptionType) hash ^= EncryptionType.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2018,47 +2358,47 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Sid.Length != 0) {
+      if (HasSid) {
         output.WriteRawTag(10);
         output.WriteString(Sid);
       }
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (HasKind) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
-      if (Source != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (HasSource) {
         output.WriteRawTag(32);
         output.WriteEnum((int) Source);
       }
-      if (Simulcasted != false) {
+      if (HasSimulcasted) {
         output.WriteRawTag(40);
         output.WriteBool(Simulcasted);
       }
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(48);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(56);
         output.WriteUInt32(Height);
       }
-      if (MimeType.Length != 0) {
+      if (HasMimeType) {
         output.WriteRawTag(66);
         output.WriteString(MimeType);
       }
-      if (Muted != false) {
+      if (HasMuted) {
         output.WriteRawTag(72);
         output.WriteBool(Muted);
       }
-      if (Remote != false) {
+      if (HasRemote) {
         output.WriteRawTag(80);
         output.WriteBool(Remote);
       }
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (HasEncryptionType) {
         output.WriteRawTag(88);
         output.WriteEnum((int) EncryptionType);
       }
@@ -2072,47 +2412,47 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Sid.Length != 0) {
+      if (HasSid) {
         output.WriteRawTag(10);
         output.WriteString(Sid);
       }
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (HasKind) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
-      if (Source != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (HasSource) {
         output.WriteRawTag(32);
         output.WriteEnum((int) Source);
       }
-      if (Simulcasted != false) {
+      if (HasSimulcasted) {
         output.WriteRawTag(40);
         output.WriteBool(Simulcasted);
       }
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(48);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(56);
         output.WriteUInt32(Height);
       }
-      if (MimeType.Length != 0) {
+      if (HasMimeType) {
         output.WriteRawTag(66);
         output.WriteString(MimeType);
       }
-      if (Muted != false) {
+      if (HasMuted) {
         output.WriteRawTag(72);
         output.WriteBool(Muted);
       }
-      if (Remote != false) {
+      if (HasRemote) {
         output.WriteRawTag(80);
         output.WriteBool(Remote);
       }
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (HasEncryptionType) {
         output.WriteRawTag(88);
         output.WriteEnum((int) EncryptionType);
       }
@@ -2126,37 +2466,37 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Sid.Length != 0) {
+      if (HasSid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Sid);
       }
-      if (Name.Length != 0) {
+      if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (HasKind) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Kind);
       }
-      if (Source != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (HasSource) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Source);
       }
-      if (Simulcasted != false) {
+      if (HasSimulcasted) {
         size += 1 + 1;
       }
-      if (Width != 0) {
+      if (HasWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
       }
-      if (MimeType.Length != 0) {
+      if (HasMimeType) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(MimeType);
       }
-      if (Muted != false) {
+      if (HasMuted) {
         size += 1 + 1;
       }
-      if (Remote != false) {
+      if (HasRemote) {
         size += 1 + 1;
       }
-      if (EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (HasEncryptionType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) EncryptionType);
       }
       if (_unknownFields != null) {
@@ -2171,37 +2511,37 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Sid.Length != 0) {
+      if (other.HasSid) {
         Sid = other.Sid;
       }
-      if (other.Name.Length != 0) {
+      if (other.HasName) {
         Name = other.Name;
       }
-      if (other.Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (other.HasKind) {
         Kind = other.Kind;
       }
-      if (other.Source != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (other.HasSource) {
         Source = other.Source;
       }
-      if (other.Simulcasted != false) {
+      if (other.HasSimulcasted) {
         Simulcasted = other.Simulcasted;
       }
-      if (other.Width != 0) {
+      if (other.HasWidth) {
         Width = other.Width;
       }
-      if (other.Height != 0) {
+      if (other.HasHeight) {
         Height = other.Height;
       }
-      if (other.MimeType.Length != 0) {
+      if (other.HasMimeType) {
         MimeType = other.MimeType;
       }
-      if (other.Muted != false) {
+      if (other.HasMuted) {
         Muted = other.Muted;
       }
-      if (other.Remote != false) {
+      if (other.HasRemote) {
         Remote = other.Remote;
       }
-      if (other.EncryptionType != global::LiveKit.Proto.EncryptionType.None) {
+      if (other.HasEncryptionType) {
         EncryptionType = other.EncryptionType;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2215,7 +2555,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2274,7 +2618,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2520,7 +2868,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2549,7 +2901,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2582,6 +2938,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<TrackInfo> _parser = new pb::MessageParser<TrackInfo>(() => new TrackInfo());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<TrackInfo> Parser { get { return _parser; } }
@@ -2609,6 +2966,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TrackInfo(TrackInfo other) : this() {
+      _hasBits0 = other._hasBits0;
       sid_ = other.sid_;
       name_ = other.name_;
       kind_ = other.kind_;
@@ -2626,74 +2984,162 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "sid" field.</summary>
     public const int SidFieldNumber = 1;
-    private string sid_ = "";
+    private readonly static string SidDefaultValue = "";
+
+    private string sid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Sid {
-      get { return sid_; }
+      get { return sid_ ?? SidDefaultValue; }
       set {
         sid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "sid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSid {
+      get { return sid_ != null; }
+    }
+    /// <summary>Clears the value of the "sid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSid() {
+      sid_ = null;
+    }
 
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 2;
-    private string name_ = "";
+    private readonly static string NameDefaultValue = "";
+
+    private string name_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Name {
-      get { return name_; }
+      get { return name_ ?? NameDefaultValue; }
       set {
         name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
+    /// <summary>Gets whether the "name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasName {
+      get { return name_ != null; }
+    }
+    /// <summary>Clears the value of the "name" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearName() {
+      name_ = null;
+    }
 
     /// <summary>Field number for the "kind" field.</summary>
     public const int KindFieldNumber = 3;
-    private global::LiveKit.Proto.TrackKind kind_ = global::LiveKit.Proto.TrackKind.KindUnknown;
+    private readonly static global::LiveKit.Proto.TrackKind KindDefaultValue = global::LiveKit.Proto.TrackKind.KindUnknown;
+
+    private global::LiveKit.Proto.TrackKind kind_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TrackKind Kind {
-      get { return kind_; }
+      get { if ((_hasBits0 & 1) != 0) { return kind_; } else { return KindDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         kind_ = value;
       }
+    }
+    /// <summary>Gets whether the "kind" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKind {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "kind" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKind() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "stream_state" field.</summary>
     public const int StreamStateFieldNumber = 4;
-    private global::LiveKit.Proto.StreamState streamState_ = global::LiveKit.Proto.StreamState.StateUnknown;
+    private readonly static global::LiveKit.Proto.StreamState StreamStateDefaultValue = global::LiveKit.Proto.StreamState.StateUnknown;
+
+    private global::LiveKit.Proto.StreamState streamState_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamState StreamState {
-      get { return streamState_; }
+      get { if ((_hasBits0 & 2) != 0) { return streamState_; } else { return StreamStateDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         streamState_ = value;
       }
+    }
+    /// <summary>Gets whether the "stream_state" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasStreamState {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "stream_state" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearStreamState() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "muted" field.</summary>
     public const int MutedFieldNumber = 5;
+    private readonly static bool MutedDefaultValue = false;
+
     private bool muted_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Muted {
-      get { return muted_; }
+      get { if ((_hasBits0 & 4) != 0) { return muted_; } else { return MutedDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         muted_ = value;
       }
+    }
+    /// <summary>Gets whether the "muted" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMuted {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "muted" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMuted() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "remote" field.</summary>
     public const int RemoteFieldNumber = 6;
+    private readonly static bool RemoteDefaultValue = false;
+
     private bool remote_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Remote {
-      get { return remote_; }
+      get { if ((_hasBits0 & 8) != 0) { return remote_; } else { return RemoteDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         remote_ = value;
       }
+    }
+    /// <summary>Gets whether the "remote" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRemote {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "remote" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRemote() {
+      _hasBits0 &= ~8;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2724,12 +3170,12 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Sid.Length != 0) hash ^= Sid.GetHashCode();
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) hash ^= Kind.GetHashCode();
-      if (StreamState != global::LiveKit.Proto.StreamState.StateUnknown) hash ^= StreamState.GetHashCode();
-      if (Muted != false) hash ^= Muted.GetHashCode();
-      if (Remote != false) hash ^= Remote.GetHashCode();
+      if (HasSid) hash ^= Sid.GetHashCode();
+      if (HasName) hash ^= Name.GetHashCode();
+      if (HasKind) hash ^= Kind.GetHashCode();
+      if (HasStreamState) hash ^= StreamState.GetHashCode();
+      if (HasMuted) hash ^= Muted.GetHashCode();
+      if (HasRemote) hash ^= Remote.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2748,27 +3194,27 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Sid.Length != 0) {
+      if (HasSid) {
         output.WriteRawTag(10);
         output.WriteString(Sid);
       }
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (HasKind) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
-      if (StreamState != global::LiveKit.Proto.StreamState.StateUnknown) {
+      if (HasStreamState) {
         output.WriteRawTag(32);
         output.WriteEnum((int) StreamState);
       }
-      if (Muted != false) {
+      if (HasMuted) {
         output.WriteRawTag(40);
         output.WriteBool(Muted);
       }
-      if (Remote != false) {
+      if (HasRemote) {
         output.WriteRawTag(48);
         output.WriteBool(Remote);
       }
@@ -2782,27 +3228,27 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Sid.Length != 0) {
+      if (HasSid) {
         output.WriteRawTag(10);
         output.WriteString(Sid);
       }
-      if (Name.Length != 0) {
+      if (HasName) {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (HasKind) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
-      if (StreamState != global::LiveKit.Proto.StreamState.StateUnknown) {
+      if (HasStreamState) {
         output.WriteRawTag(32);
         output.WriteEnum((int) StreamState);
       }
-      if (Muted != false) {
+      if (HasMuted) {
         output.WriteRawTag(40);
         output.WriteBool(Muted);
       }
-      if (Remote != false) {
+      if (HasRemote) {
         output.WriteRawTag(48);
         output.WriteBool(Remote);
       }
@@ -2816,22 +3262,22 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Sid.Length != 0) {
+      if (HasSid) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Sid);
       }
-      if (Name.Length != 0) {
+      if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (HasKind) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Kind);
       }
-      if (StreamState != global::LiveKit.Proto.StreamState.StateUnknown) {
+      if (HasStreamState) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) StreamState);
       }
-      if (Muted != false) {
+      if (HasMuted) {
         size += 1 + 1;
       }
-      if (Remote != false) {
+      if (HasRemote) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -2846,22 +3292,22 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Sid.Length != 0) {
+      if (other.HasSid) {
         Sid = other.Sid;
       }
-      if (other.Name.Length != 0) {
+      if (other.HasName) {
         Name = other.Name;
       }
-      if (other.Kind != global::LiveKit.Proto.TrackKind.KindUnknown) {
+      if (other.HasKind) {
         Kind = other.Kind;
       }
-      if (other.StreamState != global::LiveKit.Proto.StreamState.StateUnknown) {
+      if (other.HasStreamState) {
         StreamState = other.StreamState;
       }
-      if (other.Muted != false) {
+      if (other.HasMuted) {
         Muted = other.Muted;
       }
-      if (other.Remote != false) {
+      if (other.HasRemote) {
         Remote = other.Remote;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2875,7 +3321,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2914,7 +3364,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3140,7 +3594,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3169,7 +3627,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3205,6 +3667,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<LocalTrackMuteRequest> _parser = new pb::MessageParser<LocalTrackMuteRequest>(() => new LocalTrackMuteRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<LocalTrackMuteRequest> Parser { get { return _parser; } }
@@ -3232,6 +3695,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public LocalTrackMuteRequest(LocalTrackMuteRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       trackHandle_ = other.trackHandle_;
       mute_ = other.mute_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -3245,26 +3709,56 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track_handle" field.</summary>
     public const int TrackHandleFieldNumber = 1;
+    private readonly static ulong TrackHandleDefaultValue = 0UL;
+
     private ulong trackHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TrackHandle {
-      get { return trackHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return trackHandle_; } else { return TrackHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         trackHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "track_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "track_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "mute" field.</summary>
     public const int MuteFieldNumber = 2;
+    private readonly static bool MuteDefaultValue = false;
+
     private bool mute_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Mute {
-      get { return mute_; }
+      get { if ((_hasBits0 & 2) != 0) { return mute_; } else { return MuteDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         mute_ = value;
       }
+    }
+    /// <summary>Gets whether the "mute" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMute {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "mute" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMute() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3291,8 +3785,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackHandle != 0UL) hash ^= TrackHandle.GetHashCode();
-      if (Mute != false) hash ^= Mute.GetHashCode();
+      if (HasTrackHandle) hash ^= TrackHandle.GetHashCode();
+      if (HasMute) hash ^= Mute.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3311,11 +3805,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
-      if (Mute != false) {
+      if (HasMute) {
         output.WriteRawTag(16);
         output.WriteBool(Mute);
       }
@@ -3329,11 +3823,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
-      if (Mute != false) {
+      if (HasMute) {
         output.WriteRawTag(16);
         output.WriteBool(Mute);
       }
@@ -3347,10 +3841,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TrackHandle);
       }
-      if (Mute != false) {
+      if (HasMute) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -3365,10 +3859,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TrackHandle != 0UL) {
+      if (other.HasTrackHandle) {
         TrackHandle = other.TrackHandle;
       }
-      if (other.Mute != false) {
+      if (other.HasMute) {
         Mute = other.Mute;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3382,7 +3876,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3405,7 +3903,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3432,6 +3934,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<LocalTrackMuteResponse> _parser = new pb::MessageParser<LocalTrackMuteResponse>(() => new LocalTrackMuteResponse());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<LocalTrackMuteResponse> Parser { get { return _parser; } }
@@ -3459,6 +3962,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public LocalTrackMuteResponse(LocalTrackMuteResponse other) : this() {
+      _hasBits0 = other._hasBits0;
       muted_ = other.muted_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -3471,14 +3975,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "muted" field.</summary>
     public const int MutedFieldNumber = 1;
+    private readonly static bool MutedDefaultValue = false;
+
     private bool muted_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Muted {
-      get { return muted_; }
+      get { if ((_hasBits0 & 1) != 0) { return muted_; } else { return MutedDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         muted_ = value;
       }
+    }
+    /// <summary>Gets whether the "muted" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMuted {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "muted" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMuted() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3504,7 +4023,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Muted != false) hash ^= Muted.GetHashCode();
+      if (HasMuted) hash ^= Muted.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3523,7 +4042,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Muted != false) {
+      if (HasMuted) {
         output.WriteRawTag(8);
         output.WriteBool(Muted);
       }
@@ -3537,7 +4056,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Muted != false) {
+      if (HasMuted) {
         output.WriteRawTag(8);
         output.WriteBool(Muted);
       }
@@ -3551,7 +4070,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Muted != false) {
+      if (HasMuted) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -3566,7 +4085,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Muted != false) {
+      if (other.HasMuted) {
         Muted = other.Muted;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3580,7 +4099,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3599,7 +4122,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3625,6 +4152,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<EnableRemoteTrackRequest> _parser = new pb::MessageParser<EnableRemoteTrackRequest>(() => new EnableRemoteTrackRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<EnableRemoteTrackRequest> Parser { get { return _parser; } }
@@ -3652,6 +4180,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public EnableRemoteTrackRequest(EnableRemoteTrackRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       trackHandle_ = other.trackHandle_;
       enabled_ = other.enabled_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -3665,26 +4194,56 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track_handle" field.</summary>
     public const int TrackHandleFieldNumber = 1;
+    private readonly static ulong TrackHandleDefaultValue = 0UL;
+
     private ulong trackHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TrackHandle {
-      get { return trackHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return trackHandle_; } else { return TrackHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         trackHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "track_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "track_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "enabled" field.</summary>
     public const int EnabledFieldNumber = 2;
+    private readonly static bool EnabledDefaultValue = false;
+
     private bool enabled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Enabled {
-      get { return enabled_; }
+      get { if ((_hasBits0 & 2) != 0) { return enabled_; } else { return EnabledDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         enabled_ = value;
       }
+    }
+    /// <summary>Gets whether the "enabled" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEnabled {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "enabled" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEnabled() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3711,8 +4270,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackHandle != 0UL) hash ^= TrackHandle.GetHashCode();
-      if (Enabled != false) hash ^= Enabled.GetHashCode();
+      if (HasTrackHandle) hash ^= TrackHandle.GetHashCode();
+      if (HasEnabled) hash ^= Enabled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3731,11 +4290,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(16);
         output.WriteBool(Enabled);
       }
@@ -3749,11 +4308,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(16);
         output.WriteBool(Enabled);
       }
@@ -3767,10 +4326,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TrackHandle);
       }
-      if (Enabled != false) {
+      if (HasEnabled) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -3785,10 +4344,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TrackHandle != 0UL) {
+      if (other.HasTrackHandle) {
         TrackHandle = other.TrackHandle;
       }
-      if (other.Enabled != false) {
+      if (other.HasEnabled) {
         Enabled = other.Enabled;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3802,7 +4361,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3825,7 +4388,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3852,6 +4419,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<EnableRemoteTrackResponse> _parser = new pb::MessageParser<EnableRemoteTrackResponse>(() => new EnableRemoteTrackResponse());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<EnableRemoteTrackResponse> Parser { get { return _parser; } }
@@ -3879,6 +4447,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public EnableRemoteTrackResponse(EnableRemoteTrackResponse other) : this() {
+      _hasBits0 = other._hasBits0;
       enabled_ = other.enabled_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -3891,14 +4460,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "enabled" field.</summary>
     public const int EnabledFieldNumber = 1;
+    private readonly static bool EnabledDefaultValue = false;
+
     private bool enabled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Enabled {
-      get { return enabled_; }
+      get { if ((_hasBits0 & 1) != 0) { return enabled_; } else { return EnabledDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         enabled_ = value;
       }
+    }
+    /// <summary>Gets whether the "enabled" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasEnabled {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "enabled" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEnabled() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3924,7 +4508,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Enabled != false) hash ^= Enabled.GetHashCode();
+      if (HasEnabled) hash ^= Enabled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3943,7 +4527,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(8);
         output.WriteBool(Enabled);
       }
@@ -3957,7 +4541,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Enabled != false) {
+      if (HasEnabled) {
         output.WriteRawTag(8);
         output.WriteBool(Enabled);
       }
@@ -3971,7 +4555,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Enabled != false) {
+      if (HasEnabled) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -3986,7 +4570,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Enabled != false) {
+      if (other.HasEnabled) {
         Enabled = other.Enabled;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -4000,7 +4584,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4019,7 +4607,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
