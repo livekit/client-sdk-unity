@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Internal.FFIClients.Requests;
+using System.Threading.Tasks;
 
 namespace LiveKit
 {
@@ -134,15 +135,15 @@ namespace LiveKit
             var resp = request.Send();
         }
 
-        public async Task<string> PerformRpc(PerformRpcParams params)
+        public async Task<string> PerformRpc(PerformRpcParams rpcParams)
         {
             using var request = FFIBridge.Instance.NewRequest<PerformRpcRequest>();
             var rpcReq = request.request;
             rpcReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
-            rpcReq.DestinationIdentity = params.DestinationIdentity;
-            rpcReq.Method = params.Method;
-            rpcReq.Payload = params.Payload;
-            rpcReq.ResponseTimeoutMs = (int)(params.ResponseTimeout * 1000);
+            rpcReq.DestinationIdentity = rpcParams.DestinationIdentity;
+            rpcReq.Method = rpcParams.Method;
+            rpcReq.Payload = rpcParams.Payload;
+            rpcReq.ResponseTimeoutMs = (int)(rpcParams.ResponseTimeout * 1000);
 
             var response = request.Send();
             var asyncId = response.PerformRpc.AsyncId;
