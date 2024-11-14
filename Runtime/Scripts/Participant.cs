@@ -27,7 +27,7 @@ namespace LiveKit
         public readonly WeakReference<Room> Room;
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
 
-        private Dictionary<string, Func<RpcInvocationData, Task<string>>> _rpcHandlers = new();
+        public Dictionary<string, Func<RpcInvocationData, Task<string>>> _rpcHandlers = new();
 
         protected Participant(OwnedParticipant participant, Room room)
         {
@@ -135,7 +135,7 @@ namespace LiveKit
             var resp = request.Send();
         }
 
-        public async Task<string> PerformRpc(PerformRpcParams rpcParams)
+        public PerformRpcInstruction PerformRpc(PerformRpcParams rpcParams)
         {
             using var request = FFIBridge.Instance.NewRequest<PerformRpcRequest>();
             var rpcReq = request.request;
@@ -143,23 +143,11 @@ namespace LiveKit
             rpcReq.DestinationIdentity = rpcParams.DestinationIdentity;
             rpcReq.Method = rpcParams.Method;
             rpcReq.Payload = rpcParams.Payload;
-            rpcReq.ResponseTimeoutMs = (int)(rpcParams.ResponseTimeout * 1000);
+            rpcReq.ResponseTimeoutMs = (uint)(rpcParams.ResponseTimeout * 1000);
 
-            var response = request.Send();
-            var asyncId = response.PerformRpc.AsyncId;
-
-            // Wait for callback
-            var callback = await FfiClient.Instance.WaitForEvent<PerformRpcCallback>(
-                evt => evt.MessageCase == FfiEvent.MessageOneofCase.PerformRpc &&
-                       evt.PerformRpc.AsyncId == asyncId
-            );
-
-            if (callback.Error != null)
-            {
-                throw RpcError.FromProto(callback.Error);
-            }
-
-            return callback.Payload;
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new PerformRpcInstruction(res.PerformRpc.AsyncId);
         }
 
         public void RegisterRpcMethod(string method, Func<RpcInvocationData, Task<string>> handler)
@@ -190,7 +178,7 @@ namespace LiveKit
             string requestId,
             string callerIdentity,
             string payload,
-            int responseTimeout)
+            float responseTimeout)
         {
             RpcError? responseError = null;
             string? responsePayload = null;
@@ -218,7 +206,7 @@ namespace LiveKit
                 }
                 catch (Exception error)
                 {
-                    Utils.Warn($"Uncaught error returned by RPC handler for {method}. Returning APPLICATION_ERROR instead.", error);
+                    Utils.Error($"Uncaught error returned by RPC handler for {method}. Returning APPLICATION_ERROR instead. {error}");
                     responseError = RpcError.BuiltIn(RpcError.ErrorCode.APPLICATION_ERROR);
                 }
             }
@@ -239,7 +227,7 @@ namespace LiveKit
             var response = request.Send();
             if (response.Error != null)
             {
-                Utils.Warn($"Error sending rpc method invocation response: {response.Error}");
+                Utils.Error($"Error sending rpc method invocation response: {response.Error}");
             }
         }
 
@@ -329,5 +317,44 @@ namespace LiveKit
             IsDone = true;
             FfiClient.Instance.UnpublishTrackReceived -= OnUnpublish;
         }
+    }
+
+    public sealed class PerformRpcInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private string _payload;
+
+        internal PerformRpcInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.PerformRpcReceived += OnRpcResponse;
+        }
+
+        internal void OnRpcResponse(PerformRpcCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            if (e.Error != null)
+            {
+                Error = RpcError.FromProto(e.Error);
+                IsError = true;
+            }
+            else
+            {
+                _payload = e.Payload;
+            }
+            IsDone = true;
+            FfiClient.Instance.PerformRpcReceived -= OnRpcResponse;
+        }
+
+        public string GetPayload()
+        {
+            if (IsError)
+                throw Error;
+            return _payload;
+        }
+
+        public RpcError Error { get; private set; }
     }
 }

@@ -24,6 +24,6 @@ namespace LiveKit.Internal
         internal extern static unsafe FfiHandleId FfiNewRequest(byte* data, int len, out byte* dataPtr, out UIntPtr dataLen);
 
         [DllImport(Lib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "livekit_ffi_initialize")]
-        internal extern static FfiHandleId LiveKitInitialize(FFICallbackDelegate cb, bool captureLogs);
+        internal extern static FfiHandleId LiveKitInitialize(FFICallbackDelegate cb, bool captureLogs, string sdk, string sdkVersion);
     }
 }

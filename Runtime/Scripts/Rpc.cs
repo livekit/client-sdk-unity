@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using LiveKit.Proto;
 
 namespace LiveKit
@@ -15,18 +17,18 @@ namespace LiveKit
         public string RequestId { get; set; }
         public string CallerIdentity { get; set; }
         public string Payload { get; set; }
-        public int ResponseTimeout { get; set; }
+        public float ResponseTimeout { get; set; }
     }
 
     public class RpcError : Exception
     {
-        public int Code { get; private set; }
-        public string Data { get; private set; }
+        public uint Code { get; private set; }
+        public string RpcData { get; private set; }
 
-        public RpcError(int code, string message, string data = null) : base(message)
+        public RpcError(uint code, string message, string rpcData = null) : base(message)
         {
             Code = code;
-            Data = data;
+            RpcData = rpcData;
         }
 
         internal static RpcError FromProto(Proto.RpcError proto)
@@ -40,25 +42,25 @@ namespace LiveKit
             {
                 Code = Code,
                 Message = Message,
-                Data = Data
+                Data = RpcData
             };
         }
 
-        public static class ErrorCode
+        public enum ErrorCode : uint
         {
-            public const int APPLICATION_ERROR = 1500;
-            public const int CONNECTION_TIMEOUT = 1501;
-            public const int RESPONSE_TIMEOUT = 1502;
-            public const int RECIPIENT_DISCONNECTED = 1503;
-            public const int RESPONSE_PAYLOAD_TOO_LARGE = 1504;
-            public const int SEND_FAILED = 1505;
-            public const int UNSUPPORTED_METHOD = 1400;
-            public const int RECIPIENT_NOT_FOUND = 1401;
-            public const int REQUEST_PAYLOAD_TOO_LARGE = 1402;
-            public const int UNSUPPORTED_SERVER = 1403;
+            APPLICATION_ERROR = 1500,
+            CONNECTION_TIMEOUT = 1501,
+            RESPONSE_TIMEOUT = 1502,
+            RECIPIENT_DISCONNECTED = 1503,
+            RESPONSE_PAYLOAD_TOO_LARGE = 1504,
+            SEND_FAILED = 1505,
+            UNSUPPORTED_METHOD = 1400,
+            RECIPIENT_NOT_FOUND = 1401,
+            REQUEST_PAYLOAD_TOO_LARGE = 1402,
+            UNSUPPORTED_SERVER = 1403
         }
 
-        private static readonly Dictionary<int, string> ErrorMessages = new()
+        private static readonly Dictionary<ErrorCode, string> ErrorMessages = new()
         {
             { ErrorCode.APPLICATION_ERROR, "Application error in method handler" },
             { ErrorCode.CONNECTION_TIMEOUT, "Connection timeout" },
@@ -72,9 +74,9 @@ namespace LiveKit
             { ErrorCode.UNSUPPORTED_SERVER, "RPC not supported by server" }
         };
 
-        internal static RpcError BuiltIn(int code, string data = null)
+        internal static RpcError BuiltIn(ErrorCode code, string rpcData = null)
         {
-            return new RpcError(code, ErrorMessages[code], data);
+            return new RpcError((uint)code, ErrorMessages[code], rpcData);
         }
     }
 }

@@ -184,9 +184,9 @@ namespace LiveKit
             Metadata = info.Metadata;
         }
 
-        internal void OnRpcMethodInvocationReceived(RpcMethodInvocation e)
+        internal void OnRpcMethodInvocationReceived(RpcMethodInvocationEvent e)
         {
-            if (e.LocalParticipantHandle == LocalParticipant.Handle.DangerousGetHandle())
+            if (e.LocalParticipantHandle == (ulong)LocalParticipant.Handle.DangerousGetHandle())
             {
                 LocalParticipant.HandleRpcMethodInvocation(
                     e.InvocationId,
@@ -194,7 +194,7 @@ namespace LiveKit
                     e.RequestId,
                     e.CallerIdentity,
                     e.Payload,
-                    e.ResponseTimeoutMs);
+                    e.ResponseTimeoutMs / 1000f);
             }
         }
         internal void OnEventReceived(RoomEvent e)

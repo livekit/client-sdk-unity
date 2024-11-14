@@ -43,6 +43,8 @@ namespace LiveKit.Internal
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
 
+        public event PerformRpcReceivedDelegate? PerformRpcReceived;
+
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
@@ -130,7 +132,7 @@ namespace LiveKit.Internal
             initialized = true;
         }
 
-        public void Initialize()
+        public void Initialize()    
         {
             InitializeSdk();
         }
@@ -255,6 +257,9 @@ namespace LiveKit.Internal
                         Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                        break;
+                    case FfiEvent.MessageOneofCase.PerformRpc:
+                        Instance.PerformRpcReceived?.Invoke(r.PerformRpc!);
                         break;
                     case FfiEvent.MessageOneofCase.GetStats:
                     case FfiEvent.MessageOneofCase.Panic:
