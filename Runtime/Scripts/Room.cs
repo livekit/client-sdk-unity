@@ -413,13 +413,13 @@ namespace LiveKit
 
         internal void OnConnect(ConnectCallback info)
         {
-            RoomHandle = FfiHandle.FromOwnedHandle(info.Room.Handle);
+            RoomHandle = FfiHandle.FromOwnedHandle(info.Result.Room.Handle);
 
-            UpdateFromInfo(info.Room.Info);
-            LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
+            UpdateFromInfo(info.Result.Room.Info);
+            LocalParticipant = new LocalParticipant(info.Result.LocalParticipant, this);
 
             // Add already connected participant
-            foreach (var p in info.Participants)
+            foreach (var p in info.Result.Participants)
                 CreateRemoteParticipantWithTracks(p);
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;

@@ -172,7 +172,7 @@ namespace LiveKit
             var resp = request.Send();
         }
 
-        internal async Task HandleRpcMethodInvocation(
+        internal RpcMethodInvocationInstruction HandleRpcMethodInvocation(
             ulong invocationId,
             string method,
             string requestId,
@@ -180,55 +180,23 @@ namespace LiveKit
             string payload,
             float responseTimeout)
         {
-            RpcError? responseError = null;
-            string? responsePayload = null;
-
             if (!_rpcHandlers.TryGetValue(method, out var handler))
             {
-                responseError = RpcError.BuiltIn(RpcError.ErrorCode.UNSUPPORTED_METHOD);
-            }
-            else
-            {
-                try
-                {
-                    var invocationData = new RpcInvocationData
-                    {
-                        RequestId = requestId,
-                        CallerIdentity = callerIdentity,
-                        Payload = payload,
-                        ResponseTimeout = responseTimeout
-                    };
-                    responsePayload = await handler(invocationData);
-                }
-                catch (RpcError error)
-                {
-                    responseError = error;
-                }
-                catch (Exception error)
-                {
-                    Utils.Error($"Uncaught error returned by RPC handler for {method}. Returning APPLICATION_ERROR instead. {error}");
-                    responseError = RpcError.BuiltIn(RpcError.ErrorCode.APPLICATION_ERROR);
-                }
+                return new RpcMethodInvocationInstruction(invocationId, this, 
+                    handler: null, 
+                    error: RpcError.BuiltIn(RpcError.ErrorCode.UNSUPPORTED_METHOD),
+                    invocationData: null);
             }
 
-            using var request = FFIBridge.Instance.NewRequest<RpcMethodInvocationResponseRequest>();
-            var rpcResp = request.request;
-            rpcResp.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
-            rpcResp.InvocationId = invocationId;
-            if (responseError != null)
+            var invocationData = new RpcInvocationData
             {
-                rpcResp.Error = responseError.ToProto();
-            }
-            if (responsePayload != null)
-            {
-                rpcResp.Payload = responsePayload;
-            }
+                RequestId = requestId,
+                CallerIdentity = callerIdentity,
+                Payload = payload,
+                ResponseTimeout = responseTimeout
+            };
 
-            var response = request.Send();
-            if (response.Error != null)
-            {
-                Utils.Error($"Error sending rpc method invocation response: {response.Error}");
-            }
+            return new RpcMethodInvocationInstruction(invocationId, this, handler, null, invocationData);
         }
 
         private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
@@ -356,5 +324,86 @@ namespace LiveKit
         }
 
         public RpcError Error { get; private set; }
+    }
+
+    public sealed class RpcMethodInvocationInstruction : YieldInstruction 
+    {
+        private readonly ulong _invocationId;
+        private readonly LocalParticipant _participant;
+        private readonly Func<RpcInvocationData, Task<string>> _handler;
+        private readonly RpcError _error;
+        private readonly RpcInvocationData _invocationData;
+
+        internal RpcMethodInvocationInstruction(
+            ulong invocationId, 
+            LocalParticipant participant,
+            Func<RpcInvocationData, Task<string>> handler,
+            RpcError error,
+            RpcInvocationData invocationData)
+        {
+            _invocationId = invocationId;
+            _participant = participant;
+            _handler = handler;
+            _error = error;
+            _invocationData = invocationData;
+            
+            // Start processing if we have a handler
+            if (_handler != null)
+            {
+                ProcessAsync();
+            }
+            else
+            {
+                SendResponse(null, _error);
+                IsDone = true;
+            }
+        }
+
+        private async void ProcessAsync()
+        {
+            try
+            {
+                var responsePayload = await _handler(_invocationData);
+                SendResponse(responsePayload, null);
+            }
+            catch (RpcError error)
+            {
+                SendResponse(null, error);
+            }
+            catch (Exception error)
+            {
+                Utils.Error($"Uncaught error returned by RPC handler. Returning APPLICATION_ERROR instead. {error}");
+                SendResponse(null, RpcError.BuiltIn(RpcError.ErrorCode.APPLICATION_ERROR));
+            }
+            finally
+            {
+                IsDone = true;
+            }
+        }
+
+        private void SendResponse(string responsePayload, RpcError responseError)
+        {
+            using var request = FFIBridge.Instance.NewRequest<RpcMethodInvocationResponseRequest>();
+            var rpcResp = request.request;
+            rpcResp.LocalParticipantHandle = (ulong)_participant.Handle.DangerousGetHandle();
+            rpcResp.InvocationId = _invocationId;
+            
+            if (responseError != null)
+            {
+                rpcResp.Error = responseError.ToProto();
+            }
+            if (responsePayload != null)
+            {
+                rpcResp.Payload = responsePayload;
+            }
+
+            var response = request.Send();
+            FfiResponse res = response;
+            if (res.RpcMethodInvocationResponse.Error != null)
+            {
+                Utils.Error($"Error sending rpc method invocation response: {res.RpcMethodInvocationResponse.Error}");
+                IsError = true;
+            }
+        }
     }
 }
