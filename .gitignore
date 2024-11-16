@@ -74,3 +74,9 @@ crashlytics-build.properties
 .DS_Store
 
 downloads~
+
+/Runtime/Plugins/ffi-*/LICENSE.md
+/Runtime/Plugins/ffi-*/LICENSE.md.meta
+/Runtime/Plugins/ffi-*/livekit_ffi.h
+/Runtime/Plugins/ffi-*/livekit_ffi.h.meta
+
