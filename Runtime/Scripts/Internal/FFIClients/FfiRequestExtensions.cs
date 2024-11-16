@@ -84,13 +84,6 @@ namespace LiveKit.Internal.FFIClients
                 case E2eeRequest e2EeRequest:
                     ffiRequest.E2Ee = e2EeRequest;
                     break;
-                // Chat
-                case SendChatMessageRequest sendChatMessageRequest:
-                    ffiRequest.SendChatMessage = sendChatMessageRequest;
-                    break;
-                case EditChatMessageRequest editChatMessageRequest:
-                    ffiRequest.EditChatMessage = editChatMessageRequest;
-                    break;
                 // Rpc
                 case RegisterRpcMethodRequest registerRpcMethodRequest:
                     ffiRequest.RegisterRpcMethod = registerRpcMethodRequest;
@@ -157,11 +150,6 @@ namespace LiveKit.Internal.FFIClients
                 || request.E2Ee != null
                 ||
 
-                // Chat
-                request.SendChatMessage != null
-                || request.EditChatMessage != null
-                ||
-
                 // Rpc
                 request.RegisterRpcMethod != null
                 || request.UnregisterRpcMethod != null
@@ -219,11 +207,6 @@ namespace LiveKit.Internal.FFIClients
                 || response.NewSoxResampler != null
                 || response.PushSoxResampler != null
                 || response.FlushSoxResampler != null
-                ||
-
-
-                // Chat
-                response.SendChatMessage != null
                 ||
 
                 // Rpc

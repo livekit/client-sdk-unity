@@ -187,5 +187,71 @@ void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, Rem
 }
 ```
 
+### RPC
+
+Perform your own predefined method calls from one participant to another. 
+
+This feature is especially powerful when used with [Agents](https://docs.livekit.io/agents), for instance to forward LLM function calls to your client application.
+
+The following is a brief overview but [more detail is available in the documentation](https://docs.livekit.io/home/client/data/rpc).
+
+#### Registering an RPC method
+
+The participant who implements the method and will receive its calls must first register support. Your method handler will be an async callback that receives an `RpcInvocationData` object:
+
+```cs
+// Define your method handler
+async Task<string> HandleGreeting(RpcInvocationData data)
+{
+    Debug.Log($"Received greeting from {data.CallerIdentity}: {data.Payload}");
+    return $"Hello, {data.CallerIdentity}!";
+}
+
+// Register the method after connection to the room
+room.LocalParticipant.RegisterRpcMethod("greet", HandleGreeting);
+```
+
+In addition to the payload, `RpcInvocationData` also contains `responseTimeout`, which informs you the maximum time available to return a response. If you are unable to respond in time, the call will result in an error on the caller's side.
+
+#### Performing an RPC request
+
+The caller may initiate an RPC call using coroutines:
+
+```cs
+IEnumerator PerformRpcCoroutine()
+{
+    var rpcCall = room.LocalParticipant.PerformRpc(new PerformRpcParams
+    {
+        DestinationIdentity = "recipient-identity",
+        Method = "greet",
+        Payload = "Hello from RPC!"
+    });
+    
+    yield return rpcCall;
+
+    if (rpcCall.IsError)
+    {
+        Debug.Log($"RPC call failed: {rpcCall.Error}");
+    }
+    else
+    {
+        Debug.Log($"RPC response: {rpcCall.Payload}");
+    }
+}
+
+// Start the coroutine from another MonoBehaviour method
+StartCoroutine(PerformRpcCoroutine());
+```
+
+You may find it useful to adjust the `ResponseTimeout` parameter, which indicates the amount of time you will wait for a response. We recommend keeping this value as low as possible while still satisfying the constraints of your application.
+
+#### Errors
+
+LiveKit is a dynamic realtime environment and RPC calls can fail for various reasons. 
+
+You may throw errors of the type `RpcError` with a string `message` in an RPC method handler and they will be received on the caller's side with the message intact. Other errors will not be transmitted and will instead arrive to the caller as `1500` ("Application Error"). Other built-in errors are detailed in the [docs](https://docs.livekit.io/home/client/data/rpc/#errors).
+
+
+
 <!--BEGIN_REPO_NAV-->
 <!--END_REPO_NAV-->

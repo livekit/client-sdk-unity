@@ -139,6 +139,21 @@ namespace LiveKit
             var resp = request.Send();
         }
 
+
+        /// <summary>
+        /// Performs RPC on another participant in the room.
+        /// This allows you to execute a custom method on a remote participant and await their response.
+        /// </summary>
+        /// <param name="rpcParams">Parameters for the RPC call including:
+        /// - DestinationIdentity: The identity of the participant to call
+        /// - Method: Name of the method to call (up to 64 bytes)
+        /// - Payload: String payload (max 15KB)
+        /// - ResponseTimeout: Maximum time to wait for response (defaults to 10 seconds)</param>
+        /// <returns>A YieldInstruction that completes when the RPC call receives a response or errors.
+        /// Check IsError and access Payload/Error properties to handle the result.</returns>
+        /// <remarks>
+        /// See https://docs.livekit.io/home/client/data/rpc/#errors for a list of possible error codes.
+        /// </remarks>
         public PerformRpcInstruction PerformRpc(PerformRpcParams rpcParams)
         {
             using var request = FFIBridge.Instance.NewRequest<PerformRpcRequest>();
@@ -154,6 +169,13 @@ namespace LiveKit
             return new PerformRpcInstruction(res.PerformRpc.AsyncId);
         }
 
+        /// <summary>
+        /// Registers a new RPC method handler.
+        /// </summary>
+        /// <param name="method">The name of the RPC method to register</param>
+        /// <param name="handler">The async callback that handles incoming RPC requests. It receives an RpcInvocationData object 
+        /// containing the caller's identity, payload (up to 15KB), and response timeout. Must return a string response or throw 
+        /// an RpcError. Any other exceptions will be converted to a generic APPLICATION_ERROR (1500).</param>
         public void RegisterRpcMethod(string method, RpcHandler handler)
         {
             _rpcHandlers[method] = handler;
@@ -165,6 +187,10 @@ namespace LiveKit
             var resp = request.Send();
         }
 
+        /// <summary>
+        /// Unregisters a previously registered RPC method handler.
+        /// </summary>
+        /// <param name="method">The name of the RPC method to unregister</param>
         public void UnregisterRpcMethod(string method)
         {
             _rpcHandlers.Remove(method);
@@ -234,11 +260,6 @@ namespace LiveKit
                 rpcResp.Payload = responsePayload;
 
             var response = request.Send();
-            FfiResponse res = response;
-            if (res.RpcMethodInvocationResponse.Error != null)
-            {
-                Utils.Error($"Error sending rpc method invocation response: {res.RpcMethodInvocationResponse.Error}");
-            }
         }
 
         private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
@@ -345,14 +366,17 @@ namespace LiveKit
             if (e.AsyncId != _asyncId)
                 return;
 
+
             if (e.Error != null)
             {
                 Error = RpcError.FromProto(e.Error);
                 IsError = true;
+                Utils.Error($"RPC error received: {Error}");
             }
             else
             {
                 _payload = e.Payload;
+                Utils.Debug($"RPC response received with payload length: {e.Payload?.Length ?? 0}");
             }
             IsDone = true;
             FfiClient.Instance.PerformRpcReceived -= OnRpcResponse;
