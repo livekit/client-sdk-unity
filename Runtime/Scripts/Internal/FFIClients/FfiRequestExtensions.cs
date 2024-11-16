@@ -84,6 +84,26 @@ namespace LiveKit.Internal.FFIClients
                 case E2eeRequest e2EeRequest:
                     ffiRequest.E2Ee = e2EeRequest;
                     break;
+                // Chat
+                case SendChatMessageRequest sendChatMessageRequest:
+                    ffiRequest.SendChatMessage = sendChatMessageRequest;
+                    break;
+                case EditChatMessageRequest editChatMessageRequest:
+                    ffiRequest.EditChatMessage = editChatMessageRequest;
+                    break;
+                // Rpc
+                case RegisterRpcMethodRequest registerRpcMethodRequest:
+                    ffiRequest.RegisterRpcMethod = registerRpcMethodRequest;
+                    break;
+                case UnregisterRpcMethodRequest unregisterRpcMethodRequest:
+                    ffiRequest.UnregisterRpcMethod = unregisterRpcMethodRequest;
+                    break;
+                case PerformRpcRequest performRpcRequest:
+                    ffiRequest.PerformRpc = performRpcRequest;
+                    break;
+                case RpcMethodInvocationResponseRequest rpcMethodInvocationResponseRequest:
+                    ffiRequest.RpcMethodInvocationResponse = rpcMethodInvocationResponseRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }
@@ -131,7 +151,22 @@ namespace LiveKit.Internal.FFIClients
                 || request.CaptureAudioFrame != null
                 || request.NewAudioResampler != null
                 || request.RemixAndResample != null
+                || request.NewSoxResampler != null
+                || request.PushSoxResampler != null
+                || request.FlushSoxResampler != null
                 || request.E2Ee != null
+                ||
+
+                // Chat
+                request.SendChatMessage != null
+                || request.EditChatMessage != null
+                ||
+
+                // Rpc
+                request.RegisterRpcMethod != null
+                || request.UnregisterRpcMethod != null
+                || request.PerformRpc != null
+                || request.RpcMethodInvocationResponse != null
             )
             {
                 throw new InvalidOperationException("Request is not cleared");
@@ -181,6 +216,21 @@ namespace LiveKit.Internal.FFIClients
                 || response.NewAudioResampler != null
                 || response.RemixAndResample != null
                 || response.E2Ee != null
+                || response.NewSoxResampler != null
+                || response.PushSoxResampler != null
+                || response.FlushSoxResampler != null
+                ||
+
+
+                // Chat
+                response.SendChatMessage != null
+                ||
+
+                // Rpc
+                response.RegisterRpcMethod != null
+                || response.UnregisterRpcMethod != null
+                || response.PerformRpc != null
+                || response.RpcMethodInvocationResponse != null
             )
             {
                 throw new InvalidOperationException("Response is not cleared: ");
