@@ -188,6 +188,7 @@ namespace LiveKit
         {
             if (e.LocalParticipantHandle == (ulong)LocalParticipant.Handle.DangerousGetHandle())
             {
+                // Async but no need to await the response
                 LocalParticipant.HandleRpcMethodInvocation(
                     e.InvocationId,
                     e.Method,
