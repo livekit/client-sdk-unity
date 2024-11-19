@@ -144,9 +144,6 @@ namespace LiveKit.Internal.FFIClients
                 || request.CaptureAudioFrame != null
                 || request.NewAudioResampler != null
                 || request.RemixAndResample != null
-                || request.NewSoxResampler != null
-                || request.PushSoxResampler != null
-                || request.FlushSoxResampler != null
                 || request.E2Ee != null
                 ||
 
@@ -204,9 +201,6 @@ namespace LiveKit.Internal.FFIClients
                 || response.NewAudioResampler != null
                 || response.RemixAndResample != null
                 || response.E2Ee != null
-                || response.NewSoxResampler != null
-                || response.PushSoxResampler != null
-                || response.FlushSoxResampler != null
                 ||
 
                 // Rpc
