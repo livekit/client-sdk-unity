@@ -4,25 +4,79 @@ using UnityEngine;
 
 namespace LiveKit
 {
+    /// <summary>
+    /// Parameters for <see cref="LocalParticipant.PerformRpc"/>.
+    /// 
+    /// </summary>
     public class PerformRpcParams
     {
+        /// <summary>
+        /// The identity of the RemoteParticipant to send the request to.
+        /// </summary>
         public string DestinationIdentity { get; set; }
+
+        /// <summary>
+        /// The name of the RPC method to call. Max 64 bytes UTF-8.
+        /// </summary>
         public string Method { get; set; }
+
+        /// <summary>
+        /// String payload data to send to the remote participant. Max 15KiB UTF-8.
+        /// </summary>
         public string Payload { get; set; }
+
+        /// <summary>
+        /// The maximum time to wait for a response from the remote participant. Default is 10 seconds.
+        /// </summary>
         public float ResponseTimeout { get; set; } = 10f;
     }
 
+    /// <summary>
+    /// Data supplied to an RPC method handler registered with <see cref="LocalParticipant.RegisterRpcMethod"/>.
+    /// </summary>
     public class RpcInvocationData
     {
+        /// <summary>
+        /// A unique identifier for the RPC request.
+        /// </summary>
         public string RequestId { get; set; }
+
+        /// <summary>
+        /// The identity of the RemoteParticipant that made the RPC call.
+        /// </summary>
         public string CallerIdentity { get; set; }
+
+        /// <summary>
+        /// The string payload data sent by the caller.
+        /// </summary>
         public string Payload { get; set; }
+
+        /// <summary>
+        /// The maximum time available to respond before the caller times out.
+        /// </summary>
         public float ResponseTimeout { get; set; }
     }
 
+
+    /// <summary>
+    /// Errors thrown by RPC method handlers or generated due to a failure in the RPC call.
+    /// 
+    /// Built-in error codes are listed in <see cref="RpcError.ErrorCode"/>. 
+    /// 
+    /// You may also throw custom errors with your own code and data.  
+    /// Errors of this type thrown in your handler will be transmitted as-is without modification. 
+    /// All other errors will be converted to a generic APPLICATION_ERROR (1500).
+    /// </summary>
     public class RpcError : Exception
     {
+        /// <summary>
+        /// Integer error code. Values 1000-1999 are reserved for the framework, see <see cref="ErrorCode"/>.
+        /// </summary>
         public uint Code { get; private set; }
+
+        /// <summary>
+        /// String error data. Max 15KiB UTF-8.
+        /// </summary>
         public string RpcData { get; private set; }
 
         public RpcError(uint code, string message, string rpcData = null) : base(message)
@@ -47,6 +101,9 @@ namespace LiveKit
             };
         }
 
+        /// <summary>
+        /// Built-in error codes. See https://docs.livekit.io/home/client/data/rpc/#errors for more information.
+        /// </summary>
         public enum ErrorCode : uint
         {
             APPLICATION_ERROR = 1500,

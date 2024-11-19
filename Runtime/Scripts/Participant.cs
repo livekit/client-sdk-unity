@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Internal.FFIClients.Requests;
-using System.Threading.Tasks;
-using UnityEngine;
-using System.Collections;
 
 namespace LiveKit
 {
@@ -31,7 +30,7 @@ namespace LiveKit
         public readonly WeakReference<Room> Room;
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
 
-        public Dictionary<string, RpcHandler> _rpcHandlers = new();
+        private Dictionary<string, RpcHandler> _rpcHandlers = new();
 
         protected Participant(OwnedParticipant participant, Room room)
         {
@@ -146,14 +145,11 @@ namespace LiveKit
         /// </summary>
         /// <param name="rpcParams">Parameters for the RPC call including:
         /// - DestinationIdentity: The identity of the participant to call
-        /// - Method: Name of the method to call (up to 64 bytes)
-        /// - Payload: String payload (max 15KiB)
+        /// - Method: Name of the method to call (up to 64 bytes UTF-8)
+        /// - Payload: String payload (max 15KiB UTF-8)
         /// - ResponseTimeout: Maximum time to wait for response (defaults to 10 seconds)</param>
         /// <returns>
-        /// A <see cref="PerformRpcInstruction"/> that represents the asynchronous RPC operation. The instruction completes when either:
-        /// - A response is received from the remote participant
-        /// - The call times out after the specified timeout period
-        /// - An error occurs during the RPC call
+        /// A <see cref="PerformRpcInstruction"/> that completes when the RPC call receives a response or errors.
         /// Check <see cref="PerformRpcInstruction.IsError"/> and access <see cref="PerformRpcInstruction.Payload"/>/<see cref="PerformRpcInstruction.Error"/> properties to handle the result.
         /// </returns>
         /// <remarks>
@@ -179,7 +175,7 @@ namespace LiveKit
         /// </summary>
         /// <param name="method">The name of the RPC method to register</param>
         /// <param name="handler">The async callback that handles incoming RPC requests. It receives an RpcInvocationData object 
-        /// containing the caller's identity, payload (up to 15KiB), and response timeout. Must return a string response or throw 
+        /// containing the caller's identity, payload (up to 15KiB UTF-8), and response timeout. Must return a string response or throw 
         /// an RpcError. Any other exceptions will be converted to a generic APPLICATION_ERROR (1500).</param>
         public void RegisterRpcMethod(string method, RpcHandler handler)
         {
