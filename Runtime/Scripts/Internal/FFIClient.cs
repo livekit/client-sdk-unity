@@ -14,9 +14,9 @@ using UnityEditor;
 
 namespace LiveKit.Internal
 {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [InitializeOnLoad]
-    #endif
+#endif
     internal sealed class FfiClient : IFFIClient
     {
         private static bool initialized = false;
@@ -69,7 +69,7 @@ namespace LiveKit.Internal
             this.ffiResponsePool = ffiResponsePool;
         }
 
- #if UNITY_EDITOR
+#if UNITY_EDITOR
         static FfiClient()
         {
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
@@ -98,12 +98,12 @@ namespace LiveKit.Internal
 
         private static void Quit()
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
-            #endif
-                Instance.Dispose();
-            
+#endif
+            Instance.Dispose();
+
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -132,7 +132,7 @@ namespace LiveKit.Internal
             initialized = true;
         }
 
-        public void Initialize()    
+        public void Initialize()
         {
             InitializeSdk();
         }
@@ -202,7 +202,7 @@ namespace LiveKit.Internal
 
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(UIntPtr data, UIntPtr size)
-        { 
+        {
 #if NO_LIVEKIT_MODE
             return;
 #endif
