@@ -147,10 +147,15 @@ namespace LiveKit
         /// <param name="rpcParams">Parameters for the RPC call including:
         /// - DestinationIdentity: The identity of the participant to call
         /// - Method: Name of the method to call (up to 64 bytes)
-        /// - Payload: String payload (max 15KB)
+        /// - Payload: String payload (max 15KiB)
         /// - ResponseTimeout: Maximum time to wait for response (defaults to 10 seconds)</param>
-        /// <returns>A YieldInstruction that completes when the RPC call receives a response or errors.
-        /// Check IsError and access Payload/Error properties to handle the result.</returns>
+        /// <returns>
+        /// A <see cref="PerformRpcInstruction"/> that represents the asynchronous RPC operation. The instruction completes when either:
+        /// - A response is received from the remote participant
+        /// - The call times out after the specified timeout period
+        /// - An error occurs during the RPC call
+        /// Check <see cref="PerformRpcInstruction.IsError"/> and access <see cref="PerformRpcInstruction.Payload"/>/<see cref="PerformRpcInstruction.Error"/> properties to handle the result.
+        /// </returns>
         /// <remarks>
         /// See https://docs.livekit.io/home/client/data/rpc/#errors for a list of possible error codes.
         /// </remarks>
@@ -174,7 +179,7 @@ namespace LiveKit
         /// </summary>
         /// <param name="method">The name of the RPC method to register</param>
         /// <param name="handler">The async callback that handles incoming RPC requests. It receives an RpcInvocationData object 
-        /// containing the caller's identity, payload (up to 15KB), and response timeout. Must return a string response or throw 
+        /// containing the caller's identity, payload (up to 15KiB), and response timeout. Must return a string response or throw 
         /// an RpcError. Any other exceptions will be converted to a generic APPLICATION_ERROR (1500).</param>
         public void RegisterRpcMethod(string method, RpcHandler handler)
         {
@@ -233,7 +238,7 @@ namespace LiveKit
                     SendRpcResponse(invocationId, null, RpcError.BuiltIn(RpcError.ErrorCode.APPLICATION_ERROR));
                     return;
                 }
-                
+
                 SendRpcResponse(invocationId, result, null);
             }
             catch (RpcError rpcError)
@@ -253,7 +258,7 @@ namespace LiveKit
             var rpcResp = request.request;
             rpcResp.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             rpcResp.InvocationId = invocationId;
-            
+
             if (responseError != null)
                 rpcResp.Error = responseError.ToProto();
             if (responsePayload != null)
@@ -350,6 +355,12 @@ namespace LiveKit
         }
     }
 
+    /// <summary>
+    /// YieldInstruction for RPC calls. Returned by <see cref="LocalParticipant.PerformRpc"/>.
+    /// </summary>
+    /// <remarks>
+    /// Access <see cref="Payload"/> after checking <see cref="IsError"/>
+    /// </remarks>
     public sealed class PerformRpcInstruction : YieldInstruction
     {
         private ulong _asyncId;
@@ -376,14 +387,13 @@ namespace LiveKit
             else
             {
                 _payload = e.Payload;
-                Utils.Debug($"RPC response received with payload length: {e.Payload?.Length ?? 0}");
             }
             IsDone = true;
             FfiClient.Instance.PerformRpcReceived -= OnRpcResponse;
         }
 
         /// <summary>
-        /// Gets the RPC response payload. Check IsError before calling this method.
+        /// Getter for the RPC response payload. Check <see cref="IsError"/> before calling this method.
         /// </summary>
         /// <exception cref="RpcError">Thrown if the RPC call resulted in an error</exception>
         public string Payload
@@ -397,21 +407,11 @@ namespace LiveKit
         }
 
         /// <summary>
-        /// Tries to get the RPC response payload safely.
+        /// Getter for RPC response error.
         /// </summary>
-        /// <param name="payload">The payload if successful</param>
-        /// <returns>true if successful, false if there was an error</returns>
-        public bool TryGetPayload(out string payload)
-        {
-            if (IsError)
-            {
-                payload = null;
-                return false;
-            }
-            payload = _payload;
-            return true;
-        }
-
+        /// <remarks>
+        /// See <see cref="RpcError"/> for more information on error codes.
+        /// </remarks>
         public RpcError Error { get; private set; }
     }
 }
