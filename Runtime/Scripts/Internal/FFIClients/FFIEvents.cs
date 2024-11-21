@@ -27,10 +27,14 @@ namespace LiveKit.Internal
 
     internal delegate void TrackEventReceivedDelegate(TrackEvent e);
 
+    internal delegate void RpcMethodInvocationReceivedDelegate(RpcMethodInvocationEvent e);
+
 
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
 
 
     internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
+
+    internal delegate void PerformRpcReceivedDelegate(PerformRpcCallback e);
 
 }

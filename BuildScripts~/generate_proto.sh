@@ -14,4 +14,5 @@ protoc \
     $FFI_PROTOCOL/room.proto \
     $FFI_PROTOCOL/stats.proto \
     $FFI_PROTOCOL/track.proto \
-    $FFI_PROTOCOL/video_frame.proto
+    $FFI_PROTOCOL/video_frame.proto \
+    $FFI_PROTOCOL/rpc.proto

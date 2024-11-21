@@ -25,84 +25,83 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChF2aWRlb19mcmFtZS5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvGgt0cmFjay5wcm90byK1AQoVTmV3VmlkZW9TdHJlYW1SZXF1ZXN0EhQK",
-            "DHRyYWNrX2hhbmRsZRgBIAEoBBIsCgR0eXBlGAIgASgOMh4ubGl2ZWtpdC5w",
-            "cm90by5WaWRlb1N0cmVhbVR5cGUSMwoGZm9ybWF0GAMgASgOMh4ubGl2ZWtp",
-            "dC5wcm90by5WaWRlb0J1ZmZlclR5cGVIAIgBARIYChBub3JtYWxpemVfc3Ry",
-            "aWRlGAQgASgIQgkKB19mb3JtYXQiSQoWTmV3VmlkZW9TdHJlYW1SZXNwb25z",
-            "ZRIvCgZzdHJlYW0YASABKAsyHy5saXZla2l0LnByb3RvLk93bmVkVmlkZW9T",
-            "dHJlYW0i+QEKIVZpZGVvU3RyZWFtRnJvbVBhcnRpY2lwYW50UmVxdWVzdBIa",
-            "ChJwYXJ0aWNpcGFudF9oYW5kbGUYASABKAQSLAoEdHlwZRgCIAEoDjIeLmxp",
-            "dmVraXQucHJvdG8uVmlkZW9TdHJlYW1UeXBlEjAKDHRyYWNrX3NvdXJjZRgD",
-            "IAEoDjIaLmxpdmVraXQucHJvdG8uVHJhY2tTb3VyY2USMwoGZm9ybWF0GAQg",
-            "ASgOMh4ubGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlclR5cGVIAIgBARIYChBu",
-            "b3JtYWxpemVfc3RyaWRlGAUgASgIQgkKB19mb3JtYXQiVQoiVmlkZW9TdHJl",
-            "YW1Gcm9tUGFydGljaXBhbnRSZXNwb25zZRIvCgZzdHJlYW0YASABKAsyHy5s",
-            "aXZla2l0LnByb3RvLk93bmVkVmlkZW9TdHJlYW0ifwoVTmV3VmlkZW9Tb3Vy",
-            "Y2VSZXF1ZXN0EiwKBHR5cGUYASABKA4yHi5saXZla2l0LnByb3RvLlZpZGVv",
-            "U291cmNlVHlwZRI4CgpyZXNvbHV0aW9uGAIgASgLMiQubGl2ZWtpdC5wcm90",
-            "by5WaWRlb1NvdXJjZVJlc29sdXRpb24iSQoWTmV3VmlkZW9Tb3VyY2VSZXNw",
-            "b25zZRIvCgZzb3VyY2UYASABKAsyHy5saXZla2l0LnByb3RvLk93bmVkVmlk",
-            "ZW9Tb3VyY2UipwEKGENhcHR1cmVWaWRlb0ZyYW1lUmVxdWVzdBIVCg1zb3Vy",
-            "Y2VfaGFuZGxlGAEgASgEEi4KBmJ1ZmZlchgCIAEoCzIeLmxpdmVraXQucHJv",
-            "dG8uVmlkZW9CdWZmZXJJbmZvEhQKDHRpbWVzdGFtcF91cxgDIAEoAxIuCghy",
-            "b3RhdGlvbhgEIAEoDjIcLmxpdmVraXQucHJvdG8uVmlkZW9Sb3RhdGlvbiIb",
-            "ChlDYXB0dXJlVmlkZW9GcmFtZVJlc3BvbnNlIocBChNWaWRlb0NvbnZlcnRS",
-            "ZXF1ZXN0Eg4KBmZsaXBfeRgBIAEoCBIuCgZidWZmZXIYAiABKAsyHi5saXZl",
-            "a2l0LnByb3RvLlZpZGVvQnVmZmVySW5mbxIwCghkc3RfdHlwZRgDIAEoDjIe",
-            "LmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJUeXBlImUKFFZpZGVvQ29udmVy",
-            "dFJlc3BvbnNlEhIKBWVycm9yGAEgASgJSACIAQESLwoGYnVmZmVyGAIgASgL",
-            "Mh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvQnVmZmVyQggKBl9lcnJvciJE",
-            "Cg9WaWRlb1Jlc29sdXRpb24SDQoFd2lkdGgYASABKA0SDgoGaGVpZ2h0GAIg",
-            "ASgNEhIKCmZyYW1lX3JhdGUYAyABKAEigwIKD1ZpZGVvQnVmZmVySW5mbxIs",
-            "CgR0eXBlGAEgASgOMh4ubGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlclR5cGUS",
-            "DQoFd2lkdGgYAiABKA0SDgoGaGVpZ2h0GAMgASgNEhAKCGRhdGFfcHRyGAQg",
-            "ASgEEg4KBnN0cmlkZRgGIAEoDRJACgpjb21wb25lbnRzGAcgAygLMiwubGl2",
-            "ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8uQ29tcG9uZW50SW5mbxo/Cg1D",
-            "b21wb25lbnRJbmZvEhAKCGRhdGFfcHRyGAEgASgEEg4KBnN0cmlkZRgCIAEo",
-            "DRIMCgRzaXplGAMgASgNIm8KEE93bmVkVmlkZW9CdWZmZXISLQoGaGFuZGxl",
-            "GAEgASgLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZRIsCgRpbmZv",
-            "GAIgASgLMh4ubGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8iPwoPVmlk",
-            "ZW9TdHJlYW1JbmZvEiwKBHR5cGUYASABKA4yHi5saXZla2l0LnByb3RvLlZp",
-            "ZGVvU3RyZWFtVHlwZSJvChBPd25lZFZpZGVvU3RyZWFtEi0KBmhhbmRsZRgB",
-            "IAEoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgC",
-            "IAEoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9TdHJlYW1JbmZvIp8BChBWaWRl",
-            "b1N0cmVhbUV2ZW50EhUKDXN0cmVhbV9oYW5kbGUYASABKAQSOwoOZnJhbWVf",
-            "cmVjZWl2ZWQYAiABKAsyIS5saXZla2l0LnByb3RvLlZpZGVvRnJhbWVSZWNl",
-            "aXZlZEgAEiwKA2VvcxgDIAEoCzIdLmxpdmVraXQucHJvdG8uVmlkZW9TdHJl",
-            "YW1FT1NIAEIJCgdtZXNzYWdlIosBChJWaWRlb0ZyYW1lUmVjZWl2ZWQSLwoG",
-            "YnVmZmVyGAEgASgLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvQnVmZmVy",
-            "EhQKDHRpbWVzdGFtcF91cxgCIAEoAxIuCghyb3RhdGlvbhgDIAEoDjIcLmxp",
-            "dmVraXQucHJvdG8uVmlkZW9Sb3RhdGlvbiIQCg5WaWRlb1N0cmVhbUVPUyI2",
-            "ChVWaWRlb1NvdXJjZVJlc29sdXRpb24SDQoFd2lkdGgYASABKA0SDgoGaGVp",
-            "Z2h0GAIgASgNIj8KD1ZpZGVvU291cmNlSW5mbxIsCgR0eXBlGAEgASgOMh4u",
-            "bGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZVR5cGUibwoQT3duZWRWaWRlb1Nv",
-            "dXJjZRItCgZoYW5kbGUYASABKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVk",
-            "SGFuZGxlEiwKBGluZm8YAiABKAsyHi5saXZla2l0LnByb3RvLlZpZGVvU291",
-            "cmNlSW5mbyoxCgpWaWRlb0NvZGVjEgcKA1ZQOBAAEggKBEgyNjQQARIHCgNB",
-            "VjEQAhIHCgNWUDkQAypsCg1WaWRlb1JvdGF0aW9uEhQKEFZJREVPX1JPVEFU",
-            "SU9OXzAQABIVChFWSURFT19ST1RBVElPTl85MBABEhYKElZJREVPX1JPVEFU",
-            "SU9OXzE4MBACEhYKElZJREVPX1JPVEFUSU9OXzI3MBADKoEBCg9WaWRlb0J1",
-            "ZmZlclR5cGUSCAoEUkdCQRAAEggKBEFCR1IQARIICgRBUkdCEAISCAoEQkdS",
-            "QRADEgkKBVJHQjI0EAQSCAoESTQyMBAFEgkKBUk0MjBBEAYSCAoESTQyMhAH",
-            "EggKBEk0NDQQCBIICgRJMDEwEAkSCAoETlYxMhAKKlkKD1ZpZGVvU3RyZWFt",
-            "VHlwZRIXChNWSURFT19TVFJFQU1fTkFUSVZFEAASFgoSVklERU9fU1RSRUFN",
-            "X1dFQkdMEAESFQoRVklERU9fU1RSRUFNX0hUTUwQAioqCg9WaWRlb1NvdXJj",
-            "ZVR5cGUSFwoTVklERU9fU09VUkNFX05BVElWRRAAQhCqAg1MaXZlS2l0LlBy",
-            "b3RvYgZwcm90bzM="));
+            "b3RvGgt0cmFjay5wcm90byKlAQoVTmV3VmlkZW9TdHJlYW1SZXF1ZXN0EhQK",
+            "DHRyYWNrX2hhbmRsZRgBIAIoBBIsCgR0eXBlGAIgAigOMh4ubGl2ZWtpdC5w",
+            "cm90by5WaWRlb1N0cmVhbVR5cGUSLgoGZm9ybWF0GAMgASgOMh4ubGl2ZWtp",
+            "dC5wcm90by5WaWRlb0J1ZmZlclR5cGUSGAoQbm9ybWFsaXplX3N0cmlkZRgE",
+            "IAEoCCJJChZOZXdWaWRlb1N0cmVhbVJlc3BvbnNlEi8KBnN0cmVhbRgBIAIo",
+            "CzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb1N0cmVhbSLpAQohVmlkZW9T",
+            "dHJlYW1Gcm9tUGFydGljaXBhbnRSZXF1ZXN0EhoKEnBhcnRpY2lwYW50X2hh",
+            "bmRsZRgBIAIoBBIsCgR0eXBlGAIgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRl",
+            "b1N0cmVhbVR5cGUSMAoMdHJhY2tfc291cmNlGAMgAigOMhoubGl2ZWtpdC5w",
+            "cm90by5UcmFja1NvdXJjZRIuCgZmb3JtYXQYBCABKA4yHi5saXZla2l0LnBy",
+            "b3RvLlZpZGVvQnVmZmVyVHlwZRIYChBub3JtYWxpemVfc3RyaWRlGAUgASgI",
+            "IlUKIlZpZGVvU3RyZWFtRnJvbVBhcnRpY2lwYW50UmVzcG9uc2USLwoGc3Ry",
+            "ZWFtGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvU3RyZWFtIn8K",
+            "FU5ld1ZpZGVvU291cmNlUmVxdWVzdBIsCgR0eXBlGAEgAigOMh4ubGl2ZWtp",
+            "dC5wcm90by5WaWRlb1NvdXJjZVR5cGUSOAoKcmVzb2x1dGlvbhgCIAIoCzIk",
+            "LmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VSZXNvbHV0aW9uIkkKFk5ld1Zp",
+            "ZGVvU291cmNlUmVzcG9uc2USLwoGc291cmNlGAEgAigLMh8ubGl2ZWtpdC5w",
+            "cm90by5Pd25lZFZpZGVvU291cmNlIqcBChhDYXB0dXJlVmlkZW9GcmFtZVJl",
+            "cXVlc3QSFQoNc291cmNlX2hhbmRsZRgBIAIoBBIuCgZidWZmZXIYAiACKAsy",
+            "Hi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVySW5mbxIUCgx0aW1lc3RhbXBf",
+            "dXMYAyACKAMSLgoIcm90YXRpb24YBCACKA4yHC5saXZla2l0LnByb3RvLlZp",
+            "ZGVvUm90YXRpb24iGwoZQ2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZSKHAQoT",
+            "VmlkZW9Db252ZXJ0UmVxdWVzdBIOCgZmbGlwX3kYASABKAgSLgoGYnVmZmVy",
+            "GAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8SMAoIZHN0",
+            "X3R5cGUYAyACKA4yHi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVyVHlwZSJl",
+            "ChRWaWRlb0NvbnZlcnRSZXNwb25zZRIPCgVlcnJvchgBIAEoCUgAEjEKBmJ1",
+            "ZmZlchgCIAEoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlckgA",
+            "QgkKB21lc3NhZ2UiRAoPVmlkZW9SZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigN",
+            "Eg4KBmhlaWdodBgCIAIoDRISCgpmcmFtZV9yYXRlGAMgAigBIoMCCg9WaWRl",
+            "b0J1ZmZlckluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlk",
+            "ZW9CdWZmZXJUeXBlEg0KBXdpZHRoGAIgAigNEg4KBmhlaWdodBgDIAIoDRIQ",
+            "CghkYXRhX3B0chgEIAIoBBIOCgZzdHJpZGUYBiACKA0SQAoKY29tcG9uZW50",
+            "cxgHIAMoCzIsLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBv",
+            "bmVudEluZm8aPwoNQ29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgBIAIoBBIO",
+            "CgZzdHJpZGUYAiACKA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVm",
+            "ZmVyEi0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRI",
+            "YW5kbGUSLAoEaW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZm",
+            "ZXJJbmZvIj8KD1ZpZGVvU3RyZWFtSW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2",
+            "ZWtpdC5wcm90by5WaWRlb1N0cmVhbVR5cGUibwoQT3duZWRWaWRlb1N0cmVh",
+            "bRItCgZoYW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFu",
+            "ZGxlEiwKBGluZm8YAiACKAsyHi5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFt",
+            "SW5mbyKfAQoQVmlkZW9TdHJlYW1FdmVudBIVCg1zdHJlYW1faGFuZGxlGAEg",
+            "AigEEjsKDmZyYW1lX3JlY2VpdmVkGAIgASgLMiEubGl2ZWtpdC5wcm90by5W",
+            "aWRlb0ZyYW1lUmVjZWl2ZWRIABIsCgNlb3MYAyABKAsyHS5saXZla2l0LnBy",
+            "b3RvLlZpZGVvU3RyZWFtRU9TSABCCQoHbWVzc2FnZSKLAQoSVmlkZW9GcmFt",
+            "ZVJlY2VpdmVkEi8KBmJ1ZmZlchgBIAIoCzIfLmxpdmVraXQucHJvdG8uT3du",
+            "ZWRWaWRlb0J1ZmZlchIUCgx0aW1lc3RhbXBfdXMYAiACKAMSLgoIcm90YXRp",
+            "b24YAyACKA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24iEAoOVmlk",
+            "ZW9TdHJlYW1FT1MiNgoVVmlkZW9Tb3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRo",
+            "GAEgAigNEg4KBmhlaWdodBgCIAIoDSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoE",
+            "dHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8K",
+            "EE93bmVkVmlkZW9Tb3VyY2USLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5w",
+            "cm90by5GZmlPd25lZEhhbmRsZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5w",
+            "cm90by5WaWRlb1NvdXJjZUluZm8qMQoKVmlkZW9Db2RlYxIHCgNWUDgQABII",
+            "CgRIMjY0EAESBwoDQVYxEAISBwoDVlA5EAMqbAoNVmlkZW9Sb3RhdGlvbhIU",
+            "ChBWSURFT19ST1RBVElPTl8wEAASFQoRVklERU9fUk9UQVRJT05fOTAQARIW",
+            "ChJWSURFT19ST1RBVElPTl8xODAQAhIWChJWSURFT19ST1RBVElPTl8yNzAQ",
+            "AyqBAQoPVmlkZW9CdWZmZXJUeXBlEggKBFJHQkEQABIICgRBQkdSEAESCAoE",
+            "QVJHQhACEggKBEJHUkEQAxIJCgVSR0IyNBAEEggKBEk0MjAQBRIJCgVJNDIw",
+            "QRAGEggKBEk0MjIQBxIICgRJNDQ0EAgSCAoESTAxMBAJEggKBE5WMTIQCipZ",
+            "Cg9WaWRlb1N0cmVhbVR5cGUSFwoTVklERU9fU1RSRUFNX05BVElWRRAAEhYK",
+            "ElZJREVPX1NUUkVBTV9XRUJHTBABEhUKEVZJREVPX1NUUkVBTV9IVE1MEAIq",
+            "KgoPVmlkZW9Tb3VyY2VUeXBlEhcKE1ZJREVPX1NPVVJDRV9OQVRJVkUQAEIQ",
+            "qgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamRequest), global::LiveKit.Proto.NewVideoStreamRequest.Parser, new[]{ "TrackHandle", "Type", "Format", "NormalizeStride" }, new[]{ "Format" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamRequest), global::LiveKit.Proto.NewVideoStreamRequest.Parser, new[]{ "TrackHandle", "Type", "Format", "NormalizeStride" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamResponse), global::LiveKit.Proto.NewVideoStreamResponse.Parser, new[]{ "Stream" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantRequest), global::LiveKit.Proto.VideoStreamFromParticipantRequest.Parser, new[]{ "ParticipantHandle", "Type", "TrackSource", "Format", "NormalizeStride" }, new[]{ "Format" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantRequest), global::LiveKit.Proto.VideoStreamFromParticipantRequest.Parser, new[]{ "ParticipantHandle", "Type", "TrackSource", "Format", "NormalizeStride" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantResponse), global::LiveKit.Proto.VideoStreamFromParticipantResponse.Parser, new[]{ "Stream" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceRequest), global::LiveKit.Proto.NewVideoSourceRequest.Parser, new[]{ "Type", "Resolution" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceResponse), global::LiveKit.Proto.NewVideoSourceResponse.Parser, new[]{ "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureVideoFrameRequest), global::LiveKit.Proto.CaptureVideoFrameRequest.Parser, new[]{ "SourceHandle", "Buffer", "TimestampUs", "Rotation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureVideoFrameResponse), global::LiveKit.Proto.CaptureVideoFrameResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoConvertRequest), global::LiveKit.Proto.VideoConvertRequest.Parser, new[]{ "FlipY", "Buffer", "DstType" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoConvertResponse), global::LiveKit.Proto.VideoConvertResponse.Parser, new[]{ "Error", "Buffer" }, new[]{ "Error" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoConvertResponse), global::LiveKit.Proto.VideoConvertResponse.Parser, new[]{ "Error", "Buffer" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoResolution), global::LiveKit.Proto.VideoResolution.Parser, new[]{ "Width", "Height", "FrameRate" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoBufferInfo), global::LiveKit.Proto.VideoBufferInfo.Parser, new[]{ "Type", "Width", "Height", "DataPtr", "Stride", "Components" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoBufferInfo.Types.ComponentInfo), global::LiveKit.Proto.VideoBufferInfo.Types.ComponentInfo.Parser, new[]{ "DataPtr", "Stride", "Size" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedVideoBuffer), global::LiveKit.Proto.OwnedVideoBuffer.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
@@ -217,26 +216,56 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "track_handle" field.</summary>
     public const int TrackHandleFieldNumber = 1;
+    private readonly static ulong TrackHandleDefaultValue = 0UL;
+
     private ulong trackHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong TrackHandle {
-      get { return trackHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return trackHandle_; } else { return TrackHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         trackHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "track_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "track_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 2;
-    private global::LiveKit.Proto.VideoStreamType type_ = global::LiveKit.Proto.VideoStreamType.VideoStreamNative;
+    private readonly static global::LiveKit.Proto.VideoStreamType TypeDefaultValue = global::LiveKit.Proto.VideoStreamType.VideoStreamNative;
+
+    private global::LiveKit.Proto.VideoStreamType type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoStreamType Type {
-      get { return type_; }
+      get { if ((_hasBits0 & 2) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasType {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearType() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "format" field.</summary>
@@ -250,9 +279,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoBufferType Format {
-      get { if ((_hasBits0 & 1) != 0) { return format_; } else { return FormatDefaultValue; } }
+      get { if ((_hasBits0 & 4) != 0) { return format_; } else { return FormatDefaultValue; } }
       set {
-        _hasBits0 |= 1;
+        _hasBits0 |= 4;
         format_ = value;
       }
     }
@@ -260,17 +289,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasFormat {
-      get { return (_hasBits0 & 1) != 0; }
+      get { return (_hasBits0 & 4) != 0; }
     }
     /// <summary>Clears the value of the "format" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearFormat() {
-      _hasBits0 &= ~1;
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "normalize_stride" field.</summary>
     public const int NormalizeStrideFieldNumber = 4;
+    private readonly static bool NormalizeStrideDefaultValue = false;
+
     private bool normalizeStride_;
     /// <summary>
     /// if true, stride will be set to width/chroma_width
@@ -278,10 +309,23 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool NormalizeStride {
-      get { return normalizeStride_; }
+      get { if ((_hasBits0 & 8) != 0) { return normalizeStride_; } else { return NormalizeStrideDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         normalizeStride_ = value;
       }
+    }
+    /// <summary>Gets whether the "normalize_stride" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasNormalizeStride {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "normalize_stride" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearNormalizeStride() {
+      _hasBits0 &= ~8;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -310,10 +354,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TrackHandle != 0UL) hash ^= TrackHandle.GetHashCode();
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) hash ^= Type.GetHashCode();
+      if (HasTrackHandle) hash ^= TrackHandle.GetHashCode();
+      if (HasType) hash ^= Type.GetHashCode();
       if (HasFormat) hash ^= Format.GetHashCode();
-      if (NormalizeStride != false) hash ^= NormalizeStride.GetHashCode();
+      if (HasNormalizeStride) hash ^= NormalizeStride.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -332,11 +376,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Type);
       }
@@ -344,7 +388,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteEnum((int) Format);
       }
-      if (NormalizeStride != false) {
+      if (HasNormalizeStride) {
         output.WriteRawTag(32);
         output.WriteBool(NormalizeStride);
       }
@@ -358,11 +402,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(TrackHandle);
       }
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Type);
       }
@@ -370,7 +414,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteEnum((int) Format);
       }
-      if (NormalizeStride != false) {
+      if (HasNormalizeStride) {
         output.WriteRawTag(32);
         output.WriteBool(NormalizeStride);
       }
@@ -384,16 +428,16 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TrackHandle != 0UL) {
+      if (HasTrackHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TrackHandle);
       }
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (HasFormat) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Format);
       }
-      if (NormalizeStride != false) {
+      if (HasNormalizeStride) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -408,16 +452,16 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.TrackHandle != 0UL) {
+      if (other.HasTrackHandle) {
         TrackHandle = other.TrackHandle;
       }
-      if (other.Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (other.HasType) {
         Type = other.Type;
       }
       if (other.HasFormat) {
         Format = other.Format;
       }
-      if (other.NormalizeStride != false) {
+      if (other.HasNormalizeStride) {
         NormalizeStride = other.NormalizeStride;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -431,7 +475,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -462,7 +510,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -648,7 +700,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -670,7 +726,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -744,38 +804,83 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "participant_handle" field.</summary>
     public const int ParticipantHandleFieldNumber = 1;
+    private readonly static ulong ParticipantHandleDefaultValue = 0UL;
+
     private ulong participantHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong ParticipantHandle {
-      get { return participantHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return participantHandle_; } else { return ParticipantHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         participantHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "participant_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "participant_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 2;
-    private global::LiveKit.Proto.VideoStreamType type_ = global::LiveKit.Proto.VideoStreamType.VideoStreamNative;
+    private readonly static global::LiveKit.Proto.VideoStreamType TypeDefaultValue = global::LiveKit.Proto.VideoStreamType.VideoStreamNative;
+
+    private global::LiveKit.Proto.VideoStreamType type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoStreamType Type {
-      get { return type_; }
+      get { if ((_hasBits0 & 2) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasType {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearType() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "track_source" field.</summary>
     public const int TrackSourceFieldNumber = 3;
-    private global::LiveKit.Proto.TrackSource trackSource_ = global::LiveKit.Proto.TrackSource.SourceUnknown;
+    private readonly static global::LiveKit.Proto.TrackSource TrackSourceDefaultValue = global::LiveKit.Proto.TrackSource.SourceUnknown;
+
+    private global::LiveKit.Proto.TrackSource trackSource_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TrackSource TrackSource {
-      get { return trackSource_; }
+      get { if ((_hasBits0 & 4) != 0) { return trackSource_; } else { return TrackSourceDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         trackSource_ = value;
       }
+    }
+    /// <summary>Gets whether the "track_source" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackSource {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "track_source" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackSource() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "format" field.</summary>
@@ -786,9 +891,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoBufferType Format {
-      get { if ((_hasBits0 & 1) != 0) { return format_; } else { return FormatDefaultValue; } }
+      get { if ((_hasBits0 & 8) != 0) { return format_; } else { return FormatDefaultValue; } }
       set {
-        _hasBits0 |= 1;
+        _hasBits0 |= 8;
         format_ = value;
       }
     }
@@ -796,25 +901,40 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasFormat {
-      get { return (_hasBits0 & 1) != 0; }
+      get { return (_hasBits0 & 8) != 0; }
     }
     /// <summary>Clears the value of the "format" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearFormat() {
-      _hasBits0 &= ~1;
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "normalize_stride" field.</summary>
     public const int NormalizeStrideFieldNumber = 5;
+    private readonly static bool NormalizeStrideDefaultValue = false;
+
     private bool normalizeStride_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool NormalizeStride {
-      get { return normalizeStride_; }
+      get { if ((_hasBits0 & 16) != 0) { return normalizeStride_; } else { return NormalizeStrideDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         normalizeStride_ = value;
       }
+    }
+    /// <summary>Gets whether the "normalize_stride" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasNormalizeStride {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "normalize_stride" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearNormalizeStride() {
+      _hasBits0 &= ~16;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -844,11 +964,11 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ParticipantHandle != 0UL) hash ^= ParticipantHandle.GetHashCode();
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) hash ^= Type.GetHashCode();
-      if (TrackSource != global::LiveKit.Proto.TrackSource.SourceUnknown) hash ^= TrackSource.GetHashCode();
+      if (HasParticipantHandle) hash ^= ParticipantHandle.GetHashCode();
+      if (HasType) hash ^= Type.GetHashCode();
+      if (HasTrackSource) hash ^= TrackSource.GetHashCode();
       if (HasFormat) hash ^= Format.GetHashCode();
-      if (NormalizeStride != false) hash ^= NormalizeStride.GetHashCode();
+      if (HasNormalizeStride) hash ^= NormalizeStride.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -867,15 +987,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ParticipantHandle != 0UL) {
+      if (HasParticipantHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(ParticipantHandle);
       }
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Type);
       }
-      if (TrackSource != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (HasTrackSource) {
         output.WriteRawTag(24);
         output.WriteEnum((int) TrackSource);
       }
@@ -883,7 +1003,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteEnum((int) Format);
       }
-      if (NormalizeStride != false) {
+      if (HasNormalizeStride) {
         output.WriteRawTag(40);
         output.WriteBool(NormalizeStride);
       }
@@ -897,15 +1017,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ParticipantHandle != 0UL) {
+      if (HasParticipantHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(ParticipantHandle);
       }
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Type);
       }
-      if (TrackSource != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (HasTrackSource) {
         output.WriteRawTag(24);
         output.WriteEnum((int) TrackSource);
       }
@@ -913,7 +1033,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteEnum((int) Format);
       }
-      if (NormalizeStride != false) {
+      if (HasNormalizeStride) {
         output.WriteRawTag(40);
         output.WriteBool(NormalizeStride);
       }
@@ -927,19 +1047,19 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ParticipantHandle != 0UL) {
+      if (HasParticipantHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(ParticipantHandle);
       }
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (TrackSource != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (HasTrackSource) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) TrackSource);
       }
       if (HasFormat) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Format);
       }
-      if (NormalizeStride != false) {
+      if (HasNormalizeStride) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -954,19 +1074,19 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.ParticipantHandle != 0UL) {
+      if (other.HasParticipantHandle) {
         ParticipantHandle = other.ParticipantHandle;
       }
-      if (other.Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (other.HasType) {
         Type = other.Type;
       }
-      if (other.TrackSource != global::LiveKit.Proto.TrackSource.SourceUnknown) {
+      if (other.HasTrackSource) {
         TrackSource = other.TrackSource;
       }
       if (other.HasFormat) {
         Format = other.Format;
       }
-      if (other.NormalizeStride != false) {
+      if (other.HasNormalizeStride) {
         NormalizeStride = other.NormalizeStride;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -980,7 +1100,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1015,7 +1139,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1205,7 +1333,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1227,7 +1359,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1257,6 +1393,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<NewVideoSourceRequest> _parser = new pb::MessageParser<NewVideoSourceRequest>(() => new NewVideoSourceRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<NewVideoSourceRequest> Parser { get { return _parser; } }
@@ -1284,6 +1421,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NewVideoSourceRequest(NewVideoSourceRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       type_ = other.type_;
       resolution_ = other.resolution_ != null ? other.resolution_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1297,14 +1435,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::LiveKit.Proto.VideoSourceType type_ = global::LiveKit.Proto.VideoSourceType.VideoSourceNative;
+    private readonly static global::LiveKit.Proto.VideoSourceType TypeDefaultValue = global::LiveKit.Proto.VideoSourceType.VideoSourceNative;
+
+    private global::LiveKit.Proto.VideoSourceType type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoSourceType Type {
-      get { return type_; }
+      get { if ((_hasBits0 & 1) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearType() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "resolution" field.</summary>
@@ -1347,7 +1500,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) hash ^= Type.GetHashCode();
+      if (HasType) hash ^= Type.GetHashCode();
       if (resolution_ != null) hash ^= Resolution.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1367,7 +1520,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1385,7 +1538,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -1403,7 +1556,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (resolution_ != null) {
@@ -1421,7 +1574,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (other.HasType) {
         Type = other.Type;
       }
       if (other.resolution_ != null) {
@@ -1441,7 +1594,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1467,7 +1624,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1648,7 +1809,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1670,7 +1835,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -1699,6 +1868,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<CaptureVideoFrameRequest> _parser = new pb::MessageParser<CaptureVideoFrameRequest>(() => new CaptureVideoFrameRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<CaptureVideoFrameRequest> Parser { get { return _parser; } }
@@ -1726,6 +1896,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CaptureVideoFrameRequest(CaptureVideoFrameRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       sourceHandle_ = other.sourceHandle_;
       buffer_ = other.buffer_ != null ? other.buffer_.Clone() : null;
       timestampUs_ = other.timestampUs_;
@@ -1741,14 +1912,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "source_handle" field.</summary>
     public const int SourceHandleFieldNumber = 1;
+    private readonly static ulong SourceHandleDefaultValue = 0UL;
+
     private ulong sourceHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong SourceHandle {
-      get { return sourceHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return sourceHandle_; } else { return SourceHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         sourceHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "source_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSourceHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "source_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSourceHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "buffer" field.</summary>
@@ -1765,6 +1951,8 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "timestamp_us" field.</summary>
     public const int TimestampUsFieldNumber = 3;
+    private readonly static long TimestampUsDefaultValue = 0L;
+
     private long timestampUs_;
     /// <summary>
     /// In microseconds
@@ -1772,22 +1960,50 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long TimestampUs {
-      get { return timestampUs_; }
+      get { if ((_hasBits0 & 2) != 0) { return timestampUs_; } else { return TimestampUsDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         timestampUs_ = value;
       }
+    }
+    /// <summary>Gets whether the "timestamp_us" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTimestampUs {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "timestamp_us" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTimestampUs() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "rotation" field.</summary>
     public const int RotationFieldNumber = 4;
-    private global::LiveKit.Proto.VideoRotation rotation_ = global::LiveKit.Proto.VideoRotation._0;
+    private readonly static global::LiveKit.Proto.VideoRotation RotationDefaultValue = global::LiveKit.Proto.VideoRotation._0;
+
+    private global::LiveKit.Proto.VideoRotation rotation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoRotation Rotation {
-      get { return rotation_; }
+      get { if ((_hasBits0 & 4) != 0) { return rotation_; } else { return RotationDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         rotation_ = value;
       }
+    }
+    /// <summary>Gets whether the "rotation" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRotation {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "rotation" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRotation() {
+      _hasBits0 &= ~4;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1816,10 +2032,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (SourceHandle != 0UL) hash ^= SourceHandle.GetHashCode();
+      if (HasSourceHandle) hash ^= SourceHandle.GetHashCode();
       if (buffer_ != null) hash ^= Buffer.GetHashCode();
-      if (TimestampUs != 0L) hash ^= TimestampUs.GetHashCode();
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) hash ^= Rotation.GetHashCode();
+      if (HasTimestampUs) hash ^= TimestampUs.GetHashCode();
+      if (HasRotation) hash ^= Rotation.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1838,7 +2054,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(SourceHandle);
       }
@@ -1846,11 +2062,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Buffer);
       }
-      if (TimestampUs != 0L) {
+      if (HasTimestampUs) {
         output.WriteRawTag(24);
         output.WriteInt64(TimestampUs);
       }
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (HasRotation) {
         output.WriteRawTag(32);
         output.WriteEnum((int) Rotation);
       }
@@ -1864,7 +2080,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(SourceHandle);
       }
@@ -1872,11 +2088,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Buffer);
       }
-      if (TimestampUs != 0L) {
+      if (HasTimestampUs) {
         output.WriteRawTag(24);
         output.WriteInt64(TimestampUs);
       }
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (HasRotation) {
         output.WriteRawTag(32);
         output.WriteEnum((int) Rotation);
       }
@@ -1890,16 +2106,16 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (SourceHandle != 0UL) {
+      if (HasSourceHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
       }
       if (buffer_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Buffer);
       }
-      if (TimestampUs != 0L) {
+      if (HasTimestampUs) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(TimestampUs);
       }
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (HasRotation) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Rotation);
       }
       if (_unknownFields != null) {
@@ -1914,7 +2130,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.SourceHandle != 0UL) {
+      if (other.HasSourceHandle) {
         SourceHandle = other.SourceHandle;
       }
       if (other.buffer_ != null) {
@@ -1923,10 +2139,10 @@ namespace LiveKit.Proto {
         }
         Buffer.MergeFrom(other.Buffer);
       }
-      if (other.TimestampUs != 0L) {
+      if (other.HasTimestampUs) {
         TimestampUs = other.TimestampUs;
       }
-      if (other.Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (other.HasRotation) {
         Rotation = other.Rotation;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1940,7 +2156,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -1974,7 +2194,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2131,7 +2355,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2146,7 +2374,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2165,6 +2397,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoConvertRequest> _parser = new pb::MessageParser<VideoConvertRequest>(() => new VideoConvertRequest());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoConvertRequest> Parser { get { return _parser; } }
@@ -2192,6 +2425,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoConvertRequest(VideoConvertRequest other) : this() {
+      _hasBits0 = other._hasBits0;
       flipY_ = other.flipY_;
       buffer_ = other.buffer_ != null ? other.buffer_.Clone() : null;
       dstType_ = other.dstType_;
@@ -2206,14 +2440,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "flip_y" field.</summary>
     public const int FlipYFieldNumber = 1;
+    private readonly static bool FlipYDefaultValue = false;
+
     private bool flipY_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool FlipY {
-      get { return flipY_; }
+      get { if ((_hasBits0 & 1) != 0) { return flipY_; } else { return FlipYDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         flipY_ = value;
       }
+    }
+    /// <summary>Gets whether the "flip_y" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFlipY {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "flip_y" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFlipY() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "buffer" field.</summary>
@@ -2230,14 +2479,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "dst_type" field.</summary>
     public const int DstTypeFieldNumber = 3;
-    private global::LiveKit.Proto.VideoBufferType dstType_ = global::LiveKit.Proto.VideoBufferType.Rgba;
+    private readonly static global::LiveKit.Proto.VideoBufferType DstTypeDefaultValue = global::LiveKit.Proto.VideoBufferType.Rgba;
+
+    private global::LiveKit.Proto.VideoBufferType dstType_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoBufferType DstType {
-      get { return dstType_; }
+      get { if ((_hasBits0 & 2) != 0) { return dstType_; } else { return DstTypeDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         dstType_ = value;
       }
+    }
+    /// <summary>Gets whether the "dst_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDstType {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "dst_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDstType() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2265,9 +2529,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (FlipY != false) hash ^= FlipY.GetHashCode();
+      if (HasFlipY) hash ^= FlipY.GetHashCode();
       if (buffer_ != null) hash ^= Buffer.GetHashCode();
-      if (DstType != global::LiveKit.Proto.VideoBufferType.Rgba) hash ^= DstType.GetHashCode();
+      if (HasDstType) hash ^= DstType.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2286,7 +2550,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (FlipY != false) {
+      if (HasFlipY) {
         output.WriteRawTag(8);
         output.WriteBool(FlipY);
       }
@@ -2294,7 +2558,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Buffer);
       }
-      if (DstType != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (HasDstType) {
         output.WriteRawTag(24);
         output.WriteEnum((int) DstType);
       }
@@ -2308,7 +2572,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (FlipY != false) {
+      if (HasFlipY) {
         output.WriteRawTag(8);
         output.WriteBool(FlipY);
       }
@@ -2316,7 +2580,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Buffer);
       }
-      if (DstType != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (HasDstType) {
         output.WriteRawTag(24);
         output.WriteEnum((int) DstType);
       }
@@ -2330,13 +2594,13 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (FlipY != false) {
+      if (HasFlipY) {
         size += 1 + 1;
       }
       if (buffer_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Buffer);
       }
-      if (DstType != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (HasDstType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) DstType);
       }
       if (_unknownFields != null) {
@@ -2351,7 +2615,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.FlipY != false) {
+      if (other.HasFlipY) {
         FlipY = other.FlipY;
       }
       if (other.buffer_ != null) {
@@ -2360,7 +2624,7 @@ namespace LiveKit.Proto {
         }
         Buffer.MergeFrom(other.Buffer);
       }
-      if (other.DstType != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (other.HasDstType) {
         DstType = other.DstType;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2374,7 +2638,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2404,7 +2672,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2465,8 +2737,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoConvertResponse(VideoConvertResponse other) : this() {
-      error_ = other.error_;
-      buffer_ = other.buffer_ != null ? other.buffer_.Clone() : null;
+      switch (other.MessageCase) {
+        case MessageOneofCase.Error:
+          Error = other.Error;
+          break;
+        case MessageOneofCase.Buffer:
+          Buffer = other.Buffer.Clone();
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2478,40 +2757,61 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "error" field.</summary>
     public const int ErrorFieldNumber = 1;
-    private readonly static string ErrorDefaultValue = "";
-
-    private string error_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Error {
-      get { return error_ ?? ErrorDefaultValue; }
+      get { return HasError ? (string) message_ : ""; }
       set {
-        error_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        messageCase_ = MessageOneofCase.Error;
       }
     }
     /// <summary>Gets whether the "error" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasError {
-      get { return error_ != null; }
+      get { return messageCase_ == MessageOneofCase.Error; }
     }
-    /// <summary>Clears the value of the "error" field</summary>
+    /// <summary> Clears the value of the oneof if it's currently set to "error" </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearError() {
-      error_ = null;
+      if (HasError) {
+        ClearMessage();
+      }
     }
 
     /// <summary>Field number for the "buffer" field.</summary>
     public const int BufferFieldNumber = 2;
-    private global::LiveKit.Proto.OwnedVideoBuffer buffer_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.OwnedVideoBuffer Buffer {
-      get { return buffer_; }
+      get { return messageCase_ == MessageOneofCase.Buffer ? (global::LiveKit.Proto.OwnedVideoBuffer) message_ : null; }
       set {
-        buffer_ = value;
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.Buffer;
       }
+    }
+
+    private object message_;
+    /// <summary>Enum of possible cases for the "message" oneof.</summary>
+    public enum MessageOneofCase {
+      None = 0,
+      Error = 1,
+      Buffer = 2,
+    }
+    private MessageOneofCase messageCase_ = MessageOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public MessageOneofCase MessageCase {
+      get { return messageCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMessage() {
+      messageCase_ = MessageOneofCase.None;
+      message_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2531,6 +2831,7 @@ namespace LiveKit.Proto {
       }
       if (Error != other.Error) return false;
       if (!object.Equals(Buffer, other.Buffer)) return false;
+      if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2539,7 +2840,8 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (HasError) hash ^= Error.GetHashCode();
-      if (buffer_ != null) hash ^= Buffer.GetHashCode();
+      if (messageCase_ == MessageOneofCase.Buffer) hash ^= Buffer.GetHashCode();
+      hash ^= (int) messageCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2562,7 +2864,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Error);
       }
-      if (buffer_ != null) {
+      if (messageCase_ == MessageOneofCase.Buffer) {
         output.WriteRawTag(18);
         output.WriteMessage(Buffer);
       }
@@ -2580,7 +2882,7 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Error);
       }
-      if (buffer_ != null) {
+      if (messageCase_ == MessageOneofCase.Buffer) {
         output.WriteRawTag(18);
         output.WriteMessage(Buffer);
       }
@@ -2597,7 +2899,7 @@ namespace LiveKit.Proto {
       if (HasError) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
       }
-      if (buffer_ != null) {
+      if (messageCase_ == MessageOneofCase.Buffer) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Buffer);
       }
       if (_unknownFields != null) {
@@ -2612,15 +2914,18 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.HasError) {
-        Error = other.Error;
+      switch (other.MessageCase) {
+        case MessageOneofCase.Error:
+          Error = other.Error;
+          break;
+        case MessageOneofCase.Buffer:
+          if (Buffer == null) {
+            Buffer = new global::LiveKit.Proto.OwnedVideoBuffer();
+          }
+          Buffer.MergeFrom(other.Buffer);
+          break;
       }
-      if (other.buffer_ != null) {
-        if (buffer_ == null) {
-          Buffer = new global::LiveKit.Proto.OwnedVideoBuffer();
-        }
-        Buffer.MergeFrom(other.Buffer);
-      }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2632,7 +2937,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2641,10 +2950,12 @@ namespace LiveKit.Proto {
             break;
           }
           case 18: {
-            if (buffer_ == null) {
-              Buffer = new global::LiveKit.Proto.OwnedVideoBuffer();
+            global::LiveKit.Proto.OwnedVideoBuffer subBuilder = new global::LiveKit.Proto.OwnedVideoBuffer();
+            if (messageCase_ == MessageOneofCase.Buffer) {
+              subBuilder.MergeFrom(Buffer);
             }
-            input.ReadMessage(Buffer);
+            input.ReadMessage(subBuilder);
+            Buffer = subBuilder;
             break;
           }
         }
@@ -2658,7 +2969,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2667,10 +2982,12 @@ namespace LiveKit.Proto {
             break;
           }
           case 18: {
-            if (buffer_ == null) {
-              Buffer = new global::LiveKit.Proto.OwnedVideoBuffer();
+            global::LiveKit.Proto.OwnedVideoBuffer subBuilder = new global::LiveKit.Proto.OwnedVideoBuffer();
+            if (messageCase_ == MessageOneofCase.Buffer) {
+              subBuilder.MergeFrom(Buffer);
             }
-            input.ReadMessage(Buffer);
+            input.ReadMessage(subBuilder);
+            Buffer = subBuilder;
             break;
           }
         }
@@ -2688,6 +3005,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoResolution> _parser = new pb::MessageParser<VideoResolution>(() => new VideoResolution());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoResolution> Parser { get { return _parser; } }
@@ -2715,6 +3033,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoResolution(VideoResolution other) : this() {
+      _hasBits0 = other._hasBits0;
       width_ = other.width_;
       height_ = other.height_;
       frameRate_ = other.frameRate_;
@@ -2729,38 +3048,83 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "width" field.</summary>
     public const int WidthFieldNumber = 1;
+    private readonly static uint WidthDefaultValue = 0;
+
     private uint width_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Width {
-      get { return width_; }
+      get { if ((_hasBits0 & 1) != 0) { return width_; } else { return WidthDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         width_ = value;
       }
+    }
+    /// <summary>Gets whether the "width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWidth {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWidth() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "height" field.</summary>
     public const int HeightFieldNumber = 2;
+    private readonly static uint HeightDefaultValue = 0;
+
     private uint height_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Height {
-      get { return height_; }
+      get { if ((_hasBits0 & 2) != 0) { return height_; } else { return HeightDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         height_ = value;
       }
+    }
+    /// <summary>Gets whether the "height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeight {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeight() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "frame_rate" field.</summary>
     public const int FrameRateFieldNumber = 3;
+    private readonly static double FrameRateDefaultValue = 0D;
+
     private double frameRate_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public double FrameRate {
-      get { return frameRate_; }
+      get { if ((_hasBits0 & 4) != 0) { return frameRate_; } else { return FrameRateDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         frameRate_ = value;
       }
+    }
+    /// <summary>Gets whether the "frame_rate" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrameRate {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "frame_rate" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrameRate() {
+      _hasBits0 &= ~4;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2788,9 +3152,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Width != 0) hash ^= Width.GetHashCode();
-      if (Height != 0) hash ^= Height.GetHashCode();
-      if (FrameRate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FrameRate);
+      if (HasWidth) hash ^= Width.GetHashCode();
+      if (HasHeight) hash ^= Height.GetHashCode();
+      if (HasFrameRate) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FrameRate);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2809,15 +3173,15 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(8);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(16);
         output.WriteUInt32(Height);
       }
-      if (FrameRate != 0D) {
+      if (HasFrameRate) {
         output.WriteRawTag(25);
         output.WriteDouble(FrameRate);
       }
@@ -2831,15 +3195,15 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(8);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(16);
         output.WriteUInt32(Height);
       }
-      if (FrameRate != 0D) {
+      if (HasFrameRate) {
         output.WriteRawTag(25);
         output.WriteDouble(FrameRate);
       }
@@ -2853,13 +3217,13 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Width != 0) {
+      if (HasWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
       }
-      if (FrameRate != 0D) {
+      if (HasFrameRate) {
         size += 1 + 8;
       }
       if (_unknownFields != null) {
@@ -2874,13 +3238,13 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Width != 0) {
+      if (other.HasWidth) {
         Width = other.Width;
       }
-      if (other.Height != 0) {
+      if (other.HasHeight) {
         Height = other.Height;
       }
-      if (other.FrameRate != 0D) {
+      if (other.HasFrameRate) {
         FrameRate = other.FrameRate;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2894,7 +3258,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -2921,7 +3289,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -2952,6 +3324,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoBufferInfo> _parser = new pb::MessageParser<VideoBufferInfo>(() => new VideoBufferInfo());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoBufferInfo> Parser { get { return _parser; } }
@@ -2979,6 +3352,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoBufferInfo(VideoBufferInfo other) : this() {
+      _hasBits0 = other._hasBits0;
       type_ = other.type_;
       width_ = other.width_;
       height_ = other.height_;
@@ -2996,54 +3370,116 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::LiveKit.Proto.VideoBufferType type_ = global::LiveKit.Proto.VideoBufferType.Rgba;
+    private readonly static global::LiveKit.Proto.VideoBufferType TypeDefaultValue = global::LiveKit.Proto.VideoBufferType.Rgba;
+
+    private global::LiveKit.Proto.VideoBufferType type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoBufferType Type {
-      get { return type_; }
+      get { if ((_hasBits0 & 1) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearType() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "width" field.</summary>
     public const int WidthFieldNumber = 2;
+    private readonly static uint WidthDefaultValue = 0;
+
     private uint width_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Width {
-      get { return width_; }
+      get { if ((_hasBits0 & 2) != 0) { return width_; } else { return WidthDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         width_ = value;
       }
+    }
+    /// <summary>Gets whether the "width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWidth {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWidth() {
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "height" field.</summary>
     public const int HeightFieldNumber = 3;
+    private readonly static uint HeightDefaultValue = 0;
+
     private uint height_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Height {
-      get { return height_; }
+      get { if ((_hasBits0 & 4) != 0) { return height_; } else { return HeightDefaultValue; } }
       set {
+        _hasBits0 |= 4;
         height_ = value;
       }
+    }
+    /// <summary>Gets whether the "height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeight {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeight() {
+      _hasBits0 &= ~4;
     }
 
     /// <summary>Field number for the "data_ptr" field.</summary>
     public const int DataPtrFieldNumber = 4;
+    private readonly static ulong DataPtrDefaultValue = 0UL;
+
     private ulong dataPtr_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong DataPtr {
-      get { return dataPtr_; }
+      get { if ((_hasBits0 & 8) != 0) { return dataPtr_; } else { return DataPtrDefaultValue; } }
       set {
+        _hasBits0 |= 8;
         dataPtr_ = value;
       }
+    }
+    /// <summary>Gets whether the "data_ptr" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDataPtr {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "data_ptr" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDataPtr() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "stride" field.</summary>
     public const int StrideFieldNumber = 6;
+    private readonly static uint StrideDefaultValue = 0;
+
     private uint stride_;
     /// <summary>
     /// only for packed formats
@@ -3051,10 +3487,23 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Stride {
-      get { return stride_; }
+      get { if ((_hasBits0 & 16) != 0) { return stride_; } else { return StrideDefaultValue; } }
       set {
+        _hasBits0 |= 16;
         stride_ = value;
       }
+    }
+    /// <summary>Gets whether the "stride" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasStride {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "stride" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearStride() {
+      _hasBits0 &= ~16;
     }
 
     /// <summary>Field number for the "components" field.</summary>
@@ -3096,11 +3545,11 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::LiveKit.Proto.VideoBufferType.Rgba) hash ^= Type.GetHashCode();
-      if (Width != 0) hash ^= Width.GetHashCode();
-      if (Height != 0) hash ^= Height.GetHashCode();
-      if (DataPtr != 0UL) hash ^= DataPtr.GetHashCode();
-      if (Stride != 0) hash ^= Stride.GetHashCode();
+      if (HasType) hash ^= Type.GetHashCode();
+      if (HasWidth) hash ^= Width.GetHashCode();
+      if (HasHeight) hash ^= Height.GetHashCode();
+      if (HasDataPtr) hash ^= DataPtr.GetHashCode();
+      if (HasStride) hash ^= Stride.GetHashCode();
       hash ^= components_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3120,23 +3569,23 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(16);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(24);
         output.WriteUInt32(Height);
       }
-      if (DataPtr != 0UL) {
+      if (HasDataPtr) {
         output.WriteRawTag(32);
         output.WriteUInt64(DataPtr);
       }
-      if (Stride != 0) {
+      if (HasStride) {
         output.WriteRawTag(48);
         output.WriteUInt32(Stride);
       }
@@ -3151,23 +3600,23 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(16);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(24);
         output.WriteUInt32(Height);
       }
-      if (DataPtr != 0UL) {
+      if (HasDataPtr) {
         output.WriteRawTag(32);
         output.WriteUInt64(DataPtr);
       }
-      if (Stride != 0) {
+      if (HasStride) {
         output.WriteRawTag(48);
         output.WriteUInt32(Stride);
       }
@@ -3182,19 +3631,19 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
-      if (Width != 0) {
+      if (HasWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
       }
-      if (DataPtr != 0UL) {
+      if (HasDataPtr) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(DataPtr);
       }
-      if (Stride != 0) {
+      if (HasStride) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Stride);
       }
       size += components_.CalculateSize(_repeated_components_codec);
@@ -3210,19 +3659,19 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Type != global::LiveKit.Proto.VideoBufferType.Rgba) {
+      if (other.HasType) {
         Type = other.Type;
       }
-      if (other.Width != 0) {
+      if (other.HasWidth) {
         Width = other.Width;
       }
-      if (other.Height != 0) {
+      if (other.HasHeight) {
         Height = other.Height;
       }
-      if (other.DataPtr != 0UL) {
+      if (other.HasDataPtr) {
         DataPtr = other.DataPtr;
       }
-      if (other.Stride != 0) {
+      if (other.HasStride) {
         Stride = other.Stride;
       }
       components_.Add(other.components_);
@@ -3237,7 +3686,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3276,7 +3729,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3322,6 +3779,7 @@ namespace LiveKit.Proto {
       {
         private static readonly pb::MessageParser<ComponentInfo> _parser = new pb::MessageParser<ComponentInfo>(() => new ComponentInfo());
         private pb::UnknownFieldSet _unknownFields;
+        private int _hasBits0;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public static pb::MessageParser<ComponentInfo> Parser { get { return _parser; } }
@@ -3349,6 +3807,7 @@ namespace LiveKit.Proto {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public ComponentInfo(ComponentInfo other) : this() {
+          _hasBits0 = other._hasBits0;
           dataPtr_ = other.dataPtr_;
           stride_ = other.stride_;
           size_ = other.size_;
@@ -3363,38 +3822,83 @@ namespace LiveKit.Proto {
 
         /// <summary>Field number for the "data_ptr" field.</summary>
         public const int DataPtrFieldNumber = 1;
+        private readonly static ulong DataPtrDefaultValue = 0UL;
+
         private ulong dataPtr_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public ulong DataPtr {
-          get { return dataPtr_; }
+          get { if ((_hasBits0 & 1) != 0) { return dataPtr_; } else { return DataPtrDefaultValue; } }
           set {
+            _hasBits0 |= 1;
             dataPtr_ = value;
           }
+        }
+        /// <summary>Gets whether the "data_ptr" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool HasDataPtr {
+          get { return (_hasBits0 & 1) != 0; }
+        }
+        /// <summary>Clears the value of the "data_ptr" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void ClearDataPtr() {
+          _hasBits0 &= ~1;
         }
 
         /// <summary>Field number for the "stride" field.</summary>
         public const int StrideFieldNumber = 2;
+        private readonly static uint StrideDefaultValue = 0;
+
         private uint stride_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public uint Stride {
-          get { return stride_; }
+          get { if ((_hasBits0 & 2) != 0) { return stride_; } else { return StrideDefaultValue; } }
           set {
+            _hasBits0 |= 2;
             stride_ = value;
           }
+        }
+        /// <summary>Gets whether the "stride" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool HasStride {
+          get { return (_hasBits0 & 2) != 0; }
+        }
+        /// <summary>Clears the value of the "stride" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void ClearStride() {
+          _hasBits0 &= ~2;
         }
 
         /// <summary>Field number for the "size" field.</summary>
         public const int SizeFieldNumber = 3;
+        private readonly static uint SizeDefaultValue = 0;
+
         private uint size_;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public uint Size {
-          get { return size_; }
+          get { if ((_hasBits0 & 4) != 0) { return size_; } else { return SizeDefaultValue; } }
           set {
+            _hasBits0 |= 4;
             size_ = value;
           }
+        }
+        /// <summary>Gets whether the "size" field is set</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool HasSize {
+          get { return (_hasBits0 & 4) != 0; }
+        }
+        /// <summary>Clears the value of the "size" field</summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void ClearSize() {
+          _hasBits0 &= ~4;
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3422,9 +3926,9 @@ namespace LiveKit.Proto {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override int GetHashCode() {
           int hash = 1;
-          if (DataPtr != 0UL) hash ^= DataPtr.GetHashCode();
-          if (Stride != 0) hash ^= Stride.GetHashCode();
-          if (Size != 0) hash ^= Size.GetHashCode();
+          if (HasDataPtr) hash ^= DataPtr.GetHashCode();
+          if (HasStride) hash ^= Stride.GetHashCode();
+          if (HasSize) hash ^= Size.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
           }
@@ -3443,15 +3947,15 @@ namespace LiveKit.Proto {
         #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           output.WriteRawMessage(this);
         #else
-          if (DataPtr != 0UL) {
+          if (HasDataPtr) {
             output.WriteRawTag(8);
             output.WriteUInt64(DataPtr);
           }
-          if (Stride != 0) {
+          if (HasStride) {
             output.WriteRawTag(16);
             output.WriteUInt32(Stride);
           }
-          if (Size != 0) {
+          if (HasSize) {
             output.WriteRawTag(24);
             output.WriteUInt32(Size);
           }
@@ -3465,15 +3969,15 @@ namespace LiveKit.Proto {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-          if (DataPtr != 0UL) {
+          if (HasDataPtr) {
             output.WriteRawTag(8);
             output.WriteUInt64(DataPtr);
           }
-          if (Stride != 0) {
+          if (HasStride) {
             output.WriteRawTag(16);
             output.WriteUInt32(Stride);
           }
-          if (Size != 0) {
+          if (HasSize) {
             output.WriteRawTag(24);
             output.WriteUInt32(Size);
           }
@@ -3487,13 +3991,13 @@ namespace LiveKit.Proto {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public int CalculateSize() {
           int size = 0;
-          if (DataPtr != 0UL) {
+          if (HasDataPtr) {
             size += 1 + pb::CodedOutputStream.ComputeUInt64Size(DataPtr);
           }
-          if (Stride != 0) {
+          if (HasStride) {
             size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Stride);
           }
-          if (Size != 0) {
+          if (HasSize) {
             size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Size);
           }
           if (_unknownFields != null) {
@@ -3508,13 +4012,13 @@ namespace LiveKit.Proto {
           if (other == null) {
             return;
           }
-          if (other.DataPtr != 0UL) {
+          if (other.HasDataPtr) {
             DataPtr = other.DataPtr;
           }
-          if (other.Stride != 0) {
+          if (other.HasStride) {
             Stride = other.Stride;
           }
-          if (other.Size != 0) {
+          if (other.HasSize) {
             Size = other.Size;
           }
           _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3528,7 +4032,11 @@ namespace LiveKit.Proto {
         #else
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
@@ -3555,7 +4063,11 @@ namespace LiveKit.Proto {
         void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
           uint tag;
           while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
               default:
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
@@ -3774,7 +4286,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -3803,7 +4319,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -3836,6 +4356,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoStreamInfo> _parser = new pb::MessageParser<VideoStreamInfo>(() => new VideoStreamInfo());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoStreamInfo> Parser { get { return _parser; } }
@@ -3863,6 +4384,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoStreamInfo(VideoStreamInfo other) : this() {
+      _hasBits0 = other._hasBits0;
       type_ = other.type_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -3875,14 +4397,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::LiveKit.Proto.VideoStreamType type_ = global::LiveKit.Proto.VideoStreamType.VideoStreamNative;
+    private readonly static global::LiveKit.Proto.VideoStreamType TypeDefaultValue = global::LiveKit.Proto.VideoStreamType.VideoStreamNative;
+
+    private global::LiveKit.Proto.VideoStreamType type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoStreamType Type {
-      get { return type_; }
+      get { if ((_hasBits0 & 1) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearType() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3908,7 +4445,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) hash ^= Type.GetHashCode();
+      if (HasType) hash ^= Type.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3927,7 +4464,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -3941,7 +4478,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -3955,7 +4492,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (_unknownFields != null) {
@@ -3970,7 +4507,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Type != global::LiveKit.Proto.VideoStreamType.VideoStreamNative) {
+      if (other.HasType) {
         Type = other.Type;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -3984,7 +4521,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4003,7 +4544,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4209,7 +4754,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4238,7 +4787,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4271,6 +4824,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoStreamEvent> _parser = new pb::MessageParser<VideoStreamEvent>(() => new VideoStreamEvent());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoStreamEvent> Parser { get { return _parser; } }
@@ -4298,6 +4852,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoStreamEvent(VideoStreamEvent other) : this() {
+      _hasBits0 = other._hasBits0;
       streamHandle_ = other.streamHandle_;
       switch (other.MessageCase) {
         case MessageOneofCase.FrameReceived:
@@ -4319,14 +4874,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "stream_handle" field.</summary>
     public const int StreamHandleFieldNumber = 1;
+    private readonly static ulong StreamHandleDefaultValue = 0UL;
+
     private ulong streamHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ulong StreamHandle {
-      get { return streamHandle_; }
+      get { if ((_hasBits0 & 1) != 0) { return streamHandle_; } else { return StreamHandleDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         streamHandle_ = value;
       }
+    }
+    /// <summary>Gets whether the "stream_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasStreamHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "stream_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearStreamHandle() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "frame_received" field.</summary>
@@ -4400,7 +4970,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (StreamHandle != 0UL) hash ^= StreamHandle.GetHashCode();
+      if (HasStreamHandle) hash ^= StreamHandle.GetHashCode();
       if (messageCase_ == MessageOneofCase.FrameReceived) hash ^= FrameReceived.GetHashCode();
       if (messageCase_ == MessageOneofCase.Eos) hash ^= Eos.GetHashCode();
       hash ^= (int) messageCase_;
@@ -4422,7 +4992,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (StreamHandle != 0UL) {
+      if (HasStreamHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(StreamHandle);
       }
@@ -4444,7 +5014,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (StreamHandle != 0UL) {
+      if (HasStreamHandle) {
         output.WriteRawTag(8);
         output.WriteUInt64(StreamHandle);
       }
@@ -4466,7 +5036,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (StreamHandle != 0UL) {
+      if (HasStreamHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(StreamHandle);
       }
       if (messageCase_ == MessageOneofCase.FrameReceived) {
@@ -4487,7 +5057,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.StreamHandle != 0UL) {
+      if (other.HasStreamHandle) {
         StreamHandle = other.StreamHandle;
       }
       switch (other.MessageCase) {
@@ -4516,7 +5086,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4553,7 +5127,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4594,6 +5172,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoFrameReceived> _parser = new pb::MessageParser<VideoFrameReceived>(() => new VideoFrameReceived());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoFrameReceived> Parser { get { return _parser; } }
@@ -4621,6 +5200,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoFrameReceived(VideoFrameReceived other) : this() {
+      _hasBits0 = other._hasBits0;
       buffer_ = other.buffer_ != null ? other.buffer_.Clone() : null;
       timestampUs_ = other.timestampUs_;
       rotation_ = other.rotation_;
@@ -4647,6 +5227,8 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "timestamp_us" field.</summary>
     public const int TimestampUsFieldNumber = 2;
+    private readonly static long TimestampUsDefaultValue = 0L;
+
     private long timestampUs_;
     /// <summary>
     /// In microseconds
@@ -4654,22 +5236,50 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long TimestampUs {
-      get { return timestampUs_; }
+      get { if ((_hasBits0 & 1) != 0) { return timestampUs_; } else { return TimestampUsDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         timestampUs_ = value;
       }
+    }
+    /// <summary>Gets whether the "timestamp_us" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTimestampUs {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "timestamp_us" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTimestampUs() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "rotation" field.</summary>
     public const int RotationFieldNumber = 3;
-    private global::LiveKit.Proto.VideoRotation rotation_ = global::LiveKit.Proto.VideoRotation._0;
+    private readonly static global::LiveKit.Proto.VideoRotation RotationDefaultValue = global::LiveKit.Proto.VideoRotation._0;
+
+    private global::LiveKit.Proto.VideoRotation rotation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoRotation Rotation {
-      get { return rotation_; }
+      get { if ((_hasBits0 & 2) != 0) { return rotation_; } else { return RotationDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         rotation_ = value;
       }
+    }
+    /// <summary>Gets whether the "rotation" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRotation {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "rotation" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRotation() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4698,8 +5308,8 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (buffer_ != null) hash ^= Buffer.GetHashCode();
-      if (TimestampUs != 0L) hash ^= TimestampUs.GetHashCode();
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) hash ^= Rotation.GetHashCode();
+      if (HasTimestampUs) hash ^= TimestampUs.GetHashCode();
+      if (HasRotation) hash ^= Rotation.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4722,11 +5332,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteMessage(Buffer);
       }
-      if (TimestampUs != 0L) {
+      if (HasTimestampUs) {
         output.WriteRawTag(16);
         output.WriteInt64(TimestampUs);
       }
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (HasRotation) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Rotation);
       }
@@ -4744,11 +5354,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteMessage(Buffer);
       }
-      if (TimestampUs != 0L) {
+      if (HasTimestampUs) {
         output.WriteRawTag(16);
         output.WriteInt64(TimestampUs);
       }
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (HasRotation) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Rotation);
       }
@@ -4765,10 +5375,10 @@ namespace LiveKit.Proto {
       if (buffer_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Buffer);
       }
-      if (TimestampUs != 0L) {
+      if (HasTimestampUs) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(TimestampUs);
       }
-      if (Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (HasRotation) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Rotation);
       }
       if (_unknownFields != null) {
@@ -4789,10 +5399,10 @@ namespace LiveKit.Proto {
         }
         Buffer.MergeFrom(other.Buffer);
       }
-      if (other.TimestampUs != 0L) {
+      if (other.HasTimestampUs) {
         TimestampUs = other.TimestampUs;
       }
-      if (other.Rotation != global::LiveKit.Proto.VideoRotation._0) {
+      if (other.HasRotation) {
         Rotation = other.Rotation;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -4806,7 +5416,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -4836,7 +5450,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -4989,7 +5607,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5004,7 +5626,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -5023,6 +5649,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoSourceResolution> _parser = new pb::MessageParser<VideoSourceResolution>(() => new VideoSourceResolution());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoSourceResolution> Parser { get { return _parser; } }
@@ -5050,6 +5677,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoSourceResolution(VideoSourceResolution other) : this() {
+      _hasBits0 = other._hasBits0;
       width_ = other.width_;
       height_ = other.height_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -5063,26 +5691,56 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "width" field.</summary>
     public const int WidthFieldNumber = 1;
+    private readonly static uint WidthDefaultValue = 0;
+
     private uint width_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Width {
-      get { return width_; }
+      get { if ((_hasBits0 & 1) != 0) { return width_; } else { return WidthDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         width_ = value;
       }
+    }
+    /// <summary>Gets whether the "width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWidth {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWidth() {
+      _hasBits0 &= ~1;
     }
 
     /// <summary>Field number for the "height" field.</summary>
     public const int HeightFieldNumber = 2;
+    private readonly static uint HeightDefaultValue = 0;
+
     private uint height_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Height {
-      get { return height_; }
+      get { if ((_hasBits0 & 2) != 0) { return height_; } else { return HeightDefaultValue; } }
       set {
+        _hasBits0 |= 2;
         height_ = value;
       }
+    }
+    /// <summary>Gets whether the "height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeight {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeight() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5109,8 +5767,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Width != 0) hash ^= Width.GetHashCode();
-      if (Height != 0) hash ^= Height.GetHashCode();
+      if (HasWidth) hash ^= Width.GetHashCode();
+      if (HasHeight) hash ^= Height.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5129,11 +5787,11 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(8);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(16);
         output.WriteUInt32(Height);
       }
@@ -5147,11 +5805,11 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Width != 0) {
+      if (HasWidth) {
         output.WriteRawTag(8);
         output.WriteUInt32(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         output.WriteRawTag(16);
         output.WriteUInt32(Height);
       }
@@ -5165,10 +5823,10 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Width != 0) {
+      if (HasWidth) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
       }
-      if (Height != 0) {
+      if (HasHeight) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
       }
       if (_unknownFields != null) {
@@ -5183,10 +5841,10 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Width != 0) {
+      if (other.HasWidth) {
         Width = other.Width;
       }
-      if (other.Height != 0) {
+      if (other.HasHeight) {
         Height = other.Height;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -5200,7 +5858,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5223,7 +5885,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -5250,6 +5916,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<VideoSourceInfo> _parser = new pb::MessageParser<VideoSourceInfo>(() => new VideoSourceInfo());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<VideoSourceInfo> Parser { get { return _parser; } }
@@ -5277,6 +5944,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public VideoSourceInfo(VideoSourceInfo other) : this() {
+      _hasBits0 = other._hasBits0;
       type_ = other.type_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -5289,14 +5957,29 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::LiveKit.Proto.VideoSourceType type_ = global::LiveKit.Proto.VideoSourceType.VideoSourceNative;
+    private readonly static global::LiveKit.Proto.VideoSourceType TypeDefaultValue = global::LiveKit.Proto.VideoSourceType.VideoSourceNative;
+
+    private global::LiveKit.Proto.VideoSourceType type_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.VideoSourceType Type {
-      get { return type_; }
+      get { if ((_hasBits0 & 1) != 0) { return type_; } else { return TypeDefaultValue; } }
       set {
+        _hasBits0 |= 1;
         type_ = value;
       }
+    }
+    /// <summary>Gets whether the "type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasType {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearType() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5322,7 +6005,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) hash ^= Type.GetHashCode();
+      if (HasType) hash ^= Type.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5341,7 +6024,7 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -5355,7 +6038,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (HasType) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -5369,7 +6052,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (HasType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (_unknownFields != null) {
@@ -5384,7 +6067,7 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.Type != global::LiveKit.Proto.VideoSourceType.VideoSourceNative) {
+      if (other.HasType) {
         Type = other.Type;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -5398,7 +6081,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5417,7 +6104,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
@@ -5623,7 +6314,11 @@ namespace LiveKit.Proto {
     #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
@@ -5652,7 +6347,11 @@ namespace LiveKit.Proto {
     void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;

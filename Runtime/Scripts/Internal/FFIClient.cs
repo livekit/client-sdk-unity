@@ -14,9 +14,9 @@ using UnityEditor;
 
 namespace LiveKit.Internal
 {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [InitializeOnLoad]
-    #endif
+#endif
     internal sealed class FfiClient : IFFIClient
     {
         private static bool initialized = false;
@@ -37,9 +37,13 @@ namespace LiveKit.Internal
         public event DisconnectReceivedDelegate? DisconnectReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
         public event TrackEventReceivedDelegate? TrackEventReceived;
+        public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
+
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
+
+        public event PerformRpcReceivedDelegate? PerformRpcReceived;
 
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
@@ -65,7 +69,7 @@ namespace LiveKit.Internal
             this.ffiResponsePool = ffiResponsePool;
         }
 
- #if UNITY_EDITOR
+#if UNITY_EDITOR
         static FfiClient()
         {
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
@@ -94,12 +98,12 @@ namespace LiveKit.Internal
 
         private static void Quit()
         {
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
-            #endif
-                Instance.Dispose();
-            
+#endif
+            Instance.Dispose();
+
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -122,7 +126,7 @@ namespace LiveKit.Internal
             const bool captureLogs = false;
 #endif
 
-            NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
+            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", ""); // TODO: Get SDK version
 
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
@@ -198,7 +202,7 @@ namespace LiveKit.Internal
 
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(UIntPtr data, UIntPtr size)
-        { 
+        {
 #if NO_LIVEKIT_MODE
             return;
 #endif
@@ -238,6 +242,9 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.TrackEvent:
                         Instance.TrackEventReceived?.Invoke(r.TrackEvent!);
                         break;
+                    case FfiEvent.MessageOneofCase.RpcMethodInvocation:
+                        Instance.RpcMethodInvocationReceived?.Invoke(r.RpcMethodInvocation);
+                        break;
                     case FfiEvent.MessageOneofCase.Disconnect:
                         Instance.DisconnectReceived?.Invoke(r.Disconnect!);
                         break;
@@ -250,6 +257,9 @@ namespace LiveKit.Internal
                         Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                        break;
+                    case FfiEvent.MessageOneofCase.PerformRpc:
+                        Instance.PerformRpcReceived?.Invoke(r.PerformRpc!);
                         break;
                     case FfiEvent.MessageOneofCase.GetStats:
                     case FfiEvent.MessageOneofCase.Panic:

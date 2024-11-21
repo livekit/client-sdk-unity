@@ -84,6 +84,19 @@ namespace LiveKit.Internal.FFIClients
                 case E2eeRequest e2EeRequest:
                     ffiRequest.E2Ee = e2EeRequest;
                     break;
+                // Rpc
+                case RegisterRpcMethodRequest registerRpcMethodRequest:
+                    ffiRequest.RegisterRpcMethod = registerRpcMethodRequest;
+                    break;
+                case UnregisterRpcMethodRequest unregisterRpcMethodRequest:
+                    ffiRequest.UnregisterRpcMethod = unregisterRpcMethodRequest;
+                    break;
+                case PerformRpcRequest performRpcRequest:
+                    ffiRequest.PerformRpc = performRpcRequest;
+                    break;
+                case RpcMethodInvocationResponseRequest rpcMethodInvocationResponseRequest:
+                    ffiRequest.RpcMethodInvocationResponse = rpcMethodInvocationResponseRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }
@@ -132,6 +145,13 @@ namespace LiveKit.Internal.FFIClients
                 || request.NewAudioResampler != null
                 || request.RemixAndResample != null
                 || request.E2Ee != null
+                ||
+
+                // Rpc
+                request.RegisterRpcMethod != null
+                || request.UnregisterRpcMethod != null
+                || request.PerformRpc != null
+                || request.RpcMethodInvocationResponse != null
             )
             {
                 throw new InvalidOperationException("Request is not cleared");
@@ -181,6 +201,13 @@ namespace LiveKit.Internal.FFIClients
                 || response.NewAudioResampler != null
                 || response.RemixAndResample != null
                 || response.E2Ee != null
+                ||
+
+                // Rpc
+                response.RegisterRpcMethod != null
+                || response.UnregisterRpcMethod != null
+                || response.PerformRpc != null
+                || response.RpcMethodInvocationResponse != null
             )
             {
                 throw new InvalidOperationException("Response is not cleared: ");

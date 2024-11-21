@@ -184,7 +184,20 @@ namespace LiveKit
             Metadata = info.Metadata;
         }
 
-
+        internal void OnRpcMethodInvocationReceived(RpcMethodInvocationEvent e)
+        {
+            if (e.LocalParticipantHandle == (ulong)LocalParticipant.Handle.DangerousGetHandle())
+            {
+                // Async but no need to await the response
+                LocalParticipant.HandleRpcMethodInvocation(
+                    e.InvocationId,
+                    e.Method,
+                    e.RequestId,
+                    e.CallerIdentity,
+                    e.Payload,
+                    e.ResponseTimeoutMs / 1000f);
+            }
+        }
         internal void OnEventReceived(RoomEvent e)
         {
             if (e.RoomHandle != (ulong)RoomHandle.DangerousGetHandle())
@@ -401,17 +414,18 @@ namespace LiveKit
 
         internal void OnConnect(ConnectCallback info)
         {
-            RoomHandle = FfiHandle.FromOwnedHandle(info.Room.Handle);
+            RoomHandle = FfiHandle.FromOwnedHandle(info.Result.Room.Handle);
 
-            UpdateFromInfo(info.Room.Info);
-            LocalParticipant = new LocalParticipant(info.LocalParticipant, this);
+            UpdateFromInfo(info.Result.Room.Info);
+            LocalParticipant = new LocalParticipant(info.Result.LocalParticipant, this);
 
             // Add already connected participant
-            foreach (var p in info.Participants)
+            foreach (var p in info.Result.Participants)
                 CreateRemoteParticipantWithTracks(p);
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
+            FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
             Connected?.Invoke(this);
         }
 
