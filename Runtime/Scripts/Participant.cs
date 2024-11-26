@@ -30,7 +30,7 @@ namespace LiveKit
         public readonly WeakReference<Room> Room;
         public IReadOnlyDictionary<string, TrackPublication> Tracks => _tracks;
 
-        private Dictionary<string, RpcHandler> _rpcHandlers = new();
+        protected Dictionary<string, RpcHandler> _rpcHandlers = new();
 
         protected Participant(OwnedParticipant participant, Room room)
         {

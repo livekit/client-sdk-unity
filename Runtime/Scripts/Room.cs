@@ -216,8 +216,8 @@ namespace LiveKit
                         var participant = GetParticipant(e.ParticipantMetadataChanged.ParticipantIdentity);
                         if (participant != null)
                         {
-                            ParticipantMetadataChanged?.Invoke(participant);
                             participant.SetMeta(e.ParticipantMetadataChanged.Metadata);
+                            ParticipantMetadataChanged?.Invoke(participant);
                         }
                         else Utils.Debug("Unable to find participant: " + e.ParticipantMetadataChanged.ParticipantIdentity + " in Meta data Change Event");
                     }
