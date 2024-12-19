@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Collections;
+using Google.Protobuf.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Internal.FFIClients.Requests;
@@ -23,6 +23,7 @@ namespace LiveKit
         public string Identity => _info.Identity;
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
+        public MapField<string, string> Attributes => _info.Attributes;
         public ConnectionQuality ConnectionQuality { internal set; get; }
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
