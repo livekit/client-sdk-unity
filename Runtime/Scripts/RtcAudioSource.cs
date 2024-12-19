@@ -1,10 +1,9 @@
 using System;
-using UnityEngine;
+using System.Collections;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
-using System.Collections.Generic;
 
 namespace LiveKit
 {
@@ -16,8 +15,12 @@ namespace LiveKit
         AudioSourceMicrophone = 1,
     }
 
-    public class RtcAudioSource : IRtcSource
+    public abstract class RtcAudioSource : IRtcSource
     {
+        public abstract event Action<float[], int, int> AudioRead;
+        public virtual IEnumerator Prepare(float timeout = 0) { yield break;  }
+        public abstract void Play();
+
 #if UNITY_IOS
         // iOS microphone sample rate is 24k,
         // please make sure when you using 
@@ -35,28 +38,24 @@ namespace LiveKit
 
         public RtcAudioSourceType SourceType => _sourceType;
 
-        private AudioSource _audioSource;
-        private AudioFilter _audioFilter;
-
         internal readonly FfiHandle Handle;
         protected AudioSourceInfo _info;
 
-        // Used on the AudioThread
+        // Possibly used on the AudioThread
         private Thread _readAudioThread;
         private ThreadSafeQueue<AudioFrame> _frameQueue = new ThreadSafeQueue<AudioFrame>();
 
         private bool _muted = false;
-
         public override bool Muted => _muted;
 
-        public RtcAudioSource(AudioSource source, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
+        protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
         {
             _sourceType = audioSourceType;
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = DefaultChannels;
+            newAudioSource.NumChannels = (uint)channels;
             if(_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
             {
                 newAudioSource.SampleRate = DefaultMirophoneSampleRate;
@@ -73,7 +72,12 @@ namespace LiveKit
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
-            UpdateSource(source);
+        }
+
+        public IEnumerator PrepareAndStart()
+        {
+            yield return Prepare();
+            Start();
         }
 
         public void Start()
@@ -82,16 +86,14 @@ namespace LiveKit
             _readAudioThread = new Thread(Update);
             _readAudioThread.Start();
 
-            _audioFilter.AudioRead += OnAudioRead;
-            while (!(Microphone.GetPosition(null) > 0)) { }
-            _audioSource.Play();
+            AudioRead += OnAudioRead;
+            Play();
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             _readAudioThread?.Abort();
-            if(_audioFilter) _audioFilter.AudioRead -= OnAudioRead;
-            if(_audioSource && _audioSource.isPlaying) _audioSource.Stop();
+            AudioRead -= OnAudioRead;
         }
 
         private void Update()
@@ -115,7 +117,6 @@ namespace LiveKit
                 v = Math.Max(v, -32768f);
                 return (short)(v + Math.Sign(v) * 0.5f);
             }
-
             unsafe
             {
                 var frameData = new Span<short>(frame.Data.ToPointer(), frame.Length / sizeof(short));
@@ -131,7 +132,6 @@ namespace LiveKit
             }
             _frameQueue.Enqueue(frame);
         }
-
 
         private void ReadAudio()
         {
@@ -169,15 +169,10 @@ namespace LiveKit
             }
         }
 
-        private void UpdateSource(AudioSource source)
-        {
-            _audioSource = source;
-            _audioFilter = source.gameObject.AddComponent<AudioFilter>();
-        }
-
         public override void SetMute(bool muted)
         {
             _muted = muted;
         }
+
     }
 }
