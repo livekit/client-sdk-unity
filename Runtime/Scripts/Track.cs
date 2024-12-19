@@ -126,12 +126,12 @@ namespace LiveKit
 
     public sealed class LocalVideoTrack : Track, ILocalTrack, IVideoTrack
     {
-        RtcVideoSource _source;
+        public RtcVideoSource source;
 
-        IRtcSource ILocalTrack.source { get => _source; }
+        IRtcSource ILocalTrack.source => source;
 
         internal LocalVideoTrack(OwnedTrack track, Room room, RtcVideoSource source) : base(track, room, room?.LocalParticipant) {
-            _source = source;
+            this.source = source;
         }
 
         public static LocalVideoTrack CreateVideoTrack(string name, RtcVideoSource source, Room room)
