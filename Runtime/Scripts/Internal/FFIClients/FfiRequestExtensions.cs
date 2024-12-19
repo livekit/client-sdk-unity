@@ -81,6 +81,9 @@ namespace LiveKit.Internal.FFIClients
                 case RemixAndResampleRequest remixAndResampleRequest:
                     ffiRequest.RemixAndResample = remixAndResampleRequest;
                     break;
+                case LocalTrackMuteRequest localTrackMuteRequest:
+                    ffiRequest.LocalTrackMute = localTrackMuteRequest;
+                    break;
                 case E2eeRequest e2EeRequest:
                     ffiRequest.E2Ee = e2EeRequest;
                     break;
