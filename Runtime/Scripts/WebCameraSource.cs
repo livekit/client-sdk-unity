@@ -12,6 +12,7 @@ namespace LiveKit
     public class WebCameraSource : RtcVideoSource
     {
         TextureFormat _textureFormat;
+        private RenderTexture _tempTexture;
 
         public WebCamTexture Texture { get; }
 
@@ -56,6 +57,7 @@ namespace LiveKit
                 _bufferType = GetVideoBufferType(_textureFormat);
                 _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
                 _dest = new Texture2D(GetWidth(), GetHeight(), TextureFormat.BGRA32, false);
+                if (Texture.graphicsFormat != _dest.graphicsFormat) _tempTexture = new RenderTexture(GetWidth(), GetHeight(), 0, _dest.graphicsFormat);
                 textureChanged = true;
             }
 
@@ -64,7 +66,16 @@ namespace LiveKit
             var bytes = MemoryMarshal.Cast<Color32, byte>(pixels);
             _data.CopyFrom(bytes.ToArray());
             _requestPending = true;
-            Graphics.CopyTexture(Texture, _dest);
+            
+            if (Texture.graphicsFormat != _dest.graphicsFormat)
+            {
+                Graphics.Blit(Texture, _tempTexture);
+                Graphics.CopyTexture(_tempTexture, _dest);
+            }
+            else
+            {
+                Graphics.CopyTexture(Texture, _dest);
+            }
 
             return textureChanged;
         }
