@@ -15,6 +15,17 @@ namespace LiveKit
         WeakReference<Room> Room { get; }
         WeakReference<Participant> Participant { get; }
         FfiHandle TrackHandle { get; }
+        
+        public GetSessionStatsInstruction GetStats()
+        {
+            using var request = FFIBridge.Instance.NewRequest<GetStatsRequest>();
+            var getStats = request.request;
+            getStats.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new GetSessionStatsInstruction(res.GetStats.AsyncId);
+        }
+
     }
 
     public interface ILocalTrack : ITrack
@@ -156,5 +167,34 @@ namespace LiveKit
     public sealed class RemoteVideoTrack : Track, IRemoteTrack, IVideoTrack
     {
         internal RemoteVideoTrack(OwnedTrack track, Room room, RemoteParticipant participant) : base(track, room, participant) { }
+    }
+    
+    public sealed class GetSessionStatsInstruction : YieldInstruction
+    {
+        private readonly ulong _asyncId;
+        public RtcStats[] Stats;
+        public string Error;
+
+        internal GetSessionStatsInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.GetSessionStatsReceived += OnGetSessionStatsReceived;
+        }
+
+        private void OnGetSessionStatsReceived(GetStatsCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            Error = e.Error;
+            IsError = !string.IsNullOrEmpty(Error);
+            IsDone = true;
+            Stats = new RtcStats[e.Stats.Count];
+            for (var i = 0; i < e.Stats.Count; i++)
+            {
+                Stats[i] = e.Stats[i];
+            }
+            FfiClient.Instance.GetSessionStatsReceived -= OnGetSessionStatsReceived;
+        }
     }
 }

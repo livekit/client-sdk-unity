@@ -20,7 +20,8 @@ namespace LiveKit.Internal
 
     internal delegate void DisconnectReceivedDelegate(DisconnectCallback e);
 
-
+    internal delegate void GetSessionStatsDelegate(GetStatsCallback e);
+    
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
 

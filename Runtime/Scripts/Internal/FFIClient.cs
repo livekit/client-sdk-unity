@@ -35,6 +35,7 @@ namespace LiveKit.Internal
         public event UnpublishTrackDelegate? UnpublishTrackReceived;
         public event ConnectReceivedDelegate? ConnectReceived;
         public event DisconnectReceivedDelegate? DisconnectReceived;
+        public event GetSessionStatsDelegate? GetSessionStatsReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
         public event TrackEventReceivedDelegate? TrackEventReceived;
         public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
@@ -248,6 +249,9 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.Disconnect:
                         Instance.DisconnectReceived?.Invoke(r.Disconnect!);
                         break;
+                    case FfiEvent.MessageOneofCase.GetStats:
+                        Instance.GetSessionStatsReceived?.Invoke(r.GetStats);
+                        break;
                     case FfiEvent.MessageOneofCase.PublishTranscription:
                         break;
                     case FfiEvent.MessageOneofCase.VideoStreamEvent:
@@ -261,7 +265,6 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.PerformRpc:
                         Instance.PerformRpcReceived?.Invoke(r.PerformRpc!);
                         break;
-                    case FfiEvent.MessageOneofCase.GetStats:
                     case FfiEvent.MessageOneofCase.Panic:
                         break;
                     default:
