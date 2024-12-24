@@ -188,7 +188,8 @@ namespace LiveKit
                 var capture = request.request;
                 capture.SourceHandle = (ulong)Handle.DangerousGetHandle();
                 capture.Rotation = GetVideoRotation();
-                capture.TimestampUs = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                var now = DateTimeOffset.UtcNow;
+                capture.TimestampUs = now.ToUnixTimeMilliseconds() * 1000 + (now.Ticks % TimeSpan.TicksPerMillisecond) / 10;
                 capture.Buffer = buffer;
                 using var response = request.Send();
                 _reading = false;
