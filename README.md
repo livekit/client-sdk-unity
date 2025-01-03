@@ -91,7 +91,7 @@ var source = audObject.AddComponent<AudioSource>();
 source.clip = Microphone.Start(Microphone.devices[0], true, 2, (int)RtcAudioSource.DefaultSampleRate);
 source.loop = true;
 
-var rtcSource = new RtcAudioSource(source);
+var rtcSource = new RtcAudioSource(source, RtcAudioSourceType.AudioSourceMicrophone);
 var track = LocalAudioTrack.CreateAudioTrack("my-audio-track", rtcSource, room);
 
 var options = new TrackPublishOptions();
