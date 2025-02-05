@@ -1,5 +1,6 @@
 import os
 import urllib.request
+import urllib.parse
 import configparser
 import zipfile
 
@@ -13,7 +14,7 @@ download_dir = 'downloads~'
 def main():
     config = configparser.ConfigParser()
     config.read('version.ini')
-    version = config['ffi']['version']
+    tag_path = urllib.parse.quote(config['ffi']['tag'], safe='')
 
     for platform in platforms:
         archs = ['arm64', 'x86_64']
@@ -24,7 +25,7 @@ def main():
 
         for arch in archs:
             filename = 'ffi-' + platform + '-' + arch + '.zip'
-            url = config['ffi']['url'] + '/ffi-' + version + '/' + filename
+            url = f"{config['ffi']['url']}/{tag_path}/{filename}"
             file_to_download = download_dir + '/' + filename
             if download_file_if_not_exists(url, file_to_download) : 
                 dest = 'Runtime/Plugins' + '/ffi-' + platform + '-' + arch 
