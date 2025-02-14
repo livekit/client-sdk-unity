@@ -11,7 +11,9 @@ namespace LiveKit.Rooms
     public interface IRoom : ITracksHub, IRoomConnectionInfo
     {
         event Room.MetaDelegate? RoomMetadataChanged;
-        
+ 
+        event Room.SidDelegate? RoomSidChanged;
+ 
         IRoomInfo Info { get; }
         
         IActiveSpeakers ActiveSpeakers { get; }
