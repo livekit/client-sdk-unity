@@ -74,7 +74,8 @@ namespace LiveKit
             }
             else
             {
-                Graphics.CopyTexture(Texture, _dest);
+                _dest.SetPixels(Texture.GetPixels());
+                _dest.Apply();
             }
 
             return textureChanged;
