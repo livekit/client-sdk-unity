@@ -74,8 +74,12 @@ namespace LiveKit
             }
             else
             {
+#if UNITY_6000_0_OR_NEWER && UNITY_IOS
                 _dest.SetPixels(Texture.GetPixels());
                 _dest.Apply();
+#else
+                Graphics.CopyTexture(Texture, _dest);
+#endif
             }
 
             return textureChanged;
