@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;

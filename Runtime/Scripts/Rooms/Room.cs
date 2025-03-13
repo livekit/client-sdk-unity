@@ -151,6 +151,7 @@ namespace LiveKit.Rooms
         {
             using var response = FFIBridge.Instance.SendDisconnectRequest(this);
             FfiResponse res = response;
+            videoStreams.Free();
             var instruction = new DisconnectInstruction(res.Disconnect!.AsyncId, this, cancellationToken);
             await instruction.AwaitWithSuccess();
             ffiHandleFactory.Release(Handle);
