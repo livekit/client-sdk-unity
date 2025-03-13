@@ -22,7 +22,12 @@ namespace LiveKit.Rooms.VideoStreaming
 
         public void Dispose()
         {
+            if (disposed)
+                return;
+
+            disposed = true;
             handle.Dispose();
+            if (lastDecoded != null) Object.Destroy(lastDecoded);
             FfiClient.Instance.VideoStreamEventReceived -= OnVideoStreamEvent;
         }
 
@@ -63,7 +68,7 @@ namespace LiveKit.Rooms.VideoStreaming
                 if (lastDecoded == null || lastDecoded.width != rWidth || lastDecoded.height != rHeight)
                 {
                     //TODO pooling
-                    if (lastDecoded != null) UnityEngine.Object.Destroy(lastDecoded);
+                    if (lastDecoded != null) Object.Destroy(lastDecoded);
                     lastDecoded = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
                     lastDecoded.ignoreMipmapLimit = false;
                 }
