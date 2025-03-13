@@ -17,6 +17,7 @@ using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Factory;
 using LiveKit.Rooms.Tracks.Hub;
+using LiveKit.Rooms.VideoStreaming;
 using RoomInfo = LiveKit.Proto.RoomInfo;
 
 namespace LiveKit.Rooms
@@ -25,9 +26,12 @@ namespace LiveKit.Rooms
     {
         public delegate void MetaDelegate(string metaData);
 
+
         public delegate void SidDelegate(string sid);
 
+
         public delegate void RemoteParticipantDelegate(Participant participant);
+
 
         private readonly IMemoryPool memoryPool;
         private readonly IMutableActiveSpeakers activeSpeakers;
@@ -38,12 +42,15 @@ namespace LiveKit.Rooms
         private readonly ITrackPublicationFactory trackPublicationFactory;
         private readonly IMutableDataPipe dataPipe;
         private readonly IMutableRoomInfo roomInfo;
+        private readonly IVideoStreams videoStreams;
 
         public IActiveSpeakers ActiveSpeakers => activeSpeakers;
 
         public IParticipantsHub Participants => participantsHub;
 
         public IDataPipe DataPipe => dataPipe;
+
+        public IVideoStreams VideoStreams => videoStreams;
 
         public IRoomInfo Info => roomInfo;
 
@@ -66,21 +73,30 @@ namespace LiveKit.Rooms
         public Room() : this(
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
             new DefaultActiveSpeakers(),
-            new ParticipantsHub(),
+            new ParticipantsHub().Capture(out var capturedHub),
             new TracksFactory(),
             IFfiHandleFactory.Default,
             IParticipantFactory.Default,
             ITrackPublicationFactory.Default,
             new DataPipe(),
-            new MemoryRoomInfo()
+            new MemoryRoomInfo(),
+            new VideoStreams(capturedHub)
         )
         {
         }
 
-        public Room(IMemoryPool memoryPool, IMutableActiveSpeakers activeSpeakers,
-            IMutableParticipantsHub participantsHub, ITracksFactory tracksFactory, IFfiHandleFactory ffiHandleFactory,
-            IParticipantFactory participantFactory, ITrackPublicationFactory trackPublicationFactory,
-            IMutableDataPipe dataPipe, IMutableRoomInfo roomInfo)
+        public Room(
+            IMemoryPool memoryPool,
+            IMutableActiveSpeakers activeSpeakers,
+            IMutableParticipantsHub participantsHub,
+            ITracksFactory tracksFactory,
+            IFfiHandleFactory ffiHandleFactory,
+            IParticipantFactory participantFactory,
+            ITrackPublicationFactory trackPublicationFactory,
+            IMutableDataPipe dataPipe,
+            IMutableRoomInfo roomInfo,
+            IVideoStreams videoStreams
+        )
         {
             this.memoryPool = memoryPool;
             this.activeSpeakers = activeSpeakers;
@@ -91,34 +107,35 @@ namespace LiveKit.Rooms
             this.trackPublicationFactory = trackPublicationFactory;
             this.dataPipe = dataPipe;
             this.roomInfo = roomInfo;
+            this.videoStreams = videoStreams;
             dataPipe.Assign(participantsHub);
         }
 
         public void UpdateLocalMetadata(string metadata)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
-            
+
             var localParticipant = participantsHub.LocalParticipant();
-            
-            request.request.LocalParticipantHandle = (uint) localParticipant.Handle.DangerousGetHandle();
+
+            request.request.LocalParticipantHandle = (uint)localParticipant.Handle.DangerousGetHandle();
             request.request.Metadata = metadata;
-            
+
             localParticipant.UpdateMeta(metadata);
-            
+
             using var response = request.Send();
         }
 
         public void SetLocalName(string name)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
-            
+
             var localParticipant = participantsHub.LocalParticipant();
 
-            request.request.LocalParticipantHandle = (uint) localParticipant.Handle.DangerousGetHandle();
+            request.request.LocalParticipantHandle = (uint)localParticipant.Handle.DangerousGetHandle();
             request.request.Name = name;
 
             localParticipant.UpdateName(name);
-            
+
             using var response = request.Send();
         }
 
@@ -344,7 +361,10 @@ namespace LiveKit.Rooms
             }
         }
 
-        internal void OnConnect(FfiOwnedHandle roomHandle, RoomInfo info, OwnedParticipant participant,
+        internal void OnConnect(
+            FfiOwnedHandle roomHandle,
+            RoomInfo info,
+            OwnedParticipant participant,
             RepeatedField<ConnectCallback.Types.ParticipantWithTracks> participants)
         {
             Utils.Debug($"OnConnect.... {roomHandle.Id}  {participant.Handle!.Id}");
@@ -388,6 +408,17 @@ namespace LiveKit.Rooms
         public void OnDisconnect()
         {
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
+        }
+    }
+
+    internal static class Extensions
+    {
+
+        //Captures value to reuse it withing the scope
+        public static T Capture<T>(this T value, out T captured)
+        {
+            captured = value;
+            return value;
         }
     }
 }

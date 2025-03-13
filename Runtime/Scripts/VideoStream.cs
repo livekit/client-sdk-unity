@@ -3,10 +3,7 @@ using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Tracks;
 using System;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
@@ -44,6 +41,7 @@ namespace LiveKit
         }
     }
 
+    [Obsolete]
     public class VideoStream
     {
         public delegate void FrameReceiveDelegate(VideoFrameEvent frameEvent);
