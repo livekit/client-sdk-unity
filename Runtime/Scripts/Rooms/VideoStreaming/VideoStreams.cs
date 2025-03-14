@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
+using UnityEngine;
 
 namespace LiveKit.Rooms.VideoStreaming
 {
@@ -36,11 +37,15 @@ namespace LiveKit.Rooms.VideoStreaming
         }
 
         private readonly IParticipantsHub participantsHub;
+        private readonly VideoBufferType bufferType;
+        private readonly TextureFormat textureFormat;
         private readonly Dictionary<Key, IVideoStream> videoStreams = new();
 
-        public VideoStreams(IParticipantsHub participantsHub)
+        public VideoStreams(IParticipantsHub participantsHub, VideoBufferType bufferType = VideoBufferType.Bgra)
         {
             this.participantsHub = participantsHub;
+            this.bufferType = bufferType;
+            textureFormat = FormatFromBufferType(bufferType);
         }
 
         public WeakReference<IVideoStream>? VideoStream(string identity, string sid)
@@ -65,19 +70,27 @@ namespace LiveKit.Rooms.VideoStreaming
                     using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
                     var newVideoStream = request.request;
                     newVideoStream.TrackHandle = (ulong)videoTrack.Handle.DangerousGetHandle();
-                    newVideoStream.Format = VideoBufferType.Rgba;
+                    newVideoStream.Format = bufferType;
                     newVideoStream.NormalizeStride = true;
                     newVideoStream.Type = VideoStreamType.VideoStreamNative;
                     using var response = request.Send();
                     FfiResponse res = response;
 
                     var streamInfo = res.NewVideoStream!.Stream;
-                    videoStreams[key] = videoStream = new VideoStream(streamInfo!);
+                    videoStreams[key] = videoStream = new VideoStream(streamInfo!, textureFormat);
                 }
 
                 return new WeakReference<IVideoStream>(videoStream);
             }
         }
+
+        private static TextureFormat FormatFromBufferType(VideoBufferType videoBufferType) =>
+            videoBufferType switch
+            {
+                VideoBufferType.Bgra => TextureFormat.BGRA32,
+                VideoBufferType.Rgba => TextureFormat.RGBA32,
+                _ => throw new Exception($"Format conversion for {videoBufferType} is not supported")
+            };
 
         public void Free()
         {

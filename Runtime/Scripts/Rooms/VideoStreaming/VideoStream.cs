@@ -6,6 +6,7 @@ namespace LiveKit.Rooms.VideoStreaming
 {
     public class VideoStream : IVideoStream
     {
+        private readonly TextureFormat textureFormat;
         private readonly FfiHandle handle;
         private readonly VideoStreamInfo info;
 
@@ -13,8 +14,9 @@ namespace LiveKit.Rooms.VideoStreaming
         private VideoLastFrame? lastFrame;
         private bool disposed;
 
-        public VideoStream(OwnedVideoStream ownedVideoStream)
+        public VideoStream(OwnedVideoStream ownedVideoStream, TextureFormat textureFormat)
         {
+            this.textureFormat = textureFormat;
             handle = IFfiHandleFactory.Default.NewFfiHandle(ownedVideoStream.Handle!.Id);
             info = ownedVideoStream.Info!;
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
@@ -69,7 +71,7 @@ namespace LiveKit.Rooms.VideoStreaming
                 {
                     //TODO pooling
                     if (lastDecoded != null) Object.Destroy(lastDecoded);
-                    lastDecoded = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
+                    lastDecoded = new Texture2D((int)rWidth, (int)rHeight, textureFormat, false);
                     lastDecoded.ignoreMipmapLimit = false;
                 }
 
