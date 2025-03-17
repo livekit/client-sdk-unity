@@ -6,6 +6,7 @@ namespace LiveKit.Rooms.VideoStreaming
 {
     public class VideoStream : IVideoStream
     {
+        private readonly IVideoStreams videoStreams;
         private readonly TextureFormat textureFormat;
         private readonly FfiHandle handle;
         private readonly VideoStreamInfo info;
@@ -14,8 +15,9 @@ namespace LiveKit.Rooms.VideoStreaming
         private VideoLastFrame? lastFrame;
         private bool disposed;
 
-        public VideoStream(OwnedVideoStream ownedVideoStream, TextureFormat textureFormat)
+        public VideoStream(IVideoStreams videoStreams, OwnedVideoStream ownedVideoStream, TextureFormat textureFormat)
         {
+            this.videoStreams = videoStreams;
             this.textureFormat = textureFormat;
             handle = IFfiHandleFactory.Default.NewFfiHandle(ownedVideoStream.Handle!.Id);
             info = ownedVideoStream.Info!;
@@ -31,6 +33,7 @@ namespace LiveKit.Rooms.VideoStreaming
             handle.Dispose();
             if (lastDecoded != null) Object.Destroy(lastDecoded);
             FfiClient.Instance.VideoStreamEventReceived -= OnVideoStreamEvent;
+            videoStreams.Release(this);
         }
 
         private void OnVideoStreamEvent(VideoStreamEvent e)

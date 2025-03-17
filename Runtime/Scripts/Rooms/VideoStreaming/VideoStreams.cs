@@ -40,6 +40,7 @@ namespace LiveKit.Rooms.VideoStreaming
         private readonly VideoBufferType bufferType;
         private readonly TextureFormat textureFormat;
         private readonly Dictionary<Key, IVideoStream> videoStreams = new();
+        private readonly Dictionary<IVideoStream, Key> reverseLookup = new();
 
         public VideoStreams(IParticipantsHub participantsHub, VideoBufferType bufferType = VideoBufferType.Bgra)
         {
@@ -77,10 +78,26 @@ namespace LiveKit.Rooms.VideoStreaming
                     FfiResponse res = response;
 
                     var streamInfo = res.NewVideoStream!.Stream;
-                    videoStreams[key] = videoStream = new VideoStream(streamInfo!, textureFormat);
+                    videoStreams[key] = videoStream = new VideoStream(this, streamInfo!, textureFormat);
+                    reverseLookup[videoStream] = key;
                 }
 
                 return new WeakReference<IVideoStream>(videoStream);
+            }
+        }
+
+        public bool Release(IVideoStream videoStream)
+        {
+            lock (this)
+            {
+                if (reverseLookup.TryGetValue(videoStream, out var key))
+                {
+                    videoStreams.Remove(key);
+                    reverseLookup.Remove(videoStream);
+                    return true;
+                }
+
+                return false;
             }
         }
 
@@ -98,6 +115,7 @@ namespace LiveKit.Rooms.VideoStreaming
             {
                 foreach (var videoStream in videoStreams.Values) videoStream.Dispose();
                 videoStreams.Clear();
+                reverseLookup.Clear();
             }
         }
     }
