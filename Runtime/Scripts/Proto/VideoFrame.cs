@@ -56,7 +56,7 @@ namespace LiveKit.Proto {
             "Eg4KBmhlaWdodBgCIAIoDRISCgpmcmFtZV9yYXRlGAMgAigBIoMCCg9WaWRl",
             "b0J1ZmZlckluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlk",
             "ZW9CdWZmZXJUeXBlEg0KBXdpZHRoGAIgAigNEg4KBmhlaWdodBgDIAIoDRIQ",
-            "CghkYXRhX3B0chgEIAIoBBIOCgZzdHJpZGUYBiACKA0SQAoKY29tcG9uZW50",
+            "CghkYXRhX3B0chgEIAIoBBIOCgZzdHJpZGUYBiABKA0SQAoKY29tcG9uZW50",
             "cxgHIAMoCzIsLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBv",
             "bmVudEluZm8aPwoNQ29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgBIAIoBBIO",
             "CgZzdHJpZGUYAiACKA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVm",
@@ -133,6 +133,10 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("VIDEO_ROTATION_270")] _270 = 3,
   }
 
+  /// <summary>
+  /// Values of this enum must not be changed
+  /// It is used to serialize a rtc.VideoFrame on Python
+  /// </summary>
   public enum VideoBufferType {
     [pbr::OriginalName("RGBA")] Rgba = 0,
     [pbr::OriginalName("ABGR")] Abgr = 1,
