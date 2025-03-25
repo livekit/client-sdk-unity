@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using LiveKit.Proto;
-using UnityEngine.UI;
 
 namespace LiveKit.Internal
 {
