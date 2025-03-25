@@ -293,6 +293,26 @@ namespace LiveKit
             Utils.Debug("Sending message: " + topic);
             var response = request.Send();
         }
+
+        public TextStreamInfo SendText(string text, StreamTextOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ByteStreamInfo SendFile(string path, StreamByteOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TextStreamWriter StreamText(StreamTextOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ByteStreamWriter StreamBytes(StreamByteOptions options)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public sealed class RemoteParticipant : Participant

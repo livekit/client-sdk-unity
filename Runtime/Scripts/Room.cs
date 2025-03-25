@@ -177,6 +177,26 @@ namespace LiveKit
             Utils.Debug($"Disconnect response.... {resp}");
         }
 
+        public void RegisterTextStreamHandler(string topic, TextStreamHandler handler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterByteStreamHandler(string topic, ByteStreamHandler handler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnregisterTextStreamHandler(string topic)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnregisterByteStreamHandler(string topic)
+        {
+            throw new NotImplementedException();
+        }
+
         internal void UpdateFromInfo(RoomInfo info)
         {
             Sid = info.Sid;
