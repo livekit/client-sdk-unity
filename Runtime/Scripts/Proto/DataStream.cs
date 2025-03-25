@@ -107,63 +107,64 @@ namespace LiveKit.Proto {
             "cml0ZXJfaGFuZGxlGAEgAigEEg0KBWJ5dGVzGAIgAigMIjEKHUJ5dGVTdHJl",
             "YW1Xcml0ZXJXcml0ZVJlc3BvbnNlEhAKCGFzeW5jX2lkGAEgAigEIlwKHUJ5",
             "dGVTdHJlYW1Xcml0ZXJXcml0ZUNhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigE",
-            "EikKBWVycm9yGAIgASgLMhoubGl2ZWtpdC5wcm90by5TdHJlYW1FcnJvciI1",
+            "EikKBWVycm9yGAIgASgLMhoubGl2ZWtpdC5wcm90by5TdHJlYW1FcnJvciJF",
             "ChxCeXRlU3RyZWFtV3JpdGVyQ2xvc2VSZXF1ZXN0EhUKDXdyaXRlcl9oYW5k",
-            "bGUYASACKAQiMQodQnl0ZVN0cmVhbVdyaXRlckNsb3NlUmVzcG9uc2USEAoI",
-            "YXN5bmNfaWQYASACKAQiXAodQnl0ZVN0cmVhbVdyaXRlckNsb3NlQ2FsbGJh",
-            "Y2sSEAoIYXN5bmNfaWQYASACKAQSKQoFZXJyb3IYAiABKAsyGi5saXZla2l0",
-            "LnByb3RvLlN0cmVhbUVycm9yInMKFU93bmVkVGV4dFN0cmVhbVdyaXRlchIt",
-            "CgZoYW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxl",
-            "EisKBGluZm8YAiACKAsyHS5saXZla2l0LnByb3RvLlRleHRTdHJlYW1JbmZv",
-            "ImwKFVRleHRTdHJlYW1PcGVuUmVxdWVzdBIgChhsb2NhbF9wYXJ0aWNpcGFu",
-            "dF9oYW5kbGUYASACKAQSMQoHb3B0aW9ucxgCIAIoCzIgLmxpdmVraXQucHJv",
-            "dG8uU3RyZWFtVGV4dE9wdGlvbnMiKgoWVGV4dFN0cmVhbU9wZW5SZXNwb25z",
-            "ZRIQCghhc3luY19pZBgBIAIoBCKZAQoWVGV4dFN0cmVhbU9wZW5DYWxsYmFj",
-            "axIQCghhc3luY19pZBgBIAIoBBI2CgZ3cml0ZXIYAiABKAsyJC5saXZla2l0",
-            "LnByb3RvLk93bmVkVGV4dFN0cmVhbVdyaXRlckgAEisKBWVycm9yGAMgASgL",
-            "MhoubGl2ZWtpdC5wcm90by5TdHJlYW1FcnJvckgAQggKBnJlc3VsdCJDChxU",
-            "ZXh0U3RyZWFtV3JpdGVyV3JpdGVSZXF1ZXN0EhUKDXdyaXRlcl9oYW5kbGUY",
-            "ASACKAQSDAoEdGV4dBgCIAIoCSIxCh1UZXh0U3RyZWFtV3JpdGVyV3JpdGVS",
-            "ZXNwb25zZRIQCghhc3luY19pZBgBIAIoBCJcCh1UZXh0U3RyZWFtV3JpdGVy",
-            "V3JpdGVDYWxsYmFjaxIQCghhc3luY19pZBgBIAIoBBIpCgVlcnJvchgCIAEo",
-            "CzIaLmxpdmVraXQucHJvdG8uU3RyZWFtRXJyb3IiNQocVGV4dFN0cmVhbVdy",
-            "aXRlckNsb3NlUmVxdWVzdBIVCg13cml0ZXJfaGFuZGxlGAEgAigEIjEKHVRl",
-            "eHRTdHJlYW1Xcml0ZXJDbG9zZVJlc3BvbnNlEhAKCGFzeW5jX2lkGAEgAigE",
-            "IlwKHVRleHRTdHJlYW1Xcml0ZXJDbG9zZUNhbGxiYWNrEhAKCGFzeW5jX2lk",
-            "GAEgAigEEikKBWVycm9yGAIgASgLMhoubGl2ZWtpdC5wcm90by5TdHJlYW1F",
-            "cnJvciLJAwoOVGV4dFN0cmVhbUluZm8SEQoJc3RyZWFtX2lkGAEgAigJEhEK",
-            "CXRpbWVzdGFtcBgCIAIoAxIRCgltaW1lX3R5cGUYAyACKAkSDQoFdG9waWMY",
-            "BCACKAkSFAoMdG90YWxfbGVuZ3RoGAUgASgEEkEKCmF0dHJpYnV0ZXMYBiAD",
-            "KAsyLS5saXZla2l0LnByb3RvLlRleHRTdHJlYW1JbmZvLkF0dHJpYnV0ZXNF",
-            "bnRyeRJDCg5vcGVyYXRpb25fdHlwZRgHIAIoDjIrLmxpdmVraXQucHJvdG8u",
-            "VGV4dFN0cmVhbUluZm8uT3BlcmF0aW9uVHlwZRIPCgd2ZXJzaW9uGAggASgF",
-            "EhoKEnJlcGx5X3RvX3N0cmVhbV9pZBgJIAEoCRIbChNhdHRhY2hlZF9zdHJl",
-            "YW1faWRzGAogAygJEhEKCWdlbmVyYXRlZBgLIAEoCBoxCg9BdHRyaWJ1dGVz",
-            "RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJBCg1PcGVy",
-            "YXRpb25UeXBlEgoKBkNSRUFURRAAEgoKBlVQREFURRABEgoKBkRFTEVURRAC",
-            "EgwKCFJFQUNUSU9OEAMi8gEKDkJ5dGVTdHJlYW1JbmZvEhEKCXN0cmVhbV9p",
-            "ZBgBIAIoCRIRCgl0aW1lc3RhbXAYAiACKAMSEQoJbWltZV90eXBlGAMgAigJ",
-            "Eg0KBXRvcGljGAQgAigJEhQKDHRvdGFsX2xlbmd0aBgFIAEoBBJBCgphdHRy",
-            "aWJ1dGVzGAYgAygLMi0ubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtSW5mby5B",
-            "dHRyaWJ1dGVzRW50cnkSDAoEbmFtZRgHIAIoCRoxCg9BdHRyaWJ1dGVzRW50",
-            "cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASLpAgoRU3RyZWFt",
-            "VGV4dE9wdGlvbnMSDQoFdG9waWMYASACKAkSRAoKYXR0cmlidXRlcxgCIAMo",
-            "CzIwLmxpdmVraXQucHJvdG8uU3RyZWFtVGV4dE9wdGlvbnMuQXR0cmlidXRl",
-            "c0VudHJ5Eh4KFmRlc3RpbmF0aW9uX2lkZW50aXRpZXMYAyADKAkSCgoCaWQY",
-            "BCABKAkSQwoOb3BlcmF0aW9uX3R5cGUYBSABKA4yKy5saXZla2l0LnByb3Rv",
-            "LlRleHRTdHJlYW1JbmZvLk9wZXJhdGlvblR5cGUSDwoHdmVyc2lvbhgGIAEo",
-            "BRIaChJyZXBseV90b19zdHJlYW1faWQYByABKAkSGwoTYXR0YWNoZWRfc3Ry",
-            "ZWFtX2lkcxgIIAMoCRIRCglnZW5lcmF0ZWQYCSABKAgaMQoPQXR0cmlidXRl",
-            "c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEi/gEKEVN0",
-            "cmVhbUJ5dGVPcHRpb25zEg0KBXRvcGljGAEgAigJEkQKCmF0dHJpYnV0ZXMY",
-            "AiADKAsyMC5saXZla2l0LnByb3RvLlN0cmVhbUJ5dGVPcHRpb25zLkF0dHJp",
-            "YnV0ZXNFbnRyeRIeChZkZXN0aW5hdGlvbl9pZGVudGl0aWVzGAMgAygJEgoK",
-            "AmlkGAQgASgJEgwKBG5hbWUYBSABKAkSEQoJbWltZV90eXBlGAYgASgJEhQK",
-            "DHRvdGFsX2xlbmd0aBgHIAEoBBoxCg9BdHRyaWJ1dGVzRW50cnkSCwoDa2V5",
-            "GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASI+Cg5TdHJlYW1Qcm9ncmVzcxIX",
-            "Cg9ieXRlc19wcm9jZXNzZWQYASACKAQSEwoLYnl0ZXNfdG90YWwYAiABKAQi",
-            "IgoLU3RyZWFtRXJyb3ISEwoLZGVzY3JpcHRpb24YASACKAkqIAoKU3RyZWFt",
-            "S2luZBIICgRCWVRFEAASCAoEVEVYVBABQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "bGUYASACKAQSDgoGcmVhc29uGAIgASgJIjEKHUJ5dGVTdHJlYW1Xcml0ZXJD",
+            "bG9zZVJlc3BvbnNlEhAKCGFzeW5jX2lkGAEgAigEIlwKHUJ5dGVTdHJlYW1X",
+            "cml0ZXJDbG9zZUNhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigEEikKBWVycm9y",
+            "GAIgASgLMhoubGl2ZWtpdC5wcm90by5TdHJlYW1FcnJvciJzChVPd25lZFRl",
+            "eHRTdHJlYW1Xcml0ZXISLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90",
+            "by5GZmlPd25lZEhhbmRsZRIrCgRpbmZvGAIgAigLMh0ubGl2ZWtpdC5wcm90",
+            "by5UZXh0U3RyZWFtSW5mbyJsChVUZXh0U3RyZWFtT3BlblJlcXVlc3QSIAoY",
+            "bG9jYWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEjEKB29wdGlvbnMYAiAC",
+            "KAsyIC5saXZla2l0LnByb3RvLlN0cmVhbVRleHRPcHRpb25zIioKFlRleHRT",
+            "dHJlYW1PcGVuUmVzcG9uc2USEAoIYXN5bmNfaWQYASACKAQimQEKFlRleHRT",
+            "dHJlYW1PcGVuQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASACKAQSNgoGd3JpdGVy",
+            "GAIgASgLMiQubGl2ZWtpdC5wcm90by5Pd25lZFRleHRTdHJlYW1Xcml0ZXJI",
+            "ABIrCgVlcnJvchgDIAEoCzIaLmxpdmVraXQucHJvdG8uU3RyZWFtRXJyb3JI",
+            "AEIICgZyZXN1bHQiQwocVGV4dFN0cmVhbVdyaXRlcldyaXRlUmVxdWVzdBIV",
+            "Cg13cml0ZXJfaGFuZGxlGAEgAigEEgwKBHRleHQYAiACKAkiMQodVGV4dFN0",
+            "cmVhbVdyaXRlcldyaXRlUmVzcG9uc2USEAoIYXN5bmNfaWQYASACKAQiXAod",
+            "VGV4dFN0cmVhbVdyaXRlcldyaXRlQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASAC",
+            "KAQSKQoFZXJyb3IYAiABKAsyGi5saXZla2l0LnByb3RvLlN0cmVhbUVycm9y",
+            "IkUKHFRleHRTdHJlYW1Xcml0ZXJDbG9zZVJlcXVlc3QSFQoNd3JpdGVyX2hh",
+            "bmRsZRgBIAIoBBIOCgZyZWFzb24YAiABKAkiMQodVGV4dFN0cmVhbVdyaXRl",
+            "ckNsb3NlUmVzcG9uc2USEAoIYXN5bmNfaWQYASACKAQiXAodVGV4dFN0cmVh",
+            "bVdyaXRlckNsb3NlQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASACKAQSKQoFZXJy",
+            "b3IYAiABKAsyGi5saXZla2l0LnByb3RvLlN0cmVhbUVycm9yIskDCg5UZXh0",
+            "U3RyZWFtSW5mbxIRCglzdHJlYW1faWQYASACKAkSEQoJdGltZXN0YW1wGAIg",
+            "AigDEhEKCW1pbWVfdHlwZRgDIAIoCRINCgV0b3BpYxgEIAIoCRIUCgx0b3Rh",
+            "bF9sZW5ndGgYBSABKAQSQQoKYXR0cmlidXRlcxgGIAMoCzItLmxpdmVraXQu",
+            "cHJvdG8uVGV4dFN0cmVhbUluZm8uQXR0cmlidXRlc0VudHJ5EkMKDm9wZXJh",
+            "dGlvbl90eXBlGAcgAigOMisubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtSW5m",
+            "by5PcGVyYXRpb25UeXBlEg8KB3ZlcnNpb24YCCABKAUSGgoScmVwbHlfdG9f",
+            "c3RyZWFtX2lkGAkgASgJEhsKE2F0dGFjaGVkX3N0cmVhbV9pZHMYCiADKAkS",
+            "EQoJZ2VuZXJhdGVkGAsgASgIGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkY",
+            "ASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIkEKDU9wZXJhdGlvblR5cGUSCgoG",
+            "Q1JFQVRFEAASCgoGVVBEQVRFEAESCgoGREVMRVRFEAISDAoIUkVBQ1RJT04Q",
+            "AyLyAQoOQnl0ZVN0cmVhbUluZm8SEQoJc3RyZWFtX2lkGAEgAigJEhEKCXRp",
+            "bWVzdGFtcBgCIAIoAxIRCgltaW1lX3R5cGUYAyACKAkSDQoFdG9waWMYBCAC",
+            "KAkSFAoMdG90YWxfbGVuZ3RoGAUgASgEEkEKCmF0dHJpYnV0ZXMYBiADKAsy",
+            "LS5saXZla2l0LnByb3RvLkJ5dGVTdHJlYW1JbmZvLkF0dHJpYnV0ZXNFbnRy",
+            "eRIMCgRuYW1lGAcgAigJGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASAB",
+            "KAkSDQoFdmFsdWUYAiABKAk6AjgBIukCChFTdHJlYW1UZXh0T3B0aW9ucxIN",
+            "CgV0b3BpYxgBIAIoCRJECgphdHRyaWJ1dGVzGAIgAygLMjAubGl2ZWtpdC5w",
+            "cm90by5TdHJlYW1UZXh0T3B0aW9ucy5BdHRyaWJ1dGVzRW50cnkSHgoWZGVz",
+            "dGluYXRpb25faWRlbnRpdGllcxgDIAMoCRIKCgJpZBgEIAEoCRJDCg5vcGVy",
+            "YXRpb25fdHlwZRgFIAEoDjIrLmxpdmVraXQucHJvdG8uVGV4dFN0cmVhbUlu",
+            "Zm8uT3BlcmF0aW9uVHlwZRIPCgd2ZXJzaW9uGAYgASgFEhoKEnJlcGx5X3Rv",
+            "X3N0cmVhbV9pZBgHIAEoCRIbChNhdHRhY2hlZF9zdHJlYW1faWRzGAggAygJ",
+            "EhEKCWdlbmVyYXRlZBgJIAEoCBoxCg9BdHRyaWJ1dGVzRW50cnkSCwoDa2V5",
+            "GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASL+AQoRU3RyZWFtQnl0ZU9wdGlv",
+            "bnMSDQoFdG9waWMYASACKAkSRAoKYXR0cmlidXRlcxgCIAMoCzIwLmxpdmVr",
+            "aXQucHJvdG8uU3RyZWFtQnl0ZU9wdGlvbnMuQXR0cmlidXRlc0VudHJ5Eh4K",
+            "FmRlc3RpbmF0aW9uX2lkZW50aXRpZXMYAyADKAkSCgoCaWQYBCABKAkSDAoE",
+            "bmFtZRgFIAEoCRIRCgltaW1lX3R5cGUYBiABKAkSFAoMdG90YWxfbGVuZ3Ro",
+            "GAcgASgEGjEKD0F0dHJpYnV0ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFs",
+            "dWUYAiABKAk6AjgBIj4KDlN0cmVhbVByb2dyZXNzEhcKD2J5dGVzX3Byb2Nl",
+            "c3NlZBgBIAIoBBITCgtieXRlc190b3RhbBgCIAEoBCIiCgtTdHJlYW1FcnJv",
+            "chITCgtkZXNjcmlwdGlvbhgBIAIoCSogCgpTdHJlYW1LaW5kEggKBEJZVEUQ",
+            "ABIICgRURVhUEAFCEKoCDUxpdmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.StreamKind), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -207,7 +208,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterWriteRequest), global::LiveKit.Proto.ByteStreamWriterWriteRequest.Parser, new[]{ "WriterHandle", "Bytes" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterWriteResponse), global::LiveKit.Proto.ByteStreamWriterWriteResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterWriteCallback), global::LiveKit.Proto.ByteStreamWriterWriteCallback.Parser, new[]{ "AsyncId", "Error" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterCloseRequest), global::LiveKit.Proto.ByteStreamWriterCloseRequest.Parser, new[]{ "WriterHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterCloseRequest), global::LiveKit.Proto.ByteStreamWriterCloseRequest.Parser, new[]{ "WriterHandle", "Reason" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterCloseResponse), global::LiveKit.Proto.ByteStreamWriterCloseResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ByteStreamWriterCloseCallback), global::LiveKit.Proto.ByteStreamWriterCloseCallback.Parser, new[]{ "AsyncId", "Error" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedTextStreamWriter), global::LiveKit.Proto.OwnedTextStreamWriter.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
@@ -217,7 +218,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterWriteRequest), global::LiveKit.Proto.TextStreamWriterWriteRequest.Parser, new[]{ "WriterHandle", "Text" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterWriteResponse), global::LiveKit.Proto.TextStreamWriterWriteResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterWriteCallback), global::LiveKit.Proto.TextStreamWriterWriteCallback.Parser, new[]{ "AsyncId", "Error" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterCloseRequest), global::LiveKit.Proto.TextStreamWriterCloseRequest.Parser, new[]{ "WriterHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterCloseRequest), global::LiveKit.Proto.TextStreamWriterCloseRequest.Parser, new[]{ "WriterHandle", "Reason" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterCloseResponse), global::LiveKit.Proto.TextStreamWriterCloseResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamWriterCloseCallback), global::LiveKit.Proto.TextStreamWriterCloseCallback.Parser, new[]{ "AsyncId", "Error" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TextStreamInfo), global::LiveKit.Proto.TextStreamInfo.Parser, new[]{ "StreamId", "Timestamp", "MimeType", "Topic", "TotalLength", "Attributes", "OperationType", "Version", "ReplyToStreamId", "AttachedStreamIds", "Generated" }, null, new[]{ typeof(global::LiveKit.Proto.TextStreamInfo.Types.OperationType) }, null, new pbr::GeneratedClrTypeInfo[] { null, }),
@@ -10771,6 +10772,7 @@ namespace LiveKit.Proto {
     public ByteStreamWriterCloseRequest(ByteStreamWriterCloseRequest other) : this() {
       _hasBits0 = other._hasBits0;
       writerHandle_ = other.writerHandle_;
+      reason_ = other.reason_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -10807,6 +10809,32 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~1;
     }
 
+    /// <summary>Field number for the "reason" field.</summary>
+    public const int ReasonFieldNumber = 2;
+    private readonly static string ReasonDefaultValue = "";
+
+    private string reason_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Reason {
+      get { return reason_ ?? ReasonDefaultValue; }
+      set {
+        reason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "reason" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasReason {
+      get { return reason_ != null; }
+    }
+    /// <summary>Clears the value of the "reason" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearReason() {
+      reason_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -10823,6 +10851,7 @@ namespace LiveKit.Proto {
         return true;
       }
       if (WriterHandle != other.WriterHandle) return false;
+      if (Reason != other.Reason) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -10831,6 +10860,7 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (HasWriterHandle) hash ^= WriterHandle.GetHashCode();
+      if (HasReason) hash ^= Reason.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -10853,6 +10883,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(8);
         output.WriteUInt64(WriterHandle);
       }
+      if (HasReason) {
+        output.WriteRawTag(18);
+        output.WriteString(Reason);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -10867,6 +10901,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(8);
         output.WriteUInt64(WriterHandle);
       }
+      if (HasReason) {
+        output.WriteRawTag(18);
+        output.WriteString(Reason);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -10879,6 +10917,9 @@ namespace LiveKit.Proto {
       int size = 0;
       if (HasWriterHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(WriterHandle);
+      }
+      if (HasReason) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Reason);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -10894,6 +10935,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasWriterHandle) {
         WriterHandle = other.WriterHandle;
+      }
+      if (other.HasReason) {
+        Reason = other.Reason;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -10918,6 +10962,10 @@ namespace LiveKit.Proto {
             WriterHandle = input.ReadUInt64();
             break;
           }
+          case 18: {
+            Reason = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -10939,6 +10987,10 @@ namespace LiveKit.Proto {
             break;
           case 8: {
             WriterHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Reason = input.ReadString();
             break;
           }
         }
@@ -13294,6 +13346,7 @@ namespace LiveKit.Proto {
     public TextStreamWriterCloseRequest(TextStreamWriterCloseRequest other) : this() {
       _hasBits0 = other._hasBits0;
       writerHandle_ = other.writerHandle_;
+      reason_ = other.reason_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -13330,6 +13383,32 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~1;
     }
 
+    /// <summary>Field number for the "reason" field.</summary>
+    public const int ReasonFieldNumber = 2;
+    private readonly static string ReasonDefaultValue = "";
+
+    private string reason_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Reason {
+      get { return reason_ ?? ReasonDefaultValue; }
+      set {
+        reason_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "reason" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasReason {
+      get { return reason_ != null; }
+    }
+    /// <summary>Clears the value of the "reason" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearReason() {
+      reason_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -13346,6 +13425,7 @@ namespace LiveKit.Proto {
         return true;
       }
       if (WriterHandle != other.WriterHandle) return false;
+      if (Reason != other.Reason) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -13354,6 +13434,7 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (HasWriterHandle) hash ^= WriterHandle.GetHashCode();
+      if (HasReason) hash ^= Reason.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -13376,6 +13457,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(8);
         output.WriteUInt64(WriterHandle);
       }
+      if (HasReason) {
+        output.WriteRawTag(18);
+        output.WriteString(Reason);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -13390,6 +13475,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(8);
         output.WriteUInt64(WriterHandle);
       }
+      if (HasReason) {
+        output.WriteRawTag(18);
+        output.WriteString(Reason);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -13402,6 +13491,9 @@ namespace LiveKit.Proto {
       int size = 0;
       if (HasWriterHandle) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(WriterHandle);
+      }
+      if (HasReason) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Reason);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -13417,6 +13509,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasWriterHandle) {
         WriterHandle = other.WriterHandle;
+      }
+      if (other.HasReason) {
+        Reason = other.Reason;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -13441,6 +13536,10 @@ namespace LiveKit.Proto {
             WriterHandle = input.ReadUInt64();
             break;
           }
+          case 18: {
+            Reason = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -13462,6 +13561,10 @@ namespace LiveKit.Proto {
             break;
           case 8: {
             WriterHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Reason = input.ReadString();
             break;
           }
         }
