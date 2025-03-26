@@ -464,7 +464,16 @@ namespace LiveKit
 
         internal Proto.StreamTextOptions ToProto()
         {
-             throw new NotImplementedException();
+            var proto = new Proto.StreamTextOptions();
+            proto.Topic = Topic;
+            proto.Attributes.Add(Attributes);
+            proto.DestinationIdentities.AddRange(DestinationIdentities);
+            proto.Id = Id;
+            proto.OperationType = (Proto.TextStreamInfo.Types.OperationType)OperationType;
+            proto.Version = proto.HasVersion ? Version.Value : 0;
+            proto.ReplyToStreamId = ReplyToStreamId;
+            proto.AttachedStreamIds.AddRange(AttachedStreamIds);
+            return proto;
         }
     }
 
@@ -479,7 +488,15 @@ namespace LiveKit
 
         internal Proto.StreamByteOptions ToProto()
         {
-            throw new NotImplementedException();
+            var proto = new Proto.StreamByteOptions();
+            proto.Topic = Topic;
+            proto.Attributes.Add(Attributes);
+            proto.DestinationIdentities.AddRange(DestinationIdentities);
+            proto.Id = Id;
+            proto.MimeType = MimeType;
+            proto.Name = Name;
+            proto.TotalLength = proto.HasTotalLength ? TotalLength.Value : 0;
+            return proto;
         }
     }
 
