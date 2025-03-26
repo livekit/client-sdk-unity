@@ -164,7 +164,59 @@ namespace LiveKit
             return new ReadAllInstruction(res.TextReadAll.AsyncId);
         }
 
-        // TODO: Read incremental
+        public ReadIncrementalInstruction ReadIncremental()
+        {
+            using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
+            var readIncReq = request.request;
+            readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
+            request.Send();
+            return new ReadIncrementalInstruction(_handle);
+        }
+
+        public sealed class ReadIncrementalInstruction : YieldInstruction
+        {
+            private FfiHandle _readerHandle;
+            private string _latestChunk;
+
+            internal ReadIncrementalInstruction(FfiHandle readerHandle)
+            {
+                _readerHandle = readerHandle;
+                FfiClient.Instance.TextStreamReaderEventReceived += OnEvent;
+            }
+
+            internal void OnEvent(TextStreamReaderEvent e)
+            {
+                if (e.ReaderHandle != (ulong)_readerHandle.DangerousGetHandle())
+                    return;
+
+                switch (e.DetailCase)
+                {
+                    case TextStreamReaderEvent.DetailOneofCase.ChunkReceived:
+                        _latestChunk = e.ChunkReceived.Content;
+                        break;
+                    case TextStreamReaderEvent.DetailOneofCase.Eos:
+                        if (e.Eos.Error != null)
+                        {
+                            Error = new StreamError(e.Eos.Error);
+                            IsError = true;
+                        }
+                        IsDone = true;
+                        FfiClient.Instance.TextStreamReaderEventReceived -= OnEvent;
+                        break;
+                }
+            }
+
+            public string LatestChunk
+            {
+                get
+                {
+                    if (IsError) throw Error;
+                    return _latestChunk;
+                }
+            }
+
+            public StreamError Error { get; private set; }
+        }
 
         public sealed class ReadAllInstruction : YieldInstruction
         {
@@ -236,6 +288,15 @@ namespace LiveKit
             return new ReadAllInstruction(res.ByteReadAll.AsyncId);
         }
 
+        public ReadIncrementalInstruction ReadIncremental()
+        {
+            using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadIncrementalRequest>();
+            var readIncReq = request.request;
+            readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
+            request.Send();
+            return new ReadIncrementalInstruction(_handle);
+        }
+
         public WriteToFileInstruction WriteToFile(string directory = null, string nameOverride = null)
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderWriteToFileRequest>();
@@ -248,8 +309,6 @@ namespace LiveKit
             FfiResponse res = response;
             return new WriteToFileInstruction(res.ByteWriteToFile.AsyncId);
         }
-
-        // TODO: Read incremental
 
         public sealed class ReadAllInstruction : YieldInstruction
         {
@@ -287,6 +346,51 @@ namespace LiveKit
                 {
                     if (IsError) throw Error;
                     return _bytes;
+                }
+            }
+
+            public StreamError Error { get; private set; }
+        }
+
+        public sealed class ReadIncrementalInstruction : YieldInstruction
+        {
+            private FfiHandle _readerHandle;
+            private byte[] _latestChunk;
+
+            internal ReadIncrementalInstruction(FfiHandle readerHandle)
+            {
+                _readerHandle = readerHandle;
+                FfiClient.Instance.ByteStreamReaderEventReceived += OnEvent;
+            }
+
+            internal void OnEvent(ByteStreamReaderEvent e)
+            {
+                if (e.ReaderHandle != (ulong)_readerHandle.DangerousGetHandle())
+                    return;
+
+                switch (e.DetailCase)
+                {
+                    case ByteStreamReaderEvent.DetailOneofCase.ChunkReceived:
+                        _latestChunk = e.ChunkReceived.Content.ToArray();
+                        break;
+                    case ByteStreamReaderEvent.DetailOneofCase.Eos:
+                        if (e.Eos.Error != null)
+                        {
+                            Error = new StreamError(e.Eos.Error);
+                            IsError = true;
+                        }
+                        IsDone = true;
+                        FfiClient.Instance.ByteStreamReaderEventReceived -= OnEvent;
+                        break;
+                }
+            }
+
+            public byte[] LatestChunk
+            {
+                get
+                {
+                    if (IsError) throw Error;
+                    return _latestChunk;
                 }
             }
 
