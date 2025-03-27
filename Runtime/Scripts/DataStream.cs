@@ -150,14 +150,14 @@ namespace LiveKit
 
         /// <summary>
         /// Called when a new chunk is received incrementally.
-        /// Only emitted after calling <see cref="TextStreamReader.ReadIncremental" />.
+        /// Only emitted after calling <see cref="ReadIncremental" />.
         /// </summary>
         public event ChunkReceiveDelegate ChunkReceived;
 
         /// <summary>
         /// Called when an error occurs reading the stream incrementally. After
         /// an error occurs, the stream is closed and no more chunks will be emitted.
-        /// Only emitted after calling <see cref="TextStreamReader.ReadIncremental" />.
+        /// Only emitted after calling <see cref="ReadIncremental" />.
         /// </summary>
         public event ErrorReceiveDelegate ErrorReceived;
 
@@ -266,14 +266,14 @@ namespace LiveKit
 
         /// <summary>
         /// Called when a new chunk is received incrementally.
-        /// Only emitted after calling <see cref="ByteStreamReader.ReadIncremental" />.
+        /// Only emitted after calling <see cref="ReadIncremental" />.
         /// </summary>
         public event ChunkReceiveDelegate ChunkReceived;
 
         /// <summary>
         /// Called when an error occurs reading the stream incrementally. After
         /// an error occurs, the stream is closed and no more chunks will be emitted.
-        /// Only emitted after calling <see cref="ByteStreamReader.ReadIncremental" />.
+        /// Only emitted after calling <see cref="ReadIncremental" />.
         /// </summary>
         public event ErrorReceiveDelegate ErrorReceived;
 
