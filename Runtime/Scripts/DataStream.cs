@@ -169,6 +169,16 @@ namespace LiveKit
 
         public TextStreamInfo Info => _info;
 
+        /// <summary>
+        /// Reads all incoming chunks from the stream, concatenating them into a single value
+        /// once the stream closes normally.
+        /// </summary>
+        /// <remarks>Calling this method consumes the stream reader.</remarks>
+        /// <returns>
+        /// A <see cref="ReadAllInstruction"/> that completes when the stream is complete or errors.
+        /// Check <see cref="ReadAllInstruction.IsError"/> and access <see cref="ReadAllInstruction.Text"/>
+        /// properties to handle the result.
+        /// </returns>
         public ReadAllInstruction ReadAll()
         {
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadAllRequest>();
@@ -180,6 +190,13 @@ namespace LiveKit
             return new ReadAllInstruction(res.TextReadAll.AsyncId);
         }
 
+        /// <summary>
+        /// Reads incoming chunks from the stream incrementally.
+        /// </summary>
+        /// <remarks>
+        /// After calling this method, the <see cref="ChunkReceived"/> event will be emitted for each incoming
+        /// chunk, and the <see cref="ErrorReceived"/> event will be emitted if an error occurs.
+        /// </remarks>
         public void ReadIncremental()
         {
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
@@ -210,6 +227,12 @@ namespace LiveKit
             }
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="ReadAll"/>.
+        /// </summary>
+        /// <remarks>
+        /// Access <see cref="Text"/> after checking <see cref="IsError"/>
+        /// </remarks>
         public sealed class ReadAllInstruction : YieldInstruction
         {
             private ulong _asyncId;
@@ -285,6 +308,16 @@ namespace LiveKit
 
         public ByteStreamInfo Info => _info;
 
+        /// <summary>
+        /// Reads all incoming chunks from the stream, concatenating them into a single value
+        /// once the stream closes normally.
+        /// </summary>
+        /// <remarks>Calling this method consumes the stream reader.</remarks>
+        /// <returns>
+        /// A <see cref="ReadAllInstruction"/> that completes when the stream is complete or errors.
+        /// Check <see cref="ReadAllInstruction.IsError"/> and access <see cref="ReadAllInstruction.Bytes"/>
+        /// properties to handle the result.
+        /// </returns>
         public ReadAllInstruction ReadAll()
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadAllRequest>();
@@ -296,6 +329,14 @@ namespace LiveKit
             return new ReadAllInstruction(res.ByteReadAll.AsyncId);
         }
 
+        /// <summary>
+        /// Reads incoming chunks from the stream incrementally.
+        /// </summary>
+        /// <remarks>
+        /// After calling this method, the <see cref="ChunkReceived"/> event will be emitted for each incoming
+        /// chunk, and the <see cref="ErrorReceived"/> event will be emitted if an error occurs.
+        /// Calling this method consumes the stream reader.
+        /// </remarks>
         public void ReadIncremental()
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadIncrementalRequest>();
@@ -326,6 +367,19 @@ namespace LiveKit
             }
         }
 
+        /// <summary>
+        /// Reads incoming chunks from the byte stream, writing them to a file as they are received.
+        /// </summary>
+        /// <param name="directory">The directory to write the file in. The system temporary directory is used if not specified.</param>
+        /// <param name="nameOverride">The name to use for the written file, overriding stream name.</param>
+        /// <remarks>
+        /// Calling this method consumes the stream reader.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="WriteToFileInstruction"/> that completes when the stream is complete or errors.
+        /// Check <see cref="WriteToFileInstruction.IsError"/> and access <see cref="WriteToFileInstruction.FilePath"/>
+        /// properties to handle the result.
+        /// </returns>
         public WriteToFileInstruction WriteToFile(string directory = null, string nameOverride = null)
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderWriteToFileRequest>();
@@ -339,6 +393,12 @@ namespace LiveKit
             return new WriteToFileInstruction(res.ByteWriteToFile.AsyncId);
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="ReadAll"/>.
+        /// </summary>
+        /// <remarks>
+        /// Access <see cref="Bytes"/> after checking <see cref="IsError"/>
+        /// </remarks>
         public sealed class ReadAllInstruction : YieldInstruction
         {
             private ulong _asyncId;
@@ -381,6 +441,12 @@ namespace LiveKit
             public StreamError Error { get; private set; }
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="WriteToFile"/>.
+        /// </summary>
+        /// <remarks>
+        /// Access <see cref="FilePath"/> after checking <see cref="IsError"/>
+        /// </remarks>
         public sealed class WriteToFileInstruction : YieldInstruction
         {
             private ulong _asyncId;
@@ -500,6 +566,14 @@ namespace LiveKit
 
         public TextStreamInfo Info => _info;
 
+        /// <summary>
+        /// Writes text to the stream.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
+        /// <returns>
+        /// A <see cref="WriteInstruction"/> that completes when the write operation is complete or errors.
+        /// Check <see cref="WriteInstruction.Error"/> to see if the operation was successful.
+        /// </returns>
         public WriteInstruction Write(string text)
         {
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterWriteRequest>();
@@ -512,6 +586,14 @@ namespace LiveKit
             return new WriteInstruction(res.TextStreamWrite.AsyncId);
         }
 
+        /// <summary>
+        /// Closes the stream.
+        /// </summary>
+        /// <param name="reason">A string specifying the reason for closure, if the stream is not being closed normally.</param>
+        /// <returns>
+        /// A <see cref="CloseInstruction"/> that completes when the close operation is complete or errors.
+        /// Check <see cref="CloseInstruction.Error"/> to see if the operation was successful.
+        /// </returns>
         public CloseInstruction Close(string reason = null)
         {
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterCloseRequest>();
@@ -524,6 +606,12 @@ namespace LiveKit
             return new CloseInstruction(res.TextStreamWrite.AsyncId);
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="Write"/>.
+        /// </summary>
+        /// <remarks>
+        /// Check if the operation was successful by accessing <see cref="Error"/>.
+        /// </remarks>
         public sealed class WriteInstruction : YieldInstruction
         {
             private ulong _asyncId;
@@ -551,6 +639,12 @@ namespace LiveKit
             public StreamError Error { get; private set; }
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="Close"/>.
+        /// </summary>
+        /// <remarks>
+        /// Check if the operation was successful by accessing <see cref="Error"/>.
+        /// </remarks>
         public sealed class CloseInstruction : YieldInstruction
         {
             private ulong _asyncId;
@@ -595,6 +689,13 @@ namespace LiveKit
 
         public ByteStreamInfo Info => _info;
 
+        /// <summary>
+        /// Writes bytes to the stream.
+        /// </summary>
+        /// <param name="bytes">The bytes to write.</param>
+        /// <returns>
+        /// A <see cref="WriteInstruction"/> that completes when the write operation is complete or errors.
+        /// </returns>
         public WriteInstruction Write(byte[] bytes)
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterWriteRequest>();
@@ -607,6 +708,13 @@ namespace LiveKit
             return new WriteInstruction(res.ByteStreamWrite.AsyncId);
         }
 
+        /// <summary>
+        /// Closes the stream.
+        /// </summary>
+        /// <param name="reason">A string specifying the reason for closure, if the stream is not being closed normally.</param>
+        /// <returns>
+        /// A <see cref="CloseInstruction"/> that completes when the close operation is complete or errors.
+        /// </returns>
         public CloseInstruction Close(string reason = null)
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterCloseRequest>();
@@ -619,6 +727,12 @@ namespace LiveKit
             return new CloseInstruction(res.ByteStreamWrite.AsyncId);
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="Write"/>.
+        /// </summary>
+        /// <remarks>
+        /// Check if the operation was successful by accessing <see cref="Error"/>.
+        /// </remarks>
         public sealed class WriteInstruction : YieldInstruction
         {
             private ulong _asyncId;
@@ -646,6 +760,12 @@ namespace LiveKit
             public StreamError Error { get; private set; }
         }
 
+        /// <summary>
+        /// YieldInstruction for <see cref="Close"/>.
+        /// </summary>
+        /// <remarks>
+        /// Check if the operation was successful by accessing <see cref="Error"/>.
+        /// </remarks>
         public sealed class CloseInstruction : YieldInstruction
         {
             private ulong _asyncId;
