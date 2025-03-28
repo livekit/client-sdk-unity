@@ -29,30 +29,31 @@ namespace LiveKit.Proto {
             "cmZvcm1ScGNSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgB",
             "IAIoBBIcChRkZXN0aW5hdGlvbl9pZGVudGl0eRgCIAIoCRIOCgZtZXRob2QY",
             "AyACKAkSDwoHcGF5bG9hZBgEIAIoCRIbChNyZXNwb25zZV90aW1lb3V0X21z",
-            "GAUgASgNIj8KGFJlZ2lzdGVyUnBjTWV0aG9kUmVxdWVzdBITCgtyb29tX2hh",
-            "bmRsZRgBIAIoBBIOCgZtZXRob2QYAiACKAkiQQoaVW5yZWdpc3RlclJwY01l",
-            "dGhvZFJlcXVlc3QSEwoLcm9vbV9oYW5kbGUYASACKAQSDgoGbWV0aG9kGAIg",
-            "AigJIpYBCiJScGNNZXRob2RJbnZvY2F0aW9uUmVzcG9uc2VSZXF1ZXN0EiAK",
-            "GGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgBIAIoBBIVCg1pbnZvY2F0aW9u",
-            "X2lkGAIgAigEEg8KB3BheWxvYWQYAyABKAkSJgoFZXJyb3IYBCABKAsyFy5s",
-            "aXZla2l0LnByb3RvLlJwY0Vycm9yIiYKElBlcmZvcm1ScGNSZXNwb25zZRIQ",
-            "Cghhc3luY19pZBgBIAIoBCIbChlSZWdpc3RlclJwY01ldGhvZFJlc3BvbnNl",
-            "Ih0KG1VucmVnaXN0ZXJScGNNZXRob2RSZXNwb25zZSI0CiNScGNNZXRob2RJ",
-            "bnZvY2F0aW9uUmVzcG9uc2VSZXNwb25zZRINCgVlcnJvchgBIAEoCSJfChJQ",
-            "ZXJmb3JtUnBjQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASACKAQSDwoHcGF5bG9h",
-            "ZBgCIAEoCRImCgVlcnJvchgDIAEoCzIXLmxpdmVraXQucHJvdG8uUnBjRXJy",
-            "b3IivgEKGFJwY01ldGhvZEludm9jYXRpb25FdmVudBIgChhsb2NhbF9wYXJ0",
-            "aWNpcGFudF9oYW5kbGUYASACKAQSFQoNaW52b2NhdGlvbl9pZBgCIAIoBBIO",
-            "CgZtZXRob2QYAyACKAkSEgoKcmVxdWVzdF9pZBgEIAIoCRIXCg9jYWxsZXJf",
-            "aWRlbnRpdHkYBSACKAkSDwoHcGF5bG9hZBgGIAIoCRIbChNyZXNwb25zZV90",
-            "aW1lb3V0X21zGAcgAigNQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "GAUgASgNIkwKGFJlZ2lzdGVyUnBjTWV0aG9kUmVxdWVzdBIgChhsb2NhbF9w",
+            "YXJ0aWNpcGFudF9oYW5kbGUYASACKAQSDgoGbWV0aG9kGAIgAigJIk4KGlVu",
+            "cmVnaXN0ZXJScGNNZXRob2RSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50",
+            "X2hhbmRsZRgBIAIoBBIOCgZtZXRob2QYAiACKAkilgEKIlJwY01ldGhvZElu",
+            "dm9jYXRpb25SZXNwb25zZVJlcXVlc3QSIAoYbG9jYWxfcGFydGljaXBhbnRf",
+            "aGFuZGxlGAEgAigEEhUKDWludm9jYXRpb25faWQYAiACKAQSDwoHcGF5bG9h",
+            "ZBgDIAEoCRImCgVlcnJvchgEIAEoCzIXLmxpdmVraXQucHJvdG8uUnBjRXJy",
+            "b3IiJgoSUGVyZm9ybVJwY1Jlc3BvbnNlEhAKCGFzeW5jX2lkGAEgAigEIhsK",
+            "GVJlZ2lzdGVyUnBjTWV0aG9kUmVzcG9uc2UiHQobVW5yZWdpc3RlclJwY01l",
+            "dGhvZFJlc3BvbnNlIjQKI1JwY01ldGhvZEludm9jYXRpb25SZXNwb25zZVJl",
+            "c3BvbnNlEg0KBWVycm9yGAEgASgJIl8KElBlcmZvcm1ScGNDYWxsYmFjaxIQ",
+            "Cghhc3luY19pZBgBIAIoBBIPCgdwYXlsb2FkGAIgASgJEiYKBWVycm9yGAMg",
+            "ASgLMhcubGl2ZWtpdC5wcm90by5ScGNFcnJvciK+AQoYUnBjTWV0aG9kSW52",
+            "b2NhdGlvbkV2ZW50EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgBIAIo",
+            "BBIVCg1pbnZvY2F0aW9uX2lkGAIgAigEEg4KBm1ldGhvZBgDIAIoCRISCgpy",
+            "ZXF1ZXN0X2lkGAQgAigJEhcKD2NhbGxlcl9pZGVudGl0eRgFIAIoCRIPCgdw",
+            "YXlsb2FkGAYgAigJEhsKE3Jlc3BvbnNlX3RpbWVvdXRfbXMYByACKA1CEKoC",
+            "DUxpdmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RpcError), global::LiveKit.Proto.RpcError.Parser, new[]{ "Code", "Message", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PerformRpcRequest), global::LiveKit.Proto.PerformRpcRequest.Parser, new[]{ "LocalParticipantHandle", "DestinationIdentity", "Method", "Payload", "ResponseTimeoutMs" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RegisterRpcMethodRequest), global::LiveKit.Proto.RegisterRpcMethodRequest.Parser, new[]{ "RoomHandle", "Method" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UnregisterRpcMethodRequest), global::LiveKit.Proto.UnregisterRpcMethodRequest.Parser, new[]{ "RoomHandle", "Method" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RegisterRpcMethodRequest), global::LiveKit.Proto.RegisterRpcMethodRequest.Parser, new[]{ "LocalParticipantHandle", "Method" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UnregisterRpcMethodRequest), global::LiveKit.Proto.UnregisterRpcMethodRequest.Parser, new[]{ "LocalParticipantHandle", "Method" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RpcMethodInvocationResponseRequest), global::LiveKit.Proto.RpcMethodInvocationResponseRequest.Parser, new[]{ "LocalParticipantHandle", "InvocationId", "Payload", "Error" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PerformRpcResponse), global::LiveKit.Proto.PerformRpcResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RegisterRpcMethodResponse), global::LiveKit.Proto.RegisterRpcMethodResponse.Parser, null, null, null, null, null),
@@ -843,7 +844,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RegisterRpcMethodRequest(RegisterRpcMethodRequest other) : this() {
       _hasBits0 = other._hasBits0;
-      roomHandle_ = other.roomHandle_;
+      localParticipantHandle_ = other.localParticipantHandle_;
       method_ = other.method_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -854,30 +855,30 @@ namespace LiveKit.Proto {
       return new RegisterRpcMethodRequest(this);
     }
 
-    /// <summary>Field number for the "room_handle" field.</summary>
-    public const int RoomHandleFieldNumber = 1;
-    private readonly static ulong RoomHandleDefaultValue = 0UL;
+    /// <summary>Field number for the "local_participant_handle" field.</summary>
+    public const int LocalParticipantHandleFieldNumber = 1;
+    private readonly static ulong LocalParticipantHandleDefaultValue = 0UL;
 
-    private ulong roomHandle_;
+    private ulong localParticipantHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ulong RoomHandle {
-      get { if ((_hasBits0 & 1) != 0) { return roomHandle_; } else { return RoomHandleDefaultValue; } }
+    public ulong LocalParticipantHandle {
+      get { if ((_hasBits0 & 1) != 0) { return localParticipantHandle_; } else { return LocalParticipantHandleDefaultValue; } }
       set {
         _hasBits0 |= 1;
-        roomHandle_ = value;
+        localParticipantHandle_ = value;
       }
     }
-    /// <summary>Gets whether the "room_handle" field is set</summary>
+    /// <summary>Gets whether the "local_participant_handle" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasRoomHandle {
+    public bool HasLocalParticipantHandle {
       get { return (_hasBits0 & 1) != 0; }
     }
-    /// <summary>Clears the value of the "room_handle" field</summary>
+    /// <summary>Clears the value of the "local_participant_handle" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearRoomHandle() {
+    public void ClearLocalParticipantHandle() {
       _hasBits0 &= ~1;
     }
 
@@ -922,7 +923,7 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (RoomHandle != other.RoomHandle) return false;
+      if (LocalParticipantHandle != other.LocalParticipantHandle) return false;
       if (Method != other.Method) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -931,7 +932,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasRoomHandle) hash ^= RoomHandle.GetHashCode();
+      if (HasLocalParticipantHandle) hash ^= LocalParticipantHandle.GetHashCode();
       if (HasMethod) hash ^= Method.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -951,9 +952,9 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasRoomHandle) {
+      if (HasLocalParticipantHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(RoomHandle);
+        output.WriteUInt64(LocalParticipantHandle);
       }
       if (HasMethod) {
         output.WriteRawTag(18);
@@ -969,9 +970,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasRoomHandle) {
+      if (HasLocalParticipantHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(RoomHandle);
+        output.WriteUInt64(LocalParticipantHandle);
       }
       if (HasMethod) {
         output.WriteRawTag(18);
@@ -987,8 +988,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasRoomHandle) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RoomHandle);
+      if (HasLocalParticipantHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(LocalParticipantHandle);
       }
       if (HasMethod) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Method);
@@ -1005,8 +1006,8 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.HasRoomHandle) {
-        RoomHandle = other.RoomHandle;
+      if (other.HasLocalParticipantHandle) {
+        LocalParticipantHandle = other.LocalParticipantHandle;
       }
       if (other.HasMethod) {
         Method = other.Method;
@@ -1031,7 +1032,7 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            RoomHandle = input.ReadUInt64();
+            LocalParticipantHandle = input.ReadUInt64();
             break;
           }
           case 18: {
@@ -1058,7 +1059,7 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            RoomHandle = input.ReadUInt64();
+            LocalParticipantHandle = input.ReadUInt64();
             break;
           }
           case 18: {
@@ -1109,7 +1110,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public UnregisterRpcMethodRequest(UnregisterRpcMethodRequest other) : this() {
       _hasBits0 = other._hasBits0;
-      roomHandle_ = other.roomHandle_;
+      localParticipantHandle_ = other.localParticipantHandle_;
       method_ = other.method_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1120,30 +1121,30 @@ namespace LiveKit.Proto {
       return new UnregisterRpcMethodRequest(this);
     }
 
-    /// <summary>Field number for the "room_handle" field.</summary>
-    public const int RoomHandleFieldNumber = 1;
-    private readonly static ulong RoomHandleDefaultValue = 0UL;
+    /// <summary>Field number for the "local_participant_handle" field.</summary>
+    public const int LocalParticipantHandleFieldNumber = 1;
+    private readonly static ulong LocalParticipantHandleDefaultValue = 0UL;
 
-    private ulong roomHandle_;
+    private ulong localParticipantHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ulong RoomHandle {
-      get { if ((_hasBits0 & 1) != 0) { return roomHandle_; } else { return RoomHandleDefaultValue; } }
+    public ulong LocalParticipantHandle {
+      get { if ((_hasBits0 & 1) != 0) { return localParticipantHandle_; } else { return LocalParticipantHandleDefaultValue; } }
       set {
         _hasBits0 |= 1;
-        roomHandle_ = value;
+        localParticipantHandle_ = value;
       }
     }
-    /// <summary>Gets whether the "room_handle" field is set</summary>
+    /// <summary>Gets whether the "local_participant_handle" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasRoomHandle {
+    public bool HasLocalParticipantHandle {
       get { return (_hasBits0 & 1) != 0; }
     }
-    /// <summary>Clears the value of the "room_handle" field</summary>
+    /// <summary>Clears the value of the "local_participant_handle" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearRoomHandle() {
+    public void ClearLocalParticipantHandle() {
       _hasBits0 &= ~1;
     }
 
@@ -1188,7 +1189,7 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (RoomHandle != other.RoomHandle) return false;
+      if (LocalParticipantHandle != other.LocalParticipantHandle) return false;
       if (Method != other.Method) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1197,7 +1198,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasRoomHandle) hash ^= RoomHandle.GetHashCode();
+      if (HasLocalParticipantHandle) hash ^= LocalParticipantHandle.GetHashCode();
       if (HasMethod) hash ^= Method.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1217,9 +1218,9 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasRoomHandle) {
+      if (HasLocalParticipantHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(RoomHandle);
+        output.WriteUInt64(LocalParticipantHandle);
       }
       if (HasMethod) {
         output.WriteRawTag(18);
@@ -1235,9 +1236,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasRoomHandle) {
+      if (HasLocalParticipantHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(RoomHandle);
+        output.WriteUInt64(LocalParticipantHandle);
       }
       if (HasMethod) {
         output.WriteRawTag(18);
@@ -1253,8 +1254,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasRoomHandle) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RoomHandle);
+      if (HasLocalParticipantHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(LocalParticipantHandle);
       }
       if (HasMethod) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Method);
@@ -1271,8 +1272,8 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.HasRoomHandle) {
-        RoomHandle = other.RoomHandle;
+      if (other.HasLocalParticipantHandle) {
+        LocalParticipantHandle = other.LocalParticipantHandle;
       }
       if (other.HasMethod) {
         Method = other.Method;
@@ -1297,7 +1298,7 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            RoomHandle = input.ReadUInt64();
+            LocalParticipantHandle = input.ReadUInt64();
             break;
           }
           case 18: {
@@ -1324,7 +1325,7 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            RoomHandle = input.ReadUInt64();
+            LocalParticipantHandle = input.ReadUInt64();
             break;
           }
           case 18: {
