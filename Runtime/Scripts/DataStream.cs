@@ -120,12 +120,12 @@ namespace LiveKit
     /// <summary>
     /// Delegate for handling incoming text data streams.
     /// </summary>
-    public delegate Task TextStreamHandler(TextStreamReader reader, string identity);
+    public delegate void TextStreamHandler(TextStreamReader reader, string identity);
 
     /// <summary>
     /// Delegate for handling incoming byte data streams.
     /// </summary>
-    public delegate Task ByteStreamHandler(ByteStreamReader reader, string identity);
+    public delegate void ByteStreamHandler(ByteStreamReader reader, string identity);
 
     /// <summary>
     /// Error for data stream operations.
