@@ -522,6 +522,9 @@ namespace LiveKit
                 FfiClient.Instance.ByteStreamReaderWriteToFileReceived -= OnWriteToFile;
             }
 
+            /// <summary>
+            /// Path to the file that was written.
+            /// </summary>
             public string FilePath
             {
                 get
