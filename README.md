@@ -260,7 +260,170 @@ LiveKit is a dynamic realtime environment and RPC calls can fail for various rea
 
 You may throw errors of the type `RpcError` with a string `message` in an RPC method handler and they will be received on the caller's side with the message intact. Other errors will not be transmitted and will instead arrive to the caller as `1500` ("Application Error"). Other built-in errors are detailed in the [docs](https://docs.livekit.io/home/client/data/rpc/#errors).
 
+### Sending text
 
+Use text streams to send any amount of text between participants.
+
+#### Sending text all at once
+
+```cs
+IEnumerator PerformSendText()
+{
+    var text = "Lorem ipsum dolor sit amet...";
+    var sendTextCall = room.LocalParticipant.SendText(text, "some-topic");
+    yield return sendTextCall;
+
+    Debug.Log($"Sent text with stream ID {sendTextCall.Info.Id}");
+}
+```
+
+#### Streaming text incrementally
+
+```cs
+IEnumerator PerformStreamText()
+{
+    var streamTextCall = room.LocalParticipant.StreamText("my-topic");
+    yield return streamTextCall;
+
+    var writer = streamTextCall.Writer;
+    Debug.Log($"Opened text stream with ID: {writer.Info.Id}");
+
+    // In a real app, you would generate this text asynchronously / incrementally as well
+    var textChunks = new[] { "Lorem ", "ipsum ", "dolor ", "sit ", "amet..." };
+    foreach (var chunk in textChunks)
+    {
+        yield return writer.Write(chunk);
+    }
+
+    // The stream must be explicitly closed when done
+    yield return writer.Close();
+
+    Debug.Log($"Closed text stream with ID: {writer.Info.Id}");
+}
+```
+
+#### Handling incoming streams
+
+```cs
+IEnumerator HandleTextStream(TextStreamReader reader, string participantIdentity)
+{
+    var info = reader.Info;
+    Debug.Log($@"
+    Text stream received from {participantIdentity}
+    Topic: {info.Topic}
+    Timestamp: {info.Timestamp}
+    ID: {info.Id}
+    Size: {info.TotalLength} (only available if the stream was sent with `SendText`)
+    ");
+
+    // Option 1: Process the stream incrementally
+    var readIncremental = reader.ReadIncremental();
+    while (!readIncremental.IsEos)
+    {
+        readIncremental.Reset();
+        yield return readIncremental;
+        Debug.Log($"Next chunk: {readIncremental.Text}");
+    }
+
+    // Option 2: Get the entire text after the stream completes
+    var readAllCall = reader.ReadAll();
+    yield return readAllCall;
+    Debug.Log($"Received text: {readAllCall.Text}")
+}
+
+// Register the topic after connection to the room
+room.RegisterTextStreamHandler("my-topic", (reader, identity) =>
+    StartCoroutine(HandleTextStream(reader, identity))
+);
+```
+
+### Sending files & bytes
+
+Use byte streams to send files, images, or any other kind of data between participants.
+
+#### Sending files
+
+```cs
+IEnumerator PerformSendFile()
+{
+    var filePath = "path/to/file.jpg";
+    var sendFileCall = room.LocalParticipant.SendFile(filePath, "some-topic");
+    yield return sendFileCall;
+
+    Debug.Log($"Sent file with stream ID: {sendFileCall.Info.Id}");
+}
+```
+
+#### Streaming bytes
+
+```cs
+IEnumerator PerformStreamBytes()
+{
+    var streamBytesCall = room.LocalParticipant.StreamBytes("my-topic");
+    yield return streamBytesCall;
+
+    var writer = streamBytesCall.Writer;
+    Debug.Log($"Opened byte stream with ID: {writer.Info.Id}");
+
+    // Example sending arbitrary binary data
+    // For sending files, use `SendFile` instead
+    var dataChunks = new[] {
+        new byte[] { 0x00, 0x01 },
+        new byte[] { 0x03, 0x04 }
+    };
+    foreach (var chunk in dataChunks)
+    {
+        yield return writer.Write(chunk);
+    }
+
+    // The stream must be explicitly closed when done
+    yield return writer.Close();
+
+    Debug.Log($"Closed byte stream with ID: {writer.Info.Id}");
+}
+```
+
+#### Handling incoming streams
+
+```cs
+IEnumerator HandleByteStream(ByteStreamReader reader, string participantIdentity)
+{
+    var info = reader.Info;
+
+    // Option 1: Process the stream incrementally
+    var readIncremental = reader.ReadIncremental();
+    while (!readIncremental.IsEos)
+    {
+        readIncremental.Reset();
+        yield return readIncremental;
+        Debug.Log($"Next chunk: {readIncremental.Bytes}");
+    }
+
+    // Option 2: Get the entire file after the stream completes
+    var readAllCall = reader.ReadAll();
+    yield return readAllCall;
+    var data = readAllCall.Bytes;
+
+    // Option 3: Write the stream to a local file on disk as it arrives
+    var writeToFileCall = reader.WriteToFile();
+    yield return writeToFileCall;
+    var path = writeToFileCall.FilePath;
+    Debug.Log($"Wrote to file: {path}");
+
+    Debug.Log($@"
+    Byte stream received from {participantIdentity}
+    Topic: {info.Topic}
+    Timestamp: {info.Timestamp}
+    ID: {info.Id}
+    Size: {info.TotalLength} (only available if the stream was sent with `SendFile`)
+    ");
+}
+
+// Register the topic after connection to the room
+room.RegisterByteStreamHandler("my-topic", (reader, identity) =>
+    StartCoroutine(HandleByteStream(reader, identity))
+);
+```
 
 <!--BEGIN_REPO_NAV-->
 <br/><table>
