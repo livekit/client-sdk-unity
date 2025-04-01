@@ -6,6 +6,7 @@ using Google.Protobuf.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Internal.FFIClients.Requests;
+using System.Diagnostics;
 
 namespace LiveKit
 {
@@ -320,6 +321,27 @@ namespace LiveKit
         }
 
         /// <summary>
+        /// Send text to participants in the room.
+        /// </summary>
+        /// <param name="text">The text content to send.</param>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <remarks>
+        /// Use the <see cref="SendText(string, StreamTextOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="SendTextInstruction"/> that completes when the text is sent or errors.
+        /// Check <see cref="SendTextInstruction.IsError"/> and access <see cref="SendTextInstruction.Info"/>
+        /// properties to handle the result.
+        /// </returns>
+        ///
+        public SendTextInstruction SendText(string text, string topic)
+        {
+            var options = new StreamTextOptions();
+            options.Topic = topic;
+            return SendText(text, options);
+        }
+
+        /// <summary>
         /// Send a file on disk to participants in the room.
         /// </summary>
         /// <param name="path">Path to the file to be sent.</param>
@@ -342,6 +364,27 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             return new SendFileInstruction(res.SendFile.AsyncId);
+        }
+
+        /// <summary>
+        /// Send a file on disk to participants in the room.
+        /// </summary>
+        /// <param name="path">Path to the file to be sent.</param>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <remarks>
+        /// Use the <see cref="SendFile(string, StreamByteOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="SendFileInstruction"/> that completes when the file is sent or errors.
+        /// Check <see cref="SendFileInstruction.IsError"/> and access <see cref="SendFileInstruction.Info"/>
+        /// properties to handle the result.
+        /// </returns>
+        ///
+        public SendFileInstruction SendFile(string path, string topic)
+        {
+            var options = new StreamByteOptions();
+            options.Topic = topic;
+            return SendFile(path, options);
         }
 
         /// <summary>
@@ -396,6 +439,42 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             return new StreamBytesInstruction(res.ByteStreamOpen.AsyncId);
+        }
+
+        /// <summary>
+        /// Stream bytes to participants in the room.
+        /// </summary>
+        /// <remarks>
+        /// Use the <see cref="StreamBytes(StreamByteOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <returns>
+        /// A <see cref="StreamBytesInstruction"/> that completes once the stream is open or errors.
+        /// Check <see cref="StreamBytesInstruction.IsError"/> and access <see cref="StreamBytesInstruction.Writer"/>
+        /// to access the writer for the opened stream.
+        /// </returns>
+        public StreamBytesInstruction StreamBytes(string topic)
+        {
+            var options = new StreamByteOptions { Topic = topic };
+            return StreamBytes(options);
+        }
+
+        /// <summary>
+        /// Stream text to participants in the room.
+        /// </summary>
+        /// <remarks>
+        /// Use the <see cref="StreamText(StreamTextOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <returns>
+        /// A <see cref="StreamTextInstruction"/> that completes once the stream is open or errors.
+        /// Check <see cref="StreamTextInstruction.IsError"/> and access <see cref="StreamTextInstruction.Writer"/>
+        /// to access the writer for the opened stream.
+        /// </returns>
+        public StreamTextInstruction StreamText(string topic)
+        {
+            var options = new StreamTextOptions { Topic = topic };
+            return StreamText(options);
         }
     }
 
