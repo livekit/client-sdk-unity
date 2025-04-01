@@ -515,14 +515,21 @@ namespace LiveKit
         internal Proto.StreamTextOptions ToProto()
         {
             var proto = new Proto.StreamTextOptions();
+            if (Topic == null)
+            {
+                throw new InvalidOperationException("Topic field is required");
+            }
             proto.Topic = Topic;
             proto.Attributes.Add(Attributes);
             proto.DestinationIdentities.AddRange(DestinationIdentities);
-            proto.Id = Id;
-            proto.OperationType = (Proto.TextStreamInfo.Types.OperationType)OperationType;
-            proto.Version = proto.HasVersion ? Version.Value : 0;
-            proto.ReplyToStreamId = ReplyToStreamId;
+
+            // TODO: these fields are optional, but the generated proto is not allowing null values
+            if (Id != null) proto.Id = Id;
+            if (OperationType != null) proto.OperationType = (Proto.TextStreamInfo.Types.OperationType)OperationType;
+            if (Version != null) proto.Version = Version.Value;
+            if (ReplyToStreamId != null) proto.ReplyToStreamId = ReplyToStreamId;
             proto.AttachedStreamIds.AddRange(AttachedStreamIds);
+            if (Generated != null) proto.Generated = Generated.Value;
             return proto;
         }
     }
@@ -539,13 +546,18 @@ namespace LiveKit
         internal Proto.StreamByteOptions ToProto()
         {
             var proto = new Proto.StreamByteOptions();
+            if (Topic == null)
+            {
+                throw new InvalidOperationException("Topic field is required");
+            }
             proto.Topic = Topic;
             proto.Attributes.Add(Attributes);
             proto.DestinationIdentities.AddRange(DestinationIdentities);
-            proto.Id = Id;
-            proto.MimeType = MimeType;
-            proto.Name = Name;
-            proto.TotalLength = proto.HasTotalLength ? TotalLength.Value : 0;
+            // TODO: these fields are optional, but the generated proto is not allowing null values
+            if (Id != null) proto.Id = Id;
+            if (MimeType != null) proto.MimeType = MimeType;
+            if (Name != null) proto.Name = Name;
+            if (TotalLength != null) proto.TotalLength = TotalLength.Value;
             return proto;
         }
     }
