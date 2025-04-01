@@ -145,22 +145,6 @@ namespace LiveKit
         private readonly FfiHandle _handle;
         private readonly TextStreamInfo _info;
 
-        public delegate void ChunkReceiveDelegate(string chunk);
-        public delegate void ErrorReceiveDelegate(StreamError error);
-
-        /// <summary>
-        /// Called when a new chunk is received incrementally.
-        /// Only emitted after calling <see cref="ReadIncremental" />.
-        /// </summary>
-        public event ChunkReceiveDelegate ChunkReceived;
-
-        /// <summary>
-        /// Called when an error occurs reading the stream incrementally. After
-        /// an error occurs, the stream is closed and no more chunks will be emitted.
-        /// Only emitted after calling <see cref="ReadIncremental" />.
-        /// </summary>
-        public event ErrorReceiveDelegate ErrorReceived;
-
         internal TextStreamReader(OwnedTextStreamReader info)
         {
             _handle = FfiHandle.FromOwnedHandle(info.Handle);
@@ -188,43 +172,6 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             return new ReadAllInstruction(res.TextReadAll.AsyncId);
-        }
-
-        /// <summary>
-        /// Reads incoming chunks from the stream incrementally.
-        /// </summary>
-        /// <remarks>
-        /// After calling this method, the <see cref="ChunkReceived"/> event will be emitted for each incoming
-        /// chunk, and the <see cref="ErrorReceived"/> event will be emitted if an error occurs.
-        /// </remarks>
-        public void ReadIncremental()
-        {
-            using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
-            var readIncReq = request.request;
-            readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
-            request.Send();
-
-            FfiClient.Instance.TextStreamReaderEventReceived += OnStreamEvent;
-        }
-
-        private void OnStreamEvent(TextStreamReaderEvent e)
-        {
-            if (e.ReaderHandle != (ulong)_handle.DangerousGetHandle())
-                return;
-
-            switch (e.DetailCase)
-            {
-                case TextStreamReaderEvent.DetailOneofCase.ChunkReceived:
-                    ChunkReceived?.Invoke(e.ChunkReceived.Content);
-                    break;
-                case TextStreamReaderEvent.DetailOneofCase.Eos:
-                    if (e.Eos.Error != null)
-                    {
-                        ErrorReceived?.Invoke(new StreamError(e.Eos.Error));
-                    }
-                    FfiClient.Instance.TextStreamReaderEventReceived -= OnStreamEvent;
-                    break;
-            }
         }
 
         /// <summary>
@@ -274,6 +221,82 @@ namespace LiveKit
 
             public StreamError Error { get; private set; }
         }
+
+        /// <summary>
+        /// Reads incoming chunks from the stream incrementally.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="ReadIncrementalInstruction"/> that allows reading the stream incrementally.
+        /// </returns>
+        public ReadIncrementalInstruction ReadIncremental()
+        {
+            using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
+            var readIncReq = request.request;
+            readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
+            request.Send();
+
+            return new ReadIncrementalInstruction(_handle);
+        }
+
+        /// <summary>
+        /// YieldInstruction for <see cref="ReadIncremental"/>.
+        /// </summary>
+        /// <remarks>
+        /// Usage: while <see cref="IsEos"/> is false (i.e. the stream has not ended),
+        /// call <see cref="Reset"/>, yield the instruction, and then access <see cref="Text"/>.
+        /// </remarks>
+        public sealed class ReadIncrementalInstruction : StreamYieldInstruction
+        {
+            private readonly FfiHandle _handle;
+            private string _latestChunk;
+
+            internal ReadIncrementalInstruction(FfiHandle readerHandle)
+            {
+                _handle = readerHandle;
+                FfiClient.Instance.TextStreamReaderEventReceived += OnStreamEvent;
+            }
+
+            private void OnStreamEvent(TextStreamReaderEvent e)
+            {
+                if (e.ReaderHandle != (ulong)_handle.DangerousGetHandle())
+                    return;
+
+                switch (e.DetailCase)
+                {
+                    case TextStreamReaderEvent.DetailOneofCase.ChunkReceived:
+                        _latestChunk = e.ChunkReceived.Content;
+                        IsCurrentReadDone = true;
+                        break;
+                    case TextStreamReaderEvent.DetailOneofCase.Eos:
+                        IsEos = true;
+                        if (e.Eos.Error != null)
+                        {
+                            Error = new StreamError(e.Eos.Error);
+                        }
+                        FfiClient.Instance.TextStreamReaderEventReceived -= OnStreamEvent;
+                        break;
+                }
+            }
+
+            public string Text
+            {
+                get
+                {
+                    if (Error != null) throw Error;
+                    return _latestChunk;
+                }
+            }
+
+            /// <summary>
+            /// True if an error occurred on the last read.
+            /// </summary>
+            public bool IsError => Error != null;
+
+            /// <summary>
+            /// Error that occurred on the last read, if any.
+            /// </summary>
+            public StreamError Error { get; private set; }
+        }
     }
 
     /// <summary>
@@ -283,22 +306,6 @@ namespace LiveKit
     {
         private FfiHandle _handle;
         private readonly ByteStreamInfo _info;
-
-        public delegate void ChunkReceiveDelegate(byte[] chunk);
-        public delegate void ErrorReceiveDelegate(StreamError error);
-
-        /// <summary>
-        /// Called when a new chunk is received incrementally.
-        /// Only emitted after calling <see cref="ReadIncremental" />.
-        /// </summary>
-        public event ChunkReceiveDelegate ChunkReceived;
-
-        /// <summary>
-        /// Called when an error occurs reading the stream incrementally. After
-        /// an error occurs, the stream is closed and no more chunks will be emitted.
-        /// Only emitted after calling <see cref="ReadIncremental" />.
-        /// </summary>
-        public event ErrorReceiveDelegate ErrorReceived;
 
         internal ByteStreamReader(OwnedByteStreamReader info)
         {
@@ -332,39 +339,17 @@ namespace LiveKit
         /// <summary>
         /// Reads incoming chunks from the stream incrementally.
         /// </summary>
-        /// <remarks>
-        /// After calling this method, the <see cref="ChunkReceived"/> event will be emitted for each incoming
-        /// chunk, and the <see cref="ErrorReceived"/> event will be emitted if an error occurs.
-        /// Calling this method consumes the stream reader.
-        /// </remarks>
-        public void ReadIncremental()
+        /// <returns>
+        /// A <see cref="ReadIncrementalInstruction"/> that allows reading the stream incrementally.
+        /// </returns>
+        public ReadIncrementalInstruction ReadIncremental()
         {
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadIncrementalRequest>();
             var readIncReq = request.request;
             readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
             request.Send();
 
-            FfiClient.Instance.ByteStreamReaderEventReceived += OnStreamEvent;
-        }
-
-        private void OnStreamEvent(ByteStreamReaderEvent e)
-        {
-            if (e.ReaderHandle != (ulong)_handle.DangerousGetHandle())
-                return;
-
-            switch (e.DetailCase)
-            {
-                case ByteStreamReaderEvent.DetailOneofCase.ChunkReceived:
-                    ChunkReceived?.Invoke(e.ChunkReceived.Content.ToByteArray());
-                    break;
-                case ByteStreamReaderEvent.DetailOneofCase.Eos:
-                    if (e.Eos.Error != null)
-                    {
-                        ErrorReceived?.Invoke(new StreamError(e.Eos.Error));
-                    }
-                    FfiClient.Instance.ByteStreamReaderEventReceived -= OnStreamEvent;
-                    break;
-            }
+            return new ReadIncrementalInstruction(_handle);
         }
 
         /// <summary>
@@ -438,6 +423,66 @@ namespace LiveKit
                 }
             }
 
+            public StreamError Error { get; private set; }
+        }
+
+        /// <summary>
+        /// YieldInstruction for <see cref="ReadIncremental"/>.
+        /// </summary>
+        /// <remarks>
+        /// Usage: while <see cref="IsEos"/> is false (i.e. the stream has not ended),
+        /// call <see cref="Reset"/>, yield the instruction, and then access <see cref="Bytes"/>.
+        /// </remarks>
+        public sealed class ReadIncrementalInstruction : StreamYieldInstruction
+        {
+            private readonly FfiHandle _handle;
+            private byte[] _latestChunk;
+
+            internal ReadIncrementalInstruction(FfiHandle readerHandle)
+            {
+                _handle = readerHandle;
+                FfiClient.Instance.ByteStreamReaderEventReceived += OnStreamEvent;
+            }
+
+            private void OnStreamEvent(ByteStreamReaderEvent e)
+            {
+                if (e.ReaderHandle != (ulong)_handle.DangerousGetHandle())
+                    return;
+
+                switch (e.DetailCase)
+                {
+                    case ByteStreamReaderEvent.DetailOneofCase.ChunkReceived:
+                        _latestChunk = e.ChunkReceived.Content.ToByteArray();
+                        IsCurrentReadDone = true;
+                        break;
+                    case ByteStreamReaderEvent.DetailOneofCase.Eos:
+                        IsEos = true;
+                        if (e.Eos.Error != null)
+                        {
+                            Error = new StreamError(e.Eos.Error);
+                        }
+                        FfiClient.Instance.ByteStreamReaderEventReceived -= OnStreamEvent;
+                        break;
+                }
+            }
+
+            public byte[] Bytes
+            {
+                get
+                {
+                    if (Error != null) throw Error;
+                    return _latestChunk;
+                }
+            }
+
+            /// <summary>
+            /// True if an error occurred on the last read.
+            /// </summary>
+            public bool IsError => Error != null;
+
+            /// <summary>
+            /// Error that occurred on the last read, if any.
+            /// </summary>
             public StreamError Error { get; private set; }
         }
 
