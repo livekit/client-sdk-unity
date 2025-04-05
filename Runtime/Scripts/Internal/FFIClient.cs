@@ -46,7 +46,6 @@ namespace LiveKit.Internal
 
         public event PerformRpcReceivedDelegate? PerformRpcReceived;
 
-        public event ByteStreamOpenedReceivedDelegate? ByteStreamOpenedReceived;
         public event ByteStreamReaderEventReceivedDelegate? ByteStreamReaderEventReceived;
         public event ByteStreamReaderReadAllReceivedDelegate? ByteStreamReaderReadAllReceived;
         public event ByteStreamReaderWriteToFileReceivedDelegate? ByteStreamReaderWriteToFileReceived;
@@ -54,7 +53,6 @@ namespace LiveKit.Internal
         public event ByteStreamWriterWriteReceivedDelegate? ByteStreamWriterWriteReceived;
         public event ByteStreamWriterCloseReceivedDelegate? ByteStreamWriterCloseReceived;
         public event SendFileReceivedDelegate? SendFileReceived;
-        public event TextStreamOpenedReceivedDelegate? TextStreamOpenedReceived;
         public event TextStreamReaderEventReceivedDelegate? TextStreamReaderEventReceived;
         public event TextStreamReaderReadAllReceivedDelegate? TextStreamReaderReadAllReceived;
         public event TextStreamOpenReceivedDelegate? TextStreamOpenReceived;
@@ -282,9 +280,6 @@ namespace LiveKit.Internal
                         Instance.PerformRpcReceived?.Invoke(r.PerformRpc!);
                         break;
                     // Uses high-level data stream interface
-                    case FfiEvent.MessageOneofCase.ByteStreamOpened:
-                        Instance.ByteStreamOpenedReceived?.Invoke(r.ByteStreamOpened!);
-                        break;
                     case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
                         Instance.ByteStreamReaderEventReceived?.Invoke(r.ByteStreamReaderEvent!);
                         break;
@@ -305,9 +300,6 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.SendFile:
                         Instance.SendFileReceived?.Invoke(r.SendFile!);
-                        break;
-                    case FfiEvent.MessageOneofCase.TextStreamOpened:
-                        Instance.TextStreamOpenedReceived?.Invoke(r.TextStreamOpened!);
                         break;
                     case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
                         Instance.TextStreamReaderEventReceived?.Invoke(r.TextStreamReaderEvent!);

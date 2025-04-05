@@ -101,12 +101,6 @@ namespace LiveKit.Internal.FFIClients
                     ffiRequest.RpcMethodInvocationResponse = rpcMethodInvocationResponseRequest;
                     break;
                 // Data stream
-                case StreamRegisterTopicRequest streamRegisterTopicRequest:
-                    ffiRequest.RegisterTopic = streamRegisterTopicRequest;
-                    break;
-                case StreamUnregisterTopicRequest streamUnregisterTopicRequest:
-                    ffiRequest.UnregisterTopic = streamUnregisterTopicRequest;
-                    break;
                 case TextStreamReaderReadIncrementalRequest textStreamReaderReadIncrementalRequest:
                     ffiRequest.TextReadIncremental = textStreamReaderReadIncrementalRequest;
                     break;

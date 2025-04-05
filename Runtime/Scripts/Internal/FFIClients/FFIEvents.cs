@@ -61,11 +61,7 @@ namespace LiveKit.Internal
     internal delegate void PerformRpcReceivedDelegate(PerformRpcCallback e);
 
 
-    internal delegate void ByteStreamOpenedReceivedDelegate(ByteStreamOpenedEvent E);
-
     internal delegate void ByteStreamReaderEventReceivedDelegate(ByteStreamReaderEvent e);
-
-    internal delegate void TextStreamOpenedReceivedDelegate(TextStreamOpenedEvent e);
 
     internal delegate void TextStreamReaderEventReceivedDelegate(TextStreamReaderEvent e);
 }

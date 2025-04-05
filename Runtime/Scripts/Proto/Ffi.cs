@@ -27,7 +27,7 @@ namespace LiveKit.Proto {
             "CglmZmkucHJvdG8SDWxpdmVraXQucHJvdG8aCmUyZWUucHJvdG8aC3RyYWNr",
             "LnByb3RvGhd0cmFja19wdWJsaWNhdGlvbi5wcm90bxoKcm9vbS5wcm90bxoR",
             "dmlkZW9fZnJhbWUucHJvdG8aEWF1ZGlvX2ZyYW1lLnByb3RvGglycGMucHJv",
-            "dG8aEWRhdGFfc3RyZWFtLnByb3RvIoYlCgpGZmlSZXF1ZXN0EjAKB2Rpc3Bv",
+            "dG8aEWRhdGFfc3RyZWFtLnByb3RvIsEkCgpGZmlSZXF1ZXN0EjAKB2Rpc3Bv",
             "c2UYAiABKAsyHS5saXZla2l0LnByb3RvLkRpc3Bvc2VSZXF1ZXN0SAASMAoH",
             "Y29ubmVjdBgDIAEoCzIdLmxpdmVraXQucHJvdG8uQ29ubmVjdFJlcXVlc3RI",
             "ABI2CgpkaXNjb25uZWN0GAQgASgLMiAubGl2ZWtpdC5wcm90by5EaXNjb25u",
@@ -108,214 +108,208 @@ namespace LiveKit.Proto {
             "ABJEChJhcG1fcHJvY2Vzc19zdHJlYW0YMyABKAsyJi5saXZla2l0LnByb3Rv",
             "LkFwbVByb2Nlc3NTdHJlYW1SZXF1ZXN0SAASUwoaYXBtX3Byb2Nlc3NfcmV2",
             "ZXJzZV9zdHJlYW0YNCABKAsyLS5saXZla2l0LnByb3RvLkFwbVByb2Nlc3NS",
-            "ZXZlcnNlU3RyZWFtUmVxdWVzdEgAEkMKDnJlZ2lzdGVyX3RvcGljGDUgASgL",
-            "MikubGl2ZWtpdC5wcm90by5TdHJlYW1SZWdpc3RlclRvcGljUmVxdWVzdEgA",
-            "EkcKEHVucmVnaXN0ZXJfdG9waWMYNiABKAsyKy5saXZla2l0LnByb3RvLlN0",
-            "cmVhbVVucmVnaXN0ZXJUb3BpY1JlcXVlc3RIABJWChVieXRlX3JlYWRfaW5j",
-            "cmVtZW50YWwYNyABKAsyNS5saXZla2l0LnByb3RvLkJ5dGVTdHJlYW1SZWFk",
-            "ZXJSZWFkSW5jcmVtZW50YWxSZXF1ZXN0SAASRgoNYnl0ZV9yZWFkX2FsbBg4",
-            "IAEoCzItLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVJlYWRlclJlYWRBbGxS",
-            "ZXF1ZXN0SAASTwoSYnl0ZV93cml0ZV90b19maWxlGDkgASgLMjEubGl2ZWtp",
-            "dC5wcm90by5CeXRlU3RyZWFtUmVhZGVyV3JpdGVUb0ZpbGVSZXF1ZXN0SAAS",
-            "VgoVdGV4dF9yZWFkX2luY3JlbWVudGFsGDogASgLMjUubGl2ZWtpdC5wcm90",
-            "by5UZXh0U3RyZWFtUmVhZGVyUmVhZEluY3JlbWVudGFsUmVxdWVzdEgAEkYK",
-            "DXRleHRfcmVhZF9hbGwYOyABKAsyLS5saXZla2l0LnByb3RvLlRleHRTdHJl",
-            "YW1SZWFkZXJSZWFkQWxsUmVxdWVzdEgAEjkKCXNlbmRfZmlsZRg8IAEoCzIk",
-            "LmxpdmVraXQucHJvdG8uU3RyZWFtU2VuZEZpbGVSZXF1ZXN0SAASOQoJc2Vu",
-            "ZF90ZXh0GD0gASgLMiQubGl2ZWtpdC5wcm90by5TdHJlYW1TZW5kVGV4dFJl",
-            "cXVlc3RIABJAChBieXRlX3N0cmVhbV9vcGVuGD4gASgLMiQubGl2ZWtpdC5w",
-            "cm90by5CeXRlU3RyZWFtT3BlblJlcXVlc3RIABJIChFieXRlX3N0cmVhbV93",
-            "cml0ZRg/IAEoCzIrLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVdyaXRlcldy",
-            "aXRlUmVxdWVzdEgAEkgKEWJ5dGVfc3RyZWFtX2Nsb3NlGEAgASgLMisubGl2",
-            "ZWtpdC5wcm90by5CeXRlU3RyZWFtV3JpdGVyQ2xvc2VSZXF1ZXN0SAASQAoQ",
-            "dGV4dF9zdHJlYW1fb3BlbhhBIAEoCzIkLmxpdmVraXQucHJvdG8uVGV4dFN0",
-            "cmVhbU9wZW5SZXF1ZXN0SAASSAoRdGV4dF9zdHJlYW1fd3JpdGUYQiABKAsy",
-            "Ky5saXZla2l0LnByb3RvLlRleHRTdHJlYW1Xcml0ZXJXcml0ZVJlcXVlc3RI",
-            "ABJIChF0ZXh0X3N0cmVhbV9jbG9zZRhDIAEoCzIrLmxpdmVraXQucHJvdG8u",
-            "VGV4dFN0cmVhbVdyaXRlckNsb3NlUmVxdWVzdEgAQgkKB21lc3NhZ2UihCUK",
-            "C0ZmaVJlc3BvbnNlEjEKB2Rpc3Bvc2UYAiABKAsyHi5saXZla2l0LnByb3Rv",
-            "LkRpc3Bvc2VSZXNwb25zZUgAEjEKB2Nvbm5lY3QYAyABKAsyHi5saXZla2l0",
-            "LnByb3RvLkNvbm5lY3RSZXNwb25zZUgAEjcKCmRpc2Nvbm5lY3QYBCABKAsy",
-            "IS5saXZla2l0LnByb3RvLkRpc2Nvbm5lY3RSZXNwb25zZUgAEjwKDXB1Ymxp",
-            "c2hfdHJhY2sYBSABKAsyIy5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFja1Jl",
-            "c3BvbnNlSAASQAoPdW5wdWJsaXNoX3RyYWNrGAYgASgLMiUubGl2ZWtpdC5w",
-            "cm90by5VbnB1Ymxpc2hUcmFja1Jlc3BvbnNlSAASOgoMcHVibGlzaF9kYXRh",
-            "GAcgASgLMiIubGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YVJlc3BvbnNlSAAS",
-            "PgoOc2V0X3N1YnNjcmliZWQYCCABKAsyJC5saXZla2l0LnByb3RvLlNldFN1",
-            "YnNjcmliZWRSZXNwb25zZUgAEkUKEnNldF9sb2NhbF9tZXRhZGF0YRgJIAEo",
-            "CzInLmxpdmVraXQucHJvdG8uU2V0TG9jYWxNZXRhZGF0YVJlc3BvbnNlSAAS",
-            "PQoOc2V0X2xvY2FsX25hbWUYCiABKAsyIy5saXZla2l0LnByb3RvLlNldExv",
-            "Y2FsTmFtZVJlc3BvbnNlSAASSQoUc2V0X2xvY2FsX2F0dHJpYnV0ZXMYCyAB",
-            "KAsyKS5saXZla2l0LnByb3RvLlNldExvY2FsQXR0cmlidXRlc1Jlc3BvbnNl",
-            "SAASQwoRZ2V0X3Nlc3Npb25fc3RhdHMYDCABKAsyJi5saXZla2l0LnByb3Rv",
-            "LkdldFNlc3Npb25TdGF0c1Jlc3BvbnNlSAASTAoVcHVibGlzaF90cmFuc2Ny",
-            "aXB0aW9uGA0gASgLMisubGl2ZWtpdC5wcm90by5QdWJsaXNoVHJhbnNjcmlw",
-            "dGlvblJlc3BvbnNlSAASQQoQcHVibGlzaF9zaXBfZHRtZhgOIAEoCzIlLmxp",
-            "dmVraXQucHJvdG8uUHVibGlzaFNpcER0bWZSZXNwb25zZUgAEkUKEmNyZWF0",
-            "ZV92aWRlb190cmFjaxgPIAEoCzInLmxpdmVraXQucHJvdG8uQ3JlYXRlVmlk",
-            "ZW9UcmFja1Jlc3BvbnNlSAASRQoSY3JlYXRlX2F1ZGlvX3RyYWNrGBAgASgL",
-            "MicubGl2ZWtpdC5wcm90by5DcmVhdGVBdWRpb1RyYWNrUmVzcG9uc2VIABJB",
-            "ChBsb2NhbF90cmFja19tdXRlGBEgASgLMiUubGl2ZWtpdC5wcm90by5Mb2Nh",
-            "bFRyYWNrTXV0ZVJlc3BvbnNlSAASRwoTZW5hYmxlX3JlbW90ZV90cmFjaxgS",
-            "IAEoCzIoLmxpdmVraXQucHJvdG8uRW5hYmxlUmVtb3RlVHJhY2tSZXNwb25z",
-            "ZUgAEjQKCWdldF9zdGF0cxgTIAEoCzIfLmxpdmVraXQucHJvdG8uR2V0U3Rh",
-            "dHNSZXNwb25zZUgAEmQKInNldF90cmFja19zdWJzY3JpcHRpb25fcGVybWlz",
-            "c2lvbnMYLyABKAsyNi5saXZla2l0LnByb3RvLlNldFRyYWNrU3Vic2NyaXB0",
-            "aW9uUGVybWlzc2lvbnNSZXNwb25zZUgAEkEKEG5ld192aWRlb19zdHJlYW0Y",
-            "FCABKAsyJS5saXZla2l0LnByb3RvLk5ld1ZpZGVvU3RyZWFtUmVzcG9uc2VI",
-            "ABJBChBuZXdfdmlkZW9fc291cmNlGBUgASgLMiUubGl2ZWtpdC5wcm90by5O",
-            "ZXdWaWRlb1NvdXJjZVJlc3BvbnNlSAASRwoTY2FwdHVyZV92aWRlb19mcmFt",
-            "ZRgWIAEoCzIoLmxpdmVraXQucHJvdG8uQ2FwdHVyZVZpZGVvRnJhbWVSZXNw",
-            "b25zZUgAEjwKDXZpZGVvX2NvbnZlcnQYFyABKAsyIy5saXZla2l0LnByb3Rv",
-            "LlZpZGVvQ29udmVydFJlc3BvbnNlSAASWgoddmlkZW9fc3RyZWFtX2Zyb21f",
-            "cGFydGljaXBhbnQYGCABKAsyMS5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFt",
-            "RnJvbVBhcnRpY2lwYW50UmVzcG9uc2VIABJBChBuZXdfYXVkaW9fc3RyZWFt",
-            "GBkgASgLMiUubGl2ZWtpdC5wcm90by5OZXdBdWRpb1N0cmVhbVJlc3BvbnNl",
-            "SAASQQoQbmV3X2F1ZGlvX3NvdXJjZRgaIAEoCzIlLmxpdmVraXQucHJvdG8u",
-            "TmV3QXVkaW9Tb3VyY2VSZXNwb25zZUgAEkcKE2NhcHR1cmVfYXVkaW9fZnJh",
-            "bWUYGyABKAsyKC5saXZla2l0LnByb3RvLkNhcHR1cmVBdWRpb0ZyYW1lUmVz",
-            "cG9uc2VIABJFChJjbGVhcl9hdWRpb19idWZmZXIYHCABKAsyJy5saXZla2l0",
-            "LnByb3RvLkNsZWFyQXVkaW9CdWZmZXJSZXNwb25zZUgAEkcKE25ld19hdWRp",
-            "b19yZXNhbXBsZXIYHSABKAsyKC5saXZla2l0LnByb3RvLk5ld0F1ZGlvUmVz",
-            "YW1wbGVyUmVzcG9uc2VIABJFChJyZW1peF9hbmRfcmVzYW1wbGUYHiABKAsy",
-            "Jy5saXZla2l0LnByb3RvLlJlbWl4QW5kUmVzYW1wbGVSZXNwb25zZUgAEloK",
-            "HWF1ZGlvX3N0cmVhbV9mcm9tX3BhcnRpY2lwYW50GB8gASgLMjEubGl2ZWtp",
-            "dC5wcm90by5BdWRpb1N0cmVhbUZyb21QYXJ0aWNpcGFudFJlc3BvbnNlSAAS",
-            "KwoEZTJlZRggIAEoCzIbLmxpdmVraXQucHJvdG8uRTJlZVJlc3BvbnNlSAAS",
-            "QwoRbmV3X3NveF9yZXNhbXBsZXIYISABKAsyJi5saXZla2l0LnByb3RvLk5l",
-            "d1NveFJlc2FtcGxlclJlc3BvbnNlSAASRQoScHVzaF9zb3hfcmVzYW1wbGVy",
-            "GCIgASgLMicubGl2ZWtpdC5wcm90by5QdXNoU294UmVzYW1wbGVyUmVzcG9u",
-            "c2VIABJHChNmbHVzaF9zb3hfcmVzYW1wbGVyGCMgASgLMigubGl2ZWtpdC5w",
-            "cm90by5GbHVzaFNveFJlc2FtcGxlclJlc3BvbnNlSAASQwoRc2VuZF9jaGF0",
-            "X21lc3NhZ2UYJCABKAsyJi5saXZla2l0LnByb3RvLlNlbmRDaGF0TWVzc2Fn",
-            "ZVJlc3BvbnNlSAASOAoLcGVyZm9ybV9ycGMYJSABKAsyIS5saXZla2l0LnBy",
-            "b3RvLlBlcmZvcm1ScGNSZXNwb25zZUgAEkcKE3JlZ2lzdGVyX3JwY19tZXRo",
-            "b2QYJiABKAsyKC5saXZla2l0LnByb3RvLlJlZ2lzdGVyUnBjTWV0aG9kUmVz",
-            "cG9uc2VIABJLChV1bnJlZ2lzdGVyX3JwY19tZXRob2QYJyABKAsyKi5saXZl",
-            "a2l0LnByb3RvLlVucmVnaXN0ZXJScGNNZXRob2RSZXNwb25zZUgAElwKHnJw",
-            "Y19tZXRob2RfaW52b2NhdGlvbl9yZXNwb25zZRgoIAEoCzIyLmxpdmVraXQu",
-            "cHJvdG8uUnBjTWV0aG9kSW52b2NhdGlvblJlc3BvbnNlUmVzcG9uc2VIABJe",
-            "Ch9lbmFibGVfcmVtb3RlX3RyYWNrX3B1YmxpY2F0aW9uGCkgASgLMjMubGl2",
-            "ZWtpdC5wcm90by5FbmFibGVSZW1vdGVUcmFja1B1YmxpY2F0aW9uUmVzcG9u",
-            "c2VIABJxCil1cGRhdGVfcmVtb3RlX3RyYWNrX3B1YmxpY2F0aW9uX2RpbWVu",
-            "c2lvbhgqIAEoCzI8LmxpdmVraXQucHJvdG8uVXBkYXRlUmVtb3RlVHJhY2tQ",
-            "dWJsaWNhdGlvbkRpbWVuc2lvblJlc3BvbnNlSAASRQoSc2VuZF9zdHJlYW1f",
-            "aGVhZGVyGCsgASgLMicubGl2ZWtpdC5wcm90by5TZW5kU3RyZWFtSGVhZGVy",
-            "UmVzcG9uc2VIABJDChFzZW5kX3N0cmVhbV9jaHVuaxgsIAEoCzImLmxpdmVr",
-            "aXQucHJvdG8uU2VuZFN0cmVhbUNodW5rUmVzcG9uc2VIABJHChNzZW5kX3N0",
-            "cmVhbV90cmFpbGVyGC0gASgLMigubGl2ZWtpdC5wcm90by5TZW5kU3RyZWFt",
-            "VHJhaWxlclJlc3BvbnNlSAASeQouc2V0X2RhdGFfY2hhbm5lbF9idWZmZXJl",
-            "ZF9hbW91bnRfbG93X3RocmVzaG9sZBguIAEoCzI/LmxpdmVraXQucHJvdG8u",
-            "U2V0RGF0YUNoYW5uZWxCdWZmZXJlZEFtb3VudExvd1RocmVzaG9sZFJlc3Bv",
-            "bnNlSAASUAoYbG9hZF9hdWRpb19maWx0ZXJfcGx1Z2luGDAgASgLMiwubGl2",
-            "ZWtpdC5wcm90by5Mb2FkQXVkaW9GaWx0ZXJQbHVnaW5SZXNwb25zZUgAEjAK",
-            "B25ld19hcG0YMSABKAsyHS5saXZla2l0LnByb3RvLk5ld0FwbVJlc3BvbnNl",
-            "SAASRQoSYXBtX3Byb2Nlc3Nfc3RyZWFtGDIgASgLMicubGl2ZWtpdC5wcm90",
-            "by5BcG1Qcm9jZXNzU3RyZWFtUmVzcG9uc2VIABJUChphcG1fcHJvY2Vzc19y",
-            "ZXZlcnNlX3N0cmVhbRgzIAEoCzIuLmxpdmVraXQucHJvdG8uQXBtUHJvY2Vz",
-            "c1JldmVyc2VTdHJlYW1SZXNwb25zZUgAEkQKDnJlZ2lzdGVyX3RvcGljGDQg",
-            "ASgLMioubGl2ZWtpdC5wcm90by5TdHJlYW1SZWdpc3RlclRvcGljUmVzcG9u",
-            "c2VIABJIChB1bnJlZ2lzdGVyX3RvcGljGDUgASgLMiwubGl2ZWtpdC5wcm90",
-            "by5TdHJlYW1VbnJlZ2lzdGVyVG9waWNSZXNwb25zZUgAElcKFWJ5dGVfcmVh",
-            "ZF9pbmNyZW1lbnRhbBg2IAEoCzI2LmxpdmVraXQucHJvdG8uQnl0ZVN0cmVh",
-            "bVJlYWRlclJlYWRJbmNyZW1lbnRhbFJlc3BvbnNlSAASRwoNYnl0ZV9yZWFk",
-            "X2FsbBg3IAEoCzIuLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVJlYWRlclJl",
-            "YWRBbGxSZXNwb25zZUgAElAKEmJ5dGVfd3JpdGVfdG9fZmlsZRg4IAEoCzIy",
-            "LmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVJlYWRlcldyaXRlVG9GaWxlUmVz",
-            "cG9uc2VIABJXChV0ZXh0X3JlYWRfaW5jcmVtZW50YWwYOSABKAsyNi5saXZl",
-            "a2l0LnByb3RvLlRleHRTdHJlYW1SZWFkZXJSZWFkSW5jcmVtZW50YWxSZXNw",
-            "b25zZUgAEkcKDXRleHRfcmVhZF9hbGwYOiABKAsyLi5saXZla2l0LnByb3Rv",
-            "LlRleHRTdHJlYW1SZWFkZXJSZWFkQWxsUmVzcG9uc2VIABI6CglzZW5kX2Zp",
-            "bGUYOyABKAsyJS5saXZla2l0LnByb3RvLlN0cmVhbVNlbmRGaWxlUmVzcG9u",
-            "c2VIABI6CglzZW5kX3RleHQYPCABKAsyJS5saXZla2l0LnByb3RvLlN0cmVh",
-            "bVNlbmRUZXh0UmVzcG9uc2VIABJBChBieXRlX3N0cmVhbV9vcGVuGD0gASgL",
-            "MiUubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtT3BlblJlc3BvbnNlSAASSQoR",
-            "Ynl0ZV9zdHJlYW1fd3JpdGUYPiABKAsyLC5saXZla2l0LnByb3RvLkJ5dGVT",
-            "dHJlYW1Xcml0ZXJXcml0ZVJlc3BvbnNlSAASSQoRYnl0ZV9zdHJlYW1fY2xv",
-            "c2UYPyABKAsyLC5saXZla2l0LnByb3RvLkJ5dGVTdHJlYW1Xcml0ZXJDbG9z",
-            "ZVJlc3BvbnNlSAASQQoQdGV4dF9zdHJlYW1fb3BlbhhAIAEoCzIlLmxpdmVr",
-            "aXQucHJvdG8uVGV4dFN0cmVhbU9wZW5SZXNwb25zZUgAEkkKEXRleHRfc3Ry",
-            "ZWFtX3dyaXRlGEEgASgLMiwubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtV3Jp",
-            "dGVyV3JpdGVSZXNwb25zZUgAEkkKEXRleHRfc3RyZWFtX2Nsb3NlGEIgASgL",
-            "MiwubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtV3JpdGVyQ2xvc2VSZXNwb25z",
-            "ZUgAQgkKB21lc3NhZ2UizxUKCEZmaUV2ZW50Ei4KCnJvb21fZXZlbnQYASAB",
-            "KAsyGC5saXZla2l0LnByb3RvLlJvb21FdmVudEgAEjAKC3RyYWNrX2V2ZW50",
-            "GAIgASgLMhkubGl2ZWtpdC5wcm90by5UcmFja0V2ZW50SAASPQoSdmlkZW9f",
-            "c3RyZWFtX2V2ZW50GAMgASgLMh8ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVh",
-            "bUV2ZW50SAASPQoSYXVkaW9fc3RyZWFtX2V2ZW50GAQgASgLMh8ubGl2ZWtp",
-            "dC5wcm90by5BdWRpb1N0cmVhbUV2ZW50SAASMQoHY29ubmVjdBgFIAEoCzIe",
-            "LmxpdmVraXQucHJvdG8uQ29ubmVjdENhbGxiYWNrSAASNwoKZGlzY29ubmVj",
-            "dBgHIAEoCzIhLmxpdmVraXQucHJvdG8uRGlzY29ubmVjdENhbGxiYWNrSAAS",
-            "MQoHZGlzcG9zZRgIIAEoCzIeLmxpdmVraXQucHJvdG8uRGlzcG9zZUNhbGxi",
-            "YWNrSAASPAoNcHVibGlzaF90cmFjaxgJIAEoCzIjLmxpdmVraXQucHJvdG8u",
-            "UHVibGlzaFRyYWNrQ2FsbGJhY2tIABJACg91bnB1Ymxpc2hfdHJhY2sYCiAB",
-            "KAsyJS5saXZla2l0LnByb3RvLlVucHVibGlzaFRyYWNrQ2FsbGJhY2tIABI6",
-            "CgxwdWJsaXNoX2RhdGEYCyABKAsyIi5saXZla2l0LnByb3RvLlB1Ymxpc2hE",
-            "YXRhQ2FsbGJhY2tIABJMChVwdWJsaXNoX3RyYW5zY3JpcHRpb24YDCABKAsy",
-            "Ky5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFuc2NyaXB0aW9uQ2FsbGJhY2tI",
-            "ABJHChNjYXB0dXJlX2F1ZGlvX2ZyYW1lGA0gASgLMigubGl2ZWtpdC5wcm90",
-            "by5DYXB0dXJlQXVkaW9GcmFtZUNhbGxiYWNrSAASRQoSc2V0X2xvY2FsX21l",
-            "dGFkYXRhGA4gASgLMicubGl2ZWtpdC5wcm90by5TZXRMb2NhbE1ldGFkYXRh",
-            "Q2FsbGJhY2tIABI9Cg5zZXRfbG9jYWxfbmFtZRgPIAEoCzIjLmxpdmVraXQu",
-            "cHJvdG8uU2V0TG9jYWxOYW1lQ2FsbGJhY2tIABJJChRzZXRfbG9jYWxfYXR0",
-            "cmlidXRlcxgQIAEoCzIpLmxpdmVraXQucHJvdG8uU2V0TG9jYWxBdHRyaWJ1",
-            "dGVzQ2FsbGJhY2tIABI0CglnZXRfc3RhdHMYESABKAsyHy5saXZla2l0LnBy",
-            "b3RvLkdldFN0YXRzQ2FsbGJhY2tIABInCgRsb2dzGBIgASgLMhcubGl2ZWtp",
-            "dC5wcm90by5Mb2dCYXRjaEgAEkMKEWdldF9zZXNzaW9uX3N0YXRzGBMgASgL",
-            "MiYubGl2ZWtpdC5wcm90by5HZXRTZXNzaW9uU3RhdHNDYWxsYmFja0gAEiUK",
-            "BXBhbmljGBQgASgLMhQubGl2ZWtpdC5wcm90by5QYW5pY0gAEkEKEHB1Ymxp",
-            "c2hfc2lwX2R0bWYYFSABKAsyJS5saXZla2l0LnByb3RvLlB1Ymxpc2hTaXBE",
-            "dG1mQ2FsbGJhY2tIABI+CgxjaGF0X21lc3NhZ2UYFiABKAsyJi5saXZla2l0",
-            "LnByb3RvLlNlbmRDaGF0TWVzc2FnZUNhbGxiYWNrSAASOAoLcGVyZm9ybV9y",
-            "cGMYFyABKAsyIS5saXZla2l0LnByb3RvLlBlcmZvcm1ScGNDYWxsYmFja0gA",
-            "EkgKFXJwY19tZXRob2RfaW52b2NhdGlvbhgYIAEoCzInLmxpdmVraXQucHJv",
-            "dG8uUnBjTWV0aG9kSW52b2NhdGlvbkV2ZW50SAASRQoSc2VuZF9zdHJlYW1f",
-            "aGVhZGVyGBkgASgLMicubGl2ZWtpdC5wcm90by5TZW5kU3RyZWFtSGVhZGVy",
-            "Q2FsbGJhY2tIABJDChFzZW5kX3N0cmVhbV9jaHVuaxgaIAEoCzImLmxpdmVr",
-            "aXQucHJvdG8uU2VuZFN0cmVhbUNodW5rQ2FsbGJhY2tIABJHChNzZW5kX3N0",
-            "cmVhbV90cmFpbGVyGBsgASgLMigubGl2ZWtpdC5wcm90by5TZW5kU3RyZWFt",
-            "VHJhaWxlckNhbGxiYWNrSAASQgoSYnl0ZV9zdHJlYW1fb3BlbmVkGBwgASgL",
-            "MiQubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtT3BlbmVkRXZlbnRIABJIChhi",
-            "eXRlX3N0cmVhbV9yZWFkZXJfZXZlbnQYHSABKAsyJC5saXZla2l0LnByb3Rv",
-            "LkJ5dGVTdHJlYW1SZWFkZXJFdmVudEgAElUKG2J5dGVfc3RyZWFtX3JlYWRl",
-            "cl9yZWFkX2FsbBgeIAEoCzIuLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVJl",
-            "YWRlclJlYWRBbGxDYWxsYmFja0gAEl4KIGJ5dGVfc3RyZWFtX3JlYWRlcl93",
-            "cml0ZV90b19maWxlGB8gASgLMjIubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFt",
-            "UmVhZGVyV3JpdGVUb0ZpbGVDYWxsYmFja0gAEkEKEGJ5dGVfc3RyZWFtX29w",
-            "ZW4YICABKAsyJS5saXZla2l0LnByb3RvLkJ5dGVTdHJlYW1PcGVuQ2FsbGJh",
-            "Y2tIABJQChhieXRlX3N0cmVhbV93cml0ZXJfd3JpdGUYISABKAsyLC5saXZl",
-            "a2l0LnByb3RvLkJ5dGVTdHJlYW1Xcml0ZXJXcml0ZUNhbGxiYWNrSAASUAoY",
-            "Ynl0ZV9zdHJlYW1fd3JpdGVyX2Nsb3NlGCIgASgLMiwubGl2ZWtpdC5wcm90",
-            "by5CeXRlU3RyZWFtV3JpdGVyQ2xvc2VDYWxsYmFja0gAEjoKCXNlbmRfZmls",
-            "ZRgjIAEoCzIlLmxpdmVraXQucHJvdG8uU3RyZWFtU2VuZEZpbGVDYWxsYmFj",
-            "a0gAEkIKEnRleHRfc3RyZWFtX29wZW5lZBgkIAEoCzIkLmxpdmVraXQucHJv",
-            "dG8uVGV4dFN0cmVhbU9wZW5lZEV2ZW50SAASSAoYdGV4dF9zdHJlYW1fcmVh",
-            "ZGVyX2V2ZW50GCUgASgLMiQubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtUmVh",
-            "ZGVyRXZlbnRIABJVCht0ZXh0X3N0cmVhbV9yZWFkZXJfcmVhZF9hbGwYJiAB",
-            "KAsyLi5saXZla2l0LnByb3RvLlRleHRTdHJlYW1SZWFkZXJSZWFkQWxsQ2Fs",
-            "bGJhY2tIABJBChB0ZXh0X3N0cmVhbV9vcGVuGCcgASgLMiUubGl2ZWtpdC5w",
-            "cm90by5UZXh0U3RyZWFtT3BlbkNhbGxiYWNrSAASUAoYdGV4dF9zdHJlYW1f",
-            "d3JpdGVyX3dyaXRlGCggASgLMiwubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFt",
-            "V3JpdGVyV3JpdGVDYWxsYmFja0gAElAKGHRleHRfc3RyZWFtX3dyaXRlcl9j",
-            "bG9zZRgpIAEoCzIsLmxpdmVraXQucHJvdG8uVGV4dFN0cmVhbVdyaXRlckNs",
-            "b3NlQ2FsbGJhY2tIABI6CglzZW5kX3RleHQYKiABKAsyJS5saXZla2l0LnBy",
-            "b3RvLlN0cmVhbVNlbmRUZXh0Q2FsbGJhY2tIAEIJCgdtZXNzYWdlIh8KDkRp",
-            "c3Bvc2VSZXF1ZXN0Eg0KBWFzeW5jGAEgAigIIiMKD0Rpc3Bvc2VSZXNwb25z",
-            "ZRIQCghhc3luY19pZBgBIAEoBCIjCg9EaXNwb3NlQ2FsbGJhY2sSEAoIYXN5",
-            "bmNfaWQYASACKAQihQEKCUxvZ1JlY29yZBImCgVsZXZlbBgBIAIoDjIXLmxp",
-            "dmVraXQucHJvdG8uTG9nTGV2ZWwSDgoGdGFyZ2V0GAIgAigJEhMKC21vZHVs",
-            "ZV9wYXRoGAMgASgJEgwKBGZpbGUYBCABKAkSDAoEbGluZRgFIAEoDRIPCgdt",
-            "ZXNzYWdlGAYgAigJIjUKCExvZ0JhdGNoEikKB3JlY29yZHMYASADKAsyGC5s",
-            "aXZla2l0LnByb3RvLkxvZ1JlY29yZCIYCgVQYW5pYxIPCgdtZXNzYWdlGAEg",
-            "AigJKlMKCExvZ0xldmVsEg0KCUxPR19FUlJPUhAAEgwKCExPR19XQVJOEAES",
-            "DAoITE9HX0lORk8QAhINCglMT0dfREVCVUcQAxINCglMT0dfVFJBQ0UQBEIQ",
-            "qgINTGl2ZUtpdC5Qcm90bw=="));
+            "ZXZlcnNlU3RyZWFtUmVxdWVzdEgAEkcKFGFwbV9zZXRfc3RyZWFtX2RlbGF5",
+            "GDUgASgLMicubGl2ZWtpdC5wcm90by5BcG1TZXRTdHJlYW1EZWxheVJlcXVl",
+            "c3RIABJWChVieXRlX3JlYWRfaW5jcmVtZW50YWwYNiABKAsyNS5saXZla2l0",
+            "LnByb3RvLkJ5dGVTdHJlYW1SZWFkZXJSZWFkSW5jcmVtZW50YWxSZXF1ZXN0",
+            "SAASRgoNYnl0ZV9yZWFkX2FsbBg3IAEoCzItLmxpdmVraXQucHJvdG8uQnl0",
+            "ZVN0cmVhbVJlYWRlclJlYWRBbGxSZXF1ZXN0SAASTwoSYnl0ZV93cml0ZV90",
+            "b19maWxlGDggASgLMjEubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtUmVhZGVy",
+            "V3JpdGVUb0ZpbGVSZXF1ZXN0SAASVgoVdGV4dF9yZWFkX2luY3JlbWVudGFs",
+            "GDkgASgLMjUubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtUmVhZGVyUmVhZElu",
+            "Y3JlbWVudGFsUmVxdWVzdEgAEkYKDXRleHRfcmVhZF9hbGwYOiABKAsyLS5s",
+            "aXZla2l0LnByb3RvLlRleHRTdHJlYW1SZWFkZXJSZWFkQWxsUmVxdWVzdEgA",
+            "EjkKCXNlbmRfZmlsZRg7IAEoCzIkLmxpdmVraXQucHJvdG8uU3RyZWFtU2Vu",
+            "ZEZpbGVSZXF1ZXN0SAASOQoJc2VuZF90ZXh0GDwgASgLMiQubGl2ZWtpdC5w",
+            "cm90by5TdHJlYW1TZW5kVGV4dFJlcXVlc3RIABJAChBieXRlX3N0cmVhbV9v",
+            "cGVuGD0gASgLMiQubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtT3BlblJlcXVl",
+            "c3RIABJIChFieXRlX3N0cmVhbV93cml0ZRg+IAEoCzIrLmxpdmVraXQucHJv",
+            "dG8uQnl0ZVN0cmVhbVdyaXRlcldyaXRlUmVxdWVzdEgAEkgKEWJ5dGVfc3Ry",
+            "ZWFtX2Nsb3NlGD8gASgLMisubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtV3Jp",
+            "dGVyQ2xvc2VSZXF1ZXN0SAASQAoQdGV4dF9zdHJlYW1fb3BlbhhAIAEoCzIk",
+            "LmxpdmVraXQucHJvdG8uVGV4dFN0cmVhbU9wZW5SZXF1ZXN0SAASSAoRdGV4",
+            "dF9zdHJlYW1fd3JpdGUYQSABKAsyKy5saXZla2l0LnByb3RvLlRleHRTdHJl",
+            "YW1Xcml0ZXJXcml0ZVJlcXVlc3RIABJIChF0ZXh0X3N0cmVhbV9jbG9zZRhC",
+            "IAEoCzIrLmxpdmVraXQucHJvdG8uVGV4dFN0cmVhbVdyaXRlckNsb3NlUmVx",
+            "dWVzdEgAQgkKB21lc3NhZ2UiviQKC0ZmaVJlc3BvbnNlEjEKB2Rpc3Bvc2UY",
+            "AiABKAsyHi5saXZla2l0LnByb3RvLkRpc3Bvc2VSZXNwb25zZUgAEjEKB2Nv",
+            "bm5lY3QYAyABKAsyHi5saXZla2l0LnByb3RvLkNvbm5lY3RSZXNwb25zZUgA",
+            "EjcKCmRpc2Nvbm5lY3QYBCABKAsyIS5saXZla2l0LnByb3RvLkRpc2Nvbm5l",
+            "Y3RSZXNwb25zZUgAEjwKDXB1Ymxpc2hfdHJhY2sYBSABKAsyIy5saXZla2l0",
+            "LnByb3RvLlB1Ymxpc2hUcmFja1Jlc3BvbnNlSAASQAoPdW5wdWJsaXNoX3Ry",
+            "YWNrGAYgASgLMiUubGl2ZWtpdC5wcm90by5VbnB1Ymxpc2hUcmFja1Jlc3Bv",
+            "bnNlSAASOgoMcHVibGlzaF9kYXRhGAcgASgLMiIubGl2ZWtpdC5wcm90by5Q",
+            "dWJsaXNoRGF0YVJlc3BvbnNlSAASPgoOc2V0X3N1YnNjcmliZWQYCCABKAsy",
+            "JC5saXZla2l0LnByb3RvLlNldFN1YnNjcmliZWRSZXNwb25zZUgAEkUKEnNl",
+            "dF9sb2NhbF9tZXRhZGF0YRgJIAEoCzInLmxpdmVraXQucHJvdG8uU2V0TG9j",
+            "YWxNZXRhZGF0YVJlc3BvbnNlSAASPQoOc2V0X2xvY2FsX25hbWUYCiABKAsy",
+            "Iy5saXZla2l0LnByb3RvLlNldExvY2FsTmFtZVJlc3BvbnNlSAASSQoUc2V0",
+            "X2xvY2FsX2F0dHJpYnV0ZXMYCyABKAsyKS5saXZla2l0LnByb3RvLlNldExv",
+            "Y2FsQXR0cmlidXRlc1Jlc3BvbnNlSAASQwoRZ2V0X3Nlc3Npb25fc3RhdHMY",
+            "DCABKAsyJi5saXZla2l0LnByb3RvLkdldFNlc3Npb25TdGF0c1Jlc3BvbnNl",
+            "SAASTAoVcHVibGlzaF90cmFuc2NyaXB0aW9uGA0gASgLMisubGl2ZWtpdC5w",
+            "cm90by5QdWJsaXNoVHJhbnNjcmlwdGlvblJlc3BvbnNlSAASQQoQcHVibGlz",
+            "aF9zaXBfZHRtZhgOIAEoCzIlLmxpdmVraXQucHJvdG8uUHVibGlzaFNpcER0",
+            "bWZSZXNwb25zZUgAEkUKEmNyZWF0ZV92aWRlb190cmFjaxgPIAEoCzInLmxp",
+            "dmVraXQucHJvdG8uQ3JlYXRlVmlkZW9UcmFja1Jlc3BvbnNlSAASRQoSY3Jl",
+            "YXRlX2F1ZGlvX3RyYWNrGBAgASgLMicubGl2ZWtpdC5wcm90by5DcmVhdGVB",
+            "dWRpb1RyYWNrUmVzcG9uc2VIABJBChBsb2NhbF90cmFja19tdXRlGBEgASgL",
+            "MiUubGl2ZWtpdC5wcm90by5Mb2NhbFRyYWNrTXV0ZVJlc3BvbnNlSAASRwoT",
+            "ZW5hYmxlX3JlbW90ZV90cmFjaxgSIAEoCzIoLmxpdmVraXQucHJvdG8uRW5h",
+            "YmxlUmVtb3RlVHJhY2tSZXNwb25zZUgAEjQKCWdldF9zdGF0cxgTIAEoCzIf",
+            "LmxpdmVraXQucHJvdG8uR2V0U3RhdHNSZXNwb25zZUgAEmQKInNldF90cmFj",
+            "a19zdWJzY3JpcHRpb25fcGVybWlzc2lvbnMYLyABKAsyNi5saXZla2l0LnBy",
+            "b3RvLlNldFRyYWNrU3Vic2NyaXB0aW9uUGVybWlzc2lvbnNSZXNwb25zZUgA",
+            "EkEKEG5ld192aWRlb19zdHJlYW0YFCABKAsyJS5saXZla2l0LnByb3RvLk5l",
+            "d1ZpZGVvU3RyZWFtUmVzcG9uc2VIABJBChBuZXdfdmlkZW9fc291cmNlGBUg",
+            "ASgLMiUubGl2ZWtpdC5wcm90by5OZXdWaWRlb1NvdXJjZVJlc3BvbnNlSAAS",
+            "RwoTY2FwdHVyZV92aWRlb19mcmFtZRgWIAEoCzIoLmxpdmVraXQucHJvdG8u",
+            "Q2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZUgAEjwKDXZpZGVvX2NvbnZlcnQY",
+            "FyABKAsyIy5saXZla2l0LnByb3RvLlZpZGVvQ29udmVydFJlc3BvbnNlSAAS",
+            "WgoddmlkZW9fc3RyZWFtX2Zyb21fcGFydGljaXBhbnQYGCABKAsyMS5saXZl",
+            "a2l0LnByb3RvLlZpZGVvU3RyZWFtRnJvbVBhcnRpY2lwYW50UmVzcG9uc2VI",
+            "ABJBChBuZXdfYXVkaW9fc3RyZWFtGBkgASgLMiUubGl2ZWtpdC5wcm90by5O",
+            "ZXdBdWRpb1N0cmVhbVJlc3BvbnNlSAASQQoQbmV3X2F1ZGlvX3NvdXJjZRga",
+            "IAEoCzIlLmxpdmVraXQucHJvdG8uTmV3QXVkaW9Tb3VyY2VSZXNwb25zZUgA",
+            "EkcKE2NhcHR1cmVfYXVkaW9fZnJhbWUYGyABKAsyKC5saXZla2l0LnByb3Rv",
+            "LkNhcHR1cmVBdWRpb0ZyYW1lUmVzcG9uc2VIABJFChJjbGVhcl9hdWRpb19i",
+            "dWZmZXIYHCABKAsyJy5saXZla2l0LnByb3RvLkNsZWFyQXVkaW9CdWZmZXJS",
+            "ZXNwb25zZUgAEkcKE25ld19hdWRpb19yZXNhbXBsZXIYHSABKAsyKC5saXZl",
+            "a2l0LnByb3RvLk5ld0F1ZGlvUmVzYW1wbGVyUmVzcG9uc2VIABJFChJyZW1p",
+            "eF9hbmRfcmVzYW1wbGUYHiABKAsyJy5saXZla2l0LnByb3RvLlJlbWl4QW5k",
+            "UmVzYW1wbGVSZXNwb25zZUgAEloKHWF1ZGlvX3N0cmVhbV9mcm9tX3BhcnRp",
+            "Y2lwYW50GB8gASgLMjEubGl2ZWtpdC5wcm90by5BdWRpb1N0cmVhbUZyb21Q",
+            "YXJ0aWNpcGFudFJlc3BvbnNlSAASKwoEZTJlZRggIAEoCzIbLmxpdmVraXQu",
+            "cHJvdG8uRTJlZVJlc3BvbnNlSAASQwoRbmV3X3NveF9yZXNhbXBsZXIYISAB",
+            "KAsyJi5saXZla2l0LnByb3RvLk5ld1NveFJlc2FtcGxlclJlc3BvbnNlSAAS",
+            "RQoScHVzaF9zb3hfcmVzYW1wbGVyGCIgASgLMicubGl2ZWtpdC5wcm90by5Q",
+            "dXNoU294UmVzYW1wbGVyUmVzcG9uc2VIABJHChNmbHVzaF9zb3hfcmVzYW1w",
+            "bGVyGCMgASgLMigubGl2ZWtpdC5wcm90by5GbHVzaFNveFJlc2FtcGxlclJl",
+            "c3BvbnNlSAASQwoRc2VuZF9jaGF0X21lc3NhZ2UYJCABKAsyJi5saXZla2l0",
+            "LnByb3RvLlNlbmRDaGF0TWVzc2FnZVJlc3BvbnNlSAASOAoLcGVyZm9ybV9y",
+            "cGMYJSABKAsyIS5saXZla2l0LnByb3RvLlBlcmZvcm1ScGNSZXNwb25zZUgA",
+            "EkcKE3JlZ2lzdGVyX3JwY19tZXRob2QYJiABKAsyKC5saXZla2l0LnByb3Rv",
+            "LlJlZ2lzdGVyUnBjTWV0aG9kUmVzcG9uc2VIABJLChV1bnJlZ2lzdGVyX3Jw",
+            "Y19tZXRob2QYJyABKAsyKi5saXZla2l0LnByb3RvLlVucmVnaXN0ZXJScGNN",
+            "ZXRob2RSZXNwb25zZUgAElwKHnJwY19tZXRob2RfaW52b2NhdGlvbl9yZXNw",
+            "b25zZRgoIAEoCzIyLmxpdmVraXQucHJvdG8uUnBjTWV0aG9kSW52b2NhdGlv",
+            "blJlc3BvbnNlUmVzcG9uc2VIABJeCh9lbmFibGVfcmVtb3RlX3RyYWNrX3B1",
+            "YmxpY2F0aW9uGCkgASgLMjMubGl2ZWtpdC5wcm90by5FbmFibGVSZW1vdGVU",
+            "cmFja1B1YmxpY2F0aW9uUmVzcG9uc2VIABJxCil1cGRhdGVfcmVtb3RlX3Ry",
+            "YWNrX3B1YmxpY2F0aW9uX2RpbWVuc2lvbhgqIAEoCzI8LmxpdmVraXQucHJv",
+            "dG8uVXBkYXRlUmVtb3RlVHJhY2tQdWJsaWNhdGlvbkRpbWVuc2lvblJlc3Bv",
+            "bnNlSAASRQoSc2VuZF9zdHJlYW1faGVhZGVyGCsgASgLMicubGl2ZWtpdC5w",
+            "cm90by5TZW5kU3RyZWFtSGVhZGVyUmVzcG9uc2VIABJDChFzZW5kX3N0cmVh",
+            "bV9jaHVuaxgsIAEoCzImLmxpdmVraXQucHJvdG8uU2VuZFN0cmVhbUNodW5r",
+            "UmVzcG9uc2VIABJHChNzZW5kX3N0cmVhbV90cmFpbGVyGC0gASgLMigubGl2",
+            "ZWtpdC5wcm90by5TZW5kU3RyZWFtVHJhaWxlclJlc3BvbnNlSAASeQouc2V0",
+            "X2RhdGFfY2hhbm5lbF9idWZmZXJlZF9hbW91bnRfbG93X3RocmVzaG9sZBgu",
+            "IAEoCzI/LmxpdmVraXQucHJvdG8uU2V0RGF0YUNoYW5uZWxCdWZmZXJlZEFt",
+            "b3VudExvd1RocmVzaG9sZFJlc3BvbnNlSAASUAoYbG9hZF9hdWRpb19maWx0",
+            "ZXJfcGx1Z2luGDAgASgLMiwubGl2ZWtpdC5wcm90by5Mb2FkQXVkaW9GaWx0",
+            "ZXJQbHVnaW5SZXNwb25zZUgAEjAKB25ld19hcG0YMSABKAsyHS5saXZla2l0",
+            "LnByb3RvLk5ld0FwbVJlc3BvbnNlSAASRQoSYXBtX3Byb2Nlc3Nfc3RyZWFt",
+            "GDIgASgLMicubGl2ZWtpdC5wcm90by5BcG1Qcm9jZXNzU3RyZWFtUmVzcG9u",
+            "c2VIABJUChphcG1fcHJvY2Vzc19yZXZlcnNlX3N0cmVhbRgzIAEoCzIuLmxp",
+            "dmVraXQucHJvdG8uQXBtUHJvY2Vzc1JldmVyc2VTdHJlYW1SZXNwb25zZUgA",
+            "EkgKFGFwbV9zZXRfc3RyZWFtX2RlbGF5GDQgASgLMigubGl2ZWtpdC5wcm90",
+            "by5BcG1TZXRTdHJlYW1EZWxheVJlc3BvbnNlSAASVwoVYnl0ZV9yZWFkX2lu",
+            "Y3JlbWVudGFsGDUgASgLMjYubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtUmVh",
+            "ZGVyUmVhZEluY3JlbWVudGFsUmVzcG9uc2VIABJHCg1ieXRlX3JlYWRfYWxs",
+            "GDYgASgLMi4ubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtUmVhZGVyUmVhZEFs",
+            "bFJlc3BvbnNlSAASUAoSYnl0ZV93cml0ZV90b19maWxlGDcgASgLMjIubGl2",
+            "ZWtpdC5wcm90by5CeXRlU3RyZWFtUmVhZGVyV3JpdGVUb0ZpbGVSZXNwb25z",
+            "ZUgAElcKFXRleHRfcmVhZF9pbmNyZW1lbnRhbBg4IAEoCzI2LmxpdmVraXQu",
+            "cHJvdG8uVGV4dFN0cmVhbVJlYWRlclJlYWRJbmNyZW1lbnRhbFJlc3BvbnNl",
+            "SAASRwoNdGV4dF9yZWFkX2FsbBg5IAEoCzIuLmxpdmVraXQucHJvdG8uVGV4",
+            "dFN0cmVhbVJlYWRlclJlYWRBbGxSZXNwb25zZUgAEjoKCXNlbmRfZmlsZRg6",
+            "IAEoCzIlLmxpdmVraXQucHJvdG8uU3RyZWFtU2VuZEZpbGVSZXNwb25zZUgA",
+            "EjoKCXNlbmRfdGV4dBg7IAEoCzIlLmxpdmVraXQucHJvdG8uU3RyZWFtU2Vu",
+            "ZFRleHRSZXNwb25zZUgAEkEKEGJ5dGVfc3RyZWFtX29wZW4YPCABKAsyJS5s",
+            "aXZla2l0LnByb3RvLkJ5dGVTdHJlYW1PcGVuUmVzcG9uc2VIABJJChFieXRl",
+            "X3N0cmVhbV93cml0ZRg9IAEoCzIsLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVh",
+            "bVdyaXRlcldyaXRlUmVzcG9uc2VIABJJChFieXRlX3N0cmVhbV9jbG9zZRg+",
+            "IAEoCzIsLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVdyaXRlckNsb3NlUmVz",
+            "cG9uc2VIABJBChB0ZXh0X3N0cmVhbV9vcGVuGD8gASgLMiUubGl2ZWtpdC5w",
+            "cm90by5UZXh0U3RyZWFtT3BlblJlc3BvbnNlSAASSQoRdGV4dF9zdHJlYW1f",
+            "d3JpdGUYQCABKAsyLC5saXZla2l0LnByb3RvLlRleHRTdHJlYW1Xcml0ZXJX",
+            "cml0ZVJlc3BvbnNlSAASSQoRdGV4dF9zdHJlYW1fY2xvc2UYQSABKAsyLC5s",
+            "aXZla2l0LnByb3RvLlRleHRTdHJlYW1Xcml0ZXJDbG9zZVJlc3BvbnNlSABC",
+            "CQoHbWVzc2FnZSLHFAoIRmZpRXZlbnQSLgoKcm9vbV9ldmVudBgBIAEoCzIY",
+            "LmxpdmVraXQucHJvdG8uUm9vbUV2ZW50SAASMAoLdHJhY2tfZXZlbnQYAiAB",
+            "KAsyGS5saXZla2l0LnByb3RvLlRyYWNrRXZlbnRIABI9ChJ2aWRlb19zdHJl",
+            "YW1fZXZlbnQYAyABKAsyHy5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtRXZl",
+            "bnRIABI9ChJhdWRpb19zdHJlYW1fZXZlbnQYBCABKAsyHy5saXZla2l0LnBy",
+            "b3RvLkF1ZGlvU3RyZWFtRXZlbnRIABIxCgdjb25uZWN0GAUgASgLMh4ubGl2",
+            "ZWtpdC5wcm90by5Db25uZWN0Q2FsbGJhY2tIABI3CgpkaXNjb25uZWN0GAcg",
+            "ASgLMiEubGl2ZWtpdC5wcm90by5EaXNjb25uZWN0Q2FsbGJhY2tIABIxCgdk",
+            "aXNwb3NlGAggASgLMh4ubGl2ZWtpdC5wcm90by5EaXNwb3NlQ2FsbGJhY2tI",
+            "ABI8Cg1wdWJsaXNoX3RyYWNrGAkgASgLMiMubGl2ZWtpdC5wcm90by5QdWJs",
+            "aXNoVHJhY2tDYWxsYmFja0gAEkAKD3VucHVibGlzaF90cmFjaxgKIAEoCzIl",
+            "LmxpdmVraXQucHJvdG8uVW5wdWJsaXNoVHJhY2tDYWxsYmFja0gAEjoKDHB1",
+            "Ymxpc2hfZGF0YRgLIAEoCzIiLmxpdmVraXQucHJvdG8uUHVibGlzaERhdGFD",
+            "YWxsYmFja0gAEkwKFXB1Ymxpc2hfdHJhbnNjcmlwdGlvbhgMIAEoCzIrLmxp",
+            "dmVraXQucHJvdG8uUHVibGlzaFRyYW5zY3JpcHRpb25DYWxsYmFja0gAEkcK",
+            "E2NhcHR1cmVfYXVkaW9fZnJhbWUYDSABKAsyKC5saXZla2l0LnByb3RvLkNh",
+            "cHR1cmVBdWRpb0ZyYW1lQ2FsbGJhY2tIABJFChJzZXRfbG9jYWxfbWV0YWRh",
+            "dGEYDiABKAsyJy5saXZla2l0LnByb3RvLlNldExvY2FsTWV0YWRhdGFDYWxs",
+            "YmFja0gAEj0KDnNldF9sb2NhbF9uYW1lGA8gASgLMiMubGl2ZWtpdC5wcm90",
+            "by5TZXRMb2NhbE5hbWVDYWxsYmFja0gAEkkKFHNldF9sb2NhbF9hdHRyaWJ1",
+            "dGVzGBAgASgLMikubGl2ZWtpdC5wcm90by5TZXRMb2NhbEF0dHJpYnV0ZXND",
+            "YWxsYmFja0gAEjQKCWdldF9zdGF0cxgRIAEoCzIfLmxpdmVraXQucHJvdG8u",
+            "R2V0U3RhdHNDYWxsYmFja0gAEicKBGxvZ3MYEiABKAsyFy5saXZla2l0LnBy",
+            "b3RvLkxvZ0JhdGNoSAASQwoRZ2V0X3Nlc3Npb25fc3RhdHMYEyABKAsyJi5s",
+            "aXZla2l0LnByb3RvLkdldFNlc3Npb25TdGF0c0NhbGxiYWNrSAASJQoFcGFu",
+            "aWMYFCABKAsyFC5saXZla2l0LnByb3RvLlBhbmljSAASQQoQcHVibGlzaF9z",
+            "aXBfZHRtZhgVIAEoCzIlLmxpdmVraXQucHJvdG8uUHVibGlzaFNpcER0bWZD",
+            "YWxsYmFja0gAEj4KDGNoYXRfbWVzc2FnZRgWIAEoCzImLmxpdmVraXQucHJv",
+            "dG8uU2VuZENoYXRNZXNzYWdlQ2FsbGJhY2tIABI4CgtwZXJmb3JtX3JwYxgX",
+            "IAEoCzIhLmxpdmVraXQucHJvdG8uUGVyZm9ybVJwY0NhbGxiYWNrSAASSAoV",
+            "cnBjX21ldGhvZF9pbnZvY2F0aW9uGBggASgLMicubGl2ZWtpdC5wcm90by5S",
+            "cGNNZXRob2RJbnZvY2F0aW9uRXZlbnRIABJFChJzZW5kX3N0cmVhbV9oZWFk",
+            "ZXIYGSABKAsyJy5saXZla2l0LnByb3RvLlNlbmRTdHJlYW1IZWFkZXJDYWxs",
+            "YmFja0gAEkMKEXNlbmRfc3RyZWFtX2NodW5rGBogASgLMiYubGl2ZWtpdC5w",
+            "cm90by5TZW5kU3RyZWFtQ2h1bmtDYWxsYmFja0gAEkcKE3NlbmRfc3RyZWFt",
+            "X3RyYWlsZXIYGyABKAsyKC5saXZla2l0LnByb3RvLlNlbmRTdHJlYW1UcmFp",
+            "bGVyQ2FsbGJhY2tIABJIChhieXRlX3N0cmVhbV9yZWFkZXJfZXZlbnQYHCAB",
+            "KAsyJC5saXZla2l0LnByb3RvLkJ5dGVTdHJlYW1SZWFkZXJFdmVudEgAElUK",
+            "G2J5dGVfc3RyZWFtX3JlYWRlcl9yZWFkX2FsbBgdIAEoCzIuLmxpdmVraXQu",
+            "cHJvdG8uQnl0ZVN0cmVhbVJlYWRlclJlYWRBbGxDYWxsYmFja0gAEl4KIGJ5",
+            "dGVfc3RyZWFtX3JlYWRlcl93cml0ZV90b19maWxlGB4gASgLMjIubGl2ZWtp",
+            "dC5wcm90by5CeXRlU3RyZWFtUmVhZGVyV3JpdGVUb0ZpbGVDYWxsYmFja0gA",
+            "EkEKEGJ5dGVfc3RyZWFtX29wZW4YHyABKAsyJS5saXZla2l0LnByb3RvLkJ5",
+            "dGVTdHJlYW1PcGVuQ2FsbGJhY2tIABJQChhieXRlX3N0cmVhbV93cml0ZXJf",
+            "d3JpdGUYICABKAsyLC5saXZla2l0LnByb3RvLkJ5dGVTdHJlYW1Xcml0ZXJX",
+            "cml0ZUNhbGxiYWNrSAASUAoYYnl0ZV9zdHJlYW1fd3JpdGVyX2Nsb3NlGCEg",
+            "ASgLMiwubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtV3JpdGVyQ2xvc2VDYWxs",
+            "YmFja0gAEjoKCXNlbmRfZmlsZRgiIAEoCzIlLmxpdmVraXQucHJvdG8uU3Ry",
+            "ZWFtU2VuZEZpbGVDYWxsYmFja0gAEkgKGHRleHRfc3RyZWFtX3JlYWRlcl9l",
+            "dmVudBgjIAEoCzIkLmxpdmVraXQucHJvdG8uVGV4dFN0cmVhbVJlYWRlckV2",
+            "ZW50SAASVQobdGV4dF9zdHJlYW1fcmVhZGVyX3JlYWRfYWxsGCQgASgLMi4u",
+            "bGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtUmVhZGVyUmVhZEFsbENhbGxiYWNr",
+            "SAASQQoQdGV4dF9zdHJlYW1fb3BlbhglIAEoCzIlLmxpdmVraXQucHJvdG8u",
+            "VGV4dFN0cmVhbU9wZW5DYWxsYmFja0gAElAKGHRleHRfc3RyZWFtX3dyaXRl",
+            "cl93cml0ZRgmIAEoCzIsLmxpdmVraXQucHJvdG8uVGV4dFN0cmVhbVdyaXRl",
+            "cldyaXRlQ2FsbGJhY2tIABJQChh0ZXh0X3N0cmVhbV93cml0ZXJfY2xvc2UY",
+            "JyABKAsyLC5saXZla2l0LnByb3RvLlRleHRTdHJlYW1Xcml0ZXJDbG9zZUNh",
+            "bGxiYWNrSAASOgoJc2VuZF90ZXh0GCggASgLMiUubGl2ZWtpdC5wcm90by5T",
+            "dHJlYW1TZW5kVGV4dENhbGxiYWNrSABCCQoHbWVzc2FnZSIfCg5EaXNwb3Nl",
+            "UmVxdWVzdBINCgVhc3luYxgBIAIoCCIjCg9EaXNwb3NlUmVzcG9uc2USEAoI",
+            "YXN5bmNfaWQYASABKAQiIwoPRGlzcG9zZUNhbGxiYWNrEhAKCGFzeW5jX2lk",
+            "GAEgAigEIoUBCglMb2dSZWNvcmQSJgoFbGV2ZWwYASACKA4yFy5saXZla2l0",
+            "LnByb3RvLkxvZ0xldmVsEg4KBnRhcmdldBgCIAIoCRITCgttb2R1bGVfcGF0",
+            "aBgDIAEoCRIMCgRmaWxlGAQgASgJEgwKBGxpbmUYBSABKA0SDwoHbWVzc2Fn",
+            "ZRgGIAIoCSI1CghMb2dCYXRjaBIpCgdyZWNvcmRzGAEgAygLMhgubGl2ZWtp",
+            "dC5wcm90by5Mb2dSZWNvcmQiGAoFUGFuaWMSDwoHbWVzc2FnZRgBIAIoCSpT",
+            "CghMb2dMZXZlbBINCglMT0dfRVJST1IQABIMCghMT0dfV0FSThABEgwKCExP",
+            "R19JTkZPEAISDQoJTE9HX0RFQlVHEAMSDQoJTE9HX1RSQUNFEARCEKoCDUxp",
+            "dmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, global::LiveKit.Proto.TrackPublicationReflection.Descriptor, global::LiveKit.Proto.RoomReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.AudioFrameReflection.Descriptor, global::LiveKit.Proto.RpcReflection.Descriptor, global::LiveKit.Proto.DataStreamReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.LogLevel), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "E2Ee", "AudioStreamFromParticipant", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "EditChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "RegisterTopic", "UnregisterTopic", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "AudioStreamFromParticipant", "E2Ee", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "RegisterTopic", "UnregisterTopic", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "PublishTranscription", "CaptureAudioFrame", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetStats", "Logs", "GetSessionStats", "Panic", "PublishSipDtmf", "ChatMessage", "PerformRpc", "RpcMethodInvocation", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "ByteStreamOpened", "ByteStreamReaderEvent", "ByteStreamReaderReadAll", "ByteStreamReaderWriteToFile", "ByteStreamOpen", "ByteStreamWriterWrite", "ByteStreamWriterClose", "SendFile", "TextStreamOpened", "TextStreamReaderEvent", "TextStreamReaderReadAll", "TextStreamOpen", "TextStreamWriterWrite", "TextStreamWriterClose", "SendText" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "E2Ee", "AudioStreamFromParticipant", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "EditChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "AudioStreamFromParticipant", "E2Ee", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "PublishTranscription", "CaptureAudioFrame", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetStats", "Logs", "GetSessionStats", "Panic", "PublishSipDtmf", "ChatMessage", "PerformRpc", "RpcMethodInvocation", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "ByteStreamReaderEvent", "ByteStreamReaderReadAll", "ByteStreamReaderWriteToFile", "ByteStreamOpen", "ByteStreamWriterWrite", "ByteStreamWriterClose", "SendFile", "TextStreamReaderEvent", "TextStreamReaderReadAll", "TextStreamOpen", "TextStreamWriterWrite", "TextStreamWriterClose", "SendText" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeRequest), global::LiveKit.Proto.DisposeRequest.Parser, new[]{ "Async" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeResponse), global::LiveKit.Proto.DisposeResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeCallback), global::LiveKit.Proto.DisposeCallback.Parser, new[]{ "AsyncId" }, null, null, null, null),
@@ -532,11 +526,8 @@ namespace LiveKit.Proto {
         case MessageOneofCase.ApmProcessReverseStream:
           ApmProcessReverseStream = other.ApmProcessReverseStream.Clone();
           break;
-        case MessageOneofCase.RegisterTopic:
-          RegisterTopic = other.RegisterTopic.Clone();
-          break;
-        case MessageOneofCase.UnregisterTopic:
-          UnregisterTopic = other.UnregisterTopic.Clone();
+        case MessageOneofCase.ApmSetStreamDelay:
+          ApmSetStreamDelay = other.ApmSetStreamDelay.Clone();
           break;
         case MessageOneofCase.ByteReadIncremental:
           ByteReadIncremental = other.ByteReadIncremental.Clone();
@@ -1227,35 +1218,23 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "register_topic" field.</summary>
-    public const int RegisterTopicFieldNumber = 53;
-    /// <summary>
-    /// Data Streams (high level)
-    /// </summary>
+    /// <summary>Field number for the "apm_set_stream_delay" field.</summary>
+    public const int ApmSetStreamDelayFieldNumber = 53;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.StreamRegisterTopicRequest RegisterTopic {
-      get { return messageCase_ == MessageOneofCase.RegisterTopic ? (global::LiveKit.Proto.StreamRegisterTopicRequest) message_ : null; }
+    public global::LiveKit.Proto.ApmSetStreamDelayRequest ApmSetStreamDelay {
+      get { return messageCase_ == MessageOneofCase.ApmSetStreamDelay ? (global::LiveKit.Proto.ApmSetStreamDelayRequest) message_ : null; }
       set {
         message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.RegisterTopic;
-      }
-    }
-
-    /// <summary>Field number for the "unregister_topic" field.</summary>
-    public const int UnregisterTopicFieldNumber = 54;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.StreamUnregisterTopicRequest UnregisterTopic {
-      get { return messageCase_ == MessageOneofCase.UnregisterTopic ? (global::LiveKit.Proto.StreamUnregisterTopicRequest) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.UnregisterTopic;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ApmSetStreamDelay;
       }
     }
 
     /// <summary>Field number for the "byte_read_incremental" field.</summary>
-    public const int ByteReadIncrementalFieldNumber = 55;
+    public const int ByteReadIncrementalFieldNumber = 54;
+    /// <summary>
+    /// Data Streams (high level)
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderReadIncrementalRequest ByteReadIncremental {
@@ -1267,7 +1246,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_read_all" field.</summary>
-    public const int ByteReadAllFieldNumber = 56;
+    public const int ByteReadAllFieldNumber = 55;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderReadAllRequest ByteReadAll {
@@ -1279,7 +1258,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_write_to_file" field.</summary>
-    public const int ByteWriteToFileFieldNumber = 57;
+    public const int ByteWriteToFileFieldNumber = 56;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderWriteToFileRequest ByteWriteToFile {
@@ -1291,7 +1270,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_read_incremental" field.</summary>
-    public const int TextReadIncrementalFieldNumber = 58;
+    public const int TextReadIncrementalFieldNumber = 57;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamReaderReadIncrementalRequest TextReadIncremental {
@@ -1303,7 +1282,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_read_all" field.</summary>
-    public const int TextReadAllFieldNumber = 59;
+    public const int TextReadAllFieldNumber = 58;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamReaderReadAllRequest TextReadAll {
@@ -1315,7 +1294,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "send_file" field.</summary>
-    public const int SendFileFieldNumber = 60;
+    public const int SendFileFieldNumber = 59;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamSendFileRequest SendFile {
@@ -1327,7 +1306,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "send_text" field.</summary>
-    public const int SendTextFieldNumber = 61;
+    public const int SendTextFieldNumber = 60;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamSendTextRequest SendText {
@@ -1339,7 +1318,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_open" field.</summary>
-    public const int ByteStreamOpenFieldNumber = 62;
+    public const int ByteStreamOpenFieldNumber = 61;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamOpenRequest ByteStreamOpen {
@@ -1351,7 +1330,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_write" field.</summary>
-    public const int ByteStreamWriteFieldNumber = 63;
+    public const int ByteStreamWriteFieldNumber = 62;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamWriterWriteRequest ByteStreamWrite {
@@ -1363,7 +1342,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_close" field.</summary>
-    public const int ByteStreamCloseFieldNumber = 64;
+    public const int ByteStreamCloseFieldNumber = 63;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamWriterCloseRequest ByteStreamClose {
@@ -1375,7 +1354,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_open" field.</summary>
-    public const int TextStreamOpenFieldNumber = 65;
+    public const int TextStreamOpenFieldNumber = 64;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamOpenRequest TextStreamOpen {
@@ -1387,7 +1366,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_write" field.</summary>
-    public const int TextStreamWriteFieldNumber = 66;
+    public const int TextStreamWriteFieldNumber = 65;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamWriterWriteRequest TextStreamWrite {
@@ -1399,7 +1378,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_close" field.</summary>
-    public const int TextStreamCloseFieldNumber = 67;
+    public const int TextStreamCloseFieldNumber = 66;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamWriterCloseRequest TextStreamClose {
@@ -1465,21 +1444,20 @@ namespace LiveKit.Proto {
       NewApm = 50,
       ApmProcessStream = 51,
       ApmProcessReverseStream = 52,
-      RegisterTopic = 53,
-      UnregisterTopic = 54,
-      ByteReadIncremental = 55,
-      ByteReadAll = 56,
-      ByteWriteToFile = 57,
-      TextReadIncremental = 58,
-      TextReadAll = 59,
-      SendFile = 60,
-      SendText = 61,
-      ByteStreamOpen = 62,
-      ByteStreamWrite = 63,
-      ByteStreamClose = 64,
-      TextStreamOpen = 65,
-      TextStreamWrite = 66,
-      TextStreamClose = 67,
+      ApmSetStreamDelay = 53,
+      ByteReadIncremental = 54,
+      ByteReadAll = 55,
+      ByteWriteToFile = 56,
+      TextReadIncremental = 57,
+      TextReadAll = 58,
+      SendFile = 59,
+      SendText = 60,
+      ByteStreamOpen = 61,
+      ByteStreamWrite = 62,
+      ByteStreamClose = 63,
+      TextStreamOpen = 64,
+      TextStreamWrite = 65,
+      TextStreamClose = 66,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1561,8 +1539,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(NewApm, other.NewApm)) return false;
       if (!object.Equals(ApmProcessStream, other.ApmProcessStream)) return false;
       if (!object.Equals(ApmProcessReverseStream, other.ApmProcessReverseStream)) return false;
-      if (!object.Equals(RegisterTopic, other.RegisterTopic)) return false;
-      if (!object.Equals(UnregisterTopic, other.UnregisterTopic)) return false;
+      if (!object.Equals(ApmSetStreamDelay, other.ApmSetStreamDelay)) return false;
       if (!object.Equals(ByteReadIncremental, other.ByteReadIncremental)) return false;
       if (!object.Equals(ByteReadAll, other.ByteReadAll)) return false;
       if (!object.Equals(ByteWriteToFile, other.ByteWriteToFile)) return false;
@@ -1635,8 +1612,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.NewApm) hash ^= NewApm.GetHashCode();
       if (messageCase_ == MessageOneofCase.ApmProcessStream) hash ^= ApmProcessStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.ApmProcessReverseStream) hash ^= ApmProcessReverseStream.GetHashCode();
-      if (messageCase_ == MessageOneofCase.RegisterTopic) hash ^= RegisterTopic.GetHashCode();
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) hash ^= UnregisterTopic.GetHashCode();
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) hash ^= ApmSetStreamDelay.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) hash ^= ByteReadIncremental.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteReadAll) hash ^= ByteReadAll.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteWriteToFile) hash ^= ByteWriteToFile.GetHashCode();
@@ -1873,64 +1849,60 @@ namespace LiveKit.Proto {
         output.WriteRawTag(162, 3);
         output.WriteMessage(ApmProcessReverseStream);
       }
-      if (messageCase_ == MessageOneofCase.RegisterTopic) {
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
         output.WriteRawTag(170, 3);
-        output.WriteMessage(RegisterTopic);
-      }
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-        output.WriteRawTag(178, 3);
-        output.WriteMessage(UnregisterTopic);
+        output.WriteMessage(ApmSetStreamDelay);
       }
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
-        output.WriteRawTag(186, 3);
+        output.WriteRawTag(178, 3);
         output.WriteMessage(ByteReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.ByteReadAll) {
-        output.WriteRawTag(194, 3);
+        output.WriteRawTag(186, 3);
         output.WriteMessage(ByteReadAll);
       }
       if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
-        output.WriteRawTag(202, 3);
+        output.WriteRawTag(194, 3);
         output.WriteMessage(ByteWriteToFile);
       }
       if (messageCase_ == MessageOneofCase.TextReadIncremental) {
-        output.WriteRawTag(210, 3);
+        output.WriteRawTag(202, 3);
         output.WriteMessage(TextReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.TextReadAll) {
-        output.WriteRawTag(218, 3);
+        output.WriteRawTag(210, 3);
         output.WriteMessage(TextReadAll);
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
-        output.WriteRawTag(226, 3);
+        output.WriteRawTag(218, 3);
         output.WriteMessage(SendFile);
       }
       if (messageCase_ == MessageOneofCase.SendText) {
-        output.WriteRawTag(234, 3);
+        output.WriteRawTag(226, 3);
         output.WriteMessage(SendText);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
-        output.WriteRawTag(242, 3);
+        output.WriteRawTag(234, 3);
         output.WriteMessage(ByteStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
-        output.WriteRawTag(250, 3);
+        output.WriteRawTag(242, 3);
         output.WriteMessage(ByteStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamClose) {
-        output.WriteRawTag(130, 4);
+        output.WriteRawTag(250, 3);
         output.WriteMessage(ByteStreamClose);
       }
       if (messageCase_ == MessageOneofCase.TextStreamOpen) {
-        output.WriteRawTag(138, 4);
+        output.WriteRawTag(130, 4);
         output.WriteMessage(TextStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWrite) {
-        output.WriteRawTag(146, 4);
+        output.WriteRawTag(138, 4);
         output.WriteMessage(TextStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.TextStreamClose) {
-        output.WriteRawTag(154, 4);
+        output.WriteRawTag(146, 4);
         output.WriteMessage(TextStreamClose);
       }
       if (_unknownFields != null) {
@@ -2147,64 +2119,60 @@ namespace LiveKit.Proto {
         output.WriteRawTag(162, 3);
         output.WriteMessage(ApmProcessReverseStream);
       }
-      if (messageCase_ == MessageOneofCase.RegisterTopic) {
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
         output.WriteRawTag(170, 3);
-        output.WriteMessage(RegisterTopic);
-      }
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-        output.WriteRawTag(178, 3);
-        output.WriteMessage(UnregisterTopic);
+        output.WriteMessage(ApmSetStreamDelay);
       }
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
-        output.WriteRawTag(186, 3);
+        output.WriteRawTag(178, 3);
         output.WriteMessage(ByteReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.ByteReadAll) {
-        output.WriteRawTag(194, 3);
+        output.WriteRawTag(186, 3);
         output.WriteMessage(ByteReadAll);
       }
       if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
-        output.WriteRawTag(202, 3);
+        output.WriteRawTag(194, 3);
         output.WriteMessage(ByteWriteToFile);
       }
       if (messageCase_ == MessageOneofCase.TextReadIncremental) {
-        output.WriteRawTag(210, 3);
+        output.WriteRawTag(202, 3);
         output.WriteMessage(TextReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.TextReadAll) {
-        output.WriteRawTag(218, 3);
+        output.WriteRawTag(210, 3);
         output.WriteMessage(TextReadAll);
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
-        output.WriteRawTag(226, 3);
+        output.WriteRawTag(218, 3);
         output.WriteMessage(SendFile);
       }
       if (messageCase_ == MessageOneofCase.SendText) {
-        output.WriteRawTag(234, 3);
+        output.WriteRawTag(226, 3);
         output.WriteMessage(SendText);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
-        output.WriteRawTag(242, 3);
+        output.WriteRawTag(234, 3);
         output.WriteMessage(ByteStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
-        output.WriteRawTag(250, 3);
+        output.WriteRawTag(242, 3);
         output.WriteMessage(ByteStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamClose) {
-        output.WriteRawTag(130, 4);
+        output.WriteRawTag(250, 3);
         output.WriteMessage(ByteStreamClose);
       }
       if (messageCase_ == MessageOneofCase.TextStreamOpen) {
-        output.WriteRawTag(138, 4);
+        output.WriteRawTag(130, 4);
         output.WriteMessage(TextStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWrite) {
-        output.WriteRawTag(146, 4);
+        output.WriteRawTag(138, 4);
         output.WriteMessage(TextStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.TextStreamClose) {
-        output.WriteRawTag(154, 4);
+        output.WriteRawTag(146, 4);
         output.WriteMessage(TextStreamClose);
       }
       if (_unknownFields != null) {
@@ -2370,11 +2338,8 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.ApmProcessReverseStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(ApmProcessReverseStream);
       }
-      if (messageCase_ == MessageOneofCase.RegisterTopic) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(RegisterTopic);
-      }
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(UnregisterTopic);
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ApmSetStreamDelay);
       }
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(ByteReadIncremental);
@@ -2734,17 +2699,11 @@ namespace LiveKit.Proto {
           }
           ApmProcessReverseStream.MergeFrom(other.ApmProcessReverseStream);
           break;
-        case MessageOneofCase.RegisterTopic:
-          if (RegisterTopic == null) {
-            RegisterTopic = new global::LiveKit.Proto.StreamRegisterTopicRequest();
+        case MessageOneofCase.ApmSetStreamDelay:
+          if (ApmSetStreamDelay == null) {
+            ApmSetStreamDelay = new global::LiveKit.Proto.ApmSetStreamDelayRequest();
           }
-          RegisterTopic.MergeFrom(other.RegisterTopic);
-          break;
-        case MessageOneofCase.UnregisterTopic:
-          if (UnregisterTopic == null) {
-            UnregisterTopic = new global::LiveKit.Proto.StreamUnregisterTopicRequest();
-          }
-          UnregisterTopic.MergeFrom(other.UnregisterTopic);
+          ApmSetStreamDelay.MergeFrom(other.ApmSetStreamDelay);
           break;
         case MessageOneofCase.ByteReadIncremental:
           if (ByteReadIncremental == null) {
@@ -3305,24 +3264,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 426: {
-            global::LiveKit.Proto.StreamRegisterTopicRequest subBuilder = new global::LiveKit.Proto.StreamRegisterTopicRequest();
-            if (messageCase_ == MessageOneofCase.RegisterTopic) {
-              subBuilder.MergeFrom(RegisterTopic);
+            global::LiveKit.Proto.ApmSetStreamDelayRequest subBuilder = new global::LiveKit.Proto.ApmSetStreamDelayRequest();
+            if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
+              subBuilder.MergeFrom(ApmSetStreamDelay);
             }
             input.ReadMessage(subBuilder);
-            RegisterTopic = subBuilder;
+            ApmSetStreamDelay = subBuilder;
             break;
           }
           case 434: {
-            global::LiveKit.Proto.StreamUnregisterTopicRequest subBuilder = new global::LiveKit.Proto.StreamUnregisterTopicRequest();
-            if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-              subBuilder.MergeFrom(UnregisterTopic);
-            }
-            input.ReadMessage(subBuilder);
-            UnregisterTopic = subBuilder;
-            break;
-          }
-          case 442: {
             global::LiveKit.Proto.ByteStreamReaderReadIncrementalRequest subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadIncrementalRequest();
             if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
               subBuilder.MergeFrom(ByteReadIncremental);
@@ -3331,7 +3281,7 @@ namespace LiveKit.Proto {
             ByteReadIncremental = subBuilder;
             break;
           }
-          case 450: {
+          case 442: {
             global::LiveKit.Proto.ByteStreamReaderReadAllRequest subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadAllRequest();
             if (messageCase_ == MessageOneofCase.ByteReadAll) {
               subBuilder.MergeFrom(ByteReadAll);
@@ -3340,7 +3290,7 @@ namespace LiveKit.Proto {
             ByteReadAll = subBuilder;
             break;
           }
-          case 458: {
+          case 450: {
             global::LiveKit.Proto.ByteStreamReaderWriteToFileRequest subBuilder = new global::LiveKit.Proto.ByteStreamReaderWriteToFileRequest();
             if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
               subBuilder.MergeFrom(ByteWriteToFile);
@@ -3349,7 +3299,7 @@ namespace LiveKit.Proto {
             ByteWriteToFile = subBuilder;
             break;
           }
-          case 466: {
+          case 458: {
             global::LiveKit.Proto.TextStreamReaderReadIncrementalRequest subBuilder = new global::LiveKit.Proto.TextStreamReaderReadIncrementalRequest();
             if (messageCase_ == MessageOneofCase.TextReadIncremental) {
               subBuilder.MergeFrom(TextReadIncremental);
@@ -3358,7 +3308,7 @@ namespace LiveKit.Proto {
             TextReadIncremental = subBuilder;
             break;
           }
-          case 474: {
+          case 466: {
             global::LiveKit.Proto.TextStreamReaderReadAllRequest subBuilder = new global::LiveKit.Proto.TextStreamReaderReadAllRequest();
             if (messageCase_ == MessageOneofCase.TextReadAll) {
               subBuilder.MergeFrom(TextReadAll);
@@ -3367,7 +3317,7 @@ namespace LiveKit.Proto {
             TextReadAll = subBuilder;
             break;
           }
-          case 482: {
+          case 474: {
             global::LiveKit.Proto.StreamSendFileRequest subBuilder = new global::LiveKit.Proto.StreamSendFileRequest();
             if (messageCase_ == MessageOneofCase.SendFile) {
               subBuilder.MergeFrom(SendFile);
@@ -3376,7 +3326,7 @@ namespace LiveKit.Proto {
             SendFile = subBuilder;
             break;
           }
-          case 490: {
+          case 482: {
             global::LiveKit.Proto.StreamSendTextRequest subBuilder = new global::LiveKit.Proto.StreamSendTextRequest();
             if (messageCase_ == MessageOneofCase.SendText) {
               subBuilder.MergeFrom(SendText);
@@ -3385,7 +3335,7 @@ namespace LiveKit.Proto {
             SendText = subBuilder;
             break;
           }
-          case 498: {
+          case 490: {
             global::LiveKit.Proto.ByteStreamOpenRequest subBuilder = new global::LiveKit.Proto.ByteStreamOpenRequest();
             if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
               subBuilder.MergeFrom(ByteStreamOpen);
@@ -3394,7 +3344,7 @@ namespace LiveKit.Proto {
             ByteStreamOpen = subBuilder;
             break;
           }
-          case 506: {
+          case 498: {
             global::LiveKit.Proto.ByteStreamWriterWriteRequest subBuilder = new global::LiveKit.Proto.ByteStreamWriterWriteRequest();
             if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
               subBuilder.MergeFrom(ByteStreamWrite);
@@ -3403,7 +3353,7 @@ namespace LiveKit.Proto {
             ByteStreamWrite = subBuilder;
             break;
           }
-          case 514: {
+          case 506: {
             global::LiveKit.Proto.ByteStreamWriterCloseRequest subBuilder = new global::LiveKit.Proto.ByteStreamWriterCloseRequest();
             if (messageCase_ == MessageOneofCase.ByteStreamClose) {
               subBuilder.MergeFrom(ByteStreamClose);
@@ -3412,7 +3362,7 @@ namespace LiveKit.Proto {
             ByteStreamClose = subBuilder;
             break;
           }
-          case 522: {
+          case 514: {
             global::LiveKit.Proto.TextStreamOpenRequest subBuilder = new global::LiveKit.Proto.TextStreamOpenRequest();
             if (messageCase_ == MessageOneofCase.TextStreamOpen) {
               subBuilder.MergeFrom(TextStreamOpen);
@@ -3421,7 +3371,7 @@ namespace LiveKit.Proto {
             TextStreamOpen = subBuilder;
             break;
           }
-          case 530: {
+          case 522: {
             global::LiveKit.Proto.TextStreamWriterWriteRequest subBuilder = new global::LiveKit.Proto.TextStreamWriterWriteRequest();
             if (messageCase_ == MessageOneofCase.TextStreamWrite) {
               subBuilder.MergeFrom(TextStreamWrite);
@@ -3430,7 +3380,7 @@ namespace LiveKit.Proto {
             TextStreamWrite = subBuilder;
             break;
           }
-          case 538: {
+          case 530: {
             global::LiveKit.Proto.TextStreamWriterCloseRequest subBuilder = new global::LiveKit.Proto.TextStreamWriterCloseRequest();
             if (messageCase_ == MessageOneofCase.TextStreamClose) {
               subBuilder.MergeFrom(TextStreamClose);
@@ -3918,24 +3868,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 426: {
-            global::LiveKit.Proto.StreamRegisterTopicRequest subBuilder = new global::LiveKit.Proto.StreamRegisterTopicRequest();
-            if (messageCase_ == MessageOneofCase.RegisterTopic) {
-              subBuilder.MergeFrom(RegisterTopic);
+            global::LiveKit.Proto.ApmSetStreamDelayRequest subBuilder = new global::LiveKit.Proto.ApmSetStreamDelayRequest();
+            if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
+              subBuilder.MergeFrom(ApmSetStreamDelay);
             }
             input.ReadMessage(subBuilder);
-            RegisterTopic = subBuilder;
+            ApmSetStreamDelay = subBuilder;
             break;
           }
           case 434: {
-            global::LiveKit.Proto.StreamUnregisterTopicRequest subBuilder = new global::LiveKit.Proto.StreamUnregisterTopicRequest();
-            if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-              subBuilder.MergeFrom(UnregisterTopic);
-            }
-            input.ReadMessage(subBuilder);
-            UnregisterTopic = subBuilder;
-            break;
-          }
-          case 442: {
             global::LiveKit.Proto.ByteStreamReaderReadIncrementalRequest subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadIncrementalRequest();
             if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
               subBuilder.MergeFrom(ByteReadIncremental);
@@ -3944,7 +3885,7 @@ namespace LiveKit.Proto {
             ByteReadIncremental = subBuilder;
             break;
           }
-          case 450: {
+          case 442: {
             global::LiveKit.Proto.ByteStreamReaderReadAllRequest subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadAllRequest();
             if (messageCase_ == MessageOneofCase.ByteReadAll) {
               subBuilder.MergeFrom(ByteReadAll);
@@ -3953,7 +3894,7 @@ namespace LiveKit.Proto {
             ByteReadAll = subBuilder;
             break;
           }
-          case 458: {
+          case 450: {
             global::LiveKit.Proto.ByteStreamReaderWriteToFileRequest subBuilder = new global::LiveKit.Proto.ByteStreamReaderWriteToFileRequest();
             if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
               subBuilder.MergeFrom(ByteWriteToFile);
@@ -3962,7 +3903,7 @@ namespace LiveKit.Proto {
             ByteWriteToFile = subBuilder;
             break;
           }
-          case 466: {
+          case 458: {
             global::LiveKit.Proto.TextStreamReaderReadIncrementalRequest subBuilder = new global::LiveKit.Proto.TextStreamReaderReadIncrementalRequest();
             if (messageCase_ == MessageOneofCase.TextReadIncremental) {
               subBuilder.MergeFrom(TextReadIncremental);
@@ -3971,7 +3912,7 @@ namespace LiveKit.Proto {
             TextReadIncremental = subBuilder;
             break;
           }
-          case 474: {
+          case 466: {
             global::LiveKit.Proto.TextStreamReaderReadAllRequest subBuilder = new global::LiveKit.Proto.TextStreamReaderReadAllRequest();
             if (messageCase_ == MessageOneofCase.TextReadAll) {
               subBuilder.MergeFrom(TextReadAll);
@@ -3980,7 +3921,7 @@ namespace LiveKit.Proto {
             TextReadAll = subBuilder;
             break;
           }
-          case 482: {
+          case 474: {
             global::LiveKit.Proto.StreamSendFileRequest subBuilder = new global::LiveKit.Proto.StreamSendFileRequest();
             if (messageCase_ == MessageOneofCase.SendFile) {
               subBuilder.MergeFrom(SendFile);
@@ -3989,7 +3930,7 @@ namespace LiveKit.Proto {
             SendFile = subBuilder;
             break;
           }
-          case 490: {
+          case 482: {
             global::LiveKit.Proto.StreamSendTextRequest subBuilder = new global::LiveKit.Proto.StreamSendTextRequest();
             if (messageCase_ == MessageOneofCase.SendText) {
               subBuilder.MergeFrom(SendText);
@@ -3998,7 +3939,7 @@ namespace LiveKit.Proto {
             SendText = subBuilder;
             break;
           }
-          case 498: {
+          case 490: {
             global::LiveKit.Proto.ByteStreamOpenRequest subBuilder = new global::LiveKit.Proto.ByteStreamOpenRequest();
             if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
               subBuilder.MergeFrom(ByteStreamOpen);
@@ -4007,7 +3948,7 @@ namespace LiveKit.Proto {
             ByteStreamOpen = subBuilder;
             break;
           }
-          case 506: {
+          case 498: {
             global::LiveKit.Proto.ByteStreamWriterWriteRequest subBuilder = new global::LiveKit.Proto.ByteStreamWriterWriteRequest();
             if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
               subBuilder.MergeFrom(ByteStreamWrite);
@@ -4016,7 +3957,7 @@ namespace LiveKit.Proto {
             ByteStreamWrite = subBuilder;
             break;
           }
-          case 514: {
+          case 506: {
             global::LiveKit.Proto.ByteStreamWriterCloseRequest subBuilder = new global::LiveKit.Proto.ByteStreamWriterCloseRequest();
             if (messageCase_ == MessageOneofCase.ByteStreamClose) {
               subBuilder.MergeFrom(ByteStreamClose);
@@ -4025,7 +3966,7 @@ namespace LiveKit.Proto {
             ByteStreamClose = subBuilder;
             break;
           }
-          case 522: {
+          case 514: {
             global::LiveKit.Proto.TextStreamOpenRequest subBuilder = new global::LiveKit.Proto.TextStreamOpenRequest();
             if (messageCase_ == MessageOneofCase.TextStreamOpen) {
               subBuilder.MergeFrom(TextStreamOpen);
@@ -4034,7 +3975,7 @@ namespace LiveKit.Proto {
             TextStreamOpen = subBuilder;
             break;
           }
-          case 530: {
+          case 522: {
             global::LiveKit.Proto.TextStreamWriterWriteRequest subBuilder = new global::LiveKit.Proto.TextStreamWriterWriteRequest();
             if (messageCase_ == MessageOneofCase.TextStreamWrite) {
               subBuilder.MergeFrom(TextStreamWrite);
@@ -4043,7 +3984,7 @@ namespace LiveKit.Proto {
             TextStreamWrite = subBuilder;
             break;
           }
-          case 538: {
+          case 530: {
             global::LiveKit.Proto.TextStreamWriterCloseRequest subBuilder = new global::LiveKit.Proto.TextStreamWriterCloseRequest();
             if (messageCase_ == MessageOneofCase.TextStreamClose) {
               subBuilder.MergeFrom(TextStreamClose);
@@ -4248,11 +4189,8 @@ namespace LiveKit.Proto {
         case MessageOneofCase.ApmProcessReverseStream:
           ApmProcessReverseStream = other.ApmProcessReverseStream.Clone();
           break;
-        case MessageOneofCase.RegisterTopic:
-          RegisterTopic = other.RegisterTopic.Clone();
-          break;
-        case MessageOneofCase.UnregisterTopic:
-          UnregisterTopic = other.UnregisterTopic.Clone();
+        case MessageOneofCase.ApmSetStreamDelay:
+          ApmSetStreamDelay = other.ApmSetStreamDelay.Clone();
           break;
         case MessageOneofCase.ByteReadIncremental:
           ByteReadIncremental = other.ByteReadIncremental.Clone();
@@ -4931,35 +4869,23 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "register_topic" field.</summary>
-    public const int RegisterTopicFieldNumber = 52;
-    /// <summary>
-    /// Data Streams (high level)
-    /// </summary>
+    /// <summary>Field number for the "apm_set_stream_delay" field.</summary>
+    public const int ApmSetStreamDelayFieldNumber = 52;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.StreamRegisterTopicResponse RegisterTopic {
-      get { return messageCase_ == MessageOneofCase.RegisterTopic ? (global::LiveKit.Proto.StreamRegisterTopicResponse) message_ : null; }
+    public global::LiveKit.Proto.ApmSetStreamDelayResponse ApmSetStreamDelay {
+      get { return messageCase_ == MessageOneofCase.ApmSetStreamDelay ? (global::LiveKit.Proto.ApmSetStreamDelayResponse) message_ : null; }
       set {
         message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.RegisterTopic;
-      }
-    }
-
-    /// <summary>Field number for the "unregister_topic" field.</summary>
-    public const int UnregisterTopicFieldNumber = 53;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.StreamUnregisterTopicResponse UnregisterTopic {
-      get { return messageCase_ == MessageOneofCase.UnregisterTopic ? (global::LiveKit.Proto.StreamUnregisterTopicResponse) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.UnregisterTopic;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ApmSetStreamDelay;
       }
     }
 
     /// <summary>Field number for the "byte_read_incremental" field.</summary>
-    public const int ByteReadIncrementalFieldNumber = 54;
+    public const int ByteReadIncrementalFieldNumber = 53;
+    /// <summary>
+    /// Data Streams (high level)
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderReadIncrementalResponse ByteReadIncremental {
@@ -4971,7 +4897,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_read_all" field.</summary>
-    public const int ByteReadAllFieldNumber = 55;
+    public const int ByteReadAllFieldNumber = 54;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderReadAllResponse ByteReadAll {
@@ -4983,7 +4909,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_write_to_file" field.</summary>
-    public const int ByteWriteToFileFieldNumber = 56;
+    public const int ByteWriteToFileFieldNumber = 55;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderWriteToFileResponse ByteWriteToFile {
@@ -4995,7 +4921,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_read_incremental" field.</summary>
-    public const int TextReadIncrementalFieldNumber = 57;
+    public const int TextReadIncrementalFieldNumber = 56;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamReaderReadIncrementalResponse TextReadIncremental {
@@ -5007,7 +4933,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_read_all" field.</summary>
-    public const int TextReadAllFieldNumber = 58;
+    public const int TextReadAllFieldNumber = 57;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamReaderReadAllResponse TextReadAll {
@@ -5019,7 +4945,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "send_file" field.</summary>
-    public const int SendFileFieldNumber = 59;
+    public const int SendFileFieldNumber = 58;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamSendFileResponse SendFile {
@@ -5031,7 +4957,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "send_text" field.</summary>
-    public const int SendTextFieldNumber = 60;
+    public const int SendTextFieldNumber = 59;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamSendTextResponse SendText {
@@ -5043,7 +4969,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_open" field.</summary>
-    public const int ByteStreamOpenFieldNumber = 61;
+    public const int ByteStreamOpenFieldNumber = 60;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamOpenResponse ByteStreamOpen {
@@ -5055,7 +4981,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_write" field.</summary>
-    public const int ByteStreamWriteFieldNumber = 62;
+    public const int ByteStreamWriteFieldNumber = 61;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamWriterWriteResponse ByteStreamWrite {
@@ -5067,7 +4993,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_close" field.</summary>
-    public const int ByteStreamCloseFieldNumber = 63;
+    public const int ByteStreamCloseFieldNumber = 62;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamWriterCloseResponse ByteStreamClose {
@@ -5079,7 +5005,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_open" field.</summary>
-    public const int TextStreamOpenFieldNumber = 64;
+    public const int TextStreamOpenFieldNumber = 63;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamOpenResponse TextStreamOpen {
@@ -5091,7 +5017,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_write" field.</summary>
-    public const int TextStreamWriteFieldNumber = 65;
+    public const int TextStreamWriteFieldNumber = 64;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamWriterWriteResponse TextStreamWrite {
@@ -5103,7 +5029,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_close" field.</summary>
-    public const int TextStreamCloseFieldNumber = 66;
+    public const int TextStreamCloseFieldNumber = 65;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamWriterCloseResponse TextStreamClose {
@@ -5168,21 +5094,20 @@ namespace LiveKit.Proto {
       NewApm = 49,
       ApmProcessStream = 50,
       ApmProcessReverseStream = 51,
-      RegisterTopic = 52,
-      UnregisterTopic = 53,
-      ByteReadIncremental = 54,
-      ByteReadAll = 55,
-      ByteWriteToFile = 56,
-      TextReadIncremental = 57,
-      TextReadAll = 58,
-      SendFile = 59,
-      SendText = 60,
-      ByteStreamOpen = 61,
-      ByteStreamWrite = 62,
-      ByteStreamClose = 63,
-      TextStreamOpen = 64,
-      TextStreamWrite = 65,
-      TextStreamClose = 66,
+      ApmSetStreamDelay = 52,
+      ByteReadIncremental = 53,
+      ByteReadAll = 54,
+      ByteWriteToFile = 55,
+      TextReadIncremental = 56,
+      TextReadAll = 57,
+      SendFile = 58,
+      SendText = 59,
+      ByteStreamOpen = 60,
+      ByteStreamWrite = 61,
+      ByteStreamClose = 62,
+      TextStreamOpen = 63,
+      TextStreamWrite = 64,
+      TextStreamClose = 65,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5263,8 +5188,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(NewApm, other.NewApm)) return false;
       if (!object.Equals(ApmProcessStream, other.ApmProcessStream)) return false;
       if (!object.Equals(ApmProcessReverseStream, other.ApmProcessReverseStream)) return false;
-      if (!object.Equals(RegisterTopic, other.RegisterTopic)) return false;
-      if (!object.Equals(UnregisterTopic, other.UnregisterTopic)) return false;
+      if (!object.Equals(ApmSetStreamDelay, other.ApmSetStreamDelay)) return false;
       if (!object.Equals(ByteReadIncremental, other.ByteReadIncremental)) return false;
       if (!object.Equals(ByteReadAll, other.ByteReadAll)) return false;
       if (!object.Equals(ByteWriteToFile, other.ByteWriteToFile)) return false;
@@ -5336,8 +5260,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.NewApm) hash ^= NewApm.GetHashCode();
       if (messageCase_ == MessageOneofCase.ApmProcessStream) hash ^= ApmProcessStream.GetHashCode();
       if (messageCase_ == MessageOneofCase.ApmProcessReverseStream) hash ^= ApmProcessReverseStream.GetHashCode();
-      if (messageCase_ == MessageOneofCase.RegisterTopic) hash ^= RegisterTopic.GetHashCode();
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) hash ^= UnregisterTopic.GetHashCode();
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) hash ^= ApmSetStreamDelay.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) hash ^= ByteReadIncremental.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteReadAll) hash ^= ByteReadAll.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteWriteToFile) hash ^= ByteWriteToFile.GetHashCode();
@@ -5570,64 +5493,60 @@ namespace LiveKit.Proto {
         output.WriteRawTag(154, 3);
         output.WriteMessage(ApmProcessReverseStream);
       }
-      if (messageCase_ == MessageOneofCase.RegisterTopic) {
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
         output.WriteRawTag(162, 3);
-        output.WriteMessage(RegisterTopic);
-      }
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-        output.WriteRawTag(170, 3);
-        output.WriteMessage(UnregisterTopic);
+        output.WriteMessage(ApmSetStreamDelay);
       }
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
-        output.WriteRawTag(178, 3);
+        output.WriteRawTag(170, 3);
         output.WriteMessage(ByteReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.ByteReadAll) {
-        output.WriteRawTag(186, 3);
+        output.WriteRawTag(178, 3);
         output.WriteMessage(ByteReadAll);
       }
       if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
-        output.WriteRawTag(194, 3);
+        output.WriteRawTag(186, 3);
         output.WriteMessage(ByteWriteToFile);
       }
       if (messageCase_ == MessageOneofCase.TextReadIncremental) {
-        output.WriteRawTag(202, 3);
+        output.WriteRawTag(194, 3);
         output.WriteMessage(TextReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.TextReadAll) {
-        output.WriteRawTag(210, 3);
+        output.WriteRawTag(202, 3);
         output.WriteMessage(TextReadAll);
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
-        output.WriteRawTag(218, 3);
+        output.WriteRawTag(210, 3);
         output.WriteMessage(SendFile);
       }
       if (messageCase_ == MessageOneofCase.SendText) {
-        output.WriteRawTag(226, 3);
+        output.WriteRawTag(218, 3);
         output.WriteMessage(SendText);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
-        output.WriteRawTag(234, 3);
+        output.WriteRawTag(226, 3);
         output.WriteMessage(ByteStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
-        output.WriteRawTag(242, 3);
+        output.WriteRawTag(234, 3);
         output.WriteMessage(ByteStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamClose) {
-        output.WriteRawTag(250, 3);
+        output.WriteRawTag(242, 3);
         output.WriteMessage(ByteStreamClose);
       }
       if (messageCase_ == MessageOneofCase.TextStreamOpen) {
-        output.WriteRawTag(130, 4);
+        output.WriteRawTag(250, 3);
         output.WriteMessage(TextStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWrite) {
-        output.WriteRawTag(138, 4);
+        output.WriteRawTag(130, 4);
         output.WriteMessage(TextStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.TextStreamClose) {
-        output.WriteRawTag(146, 4);
+        output.WriteRawTag(138, 4);
         output.WriteMessage(TextStreamClose);
       }
       if (_unknownFields != null) {
@@ -5840,64 +5759,60 @@ namespace LiveKit.Proto {
         output.WriteRawTag(154, 3);
         output.WriteMessage(ApmProcessReverseStream);
       }
-      if (messageCase_ == MessageOneofCase.RegisterTopic) {
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
         output.WriteRawTag(162, 3);
-        output.WriteMessage(RegisterTopic);
-      }
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-        output.WriteRawTag(170, 3);
-        output.WriteMessage(UnregisterTopic);
+        output.WriteMessage(ApmSetStreamDelay);
       }
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
-        output.WriteRawTag(178, 3);
+        output.WriteRawTag(170, 3);
         output.WriteMessage(ByteReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.ByteReadAll) {
-        output.WriteRawTag(186, 3);
+        output.WriteRawTag(178, 3);
         output.WriteMessage(ByteReadAll);
       }
       if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
-        output.WriteRawTag(194, 3);
+        output.WriteRawTag(186, 3);
         output.WriteMessage(ByteWriteToFile);
       }
       if (messageCase_ == MessageOneofCase.TextReadIncremental) {
-        output.WriteRawTag(202, 3);
+        output.WriteRawTag(194, 3);
         output.WriteMessage(TextReadIncremental);
       }
       if (messageCase_ == MessageOneofCase.TextReadAll) {
-        output.WriteRawTag(210, 3);
+        output.WriteRawTag(202, 3);
         output.WriteMessage(TextReadAll);
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
-        output.WriteRawTag(218, 3);
+        output.WriteRawTag(210, 3);
         output.WriteMessage(SendFile);
       }
       if (messageCase_ == MessageOneofCase.SendText) {
-        output.WriteRawTag(226, 3);
+        output.WriteRawTag(218, 3);
         output.WriteMessage(SendText);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
-        output.WriteRawTag(234, 3);
+        output.WriteRawTag(226, 3);
         output.WriteMessage(ByteStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
-        output.WriteRawTag(242, 3);
+        output.WriteRawTag(234, 3);
         output.WriteMessage(ByteStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamClose) {
-        output.WriteRawTag(250, 3);
+        output.WriteRawTag(242, 3);
         output.WriteMessage(ByteStreamClose);
       }
       if (messageCase_ == MessageOneofCase.TextStreamOpen) {
-        output.WriteRawTag(130, 4);
+        output.WriteRawTag(250, 3);
         output.WriteMessage(TextStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWrite) {
-        output.WriteRawTag(138, 4);
+        output.WriteRawTag(130, 4);
         output.WriteMessage(TextStreamWrite);
       }
       if (messageCase_ == MessageOneofCase.TextStreamClose) {
-        output.WriteRawTag(146, 4);
+        output.WriteRawTag(138, 4);
         output.WriteMessage(TextStreamClose);
       }
       if (_unknownFields != null) {
@@ -6060,11 +5975,8 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.ApmProcessReverseStream) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(ApmProcessReverseStream);
       }
-      if (messageCase_ == MessageOneofCase.RegisterTopic) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(RegisterTopic);
-      }
-      if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(UnregisterTopic);
+      if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ApmSetStreamDelay);
       }
       if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(ByteReadIncremental);
@@ -6418,17 +6330,11 @@ namespace LiveKit.Proto {
           }
           ApmProcessReverseStream.MergeFrom(other.ApmProcessReverseStream);
           break;
-        case MessageOneofCase.RegisterTopic:
-          if (RegisterTopic == null) {
-            RegisterTopic = new global::LiveKit.Proto.StreamRegisterTopicResponse();
+        case MessageOneofCase.ApmSetStreamDelay:
+          if (ApmSetStreamDelay == null) {
+            ApmSetStreamDelay = new global::LiveKit.Proto.ApmSetStreamDelayResponse();
           }
-          RegisterTopic.MergeFrom(other.RegisterTopic);
-          break;
-        case MessageOneofCase.UnregisterTopic:
-          if (UnregisterTopic == null) {
-            UnregisterTopic = new global::LiveKit.Proto.StreamUnregisterTopicResponse();
-          }
-          UnregisterTopic.MergeFrom(other.UnregisterTopic);
+          ApmSetStreamDelay.MergeFrom(other.ApmSetStreamDelay);
           break;
         case MessageOneofCase.ByteReadIncremental:
           if (ByteReadIncremental == null) {
@@ -6980,24 +6886,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 418: {
-            global::LiveKit.Proto.StreamRegisterTopicResponse subBuilder = new global::LiveKit.Proto.StreamRegisterTopicResponse();
-            if (messageCase_ == MessageOneofCase.RegisterTopic) {
-              subBuilder.MergeFrom(RegisterTopic);
+            global::LiveKit.Proto.ApmSetStreamDelayResponse subBuilder = new global::LiveKit.Proto.ApmSetStreamDelayResponse();
+            if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
+              subBuilder.MergeFrom(ApmSetStreamDelay);
             }
             input.ReadMessage(subBuilder);
-            RegisterTopic = subBuilder;
+            ApmSetStreamDelay = subBuilder;
             break;
           }
           case 426: {
-            global::LiveKit.Proto.StreamUnregisterTopicResponse subBuilder = new global::LiveKit.Proto.StreamUnregisterTopicResponse();
-            if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-              subBuilder.MergeFrom(UnregisterTopic);
-            }
-            input.ReadMessage(subBuilder);
-            UnregisterTopic = subBuilder;
-            break;
-          }
-          case 434: {
             global::LiveKit.Proto.ByteStreamReaderReadIncrementalResponse subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadIncrementalResponse();
             if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
               subBuilder.MergeFrom(ByteReadIncremental);
@@ -7006,7 +6903,7 @@ namespace LiveKit.Proto {
             ByteReadIncremental = subBuilder;
             break;
           }
-          case 442: {
+          case 434: {
             global::LiveKit.Proto.ByteStreamReaderReadAllResponse subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadAllResponse();
             if (messageCase_ == MessageOneofCase.ByteReadAll) {
               subBuilder.MergeFrom(ByteReadAll);
@@ -7015,7 +6912,7 @@ namespace LiveKit.Proto {
             ByteReadAll = subBuilder;
             break;
           }
-          case 450: {
+          case 442: {
             global::LiveKit.Proto.ByteStreamReaderWriteToFileResponse subBuilder = new global::LiveKit.Proto.ByteStreamReaderWriteToFileResponse();
             if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
               subBuilder.MergeFrom(ByteWriteToFile);
@@ -7024,7 +6921,7 @@ namespace LiveKit.Proto {
             ByteWriteToFile = subBuilder;
             break;
           }
-          case 458: {
+          case 450: {
             global::LiveKit.Proto.TextStreamReaderReadIncrementalResponse subBuilder = new global::LiveKit.Proto.TextStreamReaderReadIncrementalResponse();
             if (messageCase_ == MessageOneofCase.TextReadIncremental) {
               subBuilder.MergeFrom(TextReadIncremental);
@@ -7033,7 +6930,7 @@ namespace LiveKit.Proto {
             TextReadIncremental = subBuilder;
             break;
           }
-          case 466: {
+          case 458: {
             global::LiveKit.Proto.TextStreamReaderReadAllResponse subBuilder = new global::LiveKit.Proto.TextStreamReaderReadAllResponse();
             if (messageCase_ == MessageOneofCase.TextReadAll) {
               subBuilder.MergeFrom(TextReadAll);
@@ -7042,7 +6939,7 @@ namespace LiveKit.Proto {
             TextReadAll = subBuilder;
             break;
           }
-          case 474: {
+          case 466: {
             global::LiveKit.Proto.StreamSendFileResponse subBuilder = new global::LiveKit.Proto.StreamSendFileResponse();
             if (messageCase_ == MessageOneofCase.SendFile) {
               subBuilder.MergeFrom(SendFile);
@@ -7051,7 +6948,7 @@ namespace LiveKit.Proto {
             SendFile = subBuilder;
             break;
           }
-          case 482: {
+          case 474: {
             global::LiveKit.Proto.StreamSendTextResponse subBuilder = new global::LiveKit.Proto.StreamSendTextResponse();
             if (messageCase_ == MessageOneofCase.SendText) {
               subBuilder.MergeFrom(SendText);
@@ -7060,7 +6957,7 @@ namespace LiveKit.Proto {
             SendText = subBuilder;
             break;
           }
-          case 490: {
+          case 482: {
             global::LiveKit.Proto.ByteStreamOpenResponse subBuilder = new global::LiveKit.Proto.ByteStreamOpenResponse();
             if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
               subBuilder.MergeFrom(ByteStreamOpen);
@@ -7069,7 +6966,7 @@ namespace LiveKit.Proto {
             ByteStreamOpen = subBuilder;
             break;
           }
-          case 498: {
+          case 490: {
             global::LiveKit.Proto.ByteStreamWriterWriteResponse subBuilder = new global::LiveKit.Proto.ByteStreamWriterWriteResponse();
             if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
               subBuilder.MergeFrom(ByteStreamWrite);
@@ -7078,7 +6975,7 @@ namespace LiveKit.Proto {
             ByteStreamWrite = subBuilder;
             break;
           }
-          case 506: {
+          case 498: {
             global::LiveKit.Proto.ByteStreamWriterCloseResponse subBuilder = new global::LiveKit.Proto.ByteStreamWriterCloseResponse();
             if (messageCase_ == MessageOneofCase.ByteStreamClose) {
               subBuilder.MergeFrom(ByteStreamClose);
@@ -7087,7 +6984,7 @@ namespace LiveKit.Proto {
             ByteStreamClose = subBuilder;
             break;
           }
-          case 514: {
+          case 506: {
             global::LiveKit.Proto.TextStreamOpenResponse subBuilder = new global::LiveKit.Proto.TextStreamOpenResponse();
             if (messageCase_ == MessageOneofCase.TextStreamOpen) {
               subBuilder.MergeFrom(TextStreamOpen);
@@ -7096,7 +6993,7 @@ namespace LiveKit.Proto {
             TextStreamOpen = subBuilder;
             break;
           }
-          case 522: {
+          case 514: {
             global::LiveKit.Proto.TextStreamWriterWriteResponse subBuilder = new global::LiveKit.Proto.TextStreamWriterWriteResponse();
             if (messageCase_ == MessageOneofCase.TextStreamWrite) {
               subBuilder.MergeFrom(TextStreamWrite);
@@ -7105,7 +7002,7 @@ namespace LiveKit.Proto {
             TextStreamWrite = subBuilder;
             break;
           }
-          case 530: {
+          case 522: {
             global::LiveKit.Proto.TextStreamWriterCloseResponse subBuilder = new global::LiveKit.Proto.TextStreamWriterCloseResponse();
             if (messageCase_ == MessageOneofCase.TextStreamClose) {
               subBuilder.MergeFrom(TextStreamClose);
@@ -7584,24 +7481,15 @@ namespace LiveKit.Proto {
             break;
           }
           case 418: {
-            global::LiveKit.Proto.StreamRegisterTopicResponse subBuilder = new global::LiveKit.Proto.StreamRegisterTopicResponse();
-            if (messageCase_ == MessageOneofCase.RegisterTopic) {
-              subBuilder.MergeFrom(RegisterTopic);
+            global::LiveKit.Proto.ApmSetStreamDelayResponse subBuilder = new global::LiveKit.Proto.ApmSetStreamDelayResponse();
+            if (messageCase_ == MessageOneofCase.ApmSetStreamDelay) {
+              subBuilder.MergeFrom(ApmSetStreamDelay);
             }
             input.ReadMessage(subBuilder);
-            RegisterTopic = subBuilder;
+            ApmSetStreamDelay = subBuilder;
             break;
           }
           case 426: {
-            global::LiveKit.Proto.StreamUnregisterTopicResponse subBuilder = new global::LiveKit.Proto.StreamUnregisterTopicResponse();
-            if (messageCase_ == MessageOneofCase.UnregisterTopic) {
-              subBuilder.MergeFrom(UnregisterTopic);
-            }
-            input.ReadMessage(subBuilder);
-            UnregisterTopic = subBuilder;
-            break;
-          }
-          case 434: {
             global::LiveKit.Proto.ByteStreamReaderReadIncrementalResponse subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadIncrementalResponse();
             if (messageCase_ == MessageOneofCase.ByteReadIncremental) {
               subBuilder.MergeFrom(ByteReadIncremental);
@@ -7610,7 +7498,7 @@ namespace LiveKit.Proto {
             ByteReadIncremental = subBuilder;
             break;
           }
-          case 442: {
+          case 434: {
             global::LiveKit.Proto.ByteStreamReaderReadAllResponse subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadAllResponse();
             if (messageCase_ == MessageOneofCase.ByteReadAll) {
               subBuilder.MergeFrom(ByteReadAll);
@@ -7619,7 +7507,7 @@ namespace LiveKit.Proto {
             ByteReadAll = subBuilder;
             break;
           }
-          case 450: {
+          case 442: {
             global::LiveKit.Proto.ByteStreamReaderWriteToFileResponse subBuilder = new global::LiveKit.Proto.ByteStreamReaderWriteToFileResponse();
             if (messageCase_ == MessageOneofCase.ByteWriteToFile) {
               subBuilder.MergeFrom(ByteWriteToFile);
@@ -7628,7 +7516,7 @@ namespace LiveKit.Proto {
             ByteWriteToFile = subBuilder;
             break;
           }
-          case 458: {
+          case 450: {
             global::LiveKit.Proto.TextStreamReaderReadIncrementalResponse subBuilder = new global::LiveKit.Proto.TextStreamReaderReadIncrementalResponse();
             if (messageCase_ == MessageOneofCase.TextReadIncremental) {
               subBuilder.MergeFrom(TextReadIncremental);
@@ -7637,7 +7525,7 @@ namespace LiveKit.Proto {
             TextReadIncremental = subBuilder;
             break;
           }
-          case 466: {
+          case 458: {
             global::LiveKit.Proto.TextStreamReaderReadAllResponse subBuilder = new global::LiveKit.Proto.TextStreamReaderReadAllResponse();
             if (messageCase_ == MessageOneofCase.TextReadAll) {
               subBuilder.MergeFrom(TextReadAll);
@@ -7646,7 +7534,7 @@ namespace LiveKit.Proto {
             TextReadAll = subBuilder;
             break;
           }
-          case 474: {
+          case 466: {
             global::LiveKit.Proto.StreamSendFileResponse subBuilder = new global::LiveKit.Proto.StreamSendFileResponse();
             if (messageCase_ == MessageOneofCase.SendFile) {
               subBuilder.MergeFrom(SendFile);
@@ -7655,7 +7543,7 @@ namespace LiveKit.Proto {
             SendFile = subBuilder;
             break;
           }
-          case 482: {
+          case 474: {
             global::LiveKit.Proto.StreamSendTextResponse subBuilder = new global::LiveKit.Proto.StreamSendTextResponse();
             if (messageCase_ == MessageOneofCase.SendText) {
               subBuilder.MergeFrom(SendText);
@@ -7664,7 +7552,7 @@ namespace LiveKit.Proto {
             SendText = subBuilder;
             break;
           }
-          case 490: {
+          case 482: {
             global::LiveKit.Proto.ByteStreamOpenResponse subBuilder = new global::LiveKit.Proto.ByteStreamOpenResponse();
             if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
               subBuilder.MergeFrom(ByteStreamOpen);
@@ -7673,7 +7561,7 @@ namespace LiveKit.Proto {
             ByteStreamOpen = subBuilder;
             break;
           }
-          case 498: {
+          case 490: {
             global::LiveKit.Proto.ByteStreamWriterWriteResponse subBuilder = new global::LiveKit.Proto.ByteStreamWriterWriteResponse();
             if (messageCase_ == MessageOneofCase.ByteStreamWrite) {
               subBuilder.MergeFrom(ByteStreamWrite);
@@ -7682,7 +7570,7 @@ namespace LiveKit.Proto {
             ByteStreamWrite = subBuilder;
             break;
           }
-          case 506: {
+          case 498: {
             global::LiveKit.Proto.ByteStreamWriterCloseResponse subBuilder = new global::LiveKit.Proto.ByteStreamWriterCloseResponse();
             if (messageCase_ == MessageOneofCase.ByteStreamClose) {
               subBuilder.MergeFrom(ByteStreamClose);
@@ -7691,7 +7579,7 @@ namespace LiveKit.Proto {
             ByteStreamClose = subBuilder;
             break;
           }
-          case 514: {
+          case 506: {
             global::LiveKit.Proto.TextStreamOpenResponse subBuilder = new global::LiveKit.Proto.TextStreamOpenResponse();
             if (messageCase_ == MessageOneofCase.TextStreamOpen) {
               subBuilder.MergeFrom(TextStreamOpen);
@@ -7700,7 +7588,7 @@ namespace LiveKit.Proto {
             TextStreamOpen = subBuilder;
             break;
           }
-          case 522: {
+          case 514: {
             global::LiveKit.Proto.TextStreamWriterWriteResponse subBuilder = new global::LiveKit.Proto.TextStreamWriterWriteResponse();
             if (messageCase_ == MessageOneofCase.TextStreamWrite) {
               subBuilder.MergeFrom(TextStreamWrite);
@@ -7709,7 +7597,7 @@ namespace LiveKit.Proto {
             TextStreamWrite = subBuilder;
             break;
           }
-          case 530: {
+          case 522: {
             global::LiveKit.Proto.TextStreamWriterCloseResponse subBuilder = new global::LiveKit.Proto.TextStreamWriterCloseResponse();
             if (messageCase_ == MessageOneofCase.TextStreamClose) {
               subBuilder.MergeFrom(TextStreamClose);
@@ -7844,9 +7732,6 @@ namespace LiveKit.Proto {
         case MessageOneofCase.SendStreamTrailer:
           SendStreamTrailer = other.SendStreamTrailer.Clone();
           break;
-        case MessageOneofCase.ByteStreamOpened:
-          ByteStreamOpened = other.ByteStreamOpened.Clone();
-          break;
         case MessageOneofCase.ByteStreamReaderEvent:
           ByteStreamReaderEvent = other.ByteStreamReaderEvent.Clone();
           break;
@@ -7867,9 +7752,6 @@ namespace LiveKit.Proto {
           break;
         case MessageOneofCase.SendFile:
           SendFile = other.SendFile.Clone();
-          break;
-        case MessageOneofCase.TextStreamOpened:
-          TextStreamOpened = other.TextStreamOpened.Clone();
           break;
         case MessageOneofCase.TextStreamReaderEvent:
           TextStreamReaderEvent = other.TextStreamReaderEvent.Clone();
@@ -8215,23 +8097,11 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "byte_stream_opened" field.</summary>
-    public const int ByteStreamOpenedFieldNumber = 28;
+    /// <summary>Field number for the "byte_stream_reader_event" field.</summary>
+    public const int ByteStreamReaderEventFieldNumber = 28;
     /// <summary>
     /// Data Streams (high level)
     /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.ByteStreamOpenedEvent ByteStreamOpened {
-      get { return messageCase_ == MessageOneofCase.ByteStreamOpened ? (global::LiveKit.Proto.ByteStreamOpenedEvent) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ByteStreamOpened;
-      }
-    }
-
-    /// <summary>Field number for the "byte_stream_reader_event" field.</summary>
-    public const int ByteStreamReaderEventFieldNumber = 29;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderEvent ByteStreamReaderEvent {
@@ -8243,7 +8113,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_reader_read_all" field.</summary>
-    public const int ByteStreamReaderReadAllFieldNumber = 30;
+    public const int ByteStreamReaderReadAllFieldNumber = 29;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderReadAllCallback ByteStreamReaderReadAll {
@@ -8255,7 +8125,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_reader_write_to_file" field.</summary>
-    public const int ByteStreamReaderWriteToFileFieldNumber = 31;
+    public const int ByteStreamReaderWriteToFileFieldNumber = 30;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamReaderWriteToFileCallback ByteStreamReaderWriteToFile {
@@ -8267,7 +8137,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_open" field.</summary>
-    public const int ByteStreamOpenFieldNumber = 32;
+    public const int ByteStreamOpenFieldNumber = 31;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamOpenCallback ByteStreamOpen {
@@ -8279,7 +8149,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_writer_write" field.</summary>
-    public const int ByteStreamWriterWriteFieldNumber = 33;
+    public const int ByteStreamWriterWriteFieldNumber = 32;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamWriterWriteCallback ByteStreamWriterWrite {
@@ -8291,7 +8161,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "byte_stream_writer_close" field.</summary>
-    public const int ByteStreamWriterCloseFieldNumber = 34;
+    public const int ByteStreamWriterCloseFieldNumber = 33;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ByteStreamWriterCloseCallback ByteStreamWriterClose {
@@ -8303,7 +8173,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "send_file" field.</summary>
-    public const int SendFileFieldNumber = 35;
+    public const int SendFileFieldNumber = 34;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamSendFileCallback SendFile {
@@ -8314,20 +8184,8 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "text_stream_opened" field.</summary>
-    public const int TextStreamOpenedFieldNumber = 36;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.TextStreamOpenedEvent TextStreamOpened {
-      get { return messageCase_ == MessageOneofCase.TextStreamOpened ? (global::LiveKit.Proto.TextStreamOpenedEvent) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.TextStreamOpened;
-      }
-    }
-
     /// <summary>Field number for the "text_stream_reader_event" field.</summary>
-    public const int TextStreamReaderEventFieldNumber = 37;
+    public const int TextStreamReaderEventFieldNumber = 35;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamReaderEvent TextStreamReaderEvent {
@@ -8339,7 +8197,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_reader_read_all" field.</summary>
-    public const int TextStreamReaderReadAllFieldNumber = 38;
+    public const int TextStreamReaderReadAllFieldNumber = 36;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamReaderReadAllCallback TextStreamReaderReadAll {
@@ -8351,7 +8209,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_open" field.</summary>
-    public const int TextStreamOpenFieldNumber = 39;
+    public const int TextStreamOpenFieldNumber = 37;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamOpenCallback TextStreamOpen {
@@ -8363,7 +8221,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_writer_write" field.</summary>
-    public const int TextStreamWriterWriteFieldNumber = 40;
+    public const int TextStreamWriterWriteFieldNumber = 38;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamWriterWriteCallback TextStreamWriterWrite {
@@ -8375,7 +8233,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "text_stream_writer_close" field.</summary>
-    public const int TextStreamWriterCloseFieldNumber = 41;
+    public const int TextStreamWriterCloseFieldNumber = 39;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.TextStreamWriterCloseCallback TextStreamWriterClose {
@@ -8387,7 +8245,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "send_text" field.</summary>
-    public const int SendTextFieldNumber = 42;
+    public const int SendTextFieldNumber = 40;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.StreamSendTextCallback SendText {
@@ -8428,21 +8286,19 @@ namespace LiveKit.Proto {
       SendStreamHeader = 25,
       SendStreamChunk = 26,
       SendStreamTrailer = 27,
-      ByteStreamOpened = 28,
-      ByteStreamReaderEvent = 29,
-      ByteStreamReaderReadAll = 30,
-      ByteStreamReaderWriteToFile = 31,
-      ByteStreamOpen = 32,
-      ByteStreamWriterWrite = 33,
-      ByteStreamWriterClose = 34,
-      SendFile = 35,
-      TextStreamOpened = 36,
-      TextStreamReaderEvent = 37,
-      TextStreamReaderReadAll = 38,
-      TextStreamOpen = 39,
-      TextStreamWriterWrite = 40,
-      TextStreamWriterClose = 41,
-      SendText = 42,
+      ByteStreamReaderEvent = 28,
+      ByteStreamReaderReadAll = 29,
+      ByteStreamReaderWriteToFile = 30,
+      ByteStreamOpen = 31,
+      ByteStreamWriterWrite = 32,
+      ByteStreamWriterClose = 33,
+      SendFile = 34,
+      TextStreamReaderEvent = 35,
+      TextStreamReaderReadAll = 36,
+      TextStreamOpen = 37,
+      TextStreamWriterWrite = 38,
+      TextStreamWriterClose = 39,
+      SendText = 40,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -8499,7 +8355,6 @@ namespace LiveKit.Proto {
       if (!object.Equals(SendStreamHeader, other.SendStreamHeader)) return false;
       if (!object.Equals(SendStreamChunk, other.SendStreamChunk)) return false;
       if (!object.Equals(SendStreamTrailer, other.SendStreamTrailer)) return false;
-      if (!object.Equals(ByteStreamOpened, other.ByteStreamOpened)) return false;
       if (!object.Equals(ByteStreamReaderEvent, other.ByteStreamReaderEvent)) return false;
       if (!object.Equals(ByteStreamReaderReadAll, other.ByteStreamReaderReadAll)) return false;
       if (!object.Equals(ByteStreamReaderWriteToFile, other.ByteStreamReaderWriteToFile)) return false;
@@ -8507,7 +8362,6 @@ namespace LiveKit.Proto {
       if (!object.Equals(ByteStreamWriterWrite, other.ByteStreamWriterWrite)) return false;
       if (!object.Equals(ByteStreamWriterClose, other.ByteStreamWriterClose)) return false;
       if (!object.Equals(SendFile, other.SendFile)) return false;
-      if (!object.Equals(TextStreamOpened, other.TextStreamOpened)) return false;
       if (!object.Equals(TextStreamReaderEvent, other.TextStreamReaderEvent)) return false;
       if (!object.Equals(TextStreamReaderReadAll, other.TextStreamReaderReadAll)) return false;
       if (!object.Equals(TextStreamOpen, other.TextStreamOpen)) return false;
@@ -8548,7 +8402,6 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SendStreamHeader) hash ^= SendStreamHeader.GetHashCode();
       if (messageCase_ == MessageOneofCase.SendStreamChunk) hash ^= SendStreamChunk.GetHashCode();
       if (messageCase_ == MessageOneofCase.SendStreamTrailer) hash ^= SendStreamTrailer.GetHashCode();
-      if (messageCase_ == MessageOneofCase.ByteStreamOpened) hash ^= ByteStreamOpened.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteStreamReaderEvent) hash ^= ByteStreamReaderEvent.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteStreamReaderReadAll) hash ^= ByteStreamReaderReadAll.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteStreamReaderWriteToFile) hash ^= ByteStreamReaderWriteToFile.GetHashCode();
@@ -8556,7 +8409,6 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.ByteStreamWriterWrite) hash ^= ByteStreamWriterWrite.GetHashCode();
       if (messageCase_ == MessageOneofCase.ByteStreamWriterClose) hash ^= ByteStreamWriterClose.GetHashCode();
       if (messageCase_ == MessageOneofCase.SendFile) hash ^= SendFile.GetHashCode();
-      if (messageCase_ == MessageOneofCase.TextStreamOpened) hash ^= TextStreamOpened.GetHashCode();
       if (messageCase_ == MessageOneofCase.TextStreamReaderEvent) hash ^= TextStreamReaderEvent.GetHashCode();
       if (messageCase_ == MessageOneofCase.TextStreamReaderReadAll) hash ^= TextStreamReaderReadAll.GetHashCode();
       if (messageCase_ == MessageOneofCase.TextStreamOpen) hash ^= TextStreamOpen.GetHashCode();
@@ -8686,64 +8538,56 @@ namespace LiveKit.Proto {
         output.WriteRawTag(218, 1);
         output.WriteMessage(SendStreamTrailer);
       }
-      if (messageCase_ == MessageOneofCase.ByteStreamOpened) {
-        output.WriteRawTag(226, 1);
-        output.WriteMessage(ByteStreamOpened);
-      }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderEvent) {
-        output.WriteRawTag(234, 1);
+        output.WriteRawTag(226, 1);
         output.WriteMessage(ByteStreamReaderEvent);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderReadAll) {
-        output.WriteRawTag(242, 1);
+        output.WriteRawTag(234, 1);
         output.WriteMessage(ByteStreamReaderReadAll);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderWriteToFile) {
-        output.WriteRawTag(250, 1);
+        output.WriteRawTag(242, 1);
         output.WriteMessage(ByteStreamReaderWriteToFile);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
-        output.WriteRawTag(130, 2);
+        output.WriteRawTag(250, 1);
         output.WriteMessage(ByteStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWriterWrite) {
-        output.WriteRawTag(138, 2);
+        output.WriteRawTag(130, 2);
         output.WriteMessage(ByteStreamWriterWrite);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWriterClose) {
-        output.WriteRawTag(146, 2);
+        output.WriteRawTag(138, 2);
         output.WriteMessage(ByteStreamWriterClose);
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
-        output.WriteRawTag(154, 2);
+        output.WriteRawTag(146, 2);
         output.WriteMessage(SendFile);
       }
-      if (messageCase_ == MessageOneofCase.TextStreamOpened) {
-        output.WriteRawTag(162, 2);
-        output.WriteMessage(TextStreamOpened);
-      }
       if (messageCase_ == MessageOneofCase.TextStreamReaderEvent) {
-        output.WriteRawTag(170, 2);
+        output.WriteRawTag(154, 2);
         output.WriteMessage(TextStreamReaderEvent);
       }
       if (messageCase_ == MessageOneofCase.TextStreamReaderReadAll) {
-        output.WriteRawTag(178, 2);
+        output.WriteRawTag(162, 2);
         output.WriteMessage(TextStreamReaderReadAll);
       }
       if (messageCase_ == MessageOneofCase.TextStreamOpen) {
-        output.WriteRawTag(186, 2);
+        output.WriteRawTag(170, 2);
         output.WriteMessage(TextStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWriterWrite) {
-        output.WriteRawTag(194, 2);
+        output.WriteRawTag(178, 2);
         output.WriteMessage(TextStreamWriterWrite);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWriterClose) {
-        output.WriteRawTag(202, 2);
+        output.WriteRawTag(186, 2);
         output.WriteMessage(TextStreamWriterClose);
       }
       if (messageCase_ == MessageOneofCase.SendText) {
-        output.WriteRawTag(210, 2);
+        output.WriteRawTag(194, 2);
         output.WriteMessage(SendText);
       }
       if (_unknownFields != null) {
@@ -8860,64 +8704,56 @@ namespace LiveKit.Proto {
         output.WriteRawTag(218, 1);
         output.WriteMessage(SendStreamTrailer);
       }
-      if (messageCase_ == MessageOneofCase.ByteStreamOpened) {
-        output.WriteRawTag(226, 1);
-        output.WriteMessage(ByteStreamOpened);
-      }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderEvent) {
-        output.WriteRawTag(234, 1);
+        output.WriteRawTag(226, 1);
         output.WriteMessage(ByteStreamReaderEvent);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderReadAll) {
-        output.WriteRawTag(242, 1);
+        output.WriteRawTag(234, 1);
         output.WriteMessage(ByteStreamReaderReadAll);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderWriteToFile) {
-        output.WriteRawTag(250, 1);
+        output.WriteRawTag(242, 1);
         output.WriteMessage(ByteStreamReaderWriteToFile);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
-        output.WriteRawTag(130, 2);
+        output.WriteRawTag(250, 1);
         output.WriteMessage(ByteStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWriterWrite) {
-        output.WriteRawTag(138, 2);
+        output.WriteRawTag(130, 2);
         output.WriteMessage(ByteStreamWriterWrite);
       }
       if (messageCase_ == MessageOneofCase.ByteStreamWriterClose) {
-        output.WriteRawTag(146, 2);
+        output.WriteRawTag(138, 2);
         output.WriteMessage(ByteStreamWriterClose);
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
-        output.WriteRawTag(154, 2);
+        output.WriteRawTag(146, 2);
         output.WriteMessage(SendFile);
       }
-      if (messageCase_ == MessageOneofCase.TextStreamOpened) {
-        output.WriteRawTag(162, 2);
-        output.WriteMessage(TextStreamOpened);
-      }
       if (messageCase_ == MessageOneofCase.TextStreamReaderEvent) {
-        output.WriteRawTag(170, 2);
+        output.WriteRawTag(154, 2);
         output.WriteMessage(TextStreamReaderEvent);
       }
       if (messageCase_ == MessageOneofCase.TextStreamReaderReadAll) {
-        output.WriteRawTag(178, 2);
+        output.WriteRawTag(162, 2);
         output.WriteMessage(TextStreamReaderReadAll);
       }
       if (messageCase_ == MessageOneofCase.TextStreamOpen) {
-        output.WriteRawTag(186, 2);
+        output.WriteRawTag(170, 2);
         output.WriteMessage(TextStreamOpen);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWriterWrite) {
-        output.WriteRawTag(194, 2);
+        output.WriteRawTag(178, 2);
         output.WriteMessage(TextStreamWriterWrite);
       }
       if (messageCase_ == MessageOneofCase.TextStreamWriterClose) {
-        output.WriteRawTag(202, 2);
+        output.WriteRawTag(186, 2);
         output.WriteMessage(TextStreamWriterClose);
       }
       if (messageCase_ == MessageOneofCase.SendText) {
-        output.WriteRawTag(210, 2);
+        output.WriteRawTag(194, 2);
         output.WriteMessage(SendText);
       }
       if (_unknownFields != null) {
@@ -9008,9 +8844,6 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SendStreamTrailer) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SendStreamTrailer);
       }
-      if (messageCase_ == MessageOneofCase.ByteStreamOpened) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ByteStreamOpened);
-      }
       if (messageCase_ == MessageOneofCase.ByteStreamReaderEvent) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(ByteStreamReaderEvent);
       }
@@ -9031,9 +8864,6 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.SendFile) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SendFile);
-      }
-      if (messageCase_ == MessageOneofCase.TextStreamOpened) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(TextStreamOpened);
       }
       if (messageCase_ == MessageOneofCase.TextStreamReaderEvent) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(TextStreamReaderEvent);
@@ -9222,12 +9052,6 @@ namespace LiveKit.Proto {
           }
           SendStreamTrailer.MergeFrom(other.SendStreamTrailer);
           break;
-        case MessageOneofCase.ByteStreamOpened:
-          if (ByteStreamOpened == null) {
-            ByteStreamOpened = new global::LiveKit.Proto.ByteStreamOpenedEvent();
-          }
-          ByteStreamOpened.MergeFrom(other.ByteStreamOpened);
-          break;
         case MessageOneofCase.ByteStreamReaderEvent:
           if (ByteStreamReaderEvent == null) {
             ByteStreamReaderEvent = new global::LiveKit.Proto.ByteStreamReaderEvent();
@@ -9269,12 +9093,6 @@ namespace LiveKit.Proto {
             SendFile = new global::LiveKit.Proto.StreamSendFileCallback();
           }
           SendFile.MergeFrom(other.SendFile);
-          break;
-        case MessageOneofCase.TextStreamOpened:
-          if (TextStreamOpened == null) {
-            TextStreamOpened = new global::LiveKit.Proto.TextStreamOpenedEvent();
-          }
-          TextStreamOpened.MergeFrom(other.TextStreamOpened);
           break;
         case MessageOneofCase.TextStreamReaderEvent:
           if (TextStreamReaderEvent == null) {
@@ -9568,15 +9386,6 @@ namespace LiveKit.Proto {
             break;
           }
           case 226: {
-            global::LiveKit.Proto.ByteStreamOpenedEvent subBuilder = new global::LiveKit.Proto.ByteStreamOpenedEvent();
-            if (messageCase_ == MessageOneofCase.ByteStreamOpened) {
-              subBuilder.MergeFrom(ByteStreamOpened);
-            }
-            input.ReadMessage(subBuilder);
-            ByteStreamOpened = subBuilder;
-            break;
-          }
-          case 234: {
             global::LiveKit.Proto.ByteStreamReaderEvent subBuilder = new global::LiveKit.Proto.ByteStreamReaderEvent();
             if (messageCase_ == MessageOneofCase.ByteStreamReaderEvent) {
               subBuilder.MergeFrom(ByteStreamReaderEvent);
@@ -9585,7 +9394,7 @@ namespace LiveKit.Proto {
             ByteStreamReaderEvent = subBuilder;
             break;
           }
-          case 242: {
+          case 234: {
             global::LiveKit.Proto.ByteStreamReaderReadAllCallback subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadAllCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamReaderReadAll) {
               subBuilder.MergeFrom(ByteStreamReaderReadAll);
@@ -9594,7 +9403,7 @@ namespace LiveKit.Proto {
             ByteStreamReaderReadAll = subBuilder;
             break;
           }
-          case 250: {
+          case 242: {
             global::LiveKit.Proto.ByteStreamReaderWriteToFileCallback subBuilder = new global::LiveKit.Proto.ByteStreamReaderWriteToFileCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamReaderWriteToFile) {
               subBuilder.MergeFrom(ByteStreamReaderWriteToFile);
@@ -9603,7 +9412,7 @@ namespace LiveKit.Proto {
             ByteStreamReaderWriteToFile = subBuilder;
             break;
           }
-          case 258: {
+          case 250: {
             global::LiveKit.Proto.ByteStreamOpenCallback subBuilder = new global::LiveKit.Proto.ByteStreamOpenCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
               subBuilder.MergeFrom(ByteStreamOpen);
@@ -9612,7 +9421,7 @@ namespace LiveKit.Proto {
             ByteStreamOpen = subBuilder;
             break;
           }
-          case 266: {
+          case 258: {
             global::LiveKit.Proto.ByteStreamWriterWriteCallback subBuilder = new global::LiveKit.Proto.ByteStreamWriterWriteCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamWriterWrite) {
               subBuilder.MergeFrom(ByteStreamWriterWrite);
@@ -9621,7 +9430,7 @@ namespace LiveKit.Proto {
             ByteStreamWriterWrite = subBuilder;
             break;
           }
-          case 274: {
+          case 266: {
             global::LiveKit.Proto.ByteStreamWriterCloseCallback subBuilder = new global::LiveKit.Proto.ByteStreamWriterCloseCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamWriterClose) {
               subBuilder.MergeFrom(ByteStreamWriterClose);
@@ -9630,7 +9439,7 @@ namespace LiveKit.Proto {
             ByteStreamWriterClose = subBuilder;
             break;
           }
-          case 282: {
+          case 274: {
             global::LiveKit.Proto.StreamSendFileCallback subBuilder = new global::LiveKit.Proto.StreamSendFileCallback();
             if (messageCase_ == MessageOneofCase.SendFile) {
               subBuilder.MergeFrom(SendFile);
@@ -9639,16 +9448,7 @@ namespace LiveKit.Proto {
             SendFile = subBuilder;
             break;
           }
-          case 290: {
-            global::LiveKit.Proto.TextStreamOpenedEvent subBuilder = new global::LiveKit.Proto.TextStreamOpenedEvent();
-            if (messageCase_ == MessageOneofCase.TextStreamOpened) {
-              subBuilder.MergeFrom(TextStreamOpened);
-            }
-            input.ReadMessage(subBuilder);
-            TextStreamOpened = subBuilder;
-            break;
-          }
-          case 298: {
+          case 282: {
             global::LiveKit.Proto.TextStreamReaderEvent subBuilder = new global::LiveKit.Proto.TextStreamReaderEvent();
             if (messageCase_ == MessageOneofCase.TextStreamReaderEvent) {
               subBuilder.MergeFrom(TextStreamReaderEvent);
@@ -9657,7 +9457,7 @@ namespace LiveKit.Proto {
             TextStreamReaderEvent = subBuilder;
             break;
           }
-          case 306: {
+          case 290: {
             global::LiveKit.Proto.TextStreamReaderReadAllCallback subBuilder = new global::LiveKit.Proto.TextStreamReaderReadAllCallback();
             if (messageCase_ == MessageOneofCase.TextStreamReaderReadAll) {
               subBuilder.MergeFrom(TextStreamReaderReadAll);
@@ -9666,7 +9466,7 @@ namespace LiveKit.Proto {
             TextStreamReaderReadAll = subBuilder;
             break;
           }
-          case 314: {
+          case 298: {
             global::LiveKit.Proto.TextStreamOpenCallback subBuilder = new global::LiveKit.Proto.TextStreamOpenCallback();
             if (messageCase_ == MessageOneofCase.TextStreamOpen) {
               subBuilder.MergeFrom(TextStreamOpen);
@@ -9675,7 +9475,7 @@ namespace LiveKit.Proto {
             TextStreamOpen = subBuilder;
             break;
           }
-          case 322: {
+          case 306: {
             global::LiveKit.Proto.TextStreamWriterWriteCallback subBuilder = new global::LiveKit.Proto.TextStreamWriterWriteCallback();
             if (messageCase_ == MessageOneofCase.TextStreamWriterWrite) {
               subBuilder.MergeFrom(TextStreamWriterWrite);
@@ -9684,7 +9484,7 @@ namespace LiveKit.Proto {
             TextStreamWriterWrite = subBuilder;
             break;
           }
-          case 330: {
+          case 314: {
             global::LiveKit.Proto.TextStreamWriterCloseCallback subBuilder = new global::LiveKit.Proto.TextStreamWriterCloseCallback();
             if (messageCase_ == MessageOneofCase.TextStreamWriterClose) {
               subBuilder.MergeFrom(TextStreamWriterClose);
@@ -9693,7 +9493,7 @@ namespace LiveKit.Proto {
             TextStreamWriterClose = subBuilder;
             break;
           }
-          case 338: {
+          case 322: {
             global::LiveKit.Proto.StreamSendTextCallback subBuilder = new global::LiveKit.Proto.StreamSendTextCallback();
             if (messageCase_ == MessageOneofCase.SendText) {
               subBuilder.MergeFrom(SendText);
@@ -9956,15 +9756,6 @@ namespace LiveKit.Proto {
             break;
           }
           case 226: {
-            global::LiveKit.Proto.ByteStreamOpenedEvent subBuilder = new global::LiveKit.Proto.ByteStreamOpenedEvent();
-            if (messageCase_ == MessageOneofCase.ByteStreamOpened) {
-              subBuilder.MergeFrom(ByteStreamOpened);
-            }
-            input.ReadMessage(subBuilder);
-            ByteStreamOpened = subBuilder;
-            break;
-          }
-          case 234: {
             global::LiveKit.Proto.ByteStreamReaderEvent subBuilder = new global::LiveKit.Proto.ByteStreamReaderEvent();
             if (messageCase_ == MessageOneofCase.ByteStreamReaderEvent) {
               subBuilder.MergeFrom(ByteStreamReaderEvent);
@@ -9973,7 +9764,7 @@ namespace LiveKit.Proto {
             ByteStreamReaderEvent = subBuilder;
             break;
           }
-          case 242: {
+          case 234: {
             global::LiveKit.Proto.ByteStreamReaderReadAllCallback subBuilder = new global::LiveKit.Proto.ByteStreamReaderReadAllCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamReaderReadAll) {
               subBuilder.MergeFrom(ByteStreamReaderReadAll);
@@ -9982,7 +9773,7 @@ namespace LiveKit.Proto {
             ByteStreamReaderReadAll = subBuilder;
             break;
           }
-          case 250: {
+          case 242: {
             global::LiveKit.Proto.ByteStreamReaderWriteToFileCallback subBuilder = new global::LiveKit.Proto.ByteStreamReaderWriteToFileCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamReaderWriteToFile) {
               subBuilder.MergeFrom(ByteStreamReaderWriteToFile);
@@ -9991,7 +9782,7 @@ namespace LiveKit.Proto {
             ByteStreamReaderWriteToFile = subBuilder;
             break;
           }
-          case 258: {
+          case 250: {
             global::LiveKit.Proto.ByteStreamOpenCallback subBuilder = new global::LiveKit.Proto.ByteStreamOpenCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamOpen) {
               subBuilder.MergeFrom(ByteStreamOpen);
@@ -10000,7 +9791,7 @@ namespace LiveKit.Proto {
             ByteStreamOpen = subBuilder;
             break;
           }
-          case 266: {
+          case 258: {
             global::LiveKit.Proto.ByteStreamWriterWriteCallback subBuilder = new global::LiveKit.Proto.ByteStreamWriterWriteCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamWriterWrite) {
               subBuilder.MergeFrom(ByteStreamWriterWrite);
@@ -10009,7 +9800,7 @@ namespace LiveKit.Proto {
             ByteStreamWriterWrite = subBuilder;
             break;
           }
-          case 274: {
+          case 266: {
             global::LiveKit.Proto.ByteStreamWriterCloseCallback subBuilder = new global::LiveKit.Proto.ByteStreamWriterCloseCallback();
             if (messageCase_ == MessageOneofCase.ByteStreamWriterClose) {
               subBuilder.MergeFrom(ByteStreamWriterClose);
@@ -10018,7 +9809,7 @@ namespace LiveKit.Proto {
             ByteStreamWriterClose = subBuilder;
             break;
           }
-          case 282: {
+          case 274: {
             global::LiveKit.Proto.StreamSendFileCallback subBuilder = new global::LiveKit.Proto.StreamSendFileCallback();
             if (messageCase_ == MessageOneofCase.SendFile) {
               subBuilder.MergeFrom(SendFile);
@@ -10027,16 +9818,7 @@ namespace LiveKit.Proto {
             SendFile = subBuilder;
             break;
           }
-          case 290: {
-            global::LiveKit.Proto.TextStreamOpenedEvent subBuilder = new global::LiveKit.Proto.TextStreamOpenedEvent();
-            if (messageCase_ == MessageOneofCase.TextStreamOpened) {
-              subBuilder.MergeFrom(TextStreamOpened);
-            }
-            input.ReadMessage(subBuilder);
-            TextStreamOpened = subBuilder;
-            break;
-          }
-          case 298: {
+          case 282: {
             global::LiveKit.Proto.TextStreamReaderEvent subBuilder = new global::LiveKit.Proto.TextStreamReaderEvent();
             if (messageCase_ == MessageOneofCase.TextStreamReaderEvent) {
               subBuilder.MergeFrom(TextStreamReaderEvent);
@@ -10045,7 +9827,7 @@ namespace LiveKit.Proto {
             TextStreamReaderEvent = subBuilder;
             break;
           }
-          case 306: {
+          case 290: {
             global::LiveKit.Proto.TextStreamReaderReadAllCallback subBuilder = new global::LiveKit.Proto.TextStreamReaderReadAllCallback();
             if (messageCase_ == MessageOneofCase.TextStreamReaderReadAll) {
               subBuilder.MergeFrom(TextStreamReaderReadAll);
@@ -10054,7 +9836,7 @@ namespace LiveKit.Proto {
             TextStreamReaderReadAll = subBuilder;
             break;
           }
-          case 314: {
+          case 298: {
             global::LiveKit.Proto.TextStreamOpenCallback subBuilder = new global::LiveKit.Proto.TextStreamOpenCallback();
             if (messageCase_ == MessageOneofCase.TextStreamOpen) {
               subBuilder.MergeFrom(TextStreamOpen);
@@ -10063,7 +9845,7 @@ namespace LiveKit.Proto {
             TextStreamOpen = subBuilder;
             break;
           }
-          case 322: {
+          case 306: {
             global::LiveKit.Proto.TextStreamWriterWriteCallback subBuilder = new global::LiveKit.Proto.TextStreamWriterWriteCallback();
             if (messageCase_ == MessageOneofCase.TextStreamWriterWrite) {
               subBuilder.MergeFrom(TextStreamWriterWrite);
@@ -10072,7 +9854,7 @@ namespace LiveKit.Proto {
             TextStreamWriterWrite = subBuilder;
             break;
           }
-          case 330: {
+          case 314: {
             global::LiveKit.Proto.TextStreamWriterCloseCallback subBuilder = new global::LiveKit.Proto.TextStreamWriterCloseCallback();
             if (messageCase_ == MessageOneofCase.TextStreamWriterClose) {
               subBuilder.MergeFrom(TextStreamWriterClose);
@@ -10081,7 +9863,7 @@ namespace LiveKit.Proto {
             TextStreamWriterClose = subBuilder;
             break;
           }
-          case 338: {
+          case 322: {
             global::LiveKit.Proto.StreamSendTextCallback subBuilder = new global::LiveKit.Proto.StreamSendTextCallback();
             if (messageCase_ == MessageOneofCase.SendText) {
               subBuilder.MergeFrom(SendText);

@@ -110,8 +110,7 @@ namespace LiveKit
     {
         internal FfiHandle RoomHandle = null;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
-        private Dictionary<string, TextStreamHandler> _textStreamHandlers = new();
-        private Dictionary<string, ByteStreamHandler> _byteStreamHandlers = new();
+        private StreamHandlerRegistry _streamHandlers = new();
 
         public delegate void MetaDelegate(string metaData);
         public delegate void ParticipantDelegate(Participant participant);
@@ -192,8 +191,7 @@ namespace LiveKit
         /// <throws>Throws a <see cref="StreamError" /> if the topic is already registered.</throws>
         public void RegisterTextStreamHandler(string topic, TextStreamHandler handler)
         {
-            RegisterTopicHandler(topic, StreamKind.Text);
-            _textStreamHandlers[topic] = handler;
+            _streamHandlers.RegisterTextStreamHandler(topic, handler);
         }
 
         /// <summary>
@@ -208,8 +206,7 @@ namespace LiveKit
         /// <throws>Throws a <see cref="StreamError" /> if the topic is already registered.</throws>
         public void RegisterByteStreamHandler(string topic, ByteStreamHandler handler)
         {
-            RegisterTopicHandler(topic, StreamKind.Byte);
-            _byteStreamHandlers[topic] = handler;
+            _streamHandlers.RegisterByteStreamHandler(topic, handler);
         }
 
         /// <summary>
@@ -218,8 +215,7 @@ namespace LiveKit
         /// <param name="topic">Topic identifier for which the handler should be unregistered.</param>
         public void UnregisterTextStreamHandler(string topic)
         {
-            UnregisterTopicHandler(topic, StreamKind.Text);
-            _textStreamHandlers.Remove(topic);
+            _streamHandlers.UnregisterTextStreamHandler(topic);
         }
 
         /// <summary>
@@ -228,34 +224,7 @@ namespace LiveKit
         /// <param name="topic">Topic identifier for which the handler should be unregistered.</param>
         public void UnregisterByteStreamHandler(string topic)
         {
-            UnregisterTopicHandler(topic, StreamKind.Byte);
-            _byteStreamHandlers.Remove(topic);
-        }
-
-        private void RegisterTopicHandler(string topic, StreamKind kind)
-        {
-            using var request = FFIBridge.Instance.NewRequest<StreamRegisterTopicRequest>();
-            var registerReq = request.request;
-            registerReq.RoomHandle = (ulong)RoomHandle.DangerousGetHandle();
-            registerReq.Topic = topic;
-            registerReq.Kind = kind;
-
-            using var response = request.Send();
-            FfiResponse res = response;
-            if (res.RegisterTopic.Error != null)
-            {
-                throw new StreamError(res.RegisterTopic.Error);
-            }
-        }
-
-        private void UnregisterTopicHandler(string topic, StreamKind kind)
-        {
-            using var request = FFIBridge.Instance.NewRequest<StreamUnregisterTopicRequest>();
-            var unregisterReq = request.request;
-            unregisterReq.RoomHandle = (ulong)RoomHandle.DangerousGetHandle();
-            unregisterReq.Topic = topic;
-            unregisterReq.Kind = kind;
-            request.Send();
+            _streamHandlers.UnregisterByteStreamHandler(topic);
         }
 
         internal void UpdateFromInfo(RoomInfo info)
@@ -278,20 +247,6 @@ namespace LiveKit
                     e.Payload,
                     e.ResponseTimeoutMs / 1000f);
             }
-        }
-
-        internal void OnTextStreamOpenedReceived(TextStreamOpenedEvent e)
-        {
-            TextStreamReader reader = new TextStreamReader(e.Reader);
-            if (!_textStreamHandlers.TryGetValue(reader.Info.Topic, out var handler)) return;
-            handler(reader, e.ParticipantIdentity);
-        }
-
-        internal void OnByteStreamOpenedReceived(ByteStreamOpenedEvent e)
-        {
-            ByteStreamReader reader = new ByteStreamReader(e.Reader);
-            if (!_byteStreamHandlers.TryGetValue(reader.Info.Topic, out var handler)) return;
-            handler(reader, e.ParticipantIdentity);
         }
 
         internal void OnEventReceived(RoomEvent e)
@@ -485,6 +440,16 @@ namespace LiveKit
                         }
                     }
                     break;
+                case RoomEvent.MessageOneofCase.ByteStreamOpened:
+                    var byteReader = new ByteStreamReader(e.ByteStreamOpened.Reader);
+                    _streamHandlers.Dispatch(byteReader, e.ByteStreamOpened.ParticipantIdentity);
+                    // TODO: Immediately dispose unhandled stream reader
+                    break;
+                case RoomEvent.MessageOneofCase.TextStreamOpened:
+                    var textReader = new TextStreamReader(e.TextStreamOpened.Reader);
+                    _streamHandlers.Dispatch(textReader, e.TextStreamOpened.ParticipantIdentity);
+                    // TODO: Immediately dispose unhandled stream reader
+                    break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionState = e.ConnectionStateChanged.State;
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
@@ -522,8 +487,6 @@ namespace LiveKit
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
             FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
-            FfiClient.Instance.TextStreamOpenedReceived += OnTextStreamOpenedReceived;
-            FfiClient.Instance.ByteStreamOpenedReceived += OnByteStreamOpenedReceived;
 
             Connected?.Invoke(this);
         }

@@ -853,4 +853,49 @@ namespace LiveKit
             public StreamError Error { get; private set; }
         }
     }
+
+    internal sealed class StreamHandlerRegistry
+    {
+        private readonly Dictionary<string, TextStreamHandler> _textStreamHandlers = new();
+        private readonly Dictionary<string, ByteStreamHandler> _byteStreamHandlers = new();
+
+        internal void RegisterTextStreamHandler(string topic, TextStreamHandler handler)
+        {
+            if (!_textStreamHandlers.TryAdd(topic, handler))
+            {
+                throw new StreamError($"Text stream handler already registered for topic: {topic}");
+            }
+        }
+
+        internal void RegisterByteStreamHandler(string topic, ByteStreamHandler handler)
+        {
+            if (!_byteStreamHandlers.TryAdd(topic, handler))
+            {
+                throw new StreamError($"Byte stream handler already registered for topic: {topic}");
+            }
+        }
+
+        internal void UnregisterTextStreamHandler(string topic) => _textStreamHandlers.Remove(topic);
+        internal void UnregisterByteStreamHandler(string topic) => _byteStreamHandlers.Remove(topic);
+
+        internal bool Dispatch(TextStreamReader reader, string participantIdentity)
+        {
+            if (_textStreamHandlers.TryGetValue(reader.Info.Topic, out var handler))
+            {
+                handler(reader, participantIdentity);
+                return true;
+            }
+            return false;
+        }
+
+        internal bool Dispatch(ByteStreamReader reader, string participantIdentity)
+        {
+            if (_byteStreamHandlers.TryGetValue(reader.Info.Topic, out var handler))
+            {
+                handler(reader, participantIdentity);
+                return true;
+            }
+            return false;
+        }
+    }
 }
