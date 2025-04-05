@@ -198,7 +198,7 @@ void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, Rem
 
 ### RPC
 
-Perform your own predefined method calls from one participant to another. 
+Perform your own predefined method calls from one participant to another.
 
 This feature is especially powerful when used with [Agents](https://docs.livekit.io/agents), for instance to forward LLM function calls to your client application.
 
@@ -235,7 +235,7 @@ IEnumerator PerformRpcCoroutine()
         Method = "greet",
         Payload = "Hello from RPC!"
     });
-    
+
     yield return rpcCall;
 
     if (rpcCall.IsError)
@@ -256,7 +256,7 @@ You may find it useful to adjust the `ResponseTimeout` parameter, which indicate
 
 #### Errors
 
-LiveKit is a dynamic realtime environment and RPC calls can fail for various reasons. 
+LiveKit is a dynamic realtime environment and RPC calls can fail for various reasons.
 
 You may throw errors of the type `RpcError` with a string `message` in an RPC method handler and they will be received on the caller's side with the message intact. Other errors will not be transmitted and will instead arrive to the caller as `1500` ("Application Error"). Other built-in errors are detailed in the [docs](https://docs.livekit.io/home/client/data/rpc/#errors).
 
@@ -331,7 +331,7 @@ IEnumerator HandleTextStream(TextStreamReader reader, string participantIdentity
     Debug.Log($"Received text: {readAllCall.Text}")
 }
 
-// Register the topic after connection to the room
+// Register the topic before connecting to the room
 room.RegisterTextStreamHandler("my-topic", (reader, identity) =>
     StartCoroutine(HandleTextStream(reader, identity))
 );
