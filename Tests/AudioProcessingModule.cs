@@ -10,7 +10,7 @@ namespace LiveKit.Tests
         public void TestAudioProcessing()
         {
             var apm = new AudioProcessingModule(true, true, true, true);
-
+            apm.SetStreamDelayMs(100);
             apm.ProcessStream(CreateTestFrame());
             apm.ProcessReverseStream(CreateTestFrame());
 

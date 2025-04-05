@@ -96,5 +96,35 @@ namespace LiveKit
                 throw new Exception(res.ApmProcessReverseStream.Error);
             }
         }
+
+        /// <summary>
+        /// This must be called if and only if echo processing is enabled.
+        /// </summary>
+        /// <remarks>
+        /// Sets the `delay` in milliseconds between receiving a far-end frame in <see cref="ProcessReverseStream"/>
+        /// and receiving the corresponding echo in a near-end frame in <see cref="ProcessStream"/>.
+        ///
+        /// The delay can be calculated as: delay = (t_render - t_analyze) + (t_process - t_capture)
+        ///
+        /// Where:
+        /// - t_analyze: Time when frame is passed to <see cref="ProcessReverseStream"/>
+        /// - t_render: Time when first sample of frame is rendered by audio hardware
+        /// - t_capture: Time when first sample of frame is captured by audio hardware
+        /// - t_process: Time when frame is passed to <see cref="ProcessStream"/>
+        /// </remarks>
+        public void SetStreamDelayMs(int delayMs)
+        {
+            using var request = FFIBridge.Instance.NewRequest<ApmSetStreamDelayRequest>();
+            var setStreamDelay = request.request;
+            setStreamDelay.ApmHandle = (ulong)Handle.DangerousGetHandle();
+            setStreamDelay.DelayMs = delayMs;
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            if (res.ApmSetStreamDelay.HasError)
+            {
+                throw new Exception(res.ApmSetStreamDelay.Error);
+            }
+        }
     }
 }

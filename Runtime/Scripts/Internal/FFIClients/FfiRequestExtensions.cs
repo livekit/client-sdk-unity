@@ -87,6 +87,19 @@ namespace LiveKit.Internal.FFIClients
                 case E2eeRequest e2EeRequest:
                     ffiRequest.E2Ee = e2EeRequest;
                     break;
+                // Apm
+                case NewApmRequest newApmRequest:
+                    ffiRequest.NewApm = newApmRequest;
+                    break;
+                case ApmProcessStreamRequest apmProcessStreamRequest:
+                    ffiRequest.ApmProcessStream = apmProcessStreamRequest;
+                    break;
+                case ApmProcessReverseStreamRequest apmProcessReverseStreamRequest:
+                    ffiRequest.ApmProcessReverseStream = apmProcessReverseStreamRequest;
+                    break;
+                case ApmSetStreamDelayRequest apmSetStreamDelayRequest:
+                    ffiRequest.ApmSetStreamDelay = apmSetStreamDelayRequest;
+                    break;
                 // Rpc
                 case RegisterRpcMethodRequest registerRpcMethodRequest:
                     ffiRequest.RegisterRpcMethod = registerRpcMethodRequest;
