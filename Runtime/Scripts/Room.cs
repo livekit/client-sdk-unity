@@ -130,7 +130,7 @@ namespace LiveKit
         public string Metadata { private set; get; }
         public LocalParticipant LocalParticipant { private set; get; }
         public ConnectionState ConnectionState { private set; get; }
-        public bool IsConnected => RoomHandle == null && ConnectionState != ConnectionState.ConnDisconnected;
+        public bool IsConnected => RoomHandle != null && ConnectionState != ConnectionState.ConnDisconnected;
         public E2EEManager E2EEManager { internal set; get; }
         public IReadOnlyDictionary<string, RemoteParticipant> RemoteParticipants => _participants;
 
