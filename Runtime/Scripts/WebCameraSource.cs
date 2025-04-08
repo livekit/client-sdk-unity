@@ -28,6 +28,11 @@ namespace LiveKit
 
         protected override VideoRotation GetVideoRotation()
         {
+            switch (Texture.videoRotationAngle)
+            {
+                case 90: return VideoRotation._90;
+                case 180: return VideoRotation._0;
+            }
             return VideoRotation._180;
         }
 
