@@ -39,6 +39,9 @@ namespace LiveKit.Internal
         public event RoomEventReceivedDelegate? RoomEventReceived;
         public event TrackEventReceivedDelegate? TrackEventReceived;
         public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
+        public event SetLocalMetadataReceivedDelegate? SetLocalMetadataReceived;
+        public event SetLocalNameReceivedDelegate? SetLocalNameReceived;
+        public event SetLocalAttributesReceivedDelegate? SetLocalAttributesReceived;
 
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
@@ -195,7 +198,7 @@ namespace LiveKit.Internal
             {
                 // Since we are in a thread I want to make sure we catch and log
                 Utils.Error(e);
-                // But we aren't actually handling this exception so we should re-throw here 
+                // But we aren't actually handling this exception so we should re-throw here
                 throw new Exception("Cannot send request", e);
             }
         }
@@ -239,6 +242,15 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.RoomEvent:
                         Instance.RoomEventReceived?.Invoke(r.RoomEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalName:
+                        Instance.SetLocalNameReceived?.Invoke(r.SetLocalName!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalMetadata:
+                        Instance.SetLocalMetadataReceived?.Invoke(r.SetLocalMetadata!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalAttributes:
+                        Instance.SetLocalAttributesReceived?.Invoke(r.SetLocalAttributes!);
                         break;
                     case FfiEvent.MessageOneofCase.TrackEvent:
                         Instance.TrackEventReceived?.Invoke(r.TrackEvent!);

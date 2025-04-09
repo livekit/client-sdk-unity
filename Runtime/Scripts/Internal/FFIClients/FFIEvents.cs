@@ -21,7 +21,11 @@ namespace LiveKit.Internal
     internal delegate void DisconnectReceivedDelegate(DisconnectCallback e);
 
     internal delegate void GetSessionStatsDelegate(GetStatsCallback e);
-    
+
+    internal delegate void SetLocalMetadataReceivedDelegate(SetLocalMetadataCallback e);
+    internal delegate void SetLocalNameReceivedDelegate(SetLocalNameCallback e);
+    internal delegate void SetLocalAttributesReceivedDelegate(SetLocalAttributesCallback e);
+
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
 

@@ -157,6 +157,7 @@ namespace LiveKit
         public event MetaDelegate RoomMetadataChanged;
         public event ParticipantDelegate ParticipantMetadataChanged;
         public event ParticipantDelegate ParticipantNameChanged;
+        public event ParticipantDelegate ParticipantAttributesChanged;
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
@@ -166,7 +167,7 @@ namespace LiveKit
             Utils.Debug($"Connect response.... {response}");
             return new ConnectInstruction(res.Connect.AsyncId, this, options);
         }
-        
+
         public void Disconnect()
         {
             if (this.RoomHandle == null)
@@ -214,20 +215,41 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ParticipantMetadataChanged:
                     {
                         var participant = GetParticipant(e.ParticipantMetadataChanged.ParticipantIdentity);
-                        if (participant != null)
+                        if (participant == null)
                         {
-                            participant.SetMeta(e.ParticipantMetadataChanged.Metadata);
-                            ParticipantMetadataChanged?.Invoke(participant);
+                            Utils.Debug($"Unable to find participant: {e.ParticipantMetadataChanged.ParticipantIdentity} in Meta data Change Event");
+                            return;
                         }
-                        else Utils.Debug("Unable to find participant: " + e.ParticipantMetadataChanged.ParticipantIdentity + " in Meta data Change Event");
+                        participant._info.Metadata = e.ParticipantMetadataChanged.Metadata;
+                        ParticipantMetadataChanged?.Invoke(participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantNameChanged:
                     {
                         var participant = GetParticipant(e.ParticipantNameChanged.ParticipantIdentity);
-                        participant.SetName(e.ParticipantNameChanged.Name);
-                        if (participant != null) ParticipantNameChanged?.Invoke(participant);
-                        else Utils.Debug("Unable to find participant: " + e.ParticipantNameChanged.ParticipantIdentity + " in Meta data Change Event");
+                        if (participant == null)
+                        {
+                            Utils.Debug($"Unable to find participant: {e.ParticipantNameChanged.ParticipantIdentity} in Name Change Event");
+                            return;
+                        }
+                        participant._info.Name = e.ParticipantNameChanged.Name;
+                        ParticipantNameChanged?.Invoke(participant);
+                    }
+                    break;
+                case RoomEvent.MessageOneofCase.ParticipantAttributesChanged:
+                    {
+                        var participant = GetParticipant(e.ParticipantAttributesChanged.ParticipantIdentity);
+                        if (participant == null)
+                        {
+                            Utils.Debug($"Unable to find participant: {e.ParticipantAttributesChanged.ParticipantIdentity} in Attributes Change Event");
+                            return;
+                        }
+                        participant._info.Attributes.Clear();
+                        foreach (var entry in e.ParticipantAttributesChanged.Attributes)
+                        {
+                            participant._info.Attributes.Add(entry.Key, entry.Value);
+                        }
+                        ParticipantAttributesChanged?.Invoke(participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ParticipantConnected:
