@@ -25,23 +25,31 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFwYXJ0aWNpcGFudC5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvIvUBCg9QYXJ0aWNpcGFudEluZm8SCwoDc2lkGAEgAigJEgwKBG5hbWUY",
+            "b3RvIrECCg9QYXJ0aWNpcGFudEluZm8SCwoDc2lkGAEgAigJEgwKBG5hbWUY",
             "AiACKAkSEAoIaWRlbnRpdHkYAyACKAkSEAoIbWV0YWRhdGEYBCACKAkSQgoK",
             "YXR0cmlidXRlcxgFIAMoCzIuLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRJ",
             "bmZvLkF0dHJpYnV0ZXNFbnRyeRIsCgRraW5kGAYgAigOMh4ubGl2ZWtpdC5w",
-            "cm90by5QYXJ0aWNpcGFudEtpbmQaMQoPQXR0cmlidXRlc0VudHJ5EgsKA2tl",
-            "eRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEibwoQT3duZWRQYXJ0aWNpcGFu",
-            "dBItCgZoYW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFu",
-            "ZGxlEiwKBGluZm8YAiACKAsyHi5saXZla2l0LnByb3RvLlBhcnRpY2lwYW50",
-            "SW5mbyqhAQoPUGFydGljaXBhbnRLaW5kEh0KGVBBUlRJQ0lQQU5UX0tJTkRf",
-            "U1RBTkRBUkQQABIcChhQQVJUSUNJUEFOVF9LSU5EX0lOR1JFU1MQARIbChdQ",
-            "QVJUSUNJUEFOVF9LSU5EX0VHUkVTUxACEhgKFFBBUlRJQ0lQQU5UX0tJTkRf",
-            "U0lQEAMSGgoWUEFSVElDSVBBTlRfS0lORF9BR0VOVBAEQhCqAg1MaXZlS2l0",
-            "LlByb3Rv"));
+            "cm90by5QYXJ0aWNpcGFudEtpbmQSOgoRZGlzY29ubmVjdF9yZWFzb24YByAC",
+            "KA4yHy5saXZla2l0LnByb3RvLkRpc2Nvbm5lY3RSZWFzb24aMQoPQXR0cmli",
+            "dXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEibwoQ",
+            "T3duZWRQYXJ0aWNpcGFudBItCgZoYW5kbGUYASACKAsyHS5saXZla2l0LnBy",
+            "b3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiACKAsyHi5saXZla2l0LnBy",
+            "b3RvLlBhcnRpY2lwYW50SW5mbyqhAQoPUGFydGljaXBhbnRLaW5kEh0KGVBB",
+            "UlRJQ0lQQU5UX0tJTkRfU1RBTkRBUkQQABIcChhQQVJUSUNJUEFOVF9LSU5E",
+            "X0lOR1JFU1MQARIbChdQQVJUSUNJUEFOVF9LSU5EX0VHUkVTUxACEhgKFFBB",
+            "UlRJQ0lQQU5UX0tJTkRfU0lQEAMSGgoWUEFSVElDSVBBTlRfS0lORF9BR0VO",
+            "VBAEKqwCChBEaXNjb25uZWN0UmVhc29uEhIKDlVOS05PV05fUkVBU09OEAAS",
+            "FAoQQ0xJRU5UX0lOSVRJQVRFRBABEhYKEkRVUExJQ0FURV9JREVOVElUWRAC",
+            "EhMKD1NFUlZFUl9TSFVURE9XThADEhcKE1BBUlRJQ0lQQU5UX1JFTU9WRUQQ",
+            "BBIQCgxST09NX0RFTEVURUQQBRISCg5TVEFURV9NSVNNQVRDSBAGEhAKDEpP",
+            "SU5fRkFJTFVSRRAHEg0KCU1JR1JBVElPThAIEhAKDFNJR05BTF9DTE9TRRAJ",
+            "Eg8KC1JPT01fQ0xPU0VEEAoSFAoQVVNFUl9VTkFWQUlMQUJMRRALEhEKDVVT",
+            "RVJfUkVKRUNURUQQDBIVChFTSVBfVFJVTktfRkFJTFVSRRANQhCqAg1MaXZl",
+            "S2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Attributes", "Kind" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Attributes", "Kind", "DisconnectReason" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null)
           }));
     }
@@ -55,6 +63,62 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("PARTICIPANT_KIND_EGRESS")] Egress = 2,
     [pbr::OriginalName("PARTICIPANT_KIND_SIP")] Sip = 3,
     [pbr::OriginalName("PARTICIPANT_KIND_AGENT")] Agent = 4,
+  }
+
+  public enum DisconnectReason {
+    [pbr::OriginalName("UNKNOWN_REASON")] UnknownReason = 0,
+    /// <summary>
+    /// the client initiated the disconnect
+    /// </summary>
+    [pbr::OriginalName("CLIENT_INITIATED")] ClientInitiated = 1,
+    /// <summary>
+    /// another participant with the same identity has joined the room
+    /// </summary>
+    [pbr::OriginalName("DUPLICATE_IDENTITY")] DuplicateIdentity = 2,
+    /// <summary>
+    /// the server instance is shutting down
+    /// </summary>
+    [pbr::OriginalName("SERVER_SHUTDOWN")] ServerShutdown = 3,
+    /// <summary>
+    /// RoomService.RemoveParticipant was called
+    /// </summary>
+    [pbr::OriginalName("PARTICIPANT_REMOVED")] ParticipantRemoved = 4,
+    /// <summary>
+    /// RoomService.DeleteRoom was called
+    /// </summary>
+    [pbr::OriginalName("ROOM_DELETED")] RoomDeleted = 5,
+    /// <summary>
+    /// the client is attempting to resume a session, but server is not aware of it
+    /// </summary>
+    [pbr::OriginalName("STATE_MISMATCH")] StateMismatch = 6,
+    /// <summary>
+    /// client was unable to connect fully
+    /// </summary>
+    [pbr::OriginalName("JOIN_FAILURE")] JoinFailure = 7,
+    /// <summary>
+    /// Cloud-only, the server requested Participant to migrate the connection elsewhere
+    /// </summary>
+    [pbr::OriginalName("MIGRATION")] Migration = 8,
+    /// <summary>
+    /// the signal websocket was closed unexpectedly
+    /// </summary>
+    [pbr::OriginalName("SIGNAL_CLOSE")] SignalClose = 9,
+    /// <summary>
+    /// the room was closed, due to all Standard and Ingress participants having left
+    /// </summary>
+    [pbr::OriginalName("ROOM_CLOSED")] RoomClosed = 10,
+    /// <summary>
+    /// SIP callee did not respond in time
+    /// </summary>
+    [pbr::OriginalName("USER_UNAVAILABLE")] UserUnavailable = 11,
+    /// <summary>
+    /// SIP callee rejected the call (busy)
+    /// </summary>
+    [pbr::OriginalName("USER_REJECTED")] UserRejected = 12,
+    /// <summary>
+    /// SIP protocol failure or unexpected response
+    /// </summary>
+    [pbr::OriginalName("SIP_TRUNK_FAILURE")] SipTrunkFailure = 13,
   }
 
   #endregion
@@ -103,6 +167,7 @@ namespace LiveKit.Proto {
       metadata_ = other.metadata_;
       attributes_ = other.attributes_.Clone();
       kind_ = other.kind_;
+      disconnectReason_ = other.disconnectReason_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -254,6 +319,33 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~1;
     }
 
+    /// <summary>Field number for the "disconnect_reason" field.</summary>
+    public const int DisconnectReasonFieldNumber = 7;
+    private readonly static global::LiveKit.Proto.DisconnectReason DisconnectReasonDefaultValue = global::LiveKit.Proto.DisconnectReason.UnknownReason;
+
+    private global::LiveKit.Proto.DisconnectReason disconnectReason_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DisconnectReason DisconnectReason {
+      get { if ((_hasBits0 & 2) != 0) { return disconnectReason_; } else { return DisconnectReasonDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        disconnectReason_ = value;
+      }
+    }
+    /// <summary>Gets whether the "disconnect_reason" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDisconnectReason {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "disconnect_reason" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDisconnectReason() {
+      _hasBits0 &= ~2;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -275,6 +367,7 @@ namespace LiveKit.Proto {
       if (Metadata != other.Metadata) return false;
       if (!Attributes.Equals(other.Attributes)) return false;
       if (Kind != other.Kind) return false;
+      if (DisconnectReason != other.DisconnectReason) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -288,6 +381,7 @@ namespace LiveKit.Proto {
       if (HasMetadata) hash ^= Metadata.GetHashCode();
       hash ^= Attributes.GetHashCode();
       if (HasKind) hash ^= Kind.GetHashCode();
+      if (HasDisconnectReason) hash ^= DisconnectReason.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -327,6 +421,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(48);
         output.WriteEnum((int) Kind);
       }
+      if (HasDisconnectReason) {
+        output.WriteRawTag(56);
+        output.WriteEnum((int) DisconnectReason);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -358,6 +456,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(48);
         output.WriteEnum((int) Kind);
       }
+      if (HasDisconnectReason) {
+        output.WriteRawTag(56);
+        output.WriteEnum((int) DisconnectReason);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -383,6 +485,9 @@ namespace LiveKit.Proto {
       size += attributes_.CalculateSize(_map_attributes_codec);
       if (HasKind) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Kind);
+      }
+      if (HasDisconnectReason) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) DisconnectReason);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -411,6 +516,9 @@ namespace LiveKit.Proto {
       attributes_.MergeFrom(other.attributes_);
       if (other.HasKind) {
         Kind = other.Kind;
+      }
+      if (other.HasDisconnectReason) {
+        DisconnectReason = other.DisconnectReason;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -455,6 +563,10 @@ namespace LiveKit.Proto {
             Kind = (global::LiveKit.Proto.ParticipantKind) input.ReadEnum();
             break;
           }
+          case 56: {
+            DisconnectReason = (global::LiveKit.Proto.DisconnectReason) input.ReadEnum();
+            break;
+          }
         }
       }
     #endif
@@ -496,6 +608,10 @@ namespace LiveKit.Proto {
           }
           case 48: {
             Kind = (global::LiveKit.Proto.ParticipantKind) input.ReadEnum();
+            break;
+          }
+          case 56: {
+            DisconnectReason = (global::LiveKit.Proto.DisconnectReason) input.ReadEnum();
             break;
           }
         }

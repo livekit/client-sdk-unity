@@ -100,6 +100,46 @@ namespace LiveKit.Internal.FFIClients
                 case RpcMethodInvocationResponseRequest rpcMethodInvocationResponseRequest:
                     ffiRequest.RpcMethodInvocationResponse = rpcMethodInvocationResponseRequest;
                     break;
+                // Data stream
+                case TextStreamReaderReadIncrementalRequest textStreamReaderReadIncrementalRequest:
+                    ffiRequest.TextReadIncremental = textStreamReaderReadIncrementalRequest;
+                    break;
+                case TextStreamReaderReadAllRequest textStreamReaderReadAllRequest:
+                    ffiRequest.TextReadAll = textStreamReaderReadAllRequest;
+                    break;
+                case ByteStreamReaderReadIncrementalRequest byteStreamReaderReadIncrementalRequest:
+                    ffiRequest.ByteReadIncremental = byteStreamReaderReadIncrementalRequest;
+                    break;
+                case ByteStreamReaderReadAllRequest byteStreamReaderReadAllRequest:
+                    ffiRequest.ByteReadAll = byteStreamReaderReadAllRequest;
+                    break;
+                case ByteStreamReaderWriteToFileRequest byteStreamReaderWriteToFileRequest:
+                    ffiRequest.ByteWriteToFile = byteStreamReaderWriteToFileRequest;
+                    break;
+                case StreamSendFileRequest streamSendFileRequest:
+                    ffiRequest.SendFile = streamSendFileRequest;
+                    break;
+                case StreamSendTextRequest streamSendTextRequest:
+                    ffiRequest.SendText = streamSendTextRequest;
+                    break;
+                case ByteStreamOpenRequest byteStreamOpenRequest:
+                    ffiRequest.ByteStreamOpen = byteStreamOpenRequest;
+                    break;
+                case ByteStreamWriterWriteRequest byteStreamWriterWriteRequest:
+                    ffiRequest.ByteStreamWrite = byteStreamWriterWriteRequest;
+                    break;
+                case ByteStreamWriterCloseRequest byteStreamWriterCloseRequest:
+                    ffiRequest.ByteStreamClose = byteStreamWriterCloseRequest;
+                    break;
+                case TextStreamOpenRequest textStreamOpenRequest:
+                    ffiRequest.TextStreamOpen = textStreamOpenRequest;
+                    break;
+                case TextStreamWriterWriteRequest textStreamWriterWriteRequest:
+                    ffiRequest.TextStreamWrite = textStreamWriterWriteRequest;
+                    break;
+                case TextStreamWriterCloseRequest textStreamWriterCloseRequest:
+                    ffiRequest.TextStreamClose = textStreamWriterCloseRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }

@@ -21,7 +21,29 @@ namespace LiveKit.Internal
     internal delegate void DisconnectReceivedDelegate(DisconnectCallback e);
 
     internal delegate void GetSessionStatsDelegate(GetStatsCallback e);
-    
+
+    internal delegate void ByteStreamReaderReadAllReceivedDelegate(ByteStreamReaderReadAllCallback e);
+
+    internal delegate void ByteStreamReaderWriteToFileReceivedDelegate(ByteStreamReaderWriteToFileCallback e);
+
+    internal delegate void ByteStreamOpenReceivedDelegate(ByteStreamOpenCallback e);
+
+    internal delegate void ByteStreamWriterWriteReceivedDelegate(ByteStreamWriterWriteCallback e);
+
+    internal delegate void ByteStreamWriterCloseReceivedDelegate(ByteStreamWriterCloseCallback e);
+
+    internal delegate void SendFileReceivedDelegate(StreamSendFileCallback e);
+
+    internal delegate void TextStreamReaderReadAllReceivedDelegate(TextStreamReaderReadAllCallback e);
+
+    internal delegate void TextStreamOpenReceivedDelegate(TextStreamOpenCallback e);
+
+    internal delegate void TextStreamWriterWriteReceivedDelegate(TextStreamWriterWriteCallback e);
+
+    internal delegate void TextStreamWriterCloseReceivedDelegate(TextStreamWriterCloseCallback e);
+
+    internal delegate void SendTextReceivedDelegate(StreamSendTextCallback e);
+
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
 
@@ -38,4 +60,8 @@ namespace LiveKit.Internal
 
     internal delegate void PerformRpcReceivedDelegate(PerformRpcCallback e);
 
+
+    internal delegate void ByteStreamReaderEventReceivedDelegate(ByteStreamReaderEvent e);
+
+    internal delegate void TextStreamReaderEventReceivedDelegate(TextStreamReaderEvent e);
 }

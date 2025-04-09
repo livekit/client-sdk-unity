@@ -6,6 +6,7 @@ using Google.Protobuf.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Internal.FFIClients.Requests;
+using System.Diagnostics;
 
 namespace LiveKit
 {
@@ -175,8 +176,8 @@ namespace LiveKit
         /// Registers a new RPC method handler.
         /// </summary>
         /// <param name="method">The name of the RPC method to register</param>
-        /// <param name="handler">The async callback that handles incoming RPC requests. It receives an RpcInvocationData object 
-        /// containing the caller's identity, payload (up to 15KiB UTF-8), and response timeout. Must return a string response or throw 
+        /// <param name="handler">The async callback that handles incoming RPC requests. It receives an RpcInvocationData object
+        /// containing the caller's identity, payload (up to 15KiB UTF-8), and response timeout. Must return a string response or throw
         /// an RpcError. Any other exceptions will be converted to a generic APPLICATION_ERROR (1500).</param>
         public void RegisterRpcMethod(string method, RpcHandler handler)
         {
@@ -292,6 +293,188 @@ namespace LiveKit
             }
             Utils.Debug("Sending message: " + topic);
             var response = request.Send();
+        }
+
+        /// <summary>
+        /// Send text to participants in the room.
+        /// </summary>
+        /// <param name="text">The text content to send.</param>
+        /// <param name="options">Configuration options for the text stream, including topic and
+        /// destination participants.</param>
+        /// <returns>
+        /// A <see cref="SendTextInstruction"/> that completes when the text is sent or errors.
+        /// Check <see cref="SendTextInstruction.IsError"/> and access <see cref="SendTextInstruction.Info"/>
+        /// properties to handle the result.
+        /// </returns>
+        ///
+        public SendTextInstruction SendText(string text, StreamTextOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<StreamSendTextRequest>();
+            var sendTextReq = request.request;
+            sendTextReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            sendTextReq.Text = text;
+            sendTextReq.Options = options.ToProto();
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new SendTextInstruction(res.SendText.AsyncId);
+        }
+
+        /// <summary>
+        /// Send text to participants in the room.
+        /// </summary>
+        /// <param name="text">The text content to send.</param>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <remarks>
+        /// Use the <see cref="SendText(string, StreamTextOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="SendTextInstruction"/> that completes when the text is sent or errors.
+        /// Check <see cref="SendTextInstruction.IsError"/> and access <see cref="SendTextInstruction.Info"/>
+        /// properties to handle the result.
+        /// </returns>
+        ///
+        public SendTextInstruction SendText(string text, string topic)
+        {
+            var options = new StreamTextOptions();
+            options.Topic = topic;
+            return SendText(text, options);
+        }
+
+        /// <summary>
+        /// Send a file on disk to participants in the room.
+        /// </summary>
+        /// <param name="path">Path to the file to be sent.</param>
+        /// <param name="options">Configuration options for the byte stream, including topic and
+        /// destination participants.</param>
+        /// <returns>
+        /// A <see cref="SendFileInstruction"/> that completes when the file is sent or errors.
+        /// Check <see cref="SendFileInstruction.IsError"/> and access <see cref="SendFileInstruction.Info"/>
+        /// properties to handle the result.
+        /// </returns>
+        ///
+        public SendFileInstruction SendFile(string path, StreamByteOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<StreamSendFileRequest>();
+            var sendFileReq = request.request;
+            sendFileReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            sendFileReq.FilePath = path;
+            sendFileReq.Options = options.ToProto();
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new SendFileInstruction(res.SendFile.AsyncId);
+        }
+
+        /// <summary>
+        /// Send a file on disk to participants in the room.
+        /// </summary>
+        /// <param name="path">Path to the file to be sent.</param>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <remarks>
+        /// Use the <see cref="SendFile(string, StreamByteOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="SendFileInstruction"/> that completes when the file is sent or errors.
+        /// Check <see cref="SendFileInstruction.IsError"/> and access <see cref="SendFileInstruction.Info"/>
+        /// properties to handle the result.
+        /// </returns>
+        ///
+        public SendFileInstruction SendFile(string path, string topic)
+        {
+            var options = new StreamByteOptions();
+            options.Topic = topic;
+            return SendFile(path, options);
+        }
+
+        /// <summary>
+        /// Stream text incrementally to participants in the room.
+        /// </summary>
+        /// <remarks>
+        /// This method allows sending text data in chunks as it becomes available.
+        /// Unlike <see cref="SendText"/>, which sends the entire text at once, this method allows
+        /// using a writer to send text incrementally.
+        /// </remarks>
+        /// <param name="options">Configuration options for the text stream, including topic and
+        /// destination participants.</param>
+        /// <returns>
+        /// A <see cref="StreamTextInstruction"/> that completes once the stream is open or errors.
+        /// Check <see cref="StreamTextInstruction.IsError"/> and access <see cref="StreamTextInstruction.Writer"/>
+        /// to access the writer for the opened stream.
+        /// </returns>
+        public StreamTextInstruction StreamText(StreamTextOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<TextStreamOpenRequest>();
+            var streamTextReq = request.request;
+            streamTextReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            streamTextReq.Options = options.ToProto();
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new StreamTextInstruction(res.TextStreamOpen.AsyncId);
+        }
+
+        /// <summary>
+        /// Stream bytes incrementally to participants in the room.
+        /// </summary>
+        /// <remarks>
+        /// This method allows sending byte data in chunks as it becomes available.
+        /// Unlike <see cref="SendFile"/>, which sends the entire file at once, this method allows
+        /// using a writer to send byte data incrementally.
+        /// </remarks>
+        /// <param name="options">Configuration options for the byte stream, including topic and
+        /// destination participants.</param>
+        /// <returns>
+        /// A <see cref="StreamBytesInstruction"/> that completes once the stream is open or errors.
+        /// Check <see cref="StreamBytesInstruction.IsError"/> and access <see cref="StreamBytesInstruction.Writer"/>
+        /// to access the writer for the opened stream.
+        /// </returns>
+        public StreamBytesInstruction StreamBytes(StreamByteOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<ByteStreamOpenRequest>();
+            var streamBytesReq = request.request;
+            streamBytesReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            streamBytesReq.Options = options.ToProto();
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new StreamBytesInstruction(res.ByteStreamOpen.AsyncId);
+        }
+
+        /// <summary>
+        /// Stream bytes to participants in the room.
+        /// </summary>
+        /// <remarks>
+        /// Use the <see cref="StreamBytes(StreamByteOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <returns>
+        /// A <see cref="StreamBytesInstruction"/> that completes once the stream is open or errors.
+        /// Check <see cref="StreamBytesInstruction.IsError"/> and access <see cref="StreamBytesInstruction.Writer"/>
+        /// to access the writer for the opened stream.
+        /// </returns>
+        public StreamBytesInstruction StreamBytes(string topic)
+        {
+            var options = new StreamByteOptions { Topic = topic };
+            return StreamBytes(options);
+        }
+
+        /// <summary>
+        /// Stream text to participants in the room.
+        /// </summary>
+        /// <remarks>
+        /// Use the <see cref="StreamText(StreamTextOptions)"/> overload to set custom stream options.
+        /// </remarks>
+        /// <param name="topic">Topic identifier used to route the stream to appropriate handlers.</param>
+        /// <returns>
+        /// A <see cref="StreamTextInstruction"/> that completes once the stream is open or errors.
+        /// Check <see cref="StreamTextInstruction.IsError"/> and access <see cref="StreamTextInstruction.Writer"/>
+        /// to access the writer for the opened stream.
+        /// </returns>
+        public StreamTextInstruction StreamText(string topic)
+        {
+            var options = new StreamTextOptions { Topic = topic };
+            return StreamText(options);
         }
     }
 
@@ -410,5 +593,197 @@ namespace LiveKit
         /// See <see cref="RpcError"/> for more information on error codes.
         /// </remarks>
         public RpcError Error { get; private set; }
+    }
+
+    /// <summary>
+    /// YieldInstruction for send text. Returned by <see cref="LocalParticipant.SendText"/>.
+    /// </summary>
+    /// <remarks>
+    /// Access <see cref="Info"/> after checking <see cref="IsError"/>
+    /// </remarks>
+    public sealed class SendTextInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private TextStreamInfo _info;
+
+        internal SendTextInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.SendTextReceived += OnSendText;
+        }
+
+        internal void OnSendText(StreamSendTextCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            switch (e.ResultCase)
+            {
+                case StreamSendTextCallback.ResultOneofCase.Error:
+                    Error = new StreamError(e.Error);
+                    IsError = true;
+                    break;
+                case StreamSendTextCallback.ResultOneofCase.Info:
+                    _info = new TextStreamInfo(e.Info);
+                    break;
+            }
+            IsDone = true;
+            FfiClient.Instance.SendTextReceived -= OnSendText;
+        }
+
+        public TextStreamInfo Info
+        {
+            get
+            {
+                if (IsError) throw Error;
+                return _info;
+            }
+        }
+
+        public StreamError Error { get; private set; }
+    }
+
+    /// <summary>
+    /// YieldInstruction for send file. Returned by <see cref="LocalParticipant.SendFile"/>.
+    /// </summary>
+    /// <remarks>
+    /// Access <see cref="Info"/> after checking <see cref="IsError"/>
+    /// </remarks>
+    public sealed class SendFileInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private ByteStreamInfo _info;
+
+        internal SendFileInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.SendFileReceived += OnSendFile;
+        }
+
+        internal void OnSendFile(StreamSendFileCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            switch (e.ResultCase)
+            {
+                case StreamSendFileCallback.ResultOneofCase.Error:
+                    Error = new StreamError(e.Error);
+                    IsError = true;
+                    break;
+                case StreamSendFileCallback.ResultOneofCase.Info:
+                    _info = new ByteStreamInfo(e.Info);
+                    break;
+            }
+            IsDone = true;
+            FfiClient.Instance.SendFileReceived -= OnSendFile;
+        }
+
+        public ByteStreamInfo Info
+        {
+            get
+            {
+                if (IsError) throw Error;
+                return _info;
+            }
+        }
+
+        public StreamError Error { get; private set; }
+    }
+
+    /// <summary>
+    /// YieldInstruction for stream text. Returned by <see cref="LocalParticipant.StreamText"/>.
+    /// </summary>
+    /// <remarks>
+    /// Access <see cref="Writer"/> after checking <see cref="IsError"/>
+    /// </remarks>
+    public sealed class StreamTextInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private TextStreamWriter _writer;
+
+        internal StreamTextInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.TextStreamOpenReceived += OnStreamOpen;
+        }
+
+        internal void OnStreamOpen(TextStreamOpenCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            switch (e.ResultCase)
+            {
+                case TextStreamOpenCallback.ResultOneofCase.Error:
+                    Error = new StreamError(e.Error);
+                    IsError = true;
+                    break;
+                case TextStreamOpenCallback.ResultOneofCase.Writer:
+                    _writer = new TextStreamWriter(e.Writer);
+                    break;
+            }
+            IsDone = true;
+            FfiClient.Instance.TextStreamOpenReceived -= OnStreamOpen;
+        }
+
+        public TextStreamWriter Writer
+        {
+            get
+            {
+                if (IsError) throw Error;
+                return _writer;
+            }
+        }
+
+        public StreamError Error { get; private set; }
+    }
+
+    /// <summary>
+    /// YieldInstruction for stream bytes. Returned by <see cref="LocalParticipant.StreamBytes"/>.
+    /// </summary>
+    /// <remarks>
+    /// Access <see cref="Writer"/> after checking <see cref="IsError"/>
+    /// </remarks>
+    public sealed class StreamBytesInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private ByteStreamWriter _writer;
+
+        internal StreamBytesInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.ByteStreamOpenReceived += OnStreamOpen;
+        }
+
+        internal void OnStreamOpen(ByteStreamOpenCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            switch (e.ResultCase)
+            {
+                case ByteStreamOpenCallback.ResultOneofCase.Error:
+                    Error = new StreamError(e.Error);
+                    IsError = true;
+                    break;
+                case ByteStreamOpenCallback.ResultOneofCase.Writer:
+                    _writer = new ByteStreamWriter(e.Writer);
+                    break;
+            }
+            IsDone = true;
+            FfiClient.Instance.ByteStreamOpenReceived -= OnStreamOpen;
+        }
+
+        public ByteStreamWriter Writer
+        {
+            get
+            {
+                if (IsError) throw Error;
+                return _writer;
+            }
+        }
+
+        public StreamError Error { get; private set; }
     }
 }
