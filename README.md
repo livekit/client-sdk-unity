@@ -14,7 +14,7 @@
 
 > This SDK is currently in Developer Preview mode and not ready for production use. There will be bugs and APIs may change during this period.
 >
-> We welcome and appreciate any feedback or contributions. You can create issues here or chat live with us in the #rust-developer-preview channel within the [LiveKit Community Slack](https://livekit.io/join-slack).
+> We welcome and appreciate any feedback or contributions. You can create issues here or chat live with us in the #sdk-native channel within the [LiveKit Community Slack](https://livekit.io/join-slack).
 
 <!--BEGIN_DESCRIPTION-->
 Use this SDK to add realtime video, audio and data features to your Unity app. By connecting to <a href="https://livekit.io/">LiveKit</a> Cloud or a self-hosted server, you can quickly build applications such as multi-modal AI, live streaming, or video calls with just a few lines of code.
