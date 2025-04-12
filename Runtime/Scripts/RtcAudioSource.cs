@@ -44,30 +44,26 @@ namespace LiveKit
         // Possibly used on the AudioThread
         private Thread _readAudioThread;
         private AudioBuffer _captureBuffer = new AudioBuffer();
+        private readonly AudioProcessingModule _apm;
+        private readonly ApmReverseStream _apmReverseStream;
 
         private bool _muted = false;
         public override bool Muted => _muted;
 
         protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
         {
+            var isMicrophone = audioSourceType == RtcAudioSourceType.AudioSourceMicrophone;
             _sourceType = audioSourceType;
+            _apm = new AudioProcessingModule(isMicrophone, true, true, true);
+            if (isMicrophone)
+                _apmReverseStream = new ApmReverseStream(_apm);
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = (uint)channels;
-            if(_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
-            {
-                newAudioSource.SampleRate = DefaultMirophoneSampleRate;
-            }
-            else
-            {
-                newAudioSource.SampleRate = DefaultSampleRate;
-            }
-            newAudioSource.Options = request.TempResource<AudioSourceOptions>();
-            newAudioSource.Options.EchoCancellation = true;
-            newAudioSource.Options.AutoGainControl = true;
-            newAudioSource.Options.NoiseSuppression = true;
+            newAudioSource.SampleRate = isMicrophone ? DefaultMirophoneSampleRate : DefaultSampleRate;
+
             using var response = request.Send();
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
@@ -85,6 +81,7 @@ namespace LiveKit
             Stop();
             _readAudioThread = new Thread(Update);
             _readAudioThread.Start();
+            _apmReverseStream?.Start();
             AudioRead += OnAudioRead;
             Play();
         }
@@ -92,6 +89,7 @@ namespace LiveKit
         public virtual void Stop()
         {
             _readAudioThread?.Abort();
+            _apmReverseStream?.Stop();
             AudioRead -= OnAudioRead;
         }
 
@@ -100,8 +98,17 @@ namespace LiveKit
             while (true)
             {
                 Thread.Sleep(Constants.TASK_DELAY);
-                var frame = _captureBuffer.ReadDuration(10); // 10ms
+                var frame = _captureBuffer.ReadDuration(AudioProcessingModule.FRAME_DURATION_MS);
                 if (_muted || frame == null) continue;
+
+                if (_apmReverseStream != null)
+                {
+                    // TODO: calculate stream delay
+                    var delayMs = 0;
+                    _apm.SetStreamDelayMs(delayMs);
+                }
+                _apm.ProcessStream(frame);
+
                 Capture(frame);
             }
         }

@@ -126,5 +126,10 @@ namespace LiveKit
                 throw new Exception(res.ApmSetStreamDelay.Error);
             }
         }
+
+        /// <summary>
+        /// The required duration for audio frames being processed.
+        /// </summary>
+        public const uint FRAME_DURATION_MS = 10;
     }
 }
