@@ -4,6 +4,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using LiveKit.Internal.FFIClients.Requests;
+using UnityEngine;
 
 namespace LiveKit
 {
@@ -48,7 +49,7 @@ namespace LiveKit
         {
             var proto = new Proto.RtcConfig();
 
-            switch(ContinualGatheringPolicy)
+            switch (ContinualGatheringPolicy)
             {
                 case ContinualGatheringPolicy.GATHER_ONCE:
                     proto.ContinualGatheringPolicy = Proto.ContinualGatheringPolicy.GatherOnce;
@@ -58,7 +59,7 @@ namespace LiveKit
                     break;
             }
 
-            switch(IceTransportType)
+            switch (IceTransportType)
             {
                 case IceTransportType.TRANSPORT_ALL:
                     proto.IceTransportType = Proto.IceTransportType.TransportAll;
@@ -71,7 +72,7 @@ namespace LiveKit
                     break;
             }
 
-            foreach(var item in IceServers)
+            foreach (var item in IceServers)
             {
                 proto.IceServers.Add(item.ToProto());
             }
@@ -109,6 +110,7 @@ namespace LiveKit
     {
         internal FfiHandle RoomHandle = null;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
+        private StreamHandlerRegistry _streamHandlers = new();
 
         public delegate void MetaDelegate(string metaData);
         public delegate void ParticipantDelegate(Participant participant);
@@ -178,6 +180,54 @@ namespace LiveKit
             Utils.Debug($"Disconnect response.... {resp}");
         }
 
+        /// <summary>
+        /// Registers a handler for incoming text streams matching the given topic.
+        /// </summary>
+        /// <param name="topic">Topic identifier that filters which streams will be handled.
+        /// Only streams with a matching topic will trigger the handler.</param>
+        /// <param name="handler">Handler that is invoked whenever a remote participant
+        /// opens a new stream with the matching topic. The handler receives a
+        /// <see cref="TextStreamReader" /> for consuming the stream data and the identity of
+        ///  the remote participant who initiated the stream.</param>
+        /// <throws>Throws a <see cref="StreamError" /> if the topic is already registered.</throws>
+        public void RegisterTextStreamHandler(string topic, TextStreamHandler handler)
+        {
+            _streamHandlers.RegisterTextStreamHandler(topic, handler);
+        }
+
+        /// <summary>
+        /// Registers a handler for incoming byte streams matching the given topic.
+        /// </summary>
+        /// <param name="topic">Topic identifier that filters which streams will be handled.
+        /// Only streams with a matching topic will trigger the handler.</param>
+        /// <param name="handler">Handler that is invoked whenever a remote participant
+        /// opens a new stream with the matching topic. The handler receives a
+        /// <see cref="ByteStreamReader" /> for consuming the stream data and the identity of
+        ///  the remote participant who initiated the stream.</param>
+        /// <throws>Throws a <see cref="StreamError" /> if the topic is already registered.</throws>
+        public void RegisterByteStreamHandler(string topic, ByteStreamHandler handler)
+        {
+            _streamHandlers.RegisterByteStreamHandler(topic, handler);
+        }
+
+        /// <summary>
+        /// Unregisters a handler for incoming text streams matching the given topic.
+        /// </summary>
+        /// <param name="topic">Topic identifier for which the handler should be unregistered.</param>
+        public void UnregisterTextStreamHandler(string topic)
+        {
+            _streamHandlers.UnregisterTextStreamHandler(topic);
+        }
+
+        /// <summary>
+        /// Unregisters a handler for incoming byte streams matching the given topic.
+        /// </summary>
+        /// <param name="topic">Topic identifier for which the handler should be unregistered.</param>
+        public void UnregisterByteStreamHandler(string topic)
+        {
+            _streamHandlers.UnregisterByteStreamHandler(topic);
+        }
+
         internal void UpdateFromInfo(RoomInfo info)
         {
             Sid = info.Sid;
@@ -199,6 +249,7 @@ namespace LiveKit
                     e.ResponseTimeoutMs / 1000f);
             }
         }
+
         internal void OnEventReceived(RoomEvent e)
         {
             if (e.RoomHandle != (ulong)RoomHandle.DangerousGetHandle())
@@ -291,7 +342,7 @@ namespace LiveKit
                         var participant = RemoteParticipants[e.TrackSubscribed.ParticipantIdentity];
                         var publication = participant.Tracks[info.Sid];
 
-                        if(publication == null)
+                        if (publication == null)
                         {
                             participant._tracks.Add(publication.Sid, publication);
                         }
@@ -383,7 +434,7 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.DataPacketReceived:
                     {
                         var valueType = e.DataPacketReceived.ValueCase;
-                        switch(valueType)
+                        switch (valueType)
                         {
                             case DataPacketReceived.ValueOneofCase.None:
                                 //do nothing.
@@ -410,6 +461,16 @@ namespace LiveKit
                                 break;
                         }
                     }
+                    break;
+                case RoomEvent.MessageOneofCase.ByteStreamOpened:
+                    var byteReader = new ByteStreamReader(e.ByteStreamOpened.Reader);
+                    _streamHandlers.Dispatch(byteReader, e.ByteStreamOpened.ParticipantIdentity);
+                    // TODO: Immediately dispose unhandled stream reader
+                    break;
+                case RoomEvent.MessageOneofCase.TextStreamOpened:
+                    var textReader = new TextStreamReader(e.TextStreamOpened.Reader);
+                    _streamHandlers.Dispatch(textReader, e.TextStreamOpened.ParticipantIdentity);
+                    // TODO: Immediately dispose unhandled stream reader
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionState = e.ConnectionStateChanged.State;
@@ -448,6 +509,7 @@ namespace LiveKit
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
             FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
+
             Connected?.Invoke(this);
         }
 
@@ -518,7 +580,7 @@ namespace LiveKit
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
             {
-                if(_roomOptions.E2EE != null)
+                if (_roomOptions.E2EE != null)
                 {
                     _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
                 }

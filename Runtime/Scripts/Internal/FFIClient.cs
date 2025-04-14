@@ -49,6 +49,20 @@ namespace LiveKit.Internal
 
         public event PerformRpcReceivedDelegate? PerformRpcReceived;
 
+        public event ByteStreamReaderEventReceivedDelegate? ByteStreamReaderEventReceived;
+        public event ByteStreamReaderReadAllReceivedDelegate? ByteStreamReaderReadAllReceived;
+        public event ByteStreamReaderWriteToFileReceivedDelegate? ByteStreamReaderWriteToFileReceived;
+        public event ByteStreamOpenReceivedDelegate? ByteStreamOpenReceived;
+        public event ByteStreamWriterWriteReceivedDelegate? ByteStreamWriterWriteReceived;
+        public event ByteStreamWriterCloseReceivedDelegate? ByteStreamWriterCloseReceived;
+        public event SendFileReceivedDelegate? SendFileReceived;
+        public event TextStreamReaderEventReceivedDelegate? TextStreamReaderEventReceived;
+        public event TextStreamReaderReadAllReceivedDelegate? TextStreamReaderReadAllReceived;
+        public event TextStreamOpenReceivedDelegate? TextStreamOpenReceived;
+        public event TextStreamWriterWriteReceivedDelegate? TextStreamWriterWriteReceived;
+        public event TextStreamWriterCloseReceivedDelegate? TextStreamWriterCloseReceived;
+        public event SendTextReceivedDelegate? SendTextReceived;
+
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
@@ -276,6 +290,46 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.PerformRpc:
                         Instance.PerformRpcReceived?.Invoke(r.PerformRpc!);
+                        break;
+                    // Uses high-level data stream interface
+                    case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
+                        Instance.ByteStreamReaderEventReceived?.Invoke(r.ByteStreamReaderEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamReaderReadAll:
+                        Instance.ByteStreamReaderReadAllReceived?.Invoke(r.ByteStreamReaderReadAll!);
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamReaderWriteToFile:
+                        Instance.ByteStreamReaderWriteToFileReceived?.Invoke(r.ByteStreamReaderWriteToFile!);
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamOpen:
+                        Instance.ByteStreamOpenReceived?.Invoke(r.ByteStreamOpen!);
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamWriterWrite:
+                        Instance.ByteStreamWriterWriteReceived?.Invoke(r.ByteStreamWriterWrite!);
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamWriterClose:
+                        Instance.ByteStreamWriterCloseReceived?.Invoke(r.ByteStreamWriterClose!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SendFile:
+                        Instance.SendFileReceived?.Invoke(r.SendFile!);
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
+                        Instance.TextStreamReaderEventReceived?.Invoke(r.TextStreamReaderEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamReaderReadAll:
+                        Instance.TextStreamReaderReadAllReceived?.Invoke(r.TextStreamReaderReadAll!);
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamOpen:
+                        Instance.TextStreamOpenReceived?.Invoke(r.TextStreamOpen!);
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamWriterWrite:
+                        Instance.TextStreamWriterWriteReceived?.Invoke(r.TextStreamWriterWrite!);
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamWriterClose:
+                        Instance.TextStreamWriterCloseReceived?.Invoke(r.TextStreamWriterClose!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SendText:
+                        Instance.SendTextReceived?.Invoke(r.SendText!);
                         break;
                     case FfiEvent.MessageOneofCase.Panic:
                         break;
