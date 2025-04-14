@@ -29,6 +29,7 @@ namespace LiveKit
 
         public override void Stop()
         {
+            base.Stop();
             _audioFilter.AudioRead -= OnAudioRead;
             Source.Stop();
         }
