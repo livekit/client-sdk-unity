@@ -39,6 +39,9 @@ namespace LiveKit.Internal.FFIClients
                 case SetLocalNameRequest updateLocalNameRequest:
                     ffiRequest.SetLocalName = updateLocalNameRequest;
                     break;
+                case SetLocalAttributesRequest setLocalAttributesRequest:
+                    ffiRequest.SetLocalAttributes = setLocalAttributesRequest;
+                    break;
                 case GetSessionStatsRequest getSessionStatsRequest:
                     ffiRequest.GetSessionStats = getSessionStatsRequest;
                     break;

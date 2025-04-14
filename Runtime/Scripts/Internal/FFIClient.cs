@@ -39,6 +39,9 @@ namespace LiveKit.Internal
         public event RoomEventReceivedDelegate? RoomEventReceived;
         public event TrackEventReceivedDelegate? TrackEventReceived;
         public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
+        public event SetLocalMetadataReceivedDelegate? SetLocalMetadataReceived;
+        public event SetLocalNameReceivedDelegate? SetLocalNameReceived;
+        public event SetLocalAttributesReceivedDelegate? SetLocalAttributesReceived;
 
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
@@ -253,6 +256,15 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.RoomEvent:
                         Instance.RoomEventReceived?.Invoke(r.RoomEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalName:
+                        Instance.SetLocalNameReceived?.Invoke(r.SetLocalName!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalMetadata:
+                        Instance.SetLocalMetadataReceived?.Invoke(r.SetLocalMetadata!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalAttributes:
+                        Instance.SetLocalAttributesReceived?.Invoke(r.SetLocalAttributes!);
                         break;
                     case FfiEvent.MessageOneofCase.TrackEvent:
                         Instance.TrackEventReceived?.Invoke(r.TrackEvent!);
