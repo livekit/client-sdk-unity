@@ -9,10 +9,10 @@ namespace LiveKit.Rooms.VideoStreaming
         private readonly VideoBufferInfo info;
         private readonly FfiHandle ffiHandle;
 
-        public VideoLastFrame(VideoBufferInfo info)
+        public VideoLastFrame(VideoBufferInfo info, FfiHandle handle)
         {
             this.info = info;
-            ffiHandle = IFfiHandleFactory.Default.NewFfiHandle(info.DataPtr);
+            ffiHandle = handle;
         }
 
         public uint Width => info.Width;

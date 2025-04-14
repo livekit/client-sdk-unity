@@ -45,8 +45,9 @@ namespace LiveKit.Rooms.VideoStreaming
                 return;
 
             var bufferInfo = e.FrameReceived!.Buffer!.Info!;
+            var frameHandle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Buffer.Handle.Id);
 
-            var evt = new VideoLastFrame(bufferInfo);
+            var evt = new VideoLastFrame(bufferInfo, frameHandle);
 
             lock (this)
             {
