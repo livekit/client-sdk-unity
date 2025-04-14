@@ -46,6 +46,7 @@ namespace LiveKit.Internal
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
+        public event CaptureAudioFrameReceivedDelegate? CaptureAudioFrameReceived;
 
         public event PerformRpcReceivedDelegate? PerformRpcReceived;
 
@@ -287,6 +288,7 @@ namespace LiveKit.Internal
                         Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                         Instance.CaptureAudioFrameReceived?.Invoke(r.CaptureAudioFrame!);
                         break;
                     case FfiEvent.MessageOneofCase.PerformRpc:
                         Instance.PerformRpcReceived?.Invoke(r.PerformRpc!);
