@@ -23,6 +23,7 @@ namespace LiveKit
 
         public AudioFrameBufferInfo Info => _info;
 
+        private NativeArray<byte> _allocatedData; // Only used if the frame's data is allocated by Unity
         private IntPtr _dataPtr;
         public IntPtr Data => _dataPtr;
 
@@ -44,8 +45,8 @@ namespace LiveKit
             _samplesPerChannel = samplesPerChannel;
             unsafe
             {
-                var data = new NativeArray<byte>(Length, Allocator.Persistent);
-                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(data);
+                _allocatedData = new NativeArray<byte>(Length, Allocator.Persistent);
+                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(_allocatedData);
             }
         }
         ~AudioFrame()
@@ -63,6 +64,10 @@ namespace LiveKit
         {
             if (!_disposed)
             {
+                if (_allocatedData.IsCreated)
+                {
+                    _allocatedData.Dispose();
+                }
                 _disposed = true;
             }
         }
