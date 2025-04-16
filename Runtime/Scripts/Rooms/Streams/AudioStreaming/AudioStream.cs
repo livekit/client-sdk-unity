@@ -5,30 +5,29 @@ using LiveKit.Proto;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using System.Runtime.InteropServices;
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using LiveKit.Rooms.AudioStreaming;
 using LiveKit.Rooms.Tracks;
 
 namespace LiveKit
 {
-
+    [Obsolete]
     public class AudioStream
     {
-        //internal readonly FfiHandle Handle;
         private FfiHandle _handle;
-        internal FfiHandle Handle
-        {
-            get { return _handle; }
-        }
+
+        internal FfiHandle Handle => _handle;
+
         private AudioSource _audioSource;
         private AudioFilter _audioFilter;
         private RingBuffer _buffer;
         private short[] _tempBuffer;
         private uint _numChannels = 0;
         private uint _sampleRate;
-        private AudioResampler _resampler = new AudioResampler();
-        private object _lock = new object();
-        private Queue<AudioStreamEvent> _pendingStreamEvents = new Queue<AudioStreamEvent>();
+        private AudioResampler _resampler = AudioResampler.New();
+
+        private readonly object _lock = new();
+        private readonly ConcurrentQueue<AudioStreamEvent> _pendingStreamEvents = new();
 
         private Thread? _writeAudioThread;
         private bool _playing = false;
@@ -119,9 +118,6 @@ namespace LiveKit
             }
         }
 
-
-
-        // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (!_playing) return;
@@ -144,23 +140,16 @@ namespace LiveKit
             {
                 Thread.Sleep(Constants.TASK_DELAY);
 
-                if (_pendingStreamEvents != null && _pendingStreamEvents.Count > 0)
+                if (_pendingStreamEvents.TryDequeue(out var e))
                 {
-                    var e = _pendingStreamEvents.Dequeue();
-
-                    var info = e.FrameReceived.Frame.Info;
-                    var frame = new AudioFrame(info);
+                    using var frame = new OwnedAudioFrame(e.FrameReceived.Frame);
 
                     lock (_lock)
                     {
-                        unsafe
-                        {
-                            var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                            var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                            _buffer.Write(data);
-                        }
+                        using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
+                        var data = uFrame.AsSpan();
+                        _buffer.Write(data);
                     }
-
                 }
             }
         }

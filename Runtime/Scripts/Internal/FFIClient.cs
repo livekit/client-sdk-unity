@@ -14,9 +14,9 @@ using UnityEditor;
 
 namespace LiveKit.Internal
 {
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [InitializeOnLoad]
-    #endif
+#endif
     internal sealed class FfiClient : IFFIClient
     {
         private static bool initialized = false;
@@ -34,7 +34,9 @@ namespace LiveKit.Internal
         public event ConnectReceivedDelegate? ConnectReceived;
         public event DisconnectReceivedDelegate? DisconnectReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
+
         public event TrackEventReceivedDelegate? TrackEventReceived;
+
         // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
@@ -63,7 +65,7 @@ namespace LiveKit.Internal
             this.ffiResponsePool = ffiResponsePool;
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         static FfiClient()
         {
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
@@ -80,45 +82,47 @@ namespace LiveKit.Internal
         {
             InitializeSdk();
         }
-        #else
+#else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
             Application.quitting += Quit;
             InitializeSdk();
         }
-        #endif
+#endif
 
         private static void Quit()
         {
-            #if NO_LIVEKIT_MODE
+#if NO_LIVEKIT_MODE
             return;
-            #endif
-            #if UNITY_EDITOR
+#endif
+#if UNITY_EDITOR
             AssemblyReloadEvents.beforeAssemblyReload -= OnBeforeAssemblyReload;
             AssemblyReloadEvents.afterAssemblyReload -= OnAfterAssemblyReload;
-            #endif
+#endif
             Instance.Dispose();
         }
 
         private static void InitializeSdk()
         {
-            #if NO_LIVEKIT_MODE
+#if NO_LIVEKIT_MODE
             return;
-            #endif
+#endif
 
 
-            #if LK_VERBOSE
+#if LK_VERBOSE
             const bool captureLogs = true;
-            #else
+#else
             const bool captureLogs = false;
-            #endif
+#endif
 
             try
             {
                 NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
             }
-            catch (DllNotFoundException) {}
+            catch (DllNotFoundException)
+            {
+            }
 
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
@@ -136,16 +140,16 @@ namespace LiveKit.Internal
 
         public void Dispose()
         {
-            #if NO_LIVEKIT_MODE
+#if NO_LIVEKIT_MODE
             return;
-            #endif
+#endif
 
             if (isDisposed)
             {
                 Utils.Debug("FFIServer - Already Disposed");
                 return;
             }
-            
+
             isDisposed = true;
 
             // Stop all rooms synchronously
@@ -167,9 +171,9 @@ namespace LiveKit.Internal
 
         public FfiResponse SendRequest(FfiRequest request)
         {
-            #if NO_LIVEKIT_MODE
+#if NO_LIVEKIT_MODE
             return new FfiResponse();
-            #endif
+#endif
             try
             {
                 unsafe
@@ -192,11 +196,11 @@ namespace LiveKit.Internal
                         var dataSpan = new Span<byte>(dataPtr, (int)dataLen.ToUInt32());
                         var response = responseParser.ParseFrom(dataSpan)!;
                         NativeMethods.FfiDropHandle(handle);
-                        
-                        #if LK_VERBOSE
+
+#if LK_VERBOSE
                         Debug.Log($"FFIClient response of type: {response.MessageCase} with asyncId: {AsyncId(response)}");
-                        #endif
-                            
+#endif
+
                         return response;
                     }
                 }
@@ -213,66 +217,73 @@ namespace LiveKit.Internal
         [MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         private static unsafe void FFICallback(IntPtr data, UIntPtr size)
         {
-            #if NO_LIVEKIT_MODE
+#if NO_LIVEKIT_MODE
             return;
-            #endif
+#endif
 
-            if (isDisposed) return;
-            var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt32());
-            var response = FfiEvent.Parser!.ParseFrom(respData);
-            
-            #if LK_VERBOSE
+            try
+            {
+                if (isDisposed) return;
+                var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt32());
+                var response = FfiEvent.Parser!.ParseFrom(respData);
+
+#if LK_VERBOSE
             if (response?.MessageCase != FfiEvent.MessageOneofCase.Logs)
                 Utils.Debug("Callback: " + response?.MessageCase);
-            #endif
-            switch (response?.MessageCase)
-            {
-                case FfiEvent.MessageOneofCase.Logs:
+#endif
+                switch (response?.MessageCase)
+                {
+                    case FfiEvent.MessageOneofCase.Logs:
 
-                    Debug.Log($"LK_DEBUG: {response.Logs.Records}");
-                    break;
-                case FfiEvent.MessageOneofCase.PublishData:
-                    break;
-                case FfiEvent.MessageOneofCase.Connect:
-                    Instance.ConnectReceived?.Invoke(response.Connect!);
-                    break;
-                case FfiEvent.MessageOneofCase.PublishTrack:
-                    Instance.PublishTrackReceived?.Invoke(response.PublishTrack!);
-                    break;
-                case FfiEvent.MessageOneofCase.UnpublishTrack:
-                    Instance.UnpublishTrackReceived?.Invoke(response.UnpublishTrack!);
-                    break;
-                case FfiEvent.MessageOneofCase.RoomEvent:
-                    Instance.RoomEventReceived?.Invoke(response.RoomEvent);
-                    break;
-                case FfiEvent.MessageOneofCase.TrackEvent:
-                    Instance.TrackEventReceived?.Invoke(response.TrackEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.Disconnect:
-                    Instance.DisconnectReceived?.Invoke(response.Disconnect!);
-                    break;
-                case FfiEvent.MessageOneofCase.PublishTranscription:
-                    break;
-                case FfiEvent.MessageOneofCase.VideoStreamEvent:
-                    Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                    Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.SetLocalMetadata:
-                case FfiEvent.MessageOneofCase.SetLocalName:
-                case FfiEvent.MessageOneofCase.SetLocalAttributes:
-                    break;
-                case FfiEvent.MessageOneofCase.CaptureAudioFrame:
-                    break;
-                case FfiEvent.MessageOneofCase.GetStats:
-                    break;
-                case FfiEvent.MessageOneofCase.Panic:
-                    Debug.LogError($"Panic received from FFI: {response.Panic?.Message}");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        $"Unknown message type: {response?.MessageCase.ToString() ?? "null"}");
+                        Debug.Log($"LK_DEBUG: {response.Logs.Records}");
+                        break;
+                    case FfiEvent.MessageOneofCase.PublishData:
+                        break;
+                    case FfiEvent.MessageOneofCase.Connect:
+                        Instance.ConnectReceived?.Invoke(response.Connect!);
+                        break;
+                    case FfiEvent.MessageOneofCase.PublishTrack:
+                        Instance.PublishTrackReceived?.Invoke(response.PublishTrack!);
+                        break;
+                    case FfiEvent.MessageOneofCase.UnpublishTrack:
+                        Instance.UnpublishTrackReceived?.Invoke(response.UnpublishTrack!);
+                        break;
+                    case FfiEvent.MessageOneofCase.RoomEvent:
+                        Instance.RoomEventReceived?.Invoke(response.RoomEvent);
+                        break;
+                    case FfiEvent.MessageOneofCase.TrackEvent:
+                        Instance.TrackEventReceived?.Invoke(response.TrackEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.Disconnect:
+                        Instance.DisconnectReceived?.Invoke(response.Disconnect!);
+                        break;
+                    case FfiEvent.MessageOneofCase.PublishTranscription:
+                        break;
+                    case FfiEvent.MessageOneofCase.VideoStreamEvent:
+                        Instance.VideoStreamEventReceived?.Invoke(response.VideoStreamEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
+                        Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SetLocalMetadata:
+                    case FfiEvent.MessageOneofCase.SetLocalName:
+                    case FfiEvent.MessageOneofCase.SetLocalAttributes:
+                        break;
+                    case FfiEvent.MessageOneofCase.CaptureAudioFrame:
+                        break;
+                    case FfiEvent.MessageOneofCase.GetStats:
+                        break;
+                    case FfiEvent.MessageOneofCase.Panic:
+                        Debug.LogError($"Panic received from FFI: {response.Panic?.Message}");
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(
+                            $"Unknown message type: {response?.MessageCase.ToString() ?? "null"}");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(new Exception("Exception received in FFI callback invocation", e));
             }
         }
 
