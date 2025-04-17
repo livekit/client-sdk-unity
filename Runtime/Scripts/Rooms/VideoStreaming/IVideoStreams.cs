@@ -1,14 +1,8 @@
-using System;
+using LiveKit.Rooms.Streaming;
 
 namespace LiveKit.Rooms.VideoStreaming
 {
-    public interface IVideoStreams
+    public interface IVideoStreams : IStreams<IVideoStream>
     {
-        /// <returns>Caller doesn't care about disposing the IVideoStream, returns null if stream is not found</returns>
-        WeakReference<IVideoStream>? VideoStream(string identity, string sid);
-
-        bool Release(IVideoStream videoStream);
-
-        void Free();
     }
 }

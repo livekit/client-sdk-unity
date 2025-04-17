@@ -13,6 +13,7 @@ using LiveKit.Rooms.DataPipes;
 using LiveKit.Rooms.Info;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Participants.Factory;
+using LiveKit.Rooms.Streaming.Audio;
 using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Factory;
@@ -43,6 +44,7 @@ namespace LiveKit.Rooms
         private readonly IMutableDataPipe dataPipe;
         private readonly IMutableRoomInfo roomInfo;
         private readonly IVideoStreams videoStreams;
+        private readonly IAudioStreams audioStreams;
 
         public IActiveSpeakers ActiveSpeakers => activeSpeakers;
 
@@ -51,6 +53,8 @@ namespace LiveKit.Rooms
         public IDataPipe DataPipe => dataPipe;
 
         public IVideoStreams VideoStreams => videoStreams;
+
+        public IAudioStreams AudioStreams => audioStreams;
 
         public IRoomInfo Info => roomInfo;
 
@@ -80,7 +84,8 @@ namespace LiveKit.Rooms
             ITrackPublicationFactory.Default,
             new DataPipe(),
             new MemoryRoomInfo(),
-            new VideoStreams(capturedHub)
+            new VideoStreams(capturedHub),
+            new AudioStreams(capturedHub)
         )
         {
         }
@@ -95,7 +100,8 @@ namespace LiveKit.Rooms
             ITrackPublicationFactory trackPublicationFactory,
             IMutableDataPipe dataPipe,
             IMutableRoomInfo roomInfo,
-            IVideoStreams videoStreams
+            IVideoStreams videoStreams,
+            IAudioStreams audioStreams
         )
         {
             this.memoryPool = memoryPool;
@@ -108,6 +114,7 @@ namespace LiveKit.Rooms
             this.dataPipe = dataPipe;
             this.roomInfo = roomInfo;
             this.videoStreams = videoStreams;
+            this.audioStreams = audioStreams;
             dataPipe.Assign(participantsHub);
         }
 
@@ -152,6 +159,7 @@ namespace LiveKit.Rooms
             using var response = FFIBridge.Instance.SendDisconnectRequest(this);
             FfiResponse res = response;
             videoStreams.Free();
+            audioStreams.Free();
             var instruction = new DisconnectInstruction(res.Disconnect!.AsyncId, this, cancellationToken);
             await instruction.AwaitWithSuccess();
             ffiHandleFactory.Release(Handle);

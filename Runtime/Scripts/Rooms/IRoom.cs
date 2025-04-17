@@ -4,6 +4,7 @@ using LiveKit.Rooms.ActiveSpeakers;
 using LiveKit.Rooms.DataPipes;
 using LiveKit.Rooms.Info;
 using LiveKit.Rooms.Participants;
+using LiveKit.Rooms.Streaming.Audio;
 using LiveKit.Rooms.Tracks.Hub;
 using LiveKit.Rooms.VideoStreaming;
 
@@ -24,6 +25,8 @@ namespace LiveKit.Rooms
         IDataPipe DataPipe { get; }
         
         IVideoStreams VideoStreams { get; }
+
+        IAudioStreams AudioStreams { get; }
 
         void UpdateLocalMetadata(string metadata);
 

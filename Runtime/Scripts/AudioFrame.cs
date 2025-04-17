@@ -23,14 +23,6 @@ namespace LiveKit
         public IntPtr Data => _dataPtr;
         public int Length => (int)(SamplesPerChannel * NumChannels * sizeof(short));
 
-        internal AudioFrame(AudioFrameBufferInfo info)
-        {
-            _sampleRate = info.SampleRate;
-            _numChannels = info.NumChannels;
-            _samplesPerChannel = info.SamplesPerChannel;
-            _dataPtr = (IntPtr)info.DataPtr;
-        }
-
         internal AudioFrame(uint sampleRate, uint numChannels, uint samplesPerChannel)
         {
             _sampleRate = sampleRate;
