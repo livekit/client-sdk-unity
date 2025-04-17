@@ -1,35 +1,37 @@
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using System.Threading;
 using System.Runtime.InteropServices;
-using System.Collections.Concurrent;
+using Livekit.Utils;
+using UnityEngine;
 
 namespace LiveKit.Rooms.Streaming.Audio
 {
     public class AudioStream : IAudioStream
     {
         private readonly IAudioStreams audioStreams;
+        private readonly IAudioRemixConveyor audioRemixConveyor;
         private readonly FfiHandle handle;
         private readonly AudioStreamInfo info;
 
         private AudioFilter _audioFilter;
-        private RingBuffer? _buffer;
+        private Mutex<RingBuffer>? _buffer;
         private short[] _tempBuffer;
         private uint _numChannels = 0;
         private uint _sampleRate;
 
-        private AudioResampler _resampler = AudioResampler.New();
         private readonly object _lock = new();
-        private readonly ConcurrentQueue<AudioStreamEvent> _pendingStreamEvents = new();
-
-        private Thread? _writeAudioThread;
 
         private bool disposed;
 
-        public AudioStream(IAudioStreams audioStreams, OwnedAudioStream ownedAudioStream)
+        public AudioStream(
+            IAudioStreams audioStreams,
+            OwnedAudioStream ownedAudioStream,
+            IAudioRemixConveyor audioRemixConveyor
+        )
         {
             this.audioStreams = audioStreams;
+            this.audioRemixConveyor = audioRemixConveyor;
             handle = IFfiHandleFactory.Default.NewFfiHandle(ownedAudioStream.Handle!.Id);
             info = ownedAudioStream.Info!;
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
@@ -42,23 +44,15 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             disposed = true;
 
-            //TODO recheck
             audioStreams.Release(this);
             handle.Dispose();
-            _buffer?.Dispose();
-            _resampler.Dispose();
+            if (_buffer != null)
+            {
+                using var guard = _buffer.Lock();
+                guard.Value.Dispose();
+            }
 
             FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
-        }
-
-        public void Start()
-        {
-            //TODO get rid off the thread
-            _writeAudioThread = new Thread(Update);
-            _writeAudioThread.Start();
-
-            //TODO
-            //_audioSource.Play();
         }
 
         public void ReadAudio(float[] data, int channels, int sampleRate)
@@ -68,9 +62,15 @@ namespace LiveKit.Rooms.Streaming.Audio
                 if (channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
                 {
                     int size = (int)(channels * sampleRate * 0.2); //0.2 stands for 200 ms
-                    _buffer?.Dispose();
-                    _buffer = new RingBuffer(size * sizeof(short));
-                    _tempBuffer = new short[data.Length];//todo avoid allocation of this buffer
+                    if (_buffer != null)
+                    {
+                        using var guard = _buffer.Lock();
+                        guard.Value.Dispose();
+                    }
+
+                    _buffer = new Mutex<RingBuffer>(new RingBuffer(size * sizeof(short)));
+
+                    _tempBuffer = new short[data.Length]; //todo avoid allocation of this buffer
                     _numChannels = (uint)channels;
                     _sampleRate = (uint)sampleRate;
                 }
@@ -82,7 +82,11 @@ namespace LiveKit.Rooms.Streaming.Audio
 
                 // "Send" the data to Unity
                 var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, data.Length));
-                int read = _buffer!.Value.Read(temp);
+
+                {
+                    using var guard = _buffer!.Lock();
+                    int read = guard.Value.Read(temp);
+                }
 
                 Array.Clear(data, 0, data.Length);
                 for (int i = 0; i < data.Length; i++) data[i] = S16ToFloat(_tempBuffer[i]);
@@ -100,28 +104,17 @@ namespace LiveKit.Rooms.Streaming.Audio
             if (_numChannels == 0)
                 return;
 
-            _pendingStreamEvents.Enqueue(e);
-        }
-
-        // TODO get rid this off
-        private void Update()
-        {
-            while (true)
+            if (_buffer == null)
             {
-                Thread.Sleep(Constants.TASK_DELAY);
-
-                if (_pendingStreamEvents.TryDequeue(out var e))
-                {
-                    using var frame = new OwnedAudioFrame(e.FrameReceived.Frame);
-
-                    lock (_lock)
-                    {
-                        using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                        var data = uFrame.AsSpan();
-                        _buffer?.Write(data);
-                    }
-                }
+                Debug.LogError("Invalid case, buffer is not set yet");
+                // prevent leak
+                var tempHandle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Frame.Handle.Id);
+                tempHandle.Dispose();
+                return;
             }
+
+            var frame = new OwnedAudioFrame(e.FrameReceived.Frame);
+            audioRemixConveyor.Process(frame, _buffer, _numChannels, _sampleRate);
         }
     }
 }

@@ -9,13 +9,14 @@ namespace LiveKit.Rooms.Streaming.Audio
 
         private int sampleRate;
         private WeakReference<IAudioStream>? stream;
-        private AudioSource audioSource;
+        private AudioSource audioSource = null!;
 
         public static LivekitAudioSource New(bool explicitName = false)
         {
             var gm = new GameObject();
+            var audioSource = gm.AddComponent<AudioSource>();
             var source = gm.AddComponent<LivekitAudioSource>();
-            source.audioSource = gm.AddComponent<AudioSource>();
+            source.audioSource = audioSource;
             if (explicitName) source.name = $"{nameof(LivekitAudioSource)}_{counter++}";
             return source;
         }

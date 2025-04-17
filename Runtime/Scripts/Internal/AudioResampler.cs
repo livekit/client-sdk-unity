@@ -48,5 +48,29 @@ namespace LiveKit.Internal
             var bufferInfo = res.RemixAndResample!.Buffer;
             return new OwnedAudioFrame(bufferInfo);
         }
+
+        public class ThreadSafe : IDisposable
+        {
+            private readonly AudioResampler resampler = New();
+            
+            /// <summary>
+            /// Takes ownership of the frame and is responsible for its disposal
+            /// </summary>
+            public OwnedAudioFrame RemixAndResample(OwnedAudioFrame frame, uint numChannels, uint sampleRate)
+            {
+                using (frame)
+                {
+                    lock (this)
+                    {
+                        return resampler.RemixAndResample(frame, numChannels, sampleRate);
+                    }
+                }
+            }
+
+            public void Dispose()
+            {
+                resampler.Dispose();
+            }
+        }
     }
 }

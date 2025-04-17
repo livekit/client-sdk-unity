@@ -1,5 +1,4 @@
-﻿using System;
-using LiveKit.Internal.FFIClients.Requests;
+﻿using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Tracks;
@@ -8,8 +7,11 @@ namespace LiveKit.Rooms.Streaming.Audio
 {
     public class AudioStreams : Streams<IAudioStream>, IAudioStreams
     {
-        public AudioStreams(IParticipantsHub participantsHub) : base(participantsHub, TrackKind.KindAudio)
+        private readonly IAudioRemixConveyor remixConveyor;
+
+        public AudioStreams(IParticipantsHub participantsHub, IAudioRemixConveyor remixConveyor) : base(participantsHub, TrackKind.KindAudio)
         {
+            this.remixConveyor = remixConveyor;
         }
 
         protected override IAudioStream NewStreamInstance(ITrack track)
@@ -22,7 +24,7 @@ namespace LiveKit.Rooms.Streaming.Audio
             FfiResponse res = response;
 
             var streamInfo = res.NewAudioStream!.Stream;
-            return new AudioStream(this, streamInfo!);
+            return new AudioStream(this, streamInfo!, remixConveyor);
         }
     }
 }
