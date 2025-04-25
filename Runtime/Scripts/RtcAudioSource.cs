@@ -4,6 +4,7 @@ using LiveKit.Proto;
 using LiveKit.Internal;
 using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
+using UnityEngine;
 
 namespace LiveKit
 {
@@ -52,11 +53,15 @@ namespace LiveKit
 
         protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
         {
-            var isMicrophone = audioSourceType == RtcAudioSourceType.AudioSourceMicrophone;
             _sourceType = audioSourceType;
+
+            var isMicrophone = audioSourceType == RtcAudioSourceType.AudioSourceMicrophone;
             _apm = new AudioProcessingModule(isMicrophone, true, true, true);
             if (isMicrophone)
+            {
                 _apmReverseStream = new ApmReverseStream(_apm);
+                _apm.SetStreamDelayMs(EstimateStreamDelayMs());
+            }
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
@@ -101,14 +106,8 @@ namespace LiveKit
                 var frame = _captureBuffer.ReadDuration(AudioProcessingModule.FRAME_DURATION_MS);
                 if (_muted || frame == null) continue;
 
-                if (_apmReverseStream != null)
-                {
-                    // TODO: calculate stream delay
-                    var delayMs = 0;
-                    _apm.SetStreamDelayMs(delayMs);
-                }
-                _apm.ProcessStream(frame);
-
+                if (_apm != null)
+                    _apm.ProcessStream(frame);
                 Capture(frame);
             }
         }
@@ -156,6 +155,15 @@ namespace LiveKit
         public override void SetMute(bool muted)
         {
             _muted = muted;
+        }
+
+        private int EstimateStreamDelayMs()
+        {
+            // TODO: estimate more accurately
+            int bufferLength, numBuffers;
+            int sampleRate = AudioSettings.outputSampleRate;
+            AudioSettings.GetDSPBufferSize(out bufferLength, out numBuffers);
+            return 2 * (int)(1000f * bufferLength * numBuffers / sampleRate);
         }
     }
 }
