@@ -1,5 +1,5 @@
 #!/bin/bash
-DOCS_DIR=../Documentation/
+DOCS_DIR=../Documentation~/
 GITHUB_DIR=../.github/
 README_PATH=../README.md
 
