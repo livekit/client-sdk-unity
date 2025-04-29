@@ -22,6 +22,10 @@ namespace LiveKit.Internal
 
     internal delegate void GetSessionStatsDelegate(GetStatsCallback e);
 
+    internal delegate void SetLocalMetadataReceivedDelegate(SetLocalMetadataCallback e);
+    internal delegate void SetLocalNameReceivedDelegate(SetLocalNameCallback e);
+    internal delegate void SetLocalAttributesReceivedDelegate(SetLocalAttributesCallback e);
+
     internal delegate void ByteStreamReaderReadAllReceivedDelegate(ByteStreamReaderReadAllCallback e);
 
     internal delegate void ByteStreamReaderWriteToFileReceivedDelegate(ByteStreamReaderWriteToFileCallback e);

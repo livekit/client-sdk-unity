@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Google.Protobuf.Collections;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Internal.FFIClients.Requests;
@@ -16,15 +15,15 @@ namespace LiveKit
     {
         public delegate void PublishDelegate(RemoteTrackPublication publication);
 
-
-        private ParticipantInfo _info;
+        internal ParticipantInfo _info; // Can be updated by the server through room events.
         internal readonly Dictionary<string, TrackPublication> _tracks = new();
         public FfiHandle Handle;
         public string Sid => _info.Sid;
         public string Identity => _info.Identity;
         public string Name => _info.Name;
         public string Metadata => _info.Metadata;
-        public MapField<string, string> Attributes => _info.Attributes;
+        public IReadOnlyDictionary<string, string> Attributes => _info.Attributes;
+
         public ConnectionQuality ConnectionQuality { internal set; get; }
         public event PublishDelegate TrackPublished;
         public event PublishDelegate TrackUnpublished;
@@ -38,23 +37,14 @@ namespace LiveKit
         {
             Room = new WeakReference<Room>(room);
             Handle = FfiHandle.FromOwnedHandle(participant.Handle);
-            UpdateInfo(participant.Info);
+            _info = participant.Info;
         }
 
-        public void SetMeta(string meta)
-        {
-            _info.Metadata = meta;
-        }
+        [Obsolete("Use SetMetadata on LocalParticipant instead; this method has no effect")]
+        public void SetMeta(string meta) {}
 
-        public void SetName(string name)
-        {
-            _info.Name = name;
-        }
-
-        internal void UpdateInfo(ParticipantInfo info)
-        {
-            _info = info;
-        }
+        [Obsolete("Use SetName on LocalParticipant instead; this method has no effect")]
+        public void SetName(string name) {}
 
         internal void OnTrackPublished(RemoteTrackPublication publication)
         {
@@ -65,7 +55,6 @@ namespace LiveKit
         {
             TrackUnpublished?.Invoke(publication);
         }
-
     }
 
     public sealed class LocalParticipant : Participant
@@ -124,22 +113,91 @@ namespace LiveKit
             }
         }
 
+        [Obsolete("Use SetMetadata instead")]
         public void UpdateMetadata(string metadata)
         {
-            using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
-            var updateReq = request.request;
-            updateReq.Metadata = metadata;
-            var resp = request.Send();
+            SetMetadata(metadata);
         }
 
+        [Obsolete("Use SetName instead")]
         public void UpdateName(string name)
         {
-            using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
-            var updateReq = request.request;
-            updateReq.Name = name;
-            var resp = request.Send();
+            SetName(name);
         }
 
+        /// <summary>
+        /// Set the metadata for the local participant.
+        /// </summary>
+        /// <remarks>
+        /// This requires `canUpdateOwnMetadata` permission.
+        /// </remarks>
+        /// <param name="metadata">The new metadata.</param>
+        public SetLocalMetadataInstruction SetMetadata(string metadata)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
+            var setReq = request.request;
+            setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            setReq.Metadata = metadata;
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new SetLocalMetadataInstruction(res.SetLocalMetadata.AsyncId);
+        }
+
+        /// <summary>
+        /// Set the name for the local participant.
+        /// </summary>
+        /// <remarks>
+        /// This requires `canUpdateOwnMetadata` permission.
+        /// </remarks>
+        /// <param name="name">The new name.</param>
+        public new SetLocalNameInstruction SetName(string name)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
+            var setReq = request.request;
+            setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            setReq.Name = name;
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new SetLocalNameInstruction(res.SetLocalName.AsyncId);
+        }
+
+        /// <summary>
+        /// Set custom attributes for the local participant.
+        /// </summary>
+        /// <remarks>
+        /// This requires `canUpdateOwnMetadata` permission.
+        /// </remarks>
+        /// <param name="attributes">The new attributes. Existing attributes that
+        /// are not overridden will remain unchanged.</param>
+        public SetLocalAttributesInstruction SetAttributes(IDictionary<string, string> attributes)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SetLocalAttributesRequest>();
+            var setReq = request.request;
+            setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+
+            var newAttributes = new Dictionary<string, string>(Attributes);
+            foreach (var kvp in attributes)
+            {
+                // Override existing attributes
+                newAttributes[kvp.Key] = kvp.Value;
+            }
+
+            foreach (var kvp in newAttributes)
+            {
+                var entry = new AttributesEntry
+                {
+                    Key = kvp.Key,
+                    Value = kvp.Value
+                };
+                setReq.Attributes.Add(entry);
+            }
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new SetLocalAttributesInstruction(res.SetLocalAttributes.AsyncId);
+        }
 
         /// <summary>
         /// Performs RPC on another participant in the room.
@@ -514,6 +572,70 @@ namespace LiveKit
             FfiClient.Instance.PublishTrackReceived -= OnPublish;
         }
     }
+
+    public sealed class SetLocalMetadataInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+
+        internal SetLocalMetadataInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.SetLocalMetadataReceived += OnSetLocalMetadata;
+        }
+
+        internal void OnSetLocalMetadata(SetLocalMetadataCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            IsError = !string.IsNullOrEmpty(e.Error);
+            IsDone = true;
+            FfiClient.Instance.SetLocalMetadataReceived -= OnSetLocalMetadata;
+        }
+    }
+
+    public sealed class SetLocalNameInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+
+        internal SetLocalNameInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.SetLocalNameReceived += OnSetLocalName;
+        }
+
+        internal void OnSetLocalName(SetLocalNameCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            IsError = !string.IsNullOrEmpty(e.Error);
+            IsDone = true;
+            FfiClient.Instance.SetLocalNameReceived -= OnSetLocalName;
+        }
+    }
+
+    public sealed class SetLocalAttributesInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+
+        internal SetLocalAttributesInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.SetLocalAttributesReceived += OnSetLocalAttributes;
+        }
+
+        internal void OnSetLocalAttributes(SetLocalAttributesCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            IsError = !string.IsNullOrEmpty(e.Error);
+            IsDone = true;
+            FfiClient.Instance.SetLocalAttributesReceived -= OnSetLocalAttributes;
+        }
+    }
+
     public sealed class UnpublishTrackInstruction : YieldInstruction
     {
         private ulong _asyncId;
