@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
 using UnityEngine;
 
@@ -43,7 +42,6 @@ namespace LiveKit
         protected AudioSourceInfo _info;
 
         // Possibly used on the AudioThread
-        private Thread _readAudioThread;
         private AudioBuffer _captureBuffer = new AudioBuffer();
         private readonly AudioProcessingModule _apm;
         private readonly ApmReverseStream _apmReverseStream;
@@ -84,8 +82,6 @@ namespace LiveKit
         public void Start()
         {
             Stop();
-            _readAudioThread = new Thread(Update);
-            _readAudioThread.Start();
             _apmReverseStream?.Start();
             AudioRead += OnAudioRead;
             Play();
@@ -93,33 +89,24 @@ namespace LiveKit
 
         public virtual void Stop()
         {
-            _readAudioThread?.Abort();
             _apmReverseStream?.Stop();
             AudioRead -= OnAudioRead;
-        }
-
-        private void Update()
-        {
-            while (true)
-            {
-                Thread.Sleep(Constants.TASK_DELAY);
-                var frame = _captureBuffer.ReadDuration(AudioProcessingModule.FRAME_DURATION_MS);
-                if (_muted || frame == null) continue;
-
-                if (_apm != null)
-                    _apm.ProcessStream(frame);
-                Capture(frame);
-            }
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             _captureBuffer.Write(data, (uint)channels, (uint)sampleRate);
-            if (_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
+            while (true)
             {
-                // Don't play the audio locally, to avoid echo.
-                Array.Clear(data, 0, data.Length);
+                var frame = _captureBuffer.ReadDuration(AudioProcessingModule.FRAME_DURATION_MS);
+                if (_muted || frame == null) break;
+
+                if (_apm != null) _apm.ProcessStream(frame);
+                Capture(frame);
             }
+            // Don't play the audio locally, to avoid echo.
+            if (_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
+                Array.Clear(data, 0, data.Length);
         }
 
         private void Capture(AudioFrame frame)
