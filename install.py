@@ -8,7 +8,7 @@ import zipfile
 def show_progress(block_num, block_size, total_size):
     print(round(block_num * block_size / total_size *100,2), end="\r")
 
-platforms = ['ios', 'macos', 'linux', 'windows']
+platforms = ['android', 'ios', 'macos', 'linux', 'windows']
 download_dir = 'downloads~'
 
 def main():
@@ -27,8 +27,8 @@ def main():
             filename = 'ffi-' + platform + '-' + arch + '.zip'
             url = f"{config['ffi']['url']}/{tag_path}/{filename}"
             file_to_download = download_dir + '/' + filename
-            if download_file_if_not_exists(url, file_to_download) : 
-                dest = 'Runtime/Plugins' + '/ffi-' + platform + '-' + arch 
+            if download_file_if_not_exists(url, file_to_download) :
+                dest = 'Runtime/Plugins' + '/ffi-' + platform + '-' + arch
                 unzip_file(file_to_download, filename, dest)
 
 def download_file_if_not_exists(url, filename):
