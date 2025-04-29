@@ -106,7 +106,10 @@ namespace LiveKit
             }
             // Don't play the audio locally, to avoid echo.
             if (_sourceType == RtcAudioSourceType.AudioSourceMicrophone)
-                Array.Clear(data, 0, data.Length);
+            {
+                Span<float> span = data;
+                span.Clear();
+            }
         }
 
         private void Capture(AudioFrame frame)
