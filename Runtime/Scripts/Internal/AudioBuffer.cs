@@ -4,7 +4,7 @@ using LiveKit.Internal;
 namespace LiveKit
 {
     /// <summary>
-    /// A thread-safe buffer for buffering audio samples.
+    /// A ring buffer for audio samples.
     /// </summary>
     internal class AudioBuffer
     {
@@ -12,7 +12,6 @@ namespace LiveKit
         private RingBuffer _buffer;
         private uint _channels;
         private uint _sampleRate;
-        private object _lock = new object();
 
         /// <summary>
         /// Initializes a new audio sample buffer for holding samples for a given duration.
@@ -52,23 +51,20 @@ namespace LiveKit
 
         private void Capture(short[] data, uint channels, uint sampleRate)
         {
-            lock (_lock)
+            if (_buffer == null || channels != _channels || sampleRate != _sampleRate)
             {
-                if (_buffer == null || channels != _channels || sampleRate != _sampleRate)
+                var size = (int)(channels * sampleRate * (_bufferDurationMs / 1000f));
+                _buffer?.Dispose();
+                _buffer = new RingBuffer(size * sizeof(short));
+                _channels = channels;
+                _sampleRate = sampleRate;
+            }
+            unsafe
+            {
+                fixed (short* pData = data)
                 {
-                    var size = (int)(channels * sampleRate * (_bufferDurationMs / 1000f));
-                    _buffer?.Dispose();
-                    _buffer = new RingBuffer(size * sizeof(short));
-                    _channels = channels;
-                    _sampleRate = sampleRate;
-                }
-                unsafe
-                {
-                    fixed (short* pData = data)
-                    {
-                        var byteData = new ReadOnlySpan<byte>(pData, data.Length * sizeof(short));
-                        _buffer.Write(byteData);
-                    }
+                    var byteData = new ReadOnlySpan<byte>(pData, data.Length * sizeof(short));
+                    _buffer.Write(byteData);
                 }
             }
         }
@@ -80,22 +76,19 @@ namespace LiveKit
         /// <returns>An AudioFrame containing the read audio samples or if there is not enough samples, null.</returns>
         internal AudioFrame ReadDuration(uint durationMs)
         {
-            lock (_lock)
+            if (_buffer == null) return null;
+
+            var samplesForDuration = (uint)(_sampleRate * (durationMs / 1000f));
+            var requiredLength = samplesForDuration * _channels * sizeof(short);
+            if (_buffer.AvailableRead() < requiredLength) return null;
+
+            var frame = new AudioFrame(_sampleRate, _channels, samplesForDuration);
+            unsafe
             {
-                if (_buffer == null) return null;
-
-                var samplesForDuration = (uint)(_sampleRate * (durationMs / 1000f));
-                var requiredLength = samplesForDuration * _channels * sizeof(short);
-                if (_buffer.AvailableRead() < requiredLength) return null;
-
-                var frame = new AudioFrame(_sampleRate, _channels, samplesForDuration);
-                unsafe
-                {
-                    var frameData = new Span<byte>(frame.Data.ToPointer(), frame.Length);
-                    _buffer.Read(frameData);
-                }
-                return frame;
+                var frameData = new Span<byte>(frame.Data.ToPointer(), frame.Length);
+                _buffer.Read(frameData);
             }
+            return frame;
         }
     }
 }
