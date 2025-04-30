@@ -48,6 +48,8 @@ namespace LiveKit.Internal
 
     internal delegate void SendTextReceivedDelegate(StreamSendTextCallback e);
 
+    internal delegate void CaptureAudioFrameReceivedDelegate(CaptureAudioFrameCallback e);
+
     // Events
     internal delegate void RoomEventReceivedDelegate(RoomEvent e);
 
