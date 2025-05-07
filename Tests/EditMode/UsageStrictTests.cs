@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
-namespace LiveKit.Tests
+namespace LiveKit.EditModeTests
 {
-    public class UsageStrict
+    public class UsageStrictTests
     {
         private readonly IReadOnlyList<string> ignoreFiles = new[] { "FFIClient.cs", "Ffi.cs" };
         private const string RuntimePath = "Assets/client-sdk-unity/Runtime/Scripts";
