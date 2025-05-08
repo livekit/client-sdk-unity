@@ -80,3 +80,6 @@ downloads~
 /Runtime/Plugins/ffi-*/livekit_ffi.h
 /Runtime/Plugins/ffi-*/livekit_ffi.h.meta
 
+# Ignore temporaries from GameCI
+/[Aa]rtifacts/
+/[Cc]odeCoverage/
