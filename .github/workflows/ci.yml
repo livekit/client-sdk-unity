@@ -24,6 +24,9 @@ jobs:
           mkdir root
           shopt -s dotglob extglob
           mv !(root) root/
+      - name: Remove Plugins
+        shell: bash
+        run: find . -type d -name 'ffi-*' ! -name 'ffi-linux-x86_64' -exec rm -rf {} +
       - name: Install LiveKit Server
         run: curl -sSL https://get.livekit.io | bash
       - name: Run LiveKit Server
