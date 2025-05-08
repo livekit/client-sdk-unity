@@ -11,13 +11,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # See supported versions: https://game.ci/docs/docker/versions
-        unityVersion:
-          - 6000.1.2f1
-          # - 2023.2.20f1
-        # See supported platforms: https://game.ci/docs/faq/#what-unity-build-targets-are-supported
-        # targetPlatform:
-          # - StandaloneLinux64
+        unityVersion: [6000.1.2f1]
+        # TODO: Add more platforms and versions
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,7 +33,7 @@ jobs:
           projectPath: root
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Test results (all modes)
