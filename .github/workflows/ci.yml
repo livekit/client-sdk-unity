@@ -18,6 +18,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+      # Required due to open issue:
+      # https://github.com/game-ci/unity-test-runner/issues/223
       - name: Move Into Subdirectory
         shell: bash
         run: |
