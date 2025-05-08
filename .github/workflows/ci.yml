@@ -51,8 +51,3 @@ jobs:
         with:
           name: Test results (all modes, ${{ matrix.unityVersion }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Coverage results (${{ matrix.unityVersion }})
-          path: ${{ steps.testRunner.outputs.coveragePath }}
