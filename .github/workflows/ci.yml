@@ -39,7 +39,9 @@ jobs:
           projectPath: root
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: Test Results (${{ matrix.testMode }})
           packageMode: true
+          useHostNetwork: true
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
