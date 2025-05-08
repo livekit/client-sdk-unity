@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    name: Build for ${{ matrix.targetPlatform }}
+    name: CI (${{ matrix.unityVersion }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -14,10 +14,11 @@ jobs:
         unityVersion: [6000.1.2f1]
         # TODO: Add more platforms and versions
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           lfs: true
-      - name: Move repo into subdirectory
+      - name: Move Into Subdirectory
         shell: bash
         run: |
           mkdir root
@@ -27,7 +28,7 @@ jobs:
         run: curl -sSL https://get.livekit.io | bash
       - name: Run LiveKit Server
         run: livekit-server --dev &
-      - name: Run tests
+      - name: Run Tests
         uses: game-ci/unity-test-runner@v4
         id: testRunner
         env:
@@ -39,7 +40,7 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           packageMode: true
-      - name: Upload test results
+      - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
