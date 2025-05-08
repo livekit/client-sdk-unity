@@ -23,6 +23,10 @@ jobs:
           mkdir root
           shopt -s dotglob extglob
           mv !(root) root/
+      - name: Install LiveKit Server
+        run: curl -sSL https://get.livekit.io | bash
+      - name: Run LiveKit Server
+        run: livekit-server --dev &
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
         id: testRunner
