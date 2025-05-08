@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  test:
+    name: Build for ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # See supported versions: https://game.ci/docs/docker/versions
+        unityVersion:
+          - 6000.1.2f1
+          # - 2023.2.20f1
+        # See supported platforms: https://game.ci/docs/faq/#what-unity-build-targets-are-supported
+        # targetPlatform:
+          # - StandaloneLinux64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Move repo into subdirectory
+        shell: bash
+        run: |
+          mkdir root
+          shopt -s dotglob extglob
+          mv !(root) root/
+      - uses: game-ci/unity-test-runner@v4
+        id: testRunner
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: root
+          unityVersion: ${{ matrix.unityVersion }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test results (all modes)
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
