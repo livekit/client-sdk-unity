@@ -39,12 +39,17 @@ jobs:
           projectPath: root
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Test Results (${{ matrix.testMode }})
+          checkName: Test Results (${{ matrix.unityVersion }})
           packageMode: true
           useHostNetwork: true
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: Test results (all modes)
+          name: Test results (all modes, ${{ matrix.unityVersion }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Coverage results (${{ matrix.unityVersion }})
+          path: ${{ steps.testRunner.outputs.coveragePath }}
