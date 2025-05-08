@@ -23,7 +23,8 @@ jobs:
           mkdir root
           shopt -s dotglob extglob
           mv !(root) root/
-      - uses: game-ci/unity-test-runner@v4
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
         id: testRunner
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -33,7 +34,9 @@ jobs:
           projectPath: root
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/upload-artifact@v4
+          packageMode: true
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Test results (all modes)
