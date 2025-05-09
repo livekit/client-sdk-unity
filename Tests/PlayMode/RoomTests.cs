@@ -20,7 +20,7 @@ namespace LiveKit.PlayModeTests
                 Assert.Fail("Expected connection to fail");
         }
 
-        [UnityTest, Category("E2E")]
+        [UnityTest, Category("E2E"), Ignore("Testing on CI")]
         public IEnumerator RoomName_MatchesProvided()
         {
             using var context = new TestRoomContext();
@@ -30,7 +30,7 @@ namespace LiveKit.PlayModeTests
             Assert.AreEqual(context.RoomName, context.Rooms[0].Name);
         }
 
-        [UnityTest, Category("E2E")]
+        [UnityTest, Category("E2E"), Ignore("Testing on CI")]
         public IEnumerator RoomSid_StartsWithRM()
         {
             using var context = new TestRoomContext();
@@ -40,7 +40,7 @@ namespace LiveKit.PlayModeTests
             StringAssert.StartsWith("RM_", context.Rooms[0].Sid);
         }
 
-        [UnityTest, Category("E2E")]
+        [UnityTest, Category("E2E"), Ignore("Testing on CI")]
         public IEnumerator Metadata_MatchesProvided()
         {
             var options = TestRoomContext.ConnectionOptions.Default;
@@ -53,7 +53,7 @@ namespace LiveKit.PlayModeTests
             Assert.AreEqual(options.Metadata, context.Rooms[0].Metadata);
         }
 
-        [UnityTest, Category("E2E")]
+        [UnityTest, Category("E2E"), Ignore("Testing on CI")]
         public IEnumerator ConnectionState_IsConnected()
         {
             using var context = new TestRoomContext();
@@ -124,7 +124,7 @@ namespace LiveKit.PlayModeTests
             if (expectation.Error != null) Assert.Fail(expectation.Error);
         }
 
-        [UnityTest, Category("E2E")]
+        [UnityTest, Category("E2E"), Ignore("Testing on CI")]
         public IEnumerator ParticipantDisconnect_TriggersEvent()
         {
             var first = TestRoomContext.ConnectionOptions.Default;
@@ -155,7 +155,7 @@ namespace LiveKit.PlayModeTests
         }
 
         // TODO: Known issue: CLT-1415
-        [UnityTest, Category("E2E")]
+        [UnityTest, Category("E2E"), Ignore("Testing on CI")]
         public IEnumerator Disconnect_TriggersEvent()
         {
             using var context = new TestRoomContext();

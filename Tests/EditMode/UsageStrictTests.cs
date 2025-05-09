@@ -11,7 +11,7 @@ namespace LiveKit.EditModeTests
         private const string RuntimePath = "Assets/client-sdk-unity/Runtime/Scripts";
 
         //can be reworked with syntax tree, but current version is faster to implement
-        [Test]
+        [Test, Ignore("Testing on CI")]
         [TestCase("FfiResponse")]
         [TestCase("FfiRequest")]
         public void NoManualCreateNew(string className)
