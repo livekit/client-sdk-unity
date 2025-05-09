@@ -6,6 +6,8 @@ on:
   workflow_dispatch:
 jobs:
   test:
+    env:
+      UNITY_PROJECT_PATH: Samples~/Basic
     name: CI (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
     runs-on: ubuntu-latest
     strategy:
@@ -24,12 +26,12 @@ jobs:
           lfs: true
       # Required due to open issue:
       # https://github.com/game-ci/unity-test-runner/issues/223
-      - name: Move Into Subdirectory
-        shell: bash
-        run: |
-          mkdir root
-          shopt -s dotglob extglob
-          mv !(root) root/
+      # - name: Move Into Subdirectory
+      #   shell: bash
+      #   run: |
+      #     mkdir root
+      #     shopt -s dotglob extglob
+      #     mv !(root) root/
       - name: Install LiveKit Server
         run: curl -sSL https://get.livekit.io | bash
       - name: Run LiveKit Server
@@ -42,11 +44,11 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: root
+          projectPath: ${{ env.UNITY_PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: Test Results (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
-          packageMode: true
+          # packageMode: true
           useHostNetwork: true
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
@@ -61,7 +63,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: root
+          projectPath: ${{ env.UNITY_PROJECT_PATH }}
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
       - name: Upload Build
