@@ -14,8 +14,8 @@ jobs:
         unityVersion: [6000.1.2f1]
         targetPlatform:
           - StandaloneLinux64
-          #- iOS
-          #- Android
+          - iOS
+          - Android
         # TODO: Add more platforms and versions
     steps:
       - name: Checkout
