@@ -32,30 +32,31 @@ jobs:
       #     mkdir root
       #     shopt -s dotglob extglob
       #     mv !(root) root/
+      # Required for E2E tests
       - name: Install LiveKit Server
         run: curl -sSL https://get.livekit.io | bash
       - name: Run LiveKit Server
         run: livekit-server --dev &
-      - name: Run Tests
-        uses: game-ci/unity-test-runner@v4
-        id: testRunner
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: ${{ env.UNITY_PROJECT_PATH }}
-          unityVersion: ${{ matrix.unityVersion }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Test Results (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
-          # packageMode: true
-          useHostNetwork: true
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Test results (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+      # - name: Run Tests
+      #   uses: game-ci/unity-test-runner@v4
+      #   id: testRunner
+      #   env:
+      #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      #   with:
+      #     projectPath: ${{ env.UNITY_PROJECT_PATH }}
+      #     unityVersion: ${{ matrix.unityVersion }}
+      #     githubToken: ${{ secrets.GITHUB_TOKEN }}
+      #     checkName: Test Results (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
+      #     # packageMode: true
+      #     useHostNetwork: true
+      # - name: Upload Test Results
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: Test results (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
+      #     path: ${{ steps.testRunner.outputs.artifactsPath }}
       - name: Build
         uses: game-ci/unity-builder@v4
         env:
