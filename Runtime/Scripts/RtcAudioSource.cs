@@ -30,12 +30,12 @@ namespace LiveKit
 
 #if UNITY_IOS
         // iOS microphone sample rate is 24k
-        public static uint DefaultMirophoneSampleRate = 24000;
+        public static uint DefaultMicrophoneSampleRate = 24000;
 
         public static uint DefaultSampleRate = 48000;
 #else
         public static uint DefaultSampleRate = 48000;
-        public static uint DefaultMirophoneSampleRate = DefaultSampleRate;
+        public static uint DefaultMicrophoneSampleRate = DefaultSampleRate;
 #endif
         public static uint DefaultChannels = 2;
 
@@ -64,7 +64,7 @@ namespace LiveKit
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = (uint)channels;
             newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
-                DefaultMirophoneSampleRate : DefaultSampleRate;
+                DefaultMicrophoneSampleRate : DefaultSampleRate;
 
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;

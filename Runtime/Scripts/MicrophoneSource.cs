@@ -61,7 +61,7 @@ namespace LiveKit
                 _deviceName,
                 loop: true,
                 lengthSec: 1,
-                frequency: (int)DefaultMirophoneSampleRate
+                frequency: (int)DefaultMicrophoneSampleRate
             );
             if (clip == null)
                 throw new InvalidOperationException("Microphone start failed");
