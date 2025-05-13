@@ -25,6 +25,14 @@ namespace LiveKit
             }
         }
 
+        public void Clear()
+        {
+            lock (_lockObject)
+            {
+                _queue.Clear();
+            }
+        }
+
         public int Count
         {
             get
