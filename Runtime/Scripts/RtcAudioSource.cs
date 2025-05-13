@@ -17,6 +17,9 @@ namespace LiveKit
         AudioSourceMicrophone = 1
     }
 
+    /// <summary>
+    /// Capture source for a local audio track.
+    /// </summary>
     public abstract class RtcAudioSource : IRtcSource, IDisposable
     {
         /// <summary>
