@@ -70,8 +70,8 @@ namespace LiveKit
             source.clip = clip;
             source.loop = true;
 
-            var filter = _sourceObject.AddComponent<AudioFilter>();
-            filter.AudioRead += OnAudioRead;
+            var probe = _sourceObject.AddComponent<AudioProbe>();
+            probe.AudioRead += OnAudioRead;
 
             var waitUntilReady = new WaitUntil(() => Microphone.GetPosition(_deviceName) > 0);
             MonoBehaviourContext.RunCoroutine(waitUntilReady, () => source.Play());
@@ -90,9 +90,9 @@ namespace LiveKit
             if (Microphone.IsRecording(_deviceName))
                 Microphone.End(_deviceName);
 
-            var filter = _sourceObject.GetComponent<AudioFilter>();
-            filter.AudioRead -= OnAudioRead;
-            UnityEngine.Object.Destroy(filter);
+            var probe = _sourceObject.GetComponent<AudioProbe>();
+            probe.AudioRead -= OnAudioRead;
+            UnityEngine.Object.Destroy(probe);
 
             var source = _sourceObject.GetComponent<AudioSource>();
             UnityEngine.Object.Destroy(source);

@@ -36,8 +36,8 @@ namespace LiveKit
             base.Start();
             if (_started) return;
 
-            var audioFilter = _source.gameObject.AddComponent<AudioFilter>();
-            audioFilter.AudioRead += OnAudioRead;
+            var probe = _source.gameObject.AddComponent<AudioProbe>();
+            probe.AudioRead += OnAudioRead;
 
             _source.Play();
             _started = true;
@@ -48,9 +48,8 @@ namespace LiveKit
             base.Stop();
             if (!_started) return;
 
-            var audioFilter = _source.gameObject.GetComponent<AudioFilter>();
-            audioFilter.AudioRead -= OnAudioRead;
-            UnityEngine.Object.Destroy(audioFilter);
+            var probe = _source.gameObject.GetComponent<AudioProbe>();
+            UnityEngine.Object.Destroy(probe);
 
             _source.Stop();
             _started = false;

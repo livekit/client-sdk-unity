@@ -50,8 +50,8 @@ namespace LiveKit
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             _audioSource = source;
-            var filter = _audioSource.gameObject.AddComponent<AudioFilter>();
-            filter.AudioRead += OnAudioRead;
+            var probe = _audioSource.gameObject.AddComponent<AudioProbe>();
+            probe.AudioRead += OnAudioRead;
             _audioSource.Play();
         }
 
@@ -127,7 +127,7 @@ namespace LiveKit
             if (!_disposed && disposing)
             {
                 _audioSource.Stop();
-                UnityEngine.Object.Destroy(_audioSource.GetComponent<AudioFilter>());
+                UnityEngine.Object.Destroy(_audioSource.GetComponent<AudioProbe>());
             }
             _disposed = true;
         }
