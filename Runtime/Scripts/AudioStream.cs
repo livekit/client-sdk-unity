@@ -7,20 +7,31 @@ using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit
 {
-    public class AudioStream
+    /// <summary>
+    /// An audio stream from a remote participant, attached to an <see cref="AudioSource"/>
+    /// in the scene.
+    /// </summary>
+    public sealed class AudioStream : IDisposable
     {
         internal readonly FfiHandle Handle;
-        public RtcAudioSource AudioSource { get; private set; }
+        private readonly AudioSource _audioSource;
         private RingBuffer _buffer;
         private short[] _tempBuffer;
         private uint _numChannels;
         private uint _sampleRate;
         private AudioResampler _resampler = new AudioResampler();
         private object _lock = new object();
+        private bool _disposed = false;
 
-        public AudioStream(IAudioTrack audioTrack, AudioSource source) : this(audioTrack, new BasicAudioSource(source)) { }
-
-        public AudioStream(IAudioTrack audioTrack, RtcAudioSource source)
+        /// <summary>
+        /// Creates a new audio stream from a remote audio track, attaching it to the
+        /// given <see cref="AudioSource"/> in the scene.
+        /// </summary>
+        /// <param name="audioTrack">The remote audio track to stream.</param>
+        /// <param name="source">The audio source to play the stream on.</param>
+        /// <exception cref="InvalidOperationException">Thrown if the audio track's room or
+        /// participant is invalid.</exception>
+        public AudioStream(RemoteAudioTrack audioTrack, AudioSource source)
         {
             if (!audioTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("audiotrack's room is invalid");
@@ -30,7 +41,7 @@ namespace LiveKit
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
             var newAudioStream = request.request;
-            newAudioStream.TrackHandle = (ulong)audioTrack.TrackHandle.DangerousGetHandle();
+            newAudioStream.TrackHandle = (ulong)(audioTrack as ITrack).TrackHandle.DangerousGetHandle();
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
 
             using var response = request.Send();
@@ -38,13 +49,10 @@ namespace LiveKit
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioStream.Stream.Handle);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
-            UpdateSource(source);
-        }
-
-        private void UpdateSource(RtcAudioSource source)
-        {
-            AudioSource = source;
-            AudioSource.AudioRead += OnAudioRead;
+            _audioSource = source;
+            var filter = _audioSource.gameObject.AddComponent<AudioFilter>();
+            filter.AudioRead += OnAudioRead;
+            _audioSource.Play();
         }
 
         // Called on Unity audio thread
@@ -61,7 +69,6 @@ namespace LiveKit
                     _numChannels = (uint)channels;
                     _sampleRate = (uint)sampleRate;
                 }
-
 
                 static float S16ToFloat(short v)
                 {
@@ -83,7 +90,7 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
-            if((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
+            if ((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
                 return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
@@ -99,13 +106,35 @@ namespace LiveKit
                 unsafe
                 {
                     var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    if(uFrame != null) {
+                    if (uFrame != null)
+                    {
                         var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
                         _buffer?.Write(data);
                     }
 
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed && disposing)
+            {
+                _audioSource.Stop();
+                UnityEngine.Object.Destroy(_audioSource.GetComponent<AudioFilter>());
+            }
+            _disposed = true;
+        }
+
+        ~AudioStream()
+        {
+            Dispose(false);
         }
     }
 }
