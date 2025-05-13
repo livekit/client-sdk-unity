@@ -1,27 +1,144 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
 namespace LiveKit
 {
-    public class MicrophoneSource : BasicAudioSource
+    /// <summary>
+    /// An audio source which captures from the device's microphone.
+    /// </summary>
+    /// <remarks>
+    /// Ensure microphone permissions are granted before calling <see cref="Start"/>.
+    /// </remarks>
+    sealed public class MicrophoneSource : RtcAudioSource
     {
-        private string _deviceName;
+        private readonly GameObject _sourceObject;
+        private readonly string _deviceName;
 
-        public MicrophoneSource(AudioSource source) : base(source, 2, RtcAudioSourceType.AudioSourceMicrophone)
+        public override event Action<float[], int, int> AudioRead;
+
+        private bool _disposed = false;
+        private bool _started = false;
+
+        /// <summary>
+        /// True indicates the capture has started but is temporarily suspended
+        /// due to the application entering the background.
+        /// </summary>
+        private bool _suspended = false;
+
+        /// <summary>
+        /// Creates a new microphone source for the given device.
+        /// </summary>
+        /// <param name="deviceName">The name of the device to capture from. Use <see cref="Microphone.devices"/> to
+        /// get the list of available devices.</param>
+        /// <param name="sourceObject">The GameObject to attach the AudioSource to. The object must be kept in the scene
+        /// for the duration of the source's lifetime.</param>
+        public MicrophoneSource(string deviceName, GameObject sourceObject) : base(2, RtcAudioSourceType.AudioSourceMicrophone)
         {
+            _deviceName = deviceName;
+            _sourceObject = sourceObject;
+            MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
         }
 
-        public void Configure(string device, bool loop, int lenghtSec, int frequency)
+        /// <summary>
+        /// Begins capturing audio from the microphone.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the microphone is not available or unauthorized.
+        /// </exception>
+        /// <remarks>
+        /// Ensure microphone permissions are granted before calling this method
+        /// by calling <see cref="Application.RequestUserAuthorization"/>.
+        /// </remarks>
+        public override void Start()
         {
-            _deviceName = device;
-            Source.clip = Microphone.Start(device, loop, lenghtSec, frequency);
-            Source.loop = true;
-        }
-        
-        public override IEnumerator Prepare(float timeout = 0)
-        {
-            return new WaitUntil(() => Microphone.GetPosition(_deviceName) > 0);
+            base.Start();
+            if (_started) return;
+
+            if (!Application.HasUserAuthorization(mode: UserAuthorization.Microphone))
+                throw new InvalidOperationException("Microphone access not authorized");
+
+            var clip = Microphone.Start(
+                _deviceName,
+                loop: true,
+                lengthSec: 1,
+                frequency: (int)DefaultMirophoneSampleRate
+            );
+            if (clip == null)
+                throw new InvalidOperationException("Microphone start failed");
+
+            var source = _sourceObject.AddComponent<AudioSource>();
+            source.clip = clip;
+            source.loop = true;
+
+            var filter = _sourceObject.AddComponent<AudioFilter>();
+            filter.AudioRead += OnAudioRead;
+
+            var waitUntilReady = new WaitUntil(() => Microphone.GetPosition(_deviceName) > 0);
+            MonoBehaviourContext.RunCoroutine(waitUntilReady, () =>
+            {
+                filter.AudioRead += OnAudioRead;
+                source.Play();
+            });
+
+            _started = true;
         }
 
+        /// <summary>
+        /// Stops capturing audio from the microphone.
+        /// </summary>
+        public override void Stop()
+        {
+            base.Stop();
+            if (!_started) return;
+
+            if (Microphone.IsRecording(_deviceName))
+                Microphone.End(_deviceName);
+
+            var filter = _sourceObject.GetComponent<AudioFilter>();
+            filter.AudioRead -= OnAudioRead;
+            UnityEngine.Object.Destroy(filter);
+
+            var source = _sourceObject.GetComponent<AudioSource>();
+            UnityEngine.Object.Destroy(source);
+
+            _started = false;
+        }
+
+        private void OnAudioRead(float[] data, int channels, int sampleRate)
+        {
+            AudioRead?.Invoke(data, channels, sampleRate);
+            // Don't play the audio locally, to avoid echo.
+            data.AsSpan().Clear();
+        }
+
+        private void OnApplicationPause(bool pause)
+        {
+            // When the application is paused (i.e. enters the background), place
+            // the microphone capture in a suspended state. This prevents stale audio
+            // samples from being captured and sent to the server when the application
+            // is resumed.
+            if (_suspended && !pause)
+            {
+                Start();
+                _suspended = false;
+            }
+            else if (!_suspended && pause)
+            {
+                Stop();
+                _suspended = true;
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!_disposed && disposing) Stop();
+            _disposed = true;
+            base.Dispose(disposing);
+        }
+
+        ~MicrophoneSource()
+        {
+            Dispose(false);
+        }
     }
 }

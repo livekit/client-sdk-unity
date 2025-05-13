@@ -32,7 +32,7 @@ namespace LiveKit
             var newAudioStream = request.request;
             newAudioStream.TrackHandle = (ulong)audioTrack.TrackHandle.DangerousGetHandle();
             newAudioStream.Type = AudioStreamType.AudioStreamNative;
-            
+
             using var response = request.Send();
             FfiResponse res = response;
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioStream.Stream.Handle);
@@ -45,7 +45,6 @@ namespace LiveKit
         {
             AudioSource = source;
             AudioSource.AudioRead += OnAudioRead;
-            source.Play();
         }
 
         // Called on Unity audio thread
@@ -93,7 +92,7 @@ namespace LiveKit
             var frame = new AudioFrame(e.FrameReceived.Frame);
 
             lock (_lock)
-            { 
+            {
                 if (_numChannels == 0)
                     return;
 
@@ -104,7 +103,7 @@ namespace LiveKit
                         var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
                         _buffer?.Write(data);
                     }
-                    
+
                 }
             }
         }
