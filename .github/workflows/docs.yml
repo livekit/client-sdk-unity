@@ -19,7 +19,7 @@ jobs:
       - name: Setup DocFx
         run: dotnet tool update -g docfx && dotnet tool restore
       - name: Build Docs
-        run: ./BuildScripts~/build_docs.sh
+        run: cd BuildScripts~ && ./build_docs.sh
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload Generated Docs
