@@ -1,0 +1,41 @@
+name: Docs
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: "docs"
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: Setup DocFx
+        run: dotnet tool update -g docfx && dotnet tool restore
+      - name: Build Docs
+        run: cd BuildScripts~ && ./build_docs.sh
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Generated Docs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: Documentation~/_site
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

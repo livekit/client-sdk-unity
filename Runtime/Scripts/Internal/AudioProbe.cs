@@ -3,7 +3,10 @@ using UnityEngine;
 namespace LiveKit
 {
     // from https://github.com/Unity-Technologies/com.unity.webrtc
-    internal class AudioFilter : MonoBehaviour
+    /// <summary>
+    /// Intercepts audio data and invokes the <see cref="AudioRead"/> event.
+    /// </summary>
+    internal class AudioProbe : MonoBehaviour
     {
         public delegate void OnAudioDelegate(float[] data, int channels, int sampleRate);
         // Event is called from the Unity audio thread

@@ -1,0 +1,42 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": ["Runtime/Scripts/**/*.cs"],
+          "src": "../"
+        }
+      ],
+      "dest": "api",
+      "disableDefaultFilter": false,
+      "allowCompilationErrors": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": "**/*.{md,yml}",
+        "src": "api",
+        "dest": "api"
+      },
+      {
+        "files": ["toc.yml", "*.md"]
+      }
+    ],
+    "resource": [{ "files": ["resources/**"] }],
+    "output": "_site",
+    "template": ["default", "modern", "custom"],
+    "globalMetadata": {
+      "_appName": "LiveKit Unity SDK",
+      "_appTitle": "LiveKit Unity SDK",
+      "_appFooter": "LiveKit Client SDK for Unity",
+      "_lang": "en",
+      "_enableSearch": true,
+      "pdf": false
+    },
+    "xrefService": ["https://xref.docs.microsoft.com/query?uid={uid}"],
+    "sitemap": {
+      "baseUrl": "https://livekit.github.io/client-sdk-unity"
+    }
+  }
+}

@@ -20,6 +20,8 @@
 Use this SDK to add realtime video, audio and data features to your Unity app. By connecting to <a href="https://livekit.io/">LiveKit</a> Cloud or a self-hosted server, you can quickly build applications such as multi-modal AI, live streaming, or video calls with just a few lines of code.
 <!--END_DESCRIPTION-->
 
+[SDK Reference »](https://livekit.github.io/client-sdk-unity)
+
 ## Platform Support
 
 - [x] Windows
@@ -93,14 +95,10 @@ IEnumerator Start()
 ### Publishing microphone
 
 ```cs
-// Publish Microphone
 var localSid = "my-audio-source";
 GameObject audObject = new GameObject(localSid);
-var source = audObject.AddComponent<AudioSource>();
-source.clip = Microphone.Start(Microphone.devices[0], true, 2, (int)RtcAudioSource.DefaultSampleRate);
-source.loop = true;
-
-var rtcSource = new RtcAudioSource(source, RtcAudioSourceType.AudioSourceMicrophone);
+_audioObjects[localSid] = audObject;
+var rtcSource = new MicrophoneSource(Microphone.devices[0], _audioObjects[localSid]);
 var track = LocalAudioTrack.CreateAudioTrack("my-audio-track", rtcSource, room);
 
 var options = new TrackPublishOptions();
@@ -318,10 +316,11 @@ IEnumerator HandleTextStream(TextStreamReader reader, string participantIdentity
 
     // Option 1: Process the stream incrementally
     var readIncremental = reader.ReadIncremental();
-    while (!readIncremental.IsEos)
+    while (true)
     {
         readIncremental.Reset();
         yield return readIncremental;
+        if (readIncremental.IsEos) break;
         Debug.Log($"Next chunk: {readIncremental.Text}");
     }
 
@@ -392,10 +391,11 @@ IEnumerator HandleByteStream(ByteStreamReader reader, string participantIdentity
 
     // Option 1: Process the stream incrementally
     var readIncremental = reader.ReadIncremental();
-    while (!readIncremental.IsEos)
+    while (true)
     {
         readIncremental.Reset();
         yield return readIncremental;
+        if (readIncremental.IsEos) break;
         Debug.Log($"Next chunk: {readIncremental.Bytes}");
     }
 
