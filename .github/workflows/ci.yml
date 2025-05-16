@@ -138,3 +138,43 @@ jobs:
         name: Build (${{ matrix.targetPlatform }})
         path: build/${{ matrix.targetPlatform }}
         retention-days: 1
+  build-macos:
+   env:
+      UNITY_PROJECT_PATH: Samples~/Basic
+   name: Build (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
+   runs-on: macos-latest
+   timeout-minutes: 10
+   strategy:
+      fail-fast: false
+      matrix:
+        unityVersion: [6000.1.2f1]
+        targetPlatform: [StandaloneOSX]
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v4
+       with:
+         lfs: true
+     - uses: actions/cache@v3
+       with:
+         path: ${{ env.UNITY_PROJECT_PATH }}/Library
+         key: Library-${{ env.UNITY_PROJECT_PATH }}-${{ matrix.targetPlatform }}-${{ hashFiles(env.UNITY_PROJECT_PATH) }}
+         restore-keys: |
+           Library-${{ env.UNITY_PROJECT_PATH }}-${{ matrix.targetPlatform }}-
+           Library-${{ env.UNITY_PROJECT_PATH }}-
+           Library-
+     - name: Build
+       uses: game-ci/unity-builder@v4
+       env:
+         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+       with:
+         projectPath: ${{ env.UNITY_PROJECT_PATH }}
+         unityVersion: ${{ matrix.unityVersion }}
+         targetPlatform: ${{ matrix.targetPlatform }}
+     - name: Upload Build
+       uses: actions/upload-artifact@v4
+       with:
+        name: Build (${{ matrix.targetPlatform }})
+        path: build/${{ matrix.targetPlatform }}
+        retention-days: 1
