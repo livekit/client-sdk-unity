@@ -20,6 +20,8 @@
 Use this SDK to add realtime video, audio and data features to your Unity app. By connecting to <a href="https://livekit.io/">LiveKit</a> Cloud or a self-hosted server, you can quickly build applications such as multi-modal AI, live streaming, or video calls with just a few lines of code.
 <!--END_DESCRIPTION-->
 
+[SDK Reference »](https://livekit.github.io/client-sdk-unity)
+
 ## Platform Support
 
 - [x] Windows
