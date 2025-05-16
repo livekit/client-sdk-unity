@@ -71,10 +71,12 @@ namespace LiveKit
             source.loop = true;
 
             var probe = _sourceObject.AddComponent<AudioProbe>();
+            // Clear the audio data after it is read as to not play it through the speaker locally.
+            probe.ClearAfterInvocation();
             probe.AudioRead += OnAudioRead;
 
             var waitUntilReady = new WaitUntil(() => Microphone.GetPosition(_deviceName) > 0);
-            MonoBehaviourContext.RunCoroutine(waitUntilReady, () => source.Play());
+            MonoBehaviourContext.RunCoroutine(waitUntilReady, () => source?.Play());
 
             _started = true;
         }
@@ -103,8 +105,6 @@ namespace LiveKit
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             AudioRead?.Invoke(data, channels, sampleRate);
-            // Don't play the audio locally, to avoid echo.
-            data.AsSpan().Clear();
         }
 
         private void OnApplicationPause(bool pause)
