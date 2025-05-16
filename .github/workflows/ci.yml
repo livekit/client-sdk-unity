@@ -65,7 +65,7 @@ jobs:
       UNITY_PROJECT_PATH: Samples~/Basic
    name: Build (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
    runs-on: ubuntu-latest
-   timeout-minutes: 10
+   timeout-minutes: 18
    strategy:
       fail-fast: false
       matrix:
@@ -111,7 +111,7 @@ jobs:
       UNITY_PROJECT_PATH: Samples~/Basic
    name: Build (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
    runs-on: windows-latest
-   timeout-minutes: 10
+   timeout-minutes: 18
    strategy:
       fail-fast: false
       matrix:
@@ -152,7 +152,7 @@ jobs:
       UNITY_PROJECT_PATH: Samples~/Basic
    name: Build (${{ matrix.targetPlatform }}, ${{ matrix.unityVersion }})
    runs-on: macos-latest
-   timeout-minutes: 10
+   timeout-minutes: 18
    strategy:
       fail-fast: false
       matrix:
