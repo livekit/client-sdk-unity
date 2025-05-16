@@ -68,7 +68,7 @@ jobs:
       fail-fast: false
       matrix:
         unityVersion: [6000.1.2f1]
-        targetPlatform: [iOS, Android]
+        targetPlatform: [iOS, Android, StandaloneLinux64]
    steps:
      - name: Checkout
        uses: actions/checkout@v4
