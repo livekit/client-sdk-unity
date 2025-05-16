@@ -1,4 +1,9 @@
 name: CI
+permissions:
+  contents: read
+  actions: read
+  packages: read
+  statuses: write
 on:
   push:
     branches: [main]
