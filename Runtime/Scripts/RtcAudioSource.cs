@@ -49,6 +49,7 @@ namespace LiveKit
         protected AudioSourceInfo _info;
 
         // Possibly used on the AudioThread
+        private CancellationTokenSource _cts;
         private Thread _readAudioThread;
         private ThreadSafeQueue<AudioFrame> _frameQueue = new ThreadSafeQueue<AudioFrame>();
 
@@ -86,7 +87,9 @@ namespace LiveKit
         {
             if (_started) return;
             _frameQueue.Clear();
-            _readAudioThread = new Thread(Update);
+            _cts = new CancellationTokenSource();
+            var cancellationToken = _cts.Token;
+            _readAudioThread = new Thread(() => Update(cancellationToken));
             _readAudioThread.Start();
             AudioRead += OnAudioRead;
             _started = true;
@@ -98,14 +101,15 @@ namespace LiveKit
         public virtual void Stop()
         {
             if (!_started) return;
-            _readAudioThread?.Abort();
+            _cts.Cancel();
+            _readAudioThread.Join();
             AudioRead -= OnAudioRead;
             _started = false;
         }
 
-        private void Update()
+        private void Update(CancellationToken token)
         {
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 ReadAudio();
                 Thread.Sleep(Constants.TASK_DELAY);
