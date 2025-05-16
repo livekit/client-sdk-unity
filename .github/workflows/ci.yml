@@ -64,6 +64,14 @@ jobs:
        uses: actions/checkout@v4
        with:
          lfs: true
+     - uses: actions/cache@v3
+       with:
+         path: ${{ env.UNITY_PROJECT_PATH }}/Library
+         key: Library-${{ env.UNITY_PROJECT_PATH }}-${{ matrix.targetPlatform }}-${{ hashFiles(env.UNITY_PROJECT_PATH) }}
+         restore-keys: |
+           Library-${{ env.UNITY_PROJECT_PATH }}-${{ matrix.targetPlatform }}-
+           Library-${{ env.UNITY_PROJECT_PATH }}-
+           Library-
      - name: Build
        uses: game-ci/unity-builder@v4
        env:
