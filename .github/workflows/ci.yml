@@ -59,6 +59,7 @@ jobs:
         with:
           name: Test results (${{ matrix.unityVersion }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
+  # For platforms with build support on Linux
   build-linux:
    env:
       UNITY_PROJECT_PATH: Samples~/Basic
@@ -99,6 +100,7 @@ jobs:
         name: Build (${{ matrix.targetPlatform }})
         path: build/${{ matrix.targetPlatform }}
         retention-days: 1
+  # For platforms with build support on Windows
   build-windows:
    env:
       UNITY_PROJECT_PATH: Samples~/Basic
@@ -139,6 +141,7 @@ jobs:
         name: Build (${{ matrix.targetPlatform }})
         path: build/${{ matrix.targetPlatform }}
         retention-days: 1
+  # For platforms with build support on MacOS
   build-macos:
    env:
       UNITY_PROJECT_PATH: Samples~/Basic
