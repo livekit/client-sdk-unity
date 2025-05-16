@@ -74,7 +74,7 @@ namespace LiveKit
             probe.AudioRead += OnAudioRead;
 
             var waitUntilReady = new WaitUntil(() => Microphone.GetPosition(_deviceName) > 0);
-            MonoBehaviourContext.RunCoroutine(waitUntilReady, () => source.Play());
+            MonoBehaviourContext.RunCoroutine(waitUntilReady, () => source?.Play());
 
             _started = true;
         }
