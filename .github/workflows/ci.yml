@@ -4,6 +4,7 @@ permissions:
   actions: read
   packages: read
   statuses: write
+  checks: write
 on:
   push:
     branches: [main]
