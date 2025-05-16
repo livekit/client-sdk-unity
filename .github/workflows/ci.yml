@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        unityVersion: [6000.1.2f1]
+        unityVersion: [6000.0.49f1]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -115,7 +115,7 @@ jobs:
    strategy:
       fail-fast: false
       matrix:
-        unityVersion: [6000.1.2f1]
+        unityVersion: [6000.0.49f1]
         targetPlatform: [StandaloneWindows64]
    steps:
      - name: Checkout
@@ -156,7 +156,7 @@ jobs:
    strategy:
       fail-fast: false
       matrix:
-        unityVersion: [6000.1.2f1]
+        unityVersion: [6000.0.49f1]
         targetPlatform: [StandaloneOSX]
    steps:
      - name: Checkout
