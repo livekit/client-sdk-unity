@@ -10,9 +10,9 @@
   },
   "samples": [
     {
-      "displayName": "Example",
-      "description": "LiveKit sample",
-      "path": "Samples~"
+      "displayName": "Basic",
+      "description": "Basic example of how to connect to a room",
+      "path": "Samples~/Basic"
     }
   ],
   "type": "library"
