@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace LiveKit
@@ -12,6 +13,17 @@ namespace LiveKit
         // Event is called from the Unity audio thread
         public event OnAudioDelegate AudioRead;
         private int _sampleRate;
+
+        private volatile bool _clearAfterInvocation = false;
+
+        /// <summary>
+        /// Once called, the audio data will be cleared after each invocation of
+        /// the <see cref="AudioRead"/> event.
+        /// </summary>
+        public void ClearAfterInvocation()
+        {
+            _clearAfterInvocation = true;
+        }
 
         void OnEnable()
         {
@@ -33,6 +45,7 @@ namespace LiveKit
         {
             // Called by Unity on the Audio thread
             AudioRead?.Invoke(data, channels, _sampleRate);
+            if (_clearAfterInvocation) data.AsSpan().Clear();
         }
 
         private void OnDestroy()
