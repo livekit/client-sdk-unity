@@ -94,7 +94,7 @@ namespace LiveKit
                 }
                 _previewTexture.SetPixels(flippedPixels);
 #else
-                Graphics.CopyTexture(_renderTexture, _dest);
+                Graphics.CopyTexture(_renderTexture, _captureBuffer);
 #endif
 
                 AsyncGPUReadback.RequestIntoNativeArray(ref _captureBuffer, _renderTexture, 0, _textureFormat, OnReadback);
