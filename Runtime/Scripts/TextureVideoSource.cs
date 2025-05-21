@@ -36,7 +36,7 @@ namespace LiveKit
 
         ~TextureVideoSource()
         {
-            Dispose(); 
+            Dispose();
         }
 
         // Read the texture data into a native array asynchronously
@@ -47,16 +47,16 @@ namespace LiveKit
             _reading = true;
             var textureChanged = false;
 
-            if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight()) {
+            if (_previewTexture == null || _previewTexture.width != GetWidth() || _previewTexture.height != GetHeight()) {
                 var compatibleFormat = SystemInfo.GetCompatibleFormat(Texture.graphicsFormat, FormatUsage.ReadPixels);
                 _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
                 _bufferType = GetVideoBufferType(_textureFormat);
-                _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
-                _dest = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
+                _captureBuffer = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
+                _previewTexture = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
                 textureChanged = true;
             }
-            Graphics.CopyTexture(Texture, _dest);
-            AsyncGPUReadback.RequestIntoNativeArray(ref _data, _dest, 0, _textureFormat, OnReadback);
+            Graphics.CopyTexture(Texture, _previewTexture);
+            AsyncGPUReadback.RequestIntoNativeArray(ref _captureBuffer, _previewTexture, 0, _textureFormat, OnReadback);
             return textureChanged;
         }
     }

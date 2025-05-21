@@ -7,7 +7,6 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using LiveKit.Internal.FFIClients.Requests;
 using System.Collections;
-using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
@@ -20,7 +19,6 @@ namespace LiveKit
             Camera = 2
         }
 
-        
         internal FfiHandle Handle { get; set; }
 
         public abstract int GetWidth();
@@ -32,8 +30,8 @@ namespace LiveKit
         /// Called when we receive a new texture (first texture or the resolution changed)
         public event TextureReceiveDelegate TextureReceived;
 
-        protected Texture2D _dest;
-        protected NativeArray<byte> _data;
+        protected Texture2D _previewTexture;
+        protected NativeArray<byte> _captureBuffer;
         protected VideoStreamSource _sourceType;
         protected VideoBufferType _bufferType;
         protected VideoSourceInfo _info;
@@ -126,7 +124,7 @@ namespace LiveKit
 
         public virtual void Stop()
         {
-            _playing = false; 
+            _playing = false;
         }
 
         public IEnumerator Update()
@@ -136,15 +134,10 @@ namespace LiveKit
                 yield return null;
                 var textureChanged = ReadBuffer();
 
-                if(textureChanged)
-                {
-                    TextureReceived?.Invoke(_dest);
-                }
+                if (textureChanged)
+                    TextureReceived?.Invoke(_previewTexture);
 
-                if(_muted)
-                {
-                    continue;
-                }
+                if (_muted)continue;
                 SendFrame();
             }
 
@@ -160,7 +153,8 @@ namespace LiveKit
         {
             if (!isDisposed)
             {
-                if (_dest != null) UnityEngine.Object.Destroy(_dest);
+                if (_previewTexture != null) UnityEngine.Object.Destroy(_previewTexture);
+                if (_captureBuffer.IsCreated) _captureBuffer.Dispose();
                 isDisposed = true;
             }
         }
@@ -175,7 +169,7 @@ namespace LiveKit
                 var buffer = new VideoBufferInfo();
                 unsafe
                 {
-                    buffer.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
+                    buffer.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_captureBuffer);
                 }
 
                 buffer.Type = _bufferType;
