@@ -41,7 +41,7 @@ namespace LiveKit
 
         ~CameraVideoSource()
         {
-            Dispose();
+            Dispose(false);
             ClearRenderTexture();
         }
 

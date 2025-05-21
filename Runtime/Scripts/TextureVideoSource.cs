@@ -36,7 +36,7 @@ namespace LiveKit
 
         ~TextureVideoSource()
         {
-            Dispose();
+            Dispose(false);
         }
 
         // Read the texture data into a native array asynchronously

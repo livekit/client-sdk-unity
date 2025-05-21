@@ -42,7 +42,7 @@ namespace LiveKit
 
         ~WebCameraSource()
         {
-            Dispose();
+            Dispose(false);
         }
 
         private Color32[] _readBuffer;
@@ -62,6 +62,7 @@ namespace LiveKit
                 _previewTexture.width != width ||
                 _previewTexture.height != height)
             {
+                Debug.Log("Creating new texture");
                 // Required when using Allocator.Persistent
                 if (_captureBuffer.IsCreated)
                     _captureBuffer.Dispose();

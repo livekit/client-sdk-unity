@@ -41,7 +41,7 @@ namespace LiveKit
 
         ~ScreenVideoSource()
         {
-            Dispose();
+            Dispose(false);
             ClearRenderTexture();
         }
 
