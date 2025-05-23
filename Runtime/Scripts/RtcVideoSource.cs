@@ -7,11 +7,10 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using LiveKit.Internal.FFIClients.Requests;
 using System.Collections;
-using UnityEngine.Experimental.Rendering;
 
 namespace LiveKit
 {
-    public abstract class RtcVideoSource : IRtcSource
+    public abstract class RtcVideoSource : IRtcSource, IDisposable
     {
         public enum VideoStreamSource
         {
@@ -20,7 +19,6 @@ namespace LiveKit
             Camera = 2
         }
 
-        
         internal FfiHandle Handle { get; set; }
 
         public abstract int GetWidth();
@@ -32,21 +30,20 @@ namespace LiveKit
         /// Called when we receive a new texture (first texture or the resolution changed)
         public event TextureReceiveDelegate TextureReceived;
 
-        protected Texture2D _dest;
-        protected NativeArray<byte> _data;
+        protected Texture2D _previewTexture;
+        protected NativeArray<byte> _captureBuffer;
         protected VideoStreamSource _sourceType;
         protected VideoBufferType _bufferType;
         protected VideoSourceInfo _info;
         protected bool _reading = false;
         protected bool _requestPending = false;
-        protected bool isDisposed = true;
+        protected bool _disposed = false;
         protected bool _playing = false;
         private bool _muted = false;
         public override bool Muted => _muted;
 
         internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
-            isDisposed = false;
             _sourceType = sourceType;
             _bufferType = bufferType;
             Handle = null;
@@ -126,7 +123,7 @@ namespace LiveKit
 
         public virtual void Stop()
         {
-            _playing = false; 
+            _playing = false;
         }
 
         public IEnumerator Update()
@@ -134,17 +131,13 @@ namespace LiveKit
             while (_playing)
             {
                 yield return null;
+                if (_disposed) break;
                 var textureChanged = ReadBuffer();
 
-                if(textureChanged)
-                {
-                    TextureReceived?.Invoke(_dest);
-                }
+                if (textureChanged)
+                    TextureReceived?.Invoke(_previewTexture);
 
-                if(_muted)
-                {
-                    continue;
-                }
+                if (_muted)continue;
                 SendFrame();
             }
 
@@ -156,26 +149,17 @@ namespace LiveKit
             _muted = muted;
         }
 
-        public virtual void Dispose()
-        {
-            if (!isDisposed)
-            {
-                if (_dest != null) UnityEngine.Object.Destroy(_dest);
-                isDisposed = true;
-            }
-        }
-
         protected abstract bool ReadBuffer();
 
         protected virtual bool SendFrame()
         {
-            var result = _requestPending && !isDisposed;
+            var result = _requestPending && !_disposed;
             if (result)
             {
                 var buffer = new VideoBufferInfo();
                 unsafe
                 {
-                    buffer.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
+                    buffer.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_captureBuffer);
                 }
 
                 buffer.Type = _bufferType;
@@ -209,6 +193,30 @@ namespace LiveKit
                 Utils.Error("GPU Read Back on Video Source Failed: " + req.ToString());
                 _reading = false;
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (_previewTexture != null)
+                 UnityEngine.Object.Destroy(_previewTexture);
+            if (_captureBuffer.IsCreated)
+            {
+                Debug.Log("Disposing capture buffer");
+                _captureBuffer.Dispose();
+            }
+            _disposed = true;
+        }
+
+        ~RtcVideoSource()
+        {
+            Dispose(false);
         }
     }
 }

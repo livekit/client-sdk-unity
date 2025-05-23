@@ -41,7 +41,7 @@ namespace LiveKit
 
         ~CameraVideoSource()
         {
-            Dispose();
+            Dispose(false);
             ClearRenderTexture();
         }
 
@@ -77,27 +77,27 @@ namespace LiveKit
                     _bufferType = GetVideoBufferType(_textureFormat);
                     _renderTexture = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
                     Camera.targetTexture = _renderTexture as RenderTexture;
-                    _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
-                    _dest = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
+                    _captureBuffer = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
+                    _previewTexture = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
                     textureChanged = true;
                 }
                 ScreenCapture.CaptureScreenshotIntoRenderTexture(_renderTexture);
 
 #if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
                 // Flip the texture for OSX
-                Graphics.CopyTexture(_renderTexture, _dest);
-                var pixels = _dest.GetPixels();
+                Graphics.CopyTexture(_renderTexture, _previewTexture);
+                var pixels = _previewTexture.GetPixels();
                 var flippedPixels = new Color[pixels.Length];
-                for (int i = 0; i < _dest.height; i++)
+                for (int i = 0; i < _previewTexture.height; i++)
                 {
-                    Array.Copy(pixels, i * _dest.width, flippedPixels, (_dest.height - i - 1) * _dest.width, _dest.width);
+                    Array.Copy(pixels, i * _previewTexture.width, flippedPixels, (_previewTexture.height - i - 1) * _previewTexture.width, _previewTexture.width);
                 }
-                _dest.SetPixels(flippedPixels);
+                _previewTexture.SetPixels(flippedPixels);
 #else
-                Graphics.CopyTexture(_renderTexture, _dest);
+                Graphics.CopyTexture(_renderTexture, _previewTexture);
 #endif
 
-                AsyncGPUReadback.RequestIntoNativeArray(ref _data, _renderTexture, 0, _textureFormat, OnReadback);
+                AsyncGPUReadback.RequestIntoNativeArray(ref _captureBuffer, _renderTexture, 0, _textureFormat, OnReadback);
             }
             catch (Exception e)
             {

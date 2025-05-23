@@ -1,9 +1,7 @@
 using UnityEngine;
 using LiveKit.Proto;
-using UnityEngine.Rendering;
 using Unity.Collections;
 using UnityEngine.Experimental.Rendering;
-using System;
 using System.Runtime.InteropServices;
 
 namespace LiveKit
@@ -14,21 +12,21 @@ namespace LiveKit
         TextureFormat _textureFormat;
         private RenderTexture _tempTexture;
 
-        public WebCamTexture Texture { get; }
+        public WebCamTexture CamTexture { get; }
 
         public override int GetWidth()
         {
-            return Texture.width;
+            return CamTexture.width;
         }
 
         public override int GetHeight()
         {
-            return Texture.height;
+            return CamTexture.height;
         }
 
         protected override VideoRotation GetVideoRotation()
         {
-            switch (Texture.videoRotationAngle)
+            switch (CamTexture.videoRotationAngle)
             {
                 case 90: return VideoRotation._90;
                 case 180: return VideoRotation._0;
@@ -38,52 +36,69 @@ namespace LiveKit
 
         public WebCameraSource(WebCamTexture texture, VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Texture, bufferType)
         {
-            Texture = texture;
+            CamTexture = texture;
             base.Init();
         }
 
         ~WebCameraSource()
         {
-            Dispose();
+            Dispose(false);
         }
+
+        private Color32[] _readBuffer;
 
         // Read the texture data into a native array asynchronously
         protected override bool ReadBuffer()
         {
-            if (_reading && !Texture.isPlaying)
+            if (_reading && !CamTexture.isPlaying)
                 return false;
             _reading = true;
             var textureChanged = false;
 
-            if (_dest == null || _dest.width != GetWidth() || _dest.height != GetHeight())
+            int width = GetWidth();
+            int height = GetHeight();
+
+            if (_previewTexture == null ||
+                _previewTexture.width != width ||
+                _previewTexture.height != height)
             {
-                var compatibleFormat = SystemInfo.GetCompatibleFormat(Texture.graphicsFormat, FormatUsage.ReadPixels);
+                Debug.Log("Creating new texture");
+                // Required when using Allocator.Persistent
+                if (_captureBuffer.IsCreated)
+                    _captureBuffer.Dispose();
+
+                var compatibleFormat = SystemInfo.GetCompatibleFormat(CamTexture.graphicsFormat, FormatUsage.ReadPixels);
                 _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
                 _bufferType = GetVideoBufferType(_textureFormat);
-                _data = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
-                _dest = new Texture2D(GetWidth(), GetHeight(), TextureFormat.BGRA32, false);
-                if (Texture.graphicsFormat != _dest.graphicsFormat) _tempTexture = new RenderTexture(GetWidth(), GetHeight(), 0, _dest.graphicsFormat);
+
+                _readBuffer = new Color32[width * height];
+                _previewTexture = new Texture2D(width, height, TextureFormat.BGRA32, false);
+                _captureBuffer = new NativeArray<byte>(width * height * GetStrideForBuffer(_bufferType), Allocator.Persistent);
+
+                if (CamTexture.graphicsFormat != _previewTexture.graphicsFormat)
+                    _tempTexture = new RenderTexture(width, height, 0, _previewTexture.graphicsFormat);
+
                 textureChanged = true;
             }
 
-            Color32[] pixels = new Color32[GetWidth() * GetHeight()];
-            Texture.GetPixels32(pixels);
-            var bytes = MemoryMarshal.Cast<Color32, byte>(pixels);
-            _data.CopyFrom(bytes.ToArray());
+            CamTexture.GetPixels32(_readBuffer);
+            MemoryMarshal.Cast<Color32, byte>(_readBuffer)
+                .CopyTo(_captureBuffer.AsSpan());
+
             _requestPending = true;
-            
-            if (Texture.graphicsFormat != _dest.graphicsFormat)
+
+            if (CamTexture.graphicsFormat != _previewTexture.graphicsFormat)
             {
-                Graphics.Blit(Texture, _tempTexture);
-                Graphics.CopyTexture(_tempTexture, _dest);
+                Graphics.Blit(CamTexture, _tempTexture);
+                Graphics.CopyTexture(_tempTexture, _previewTexture);
             }
             else
             {
 #if UNITY_6000_0_OR_NEWER && UNITY_IOS
-                _dest.SetPixels(Texture.GetPixels());
-                _dest.Apply();
+                _previewTexture.SetPixels(CamTexture.GetPixels());
+                _previewTexture.Apply();
 #else
-                Graphics.CopyTexture(Texture, _dest);
+                Graphics.CopyTexture(CamTexture, _previewTexture);
 #endif
             }
 
