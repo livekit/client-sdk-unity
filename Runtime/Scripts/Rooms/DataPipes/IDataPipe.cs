@@ -8,6 +8,7 @@ namespace LiveKit.Rooms.DataPipes
     public delegate void ReceivedDataDelegate(
         ReadOnlySpan<byte> data,
         Participant participant,
+        string topic,
         DataPacketKind kind
     );
 
@@ -27,6 +28,6 @@ namespace LiveKit.Rooms.DataPipes
     {
         void Assign(IParticipantsHub participants);
         
-        void Notify(ReadOnlySpan<byte> data, Participant participant, DataPacketKind kind);
+        void Notify(ReadOnlySpan<byte> data, Participant participant, string topic, DataPacketKind kind);
     }
 }

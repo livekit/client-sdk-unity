@@ -332,7 +332,7 @@ namespace LiveKit.Rooms
                         var dataInfo = dataReceivedPacket.User!.Data!;
                         using var memory = dataInfo.ReadAndDispose(memoryPool);
                         var participant = this.ParticipantEnsured(dataReceivedPacket.ParticipantIdentity!);
-                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.Kind);
+                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.User.Topic, e.DataPacketReceived.Kind);
                     }
                 }
                     break;

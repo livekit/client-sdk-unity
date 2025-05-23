@@ -55,9 +55,9 @@ namespace LiveKit.Rooms.DataPipes
             participantsHub = participants;
         }
 
-        public void Notify(ReadOnlySpan<byte> data, Participant participant, DataPacketKind kind)
+        public void Notify(ReadOnlySpan<byte> data, Participant participant, string topic, DataPacketKind kind)
         {
-            DataReceived?.Invoke(data, participant, kind);
+            DataReceived?.Invoke(data, participant, topic, kind);
         }
     }
 }
