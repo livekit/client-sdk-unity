@@ -95,7 +95,7 @@ namespace LiveKit
             else
             {
 #if UNITY_6000_0_OR_NEWER && UNITY_IOS
-                _previewTexture.SetPixels(Texture.GetPixels());
+                _previewTexture.SetPixels(CamTexture.GetPixels());
                 _previewTexture.Apply();
 #else
                 Graphics.CopyTexture(CamTexture, _previewTexture);
