@@ -18,6 +18,7 @@ namespace LiveKit
 
         private bool _disposed = false;
         private bool _started = false;
+        private bool _audioConfigurationChecked = false;
 
         /// <summary>
         /// True indicates the capture has started but is temporarily suspended
@@ -53,6 +54,15 @@ namespace LiveKit
         {
             base.Start();
             if (_started) return;
+
+            if (!_audioConfigurationChecked)
+            {
+                var audioConf = AudioSettings.GetConfiguration();
+                if (audioConf.dspBufferSize > 256)
+                    Debug.Log("LiveKit: consider setting the DSP buffer size to 'Best Latency' "+
+                    "for applications using the microphone.");
+                _audioConfigurationChecked = true;
+            }
 
             if (!Application.HasUserAuthorization(mode: UserAuthorization.Microphone))
                 throw new InvalidOperationException("Microphone access not authorized");
