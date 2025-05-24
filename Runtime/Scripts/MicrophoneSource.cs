@@ -36,6 +36,7 @@ namespace LiveKit
         {
             _deviceName = deviceName;
             _sourceObject = sourceObject;
+            MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
         }
 
         /// <summary>
@@ -104,6 +105,24 @@ namespace LiveKit
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             AudioRead?.Invoke(data, channels, sampleRate);
+        }
+
+        private void OnApplicationPause(bool pause)
+        {
+            // When the application is paused (i.e. enters the background), place
+            // the microphone capture in a suspended state. This prevents stale audio
+            // samples from being captured and sent to the server when the application
+            // is resumed.
+            if (_suspended && !pause)
+            {
+                Start();
+                _suspended = false;
+            }
+            else if (!_suspended && pause)
+            {
+                Stop();
+                _suspended = true;
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -26,6 +26,11 @@ namespace LiveKit
         }
 
         /// <summary>
+        /// Invoked when the application is paused or resumed.
+        /// </summary>
+        internal static Action<bool> OnApplicationPauseEvent;
+
+        /// <summary>
         /// Runs a coroutine from a non-MonoBehaviour context, invoking the callback when the
         /// coroutine completes.
         /// </summary>
@@ -38,6 +43,11 @@ namespace LiveKit
         {
             yield return coroutine;
             onComplete?.Invoke();
+        }
+
+        private void OnApplicationPause(bool pause)
+        {
+            OnApplicationPauseEvent?.Invoke(pause);
         }
     }
 }
