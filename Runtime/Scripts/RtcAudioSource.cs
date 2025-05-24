@@ -5,6 +5,7 @@ using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using System.Diagnostics;
 
 namespace LiveKit
 {
@@ -31,7 +32,7 @@ namespace LiveKit
         /// </remarks>
         public abstract event Action<float[], int, int> AudioRead;
 
-#if UNITY_IOS
+#if UNITY_IOS && !UNITY_EDITOR
         // iOS microphone sample rate is 24k
         public static uint DefaultMicrophoneSampleRate = 24000;
 
@@ -70,6 +71,8 @@ namespace LiveKit
             newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
                 DefaultMicrophoneSampleRate : DefaultSampleRate;
 
+            UnityEngine.Debug.Log($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
+
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;
             newAudioSource.Options.AutoGainControl = true;
@@ -103,6 +106,7 @@ namespace LiveKit
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             if (_muted) return;
+            UnityEngine.Debug.Log($"OnAudioRead: {data.Length} {channels} {sampleRate}");
 
             // The length of the data buffer corresponds to the DSP buffer size.
             if (_frameData.Length != data.Length)
@@ -132,7 +136,8 @@ namespace LiveKit
             pushFrame.Buffer = audioFrameBufferInfo;
             unsafe
             {
-                 pushFrame.Buffer.DataPtr = (ulong)NativeArrayUnsafeUtility.GetUnsafePtr(_frameData);
+                 pushFrame.Buffer.DataPtr = (ulong)NativeArrayUnsafeUtility
+                    .GetUnsafePtr(_frameData);
             }
             pushFrame.Buffer.NumChannels = (uint)channels;
             pushFrame.Buffer.SampleRate = (uint)sampleRate;
