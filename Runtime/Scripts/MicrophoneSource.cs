@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace LiveKit
@@ -20,12 +21,6 @@ namespace LiveKit
         private bool _started = false;
 
         /// <summary>
-        /// True indicates the capture has started but is temporarily suspended
-        /// due to the application entering the background.
-        /// </summary>
-        private bool _suspended = false;
-
-        /// <summary>
         /// Creates a new microphone source for the given device.
         /// </summary>
         /// <param name="deviceName">The name of the device to capture from. Use <see cref="Microphone.devices"/> to
@@ -36,7 +31,6 @@ namespace LiveKit
         {
             _deviceName = deviceName;
             _sourceObject = sourceObject;
-            MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
         }
 
         /// <summary>
@@ -54,10 +48,19 @@ namespace LiveKit
             base.Start();
             if (_started) return;
 
+
             if (!Application.HasUserAuthorization(mode: UserAuthorization.Microphone))
                 throw new InvalidOperationException("Microphone access not authorized");
 
-            var clip = Microphone.Start(
+            MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
+            MonoBehaviourContext.RunCoroutine(StartMicrophone());
+
+            _started = true;
+        }
+
+        private IEnumerator StartMicrophone()
+        {
+             var clip = Microphone.Start(
                 _deviceName,
                 loop: true,
                 lengthSec: 1,
@@ -76,9 +79,8 @@ namespace LiveKit
             probe.AudioRead += OnAudioRead;
 
             var waitUntilReady = new WaitUntil(() => Microphone.GetPosition(_deviceName) > 0);
-            MonoBehaviourContext.RunCoroutine(waitUntilReady, () => source?.Play());
-
-            _started = true;
+            yield return waitUntilReady;
+            source.Play();
         }
 
         /// <summary>
@@ -87,8 +89,13 @@ namespace LiveKit
         public override void Stop()
         {
             base.Stop();
-            if (!_started) return;
+            MonoBehaviourContext.RunCoroutine(StopMicrophone());
+            MonoBehaviourContext.OnApplicationPauseEvent -= OnApplicationPause;
+            _started = false;
+        }
 
+        private IEnumerator StopMicrophone()
+        {
             if (Microphone.IsRecording(_deviceName))
                 Microphone.End(_deviceName);
 
@@ -98,8 +105,7 @@ namespace LiveKit
 
             var source = _sourceObject.GetComponent<AudioSource>();
             UnityEngine.Object.Destroy(source);
-
-            _started = false;
+            yield return null;
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
@@ -109,20 +115,14 @@ namespace LiveKit
 
         private void OnApplicationPause(bool pause)
         {
-            // When the application is paused (i.e. enters the background), place
-            // the microphone capture in a suspended state. This prevents stale audio
-            // samples from being captured and sent to the server when the application
-            // is resumed.
-            if (_suspended && !pause)
-            {
-                Start();
-                _suspended = false;
-            }
-            else if (!_suspended && pause)
-            {
-                Stop();
-                _suspended = true;
-            }
+            if (!pause && _started)
+                MonoBehaviourContext.RunCoroutine(RestartMicrophone());
+        }
+
+        private IEnumerator RestartMicrophone()
+        {
+            yield return StopMicrophone();
+            yield return StartMicrophone();
         }
 
         protected override void Dispose(bool disposing)

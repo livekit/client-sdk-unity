@@ -106,7 +106,6 @@ namespace LiveKit
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             if (_muted) return;
-            UnityEngine.Debug.Log($"OnAudioRead: {data.Length} {channels} {sampleRate}");
 
             // The length of the data buffer corresponds to the DSP buffer size.
             if (_frameData.Length != data.Length)
