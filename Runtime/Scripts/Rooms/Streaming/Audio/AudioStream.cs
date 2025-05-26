@@ -14,7 +14,7 @@ namespace LiveKit.Rooms.Streaming.Audio
         private readonly FfiHandle handle;
         private readonly AudioStreamInfo info;
 
-        private AudioFilter _audioFilter;
+        private IAudioFilter _audioFilter;
         private Mutex<RingBuffer>? _buffer;
         private short[] _tempBuffer;
         private uint _numChannels = 0;

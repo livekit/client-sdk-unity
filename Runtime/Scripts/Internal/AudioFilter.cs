@@ -3,12 +3,16 @@ using UnityEngine;
 namespace LiveKit
 {
     // from https://github.com/Unity-Technologies/com.unity.webrtc
-    public class AudioFilter : MonoBehaviour
+    public class AudioFilter : MonoBehaviour, IAudioFilter
     {
-        public delegate void OnAudioDelegate(float[] data, int channels, int sampleRate);
         // Event is called from the Unity audio thread
-        public event OnAudioDelegate AudioRead;
+        public event IAudioFilter.OnAudioDelegate AudioRead;
         private int _sampleRate;
+
+        /// <summary>
+        /// Gets whether this audio filter is valid and can be used
+        /// </summary>
+        public bool IsValid => this != null;
 
         void OnEnable()
         {

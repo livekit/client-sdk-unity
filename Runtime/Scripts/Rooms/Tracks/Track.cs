@@ -15,7 +15,7 @@ namespace LiveKit.Rooms.Tracks
         TrackKind Kind { get; }
         StreamState StreamState { get; }
         bool Muted { get; }
-        WeakReference<Room> Room { get; }
+        WeakReference<IRoom> Room { get; }
         WeakReference<Participant> Participant { get; }
         FfiHandle? Handle { get; }
         
@@ -36,14 +36,13 @@ namespace LiveKit.Rooms.Tracks
         // IsOwned is true if C# owns the handle
         public bool IsOwned => Handle is { IsInvalid: false };
 
-
-        public WeakReference<Room> Room { get; private set; }
+        public WeakReference<IRoom> Room { get; private set; }
         public WeakReference<Participant> Participant { get; private set;}
         public FfiHandle? Handle { get; private set; }
 
-        public void Construct(FfiHandle? handle, TrackInfo info, Room room, Participant participant)
+        public void Construct(FfiHandle? handle, TrackInfo info, IRoom room, Participant participant)
         {
-            Room = new WeakReference<Room>(room);
+            Room = new WeakReference<IRoom>(room);
             Participant = new WeakReference<Participant>(participant);
             Handle = handle;
             this.info = info;

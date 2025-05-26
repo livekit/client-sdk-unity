@@ -27,12 +27,9 @@ namespace LiveKit.Rooms
     {
         public delegate void MetaDelegate(string metaData);
 
-
         public delegate void SidDelegate(string sid);
 
-
         public delegate void RemoteParticipantDelegate(Participant participant);
-
 
         private readonly IMemoryPool memoryPool;
         private readonly IMutableActiveSpeakers activeSpeakers;
@@ -45,6 +42,7 @@ namespace LiveKit.Rooms
         private readonly IMutableRoomInfo roomInfo;
         private readonly IVideoStreams videoStreams;
         private readonly IAudioStreams audioStreams;
+        private readonly IAudioTracks audioTracks;
 
         public IActiveSpeakers ActiveSpeakers => activeSpeakers;
 
@@ -55,6 +53,8 @@ namespace LiveKit.Rooms
         public IVideoStreams VideoStreams => videoStreams;
 
         public IAudioStreams AudioStreams => audioStreams;
+
+        public IAudioTracks AudioTracks => audioTracks;
 
         public IRoomInfo Info => roomInfo;
 
@@ -78,17 +78,18 @@ namespace LiveKit.Rooms
             new ArrayMemoryPool(ArrayPool<byte>.Shared!),
             new DefaultActiveSpeakers(),
             new ParticipantsHub().Capture(out var capturedHub),
-            new TracksFactory(),
+            new TracksFactory().Capture(out var tracksFactory),
             IFfiHandleFactory.Default,
             IParticipantFactory.Default,
             ITrackPublicationFactory.Default,
             new DataPipe(),
             new MemoryRoomInfo(),
             new VideoStreams(capturedHub),
-            new AudioStreams(capturedHub, new IAudioRemixConveyor.SameThreadAudioRemixConveyor())
-        )
-        {
-        }
+            new AudioStreams(capturedHub,
+            new IAudioRemixConveyor.SameThreadAudioRemixConveyor()),
+            null! // AudioTracks will be created after Room construction
+            )
+        { }
 
         public Room(
             IMemoryPool memoryPool,
@@ -101,7 +102,8 @@ namespace LiveKit.Rooms
             IMutableDataPipe dataPipe,
             IMutableRoomInfo roomInfo,
             IVideoStreams videoStreams,
-            IAudioStreams audioStreams
+            IAudioStreams audioStreams,
+            IAudioTracks audioTracks
         )
         {
             this.memoryPool = memoryPool;
@@ -115,6 +117,7 @@ namespace LiveKit.Rooms
             this.roomInfo = roomInfo;
             this.videoStreams = videoStreams;
             this.audioStreams = audioStreams;
+            this.audioTracks = audioTracks ?? new AudioTracks(tracksFactory, this);
             dataPipe.Assign(participantsHub);
         }
 
@@ -164,6 +167,7 @@ namespace LiveKit.Rooms
             await instruction.AwaitWithSuccess();
             ffiHandleFactory.Release(Handle);
         }
+
 
         private void OnEventReceived(RoomEvent e)
         {
@@ -422,7 +426,6 @@ namespace LiveKit.Rooms
 
     internal static class Extensions
     {
-
         //Captures value to reuse it withing the scope
         public static T Capture<T>(this T value, out T captured)
         {

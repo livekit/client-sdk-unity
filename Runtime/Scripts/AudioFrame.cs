@@ -8,50 +8,45 @@ using System.Runtime.InteropServices;
 
 namespace LiveKit
 {
-    public class AudioFrame : IDisposable
+    public readonly struct AudioFrame : IDisposable
     {
-        private bool _disposed = false;
+        public readonly uint NumChannels;
+        public readonly uint SampleRate;
+        public readonly uint SamplesPerChannel;
 
-        private uint _numChannels;
-        public uint NumChannels => _numChannels;
-        private uint _sampleRate;
-        public uint SampleRate => _sampleRate;
-        private uint _samplesPerChannel;
-        public uint SamplesPerChannel => _samplesPerChannel;
-
-        private IntPtr _dataPtr;
+        private readonly NativeArray<byte> _data;
+        private readonly IntPtr _dataPtr;
+        
         public IntPtr Data => _dataPtr;
         public int Length => (int)(SamplesPerChannel * NumChannels * sizeof(short));
+        public bool IsValid => _data.IsCreated;
 
         internal AudioFrame(uint sampleRate, uint numChannels, uint samplesPerChannel)
         {
-            _sampleRate = sampleRate;
-            _numChannels = numChannels;
-            _samplesPerChannel = samplesPerChannel;
+            SampleRate = sampleRate;
+            NumChannels = numChannels;
+            SamplesPerChannel = samplesPerChannel;
 
-             unsafe
+            unsafe
             {
-                var data = new NativeArray<byte>(Length, Allocator.Persistent);
-                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(data);
+                _data = new NativeArray<byte>((int)(samplesPerChannel * numChannels * sizeof(short)), Allocator.Persistent);
+                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(_data);
             }
-        }
-
-        ~AudioFrame()
-        {
-            Dispose(false);
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (_data.IsCreated)
+            {
+                _data.Dispose();
+            }
         }
 
-        protected virtual void Dispose(bool disposing)
+        public Span<byte> AsSpan()
         {
-            if (!_disposed)
+            unsafe
             {
-                _disposed = true;
+                return new Span<byte>(_dataPtr.ToPointer(), Length);
             }
         }
     }
