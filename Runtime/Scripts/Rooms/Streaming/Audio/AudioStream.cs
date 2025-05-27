@@ -44,7 +44,6 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             disposed = true;
 
-            audioStreams.Release(this);
             handle.Dispose();
             if (_buffer != null)
             {
@@ -53,6 +52,7 @@ namespace LiveKit.Rooms.Streaming.Audio
             }
 
             FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
+            audioStreams.Release(this);
         }
 
         public void ReadAudio(float[] data, int channels, int sampleRate)

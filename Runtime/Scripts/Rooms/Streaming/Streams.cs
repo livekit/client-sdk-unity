@@ -92,7 +92,7 @@ namespace LiveKit.Rooms.Streaming
         {
             lock (this)
             {
-                foreach (var videoStream in streams.Values) videoStream.Dispose();
+                foreach (var stream in streams.Values) stream.Dispose();
                 streams.Clear();
                 reverseLookup.Clear();
             }
