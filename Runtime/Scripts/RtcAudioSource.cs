@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using System.Threading;
 using LiveKit.Internal.FFIClients.Requests;
-using UnityEngine;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
+using System.Diagnostics;
 
 namespace LiveKit
 {
@@ -31,7 +32,7 @@ namespace LiveKit
         /// </remarks>
         public abstract event Action<float[], int, int> AudioRead;
 
-#if UNITY_IOS
+#if UNITY_IOS && !UNITY_EDITOR
         // iOS microphone sample rate is 24k
         public static uint DefaultMicrophoneSampleRate = 24000;
 
@@ -48,10 +49,10 @@ namespace LiveKit
         internal readonly FfiHandle Handle;
         protected AudioSourceInfo _info;
 
-        // Possibly used on the AudioThread
-        private CancellationTokenSource _cts;
-        private Thread _readAudioThread;
-        private ThreadSafeQueue<AudioFrame> _frameQueue = new ThreadSafeQueue<AudioFrame>();
+        /// <summary>
+        /// Temporary frame buffer for invoking the FFI capture method.
+        /// </summary>
+        private NativeArray<short> _frameData;
 
         private bool _muted = false;
         public override bool Muted => _muted;
@@ -70,6 +71,8 @@ namespace LiveKit
             newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
                 DefaultMicrophoneSampleRate : DefaultSampleRate;
 
+            UnityEngine.Debug.Log($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
+
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;
             newAudioSource.Options.AutoGainControl = true;
@@ -86,11 +89,6 @@ namespace LiveKit
         public virtual void Start()
         {
             if (_started) return;
-            _frameQueue.Clear();
-            _cts = new CancellationTokenSource();
-            var cancellationToken = _cts.Token;
-            _readAudioThread = new Thread(() => Update(cancellationToken));
-            _readAudioThread.Start();
             AudioRead += OnAudioRead;
             _started = true;
         }
@@ -101,26 +99,23 @@ namespace LiveKit
         public virtual void Stop()
         {
             if (!_started) return;
-            _cts.Cancel();
-            _readAudioThread.Join();
             AudioRead -= OnAudioRead;
             _started = false;
         }
 
-        private void Update(CancellationToken token)
-        {
-            while (!token.IsCancellationRequested)
-            {
-                ReadAudio();
-                Thread.Sleep(Constants.TASK_DELAY);
-            }
-        }
-
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
-            var samplesPerChannel = data.Length / channels;
-            var frame = new AudioFrame((uint)sampleRate, (uint)channels, (uint)samplesPerChannel);
+            if (_muted) return;
 
+            // The length of the data buffer corresponds to the DSP buffer size.
+            if (_frameData.Length != data.Length)
+            {
+                if (_frameData.IsCreated) _frameData.Dispose();
+                 _frameData = new NativeArray<short>(data.Length, Allocator.Persistent);
+            }
+
+            // Copy from the audio read buffer into the frame buffer, converting
+            // each sample to a 16-bit signed integer.
             static short FloatToS16(float v)
             {
                 v *= 32768f;
@@ -128,51 +123,38 @@ namespace LiveKit
                 v = Math.Max(v, -32768f);
                 return (short)(v + Math.Sign(v) * 0.5f);
             }
+            for (int i = 0; i < data.Length; i++)
+                _frameData[i] = FloatToS16(data[i]);
+
+            // Capture the frame.
+            using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
+            using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
+
+            var pushFrame = request.request;
+            pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
+            pushFrame.Buffer = audioFrameBufferInfo;
             unsafe
             {
-                var frameData = new Span<short>(frame.Data.ToPointer(), frame.Length / sizeof(short));
-                for (int i = 0; i < data.Length; i++)
-                {
-                    frameData[i] = FloatToS16(data[i]);
-                }
+                 pushFrame.Buffer.DataPtr = (ulong)NativeArrayUnsafeUtility
+                    .GetUnsafePtr(_frameData);
             }
-            _frameQueue.Enqueue(frame);
-        }
+            pushFrame.Buffer.NumChannels = (uint)channels;
+            pushFrame.Buffer.SampleRate = (uint)sampleRate;
+            pushFrame.Buffer.SamplesPerChannel = (uint)data.Length / (uint)channels;
 
-        private void ReadAudio()
-        {
-            while (_frameQueue.Count > 0)
+            using var response = request.Send();
+            FfiResponse res = response;
+
+            // Wait for async callback, log an error if the capture fails.
+            var asyncId = res.CaptureAudioFrame.AsyncId;
+            void Callback(CaptureAudioFrameCallback callback)
             {
-                try
-                {
-                    AudioFrame frame = _frameQueue.Dequeue();
-
-                    if(_muted)
-                    {
-                        continue;
-                    }
-                    unsafe
-                    {
-                        using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
-                        using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
-
-                        var pushFrame = request.request;
-                        pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
-
-                        pushFrame.Buffer = audioFrameBufferInfo;
-                        pushFrame.Buffer.DataPtr = (ulong)frame.Data;
-                        pushFrame.Buffer.NumChannels = frame.NumChannels;
-                        pushFrame.Buffer.SampleRate = frame.SampleRate;
-                        pushFrame.Buffer.SamplesPerChannel = frame.SamplesPerChannel;
-
-                        using var response = request.Send();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utils.Error("Audio Framedata error: " + e.Message);
-                }
+                if (callback.AsyncId != asyncId) return;
+                if (callback.HasError)
+                    Utils.Error($"Audio capture failed: {callback.Error}");
+                FfiClient.Instance.CaptureAudioFrameReceived -= Callback;
             }
+            FfiClient.Instance.CaptureAudioFrameReceived += Callback;
         }
 
         /// <summary>
@@ -195,6 +177,7 @@ namespace LiveKit
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed && disposing) Stop();
+            if (_frameData.IsCreated) _frameData.Dispose();
             _disposed = true;
         }
 

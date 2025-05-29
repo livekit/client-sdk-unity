@@ -2,7 +2,6 @@ using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace LiveKit
 {
@@ -39,16 +38,6 @@ namespace LiveKit
             _dataPtr = (IntPtr)_info.DataPtr;
         }
 
-        internal AudioFrame(uint sampleRate, uint numChannels, uint samplesPerChannel) {
-            _sampleRate = sampleRate;
-            _numChannels = numChannels;
-            _samplesPerChannel = samplesPerChannel;
-            unsafe
-            {
-                _allocatedData = new NativeArray<byte>(Length, Allocator.Persistent);
-                _dataPtr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(_allocatedData);
-            }
-        }
         ~AudioFrame()
         {
             Dispose(false);
