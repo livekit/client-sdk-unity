@@ -66,9 +66,12 @@ namespace LiveKit
             if (audioFilter?.IsValid == true) audioFilter.AudioRead -= OnAudioRead;
             if (audioSource) audioSource.Stop();
 
-            using var guard = buffer.Lock();
-            guard.Value.Dispose();
-            if (frame.IsValid) frame.Dispose();
+            lock (lockObject)
+            {
+                using var guard = buffer.Lock();
+                guard.Value.Dispose();
+                if (frame.IsValid) frame.Dispose();
+            }
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)

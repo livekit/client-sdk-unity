@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace LiveKit
 {
-    public readonly struct AudioFrame : IDisposable
+    public struct AudioFrame : IDisposable
     {
         public readonly uint NumChannels;
         public readonly uint SampleRate;
@@ -16,16 +16,18 @@ namespace LiveKit
 
         private readonly NativeArray<byte> _data;
         private readonly IntPtr _dataPtr;
+        private bool _disposed;
         
         public IntPtr Data => _dataPtr;
         public int Length => (int)(SamplesPerChannel * NumChannels * sizeof(short));
-        public bool IsValid => _data.IsCreated;
+        public bool IsValid => _data.IsCreated && !_disposed;
 
         internal AudioFrame(uint sampleRate, uint numChannels, uint samplesPerChannel)
         {
             SampleRate = sampleRate;
             NumChannels = numChannels;
             SamplesPerChannel = samplesPerChannel;
+            _disposed = false;
 
             unsafe
             {
@@ -36,14 +38,21 @@ namespace LiveKit
 
         public void Dispose()
         {
-            if (_data.IsCreated)
+            if (!_disposed && _data.IsCreated)
             {
                 _data.Dispose();
+                _disposed = true;
             }
         }
 
         public Span<byte> AsSpan()
         {
+            if (_disposed)
+            {
+                Utils.Debug("Attempted to access disposed AudioFrame");
+                return Span<byte>.Empty;
+            }
+            
             unsafe
             {
                 return new Span<byte>(_dataPtr.ToPointer(), Length);
