@@ -22,6 +22,8 @@ def main():
             archs = [ 'armv7', 'arm64', 'x86_64']
         elif platform == 'ios':
             archs = ['arm64', 'sim-arm64']
+        elif platform == 'linux':
+            archs = ['x86_64']
 
         for arch in archs:
             filename = 'ffi-' + platform + '-' + arch + '.zip'
