@@ -118,7 +118,7 @@ namespace LiveKit.Internal
 
             try
             {
-                NativeMethods.LiveKitInitialize(FFICallback, captureLogs);
+                NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", ""); // TODO: Get SDK version
             }
             catch (DllNotFoundException)
             {
@@ -182,15 +182,13 @@ namespace LiveKit.Internal
                     var data = memory.Span();
                     request.WriteTo(data);
 
-                    var dataInLen = new UIntPtr((ulong)data.Length);
-
                     fixed (byte* requestDataPtr = data)
                     {
                         var handle = NativeMethods.FfiNewRequest(
                             requestDataPtr,
-                            dataInLen,
+                            data.Length,
                             out byte* dataPtr,
-                            out var dataLen
+                            out UIntPtr dataLen
                         );
 
                         var dataSpan = new Span<byte>(dataPtr, (int)dataLen.ToUInt32());
@@ -276,6 +274,76 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.Panic:
                         Debug.LogError($"Panic received from FFI: {response.Panic?.Message}");
                         break;
+                    case FfiEvent.MessageOneofCase.None:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.Dispose:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.GetSessionStats:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.PublishSipDtmf:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ChatMessage:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.PerformRpc:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.RpcMethodInvocation:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.SendStreamHeader:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.SendStreamChunk:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.SendStreamTrailer:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamReaderReadAll:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamReaderWriteToFile:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamOpen:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamWriterWrite:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.ByteStreamWriterClose:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.SendFile:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamReaderReadAll:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamOpen:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamWriterWrite:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.TextStreamWriterClose:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case FfiEvent.MessageOneofCase.SendText:
+                        // NOT supported yet after ffi plugin update
+                        break;
+                    case null: break;
                     default:
                         throw new ArgumentOutOfRangeException(
                             $"Unknown message type: {response?.MessageCase.ToString() ?? "null"}");
@@ -318,6 +386,44 @@ namespace LiveKit.Internal
                 FfiResponse.MessageOneofCase.NewAudioResampler => 0,
                 FfiResponse.MessageOneofCase.RemixAndResample => 0,
                 FfiResponse.MessageOneofCase.E2Ee => 0,
+                FfiResponse.MessageOneofCase.LocalTrackMute => 0,
+                FfiResponse.MessageOneofCase.EnableRemoteTrack => 0,
+                FfiResponse.MessageOneofCase.SetTrackSubscriptionPermissions => 0,
+                FfiResponse.MessageOneofCase.VideoStreamFromParticipant => 0,
+                FfiResponse.MessageOneofCase.ClearAudioBuffer => 0,
+                FfiResponse.MessageOneofCase.AudioStreamFromParticipant => 0,
+                FfiResponse.MessageOneofCase.NewSoxResampler => 0,
+                FfiResponse.MessageOneofCase.PushSoxResampler => 0,
+                FfiResponse.MessageOneofCase.FlushSoxResampler => 0,
+                FfiResponse.MessageOneofCase.SendChatMessage => response.SendChatMessage.AsyncId,
+                FfiResponse.MessageOneofCase.PerformRpc => response.PerformRpc.AsyncId,
+                FfiResponse.MessageOneofCase.RegisterRpcMethod => 0,
+                FfiResponse.MessageOneofCase.UnregisterRpcMethod => 0,
+                FfiResponse.MessageOneofCase.RpcMethodInvocationResponse => 0,
+                FfiResponse.MessageOneofCase.EnableRemoteTrackPublication => 0,
+                FfiResponse.MessageOneofCase.UpdateRemoteTrackPublicationDimension => 0,
+                FfiResponse.MessageOneofCase.SendStreamHeader => response.SendStreamHeader.AsyncId,
+                FfiResponse.MessageOneofCase.SendStreamChunk => response.SendStreamChunk.AsyncId,
+                FfiResponse.MessageOneofCase.SendStreamTrailer => response.SendStreamTrailer.AsyncId,
+                FfiResponse.MessageOneofCase.SetDataChannelBufferedAmountLowThreshold => 0,
+                FfiResponse.MessageOneofCase.LoadAudioFilterPlugin => 0,
+                FfiResponse.MessageOneofCase.NewApm => 0,
+                FfiResponse.MessageOneofCase.ApmProcessStream => 0,
+                FfiResponse.MessageOneofCase.ApmProcessReverseStream => 0,
+                FfiResponse.MessageOneofCase.ApmSetStreamDelay => 0,
+                FfiResponse.MessageOneofCase.ByteReadIncremental => 0,
+                FfiResponse.MessageOneofCase.ByteReadAll => response.ByteReadAll.AsyncId,
+                FfiResponse.MessageOneofCase.ByteWriteToFile => response.ByteWriteToFile.AsyncId,
+                FfiResponse.MessageOneofCase.TextReadIncremental => 0,
+                FfiResponse.MessageOneofCase.TextReadAll => response.TextReadAll.AsyncId,
+                FfiResponse.MessageOneofCase.SendFile => response.SendFile.AsyncId,
+                FfiResponse.MessageOneofCase.SendText => response.SendText.AsyncId,
+                FfiResponse.MessageOneofCase.ByteStreamOpen => response.ByteStreamOpen.AsyncId,
+                FfiResponse.MessageOneofCase.ByteStreamWrite => response.ByteStreamWrite.AsyncId,
+                FfiResponse.MessageOneofCase.ByteStreamClose => response.ByteStreamClose.AsyncId,
+                FfiResponse.MessageOneofCase.TextStreamOpen => response.TextStreamOpen.AsyncId,
+                FfiResponse.MessageOneofCase.TextStreamWrite => response.TextStreamWrite.AsyncId,
+                FfiResponse.MessageOneofCase.TextStreamClose => response.TextStreamClose.AsyncId,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

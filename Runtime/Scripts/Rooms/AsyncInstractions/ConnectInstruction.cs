@@ -30,7 +30,7 @@ namespace LiveKit.Rooms.AsyncInstractions
             bool success = string.IsNullOrEmpty(e.Error);
             Utils.Debug("Connection success: " + success);
             if (success)
-                _room.OnConnect(e.Room.Handle, e.Room.Info, e.LocalParticipant, e.Participants);
+                _room.OnConnect(e.Result.Room.Handle, e.Result.Room.Info, e.Result.LocalParticipant, e.Result.Participants);
 
             IsError = !success;
             IsDone = true;
