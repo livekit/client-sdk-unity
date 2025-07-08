@@ -15,7 +15,7 @@ namespace LiveKit.Rooms.Tracks
             this.room = room;
         }
 
-        public ITrack CreateAudioTrack(string name, RtcAudioSource source) =>
+        public ITrack CreateAudioTrack(string name, IRtcAudioSource source) =>
             tracksFactory.NewAudioTrack(name, source, room);
     }
 } 

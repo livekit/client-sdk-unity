@@ -6,7 +6,7 @@ namespace LiveKit.Rooms.Tracks.Factory
 {
     public interface ITracksFactory
     {
-        ITrack NewAudioTrack(string name, RtcAudioSource source, IRoom room);
+        ITrack NewAudioTrack(string name, IRtcAudioSource source, IRoom room);
 
         ITrack NewVideoTrack(string name, RtcVideoSource source, Room room);
 

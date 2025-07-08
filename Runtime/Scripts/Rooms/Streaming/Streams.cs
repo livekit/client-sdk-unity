@@ -39,6 +39,7 @@ namespace LiveKit.Rooms.Streaming
         private readonly IParticipantsHub participantsHub;
         private readonly Dictionary<Key, T> streams = new();
         private readonly Dictionary<T, Key> reverseLookup = new();
+        private bool isDisposing = false;
 
         public Streams(IParticipantsHub participantsHub, TrackKind requiredKind)
         {
@@ -54,9 +55,13 @@ namespace LiveKit.Rooms.Streaming
                 if (streams.TryGetValue(key, out var stream) == false)
                 {
                     var participant = participantsHub.RemoteParticipant(identity);
+                    
                     if (participant == null)
-                        return null;
-
+                        if (identity == participantsHub.LocalParticipant().Identity)
+                            participant = participantsHub.LocalParticipant();
+                        else
+                            return null;        
+                    
                     if (participant.Tracks.TryGetValue(sid, out var trackPublication) == false)
                         return null;
 
@@ -73,14 +78,16 @@ namespace LiveKit.Rooms.Streaming
             }
         }
 
-        public bool Release(T videoStream)
+        public bool Release(T stream)
         {
             lock (this)
             {
-                if (reverseLookup.TryGetValue(videoStream, out var key))
+                if (isDisposing) return false;
+                
+                if (reverseLookup.TryGetValue(stream, out var key))
                 {
                     streams.Remove(key);
-                    reverseLookup.Remove(videoStream);
+                    reverseLookup.Remove(stream);
                     return true;
                 }
 
@@ -92,9 +99,11 @@ namespace LiveKit.Rooms.Streaming
         {
             lock (this)
             {
+                isDisposing = true;
                 foreach (var stream in streams.Values) stream.Dispose();
                 streams.Clear();
                 reverseLookup.Clear();
+                isDisposing = false;
             }
         }
 

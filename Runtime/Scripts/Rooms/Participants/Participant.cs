@@ -126,7 +126,7 @@ namespace LiveKit.Rooms.Participants
             publish.Options = options;
             using var response = request.Send();
             FfiResponse res = response;
-            return new PublishTrackInstruction(res.PublishTrack.AsyncId, Room, token);
+            return new PublishTrackInstruction(res.PublishTrack.AsyncId, Room, localTrack, token);
         }
 
         public void UnpublishTrack(
@@ -143,7 +143,7 @@ namespace LiveKit.Rooms.Participants
             publish.StopOnUnpublish = stopOnUnpublish;
             using var response = request.Send();
             FfiResponse res = response;
-            Debug.LogError("UnpublishTrack Response:: " + res);
+            Utils.Debug("UnpublishTrack Response:: " + res);
         }
     }
 }

@@ -20,12 +20,12 @@ namespace LiveKit.Rooms.Tracks.Factory
             this.trackPool = trackPool;
         }
 
-        public ITrack NewAudioTrack(string name, RtcAudioSource source, IRoom room)
+        public ITrack NewAudioTrack(string name, IRtcAudioSource source, IRoom room)
         {
             using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
             var createTrack = request.request;
             createTrack.Name = name;
-            createTrack.SourceHandle = (ulong)source.handle.DangerousGetHandle();
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
             using var response = request.Send();
             return CreateTrack(response, room, true);
         }

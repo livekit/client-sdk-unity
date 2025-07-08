@@ -14,8 +14,8 @@ namespace LiveKit.Rooms.Streaming.Audio
         private readonly FfiHandle handle;
         private readonly AudioStreamInfo info;
 
-        private IAudioFilter _audioFilter;
         private Mutex<RingBuffer>? _buffer;
+        private int _bufferSize = 0; // Track current buffer size in samples
         private short[] _tempBuffer;
         private uint _numChannels = 0;
         private uint _sampleRate;
@@ -55,41 +55,49 @@ namespace LiveKit.Rooms.Streaming.Audio
             audioStreams.Release(this);
         }
 
-        public void ReadAudio(float[] data, int channels, int sampleRate)
+        public void ReadAudio(Span<float> data, int channels, int sampleRate)
         {
             lock (_lock)
             {
-                if (channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
+                int requiredSize = (int)(channels * sampleRate * 0.2); // 200 ms buffer
+
+                // Only reallocate RingBuffer if needed
+                if (_buffer == null || _bufferSize < requiredSize * sizeof(short))
                 {
-                    int size = (int)(channels * sampleRate * 0.2); //0.2 stands for 200 ms
                     if (_buffer != null)
                     {
                         using var guard = _buffer.Lock();
                         guard.Value.Dispose();
                     }
-
-                    _buffer = new Mutex<RingBuffer>(new RingBuffer(size * sizeof(short)));
-
-                    _tempBuffer = new short[data.Length]; //todo avoid allocation of this buffer
-                    _numChannels = (uint)channels;
-                    _sampleRate = (uint)sampleRate;
+                    _buffer = new Mutex<RingBuffer>(new RingBuffer(requiredSize * sizeof(short)));
+                    _bufferSize = requiredSize * sizeof(short);
                 }
+
+                // Only reallocate _tempBuffer if needed
+                if (_tempBuffer == null || _tempBuffer.Length < data.Length)
+                {
+                    _tempBuffer = new short[data.Length];
+                }
+
+                _numChannels = (uint)channels;
+                _sampleRate = (uint)sampleRate;
 
                 static float S16ToFloat(short v)
                 {
                     return v / 32768f;
                 }
 
-                // "Send" the data to Unity
-                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, data.Length));
-
+                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan(0, data.Length));
                 {
                     using var guard = _buffer!.Lock();
                     int read = guard.Value.Read(temp);
                 }
 
-                Array.Clear(data, 0, data.Length);
-                for (int i = 0; i < data.Length; i++) data[i] = S16ToFloat(_tempBuffer[i]);
+                data.Clear();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    data[i] = S16ToFloat(_tempBuffer[i]);
+                }
             }
         }
 
@@ -106,7 +114,7 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             if (_buffer == null)
             {
-                Debug.LogError("Invalid case, buffer is not set yet");
+                Utils.Error("Invalid case, buffer is not set yet");
                 // prevent leak
                 var tempHandle = IFfiHandleFactory.Default.NewFfiHandle(e.FrameReceived.Frame.Handle.Id);
                 tempHandle.Dispose();

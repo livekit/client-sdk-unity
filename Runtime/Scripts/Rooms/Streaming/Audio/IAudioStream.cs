@@ -8,6 +8,6 @@ namespace LiveKit.Rooms.Streaming.Audio
         /// Supposed to be called from Unity's audio thread.
         /// </summary>
         /// <returns>buffer filled - true or false.</returns>
-        void ReadAudio(float[] data, int channels, int sampleRate);
+        void ReadAudio(Span<float> data, int channels, int sampleRate);
     }
 }

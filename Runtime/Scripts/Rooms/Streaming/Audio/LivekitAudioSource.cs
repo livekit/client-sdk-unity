@@ -67,7 +67,7 @@ namespace LiveKit.Rooms.Streaming.Audio
         {
             if (stream != null && stream.TryGetTarget(out var s))
             {
-                s?.ReadAudio(data, channels, sampleRate);
+                s?.ReadAudio(data.AsSpan(), channels, sampleRate);
             }
         }
     }
