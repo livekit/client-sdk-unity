@@ -369,6 +369,9 @@ namespace LiveKit.Rooms
                 case RoomEvent.MessageOneofCase.TranscriptionReceived:
                     //ignore
                     break;
+                case RoomEvent.MessageOneofCase.LocalTrackSubscribed:
+                    //ignore
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(e), e.MessageCase.ToString());
             }
