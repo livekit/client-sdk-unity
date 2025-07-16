@@ -26,7 +26,7 @@ namespace LiveKit.Rooms.AsyncInstractions
 
             room.OnDisconnect();
 
-            IsError = false;
+            ErrorMessage = string.Empty;
             IsDone = true;
         }
     }

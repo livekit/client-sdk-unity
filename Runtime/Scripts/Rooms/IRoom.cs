@@ -35,7 +35,7 @@ namespace LiveKit.Rooms
 
         void SetLocalName(string name);
 
-        Task<bool> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
+        Task<(bool success, string? errorMessage)> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
 
         Task DisconnectAsync(CancellationToken cancellationToken);
     }

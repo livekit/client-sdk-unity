@@ -26,7 +26,7 @@ namespace LiveKit.Rooms.AsyncInstractions
             if (e.AsyncId != _asyncId)
                 return;
 
-            IsError = !string.IsNullOrEmpty(e.Error);
+            ErrorMessage = e.Error;
             
             if (!IsError && e.Publication != null)
             {

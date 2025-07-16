@@ -7,7 +7,8 @@ namespace LiveKit
     public class AsyncInstruction
     {
         public bool IsDone { protected set; get; }
-        public bool IsError { protected set; get; }
+        public bool IsError => string.IsNullOrWhiteSpace(ErrorMessage) == false;
+        public string? ErrorMessage { protected set; get; }
 
         public bool keepWaiting => !IsDone;
 
@@ -29,10 +30,10 @@ namespace LiveKit
             }
         }
 
-        public async Task<bool> AwaitWithSuccess()
+        public async Task<(bool success, string? errorMessage)> AwaitWithSuccess()
         {
             await AwaitCompletion();
-            return IsError == false;
+            return (IsError == false, ErrorMessage);
         }
     }
 }

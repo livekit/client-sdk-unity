@@ -27,12 +27,12 @@ namespace LiveKit.Rooms.AsyncInstractions
 
             if (Token.IsCancellationRequested) return;
 
-            bool success = string.IsNullOrEmpty(e.Error);
+            ErrorMessage = e.Error;
+            bool success = IsError == false;
             Utils.Debug("Connection success: " + success);
             if (success)
                 _room.OnConnect(e.Result.Room.Handle, e.Result.Room.Info, e.Result.LocalParticipant, e.Result.Participants);
 
-            IsError = !success;
             IsDone = true;
         }
     }
