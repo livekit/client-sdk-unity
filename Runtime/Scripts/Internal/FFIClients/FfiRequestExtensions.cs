@@ -75,6 +75,19 @@ namespace LiveKit.Internal.FFIClients
                 case VideoConvertRequest videoConvertRequest:
                     ffiRequest.VideoConvert = videoConvertRequest;
                     break;
+                // APM
+                case NewApmRequest newApm:
+                    ffiRequest.NewApm = newApm;
+                    break;
+                case ApmProcessStreamRequest apmProcessStream:
+                    ffiRequest.ApmProcessStream = apmProcessStream;
+                    break;
+                case ApmProcessReverseStreamRequest apmProcessReverseStream:
+                    ffiRequest.ApmProcessReverseStream = apmProcessReverseStream;
+                    break;
+                case ApmSetStreamDelayRequest apmSetStreamDelay:
+                    ffiRequest.ApmSetStreamDelay = apmSetStreamDelay;
+                    break;
                 // Audio
                 case NewAudioStreamRequest wewAudioStreamRequest:
                     ffiRequest.NewAudioStream = wewAudioStreamRequest;
