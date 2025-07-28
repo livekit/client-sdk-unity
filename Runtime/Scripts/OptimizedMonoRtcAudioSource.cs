@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Concurrent;
 using System.Numerics;
 using System.Buffers;
+using LiveKit.Audio;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;

@@ -1,9 +1,10 @@
 {
-    "name": "LiveKit",
-    "rootNamespace": "LiveKit",
+    "name": "livekit.unity.Examples",
+    "rootNamespace": "livekit.unity.Examples",
     "references": [
-        "RichTypes",
-        "UniTask"
+        "GUID:702f733b4deb246808c6ce84d93b5c9c",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:1087662aaf1c5462baa91fb9484296fd"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

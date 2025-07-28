@@ -6,7 +6,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Runtime.InteropServices;
 
-namespace LiveKit
+namespace LiveKit.Audio
 {
     public struct AudioFrame : IDisposable
     {
