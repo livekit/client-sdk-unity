@@ -64,9 +64,9 @@ public class ExampleRoom : MonoBehaviour
 
         var c = await m_Room.ConnectAsync(JoinMenu.LivekitURL, JoinMenu.RoomToken, CancellationToken.None, true);
 
-        if (c.success == false)
+        if (c.Success == false)
         {
-            Debug.Log($"Failed to connect to the room !: {c.errorMessage}");
+            Debug.Log($"Failed to connect to the room !: {c.ErrorMessage}");
             return;
         }
 

@@ -8,6 +8,7 @@ using LiveKit.Rooms.Streaming.Audio;
 using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Hub;
 using LiveKit.Rooms.VideoStreaming;
+using RichTypes;
 
 namespace LiveKit.Rooms
 {
@@ -35,7 +36,7 @@ namespace LiveKit.Rooms
 
         void SetLocalName(string name);
 
-        Task<(bool success, string? errorMessage)> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
+        Task<Result> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe);
 
         Task DisconnectAsync(CancellationToken cancellationToken);
     }

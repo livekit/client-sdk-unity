@@ -1,6 +1,7 @@
 using LiveKit.Internal;
 using System.Threading;
 using System.Threading.Tasks;
+using RichTypes;
 
 namespace LiveKit
 {
@@ -30,10 +31,12 @@ namespace LiveKit
             }
         }
 
-        public async Task<(bool success, string? errorMessage)> AwaitWithSuccess()
+        public async Task<Result> AwaitWithSuccess()
         {
             await AwaitCompletion();
-            return (IsError == false, ErrorMessage);
+            return IsError 
+                ? Result.ErrorResult(ErrorMessage!) 
+                : Result.SuccessResult();
         }
     }
 }
