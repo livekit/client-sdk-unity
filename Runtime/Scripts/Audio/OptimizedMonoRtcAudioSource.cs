@@ -38,8 +38,8 @@ namespace LiveKit
         private bool _disposed;
         private bool _muted;
         public bool Muted => _muted;
-        public FfiHandle Handle => handle;
-        internal FfiHandle handle { get; }
+
+        private readonly FfiHandle handle;
 
         public OptimizedMonoRtcAudioSource(IAudioFilter audioFilter)
         {
@@ -95,6 +95,11 @@ namespace LiveKit
             {
                 ArrayPool<short>.Shared.Return(buffer);
             }
+        }
+
+        FfiHandle IRtcAudioSource.BorrowHandle()
+        {
+            return handle;
         }
 
         public void Start()

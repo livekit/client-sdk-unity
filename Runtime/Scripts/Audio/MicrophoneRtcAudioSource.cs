@@ -21,9 +21,10 @@ namespace LiveKit.Audio
         private readonly ApmReverseStream? reverseStream;
         private readonly GameObject gameObject;
 
+        private bool handleBorrowed;
         private bool disposed;
 
-        public FfiHandle Handle { get; }
+        private readonly FfiHandle handle;
 
         private MicrophoneRtcAudioSource(
             AudioSource audioSource,
@@ -48,7 +49,7 @@ namespace LiveKit.Audio
 
             using var response = request.Send();
             FfiResponse res = response;
-            Handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioSource.Source.Handle!.Id);
+            handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioSource.Source.Handle!.Id);
             this.audioSource = audioSource;
             this.audioFilter = audioFilter;
             this.apm = apm;
@@ -82,6 +83,17 @@ namespace LiveKit.Audio
             return Result<MicrophoneRtcAudioSource>.SuccessResult(
                 new MicrophoneRtcAudioSource(audioSource, audioFilter, apm, reverseStream.Value)
             );
+        }
+
+        FfiHandle IRtcAudioSource.BorrowHandle()
+        {
+            if (handleBorrowed)
+            {
+                Utils.Error("Borrowing already borrowed handle, may cause undefined behaviour");
+            }
+
+            handleBorrowed = true;
+            return handle;
         }
 
         public void Start()
@@ -153,7 +165,7 @@ namespace LiveKit.Audio
                 using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
 
                 var pushFrame = request.request;
-                pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
+                pushFrame.SourceHandle = (ulong)handle.DangerousGetHandle();
                 pushFrame.Buffer = audioFrameBufferInfo;
                 pushFrame.Buffer.DataPtr = (ulong)frame.Data;
                 pushFrame.Buffer.NumChannels = frame.NumChannels;
@@ -180,13 +192,15 @@ namespace LiveKit.Audio
                 Utils.Error($"{nameof(MicrophoneRtcAudioSource)} is already disposed");
                 return;
             }
-            
+
             disposed = true;
-            
+
             buffer.Dispose();
             apm.Dispose();
             reverseStream?.Dispose();
-            Handle.Dispose();
+
+            if (handleBorrowed == false)
+                handle.Dispose();
 
             if (gameObject)
                 UnityEngine.Object.Destroy(gameObject);
