@@ -1,4 +1,3 @@
-using System;
 using LiveKit.Internal;
 
 namespace LiveKit
@@ -9,9 +8,10 @@ namespace LiveKit
     public interface IRtcAudioSource
     {
         /// <summary>
-        ///     Internal handle for FFI communication
+        /// Borrow ownership of native resources
         /// </summary>
-        FfiHandle Handle { get; }
+        /// <returns></returns>
+        internal FfiHandle BorrowHandle();
 
         void Start();
 

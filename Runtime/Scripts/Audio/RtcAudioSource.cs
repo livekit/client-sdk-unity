@@ -6,7 +6,7 @@ using LiveKit.Internal.FFIClients.Requests;
 using Livekit.Utils;
 using System.Runtime.InteropServices;
 
-namespace LiveKit
+namespace LiveKit.Audio
 {
     public class RtcAudioSource : IRtcAudioSource
     {
@@ -28,9 +28,8 @@ namespace LiveKit
         private int currentBufferSize;
 
         private int cachedFrameSize;
-        public FfiHandle Handle => handle;
 
-        internal FfiHandle handle { get; }
+        private readonly FfiHandle handle;
 
         public RtcAudioSource(AudioSource audioSource, IAudioFilter audioFilter)
         {
@@ -47,6 +46,11 @@ namespace LiveKit
             handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioSource.Source.Handle!.Id);
             this.audioSource = audioSource;
             this.audioFilter = audioFilter;
+        }
+
+        FfiHandle IRtcAudioSource.BorrowHandle()
+        {
+            return handle;
         }
 
         public void Start()
@@ -77,9 +81,9 @@ namespace LiveKit
 
         private void OnAudioRead(Span<float> data, int channels, int sampleRate)
         {
-            var needsReconfiguration = channels != this.channels ||
-                                       sampleRate != this.sampleRate ||
-                                       data.Length != tempBuffer?.Length;
+            var needsReconfiguration = channels != this.channels
+                                       || sampleRate != this.sampleRate
+                                       || data.Length != tempBuffer?.Length;
 
             var newBufferSize = 0;
             if (needsReconfiguration)

@@ -14,5 +14,9 @@
       "path": "Samples~"
     }
   ],
-  "type": "library"
+  "type": "library",
+  "dependencies": {
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    "com.nickkhalow.richtypes": "https://github.com/NickKhalow/RichTypesUnity.git?path=/Packages/RichTypes"
+  }
 }

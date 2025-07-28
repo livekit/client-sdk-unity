@@ -25,7 +25,7 @@ namespace LiveKit.Rooms.Tracks.Factory
             using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
             var createTrack = request.request;
             createTrack.Name = name;
-            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
+            createTrack.SourceHandle = (ulong)source.BorrowHandle().DangerousGetHandle();
             using var response = request.Send();
             return CreateTrack(response, room, true);
         }

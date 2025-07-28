@@ -19,6 +19,7 @@ using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Factory;
 using LiveKit.Rooms.Tracks.Hub;
 using LiveKit.Rooms.VideoStreaming;
+using RichTypes;
 using RoomInfo = LiveKit.Proto.RoomInfo;
 
 namespace LiveKit.Rooms
@@ -149,7 +150,7 @@ namespace LiveKit.Rooms
             using var response = request.Send();
         }
 
-        public Task<(bool success, string? errorMessage)> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
+        public Task<Result> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
         {
             using var response = FFIBridge.Instance.SendConnectRequest(url, authToken, autoSubscribe);
             FfiResponse res = response;
