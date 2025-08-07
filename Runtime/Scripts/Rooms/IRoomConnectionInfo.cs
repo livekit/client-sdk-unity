@@ -9,7 +9,7 @@ namespace LiveKit.Rooms
     public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
 
 
-    public delegate void ConnectionDelegate(IRoom room, ConnectionUpdate connectionUpdate);
+    public delegate void ConnectionDelegate(IRoom room, ConnectionUpdate connectionUpdate, DisconnectReason? disconnectReason = null);
 
 
     public enum ConnectionUpdate

@@ -1,0 +1,16 @@
+[package]
+name = "rust-audio"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.98"
+arc-swap = "1.7.1"
+cpal = "0.16.0"
+crossbeam-channel = "0.5.15"
+dashmap = "6.1.0"
+lazy_static = "1.5.0"
+
+[lib]
+name = "rust_audio"
+crate-type = ["cdylib"]

@@ -3,8 +3,8 @@ using UnityEngine;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
-using Livekit.Utils;
 using System.Runtime.InteropServices;
+using Livekit.Types;
 
 namespace LiveKit.Audio
 {
@@ -111,7 +111,7 @@ namespace LiveKit.Audio
                     if (frame.IsValid) frame.Dispose();
                     frame = new AudioFrame(this.sampleRate, this.channels, (uint)(tempBuffer.Length / this.channels));
 
-                    cachedFrameSize = frame.Length;
+                    cachedFrameSize = frame.LengthBytes();
                 }
 
                 if (tempBuffer == null)

@@ -8,6 +8,8 @@ namespace LiveKit.Audio
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct PCMSample
     {
+        public static readonly PCMSample SILENCE = default;
+
         public const byte BytesPerSample = 2; // Int16 = Int8 * 2
 
         private const float S16_MAX_VALUE = 32767f;
@@ -27,6 +29,11 @@ namespace LiveKit.Audio
             if (sample > S16_MAX_VALUE) sample = S16_MAX_VALUE;
             else if (sample < S16_MIN_VALUE) sample = S16_MIN_VALUE;
             return new PCMSample((short)(sample + (sample >= 0 ? 0.5f : -0.5f)));
+        }
+
+        public float ToFloat()
+        {
+            return data / 32768f;
         }
     }
 }

@@ -177,7 +177,7 @@ namespace LiveKit
                     this.sampleRate = (uint)sampleRate;
                     if (frame.IsValid) frame.Dispose();
                     frame = new AudioFrame(this.sampleRate, this.channels, (uint)(data.Length / this.channels));
-                    cachedFrameSize = frame.Length;
+                    cachedFrameSize = frame.LengthBytes();
                 }
             }
 

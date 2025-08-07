@@ -31,7 +31,7 @@ namespace LiveKit
         }
 
         // Event is called from the Unity audio thread
-        public event IAudioFilter.OnAudioDelegate AudioRead;
+        public event IAudioFilter.OnAudioDelegate? AudioRead;
 
         /// <summary>
         ///     Gets whether this audio filter is valid and can be used
@@ -42,5 +42,27 @@ namespace LiveKit
         {
             _sampleRate = AudioSettings.outputSampleRate;
         }
+
+
+        #if UNITY_EDITOR
+        [ContextMenu(nameof(StartSource))]
+        public void StartSource()
+        {
+            GetComponent<AudioSource>().Play();
+        }
+
+        [ContextMenu(nameof(StopSource))]
+        public void StopSource()
+        {
+            GetComponent<AudioSource>().Stop();
+        }
+
+        [ContextMenu(nameof(StopSource))]
+        public void LogInfo()
+        {
+            var source = GetComponent<AudioSource>();
+            Debug.Log($"{nameof(AudioFilter)} Source: IsValid - {IsValid}, IsRecording - {source!.isPlaying}");
+        }
+        #endif
     }
 }

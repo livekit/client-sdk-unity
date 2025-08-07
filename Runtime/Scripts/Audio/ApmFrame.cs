@@ -43,9 +43,9 @@ namespace LiveKit.Audio
                 return default;
             }
 
-            if (sampleRate.valueHz == 0)
+            if (sampleRate.valueHz != SampleRate.Hz48000.valueHz)
             {
-                error = "SampleRate is 0, it's invalid value.";
+                error = "SampleRate must be Hz48000, it's invalid value.";
                 return default;
             }
 

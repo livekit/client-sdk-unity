@@ -11,7 +11,7 @@ namespace LiveKit
         /// Borrow ownership of native resources
         /// </summary>
         /// <returns></returns>
-        internal FfiHandle BorrowHandle();
+        FfiHandle BorrowHandle();
 
         void Start();
 

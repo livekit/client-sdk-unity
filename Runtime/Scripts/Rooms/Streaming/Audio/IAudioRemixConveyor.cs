@@ -1,6 +1,7 @@
 ﻿using System;
+using LiveKit.Audio;
 using LiveKit.Internal;
-using Livekit.Utils;
+using Livekit.Types;
 
 namespace LiveKit.Rooms.Streaming.Audio
 {
@@ -21,7 +22,7 @@ namespace LiveKit.Rooms.Streaming.Audio
             )
             {
                 using var uFrame = resampler.RemixAndResample(ownedAudioFrame, numChannels, sampleRate);
-                var data = uFrame.AsSpan();
+                Span<byte> data = uFrame.AsSpan();
                 using var guard = outputBuffer.Lock();
                 guard.Value.Write(data);
             }

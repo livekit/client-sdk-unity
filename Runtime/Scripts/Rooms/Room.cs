@@ -350,7 +350,8 @@ namespace LiveKit.Rooms
                     break;*/
                 case RoomEvent.MessageOneofCase.Eos:
                 case RoomEvent.MessageOneofCase.Disconnected:
-                    ConnectionUpdated?.Invoke(this, ConnectionUpdate.Disconnected);
+                    var disconnectReason = e.Disconnected?.Reason ?? DisconnectReason.UnknownReason;
+                    ConnectionUpdated?.Invoke(this, ConnectionUpdate.Disconnected, disconnectReason);
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
                     ConnectionUpdated?.Invoke(this, ConnectionUpdate.Reconnecting);

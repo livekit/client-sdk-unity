@@ -1,7 +1,12 @@
 using System;
+using LiveKit.Audio;
+using LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients;
+using LiveKit.Internal.FFIClients;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Streaming.Audio;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace LiveKit.Internal
 {
@@ -28,31 +33,55 @@ namespace LiveKit.Internal
             handle.Dispose();
         }
 
-        public OwnedAudioFrame RemixAndResample(OwnedAudioFrame frame, uint numChannels, uint sampleRate)
+        public OwnedAudioFrame LiveKitCompatibleRemixAndResample<TAudioFrame>(
+            TAudioFrame frame,
+            uint? overrideNumChannels = null) where TAudioFrame : IAudioFrame
         {
-            using var request = FFIBridge.Instance.NewRequest<RemixAndResampleRequest>();
-            using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
-            var remix = request.request;
+            return RemixAndResample(frame, overrideNumChannels ?? frame.NumChannels, SampleRate.Hz48000.valueHz);
+        }
+
+        public OwnedAudioFrame RemixAndResample<TAudioFrame>(
+            TAudioFrame frame,
+            uint numChannels,
+            uint sampleRate
+        ) where TAudioFrame : IAudioFrame
+        {
+            Assert.AreNotEqual(0, sampleRate);
+            Assert.AreNotEqual(0, numChannels);
+
+            var duration = frame.DurationMs();
+            if (duration != 10) //10 ms required by WebRTC
+            {
+                Debug.LogError($"Cannot resample, duration is not 10 ms, instead {duration} ms");
+                //TODO result
+                throw new Exception();
+            }
+
+            using FfiRequestWrap<RemixAndResampleRequest>
+                request = FFIBridge.Instance.NewRequest<RemixAndResampleRequest>();
+            using SmartWrap<AudioFrameBufferInfo> audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
+            RemixAndResampleRequest remix = request.request;
             remix.ResamplerHandle = (ulong)handle.DangerousGetHandle();
 
             remix.Buffer = audioFrameBufferInfo;
-            remix.Buffer.DataPtr = (ulong)frame.dataPtr;
-            remix.Buffer.NumChannels = frame.numChannels;
-            remix.Buffer.SampleRate = frame.sampleRate;
-            remix.Buffer.SamplesPerChannel = frame.samplesPerChannel;
+            remix.Buffer.DataPtr = (ulong)frame.Data;
+            remix.Buffer.NumChannels = frame.NumChannels;
+            remix.Buffer.SampleRate = frame.SampleRate;
+            remix.Buffer.SamplesPerChannel = frame.SamplesPerChannel;
 
             remix.NumChannels = numChannels;
             remix.SampleRate = sampleRate;
-            using var response = request.Send();
+            using FfiResponseWrap response = request.Send();
             FfiResponse res = response;
-            var bufferInfo = res.RemixAndResample!.Buffer;
+            OwnedAudioFrameBuffer bufferInfo = res.RemixAndResample!.Buffer;
             return new OwnedAudioFrame(bufferInfo);
         }
+
 
         public class ThreadSafe : IDisposable
         {
             private readonly AudioResampler resampler = New();
-            
+
             /// <summary>
             /// Takes ownership of the frame and is responsible for its disposal
             /// </summary>

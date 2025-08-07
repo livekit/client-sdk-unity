@@ -1,4 +1,5 @@
 using System.Collections;
+using Examples;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class JoinMenu : MonoBehaviour
     public RawImage PreviewCamera;
     public InputField URLField;
     public InputField TokenField;
+    public Dropdown Dropdown;
     public Button ConnectButton;
 
     void Start()
@@ -24,6 +26,8 @@ public class JoinMenu : MonoBehaviour
         {
             TokenField.text = PlayerPrefs.GetString(nameof(RoomToken));
         }
+
+        MicrophoneDropdown.Bind(Dropdown);
 
         StartCoroutine(StartPreviewCamera());
 

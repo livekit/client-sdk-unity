@@ -47,13 +47,21 @@ namespace LiveKit.Internal
             int readCount = GetBufferReadRegions(data.Length, out int dataIndex1, out int dataLen1, out int dataIndex2, out int dataLen2);
             if (dataLen2 > 0)
             {
-                buffer.Span().Slice(dataIndex1, dataLen1).CopyTo(data);
-                buffer.Span().Slice(dataIndex2, dataLen2).CopyTo(data.Slice(dataLen1));
+                Span<byte> slice1 = buffer.Span().Slice(dataIndex1, dataLen1);
+                Span<byte> slice2 = buffer.Span().Slice(dataIndex2, dataLen2);
+                
+                slice1.CopyTo(data);
+                slice2.CopyTo(data.Slice(dataLen1));
+                
+                slice1.Fill(0);
+                slice2.Fill(0);
             }
             else
             {
                 // TODO(theomonnom): Don't always copy in this case?
-                buffer.Span().Slice(dataIndex1, dataLen1).CopyTo(data);
+                Span<byte> slice = buffer.Span().Slice(dataIndex1, dataLen1);
+                slice.CopyTo(data);
+                slice.Fill(0);
             }
 
             MoveReadPtr(readCount);

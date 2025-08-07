@@ -1,4 +1,4 @@
-﻿namespace Livekit.Utils
+﻿namespace Livekit.Types
 {
     public class Mutex<T>
     {

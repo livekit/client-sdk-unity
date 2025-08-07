@@ -3,7 +3,8 @@
     "rootNamespace": "LiveKit",
     "references": [
         "RichTypes",
-        "UniTask"
+        "UniTask",
+        "RustAudio"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

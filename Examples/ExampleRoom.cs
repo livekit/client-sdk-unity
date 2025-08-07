@@ -3,11 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Examples;
 using LiveKit.Audio;
 using LiveKit.Proto;
 using LiveKit.Rooms;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Streaming.Audio;
+using LiveKit.Runtime.Scripts.Audio;
+using RichTypes;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class ExampleRoom : MonoBehaviour
@@ -17,7 +21,13 @@ public class ExampleRoom : MonoBehaviour
 
     private readonly Dictionary<IAudioStream, LivekitAudioSource> sourcesMap = new();
 
+    public Dropdown MicrophoneDropdownMenu;
     public Button DisconnectButton;
+    [Space]
+    public bool microphonePlaybackToSpeakers;
+    [Space]
+    public AudioMixer audioMixer;
+    public string audioHandleName;
 
     private void Start()
     {
@@ -62,7 +72,13 @@ public class ExampleRoom : MonoBehaviour
                 Debug.Log($"Participant connected: {p.Sid}");
         };
 
-        var c = await m_Room.ConnectAsync(JoinMenu.LivekitURL, JoinMenu.RoomToken, CancellationToken.None, true);
+
+        var c = await m_Room.ConnectAsync(
+            PlayerPrefs.GetString(nameof(JoinMenu.LivekitURL))!,
+            PlayerPrefs.GetString(nameof(JoinMenu.RoomToken))!,
+            CancellationToken.None,
+            true
+        );
 
         if (c.Success == false)
         {
@@ -79,7 +95,21 @@ public class ExampleRoom : MonoBehaviour
         });
 
         // Microphone usage
-        var sourceResult = MicrophoneRtcAudioSource.New();
+
+        MicrophoneSelection? selection = null;
+        Result<MicrophoneSelection> result = MicrophoneDropdown.CurrentMicrophoneSelection();
+        if (result.Success)
+        {
+            selection = result.Value;
+        }
+
+        Debug.Log($"Selected Microphone: {selection?.name}");
+
+        Result<MicrophoneRtcAudioSource> sourceResult = MicrophoneRtcAudioSource.New(
+            selection,
+            (audioMixer, audioHandleName),
+            microphonePlaybackToSpeakers
+        );
         if (sourceResult.Success == false)
         {
             Debug.LogError($"Cannot create microphone source: {sourceResult.ErrorMessage}");
@@ -88,6 +118,8 @@ public class ExampleRoom : MonoBehaviour
 
         microphoneSource = sourceResult.Value;
         microphoneSource.Start();
+
+        MicrophoneDropdown.Bind(MicrophoneDropdownMenu, microphoneSource);
 
         var myTrack = m_Room.AudioTracks.CreateAudioTrack("own", microphoneSource);
         var trackOptions = new TrackPublishOptions
