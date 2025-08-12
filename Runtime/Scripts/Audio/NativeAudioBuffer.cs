@@ -56,7 +56,7 @@ namespace LiveKit.Audio
         {
             if (this.sampleRate == 0)
             {
-                Debug.LogError("Buffer: attempt to read from an initialized buffer");
+                Debug.LogWarning("Buffer: attempt to read from an initialized buffer");
                 return Option<AudioFrame>.None;
             }
 
