@@ -26,7 +26,7 @@ public class ExampleRoom : MonoBehaviour
 
     private void Update()
     {
-        foreach (var remoteParticipantIdentity in m_Room.Participants.RemoteParticipantIdentities())
+        foreach (var (remoteParticipantIdentity, _) in m_Room.Participants.RemoteParticipantIdentities())
         {
             var participant = m_Room.Participants.RemoteParticipant(remoteParticipantIdentity)!;
             foreach (var (key, value) in participant.Tracks)

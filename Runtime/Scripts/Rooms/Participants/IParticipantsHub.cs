@@ -21,7 +21,7 @@ namespace LiveKit.Rooms.Participants
 
         Participant? RemoteParticipant(string identity);
 
-        IReadOnlyCollection<string> RemoteParticipantIdentities();
+        IReadOnlyDictionary<string, Participant> RemoteParticipantIdentities();
     }
 
     public interface IMutableParticipantsHub : IParticipantsHub
