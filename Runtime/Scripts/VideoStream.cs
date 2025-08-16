@@ -113,7 +113,7 @@ namespace LiveKit
                 }
                 var rgba = VideoBuffer.ToRGBA();
                 {
-                    Texture.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize()); 
+                    Texture.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
                 }
                 Texture.Apply();
 
@@ -121,6 +121,7 @@ namespace LiveKit
                     TextureReceived?.Invoke(Texture);
 
                 TextureUploaded?.Invoke();
+                rgba.Dispose();
             }
 
             yield break;
