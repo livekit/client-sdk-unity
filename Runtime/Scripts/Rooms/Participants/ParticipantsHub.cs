@@ -1,16 +1,16 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using LiveKit.Rooms.Participants.Factory;
 
 namespace LiveKit.Rooms.Participants
 {
     public class ParticipantsHub : IMutableParticipantsHub
     {
+        private readonly ConcurrentDictionary<string, Participant> remoteParticipants = new();
         private Participant? local;
-        private readonly Dictionary<string, Participant> remoteParticipants = new();
 
         public event ParticipantDelegate? UpdatesFromParticipant;
-        
+
         public Participant LocalParticipant()
         {
             return local
@@ -25,9 +25,12 @@ namespace LiveKit.Rooms.Participants
             return remoteParticipant;
         }
 
-        public IReadOnlyCollection<string> RemoteParticipantIdentities()
+        /// <summary>
+        ///     Don't expose ConcurrentDictionary.Keys as it creates a whole new collection on get
+        /// </summary>
+        public IReadOnlyDictionary<string, Participant> RemoteParticipantIdentities()
         {
-            return remoteParticipants.Keys;
+            return remoteParticipants;
         }
 
         public void AssignLocal(Participant participant)
@@ -37,12 +40,12 @@ namespace LiveKit.Rooms.Participants
 
         public void AddRemote(Participant participant)
         {
-            remoteParticipants.Add(participant.Identity, participant);
+            remoteParticipants[participant.Identity] = participant;
         }
 
         public void RemoveRemote(Participant participant)
         {
-            remoteParticipants.Remove(participant.Identity);
+            remoteParticipants.TryRemove(participant.Identity, out _);
         }
 
         public void NotifyParticipantUpdate(Participant participant, UpdateFromParticipant update)
@@ -58,6 +61,7 @@ namespace LiveKit.Rooms.Participants
             {
                 participant.Clear();
             }
+
             remoteParticipants.Clear();
         }
     }
