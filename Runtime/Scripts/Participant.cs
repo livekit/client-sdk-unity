@@ -331,7 +331,13 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
 
             var publish = request.request;
+            
             publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+
+            // Clear previous values of conditional fields
+            publish.DestinationIdentities.Clear();
+            publish.ClearTopic();
+
             publish.Reliable = reliable;
 
             if (destination_identities is not null)
@@ -349,7 +355,7 @@ namespace LiveKit
                 publish.DataLen = (ulong)len;
                 publish.DataPtr = (ulong)data;
             }
-            Utils.Debug("Sending message: " + topic);
+            Utils.Debug("Sending message: " + publish);
             var response = request.Send();
         }
 
