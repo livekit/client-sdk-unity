@@ -20,11 +20,11 @@ namespace LiveKit.Internal.FFIClients.Requests
             return response;
         }
         
-        public static FfiResponseWrap SendDisconnectRequest(this IFFIBridge ffiBridge, Room room)
+        public static FfiResponseWrap SendDisconnectRequest(this IFFIBridge ffiBridge, FfiHandle roomHandle)
         {
             using var request = ffiBridge.NewRequest<DisconnectRequest>();
             var disconnect = request.request;
-            disconnect.RoomHandle = (ulong)room.Handle.DangerousGetHandle();
+            disconnect.RoomHandle = (ulong)roomHandle.DangerousGetHandle();
             Utils.Debug($"Disconnect.... {disconnect.RoomHandle}");
             var response = request.Send();
             // ReSharper disable once RedundantAssignment

@@ -59,7 +59,7 @@ namespace LiveKit.Rooms
 
         public IRoomInfo Info => roomInfo;
 
-        internal FfiHandle Handle { get; private set; } = null!;
+        private FfiHandle? handle;
 
         public event MetaDelegate? RoomMetadataChanged;
         public event SidDelegate? RoomSidChanged;
@@ -160,26 +160,38 @@ namespace LiveKit.Rooms
 
         public async Task DisconnectAsync(CancellationToken cancellationToken)
         {
-            using var response = FFIBridge.Instance.SendDisconnectRequest(this);
+            if (handle == null)
+            {
+                return;
+            }
+            
+            using var response = FFIBridge.Instance.SendDisconnectRequest(handle);
             FfiResponse res = response;
             videoStreams.Free();
             audioStreams.Free();
             var instruction = new DisconnectInstruction(res.Disconnect!.AsyncId, this, cancellationToken);
             await instruction.AwaitWithSuccess();
-            ffiHandleFactory.Release(Handle);
+            ffiHandleFactory.Release(handle);
+            handle = null;
         }
 
 
         private void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
+            if (handle == null)
+            {
+                Utils.Debug("Ignoring. Room does not have ffi handle: " + e.MessageCase);
+                return;
+            }
+            
+            if (e.RoomHandle != (ulong)handle.DangerousGetHandle())
             {
                 Utils.Debug("Ignoring. Different Room... " + e);
                 return;
             }
 
             Utils.Debug(
-                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)Handle.DangerousGetHandle()})");
+                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)handle.DangerousGetHandle()})");
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.RoomMetadataChanged:
@@ -391,7 +403,7 @@ namespace LiveKit.Rooms
             activeSpeakers.Clear();
             participantsHub.Clear();
 
-            Handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
+            handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
             roomInfo.UpdateFromInfo(info);
 
             var selfParticipant = participantFactory.NewParticipant(
