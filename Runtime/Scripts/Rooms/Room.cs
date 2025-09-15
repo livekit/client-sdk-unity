@@ -28,9 +28,12 @@ namespace LiveKit.Rooms
     {
         public delegate void MetaDelegate(string metaData);
 
+
         public delegate void SidDelegate(string sid);
 
+
         public delegate void RemoteParticipantDelegate(Participant participant);
+
 
         private readonly IMemoryPool memoryPool;
         private readonly IMutableActiveSpeakers activeSpeakers;
@@ -60,6 +63,7 @@ namespace LiveKit.Rooms
         public IRoomInfo Info => roomInfo;
 
         private FfiHandle? handle;
+        private ulong handleId;
 
         public event MetaDelegate? RoomMetadataChanged;
         public event SidDelegate? RoomSidChanged;
@@ -87,10 +91,11 @@ namespace LiveKit.Rooms
             new MemoryRoomInfo(),
             new VideoStreams(capturedHub),
             new AudioStreams(capturedHub,
-            new IAudioRemixConveyor.SameThreadAudioRemixConveyor()),
+                new IAudioRemixConveyor.SameThreadAudioRemixConveyor()),
             null! // AudioTracks will be created after Room construction
-            )
-        { }
+        )
+        {
+        }
 
         public Room(
             IMemoryPool memoryPool,
@@ -164,7 +169,7 @@ namespace LiveKit.Rooms
             {
                 return;
             }
-            
+
             using var response = FFIBridge.Instance.SendDisconnectRequest(handle);
             FfiResponse res = response;
             videoStreams.Free();
@@ -178,20 +183,14 @@ namespace LiveKit.Rooms
 
         private void OnEventReceived(RoomEvent e)
         {
-            if (handle == null)
-            {
-                Utils.Debug("Ignoring. Room does not have ffi handle: " + e.MessageCase);
-                return;
-            }
-            
-            if (e.RoomHandle != (ulong)handle.DangerousGetHandle())
+            if (e.RoomHandle != handleId)
             {
                 Utils.Debug("Ignoring. Different Room... " + e);
                 return;
             }
 
             Utils.Debug(
-                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)handle.DangerousGetHandle()})");
+                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {handleId})");
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.RoomMetadataChanged:
@@ -254,7 +253,8 @@ namespace LiveKit.Rooms
                     }
                     else
                     {
-                        Utils.Debug("Unable to find local track after unpublish: " + e.LocalTrackUnpublished!.PublicationSid);
+                        Utils.Debug(
+                            "Unable to find local track after unpublish: " + e.LocalTrackUnpublished!.PublicationSid);
                     }
                 }
                     break;
@@ -349,7 +349,8 @@ namespace LiveKit.Rooms
                         var dataInfo = dataReceivedPacket.User!.Data!;
                         using var memory = dataInfo.ReadAndDispose(memoryPool);
                         var participant = this.ParticipantEnsured(dataReceivedPacket.ParticipantIdentity!);
-                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.User.Topic, e.DataPacketReceived.Kind);
+                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.User.Topic,
+                            e.DataPacketReceived.Kind);
                     }
                 }
                     break;
@@ -404,6 +405,7 @@ namespace LiveKit.Rooms
             participantsHub.Clear();
 
             handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
+            handleId = (ulong)handle.DangerousGetHandle();
             roomInfo.UpdateFromInfo(info);
 
             var selfParticipant = participantFactory.NewParticipant(
