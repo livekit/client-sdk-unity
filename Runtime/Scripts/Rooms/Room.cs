@@ -28,9 +28,12 @@ namespace LiveKit.Rooms
     {
         public delegate void MetaDelegate(string metaData);
 
+
         public delegate void SidDelegate(string sid);
 
+
         public delegate void RemoteParticipantDelegate(Participant participant);
+
 
         private readonly IMemoryPool memoryPool;
         private readonly IMutableActiveSpeakers activeSpeakers;
@@ -59,7 +62,8 @@ namespace LiveKit.Rooms
 
         public IRoomInfo Info => roomInfo;
 
-        internal FfiHandle Handle { get; private set; } = null!;
+        private FfiHandle? handle;
+        private ulong handleId;
 
         public event MetaDelegate? RoomMetadataChanged;
         public event SidDelegate? RoomSidChanged;
@@ -87,10 +91,11 @@ namespace LiveKit.Rooms
             new MemoryRoomInfo(),
             new VideoStreams(capturedHub),
             new AudioStreams(capturedHub,
-            new IAudioRemixConveyor.SameThreadAudioRemixConveyor()),
+                new IAudioRemixConveyor.SameThreadAudioRemixConveyor()),
             null! // AudioTracks will be created after Room construction
-            )
-        { }
+        )
+        {
+        }
 
         public Room(
             IMemoryPool memoryPool,
@@ -160,26 +165,32 @@ namespace LiveKit.Rooms
 
         public async Task DisconnectAsync(CancellationToken cancellationToken)
         {
-            using var response = FFIBridge.Instance.SendDisconnectRequest(this);
+            if (handle == null)
+            {
+                return;
+            }
+
+            using var response = FFIBridge.Instance.SendDisconnectRequest(handle);
             FfiResponse res = response;
             videoStreams.Free();
             audioStreams.Free();
             var instruction = new DisconnectInstruction(res.Disconnect!.AsyncId, this, cancellationToken);
             await instruction.AwaitWithSuccess();
-            ffiHandleFactory.Release(Handle);
+            ffiHandleFactory.Release(handle);
+            handle = null;
         }
 
 
         private void OnEventReceived(RoomEvent e)
         {
-            if (e.RoomHandle != (ulong)Handle.DangerousGetHandle())
+            if (e.RoomHandle != handleId)
             {
                 Utils.Debug("Ignoring. Different Room... " + e);
                 return;
             }
 
             Utils.Debug(
-                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {(ulong)Handle.DangerousGetHandle()})");
+                $"Room {Info.Name} Event Type: {e.MessageCase}   ---> ({e.RoomHandle} <=> {handleId})");
             switch (e.MessageCase)
             {
                 case RoomEvent.MessageOneofCase.RoomMetadataChanged:
@@ -242,7 +253,8 @@ namespace LiveKit.Rooms
                     }
                     else
                     {
-                        Utils.Debug("Unable to find local track after unpublish: " + e.LocalTrackUnpublished!.PublicationSid);
+                        Utils.Debug(
+                            "Unable to find local track after unpublish: " + e.LocalTrackUnpublished!.PublicationSid);
                     }
                 }
                     break;
@@ -337,7 +349,8 @@ namespace LiveKit.Rooms
                         var dataInfo = dataReceivedPacket.User!.Data!;
                         using var memory = dataInfo.ReadAndDispose(memoryPool);
                         var participant = this.ParticipantEnsured(dataReceivedPacket.ParticipantIdentity!);
-                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.User.Topic, e.DataPacketReceived.Kind);
+                        dataPipe.Notify(memory.Span(), participant, e.DataPacketReceived.User.Topic,
+                            e.DataPacketReceived.Kind);
                     }
                 }
                     break;
@@ -391,7 +404,8 @@ namespace LiveKit.Rooms
             activeSpeakers.Clear();
             participantsHub.Clear();
 
-            Handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
+            handle = ffiHandleFactory.NewFfiHandle(roomHandle.Id);
+            handleId = (ulong)handle.DangerousGetHandle();
             roomInfo.UpdateFromInfo(info);
 
             var selfParticipant = participantFactory.NewParticipant(
