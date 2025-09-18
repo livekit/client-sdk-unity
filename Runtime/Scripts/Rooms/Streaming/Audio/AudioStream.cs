@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Audio;
@@ -9,9 +12,10 @@ namespace LiveKit.Rooms.Streaming.Audio
 {
     public class AudioStream : IAudioStream
     {
+        private static readonly ResampleQueue Queue = new();
+
         private readonly IAudioStreams audioStreams;
         private readonly FfiHandle handle;
-        private readonly AudioResampler audioResampler = AudioResampler.New();
 
         private readonly Mutex<NativeAudioBuffer> buffer = new(new NativeAudioBuffer(200));
 
@@ -22,13 +26,13 @@ namespace LiveKit.Rooms.Streaming.Audio
 
         public AudioStream(
             IAudioStreams audioStreams,
-            OwnedAudioStream ownedAudioStream,
-            IAudioRemixConveyor _ //TODO remove
+            OwnedAudioStream ownedAudioStream
         )
         {
             this.audioStreams = audioStreams;
             handle = IFfiHandleFactory.Default.NewFfiHandle(ownedAudioStream.Handle!.Id);
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
+            Queue.Register(this);
         }
 
         public void Dispose()
@@ -40,10 +44,10 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             handle.Dispose();
             using (var guard = buffer.Lock()) guard.Value.Dispose();
-            audioResampler.Dispose();
 
             FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
             audioStreams.Release(this);
+            Queue.UnRegister(this);
         }
 
         public void ReadAudio(Span<float> data, int channels, int sampleRate)
@@ -92,20 +96,82 @@ namespace LiveKit.Rooms.Streaming.Audio
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            // We need to pass the exact 10ms chunks, otherwise - crash
-            // Example
-            // #                                                                                             
-            // # Fatal error in: ../common_audio/resampler/push_sinc_resampler.cc, line 52                   
-            // # last system error: 1                                                                        
-            // # Check failed: source_length == resampler_->request_frames() (1104 vs. 480)                  
-            // #   
 
-            using var rawFrame = new OwnedAudioFrame(e.FrameReceived!.Frame!);
+            Queue.Enqueue(this, e.FrameReceived.Frame);
 
-            if (targetChannels == 0 || targetSampleRate == 0) return;
-            using var frame = audioResampler.RemixAndResample(rawFrame, (uint)targetChannels, (uint)targetSampleRate);
-            using var guard = buffer.Lock();
-            guard.Value.Write(frame.AsPCMSampleSpan(), frame.NumChannels, frame.SampleRate);
+            // TODO
+            // SIMD integration
+            // MOVE UNITY sampling to buffer already, don't do it on audio thread
+        }
+
+        private class ResampleQueue
+        {
+            private readonly BlockingCollection<(AudioStream author, OwnedAudioFrameBuffer buffer)> bufferQueue = new();
+            private readonly AudioResampler audioResampler = AudioResampler.New();
+            private readonly HashSet<AudioStream> registeredStreams = new();
+
+            private Thread? thread;
+
+            public void Register(AudioStream audioStream)
+            {
+                lock (registeredStreams)
+                {
+                    registeredStreams.Add(audioStream);
+                    if (thread == null)
+                    {
+                        StartThread();
+                    }
+                }
+            }
+
+            public void UnRegister(AudioStream audioStream)
+            {
+                lock (registeredStreams)
+                {
+                    registeredStreams.Remove(audioStream);
+                    if (registeredStreams.Count == 0)
+                    {
+                        thread?.Abort();
+                        thread = null;
+                    }
+                }
+            }
+
+            public void Enqueue(AudioStream stream, OwnedAudioFrameBuffer buffer)
+            {
+                bufferQueue.Add((stream, buffer));
+            }
+
+            private void ProcessCandidate(AudioStream stream, OwnedAudioFrameBuffer buffer)
+            {
+                // We need to pass the exact 10ms chunks, otherwise - crash
+                // Example
+                // #                                                                                             
+                // # Fatal error in: ../common_audio/resampler/push_sinc_resampler.cc, line 52                   
+                // # last system error: 1                                                                        
+                // # Check failed: source_length == resampler_->request_frames() (1104 vs. 480)                  
+                // #   
+                using var rawFrame = new OwnedAudioFrame(buffer);
+
+                if (stream.targetChannels == 0 || stream.targetSampleRate == 0) return;
+                using var frame = audioResampler.RemixAndResample(rawFrame, (uint)stream.targetChannels,
+                    (uint)stream.targetSampleRate);
+                using var guard = stream.buffer.Lock();
+                guard.Value.Write(frame.AsPCMSampleSpan(), frame.NumChannels, frame.SampleRate);
+            }
+
+            private void StartThread()
+            {
+                thread = new Thread(() =>
+                    {
+                        foreach (var (author, ownedAudioFrameBuffer) in bufferQueue.GetConsumingEnumerable())
+                            ProcessCandidate(author, ownedAudioFrameBuffer);
+
+                        // ReSharper disable once FunctionNeverReturns
+                    }
+                );
+                thread.Start();
+            }
         }
     }
 }

@@ -12,8 +12,6 @@ namespace LiveKit.Internal.FFIClients.Requests
         private readonly IMultiPool multiPool;
         private readonly IFFIClient ffiClient;
         private readonly FfiRequest ffiRequest;
-        private readonly Action<FfiRequest> releaseFfiRequest;
-        private readonly Action<T> releaseRequest;
 
         private bool sent;
 
@@ -21,9 +19,7 @@ namespace LiveKit.Internal.FFIClients.Requests
             multiPool.Get<T>(),
             multiPool,
             multiPool.Get<FfiRequest>(),
-            ffiClient,
-            multiPool.Release,
-            multiPool.Release
+            ffiClient
         )
         {
         }
@@ -32,17 +28,13 @@ namespace LiveKit.Internal.FFIClients.Requests
             T request,
             IMultiPool multiPool,
             FfiRequest ffiRequest,
-            IFFIClient ffiClient,
-            Action<FfiRequest> releaseFfiRequest,
-            Action<T> releaseRequest
+            IFFIClient ffiClient
         )
         {
             this.request = request;
             this.multiPool = multiPool;
             this.ffiRequest = ffiRequest;
             this.ffiClient = ffiClient;
-            this.releaseFfiRequest = releaseFfiRequest;
-            this.releaseRequest = releaseRequest;
             sent = false;
         }
 
@@ -68,8 +60,8 @@ namespace LiveKit.Internal.FFIClients.Requests
         public void Dispose()
         {
             ffiRequest.ClearMessage();
-            releaseRequest(request);
-            releaseFfiRequest(ffiRequest);
+            multiPool.Release(request);
+            multiPool.Release(ffiRequest);
         }
     }
 }

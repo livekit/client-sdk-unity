@@ -8,7 +8,7 @@ namespace LiveKit.Rooms.Streaming.Audio
     public struct OwnedAudioFrame : IAudioFrame, IDisposable
     {
         private readonly AudioFrameBufferInfo info;
-        private readonly FfiHandle handle;
+        private LightFfiHandle handle;
 
         public uint NumChannels { get; }
         public uint SampleRate { get; }
@@ -18,7 +18,7 @@ namespace LiveKit.Rooms.Streaming.Audio
 
         public OwnedAudioFrame(OwnedAudioFrameBuffer ownedAudioFrameBuffer)
         {
-            handle = IFfiHandleFactory.Default.NewFfiHandle(ownedAudioFrameBuffer.Handle.Id);
+            handle = new LightFfiHandle(ownedAudioFrameBuffer.Handle.Id);
             info = ownedAudioFrameBuffer.Info;
             SampleRate = info.SampleRate;
             NumChannels = info.NumChannels;

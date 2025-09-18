@@ -79,7 +79,7 @@ namespace LiveKit.Scripts.Audio
 
             if (withPlayback)
             {
-                instance.lateBindPlaybackProxy = PlaybackMicrophoneAudioSource.New(instance);
+                instance.lateBindPlaybackProxy = PlaybackMicrophoneAudioSource.New(instance, name);
             }
 
             return Result<MicrophoneAudioFilter>.SuccessResult(instance);

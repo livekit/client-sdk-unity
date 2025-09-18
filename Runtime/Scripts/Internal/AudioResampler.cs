@@ -2,6 +2,7 @@ using System;
 using LiveKit.Audio;
 using LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients;
 using LiveKit.Internal.FFIClients;
+using LiveKit.Internal.FFIClients.Pools;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Streaming.Audio;
@@ -13,10 +14,12 @@ namespace LiveKit.Internal
     public readonly struct AudioResampler : IDisposable
     {
         private readonly FfiHandle handle;
+        private readonly FFIBridge ffiBridge;
 
-        private AudioResampler(FfiHandle handle)
+        private AudioResampler(FfiHandle handle, FFIBridge ffiBridge)
         {
             this.handle = handle;
+            this.ffiBridge = ffiBridge;
         }
 
         public static AudioResampler New()
@@ -25,7 +28,11 @@ namespace LiveKit.Internal
             using var response = request.Send();
             FfiResponse res = response;
             var handle = IFfiHandleFactory.Default.NewFfiHandle(res.NewAudioResampler!.Resampler!.Handle!.Id);
-            return new AudioResampler(handle);
+            
+            // Thread local pool for performance, default instance is thread safe and has locks
+            FFIBridge bridge = new FFIBridge(FfiClient.Instance, new ThreadLocalMultiPool());
+            
+            return new AudioResampler(handle, bridge);
         }
 
         public void Dispose()
@@ -57,8 +64,7 @@ namespace LiveKit.Internal
                 throw new Exception();
             }
 
-            using FfiRequestWrap<RemixAndResampleRequest>
-                request = FFIBridge.Instance.NewRequest<RemixAndResampleRequest>();
+            using FfiRequestWrap<RemixAndResampleRequest> request = ffiBridge.NewRequest<RemixAndResampleRequest>();
             using SmartWrap<AudioFrameBufferInfo> audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
             RemixAndResampleRequest remix = request.request;
             remix.ResamplerHandle = (ulong)handle.DangerousGetHandle();

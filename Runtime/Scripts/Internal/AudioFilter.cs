@@ -6,6 +6,8 @@ namespace LiveKit
     // from https://github.com/Unity-Technologies/com.unity.webrtc
     public class AudioFilter : MonoBehaviour, IAudioFilter
     {
+        [SerializeField] private bool silenceAfterCapture;
+        
         private int _sampleRate;
 
         private void OnEnable()
@@ -26,8 +28,18 @@ namespace LiveKit
 
         private void OnAudioFilterRead(float[] data, int channels)
         {
+            Span<float> span = data.AsSpan();
             // Called by Unity on the Audio thread
-            AudioRead?.Invoke(data.AsSpan(), channels, _sampleRate);
+            AudioRead?.Invoke(span, channels, _sampleRate);
+            if (silenceAfterCapture)
+            {
+                span.Clear();
+            }
+        }
+
+        public void EnableSilenceAfterCapture()
+        {
+            silenceAfterCapture = true;
         }
 
         // Event is called from the Unity audio thread

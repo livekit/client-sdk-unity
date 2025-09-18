@@ -224,10 +224,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 895321987}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6265f833a9d24ad4bf835912f0b38dce, type: 3}
+  m_Script: {fileID: 11500000, guid: 910671c2521449a3bc58e1c54d77e20d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  microphoneName: Microphone Array (Realtek(R) Audio)
+  audioClip: {fileID: 8300000, guid: 2215cac0cd3f0469d85d9940223b037d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

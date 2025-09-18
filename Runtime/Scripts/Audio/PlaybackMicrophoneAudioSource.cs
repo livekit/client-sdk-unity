@@ -15,23 +15,23 @@ namespace LiveKit.Audio
         private readonly Mutex<NativeAudioBuffer> microphoneBuffer = new(new NativeAudioBuffer(30));
 
         private readonly AudioResampler audioResampler = AudioResampler.New();
-        private MicrophoneAudioFilter? microphoneAudioFilter;
+        private IAudioFilter? microphoneAudioFilter;
 
         private uint outputSampleRate;
         private uint targetChannels;
 
         private bool disposed;
 
-        private void Construct(MicrophoneAudioFilter newMicrophoneAudioFilter)
+        private void Construct(IAudioFilter newMicrophoneAudioFilter)
         {
             microphoneAudioFilter = newMicrophoneAudioFilter;
             microphoneAudioFilter.AudioRead += MicrophoneAudioFilterOnAudioRead;
             outputSampleRate = (uint)AudioSettings.outputSampleRate;
         }
 
-        public static PlaybackMicrophoneAudioSource New(MicrophoneAudioFilter microphoneAudioFilter)
+        public static PlaybackMicrophoneAudioSource New(IAudioFilter microphoneAudioFilter, string name)
         {
-            var gm = new GameObject(nameof(PlaybackMicrophoneAudioSource) + " - " + microphoneAudioFilter.Name);
+            var gm = new GameObject(nameof(PlaybackMicrophoneAudioSource) + " - " + name);
             var source = gm.AddComponent<AudioSource>();
             var playback = gm.AddComponent<PlaybackMicrophoneAudioSource>();
             playback.Construct(microphoneAudioFilter);
