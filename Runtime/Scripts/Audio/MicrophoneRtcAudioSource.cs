@@ -9,6 +9,7 @@ using LiveKit.Runtime.Scripts.Audio;
 using LiveKit.Scripts.Audio;
 using Livekit.Types;
 using RichTypes;
+using RustAudio;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -34,6 +35,8 @@ namespace LiveKit.Audio
         private readonly CancellationTokenSource audioVolumeLoopCancellationTokenSource;
 
         private readonly FfiHandle handle;
+
+        public MicrophoneInfo MicrophoneInfo => deviceMicrophoneAudioSource.MicrophoneInfo;
 
         public bool IsRecording => deviceMicrophoneAudioSource.IsRecording;
 

@@ -9,11 +9,12 @@ namespace LiveKit.Scripts.Audio
 {
     public class MicrophoneAudioFilter : IAudioFilter, IDisposable
     {
-        public readonly MicrophoneInfo microphoneInfo;
         private readonly RustAudioSource native;
         private PlaybackMicrophoneAudioSource? lateBindPlaybackProxy;
 
         private bool disposed;
+
+        public MicrophoneInfo MicrophoneInfo => native.microphoneInfo;
 
         public bool IsRecording => native.IsRecording;
 
@@ -23,7 +24,6 @@ namespace LiveKit.Scripts.Audio
 
         private MicrophoneAudioFilter(RustAudioSource native)
         {
-            microphoneInfo = native.microphoneInfo;
             this.native = native;
 
             native.AudioRead += NativeOnAudioRead;
@@ -84,7 +84,8 @@ namespace LiveKit.Scripts.Audio
 
         private void NativeOnAudioRead(Span<float> data)
         {
-            AudioRead?.Invoke(data, (int)microphoneInfo.channels, (int)microphoneInfo.sampleRate);
+            MicrophoneInfo info = MicrophoneInfo;
+            AudioRead?.Invoke(data, (int)info.channels, (int)info.sampleRate);
         }
 
         public void StartCapture()
