@@ -43,9 +43,9 @@ public static class RustAudioTools
         {
             var source = rustAudioSource.Value!;
             sb.Append(rustAudioSource.Key)
-                .Append(": name - ").Append(source.name)
-                .Append(", sampleRate - ").Append(source.sampleRate)
-                .Append(", channels - ").Append(source.channels)
+                .Append(": name - ").Append(source.microphoneInfo.name)
+                .Append(", sampleRate - ").Append(source.microphoneInfo.sampleRate)
+                .Append(", channels - ").Append(source.microphoneInfo.channels)
                 .Append(", recording - ").Append(source.IsRecording)
                 .AppendLine();
         }

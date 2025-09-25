@@ -116,18 +116,29 @@ namespace RustAudio
             }
 
             return Result<RustAudioSource>.SuccessResult(
-                new RustAudioSource(deviceName, result.streamId, result.sampleRate, result.channels)
+                new RustAudioSource(new MicrophoneInfo(deviceName, result.sampleRate, result.channels), result.streamId)
             );
         }
     }
 
+    public readonly struct MicrophoneInfo
+    {
+        public readonly string name;
+        public readonly uint sampleRate;
+        public readonly uint channels;
+
+        public MicrophoneInfo(string name, uint sampleRate, uint channels)
+        {
+            this.name = name;
+            this.sampleRate = sampleRate;
+            this.channels = channels;
+        }
+    }
 
     public class RustAudioSource : IDisposable
     {
         private readonly ulong streamId;
-        public readonly string name;
-        public readonly uint sampleRate;
-        public readonly uint channels;
+        public readonly MicrophoneInfo microphoneInfo;
 
         private readonly CancellationTokenSource cancellationTokenSource;
 
@@ -137,12 +148,10 @@ namespace RustAudio
 
         public bool IsRecording { get; private set; }
 
-        internal RustAudioSource(string name, ulong streamId, uint sampleRate, uint channels)
+        internal RustAudioSource(MicrophoneInfo microphoneInfo, ulong streamId)
         {
-            this.name = name;
             this.streamId = streamId;
-            this.sampleRate = sampleRate;
-            this.channels = channels;
+            this.microphoneInfo = microphoneInfo;
             IsRecording = false;
 
             Debug.Log("RustAudioSource new");
@@ -206,7 +215,7 @@ namespace RustAudio
             var message = NativeMethods.PtrToStringAndFree(result.errorMessage);
             if (message.Has)
             {
-                Debug.LogError($"Cannot start microphone stream '{name}' due error: {message.Value}");
+                Debug.LogError($"Cannot start microphone stream '{microphoneInfo.name}' due error: {message.Value}");
                 return;
             }
 
@@ -223,7 +232,7 @@ namespace RustAudio
             Option<string> message = NativeMethods.PtrToStringAndFree(result.errorMessage);
             if (message.Has)
             {
-                Debug.LogError($"Cannot pause microphone stream '{name}' due error: {message.Value}");
+                Debug.LogError($"Cannot pause microphone stream '{microphoneInfo.name}' due error: {message.Value}");
                 return;
             }
 
