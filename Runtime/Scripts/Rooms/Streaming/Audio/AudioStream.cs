@@ -110,14 +110,14 @@ namespace LiveKit.Rooms.Streaming.Audio
             private readonly AudioResampler audioResampler = AudioResampler.New();
             private readonly HashSet<AudioStream> registeredStreams = new();
 
-            private Thread? thread;
+            private CancellationTokenSource? cancellationTokenSource;
 
             public void Register(AudioStream audioStream)
             {
                 lock (registeredStreams)
                 {
                     registeredStreams.Add(audioStream);
-                    if (thread == null)
+                    if (cancellationTokenSource == null)
                     {
                         StartThread();
                     }
@@ -131,8 +131,8 @@ namespace LiveKit.Rooms.Streaming.Audio
                     registeredStreams.Remove(audioStream);
                     if (registeredStreams.Count == 0)
                     {
-                        thread?.Abort();
-                        thread = null;
+                        cancellationTokenSource?.Cancel();
+                        cancellationTokenSource = null;
                     }
                 }
             }
@@ -162,15 +162,21 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             private void StartThread()
             {
-                thread = new Thread(() =>
+                var token = cancellationTokenSource = new CancellationTokenSource();
+                new Thread(() =>
                     {
-                        foreach (var (author, ownedAudioFrameBuffer) in bufferQueue.GetConsumingEnumerable())
-                            ProcessCandidate(author, ownedAudioFrameBuffer);
-
-                        // ReSharper disable once FunctionNeverReturns
+                        try
+                        {
+                            foreach (var (author, ownedAudioFrameBuffer)
+                                     in bufferQueue.GetConsumingEnumerable(token.Token)!)
+                                ProcessCandidate(author, ownedAudioFrameBuffer);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            // Expected
+                        }
                     }
-                );
-                thread.Start();
+                ).Start();
             }
         }
     }
