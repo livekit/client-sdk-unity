@@ -1,45 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
+using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
+using RichTypes;
 
 namespace LiveKit.Rooms.Streaming
 {
-    public abstract class Streams<T> : IStreams<T> where T : class, IDisposable
+    public abstract class Streams<T, TInfo> : IStreams<T, TInfo> where T : class, IDisposable
     {
-        [Serializable]
-        private readonly struct Key : IEquatable<Key>
-        {
-            public readonly string identity;
-            public readonly string sid;
-
-            public Key(string identity, string sid)
-            {
-                this.identity = identity;
-                this.sid = sid;
-            }
-
-            public bool Equals(Key other) =>
-                identity == other.identity
-                && sid == other.sid;
-
-            public override bool Equals(object? obj)
-            {
-                return obj is Key other && Equals(other);
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(identity, sid);
-            }
-        }
-
         private readonly TrackKind requiredKind;
         private readonly IParticipantsHub participantsHub;
-        private readonly Dictionary<Key, T> streams = new();
-        private readonly Dictionary<T, Key> reverseLookup = new();
-        private bool isDisposing = false;
+        private readonly Dictionary<StreamKey, Owned<T>> streams = new();
+
+        private Room? room;
+        private bool isDisposed;
 
         public Streams(IParticipantsHub participantsHub, TrackKind requiredKind)
         {
@@ -47,47 +24,92 @@ namespace LiveKit.Rooms.Streaming
             this.requiredKind = requiredKind;
         }
 
-        public WeakReference<T>? ActiveStream(string identity, string sid)
+        public void Dispose()
         {
             lock (this)
             {
-                var key = new Key(identity, sid);
-                if (streams.TryGetValue(key, out var stream) == false)
+                if (isDisposed) Utils.Error("Attempt to dispose an already disposed Streams instance");
+                Free();
+
+                if (room != null)
                 {
-                    var participant = participantsHub.RemoteParticipant(identity);
-                    
-                    if (participant == null)
-                        if (identity == participantsHub.LocalParticipant().Identity)
-                            participant = participantsHub.LocalParticipant();
-                        else
-                            return null;        
-                    
-                    if (participant.Tracks.TryGetValue(sid, out var trackPublication) == false)
-                        return null;
-
-                    if (trackPublication!.Track == null || trackPublication.Track!.Kind != requiredKind)
-                        return null;
-
-                    var track = trackPublication.Track!;
-
-                    streams[key] = stream = NewStreamInstance(track);
-                    reverseLookup[stream] = key;
+                    room.TrackUnpublished -= RoomOnTrackUnpublished;
                 }
 
-                return new WeakReference<T>(stream);
+                isDisposed = true;
             }
         }
 
-        public bool Release(T stream)
+        public void AssignRoom(Room newRoom)
         {
             lock (this)
             {
-                if (isDisposing) return false;
-                
-                if (reverseLookup.TryGetValue(stream, out var key))
+                if (room != null)
                 {
+                    throw new Exception("Cannot reassign room");
+                }
+
+                room = newRoom;
+                room.TrackUnpublished += RoomOnTrackUnpublished;
+            }
+        }
+
+        private void RoomOnTrackUnpublished(TrackPublication publication, Participant participant)
+        {
+            Release(new StreamKey(participant.Identity, publication.Sid));
+        }
+
+        public Weak<T> ActiveStream(StreamKey key)
+        {
+            lock (this)
+            {
+                if (isDisposed)
+                {
+                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    return Weak<T>.Null;
+                }
+
+                if (streams.TryGetValue(key, out Owned<T>? stream) == false)
+                {
+                    var participant = participantsHub.RemoteParticipant(key.identity);
+
+                    if (participant == null)
+                        if (key.identity == participantsHub.LocalParticipant().Identity)
+                            participant = participantsHub.LocalParticipant();
+                        else
+                            return Weak<T>.Null;
+
+                    if (participant.Tracks.TryGetValue(key.sid, out var trackPublication) == false)
+                        return Weak<T>.Null;
+
+                    if (trackPublication!.Track == null || trackPublication.Track!.Kind != requiredKind)
+                        return Weak<T>.Null;
+
+                    var track = trackPublication.Track!;
+
+                    streams[key] = stream = new Owned<T>(NewStreamInstance(key, track));
+                    return stream.Downgrade();
+                }
+
+                return stream!.Downgrade();
+            }
+        }
+
+        public bool Release(StreamKey key)
+        {
+            lock (this)
+            {
+                if (isDisposed)
+                {
+                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    return false;
+                }
+
+                if (streams.TryGetValue(key, out Owned<T> stream))
+                {
+                    stream!.Dispose(out T? inner);
+                    inner!.Dispose();
                     streams.Remove(key);
-                    reverseLookup.Remove(stream);
                     return true;
                 }
 
@@ -99,14 +121,42 @@ namespace LiveKit.Rooms.Streaming
         {
             lock (this)
             {
-                isDisposing = true;
-                foreach (var stream in streams.Values) stream.Dispose();
+                if (isDisposed)
+                {
+                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                }
+
+                foreach (Owned<T> stream in streams.Values)
+                {
+                    stream.Dispose(out T? inner);
+                    inner!.Dispose();
+                }
+
                 streams.Clear();
-                reverseLookup.Clear();
-                isDisposing = false;
             }
         }
 
-        protected abstract T NewStreamInstance(ITrack track);
+        public void ListInfo(List<StreamInfo<TInfo>> output)
+        {
+            lock (this)
+            {
+                if (isDisposed)
+                {
+                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    return;
+                }
+
+                output.Clear();
+
+                foreach ((var key, Owned<T> value) in streams)
+                {
+                    output.Add(new StreamInfo<TInfo>(key, InfoFromStream(value.Resource)));
+                }
+            }
+        }
+
+        protected abstract TInfo InfoFromStream(T stream);
+
+        protected abstract T NewStreamInstance(StreamKey streamKey, ITrack track);
     }
 }

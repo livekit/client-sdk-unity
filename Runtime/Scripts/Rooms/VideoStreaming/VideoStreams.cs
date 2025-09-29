@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace LiveKit.Rooms.VideoStreaming
 {
-    public class VideoStreams : Streams<IVideoStream>, IVideoStreams
+    public class VideoStreams : Streams<IVideoStream, VideoStreamInfo>, IVideoStreams
     {
         private readonly VideoBufferType bufferType;
         private readonly TextureFormat textureFormat;
@@ -29,7 +29,7 @@ namespace LiveKit.Rooms.VideoStreaming
                 _ => throw new Exception($"Format conversion for {videoBufferType} is not supported")
             };
 
-        protected override IVideoStream NewStreamInstance(ITrack track)
+        protected override IVideoStream NewStreamInstance(StreamKey streamKey, ITrack track)
         {
             using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
             var newVideoStream = request.request;
@@ -41,7 +41,12 @@ namespace LiveKit.Rooms.VideoStreaming
             FfiResponse res = response;
 
             var streamInfo = res.NewVideoStream!.Stream;
-            return new VideoStream(this, streamInfo!, textureFormat);
+            return new VideoStream(streamInfo!, textureFormat);
+        }
+
+        protected override VideoStreamInfo InfoFromStream(IVideoStream stream)
+        {
+            return new VideoStreamInfo();
         }
     }
 }

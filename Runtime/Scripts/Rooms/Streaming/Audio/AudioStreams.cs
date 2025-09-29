@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace LiveKit.Rooms.Streaming.Audio
 {
-    public class AudioStreams : Streams<IAudioStream>, IAudioStreams
+    public class AudioStreams : Streams<AudioStream, AudioStreamInfo>, IAudioStreams
     {
         public AudioStreams(IParticipantsHub participantsHub) : base(participantsHub, TrackKind.KindAudio)
         {
         }
 
-        protected override IAudioStream NewStreamInstance(ITrack track)
+        protected override AudioStream NewStreamInstance(StreamKey streamKey, ITrack track)
         {
             using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
             var newStream = request.request;
@@ -32,12 +32,18 @@ namespace LiveKit.Rooms.Streaming.Audio
             }
 
             newStream.NumChannels = 2;
+            AudioStreamInfo audioStreamInfo = new AudioStreamInfo(newStream.NumChannels, newStream.SampleRate);
 
             using var response = request.Send();
             FfiResponse res = response;
 
             var streamInfo = res.NewAudioStream!.Stream;
-            return new AudioStream(this, streamInfo!);
+            return new AudioStream(streamInfo!, audioStreamInfo);
+        }
+
+        protected override AudioStreamInfo InfoFromStream(AudioStream stream)
+        {
+            return stream.audioStreamInfo;
         }
     }
 }

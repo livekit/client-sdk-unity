@@ -1,4 +1,5 @@
 ﻿using System;
+using RichTypes;
 using UnityEngine;
 
 namespace LiveKit.Rooms.Streaming.Audio
@@ -8,7 +9,7 @@ namespace LiveKit.Rooms.Streaming.Audio
         private static ulong counter;
 
         private int sampleRate;
-        private WeakReference<IAudioStream>? stream;
+        private Weak<AudioStream> stream = Weak<AudioStream>.Null;
         private AudioSource audioSource = null!;
 
         public static LivekitAudioSource New(bool explicitName = false)
@@ -21,14 +22,14 @@ namespace LiveKit.Rooms.Streaming.Audio
             return source;
         }
 
-        public void Construct(WeakReference<IAudioStream> audioStream)
+        public void Construct(Weak<AudioStream> audioStream)
         {
             stream = audioStream;
         }
 
         public void Free()
         {
-            stream = null;
+            stream = Weak<AudioStream>.Null;
         }
 
         public void Play()
@@ -65,10 +66,8 @@ namespace LiveKit.Rooms.Streaming.Audio
         // Called by Unity on the Audio thread
         private void OnAudioFilterRead(float[] data, int channels)
         {
-            if (stream != null && stream.TryGetTarget(out var s))
-            {
-                s?.ReadAudio(data.AsSpan(), channels, sampleRate);
-            }
+            Option<AudioStream> resource = stream.Resource;
+            if (resource.Has) resource.Value.ReadAudio(data.AsSpan(), channels, sampleRate);
         }
     }
 }

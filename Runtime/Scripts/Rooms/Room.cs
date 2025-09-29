@@ -124,6 +124,8 @@ namespace LiveKit.Rooms
             this.audioStreams = audioStreams;
             this.audioTracks = audioTracks ?? new AudioTracks(tracksFactory, this);
             dataPipe.Assign(participantsHub);
+            videoStreams.AssignRoom(this);
+            audioStreams.AssignRoom(this);
         }
 
         public void UpdateLocalMetadata(string metadata)

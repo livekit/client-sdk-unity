@@ -11,6 +11,7 @@ using LiveKit.Audio;
 using LiveKit.Proto;
 using LiveKit.Rooms;
 using LiveKit.Rooms.Participants;
+using LiveKit.Rooms.Streaming;
 using LiveKit.Rooms.Streaming.Audio;
 using LiveKit.Runtime.Scripts.Audio;
 using RichTypes;
@@ -22,7 +23,7 @@ public class ExampleRoom : MonoBehaviour
     private Room? m_Room;
     private MicrophoneRtcAudioSource? microphoneSource;
 
-    private readonly Dictionary<IAudioStream, LivekitAudioSource> sourcesMap = new();
+    private readonly Dictionary<AudioStream, LivekitAudioSource> sourcesMap = new();
     private readonly List<(Room room, IRtcAudioSource bot)> botInstances = new();
 
     public Dropdown MicrophoneDropdownMenu;
@@ -52,19 +53,17 @@ public class ExampleRoom : MonoBehaviour
             var participant = m_Room.Participants.RemoteParticipant(remoteParticipantIdentity)!;
             foreach (var (key, value) in participant.Tracks)
             {
-                var track = m_Room.AudioStreams.ActiveStream(remoteParticipantIdentity, key!);
-                if (track != null)
+                var track = m_Room.AudioStreams.ActiveStream(new StreamKey(remoteParticipantIdentity, key!));
+                if (track.Resource.Has)
                 {
-                    if (track.TryGetTarget(out var audioStream))
+                    var audioStream = track.Resource.Value;
+                    if (sourcesMap.ContainsKey(audioStream) == false)
                     {
-                        if (sourcesMap.ContainsKey(audioStream) == false)
-                        {
-                            var livekitAudioSource = LivekitAudioSource.New(true);
-                            livekitAudioSource.Construct(track);
-                            livekitAudioSource.Play();
-                            Debug.Log($"Participant {remoteParticipantIdentity} added track {key}");
-                            sourcesMap[audioStream] = livekitAudioSource;
-                        }
+                        var livekitAudioSource = LivekitAudioSource.New(true);
+                        livekitAudioSource.Construct(track);
+                        livekitAudioSource.Play();
+                        Debug.Log($"Participant {remoteParticipantIdentity} added track {key}");
+                        sourcesMap[audioStream] = livekitAudioSource;
                     }
                 }
             }
@@ -75,7 +74,7 @@ public class ExampleRoom : MonoBehaviour
     {
         enableAudioSources.onValueChanged.AddListener(v =>
         {
-            foreach (KeyValuePair<IAudioStream, LivekitAudioSource> pair in sourcesMap)
+            foreach (KeyValuePair<AudioStream, LivekitAudioSource> pair in sourcesMap)
             {
                 if (v) pair.Value.Play();
                 else pair.Value.Stop();

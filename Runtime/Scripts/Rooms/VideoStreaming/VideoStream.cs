@@ -1,29 +1,31 @@
 using LiveKit.Internal;
 using LiveKit.Proto;
+using LiveKit.Rooms.Streaming;
 using UnityEngine;
 
 namespace LiveKit.Rooms.VideoStreaming
 {
     public class VideoStream : IVideoStream
     {
-        private readonly IVideoStreams videoStreams;
         private readonly TextureFormat textureFormat;
         private readonly FfiHandle handle;
-        private readonly VideoStreamInfo info;
+        private readonly LiveKit.Proto.VideoStreamInfo info;
 
         private Texture2D? lastDecoded;
         private VideoLastFrame? lastFrame;
         private bool disposed;
 
-        public VideoStream(IVideoStreams videoStreams, OwnedVideoStream ownedVideoStream, TextureFormat textureFormat)
+        public VideoStream(OwnedVideoStream ownedVideoStream, TextureFormat textureFormat)
         {
-            this.videoStreams = videoStreams;
             this.textureFormat = textureFormat;
             handle = IFfiHandleFactory.Default.NewFfiHandle(ownedVideoStream.Handle!.Id);
             info = ownedVideoStream.Info!;
             FfiClient.Instance.VideoStreamEventReceived += OnVideoStreamEvent;
         }
 
+        /// <summary>
+        /// Supposed to be disposed ONLY by VideoStreams
+        /// </summary>
         public void Dispose()
         {
             if (disposed)
@@ -33,7 +35,6 @@ namespace LiveKit.Rooms.VideoStreaming
             handle.Dispose();
             if (lastDecoded != null) Object.Destroy(lastDecoded);
             FfiClient.Instance.VideoStreamEventReceived -= OnVideoStreamEvent;
-            videoStreams.Release(this);
         }
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
@@ -89,5 +90,9 @@ namespace LiveKit.Rooms.VideoStreaming
                 return lastDecoded;
             }
         }
+    }
+
+    public readonly struct VideoStreamInfo
+    {
     }
 }

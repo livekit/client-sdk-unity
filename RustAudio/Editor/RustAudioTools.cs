@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using LiveKit.Scripts.Audio;
+using RichTypes;
 using RustAudio;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +20,15 @@ public static class RustAudioTools
         foreach (var name in array)
         {
             sb.AppendLine(name);
+
+            Result<string[]> options = RustAudioClient.DeviceQualityOptions(name);
+            if (options.Success)
+            {
+                foreach (string quality in options.Value)
+                {
+                    sb.Append("- ").AppendLine(quality);
+                }
+            }
         }
 
         Debug.Log(sb.ToString());

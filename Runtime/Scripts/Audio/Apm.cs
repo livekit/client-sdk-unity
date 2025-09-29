@@ -10,6 +10,7 @@ namespace LiveKit.Audio
     public class Apm : IDisposable
     {
         private readonly FfiHandle apmHandle;
+        private bool disposed;
 
         public Apm(
             bool echoCancellerEnabled,
@@ -37,7 +38,11 @@ namespace LiveKit.Audio
         {
             lock (this)
             {
+                if (disposed)
+                    return;
+
                 apmHandle.Dispose();
+                disposed = true;
             }
         }
 
@@ -48,6 +53,9 @@ namespace LiveKit.Audio
         {
             lock (this)
             {
+                if (disposed)
+                    return Result.ErrorResult("APM instance is already disposed");
+
                 unsafe
                 {
                     fixed (void* ptr = frame.data)
@@ -80,6 +88,9 @@ namespace LiveKit.Audio
         {
             lock (this)
             {
+                if (disposed)
+                    return Result.ErrorResult("APM instance is already disposed");
+
                 unsafe
                 {
                     fixed (void* ptr = apmFrame.data)
@@ -108,6 +119,9 @@ namespace LiveKit.Audio
         {
             lock (this)
             {
+                if (disposed)
+                    return Result.ErrorResult("APM instance is already disposed");
+
                 using var apmRequest = FFIBridge.Instance.NewRequest<LiveKit.Proto.ApmSetStreamDelayRequest>();
                 apmRequest.request.ApmHandle = (ulong)apmHandle.DangerousGetHandle().ToInt64();
                 apmRequest.request.DelayMs = delayMs;

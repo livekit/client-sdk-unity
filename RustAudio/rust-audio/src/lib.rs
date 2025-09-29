@@ -10,7 +10,7 @@ use lazy_static::lazy_static;
 use std::{
     ffi::{CStr, CString},
     os::raw::{c_char, c_void},
-    ptr::{self},
+    ptr::{self, null},
     sync::{Arc, atomic::AtomicU64},
 };
 
@@ -41,6 +41,13 @@ pub struct Status {
 #[repr(C)]
 pub struct DeviceNamesResult {
     pub names: *const *const c_char,
+    pub length: i32,
+    pub error_message: *const c_char,
+}
+
+#[repr(C)]
+pub struct QualityOptionsResult {
+    pub options: *const *const c_char,
     pub length: i32,
     pub error_message: *const c_char,
 }
@@ -210,32 +217,99 @@ fn rust_audio_input_device_names_internal() -> Result<Vec<String>> {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_audio_input_stream_new(device_name: *const c_char) -> InputStreamResult {
-    {
-        if device_name.is_null() {
-            return InputStreamResult::error("Device name is null");
+pub extern "C" fn rust_audio_device_quality_options(
+    device_name: *const c_char,
+) -> QualityOptionsResult {
+    if device_name.is_null() {
+        return QualityOptionsResult {
+            options: null(),
+            length: 0,
+            error_message: string_to_c_bytes("Device name is null"),
+        };
+    }
+
+    unsafe {
+        let cstr = CStr::from_ptr(device_name);
+        let device_name = match cstr.to_str() {
+            Ok(name) => name,
+            Err(_) => {
+                return QualityOptionsResult {
+                    options: null(),
+                    length: 0,
+                    error_message: string_to_c_bytes("Invalid UTF-8 in device name"),
+                };
+            }
+        };
+        let result = rust_audio_device_quality_options_internal(device_name);
+        match result {
+            Ok(options) => {
+                return QualityOptionsResult {
+                    error_message: ptr::null(),
+                    length: options.len() as i32,
+                    options: vec_to_c_array(options),
+                };
+            }
+            Err(e) => {
+                return QualityOptionsResult {
+                    options: ptr::null(),
+                    length: 0,
+                    error_message: string_to_c_bytes(&e.to_string()),
+                };
+            }
         }
+    }
+}
 
-        unsafe {
-            let cstr = CStr::from_ptr(device_name);
-            let device_name = match cstr.to_str() {
-                Ok(name) => name,
-                Err(_) => {
-                    return InputStreamResult::error("Invalid UTF-8 in device name");
-                }
-            };
+fn rust_audio_device_quality_options_internal(device_name: &str) -> Result<Vec<String>> {
+    let host = cpal::default_host();
+    let device = host
+        .input_devices()
+        .context("cannot get input devices")?
+        .find(|d| d.name().unwrap_or_default() == device_name)
+        .ok_or(anyhow!("device with specified name not found"))?;
 
-            match rust_audio_input_stream_new_internal(device_name) {
-                Ok(s) => {
-                    let stream_id = s.0;
-                    let config = s.1;
+    let list = device
+        .supported_input_configs()
+        .context("device doesn't have supported configs")?
+        .map(|e| {
+            format!(
+                "channels: {}, sample_rate: {:?}, sample_format: {}, buffer_size: {:?}",
+                e.channels(),
+                e.max_sample_rate(),
+                e.sample_format(),
+                e.buffer_size(),
+            )
+        })
+        .collect();
 
-                    InputStreamResult::ok(stream_id, config.sample_rate.0, config.channels as u32)
-                }
-                Err(e) => {
-                    let message = e.to_string();
-                    InputStreamResult::error(message.as_str())
-                }
+    Ok(list)
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn rust_audio_input_stream_new(device_name: *const c_char) -> InputStreamResult {
+    if device_name.is_null() {
+        return InputStreamResult::error("Device name is null");
+    }
+
+    unsafe {
+        let cstr = CStr::from_ptr(device_name);
+        let device_name = match cstr.to_str() {
+            Ok(name) => name,
+            Err(_) => {
+                return InputStreamResult::error("Invalid UTF-8 in device name");
+            }
+        };
+
+        match rust_audio_input_stream_new_internal(device_name) {
+            Ok(s) => {
+                let stream_id = s.0;
+                let config = s.1;
+
+                InputStreamResult::ok(stream_id, config.sample_rate.0, config.channels as u32)
+            }
+            Err(e) => {
+                let message = e.to_string();
+                InputStreamResult::error(message.as_str())
             }
         }
     }
@@ -260,6 +334,8 @@ fn rust_audio_input_stream_new_internal(device_name: &str) -> Result<(StreamId, 
     let next_id = NEXT_STREAM_ID.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
     let moved_id = next_id;
 
+    // both 2 audio callbacks must be lightweight and NOT call to other callbacks
+    // callbacks used from audio thread and if call is heavy OS may kill the app
     let stream = device
         .build_input_stream(
             &config,
@@ -269,14 +345,7 @@ fn rust_audio_input_stream_new_internal(device_name: &str) -> Result<(StreamId, 
                     let _ = channel.0.try_send(data);
                 }
             },
-            |e| {
-                let content = e.to_string();
-                let c_content = CString::new(content).unwrap_or_default();
-
-                if let Some(cb) = **ERROR_CALLBACK.load() {
-                    cb(c_content.as_ptr());
-                }
-            },
+            |e| eprintln!("error on stream: {e}"),
             None,
         )
         .context("cannot build input stream")?;
