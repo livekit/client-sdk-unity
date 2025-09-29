@@ -192,7 +192,11 @@ pub extern "C" fn rust_audio_input_device_names() -> DeviceNamesResult {
         Ok(names) => DeviceNamesResult {
             error_message: ptr::null(),
             length: names.len() as i32,
-            names: vec_to_c_array(names),
+            names: if names.len() > 0 {
+                vec_to_c_array(names)
+            } else {
+                ptr::null()
+            },
         },
         Err(e) => DeviceNamesResult {
             names: ptr::null(),
