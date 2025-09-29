@@ -136,6 +136,11 @@ namespace RustAudio
                 return Result<string[]>.ErrorResult(error.Value);
             }
 
+            if (res.length == 0)
+            {
+                return Result<string[]>.SuccessResult(Array.Empty<string>());
+            }
+
             var result = new string[res.length];
             var ptrArray = new IntPtr[res.length];
             Marshal.Copy(res.names, ptrArray, 0, res.length);
