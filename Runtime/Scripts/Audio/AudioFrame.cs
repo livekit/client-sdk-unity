@@ -1,7 +1,5 @@
 using System;
-using LiveKit.Proto;
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Runtime.InteropServices;

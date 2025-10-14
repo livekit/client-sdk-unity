@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
+using LiveKit.Rooms.Streaming;
 using LiveKit.Rooms.Streaming.Audio;
 using LiveKit.Runtime.Scripts.Audio;
 using LiveKit.Scripts.Audio;
@@ -17,10 +18,13 @@ namespace LiveKit.Audio
 {
     public class MicrophoneRtcAudioSource : IRtcAudioSource, IDisposable
     {
-        private const int DEFAULT_NUM_CHANNELS = 2;
-
         private readonly AudioResampler audioResampler = AudioResampler.New();
-        private readonly Mutex<NativeAudioBuffer> buffer = new(new NativeAudioBuffer(200));
+        private readonly Mutex<NativeAudioBufferResampleTee> buffer =
+            new(
+                new NativeAudioBufferResampleTee(
+                    new NativeAudioBuffer(200), default, default
+                )
+            );
 
         private MicrophoneAudioFilter deviceMicrophoneAudioSource;
         private readonly bool playbackToSpeakers;
@@ -40,6 +44,16 @@ namespace LiveKit.Audio
 
         public bool IsRecording => deviceMicrophoneAudioSource.IsRecording;
 
+        public WavTeeControl WavTeeControl
+        {
+            get
+            {
+                string raw = StreamKeyUtils.NewPersistentFilePathByName("raw_microphone");
+                string resampled = StreamKeyUtils.NewPersistentFilePathByName("resampled_microphone");
+                return new(buffer, beforeWavFilePath: raw, afterWavFilePath: resampled);
+            }
+        }
+
         private MicrophoneRtcAudioSource(
             MicrophoneAudioFilter deviceMicrophoneAudioSource,
             Apm apm,
@@ -54,7 +68,7 @@ namespace LiveKit.Audio
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = DEFAULT_NUM_CHANNELS;
+            newAudioSource.NumChannels = deviceMicrophoneAudioSource.MicrophoneInfo.channels;
             newAudioSource.SampleRate = SampleRate.Hz48000.valueHz;
 
             using var options = request.TempResource<AudioSourceOptions>();
@@ -204,6 +218,7 @@ namespace LiveKit.Audio
         {
             using var guard = buffer.Lock();
 
+            // TODO should be pooled
             PCMSample[] converted = new PCMSample[data.Length];
 
             // cache to don't access volatile variable for each sample 
@@ -212,9 +227,11 @@ namespace LiveKit.Audio
             for (int i = 0; i < data.Length; i++)
             {
                 var sample = data[i] * volume;
+                // TODO should be SIMD
                 converted[i] = PCMSample.FromUnitySample(sample);
             }
 
+            guard.Value.TryWavTeeBeforeFrame(converted, (uint)channels, (uint)sampleRate);
             guard.Value.Write(converted, (uint)channels, (uint)sampleRate);
             while (true)
             {
@@ -223,7 +240,8 @@ namespace LiveKit.Audio
                 if (frameResult.Has == false) break;
                 using AudioFrame rawFrame = frameResult.Value;
                 using OwnedAudioFrame frame =
-                    audioResampler.LiveKitCompatibleRemixAndResample(rawFrame, DEFAULT_NUM_CHANNELS);
+                    audioResampler.LiveKitCompatibleRemixAndResample(rawFrame);
+                guard.Value.TryWavTeeAfterFrame(frame);
 
                 Span<PCMSample> audioBytes = frame.AsPCMSampleSpan();
 
