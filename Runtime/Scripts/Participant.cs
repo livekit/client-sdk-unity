@@ -207,7 +207,9 @@ namespace LiveKit
         /// - DestinationIdentity: The identity of the participant to call
         /// - Method: Name of the method to call (up to 64 bytes UTF-8)
         /// - Payload: String payload (max 15KiB UTF-8)
-        /// - ResponseTimeout: Maximum time to wait for response (defaults to 10 seconds)</param>
+        /// - ResponseTimeout: Maximum time to wait for response (defaults to 15 seconds)
+        ///   If a value less than 8 seconds is provided, it will be automatically clamped to 8 seconds
+        ///   to ensure sufficient time for round-trip latency buffering.</param>
         /// <returns>
         /// A <see cref="PerformRpcInstruction"/> that completes when the RPC call receives a response or errors.
         /// Check <see cref="PerformRpcInstruction.IsError"/> and access <see cref="PerformRpcInstruction.Payload"/>/<see cref="PerformRpcInstruction.Error"/> properties to handle the result.

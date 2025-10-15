@@ -26,9 +26,12 @@ namespace LiveKit
         public string Payload { get; set; }
 
         /// <summary>
-        /// The maximum time to wait for a response from the remote participant. Default is 10 seconds.
+        /// Timeout for receiving a response after the initial connection (in seconds).
+        /// If a value less than 8s is provided, it will be automatically clamped to 8s
+        /// to ensure sufficient time for round-trip latency buffering.
+        /// Default is 15 seconds.
         /// </summary>
-        public float ResponseTimeout { get; set; } = 10f;
+        public float ResponseTimeout { get; set; } = 15f;
     }
 
     /// <summary>
