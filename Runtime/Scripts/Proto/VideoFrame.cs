@@ -78,17 +78,17 @@ namespace LiveKit.Proto {
             "dHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8K",
             "EE93bmVkVmlkZW9Tb3VyY2USLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5w",
             "cm90by5GZmlPd25lZEhhbmRsZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5w",
-            "cm90by5WaWRlb1NvdXJjZUluZm8qMQoKVmlkZW9Db2RlYxIHCgNWUDgQABII",
-            "CgRIMjY0EAESBwoDQVYxEAISBwoDVlA5EAMqbAoNVmlkZW9Sb3RhdGlvbhIU",
-            "ChBWSURFT19ST1RBVElPTl8wEAASFQoRVklERU9fUk9UQVRJT05fOTAQARIW",
-            "ChJWSURFT19ST1RBVElPTl8xODAQAhIWChJWSURFT19ST1RBVElPTl8yNzAQ",
-            "AyqBAQoPVmlkZW9CdWZmZXJUeXBlEggKBFJHQkEQABIICgRBQkdSEAESCAoE",
-            "QVJHQhACEggKBEJHUkEQAxIJCgVSR0IyNBAEEggKBEk0MjAQBRIJCgVJNDIw",
-            "QRAGEggKBEk0MjIQBxIICgRJNDQ0EAgSCAoESTAxMBAJEggKBE5WMTIQCipZ",
-            "Cg9WaWRlb1N0cmVhbVR5cGUSFwoTVklERU9fU1RSRUFNX05BVElWRRAAEhYK",
-            "ElZJREVPX1NUUkVBTV9XRUJHTBABEhUKEVZJREVPX1NUUkVBTV9IVE1MEAIq",
-            "KgoPVmlkZW9Tb3VyY2VUeXBlEhcKE1ZJREVPX1NPVVJDRV9OQVRJVkUQAEIQ",
-            "qgINTGl2ZUtpdC5Qcm90bw=="));
+            "cm90by5WaWRlb1NvdXJjZUluZm8qOwoKVmlkZW9Db2RlYxIHCgNWUDgQABII",
+            "CgRIMjY0EAESBwoDQVYxEAISBwoDVlA5EAMSCAoESDI2NRAEKmwKDVZpZGVv",
+            "Um90YXRpb24SFAoQVklERU9fUk9UQVRJT05fMBAAEhUKEVZJREVPX1JPVEFU",
+            "SU9OXzkwEAESFgoSVklERU9fUk9UQVRJT05fMTgwEAISFgoSVklERU9fUk9U",
+            "QVRJT05fMjcwEAMqgQEKD1ZpZGVvQnVmZmVyVHlwZRIICgRSR0JBEAASCAoE",
+            "QUJHUhABEggKBEFSR0IQAhIICgRCR1JBEAMSCQoFUkdCMjQQBBIICgRJNDIw",
+            "EAUSCQoFSTQyMEEQBhIICgRJNDIyEAcSCAoESTQ0NBAIEggKBEkwMTAQCRII",
+            "CgROVjEyEAoqWQoPVmlkZW9TdHJlYW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9O",
+            "QVRJVkUQABIWChJWSURFT19TVFJFQU1fV0VCR0wQARIVChFWSURFT19TVFJF",
+            "QU1fSFRNTBACKioKD1ZpZGVvU291cmNlVHlwZRIXChNWSURFT19TT1VSQ0Vf",
+            "TkFUSVZFEABCEKoCDUxpdmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -124,6 +124,7 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("H264")] H264 = 1,
     [pbr::OriginalName("AV1")] Av1 = 2,
     [pbr::OriginalName("VP9")] Vp9 = 3,
+    [pbr::OriginalName("H265")] H265 = 4,
   }
 
   public enum VideoRotation {

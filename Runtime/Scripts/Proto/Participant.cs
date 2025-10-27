@@ -38,14 +38,15 @@ namespace LiveKit.Proto {
             "UlRJQ0lQQU5UX0tJTkRfU1RBTkRBUkQQABIcChhQQVJUSUNJUEFOVF9LSU5E",
             "X0lOR1JFU1MQARIbChdQQVJUSUNJUEFOVF9LSU5EX0VHUkVTUxACEhgKFFBB",
             "UlRJQ0lQQU5UX0tJTkRfU0lQEAMSGgoWUEFSVElDSVBBTlRfS0lORF9BR0VO",
-            "VBAEKqwCChBEaXNjb25uZWN0UmVhc29uEhIKDlVOS05PV05fUkVBU09OEAAS",
+            "VBAEKtcCChBEaXNjb25uZWN0UmVhc29uEhIKDlVOS05PV05fUkVBU09OEAAS",
             "FAoQQ0xJRU5UX0lOSVRJQVRFRBABEhYKEkRVUExJQ0FURV9JREVOVElUWRAC",
             "EhMKD1NFUlZFUl9TSFVURE9XThADEhcKE1BBUlRJQ0lQQU5UX1JFTU9WRUQQ",
             "BBIQCgxST09NX0RFTEVURUQQBRISCg5TVEFURV9NSVNNQVRDSBAGEhAKDEpP",
             "SU5fRkFJTFVSRRAHEg0KCU1JR1JBVElPThAIEhAKDFNJR05BTF9DTE9TRRAJ",
             "Eg8KC1JPT01fQ0xPU0VEEAoSFAoQVVNFUl9VTkFWQUlMQUJMRRALEhEKDVVT",
-            "RVJfUkVKRUNURUQQDBIVChFTSVBfVFJVTktfRkFJTFVSRRANQhCqAg1MaXZl",
-            "S2l0LlByb3Rv"));
+            "RVJfUkVKRUNURUQQDBIVChFTSVBfVFJVTktfRkFJTFVSRRANEhYKEkNPTk5F",
+            "Q1RJT05fVElNRU9VVBAOEhEKDU1FRElBX0ZBSUxVUkUQD0IQqgINTGl2ZUtp",
+            "dC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -119,6 +120,8 @@ namespace LiveKit.Proto {
     /// SIP protocol failure or unexpected response
     /// </summary>
     [pbr::OriginalName("SIP_TRUNK_FAILURE")] SipTrunkFailure = 13,
+    [pbr::OriginalName("CONNECTION_TIMEOUT")] ConnectionTimeout = 14,
+    [pbr::OriginalName("MEDIA_FAILURE")] MediaFailure = 15,
   }
 
   #endregion
