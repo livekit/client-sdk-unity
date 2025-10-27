@@ -31,19 +31,39 @@ namespace LiveKit.Proto {
             "UmVtb3RlVHJhY2tQdWJsaWNhdGlvbkRpbWVuc2lvblJlcXVlc3QSIAoYdHJh",
             "Y2tfcHVibGljYXRpb25faGFuZGxlGAEgAigEEg0KBXdpZHRoGAIgAigNEg4K",
             "BmhlaWdodBgDIAIoDSIvCi1VcGRhdGVSZW1vdGVUcmFja1B1YmxpY2F0aW9u",
-            "RGltZW5zaW9uUmVzcG9uc2VCEKoCDUxpdmVLaXQuUHJvdG8="));
+            "RGltZW5zaW9uUmVzcG9uc2UieQonU2V0UmVtb3RlVHJhY2tQdWJsaWNhdGlv",
+            "blF1YWxpdHlSZXF1ZXN0EiAKGHRyYWNrX3B1YmxpY2F0aW9uX2hhbmRsZRgB",
+            "IAIoBBIsCgdxdWFsaXR5GAIgAigOMhsubGl2ZWtpdC5wcm90by5WaWRlb1F1",
+            "YWxpdHkiKgooU2V0UmVtb3RlVHJhY2tQdWJsaWNhdGlvblF1YWxpdHlSZXNw",
+            "b25zZSpXCgxWaWRlb1F1YWxpdHkSFQoRVklERU9fUVVBTElUWV9MT1cQABIY",
+            "ChRWSURFT19RVUFMSVRZX01FRElVTRABEhYKElZJREVPX1FVQUxJVFlfSElH",
+            "SBACQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoQuality), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.EnableRemoteTrackPublicationRequest), global::LiveKit.Proto.EnableRemoteTrackPublicationRequest.Parser, new[]{ "TrackPublicationHandle", "Enabled" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.EnableRemoteTrackPublicationResponse), global::LiveKit.Proto.EnableRemoteTrackPublicationResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UpdateRemoteTrackPublicationDimensionRequest), global::LiveKit.Proto.UpdateRemoteTrackPublicationDimensionRequest.Parser, new[]{ "TrackPublicationHandle", "Width", "Height" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UpdateRemoteTrackPublicationDimensionResponse), global::LiveKit.Proto.UpdateRemoteTrackPublicationDimensionResponse.Parser, null, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UpdateRemoteTrackPublicationDimensionResponse), global::LiveKit.Proto.UpdateRemoteTrackPublicationDimensionResponse.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetRemoteTrackPublicationQualityRequest), global::LiveKit.Proto.SetRemoteTrackPublicationQualityRequest.Parser, new[]{ "TrackPublicationHandle", "Quality" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetRemoteTrackPublicationQualityResponse), global::LiveKit.Proto.SetRemoteTrackPublicationQualityResponse.Parser, null, null, null, null, null)
           }));
     }
     #endregion
 
   }
+  #region Enums
+  /// <summary>
+  /// Video quality for simulcasted tracks.
+  /// </summary>
+  public enum VideoQuality {
+    [pbr::OriginalName("VIDEO_QUALITY_LOW")] Low = 0,
+    [pbr::OriginalName("VIDEO_QUALITY_MEDIUM")] Medium = 1,
+    [pbr::OriginalName("VIDEO_QUALITY_HIGH")] High = 2,
+  }
+
+  #endregion
+
   #region Messages
   /// <summary>
   /// Enable/Disable a remote track publication
@@ -911,6 +931,437 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void MergeFrom(UpdateRemoteTrackPublicationDimensionResponse other) {
+      if (other == null) {
+        return;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// For tracks that support simulcasting, adjust subscribed quality.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class SetRemoteTrackPublicationQualityRequest : pb::IMessage<SetRemoteTrackPublicationQualityRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<SetRemoteTrackPublicationQualityRequest> _parser = new pb::MessageParser<SetRemoteTrackPublicationQualityRequest>(() => new SetRemoteTrackPublicationQualityRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<SetRemoteTrackPublicationQualityRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackPublicationReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SetRemoteTrackPublicationQualityRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SetRemoteTrackPublicationQualityRequest(SetRemoteTrackPublicationQualityRequest other) : this() {
+      _hasBits0 = other._hasBits0;
+      trackPublicationHandle_ = other.trackPublicationHandle_;
+      quality_ = other.quality_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SetRemoteTrackPublicationQualityRequest Clone() {
+      return new SetRemoteTrackPublicationQualityRequest(this);
+    }
+
+    /// <summary>Field number for the "track_publication_handle" field.</summary>
+    public const int TrackPublicationHandleFieldNumber = 1;
+    private readonly static ulong TrackPublicationHandleDefaultValue = 0UL;
+
+    private ulong trackPublicationHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong TrackPublicationHandle {
+      get { if ((_hasBits0 & 1) != 0) { return trackPublicationHandle_; } else { return TrackPublicationHandleDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        trackPublicationHandle_ = value;
+      }
+    }
+    /// <summary>Gets whether the "track_publication_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTrackPublicationHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "track_publication_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTrackPublicationHandle() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "quality" field.</summary>
+    public const int QualityFieldNumber = 2;
+    private readonly static global::LiveKit.Proto.VideoQuality QualityDefaultValue = global::LiveKit.Proto.VideoQuality.Low;
+
+    private global::LiveKit.Proto.VideoQuality quality_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.VideoQuality Quality {
+      get { if ((_hasBits0 & 2) != 0) { return quality_; } else { return QualityDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        quality_ = value;
+      }
+    }
+    /// <summary>Gets whether the "quality" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQuality {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "quality" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQuality() {
+      _hasBits0 &= ~2;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as SetRemoteTrackPublicationQualityRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(SetRemoteTrackPublicationQualityRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TrackPublicationHandle != other.TrackPublicationHandle) return false;
+      if (Quality != other.Quality) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasTrackPublicationHandle) hash ^= TrackPublicationHandle.GetHashCode();
+      if (HasQuality) hash ^= Quality.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasTrackPublicationHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(TrackPublicationHandle);
+      }
+      if (HasQuality) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Quality);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasTrackPublicationHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(TrackPublicationHandle);
+      }
+      if (HasQuality) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Quality);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasTrackPublicationHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TrackPublicationHandle);
+      }
+      if (HasQuality) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Quality);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(SetRemoteTrackPublicationQualityRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasTrackPublicationHandle) {
+        TrackPublicationHandle = other.TrackPublicationHandle;
+      }
+      if (other.HasQuality) {
+        Quality = other.Quality;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TrackPublicationHandle = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            Quality = (global::LiveKit.Proto.VideoQuality) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TrackPublicationHandle = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            Quality = (global::LiveKit.Proto.VideoQuality) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class SetRemoteTrackPublicationQualityResponse : pb::IMessage<SetRemoteTrackPublicationQualityResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<SetRemoteTrackPublicationQualityResponse> _parser = new pb::MessageParser<SetRemoteTrackPublicationQualityResponse>(() => new SetRemoteTrackPublicationQualityResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<SetRemoteTrackPublicationQualityResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.TrackPublicationReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SetRemoteTrackPublicationQualityResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SetRemoteTrackPublicationQualityResponse(SetRemoteTrackPublicationQualityResponse other) : this() {
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SetRemoteTrackPublicationQualityResponse Clone() {
+      return new SetRemoteTrackPublicationQualityResponse(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as SetRemoteTrackPublicationQualityResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(SetRemoteTrackPublicationQualityResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(SetRemoteTrackPublicationQualityResponse other) {
       if (other == null) {
         return;
       }
