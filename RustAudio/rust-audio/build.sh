@@ -1,22 +1,33 @@
 #!/bin/bash
 set -e  # Stop on error
 
-echo "Building Rust project in release mode..."
-cargo build --release
+LIB_NAME="librust_audio.dylib"
+DEST_DIR="../Wrap/Libraries"
+UNIVERSAL_OUT="$DEST_DIR/$LIB_NAME"
 
-source="target/release/librust_audio.dylib"
-destination="../Wrap/Libraries/librust_audio.dylib"
+mkdir -p "$DEST_DIR"
 
-if [ ! -f "$source" ]; then
-  echo "Build succeeded but DLL not found at $source" >&2
+echo "Building for x86_64 (Intel)..."
+cargo build --release --target x86_64-apple-darwin
+
+echo "Building for arm64 (Apple Silicon)..."
+cargo build --release --target aarch64-apple-darwin
+
+SRC_X86="target/x86_64-apple-darwin/release/$LIB_NAME"
+SRC_ARM="target/aarch64-apple-darwin/release/$LIB_NAME"
+
+if [ ! -f "$SRC_X86" ] || [ ! -f "$SRC_ARM" ]; then
+  echo "One or both builds failed or missing: $SRC_X86 / $SRC_ARM"
   exit 1
 fi
 
-echo "Copying $source to $destination"
-cp -f "$source" "$destination"
+echo "Merging into universal binary..."
+lipo -create -output "$UNIVERSAL_OUT" "$SRC_X86" "$SRC_ARM"
 
-echo "Removing target directory..."
+echo "Universal binary created at: $UNIVERSAL_OUT"
+
+echo "Cleaning up build directories..."
 rm -rf target
 
-echo "Build and copy complete."
+echo "Done."
 
