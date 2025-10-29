@@ -63,6 +63,22 @@ namespace LiveKit
             setSubscribed.PublicationHandle = (ulong)Handle.DangerousGetHandle();
             using var response = request.Send();
         }
+
+        /// <summary>
+        /// For video tracks that support simulcasting, adjust subscribed quality.
+        ///
+        /// This indicates the highest quality the client can accept. If network
+        /// bandwidth does not allow, the server will automatically reduce quality to
+        /// optimize for uninterrupted video.
+        /// </summary>
+        public void SetVideoQuality(VideoQuality quality)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SetRemoteTrackPublicationQualityRequest>();
+            var setRemoteTrackPublicationQuality = request.request;
+            setRemoteTrackPublicationQuality.TrackPublicationHandle = (ulong)Handle.DangerousGetHandle();
+            setRemoteTrackPublicationQuality.Quality = quality;
+            using var response = request.Send();
+        }
     }
 
     public sealed class LocalTrackPublication : TrackPublication
