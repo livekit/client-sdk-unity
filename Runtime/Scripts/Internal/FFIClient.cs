@@ -139,11 +139,8 @@ namespace LiveKit.Internal
             return;
 #endif
 
-#if LK_VERBOSE
+            // TODO: gate behind LK_VERBOSE
             const bool captureLogs = true;
-#else
-            const bool captureLogs = false;
-#endif
 
             NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", ""); // TODO: Get SDK version
 
@@ -218,7 +215,6 @@ namespace LiveKit.Internal
             }
         }
 
-
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(UIntPtr data, UIntPtr size)
         {
@@ -243,6 +239,7 @@ namespace LiveKit.Internal
                 switch (r?.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.Logs:
+                        Utils.HandleLogBatch(r.Logs);
                         break;
                     case FfiEvent.MessageOneofCase.PublishData:
                         break;
