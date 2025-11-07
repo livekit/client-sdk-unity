@@ -17,9 +17,7 @@ namespace LiveKit
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
-        private bool _useGpuYuvToRgb = true;
-		private string _lastColorConversionPathLog;
-		// Fixed baseline: BT.709 limited, no UV swap
+        private bool _useGpuShader = true;
 
         private Material _yuvToRgbMaterial;
         private Texture2D _planeY;
@@ -107,6 +105,7 @@ namespace LiveKit
             _playing = false;
         }
 
+        // Ensure the output render texture is created and sized correctly
         private bool EnsureRenderTexture(int width, int height)
         {
             var textureChanged = false;
@@ -125,6 +124,7 @@ namespace LiveKit
             return textureChanged;
         }
 
+        // Ensure the GPU YUV->RGB material is available
         private void EnsureGpuMaterial()
         {
             if (_yuvToRgbMaterial == null)
@@ -135,6 +135,7 @@ namespace LiveKit
             }
         }
 
+        // Ensure or recreate a plane texture with given format and filter
         private static void EnsurePlaneTexture(ref Texture2D tex, int width, int height, TextureFormat format, FilterMode filterMode)
         {
             if (tex == null || tex.width != width || tex.height != height)
@@ -146,6 +147,7 @@ namespace LiveKit
             }
         }
 
+        // Ensure Y, U, V plane textures exist with correct dimensions
         private void EnsureYuvPlaneTextures(int width, int height)
         {
             EnsurePlaneTexture(ref _planeY, width, height, TextureFormat.R8, FilterMode.Bilinear);
@@ -155,6 +157,7 @@ namespace LiveKit
             EnsurePlaneTexture(ref _planeV, chromaW, chromaH, TextureFormat.R8, FilterMode.Point);
         }
 
+        // Upload raw Y, U, V plane bytes from VideoBuffer to textures
         private void UploadYuvPlanes()
         {
             var info = VideoBuffer.Info;
@@ -171,6 +174,7 @@ namespace LiveKit
             _planeV.Apply(false, false);
         }
 
+        // CPU-side conversion to RGBA and blit to the render target
         private void CpuConvertToRenderTarget(int width, int height)
         {
             var rgba = VideoBuffer.ToRGBA();
@@ -182,6 +186,7 @@ namespace LiveKit
             rgba.Dispose();
         }
 
+        // GPU-side YUV->RGB conversion using shader material
         private void GpuConvertToRenderTarget()
         {
             _yuvToRgbMaterial.SetTexture("_TexY", _planeY);
@@ -189,14 +194,6 @@ namespace LiveKit
             _yuvToRgbMaterial.SetTexture("_TexV", _planeV);
             Graphics.Blit(Texture2D.blackTexture, _convertRt, _yuvToRgbMaterial);
         }
-
-		private void LogConversionPath(string path)
-		{
-			if (_lastColorConversionPathLog == path)
-				return;
-			_lastColorConversionPathLog = path;
-			Debug.Log($"[LiveKit] VideoStream color conversion: {path}");
-		}
 
         public IEnumerator Update()
         {
@@ -216,7 +213,7 @@ namespace LiveKit
 
                 var textureChanged = EnsureRenderTexture((int)rWidth, (int)rHeight);
 
-                if (_useGpuYuvToRgb)
+                if (_useGpuShader)
                 {
                     EnsureGpuMaterial();
                     EnsureYuvPlaneTextures((int)rWidth, (int)rHeight);
@@ -224,18 +221,15 @@ namespace LiveKit
 
                     if (_yuvToRgbMaterial != null)
                     {
-                        LogConversionPath("GPU shader YUV->RGB (BT.709 limited)");
                         GpuConvertToRenderTarget();
                     }
                     else
                     {
-                        LogConversionPath("CPU conversion (shader not found)");
                         CpuConvertToRenderTarget((int)rWidth, (int)rHeight);
                     }
                 }
                 else
                 {
-                    LogConversionPath("CPU conversion (_useGpuYuvToRgb=false)");
                     CpuConvertToRenderTarget((int)rWidth, (int)rHeight);
                 }
 
@@ -248,6 +242,7 @@ namespace LiveKit
             yield break;
         }
 
+        // Handle new video stream events
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
             if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
