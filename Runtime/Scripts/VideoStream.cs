@@ -9,13 +9,6 @@ namespace LiveKit
 {
     public class VideoStream
     {
-		public enum ColorStandard
-		{
-			Auto = 0,
-			BT601 = 1,
-			BT709 = 2,
-		}
-
         public delegate void FrameReceiveDelegate(VideoFrame frame);
         public delegate void TextureReceiveDelegate(Texture tex);
         public delegate void TextureUploadDelegate();
@@ -26,12 +19,7 @@ namespace LiveKit
         private bool _dirty = false;
         private bool _useGpuYuvToRgb = true;
 		private string _lastColorConversionPathLog;
-		private bool _swapUV = false;
-		private bool _fullRange = false;
-		private ColorStandard _colorStandard = ColorStandard.BT709;
-		private bool _invertU = false;
-		private bool _invertV = false;
-		private int _debugMode = 0;
+		// Fixed baseline: BT.709 limited, no UV swap
 
         private Material _yuvToRgbMaterial;
         private Texture2D _planeY;
@@ -119,42 +107,88 @@ namespace LiveKit
             _playing = false;
         }
 
-		public bool SwapUV
-		{
-			get => _swapUV;
-			set => _swapUV = value;
-		}
+        private bool EnsureRenderTexture(int width, int height)
+        {
+            var textureChanged = false;
+            if (_convertRt == null || _convertRt.width != width || _convertRt.height != height)
+            {
+                if (_convertRt != null)
+                {
+                    _convertRt.Release();
+                    UnityEngine.Object.Destroy(_convertRt);
+                }
+                _convertRt = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32);
+                _convertRt.Create();
+                Texture = _convertRt;
+                textureChanged = true;
+            }
+            return textureChanged;
+        }
 
-		public bool FullRangeYuv
-		{
-			get => _fullRange;
-			set => _fullRange = value;
-		}
+        private void EnsureGpuMaterial()
+        {
+            if (_yuvToRgbMaterial == null)
+            {
+                var shader = Shader.Find("Hidden/LiveKit/YUV2RGB");
+                if (shader != null)
+                    _yuvToRgbMaterial = new Material(shader);
+            }
+        }
 
-		public ColorStandard ColorStandardMode
-		{
-			get => _colorStandard;
-			set => _colorStandard = value;
-		}
+        private static void EnsurePlaneTexture(ref Texture2D tex, int width, int height, TextureFormat format, FilterMode filterMode)
+        {
+            if (tex == null || tex.width != width || tex.height != height)
+            {
+                if (tex != null) UnityEngine.Object.Destroy(tex);
+                tex = new Texture2D(width, height, format, false, true);
+                tex.filterMode = filterMode;
+                tex.wrapMode = TextureWrapMode.Clamp;
+            }
+        }
 
-		public bool InvertU
-		{
-			get => _invertU;
-			set => _invertU = value;
-		}
+        private void EnsureYuvPlaneTextures(int width, int height)
+        {
+            EnsurePlaneTexture(ref _planeY, width, height, TextureFormat.R8, FilterMode.Bilinear);
+            var chromaW = width / 2;
+            var chromaH = height / 2;
+            EnsurePlaneTexture(ref _planeU, chromaW, chromaH, TextureFormat.R8, FilterMode.Point);
+            EnsurePlaneTexture(ref _planeV, chromaW, chromaH, TextureFormat.R8, FilterMode.Point);
+        }
 
-		public bool InvertV
-		{
-			get => _invertV;
-			set => _invertV = value;
-		}
+        private void UploadYuvPlanes()
+        {
+            var info = VideoBuffer.Info;
+            if (info.Components.Count < 3) return;
+            var yComp = info.Components[0];
+            var uComp = info.Components[1];
+            var vComp = info.Components[2];
 
-		/// 0 = normal, 1 = Y, 2 = U, 3 = V
-		public int DebugMode
-		{
-			get => _debugMode;
-			set => _debugMode = value;
-		}
+            _planeY.LoadRawTextureData((IntPtr)yComp.DataPtr, (int)yComp.Size);
+            _planeY.Apply(false, false);
+            _planeU.LoadRawTextureData((IntPtr)uComp.DataPtr, (int)uComp.Size);
+            _planeU.Apply(false, false);
+            _planeV.LoadRawTextureData((IntPtr)vComp.DataPtr, (int)vComp.Size);
+            _planeV.Apply(false, false);
+        }
+
+        private void CpuConvertToRenderTarget(int width, int height)
+        {
+            var rgba = VideoBuffer.ToRGBA();
+            var tempTex = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
+            tempTex.Apply();
+            Graphics.Blit(tempTex, _convertRt);
+            UnityEngine.Object.Destroy(tempTex);
+            rgba.Dispose();
+        }
+
+        private void GpuConvertToRenderTarget()
+        {
+            _yuvToRgbMaterial.SetTexture("_TexY", _planeY);
+            _yuvToRgbMaterial.SetTexture("_TexU", _planeU);
+            _yuvToRgbMaterial.SetTexture("_TexV", _planeV);
+            Graphics.Blit(Texture2D.blackTexture, _convertRt, _yuvToRgbMaterial);
+        }
 
 		private void LogConversionPath(string path)
 		{
@@ -180,123 +214,29 @@ namespace LiveKit
                 var rWidth = VideoBuffer.Width;
                 var rHeight = VideoBuffer.Height;
 
-                var textureChanged = false;
-                if (_convertRt == null || _convertRt.width != rWidth || _convertRt.height != rHeight)
-                {
-                    if (_convertRt != null)
-                    {
-                        _convertRt.Release();
-                        UnityEngine.Object.Destroy(_convertRt);
-                    }
-                    _convertRt = new RenderTexture((int)rWidth, (int)rHeight, 0, RenderTextureFormat.ARGB32);
-                    _convertRt.Create();
-                    Texture = _convertRt;
-                    textureChanged = true;
-                }
+                var textureChanged = EnsureRenderTexture((int)rWidth, (int)rHeight);
 
                 if (_useGpuYuvToRgb)
                 {
-                    if (_yuvToRgbMaterial == null)
-                    {
-                        var shader = Shader.Find("Hidden/LiveKit/YUV2RGB");
-                        if (shader != null)
-                            _yuvToRgbMaterial = new Material(shader);
-                    }
-
-                    // _convertRt ensured above
-
-                    // Ensure YUV plane textures
-                    if (_planeY == null || _planeY.width != rWidth || _planeY.height != rHeight)
-                    {
-                        if (_planeY != null) UnityEngine.Object.Destroy(_planeY);
-						_planeY = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.R8, false, true);
-                        _planeY.filterMode = FilterMode.Bilinear;
-                        _planeY.wrapMode = TextureWrapMode.Clamp;
-                    }
-                    var chromaW = (int)(rWidth / 2);
-                    var chromaH = (int)(rHeight / 2);
-                    if (_planeU == null || _planeU.width != chromaW || _planeU.height != chromaH)
-                    {
-                        if (_planeU != null) UnityEngine.Object.Destroy(_planeU);
-						_planeU = new Texture2D(chromaW, chromaH, TextureFormat.R8, false, true);
-						_planeU.filterMode = FilterMode.Point;
-                        _planeU.wrapMode = TextureWrapMode.Clamp;
-                    }
-                    if (_planeV == null || _planeV.width != chromaW || _planeV.height != chromaH)
-                    {
-                        if (_planeV != null) UnityEngine.Object.Destroy(_planeV);
-						_planeV = new Texture2D(chromaW, chromaH, TextureFormat.R8, false, true);
-						_planeV.filterMode = FilterMode.Point;
-                        _planeV.wrapMode = TextureWrapMode.Clamp;
-                    }
-
-                    // Upload planes (assuming NormalizeStride = true)
-                    var info = VideoBuffer.Info;
-                    if (info.Components.Count >= 3)
-                    {
-                        var yComp = info.Components[0];
-                        var uComp = info.Components[1];
-                        var vComp = info.Components[2];
-
-                        _planeY.LoadRawTextureData((IntPtr)yComp.DataPtr, (int)yComp.Size);
-                        _planeY.Apply(false, false);
-                        _planeU.LoadRawTextureData((IntPtr)uComp.DataPtr, (int)uComp.Size);
-                        _planeU.Apply(false, false);
-                        _planeV.LoadRawTextureData((IntPtr)vComp.DataPtr, (int)vComp.Size);
-                        _planeV.Apply(false, false);
-                    }
+                    EnsureGpuMaterial();
+                    EnsureYuvPlaneTextures((int)rWidth, (int)rHeight);
+                    UploadYuvPlanes();
 
                     if (_yuvToRgbMaterial != null)
                     {
-						// Select color matrix, preferring explicit override when set
-						bool useBt709;
-						if (_colorStandard == ColorStandard.BT601)
-							useBt709 = false;
-						else if (_colorStandard == ColorStandard.BT709)
-							useBt709 = true;
-						else
-							useBt709 = (rWidth >= 1280) || (rHeight >= 720); // heuristic
-						_yuvToRgbMaterial.SetFloat("_ColorStd", useBt709 ? 1.0f : 0.0f);
-						_yuvToRgbMaterial.SetFloat("_SwapUV", _swapUV ? 1.0f : 0.0f);
-						_yuvToRgbMaterial.SetFloat("_FullRange", _fullRange ? 1.0f : 0.0f);
-						_yuvToRgbMaterial.SetFloat("_InvertU", _invertU ? 1.0f : 0.0f);
-						_yuvToRgbMaterial.SetFloat("_InvertV", _invertV ? 1.0f : 0.0f);
-						_yuvToRgbMaterial.SetFloat("_DebugMode", _debugMode);
-						var path = useBt709 ? "GPU shader YUV->RGB (BT.709)" : "GPU shader YUV->RGB (BT.601)";
-						if (_swapUV) path += " +SwapUV";
-						if (_fullRange) path += " +FullRange";
-						if (_invertU) path += " +InvertU";
-						if (_invertV) path += " +InvertV";
-						if (_debugMode != 0) path += $" +Debug({(DebugMode==1?"Y":DebugMode==2?"U":"V")})";
-						LogConversionPath(path);
-                        _yuvToRgbMaterial.SetTexture("_TexY", _planeY);
-                        _yuvToRgbMaterial.SetTexture("_TexU", _planeU);
-                        _yuvToRgbMaterial.SetTexture("_TexV", _planeV);
-                        Graphics.Blit(Texture2D.blackTexture, _convertRt, _yuvToRgbMaterial);
+                        LogConversionPath("GPU shader YUV->RGB (BT.709 limited)");
+                        GpuConvertToRenderTarget();
                     }
                     else
                     {
-						LogConversionPath("CPU conversion (shader not found)");
-                        // Fallback to CPU conversion if shader not found
-                        var rgba = VideoBuffer.ToRGBA();
-                        var tempTex = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
-                        tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
-                        tempTex.Apply();
-                        Graphics.Blit(tempTex, _convertRt);
-                        UnityEngine.Object.Destroy(tempTex);
-                        rgba.Dispose();
+                        LogConversionPath("CPU conversion (shader not found)");
+                        CpuConvertToRenderTarget((int)rWidth, (int)rHeight);
                     }
                 }
                 else
                 {
-					LogConversionPath("CPU conversion (_useGpuYuvToRgb=false)");
-                    var rgba = VideoBuffer.ToRGBA();
-                    var tempTex = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
-                    tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
-                    tempTex.Apply();
-                    Graphics.Blit(tempTex, _convertRt);
-                    UnityEngine.Object.Destroy(tempTex);
-                    rgba.Dispose();
+                    LogConversionPath("CPU conversion (_useGpuYuvToRgb=false)");
+                    CpuConvertToRenderTarget((int)rWidth, (int)rHeight);
                 }
 
                 if (textureChanged)
