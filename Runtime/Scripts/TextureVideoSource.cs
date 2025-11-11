@@ -1,9 +1,8 @@
-using UnityEngine;
 using LiveKit.Proto;
-using UnityEngine.Rendering;
 using Unity.Collections;
+using UnityEngine;
 using UnityEngine.Experimental.Rendering;
-using System;
+using UnityEngine.Rendering;
 
 namespace LiveKit
 {
@@ -43,19 +42,24 @@ namespace LiveKit
         protected override bool ReadBuffer()
         {
             if (_reading)
+            {
                 return false;
+            }
+
             _reading = true;
             var textureChanged = false;
 
-            if (_previewTexture == null || _previewTexture.width != GetWidth() || _previewTexture.height != GetHeight()) {
+            if (_previewTexture == null || _previewTexture.width != GetWidth() || _previewTexture.height != GetHeight())
+            {
                 var compatibleFormat = SystemInfo.GetCompatibleFormat(Texture.graphicsFormat, FormatUsage.ReadPixels);
                 _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
                 _bufferType = GetVideoBufferType(_textureFormat);
                 _captureBuffer = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
-                _previewTexture = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
+                _previewTexture = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
                 textureChanged = true;
             }
-            Graphics.CopyTexture(Texture, _previewTexture);
+
+            Graphics.Blit(Texture, _previewTexture, new Vector2(1f, -1f), new Vector2(0f, 1f));
             AsyncGPUReadback.RequestIntoNativeArray(ref _captureBuffer, _previewTexture, 0, _textureFormat, OnReadback);
             return textureChanged;
         }
