@@ -26,11 +26,11 @@ namespace LiveKit
 
         protected abstract VideoRotation GetVideoRotation();
 
-        public delegate void TextureReceiveDelegate(Texture2D tex2d);
+        public delegate void TextureReceiveDelegate(RenderTexture tex2d);
         /// Called when we receive a new texture (first texture or the resolution changed)
         public event TextureReceiveDelegate TextureReceived;
 
-        protected Texture2D _previewTexture;
+        protected RenderTexture _previewTexture;
         protected NativeArray<byte> _captureBuffer;
         protected VideoStreamSource _sourceType;
         protected VideoBufferType _bufferType;

@@ -33,7 +33,7 @@ namespace LiveKit
             return VideoRotation._0;
         }
 
-        public CameraVideoSource(Camera camera,   VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Screen, bufferType)
+        public CameraVideoSource(Camera camera, VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Screen, bufferType)
         {
             Camera = camera;
             base.Init();
@@ -78,26 +78,14 @@ namespace LiveKit
                     _renderTexture = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
                     Camera.targetTexture = _renderTexture as RenderTexture;
                     _captureBuffer = new NativeArray<byte>(GetWidth() * GetHeight() * GetStrideForBuffer(_bufferType), Allocator.Persistent);
-                    _previewTexture = new Texture2D(GetWidth(), GetHeight(), _textureFormat, false);
+                    _previewTexture = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
                     textureChanged = true;
                 }
+
                 ScreenCapture.CaptureScreenshotIntoRenderTexture(_renderTexture);
 
-#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-                // Flip the texture for OSX
-                Graphics.CopyTexture(_renderTexture, _previewTexture);
-                var pixels = _previewTexture.GetPixels();
-                var flippedPixels = new Color[pixels.Length];
-                for (int i = 0; i < _previewTexture.height; i++)
-                {
-                    Array.Copy(pixels, i * _previewTexture.width, flippedPixels, (_previewTexture.height - i - 1) * _previewTexture.width, _previewTexture.width);
-                }
-                _previewTexture.SetPixels(flippedPixels);
-#else
-                Graphics.CopyTexture(_renderTexture, _previewTexture);
-#endif
-
-                AsyncGPUReadback.RequestIntoNativeArray(ref _captureBuffer, _renderTexture, 0, _textureFormat, OnReadback);
+                Graphics.Blit(_renderTexture, _previewTexture, new Vector2(1f, -1f), new Vector2(0f, 1f));
+                AsyncGPUReadback.RequestIntoNativeArray(ref _captureBuffer, _previewTexture, 0, _textureFormat, OnReadback);
             }
             catch (Exception e)
             {
