@@ -42,10 +42,7 @@ namespace LiveKit
         protected override bool ReadBuffer()
         {
             if (_reading)
-            {
                 return false;
-            }
-
             _reading = true;
             var textureChanged = false;
 
