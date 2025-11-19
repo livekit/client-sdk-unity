@@ -103,8 +103,8 @@ namespace LiveKit
 			EnsurePlaneTexture(ref _planeY, width, height, TextureFormat.R8, FilterMode.Bilinear);
 			var chromaW = width / 2;
 			var chromaH = height / 2;
-			EnsurePlaneTexture(ref _planeU, chromaW, chromaH, TextureFormat.R8, FilterMode.Point);
-			EnsurePlaneTexture(ref _planeV, chromaW, chromaH, TextureFormat.R8, FilterMode.Point);
+			EnsurePlaneTexture(ref _planeU, chromaW, chromaH, TextureFormat.R8, FilterMode.Bilinear);
+			EnsurePlaneTexture(ref _planeV, chromaW, chromaH, TextureFormat.R8, FilterMode.Bilinear);
 		}
 
 		// Upload raw Y, U, V plane bytes from buffer to textures.
