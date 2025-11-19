@@ -129,11 +129,17 @@ namespace LiveKit
 		{
 			var rgba = buffer.ToRGBA();
 			var tempTex = new Texture2D(width, height, TextureFormat.RGBA32, false);
-			tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
-			tempTex.Apply();
-			Graphics.Blit(tempTex, Output);
-			UnityEngine.Object.Destroy(tempTex);
-			rgba.Dispose();
+			try
+			{
+				tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
+				tempTex.Apply();
+				Graphics.Blit(tempTex, Output);
+			}
+			finally
+			{
+				UnityEngine.Object.Destroy(tempTex);
+				rgba.Dispose();
+			}
 		}
 
 		// GPU-side YUV->RGB conversion using shader material.
