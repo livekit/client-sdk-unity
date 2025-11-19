@@ -78,6 +78,8 @@ namespace LiveKit
                 // Unity objects must be destroyed on main thread
                 _converter?.Dispose();
                 _converter = null;
+                // Texture is owned and cleaned up by _converter. Set to null to avoid holding a reference to a disposed RenderTexture.
+                Texture = null;
                 _disposed = true;
             }
         }
