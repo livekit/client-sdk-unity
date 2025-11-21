@@ -1,12 +1,15 @@
+using Cysharp.Threading.Tasks;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using LiveKit.Rooms.Streaming;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace LiveKit.Rooms.VideoStreaming
 {
     public class VideoStream : IVideoStream
     {
+        private static readonly ProfilerMarker marker = new("LiveKit.VideoStream.DecodeLastFrame");
+        
         private readonly TextureFormat textureFormat;
         private readonly FfiHandle handle;
         private readonly LiveKit.Proto.VideoStreamInfo info;
@@ -33,8 +36,14 @@ namespace LiveKit.Rooms.VideoStreaming
 
             disposed = true;
             handle.Dispose();
-            if (lastDecoded != null) Object.Destroy(lastDecoded);
+            DisposeLastDecodedIfNeededAsync().Forget();
             FfiClient.Instance.VideoStreamEventReceived -= OnVideoStreamEvent;
+        }
+
+        private async UniTaskVoid DisposeLastDecodedIfNeededAsync()
+        {
+            await UniTask.SwitchToMainThread();
+            if (lastDecoded != null) Object.Destroy(lastDecoded);
         }
 
         private void OnVideoStreamEvent(VideoStreamEvent e)
@@ -62,6 +71,7 @@ namespace LiveKit.Rooms.VideoStreaming
             if (disposed)
                 return null;
 
+            using ProfilerMarker.AutoScope scope = marker.Auto();
             lock (this)
             {
                 if (lastFrame.HasValue == false)

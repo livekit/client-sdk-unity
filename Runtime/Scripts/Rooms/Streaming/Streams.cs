@@ -90,6 +90,26 @@ namespace LiveKit.Rooms.Streaming
                     streams[key] = stream = new Owned<T>(NewStreamInstance(key, track));
                     return stream.Downgrade();
                 }
+                else // don't return a track if it's already unpublished
+                {
+                    var participant = participantsHub.RemoteParticipant(key.identity);
+
+                    if (participant == null)
+                        if (key.identity == participantsHub.LocalParticipant().Identity)
+                            participant = participantsHub.LocalParticipant();
+                        else
+                            return Weak<T>.Null;
+
+
+                    if (participant.Tracks.TryGetValue(key.sid, out _) == false)
+                    {
+                        stream!.Dispose(out var resource);
+                        resource?.Dispose();
+                        streams.Remove(key);
+                        return Weak<T>.Null;
+                    }
+                    
+                }
 
                 return stream!.Downgrade();
             }

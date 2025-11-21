@@ -30,7 +30,7 @@ namespace LiveKit.Rooms
 
         IAudioStreams AudioStreams { get; }
 
-        IAudioTracks AudioTracks { get; }
+        ILocalTracks LocalTracks { get; }
 
         void UpdateLocalMetadata(string metadata);
 

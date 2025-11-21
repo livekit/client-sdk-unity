@@ -30,6 +30,11 @@ namespace LiveKit.Rooms.Streaming
         {
             return HashCode.Combine(identity, sid);
         }
+
+        public override string ToString()
+        {
+            return $"{{ identity: {identity}, sid: {sid} }}";
+        }
     }
 
     public static class StreamKeyUtils

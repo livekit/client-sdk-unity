@@ -1,8 +1,8 @@
-using System;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
+using LiveKit.RtcSources.Video;
 using UnityEngine.Pool;
 
 namespace LiveKit.Rooms.Tracks.Factory
@@ -30,12 +30,13 @@ namespace LiveKit.Rooms.Tracks.Factory
             return CreateTrack(response, room, true);
         }
 
-        public ITrack NewVideoTrack(string name, RtcVideoSource source, Room room)
+        public ITrack NewVideoTrack(string name, RtcVideoSource source, IRoom room)
         {
-            using var request = FFIBridge.Instance.NewRequest<CreateVideoTrackRequest>();
+            using FfiRequestWrap<CreateVideoTrackRequest>
+                request = FFIBridge.Instance.NewRequest<CreateVideoTrackRequest>();
             var createTrack = request.request;
             createTrack.Name = name;
-            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
+            createTrack.SourceHandle = source.HandleId;
             using var response = request.Send();
             return CreateTrack(response, room, false);
         }

@@ -46,7 +46,7 @@ namespace LiveKit.Rooms
         private readonly IMutableRoomInfo roomInfo;
         private readonly IVideoStreams videoStreams;
         private readonly IAudioStreams audioStreams;
-        private readonly IAudioTracks audioTracks;
+        private readonly ILocalTracks localTracks;
 
         public IActiveSpeakers ActiveSpeakers => activeSpeakers;
 
@@ -58,7 +58,7 @@ namespace LiveKit.Rooms
 
         public IAudioStreams AudioStreams => audioStreams;
 
-        public IAudioTracks AudioTracks => audioTracks;
+        public ILocalTracks LocalTracks => localTracks;
 
         public IRoomInfo Info => roomInfo;
 
@@ -108,7 +108,7 @@ namespace LiveKit.Rooms
             IMutableRoomInfo roomInfo,
             IVideoStreams videoStreams,
             IAudioStreams audioStreams,
-            IAudioTracks? audioTracks
+            ILocalTracks? audioTracks
         )
         {
             this.memoryPool = memoryPool;
@@ -122,7 +122,7 @@ namespace LiveKit.Rooms
             this.roomInfo = roomInfo;
             this.videoStreams = videoStreams;
             this.audioStreams = audioStreams;
-            this.audioTracks = audioTracks ?? new AudioTracks(tracksFactory, this);
+            this.localTracks = audioTracks ?? new LocalTracks(tracksFactory, this);
             dataPipe.Assign(participantsHub);
             videoStreams.AssignRoom(this);
             audioStreams.AssignRoom(this);

@@ -13,9 +13,14 @@ using LiveKit.Rooms;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Streaming;
 using LiveKit.Rooms.Streaming.Audio;
+using LiveKit.Rooms.Streaming.Video;
+using LiveKit.Rooms.Tracks;
+using LiveKit.Rooms.VideoStreaming;
+using LiveKit.RtcSources.Video;
 using LiveKit.Runtime.Scripts.Audio;
 using RichTypes;
 using UnityEngine.Audio;
+using UnityEngine.Pool;
 using UnityEngine.SceneManagement;
 
 public class ExampleRoom : MonoBehaviour
@@ -23,8 +28,11 @@ public class ExampleRoom : MonoBehaviour
     private Room? m_Room;
     private MicrophoneRtcAudioSource? microphoneSource;
 
-    private readonly Dictionary<AudioStream, LivekitAudioSource> sourcesMap = new();
+    private readonly Dictionary<StreamKey, LivekitAudioSource> audioSourcesMap = new();
+    private readonly Dictionary<StreamKey, LivekitVideoSource> videoSourcesMap = new();
     private readonly List<(Room room, IRtcAudioSource bot)> botInstances = new();
+
+    private readonly List<(ITrack track, RtcVideoSource videoSource)> publishedVideoTracks = new();
 
     public Dropdown MicrophoneDropdownMenu;
     public Button DisconnectButton;
@@ -32,6 +40,7 @@ public class ExampleRoom : MonoBehaviour
     [Space] public AudioMixer audioMixer;
     public string audioHandleName;
     [SerializeField] private Toggle enableAudioSources;
+    [SerializeField] private RectTransform videoParent;
 
     [Header("Bot Speakers")] [SerializeField]
     private TextAsset botTokens;
@@ -51,20 +60,91 @@ public class ExampleRoom : MonoBehaviour
         foreach (var (remoteParticipantIdentity, _) in m_Room.Participants.RemoteParticipantIdentities())
         {
             var participant = m_Room.Participants.RemoteParticipant(remoteParticipantIdentity)!;
+
+            // Add new tracks
             foreach (var (key, value) in participant.Tracks)
             {
-                var track = m_Room.AudioStreams.ActiveStream(new StreamKey(remoteParticipantIdentity, key!));
-                if (track.Resource.Has)
+                StreamKey streamKey = new StreamKey(remoteParticipantIdentity, key!);
+                switch (value.Kind)
                 {
-                    var audioStream = track.Resource.Value;
-                    if (sourcesMap.ContainsKey(audioStream) == false)
+                    case TrackKind.KindUnknown:
+                        break;
+                    case TrackKind.KindAudio:
                     {
-                        var livekitAudioSource = LivekitAudioSource.New(true);
-                        livekitAudioSource.Construct(track);
-                        livekitAudioSource.Play();
-                        Debug.Log($"Participant {remoteParticipantIdentity} added track {key}");
-                        sourcesMap[audioStream] = livekitAudioSource;
+                        Weak<AudioStream> track = m_Room.AudioStreams.ActiveStream(streamKey);
+                        if (track.Resource.Has)
+                        {
+                            var audioStream = track.Resource.Value;
+                            if (audioSourcesMap.ContainsKey(streamKey) == false)
+                            {
+                                var livekitAudioSource = LivekitAudioSource.New(true);
+                                livekitAudioSource.Construct(track);
+                                livekitAudioSource.Play();
+                                Debug.Log($"Participant {remoteParticipantIdentity} added track {key}");
+                                audioSourcesMap[streamKey] = livekitAudioSource;
+                            }
+                        }
                     }
+                        break;
+                    case TrackKind.KindVideo:
+                    {
+                        Weak<IVideoStream> track = m_Room.VideoStreams.ActiveStream(streamKey);
+                        if (track.Resource.Has)
+                        {
+                            if (videoSourcesMap.ContainsKey(streamKey) == false)
+                            {
+                                var livekitVideoSource = LivekitVideoSource.New(videoParent, true);
+                                livekitVideoSource.Construct(track);
+                                livekitVideoSource.Play();
+                                Debug.Log($"Participant {remoteParticipantIdentity} added track {key}");
+                                videoSourcesMap[streamKey] = livekitVideoSource;
+                            }
+                        }
+                    }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            // Remove unpublished
+            using PooledObject<List<StreamKey>> _ = ListPool<StreamKey>.Get(out List<StreamKey> removeCandidates);
+            foreach (KeyValuePair<StreamKey, LivekitVideoSource> source in videoSourcesMap)
+            {
+                Weak<IVideoStream> stream = m_Room.VideoStreams.ActiveStream(source.Key);
+                Option<IVideoStream> resource = stream.Resource;
+                if (resource.Has == false)
+                {
+                    removeCandidates!.Add(source.Key);
+                }
+            }
+
+            foreach (var candidate in removeCandidates!)
+            {
+                if (videoSourcesMap.Remove(candidate, out var source))
+                {
+                    Debug.Log($"Remove remote video track: {candidate}");
+                    Destroy(source!.gameObject);
+                }
+            }
+
+            removeCandidates.Clear();
+            foreach (KeyValuePair<StreamKey, LivekitAudioSource> source in audioSourcesMap)
+            {
+                Weak<AudioStream> stream = m_Room.AudioStreams.ActiveStream(source.Key);
+                Option<AudioStream> resource = stream.Resource;
+                if (resource.Has == false)
+                {
+                    removeCandidates.Add(source.Key);
+                }
+            }
+
+            foreach (var candidate in removeCandidates)
+            {
+                if (audioSourcesMap.Remove(candidate, out var source))
+                {
+                    Debug.Log($"Remove remote audio track: {candidate}");
+                    Destroy(source!.gameObject);
                 }
             }
         }
@@ -72,11 +152,11 @@ public class ExampleRoom : MonoBehaviour
 
     private async UniTaskVoid StartAsync()
     {
-        enableAudioSources.onValueChanged.AddListener(v =>
+        enableAudioSources.onValueChanged.AddListener(enable =>
         {
-            foreach (KeyValuePair<AudioStream, LivekitAudioSource> pair in sourcesMap)
+            foreach (KeyValuePair<StreamKey, LivekitAudioSource> pair in audioSourcesMap)
             {
-                if (v) pair.Value.Play();
+                if (enable) pair.Value.Play();
                 else pair.Value.Stop();
             }
         });
@@ -143,7 +223,7 @@ public class ExampleRoom : MonoBehaviour
 
         MicrophoneDropdown.Bind(MicrophoneDropdownMenu, microphoneSource);
 
-        var myTrack = m_Room.AudioTracks.CreateAudioTrack("own", microphoneSource);
+        var audioTrack = m_Room.LocalTracks.CreateAudioTrack("own", microphoneSource);
         var trackOptions = new TrackPublishOptions
         {
             AudioEncoding = new AudioEncoding
@@ -153,9 +233,61 @@ public class ExampleRoom : MonoBehaviour
             Source = TrackSource.SourceMicrophone
         };
         var publishTask = m_Room.Participants.LocalParticipant()
-            .PublishTrack(myTrack, trackOptions, CancellationToken.None);
+            .PublishTrack(audioTrack, trackOptions, CancellationToken.None);
         await UniTask.WaitUntil(() => publishTask.IsDone);
+
+        // Camera usage
+        await PublishNewVideoTrackAsync();
         Debug.Log("Init finished");
+    }
+
+    [ContextMenu(nameof(PublishNewVideoTrack))]
+    public void PublishNewVideoTrack()
+    {
+        PublishNewVideoTrackAsync().Forget();
+    }
+
+    private async UniTask PublishNewVideoTrackAsync()
+    {
+        Result<WebCameraVideoInput> inputResult = WebCameraVideoInput.NewDefault();
+        if (inputResult.Success == false)
+        {
+            Debug.LogError($"Cannot create video source: {inputResult.ErrorMessage}");
+            return;
+        }
+
+        RtcVideoSource videoSource = new(inputResult.Value);
+        videoSource.Start();
+
+        var videoTrack = m_Room.LocalTracks.CreateVideoTrack("own", videoSource);
+        var videoTrackOptions = new TrackPublishOptions
+        {
+            VideoEncoding = new VideoEncoding
+            {
+                MaxFramerate = 60
+            },
+            Source = TrackSource.SourceCamera
+        };
+        var publishVideoTask = m_Room.Participants.LocalParticipant()
+            .PublishTrack(videoTrack, videoTrackOptions, CancellationToken.None);
+        await UniTask.WaitUntil(() => publishVideoTask.IsDone);
+        publishedVideoTracks.Add((videoTrack, videoSource));
+        Debug.Log($"Published video track, current count: {publishedVideoTracks.Count}");
+    }
+
+    [ContextMenu(nameof(UnpublishLastVideoTrack))]
+    private void UnpublishLastVideoTrack()
+    {
+        if (publishedVideoTracks.Count == 0)
+        {
+            return;
+        }
+
+        int index = publishedVideoTracks.Count - 1;
+        (ITrack track, RtcVideoSource videoSource) last = publishedVideoTracks[index];
+        publishedVideoTracks.RemoveAt(index);
+        m_Room?.Participants.LocalParticipant().UnpublishTrack(last.track, stopOnUnpublish: true);
+        Debug.Log($"Unpublished video track, current count: {publishedVideoTracks.Count}");
     }
 
     private void OnDestroy()
@@ -205,7 +337,7 @@ public class ExampleRoom : MonoBehaviour
             IRtcAudioSource source = NewBotAudioSource(botCaptureMode, botId, botParticipant.audioClip);
             source.Start();
 
-            var myTrack = room.AudioTracks.CreateAudioTrack("own", source);
+            var myTrack = room.LocalTracks.CreateAudioTrack("own", source);
             var trackOptions = new TrackPublishOptions
             {
                 AudioEncoding = new AudioEncoding
