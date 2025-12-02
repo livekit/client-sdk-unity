@@ -17,7 +17,6 @@ namespace LiveKit
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
-        private bool _useGpuShader = true;
         private YuvToRgbConverter _converter;
 
         /// Called when we receive a new frame from the VideoTrack
@@ -112,7 +111,6 @@ namespace LiveKit
                 var rHeight = VideoBuffer.Height;
 
                 if (_converter == null) _converter = new YuvToRgbConverter();
-                _converter.UseGpuShader = _useGpuShader;
                 var textureChanged = _converter.EnsureOutput((int)rWidth, (int)rHeight);
                 _converter.Convert(VideoBuffer);
                 if (textureChanged) Texture = _converter.Output;
