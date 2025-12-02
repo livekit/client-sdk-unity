@@ -36,30 +36,31 @@ Shader "Hidden/LiveKit/YUV2RGB"
                 return o;
             }
 
-            float3 yuvToRgb709Limited(float y, float u, float v)
+            inline half3 yuvToRgb709Limited(half y, half u, half v)
             {
                 // BT.709 limited range
-                float c = y - 16.0 / 255.0;
-                float d = u - 128.0 / 255.0;
-                float e = v - 128.0 / 255.0;
+                half c = y - half(16.0 / 255.0);
+                half d = u - half(128.0 / 255.0);
+                half e = v - half(128.0 / 255.0);
 
-                float3 rgb;
-                rgb.r = saturate(1.16438356 * c + 1.79274107 * e);
-                rgb.g = saturate(1.16438356 * c - 0.21324861 * d - 0.53290933 * e);
-                rgb.b = saturate(1.16438356 * c + 2.11240179 * d);
-                return rgb;
+                half Y = half(1.16438356) * c;
+
+                half3 rgb;
+                rgb.r = Y + half(1.79274107) * e;
+                rgb.g = Y - half(0.21324861) * d - half(0.53290933) * e;
+                rgb.b = Y + half(2.11240179) * d;
+                return saturate(rgb);
             }
 
-            float4 frag(v2f i) : SV_Target
+            half4 frag(v2f i) : SV_Target
             {
                 // Flip horizontally to match Unity's texture orientation with incoming YUV data
-                float2 uv = float2(1.0 - i.uv.x, i.uv.y);
+                half2 uv = half2(1.0h - i.uv.x, i.uv.y);
 
-                float y = tex2D(_TexY, uv).r;
-                float u = tex2D(_TexU, uv).r;
-                float v = tex2D(_TexV, uv).r;
-                float3 rgb = yuvToRgb709Limited(y, u, v);
-                return float4(rgb, 1.0);
+                half y = tex2D(_TexY, uv).r;
+                half u = tex2D(_TexU, uv).r;
+                half v = tex2D(_TexV, uv).r;
+                return half4(yuvToRgb709Limited(y, u, v), 1.0h);
             }
             ENDHLSL
         }
