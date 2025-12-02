@@ -52,9 +52,12 @@ Shader "Hidden/LiveKit/YUV2RGB"
 
             float4 frag(v2f i) : SV_Target
             {
-                float y = tex2D(_TexY, i.uv).r;
-                float u = tex2D(_TexU, i.uv).r;
-                float v = tex2D(_TexV, i.uv).r;
+                // Flip horizontally to match Unity's texture orientation with incoming YUV data
+                float2 uv = float2(1.0 - i.uv.x, i.uv.y);
+
+                float y = tex2D(_TexY, uv).r;
+                float u = tex2D(_TexU, uv).r;
+                float v = tex2D(_TexV, uv).r;
                 float3 rgb = yuvToRgb709Limited(y, u, v);
                 return float4(rgb, 1.0);
             }
