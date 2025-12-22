@@ -130,6 +130,7 @@ namespace LiveKit
         public string Sid { private set; get; }
         public string Name { private set; get; }
         public string Metadata { private set; get; }
+        public uint NumParticipants { private set; get; }
         public LocalParticipant LocalParticipant { private set; get; }
         public ConnectionState ConnectionState { private set; get; }
         public bool IsConnected => RoomHandle != null && ConnectionState != ConnectionState.ConnDisconnected;
@@ -233,6 +234,7 @@ namespace LiveKit
             Sid = info.Sid;
             Name = info.Name;
             Metadata = info.Metadata;
+            NumParticipants = info.NumParticipants;  
         }
 
         internal void OnRpcMethodInvocationReceived(RpcMethodInvocationEvent e)
@@ -492,6 +494,16 @@ namespace LiveKit
                         E2EeStateChanged?.Invoke(participant, e.E2EeStateChanged.State);
                     }
                     break;
+                case RoomEvent.MessageOneofCase.RoomUpdated:
+                    {
+                        UpdateFromInfo(e.RoomUpdated);
+                    }
+                    break;
+                case RoomEvent.MessageOneofCase.Moved:
+                    {
+                        // Participants moved to new room.
+                        UpdateFromInfo(e.Moved);
+                    }
             }
         }
 
