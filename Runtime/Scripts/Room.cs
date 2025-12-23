@@ -504,6 +504,7 @@ namespace LiveKit
                         // Participants moved to new room.
                         UpdateFromInfo(e.Moved);
                     }
+                    break;
             }
         }
 
