@@ -342,11 +342,12 @@ namespace LiveKit
                         var track = e.TrackSubscribed.Track;
                         var info = track.Info;
                         var participant = RemoteParticipants[e.TrackSubscribed.ParticipantIdentity];
-                        var publication = participant.Tracks[info.Sid];
 
-                        if (publication == null)
+                        if (!participant.Tracks.TryGetValue(info.Sid, out var publication))
                         {
+                            publication = new RemoteTrackPublication(info, FfiHandle.FromOwnedHandle(track.Handle));
                             participant._tracks.Add(publication.Sid, publication);
+                            participant.OnTrackPublished(publication);
                         }
 
                         if (info.Kind == TrackKind.KindVideo)
