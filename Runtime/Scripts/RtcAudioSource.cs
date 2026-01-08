@@ -128,15 +128,11 @@ namespace LiveKit
 
             //Change - hand to make FFIBridge properties public to do this which isn't great
             // Capture the frame.
-            //using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
             CaptureAudioFrameRequest pushFrame = FFIBridge.Instance.multiPool.Get<CaptureAudioFrameRequest>();
             AudioFrameBufferInfo audioFrameBufferInfo = FFIBridge.Instance.multiPool.Get<AudioFrameBufferInfo>();
 
             FfiRequest ffiRequest = FFIBridge.Instance.multiPool.Get<FfiRequest>();
 
-            // using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
-
-            // var pushFrame = request.request;
             pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
             pushFrame.Buffer = audioFrameBufferInfo;
             unsafe
@@ -148,14 +144,14 @@ namespace LiveKit
             pushFrame.Buffer.SampleRate = (uint)sampleRate;
             pushFrame.Buffer.SamplesPerChannel = (uint)data.Length / (uint)channels;
 
-            // using var response = request.Send();
-            // FfiResponse res = response;
+
             ffiRequest.CaptureAudioFrame = pushFrame;
             FFIBridge.Instance.ffiClient.SendRequest(ffiRequest, false);
 
 
             // Changes - this was creating memory because of the callback being created,
             // might be able to make a call back and cache the asyncID to get around that problem
+            // TODO: Investigate further and optimize if needed
             /*
             var asyncId = res.CaptureAudioFrame.AsyncId;
             void Callback(CaptureAudioFrameCallback callback)
