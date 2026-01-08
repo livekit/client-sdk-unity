@@ -138,14 +138,12 @@ namespace LiveKit
                         }
 
                         // Cast the stereo short span to bytes and write to the buffer
-                        ReadOnlySpan<byte> stereoBytes = MemoryMarshal.AsBytes(stereoSamples);
-                        _buffer?.Write(stereoBytes);
+                        _buffer?.Write(MemoryMarshal.AsBytes(stereoSamples));
                     }
                     else
                     {
                         //TODO add support here if they fix the above bug
                     }
-
                 }
             }
             // Change - need to drop handle here because it would normally be done
@@ -163,8 +161,10 @@ namespace LiveKit
         {
             if (!_disposed && disposing)
             {
+                FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
                 _audioSource.Stop();
                 UnityEngine.Object.Destroy(_audioSource.GetComponent<AudioProbe>());
+                _buffer?.Dispose();
             }
             _disposed = true;
         }
