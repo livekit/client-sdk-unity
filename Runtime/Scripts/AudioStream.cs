@@ -96,7 +96,7 @@ namespace LiveKit
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var frame = new AudioFrame(e.FrameReceived.Frame);
+            //var frame = new AudioFrame(e.FrameReceived.Frame);
 
             lock (_lock)
             {
@@ -105,15 +105,52 @@ namespace LiveKit
 
                 unsafe
                 {
-                    var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    if (uFrame != null)
+                    // Change deal with issue in newer LiveKit where channels are returned incorrectly
+                    // -https://github.com/livekit/client-sdk-unity/issues/169
+                    // (plus some new changes to reduce garbage creation)
+                    if (e.FrameReceived.Frame.Info.NumChannels == 1 && _numChannels == 2)
                     {
-                        var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                        _buffer?.Write(data);
+
+                        int samplesPerChannel = (int)e.FrameReceived.Frame.Info.SamplesPerChannel;
+                        int monoLengthBytes =
+                            (int)(e.FrameReceived.Frame.Info.SamplesPerChannel *
+                                  e.FrameReceived.Frame.Info.NumChannels *
+                                  sizeof(short));
+
+                        // Span over the incoming mono audio bytes
+                        var monoByteSpan = new ReadOnlySpan<byte>(
+                            (void*)e.FrameReceived.Frame.Info.DataPtr,
+                            monoLengthBytes);
+
+                        // Treat them as 16-bit samples
+                        var monoSamples = MemoryMarshal.Cast<byte, short>(monoByteSpan);
+
+                        // Allocate stereo buffer on the stack: 2 channels * samples * sizeof(short)
+                        Span<short> stereoSamples = stackalloc short[samplesPerChannel * 2];
+
+                        for (int i = 0; i < samplesPerChannel; i++)
+                        {
+                            short sample = monoSamples[i]; // mono
+                            int dstIndex = i * 2;
+
+                            stereoSamples[dstIndex] = sample; // Left
+                            stereoSamples[dstIndex + 1] = sample; // Right
+                        }
+
+                        // Cast the stereo short span to bytes and write to the buffer
+                        ReadOnlySpan<byte> stereoBytes = MemoryMarshal.AsBytes(stereoSamples);
+                        _buffer?.Write(stereoBytes);
+                    }
+                    else
+                    {
+                        //TODO add support here if they fix the above bug
                     }
 
                 }
             }
+            // Change - need to drop handle here because it would normally be done
+            // within AudioFrame,  without memory will be leaked on the plugin side
+            NativeMethods.FfiDropHandle((IntPtr)e.FrameReceived.Frame.Handle.Id);
         }
 
         public void Dispose()

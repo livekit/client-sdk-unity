@@ -126,26 +126,37 @@ namespace LiveKit
             for (int i = 0; i < data.Length; i++)
                 _frameData[i] = FloatToS16(data[i]);
 
+            //Change - hand to make FFIBridge properties public to do this which isn't great
             // Capture the frame.
-            using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
-            using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
+            //using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
+            CaptureAudioFrameRequest pushFrame = FFIBridge.Instance.multiPool.Get<CaptureAudioFrameRequest>();
+            AudioFrameBufferInfo audioFrameBufferInfo = FFIBridge.Instance.multiPool.Get<AudioFrameBufferInfo>();
 
-            var pushFrame = request.request;
+            FfiRequest ffiRequest = FFIBridge.Instance.multiPool.Get<FfiRequest>();
+
+            // using var audioFrameBufferInfo = request.TempResource<AudioFrameBufferInfo>();
+
+            // var pushFrame = request.request;
             pushFrame.SourceHandle = (ulong)Handle.DangerousGetHandle();
             pushFrame.Buffer = audioFrameBufferInfo;
             unsafe
             {
-                 pushFrame.Buffer.DataPtr = (ulong)NativeArrayUnsafeUtility
-                    .GetUnsafePtr(_frameData);
+                pushFrame.Buffer.DataPtr = (ulong)NativeArrayUnsafeUtility
+                   .GetUnsafePtr(_frameData);
             }
             pushFrame.Buffer.NumChannels = (uint)channels;
             pushFrame.Buffer.SampleRate = (uint)sampleRate;
             pushFrame.Buffer.SamplesPerChannel = (uint)data.Length / (uint)channels;
 
-            using var response = request.Send();
-            FfiResponse res = response;
+            // using var response = request.Send();
+            // FfiResponse res = response;
+            ffiRequest.CaptureAudioFrame = pushFrame;
+            FFIBridge.Instance.ffiClient.SendRequest(ffiRequest, false);
 
-            // Wait for async callback, log an error if the capture fails.
+
+            // Changes - this was creating memory because of the callback being created,
+            // might be able to make a call back and cache the asyncID to get around that problem
+            /*
             var asyncId = res.CaptureAudioFrame.AsyncId;
             void Callback(CaptureAudioFrameCallback callback)
             {
@@ -155,6 +166,17 @@ namespace LiveKit
                 FfiClient.Instance.CaptureAudioFrameReceived -= Callback;
             }
             FfiClient.Instance.CaptureAudioFrameReceived += Callback;
+            */
+
+            ffiRequest.CaptureAudioFrame = null;
+            pushFrame.Buffer.ClearDataPtr();
+            pushFrame.Buffer = null;
+            ffiRequest.ClearMessage();
+
+
+            FFIBridge.Instance.multiPool.Release(ffiRequest);
+            FFIBridge.Instance.multiPool.Release(pushFrame);
+            FFIBridge.Instance.multiPool.Release(audioFrameBufferInfo);
         }
 
         /// <summary>
