@@ -100,8 +100,12 @@ namespace LiveKit.Scripts.Audio
 
         public static string[] AvailableDeviceNamesOrEmpty()
         {
+#if UNITY_WEBGL
+            return Array.Empty<string>();
+#else
             var result = RustAudioClient.AvailableDeviceNames();
             return result.Success ? result.Value : Array.Empty<string>();
+#endif
         }
 
         private void NativeOnAudioRead(Span<float> data)
