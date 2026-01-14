@@ -1,7 +1,10 @@
 using System.Linq;
-using LiveKit.Scripts.Audio;
 using RichTypes;
 using UnityEngine;
+
+#if !UNITY_WEBGL
+using LiveKit.Scripts.Audio;
+#endif
 
 namespace LiveKit.Runtime.Scripts.Audio
 {
@@ -16,10 +19,14 @@ namespace LiveKit.Runtime.Scripts.Audio
 
         public static Result<MicrophoneSelection> Default()
         {
+#if UNITY_WEBGL
+            return Result<MicrophoneSelection>.ErrorResult("Microphone devices are not available on WebGL");
+#else
             string? name = Microphone.devices!.FirstOrDefault();
             return name == null
                 ? Result<MicrophoneSelection>.ErrorResult("Microphone devices are not available")
                 : Result<MicrophoneSelection>.SuccessResult(new MicrophoneSelection(name));
+#endif
         }
 
         public static Result<MicrophoneSelection> FromName(string microphoneName)
@@ -44,9 +51,12 @@ namespace LiveKit.Runtime.Scripts.Audio
 
         public static string[] Devices()
         {
-            //string[] devices = Microphone.devices ?? Array.Empty<string>();
+#if UNITY_WEBGL
+            return System.Array.Empty<string>();
+#else
             string[] devices = MicrophoneAudioFilter.AvailableDeviceNamesOrEmpty();
             return devices;
+#endif
         }
     }
 }

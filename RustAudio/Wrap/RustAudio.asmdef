@@ -2,10 +2,13 @@
     "name": "RustAudio",
     "rootNamespace": "",
     "references": [
-        "RichTypes"
+        "RichTypes",
+        "RustAudio.Def"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [],
+    "excludePlatforms": [
+        "WebGL"
+    ],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],

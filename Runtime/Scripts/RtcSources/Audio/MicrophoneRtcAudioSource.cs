@@ -7,12 +7,13 @@ using LiveKit.Proto;
 using LiveKit.Rooms.Streaming;
 using LiveKit.Rooms.Streaming.Audio;
 using LiveKit.Runtime.Scripts.Audio;
-using LiveKit.Scripts.Audio;
 using Livekit.Types;
 using RichTypes;
-using RustAudio;
 using UnityEngine;
 using UnityEngine.Audio;
+using RustAudio;
+using LiveKit.Scripts.Audio;
+
 
 namespace LiveKit.Audio
 {
@@ -27,6 +28,7 @@ namespace LiveKit.Audio
             );
 
         private MicrophoneAudioFilter deviceMicrophoneAudioSource;
+
         private readonly bool playbackToSpeakers;
 
         private readonly Apm apm;
@@ -41,7 +43,6 @@ namespace LiveKit.Audio
         private readonly FfiHandle handle;
 
         public MicrophoneInfo MicrophoneInfo => deviceMicrophoneAudioSource.MicrophoneInfo;
-
         public bool IsRecording => deviceMicrophoneAudioSource.IsRecording;
 
         public WavTeeControl WavTeeControl

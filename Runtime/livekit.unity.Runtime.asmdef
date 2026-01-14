@@ -4,7 +4,8 @@
     "references": [
         "RichTypes",
         "UniTask",
-        "RustAudio"
+        "RustAudio",
+        "RustAudio.Def"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

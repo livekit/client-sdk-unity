@@ -1,10 +1,13 @@
 ﻿using System;
 using LiveKit.Audio;
 using LiveKit.Internal;
-using LiveKit.Scripts.Audio;
 using Livekit.Types;
 using RichTypes;
 using UnityEngine;
+
+#if !UNITY_WEBGL
+using LiveKit.Scripts.Audio;
+#endif
 
 namespace LiveKit.Audio
 {

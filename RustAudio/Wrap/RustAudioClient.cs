@@ -11,7 +11,6 @@ namespace RustAudio
 {
     public delegate void OnStreamAudioDelegate(Span<float> data);
 
-
     public static class RustAudioClient
     {
         #if UNITY_EDITOR
@@ -37,6 +36,10 @@ namespace RustAudio
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
         {
+            #if NO_LIVEKIT_MODE
+            return;
+            #endif
+
             Application.quitting += Quit;
             InitializeSdk();
         }
@@ -126,20 +129,6 @@ namespace RustAudio
             return Result<RustAudioSource>.SuccessResult(
                 new RustAudioSource(new MicrophoneInfo(deviceName, result.sampleRate, result.channels), result.streamId)
             );
-        }
-    }
-
-    public readonly struct MicrophoneInfo
-    {
-        public readonly string name;
-        public readonly uint sampleRate;
-        public readonly uint channels;
-
-        public MicrophoneInfo(string name, uint sampleRate, uint channels)
-        {
-            this.name = name;
-            this.sampleRate = sampleRate;
-            this.channels = channels;
         }
     }
 
