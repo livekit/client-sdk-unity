@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿#if !UNITY_WEBGL
+
+using System.Text;
 using LiveKit.Runtime.Scripts.Audio;
 using LiveKit.Scripts.Audio;
 using RichTypes;
@@ -68,3 +70,5 @@ namespace Livekit.Examples.Microphone
         }
     }
 }
+
+#endif

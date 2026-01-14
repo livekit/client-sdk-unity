@@ -9,32 +9,49 @@ namespace LiveKit.Scripts.Audio
 {
     public class MicrophoneAudioFilter : IAudioFilter, IDisposable
     {
+#if !UNITY_WEBGL
         private readonly RustAudioSource native;
-        private PlaybackMicrophoneAudioSource? lateBindPlaybackProxy;
+#endif
 
+        private PlaybackMicrophoneAudioSource? lateBindPlaybackProxy;
         private bool disposed;
 
+#if !UNITY_WEBGL
         public MicrophoneInfo MicrophoneInfo => native.microphoneInfo;
 
         public bool IsRecording => native.IsRecording;
+#else
+        // Actually is impossible to call, because the ctor cannot produce the instance of the class.
+        // But to keep the contracts alive I'll preserve the signature
+        public MicrophoneInfo MicrophoneInfo => new MicrophoneInfo(string.Empty, 0, 0);
+
+        public bool IsRecording => false;
+#endif
 
         public bool IsValid => disposed == false;
 
         public event IAudioFilter.OnAudioDelegate? AudioRead;
 
+
+#if !UNITY_WEBGL
         private MicrophoneAudioFilter(RustAudioSource native)
         {
             this.native = native;
 
             native.AudioRead += NativeOnAudioRead;
         }
+#endif
 
         public void Dispose()
         {
             if (disposed) return;
             disposed = true;
+
+#if !UNITY_WEBGL
             native.AudioRead -= NativeOnAudioRead;
             native.Dispose();
+#endif
+
             if (lateBindPlaybackProxy)
                 lateBindPlaybackProxy.Dispose();
         }
@@ -43,6 +60,10 @@ namespace LiveKit.Scripts.Audio
             MicrophoneSelection? microphoneName = null,
             bool withPlayback = false)
         {
+#if UNITY_WEBGL
+            return Result<MicrophoneAudioFilter>.ErrorResult(
+                $"MicrophoneAudioFilter is not supported on WEBGL");
+#else
             Result<string[]> deviceNames = RustAudioClient.AvailableDeviceNames();
             if (deviceNames.Success == false)
             {
@@ -74,6 +95,7 @@ namespace LiveKit.Scripts.Audio
             }
 
             return Result<MicrophoneAudioFilter>.SuccessResult(instance);
+#endif
         }
 
         public static string[] AvailableDeviceNamesOrEmpty()
@@ -90,12 +112,16 @@ namespace LiveKit.Scripts.Audio
 
         public void StartCapture()
         {
+#if !UNITY_WEBGL
             native.StartCapture();
+#endif
         }
 
         public void StopCapture()
         {
+#if !UNITY_WEBGL
             native.PauseCapture();
+#endif
         }
     }
 }

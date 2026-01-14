@@ -197,7 +197,7 @@ namespace LiveKit.Audio
         {
             if (disposed)
             {
-                Utils.Error($"{nameof(MicrophoneRtcAudioSource)} is already disposed");
+                Utils.Error($"{nameof(AudioClipRtcAudioSource)} is already disposed");
                 return;
             }
 

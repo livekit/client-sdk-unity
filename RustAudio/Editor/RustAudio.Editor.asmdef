@@ -4,7 +4,8 @@
     "references": [
         "RichTypes",
         "LiveKit",
-        "RustAudio"
+        "RustAudio",
+        "RustAudio.Def"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
