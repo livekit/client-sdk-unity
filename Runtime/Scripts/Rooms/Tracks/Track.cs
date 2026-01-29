@@ -1,8 +1,9 @@
+#if !UNITY_WEBGL
+
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using System.Threading;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.Participants;
 
 namespace LiveKit.Rooms.Tracks
@@ -62,3 +63,5 @@ namespace LiveKit.Rooms.Tracks
         }
     }
 }
+
+#endif

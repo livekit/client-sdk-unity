@@ -1,5 +1,6 @@
+#if !UNITY_WEBGL
+
 using System;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Streaming;
@@ -50,3 +51,5 @@ namespace LiveKit.Rooms.VideoStreaming
         }
     }
 }
+
+#endif

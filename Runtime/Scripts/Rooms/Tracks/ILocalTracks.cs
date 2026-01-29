@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using LiveKit.RtcSources.Video;
 
 namespace LiveKit.Rooms.Tracks
@@ -9,3 +11,5 @@ namespace LiveKit.Rooms.Tracks
         ITrack CreateVideoTrack(string name, RtcVideoSource source);
     }
 } 
+
+#endif

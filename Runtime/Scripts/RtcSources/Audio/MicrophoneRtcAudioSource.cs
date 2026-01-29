@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !UNITY_WEBGL
+
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using LiveKit.Internal;
@@ -319,3 +321,5 @@ namespace LiveKit.Audio
         }
     }
 }
+
+#endif

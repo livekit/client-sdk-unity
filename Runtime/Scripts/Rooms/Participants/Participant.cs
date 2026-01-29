@@ -5,17 +5,21 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Threading;
 using Google.Protobuf.Collections;
-using LiveKit.Internal.FFIClients.Requests;
-using LiveKit.Rooms.AsyncInstractions;
-using LiveKit.Rooms.TrackPublications;
 using LiveKit.Rooms.Tracks;
 using UnityEngine;
+using DCL.LiveKit.Public;
+
+#if !UNITY_WEBGL
+using LiveKit.Rooms.AsyncInstractions;
+using LiveKit.Rooms.TrackPublications;
+#endif
 
 namespace LiveKit.Rooms.Participants
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    public class Participant
+    public class LKParticipant
+#if !UNITY_WEBGL
     {
         public delegate void PublishDelegate(TrackPublication publication);
 
@@ -146,4 +150,21 @@ namespace LiveKit.Rooms.Participants
             Utils.Debug("UnpublishTrack Response:: " + res);
         }
     }
+#else
+//TODO and replace for WebGL
+    {
+        public string Sid => throw new System.NotImplementedException();
+        public string Identity => throw new System.NotImplementedException();
+        public string Name => throw new System.NotImplementedException();
+        public string Metadata => throw new System.NotImplementedException();
+
+        public LKConnectionQuality ConnectionQuality => throw new System.NotImplementedException();
+
+        public void Clear()
+        {
+            // TODO
+        }
+    }
+#endif
+
 }

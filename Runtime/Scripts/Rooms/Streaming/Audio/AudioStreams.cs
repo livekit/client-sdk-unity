@@ -1,5 +1,6 @@
-﻿using LiveKit.Audio;
-using LiveKit.Internal.FFIClients.Requests;
+﻿#if !UNITY_WEBGL
+
+using LiveKit.Audio;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Tracks;
@@ -23,3 +24,5 @@ namespace LiveKit.Rooms.Streaming.Audio
         }
     }
 }
+
+#endif

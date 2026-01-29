@@ -1,5 +1,6 @@
+#if !UNITY_WEBGL
+
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
 using LiveKit.RtcSources.Video;
@@ -58,3 +59,5 @@ namespace LiveKit.Rooms.Tracks.Factory
         }
     }
 }
+
+#endif

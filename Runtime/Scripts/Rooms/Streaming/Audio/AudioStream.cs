@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +8,6 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Audio;
 using LiveKit.Internal.FFIClients;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.Tracks;
 using Livekit.Types;
 using RichTypes;
@@ -244,3 +245,5 @@ namespace LiveKit.Rooms.Streaming.Audio
         }
     }
 }
+
+#endif

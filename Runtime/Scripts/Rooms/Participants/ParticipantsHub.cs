@@ -6,12 +6,12 @@ namespace LiveKit.Rooms.Participants
 {
     public class ParticipantsHub : IMutableParticipantsHub
     {
-        private readonly ConcurrentDictionary<string, Participant> remoteParticipants = new();
-        private Participant? local;
+        private readonly ConcurrentDictionary<string, LKParticipant> remoteParticipants = new();
+        private LKParticipant? local;
 
         public event ParticipantDelegate? UpdatesFromParticipant;
 
-        public Participant LocalParticipant()
+        public LKParticipant LocalParticipant()
         {
             return local
                    ?? throw new InvalidOperationException(
@@ -19,7 +19,7 @@ namespace LiveKit.Rooms.Participants
                    );
         }
 
-        public Participant? RemoteParticipant(string identity)
+        public LKParticipant? RemoteParticipant(string identity)
         {
             remoteParticipants.TryGetValue(identity, out var remoteParticipant);
             return remoteParticipant;
@@ -28,27 +28,27 @@ namespace LiveKit.Rooms.Participants
         /// <summary>
         ///     Don't expose ConcurrentDictionary.Keys as it creates a whole new collection on get
         /// </summary>
-        public IReadOnlyDictionary<string, Participant> RemoteParticipantIdentities()
+        public IReadOnlyDictionary<string, LKParticipant> RemoteParticipantIdentities()
         {
             return remoteParticipants;
         }
 
-        public void AssignLocal(Participant participant)
+        public void AssignLocal(LKParticipant participant)
         {
             local = participant;
         }
 
-        public void AddRemote(Participant participant)
+        public void AddRemote(LKParticipant participant)
         {
             remoteParticipants[participant.Identity] = participant;
         }
 
-        public void RemoveRemote(Participant participant)
+        public void RemoveRemote(LKParticipant participant)
         {
             remoteParticipants.TryRemove(participant.Identity, out _);
         }
 
-        public void NotifyParticipantUpdate(Participant participant, UpdateFromParticipant update)
+        public void NotifyParticipantUpdate(LKParticipant participant, UpdateFromParticipant update)
         {
             UpdatesFromParticipant?.Invoke(participant, update);
         }

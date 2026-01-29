@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 
 namespace LiveKit.Internal
@@ -13,3 +15,5 @@ namespace LiveKit.Internal
         static readonly IFfiHandleFactory Default = new FfiHandleFactory();
     }
 }
+
+#endif

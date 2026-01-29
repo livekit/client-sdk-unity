@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -32,3 +34,5 @@ namespace LiveKit.Rooms.Participants.Factory
         }
     }
 }
+
+#endif

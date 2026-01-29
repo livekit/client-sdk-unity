@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using LiveKit.Proto;
 using LiveKit.Rooms;
 
@@ -33,3 +35,5 @@ namespace LiveKit.Internal.FFIClients.Requests
         }
     }
 }
+
+#endif

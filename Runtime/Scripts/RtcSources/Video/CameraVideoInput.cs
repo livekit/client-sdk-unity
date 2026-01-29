@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -230,3 +232,5 @@ namespace LiveKit.RtcSources.Video
     }
 
 }
+
+#endif

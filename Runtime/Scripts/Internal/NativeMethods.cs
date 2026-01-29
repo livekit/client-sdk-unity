@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Security;
 using System.Runtime.ConstrainedExecution;
@@ -48,3 +50,5 @@ namespace LiveKit.Internal
 #endif
     }
 }
+
+#endif

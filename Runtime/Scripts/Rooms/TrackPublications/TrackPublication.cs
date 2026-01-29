@@ -1,4 +1,5 @@
-using LiveKit.Internal.FFIClients.Requests;
+#if !UNITY_WEBGL
+
 using LiveKit.Proto;
 using LiveKit.Rooms.Tracks;
 
@@ -66,3 +67,5 @@ namespace LiveKit.Rooms.TrackPublications
     }
 
 }
+
+#endif

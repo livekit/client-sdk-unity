@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System.Threading;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -37,3 +39,5 @@ namespace LiveKit.Rooms.AsyncInstractions
         }
     }
 }
+
+#endif

@@ -1,7 +1,8 @@
+#if !UNITY_WEBGL
+
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using LiveKit.Internal.FFIClients.Requests;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -109,3 +110,5 @@ namespace LiveKit
         }
     }
 }
+
+#endif

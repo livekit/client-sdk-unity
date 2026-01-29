@@ -1,10 +1,11 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using Unity.Collections.LowLevel.Unsafe;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients;
 using LiveKit.Internal.FFIClients;
 using RichTypes;
@@ -158,3 +159,5 @@ namespace LiveKit.RtcSources.Video
         }
     }
 }
+
+#endif

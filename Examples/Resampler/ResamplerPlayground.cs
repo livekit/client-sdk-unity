@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System.IO;
 using System.Text;
 using LiveKit.Audio;
@@ -54,3 +56,5 @@ namespace Examples.Resampler
         }
     }
 }
+
+#endif

@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using Google.Protobuf;
 
 namespace LiveKit.Internal.FFIClients.Requests
@@ -10,3 +12,5 @@ namespace LiveKit.Internal.FFIClients.Requests
         FfiRequestWrap<T> NewRequest<T>() where T : class, IMessage<T>, new();
     }
 }
+
+#endif

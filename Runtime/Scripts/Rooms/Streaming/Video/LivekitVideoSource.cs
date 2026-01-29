@@ -34,7 +34,7 @@ namespace LiveKit.Rooms.Streaming.Video
             if (image == null)
             {
                 image = GetComponent<RawImage>();
-                if (image == null) Utils.Error("Cannot assign raw image");
+                if (image == null) LiveKit.Internal.Utils.Error("Cannot assign raw image");
             }
         }
 

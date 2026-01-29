@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System.Collections;
 using Examples;
 using UnityEngine;
@@ -52,3 +54,5 @@ public class JoinMenu : MonoBehaviour
         yield break;
     }
 }
+
+#endif

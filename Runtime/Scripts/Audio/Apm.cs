@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
@@ -146,3 +148,5 @@ namespace LiveKit.Audio
         }
     }
 }
+
+#endif

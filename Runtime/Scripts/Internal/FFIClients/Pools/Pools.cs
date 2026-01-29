@@ -1,9 +1,11 @@
+#if !UNITY_WEBGL
+
 using System;
 using LiveKit.Internal.FFIClients.Pools.ObjectPool;
 using LiveKit.Proto;
 using UnityEngine.Pool;
 
-namespace LiveKit.Internal.FFIClients.Pools//
+namespace LiveKit.Internal.FFIClients.Pools
 {
     public static class Pools
     {
@@ -21,3 +23,5 @@ namespace LiveKit.Internal.FFIClients.Pools//
         }
     }
 }
+
+#endif

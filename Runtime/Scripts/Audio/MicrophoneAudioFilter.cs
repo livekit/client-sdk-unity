@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !UNITY_WEBGL
+
+using System;
 using System.Linq;
 using LiveKit.Audio;
 using LiveKit.Runtime.Scripts.Audio;
@@ -9,9 +11,7 @@ namespace LiveKit.Scripts.Audio
 {
     public class MicrophoneAudioFilter : IAudioFilter, IDisposable
     {
-#if !UNITY_WEBGL
         private readonly RustAudioSource native;
-#endif
 
         private PlaybackMicrophoneAudioSource? lateBindPlaybackProxy;
         private bool disposed;
@@ -129,3 +129,5 @@ namespace LiveKit.Scripts.Audio
         }
     }
 }
+
+#endif

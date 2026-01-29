@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Collections.Generic;
 
@@ -32,3 +34,5 @@ namespace LiveKit.Internal
         }
     }
 }
+
+#endif

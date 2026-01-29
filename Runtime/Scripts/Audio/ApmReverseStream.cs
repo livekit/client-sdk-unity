@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Runtime.InteropServices;
 using LiveKit.Internal;
@@ -98,3 +100,5 @@ namespace LiveKit.Audio
         }
     }
 }
+
+#endif

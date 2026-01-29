@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -307,7 +309,7 @@ public class ExampleRoom : MonoBehaviour
     {
         await UniTask.WhenAll(
             botInstances
-                .Select(r => r.room!.DisconnectAsync(destroyCancellationToken).AsUniTask())!
+                .Select(r => r.room!.DisconnectAsync(destroyCancellationToken))!
                 .ToArray()
         );
         foreach (var botInstance in botInstances)
@@ -402,3 +404,5 @@ public enum BotCaptureMode
     FromClip,
     FromMicrophone
 }
+
+#endif

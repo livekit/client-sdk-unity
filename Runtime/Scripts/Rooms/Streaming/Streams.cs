@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !UNITY_WEBGL
+
+using System;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -180,3 +182,5 @@ namespace LiveKit.Rooms.Streaming
         protected abstract T NewStreamInstance(StreamKey streamKey, ITrack track);
     }
 }
+
+#endif
