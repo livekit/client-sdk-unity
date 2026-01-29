@@ -18,8 +18,8 @@ namespace LiveKit.Rooms.Participants
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    public class LKParticipant
 #if !UNITY_WEBGL
+    public class LKParticipant
     {
         public delegate void PublishDelegate(TrackPublication publication);
 
@@ -151,19 +151,37 @@ namespace LiveKit.Rooms.Participants
         }
     }
 #else
-//TODO and replace for WebGL
+    // IEquatable to keep behaviour consistent in dictionaries.
+    public readonly struct LKParticipant : IEquatable<LKParticipant>
     {
-        public string Sid => throw new System.NotImplementedException();
-        public string Identity => throw new System.NotImplementedException();
-        public string Name => throw new System.NotImplementedException();
-        public string Metadata => throw new System.NotImplementedException();
+        private readonly LiveKit.Participant jsParticipant;
+
+        public string Sid => jsParticipant.Sid;
+        public string Identity => jsParticipant.Identity;
+        public string Name => jsParticipant.Name;
+        public string Metadata => jsParticipant.Metadata;
 
         public LKConnectionQuality ConnectionQuality => throw new System.NotImplementedException();
 
-        public void Clear()
+        public LKParticipant(LiveKit.Participant jsParticipant)
         {
-            // TODO
+            this.jsParticipant = jsParticipant;
         }
+
+        public bool Equals(LKParticipant other)
+            => string.Equals(Sid, other.Sid, StringComparison.Ordinal);
+
+        public override bool Equals(object obj)
+            => obj is LKParticipant other && Equals(other);
+
+        public override int GetHashCode()
+            => Sid != null ? Sid.GetHashCode() : 0;
+
+        public static bool operator ==(LKParticipant a, LKParticipant b)
+            => a.Equals(b);
+
+        public static bool operator !=(LKParticipant a, LKParticipant b)
+            => !a.Equals(b);
     }
 #endif
 
