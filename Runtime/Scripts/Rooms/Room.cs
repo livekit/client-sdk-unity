@@ -14,6 +14,7 @@ using LiveKit.Rooms.Tracks;
 using LiveKit.Rooms.Tracks.Hub;
 using LiveKit.Rooms.VideoStreaming;
 using RichTypes;
+using DCL.LiveKit.Public;
 using RoomInfo = LiveKit.Proto.RoomInfo;
 
 #if !UNITY_WEBGL
@@ -25,6 +26,10 @@ using LiveKit.Rooms.TrackPublications;
 #endif
 
 using Utils = LiveKit.Internal.Utils;
+
+#if UNITY_WEBGL
+using JsRoom = LiveKit.Room;
+#endif
 
 namespace LiveKit.Rooms
 {
@@ -453,6 +458,18 @@ namespace LiveKit.Rooms
 #else
         // WebGL implementation
 
+        private static readonly TimeSpan POLL_DELAY = TimeSpan.FromMilliseconds(500);
+
+        private readonly JsRoom jsRoom;
+
+        private readonly JsRoomInfo roomInfo;
+        private readonly NoActiveSpeakers activeSpeakers;
+        private readonly JsParticipantsHub jsParticipantsHub;
+        private readonly JsDataPipe jsDataPipe;
+        
+        private bool disposed;
+
+
         public event MetaDelegate? RoomMetadataChanged;
         public event SidDelegate? RoomSidChanged;
 
@@ -460,34 +477,148 @@ namespace LiveKit.Rooms
         public event ConnectionStateChangeDelegate? ConnectionStateChanged;
         public event ConnectionDelegate? ConnectionUpdated;
  
-        public IRoomInfo Info { get; }
+        public IRoomInfo Info => roomInfo;
         
-        public IActiveSpeakers ActiveSpeakers { get; }
+        public IActiveSpeakers ActiveSpeakers => activeSpeakers;
         
-        public IParticipantsHub Participants { get; }
+        public IParticipantsHub Participants => jsParticipantsHub;
         
-        public IDataPipe DataPipe { get; }
-        
+        public IDataPipe DataPipe => jsDataPipe;
+
+        /* Js Implementation accepts options, can be expanded later
+           public struct RoomOptions
+           {
+           [JsonProperty("adaptiveStream")]
+           public bool AdaptiveStream;
+           [JsonProperty("dynacast")]
+           public bool Dynacast;
+           [JsonProperty("audioCaptureDefaults")]
+           public AudioCaptureOptions? AudioCaptureDefaults;
+           [JsonProperty("videoCaptureDefaults")]
+           public VideoCaptureOptions? VideoCaptureDefaults;
+           [JsonProperty("publishDefaults")]
+           public TrackPublishDefaults? PublishDefaults;
+           [JsonProperty("stopLocalTrackOnUnpublish")]
+           public bool StopLocalTrackOnUnpublish;
+           [JsonProperty("expDisableLayerPause")]
+           public bool ExpDisableLayerPause;
+           }
+        */
+        public Room()
+        {
+            jsRoom = new JsRoom();
+
+            // TODO (enhance) dispose to avoid the UniTask loop leakage (private ListenLoopAsync)?
+            // From other side the current design suppose to reuse the room and won't dispose it
+            roomInfo = JsRoomInfo.NewAndStart(jsRoom, newSid => RoomSidChanged?.Invoke(newSid));
+            activeSpeakers = new NoActiveSpeakers(); // Not needed for this iteration
+            jsParticipantsHub = new JsParticipantsHub(jsRoom);
+            jsDataPipe = new JsDataPipe(jsRoom);
+
+            disposed = false;
+
+            WireEvents(jsRoom);
+            PollStateAsync().Forget();
+        }
+
+        private void WireEvents(JsRoom r)
+        {
+            r.RoomMetadataChanged += (string metadata) => 
+            {
+                RoomMetadataChanged?.Invoke(metadata);
+            };
+
+            r.ConnectionQualityChanged += (LiveKit.ConnectionQuality quality, LiveKit.Participant participant) =>
+            {
+                LKConnectionQuality q = quality switch
+                {
+                    LiveKit.ConnectionQuality.Unknown => LKConnectionQuality.QualityLost,
+                    LiveKit.ConnectionQuality.Poor => LKConnectionQuality.QualityPoor,
+                    LiveKit.ConnectionQuality.Good => LKConnectionQuality.QualityGood,
+                    LiveKit.ConnectionQuality.Excellent => LKConnectionQuality.QualityExcellent,
+                };
+
+                LKParticipant wrap =  new LKParticipant(participant);
+                ConnectionQualityChanged?.Invoke(q, wrap);
+            };
+
+            r.Reconnecting += () => ConnectionUpdated?.Invoke(this, ConnectionUpdate.Reconnecting, null);
+            r.Reconnected += () => ConnectionUpdated?.Invoke(this, ConnectionUpdate.Reconnected, null);
+            r.Disconnected += (LiveKit.DisconnectReason? reason) =>
+            {
+                LKDisconnectReason? lkDisconnectReason = null;
+                if (reason != null)
+                {
+                    lkDisconnectReason = reason.Value switch
+                    {
+                        DisconnectReason.UNKNOWN_REASON => LKDisconnectReason.UnknownReason,
+                        DisconnectReason.CLIENT_INITIATED => LKDisconnectReason.ClientInitiated,
+                        DisconnectReason.DUPLICATE_IDENTITY => LKDisconnectReason.DuplicateIdentity,
+                        DisconnectReason.SERVER_SHUTDOWN => LKDisconnectReason.ServerShutdown,
+                        DisconnectReason.PARTICIPANT_REMOVED => LKDisconnectReason.ParticipantRemoved,
+                        DisconnectReason.ROOM_DELETED => LKDisconnectReason.RoomDeleted,
+                        DisconnectReason.STATE_MISMATCH => LKDisconnectReason.StateMismatch,
+                        DisconnectReason.UNRECOGNIZED => LKDisconnectReason.UnknownReason, // Weird, but Web version won't represent all reasons
+
+                    };
+                }
+
+                ConnectionUpdated?.Invoke(this, ConnectionUpdate.Disconnected, lkDisconnectReason);
+            };
+        }
+
+        private async UniTaskVoid PollStateAsync()
+        {
+            LKConnectionState lastState = roomInfo.ConnectionState;
+            while (disposed == false)
+            {
+                await UniTask.Delay(POLL_DELAY);
+                LKConnectionState newState = roomInfo.ConnectionState;
+                if (lastState != newState)
+                {
+                    ConnectionStateChanged?.Invoke(newState);
+                    lastState = newState;
+                }
+            }
+        }
 
         public void UpdateLocalMetadata(string metadata)
         {
-            // TODO
+            jsRoom.LocalParticipant?.SetMetadata(metadata);
         }
 
         public void SetLocalName(string name)
         {
-            // TODO
+            jsRoom.LocalParticipant?.SetName(name);
         }
 
-        public UniTask<Result> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
+        public async UniTask<Result> ConnectAsync(string url, string authToken, CancellationToken cancelToken, bool autoSubscribe)
         {
-            throw new Exception();
-            // TODO
+            try
+            {
+                RoomConnectOptions options = new RoomConnectOptions();
+                options.AutoSubscribe = autoSubscribe;
+                LiveKit.ConnectOperation operation = jsRoom.Connect(url, authToken, options);
+                await operation;
+
+                if (operation.IsError)
+                {
+                    global::LiveKit.JSError error = operation.Error;
+                    return Result.ErrorResult($"Cannot connect to room {url} due an js error: {error.Name} - {error.Message}");
+                }
+
+                ConnectionUpdated?.Invoke(this, ConnectionUpdate.Connected, null);
+                return Result.SuccessResult();
+            }
+            catch (Exception e)
+            {
+                return Result.ErrorResult($"Cannot connect to room {url} due an exception: {e}");
+            }
         }
 
         public async UniTask DisconnectAsync(CancellationToken cancellationToken)
         {
-            // TODO
+            jsRoom.Disconnect();
         }
 
 #endif
