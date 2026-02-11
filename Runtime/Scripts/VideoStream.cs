@@ -10,13 +10,14 @@ namespace LiveKit
     public class VideoStream
     {
         public delegate void FrameReceiveDelegate(VideoFrame frame);
-        public delegate void TextureReceiveDelegate(Texture2D tex2d);
+        public delegate void TextureReceiveDelegate(Texture tex);
         public delegate void TextureUploadDelegate();
 
         internal readonly FfiHandle Handle;
         private VideoStreamInfo _info;
         private bool _disposed = false;
         private bool _dirty = false;
+        private YuvToRgbConverter _converter;
 
         /// Called when we receive a new frame from the VideoTrack
         public event FrameReceiveDelegate FrameReceived;
@@ -29,7 +30,7 @@ namespace LiveKit
 
         /// The texture changes every time the video resolution changes.
         /// Can be null if UpdateRoutine isn't started
-        public Texture2D Texture { private set; get; }
+        public RenderTexture Texture { private set; get; }
         public VideoFrameBuffer VideoBuffer { private set; get; }
 
         protected bool _playing = false;
@@ -70,8 +71,14 @@ namespace LiveKit
             if (!_disposed)
             {
                 if (disposing)
+                {
                     VideoBuffer?.Dispose();
-                if (Texture != null) UnityEngine.Object.Destroy(Texture);
+                }
+                // Unity objects must be destroyed on main thread
+                _converter?.Dispose();
+                _converter = null;
+                // Texture is owned and cleaned up by _converter. Set to null to avoid holding a reference to a disposed RenderTexture.
+                Texture = null;
                 _disposed = true;
             }
         }
@@ -103,30 +110,21 @@ namespace LiveKit
                 var rWidth = VideoBuffer.Width;
                 var rHeight = VideoBuffer.Height;
 
-                var textureChanged = false;
-                if (Texture == null || Texture.width != rWidth || Texture.height != rHeight)
-                {
-                    if (Texture != null) UnityEngine.Object.Destroy(Texture);
-                    Texture = new Texture2D((int)rWidth, (int)rHeight, TextureFormat.RGBA32, false);
-                    Texture.ignoreMipmapLimit = false;
-                    textureChanged = true;
-                }
-                var rgba = VideoBuffer.ToRGBA();
-                {
-                    Texture.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
-                }
-                Texture.Apply();
+                if (_converter == null) _converter = new YuvToRgbConverter();
+                var textureChanged = _converter.EnsureOutput((int)rWidth, (int)rHeight);
+                _converter.Convert(VideoBuffer);
+                if (textureChanged) Texture = _converter.Output;
 
                 if (textureChanged)
                     TextureReceived?.Invoke(Texture);
 
                 TextureUploaded?.Invoke();
-                rgba.Dispose();
             }
 
             yield break;
         }
 
+        // Handle new video stream events
         private void OnVideoStreamEvent(VideoStreamEvent e)
         {
             if (e.StreamHandle != (ulong)Handle.DangerousGetHandle())
