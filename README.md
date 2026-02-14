@@ -425,6 +425,14 @@ room.RegisterByteStreamHandler("my-topic", (reader, identity) =>
 );
 ```
 
+## Verbose Logging
+
+To enable verbose logging, define the `LK_VERBOSE` symbol:
+
+1. Navigate to Project Settings → Player
+2. Select your platform tab (e.g., Mac, iOS, Android).
+3. Under Other Settings → Scripting Define Symbols, add `LK_VERBOSE`.
+
 <!--BEGIN_REPO_NAV-->
 <br/><table>
 <thead><tr><th colspan="2">LiveKit Ecosystem</th></tr></thead>
