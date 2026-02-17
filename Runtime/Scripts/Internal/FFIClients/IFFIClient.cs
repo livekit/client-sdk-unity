@@ -8,7 +8,7 @@ namespace LiveKit.Internal.FFIClients
     /// </summary>
     public interface IFFIClient : IDisposable
     {
-        FfiResponse SendRequest(FfiRequest request);
+        FfiResponse SendRequest(FfiRequest request, bool requireResponse = true);
 
         void Release(FfiResponse response);
     }
