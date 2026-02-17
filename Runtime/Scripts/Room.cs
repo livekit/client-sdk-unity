@@ -342,11 +342,12 @@ namespace LiveKit
                         var track = e.TrackSubscribed.Track;
                         var info = track.Info;
                         var participant = RemoteParticipants[e.TrackSubscribed.ParticipantIdentity];
-                        var publication = participant.Tracks[info.Sid];
 
-                        if (publication == null)
+                        if (!participant.Tracks.TryGetValue(info.Sid, out var publication))
                         {
+                            publication = new RemoteTrackPublication(info, FfiHandle.FromOwnedHandle(track.Handle));
                             participant._tracks.Add(publication.Sid, publication);
+                            participant.OnTrackPublished(publication);
                         }
 
                         if (info.Kind == TrackKind.KindVideo)
@@ -466,13 +467,17 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.ByteStreamOpened:
                     var byteReader = new ByteStreamReader(e.ByteStreamOpened.Reader);
-                    _streamHandlers.Dispatch(byteReader, e.ByteStreamOpened.ParticipantIdentity);
-                    // TODO: Immediately dispose unhandled stream reader
+                    if (!_streamHandlers.Dispatch(byteReader, e.ByteStreamOpened.ParticipantIdentity))
+                    {
+                        byteReader.Dispose();
+                    }
                     break;
                 case RoomEvent.MessageOneofCase.TextStreamOpened:
                     var textReader = new TextStreamReader(e.TextStreamOpened.Reader);
-                    _streamHandlers.Dispatch(textReader, e.TextStreamOpened.ParticipantIdentity);
-                    // TODO: Immediately dispose unhandled stream reader
+                    if (!_streamHandlers.Dispatch(textReader, e.TextStreamOpened.ParticipantIdentity))
+                    {
+                        textReader.Dispose();
+                    }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionState = e.ConnectionStateChanged.State;
