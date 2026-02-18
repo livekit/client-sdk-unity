@@ -125,6 +125,7 @@ namespace LiveKit
         public delegate void SipDtmfDelegate(Participant participant, UInt32 code, string digit);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate(Room room);
+        public delegate void DisconnectDelegate(DisconnectReason reason);
         public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
 
         public string Sid { private set; get; }
@@ -153,7 +154,7 @@ namespace LiveKit
         public event SipDtmfDelegate SipDtmfReceived;
         public event ConnectionStateChangeDelegate ConnectionStateChanged;
         public event ConnectionDelegate Connected;
-        public event ConnectionDelegate Disconnected;
+        public event DisconnectDelegate Disconnected;
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
         public event E2EeStateChangedDelegate E2EeStateChanged;
@@ -479,7 +480,7 @@ namespace LiveKit
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
-                    Disconnected?.Invoke(this);
+                    Disconnected?.Invoke(e.Disconnected.Reason);
                     OnDisconnect();
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
@@ -528,6 +529,8 @@ namespace LiveKit
 
         private void OnDisconnectReceived(DisconnectCallback e)
         {
+            OnDisconnect();
+            Disconnected?.Invoke(DisconnectReason.ClientInitiated);
             FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
             Utils.Debug($"OnDisconnect.... {e}");
         }
