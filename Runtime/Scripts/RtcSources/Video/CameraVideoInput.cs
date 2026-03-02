@@ -1,3 +1,4 @@
+#if DCL_LIVEKIT_CAMERA_VIDEO_INPUT_ON
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -230,3 +231,4 @@ namespace LiveKit.RtcSources.Video
     }
 
 }
+#endif

@@ -1,3 +1,4 @@
+#if DCL_LIVEKIT_CAMERA_VIDEO_INPUT_ON
 using System;
 using LiveKit.RtcSources.Video;
 using RichTypes;
@@ -96,3 +97,4 @@ namespace Examples.CameraCapture
         }
     }
 }
+#endif
