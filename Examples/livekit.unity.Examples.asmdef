@@ -7,10 +7,10 @@
         "LiveKit",
         "RustAudio"
     ],
-    "includePlatforms": [],
-    "excludePlatforms": [
-        "WebGL"
+    "includePlatforms": [
+        "Editor"
     ],
+    "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
