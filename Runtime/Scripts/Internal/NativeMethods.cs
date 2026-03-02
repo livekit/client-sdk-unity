@@ -31,17 +31,17 @@ namespace LiveKit.Internal
 #else
         private const string ERR_MSG = "Linux is not supported";
 
-        internal extern static bool FfiDropHandle(FfiHandleId handleId)
+        internal static bool FfiDropHandle(FfiHandleId handleId)
         {
             throw new PlatformNotSupportedException(ERR_MSG);
         }
 
-        internal extern static unsafe FfiHandleId FfiNewRequest(byte* data, int len, out byte* dataPtr, out UIntPtr dataLen)
+        internal static unsafe FfiHandleId FfiNewRequest(byte* data, int len, out byte* dataPtr, out UIntPtr dataLen)
         {
             throw new PlatformNotSupportedException(ERR_MSG);
         }
 
-        internal extern static FfiHandleId LiveKitInitialize(FFICallbackDelegate cb, bool captureLogs, string sdk, string sdkVersion)
+        internal static FfiHandleId LiveKitInitialize(FFICallbackDelegate cb, bool captureLogs, string sdk, string sdkVersion)
         {
             throw new PlatformNotSupportedException(ERR_MSG);
         }
