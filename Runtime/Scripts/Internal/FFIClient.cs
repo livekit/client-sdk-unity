@@ -64,6 +64,11 @@ namespace LiveKit.Internal
         public event TextStreamWriterCloseReceivedDelegate? TextStreamWriterCloseReceived;
         public event SendTextReceivedDelegate? SendTextReceived;
 
+        // Data Track
+        public event PublishDataTrackReceivedDelegate? PublishDataTrackReceived;
+        public event SubscribeDataTrackReceivedDelegate? SubscribeDataTrackReceived;
+        public event DataTrackSubscriptionEventReceivedDelegate? DataTrackSubscriptionEventReceived;
+
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
@@ -332,6 +337,16 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.SendText:
                         Instance.SendTextReceived?.Invoke(r.SendText!);
+                        break;
+                    // Data Track
+                    case FfiEvent.MessageOneofCase.PublishDataTrack:
+                        Instance.PublishDataTrackReceived?.Invoke(r.PublishDataTrack!);
+                        break;
+                    case FfiEvent.MessageOneofCase.SubscribeDataTrack:
+                        Instance.SubscribeDataTrackReceived?.Invoke(r.SubscribeDataTrack!);
+                        break;
+                    case FfiEvent.MessageOneofCase.DataTrackSubscriptionEvent:
+                        Instance.DataTrackSubscriptionEventReceived?.Invoke(r.DataTrackSubscriptionEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.Panic:
                         break;

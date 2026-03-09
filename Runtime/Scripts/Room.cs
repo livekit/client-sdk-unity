@@ -126,6 +126,7 @@ namespace LiveKit
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate(Room room);
         public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
+        public delegate void RemoteDataTrackPublishedDelegate(RemoteDataTrack track);
 
         public string Sid { private set; get; }
         public string Name { private set; get; }
@@ -161,6 +162,7 @@ namespace LiveKit
         public event ParticipantDelegate ParticipantMetadataChanged;
         public event ParticipantDelegate ParticipantNameChanged;
         public event ParticipantDelegate ParticipantAttributesChanged;
+        public event RemoteDataTrackPublishedDelegate RemoteDataTrackPublished;
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
@@ -501,8 +503,13 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.Moved:
                     {
-                        // Participants moved to new room.
                         UpdateFromInfo(e.Moved);
+                    }
+                    break;
+                case RoomEvent.MessageOneofCase.RemoteDataTrackPublished:
+                    {
+                        var track = new RemoteDataTrack(e.RemoteDataTrackPublished.Track);
+                        RemoteDataTrackPublished?.Invoke(track);
                     }
                     break;
             }
