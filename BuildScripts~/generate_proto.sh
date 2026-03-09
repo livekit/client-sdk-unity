@@ -17,4 +17,5 @@ protoc \
     $FFI_PROTOCOL/e2ee.proto \
     $FFI_PROTOCOL/stats.proto \
     $FFI_PROTOCOL/rpc.proto \
-    $FFI_PROTOCOL/data_stream.proto
+    $FFI_PROTOCOL/data_stream.proto \
+    $FFI_PROTOCOL/data_track.proto
