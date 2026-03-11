@@ -139,8 +139,11 @@ namespace LiveKit.Internal
             return;
 #endif
 
-            // TODO: gate behind LK_VERBOSE
+#if LK_VERBOSE
             const bool captureLogs = true;
+#else
+            const bool captureLogs = false;
+#endif
 
             NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", ""); // TODO: Get SDK version
 
