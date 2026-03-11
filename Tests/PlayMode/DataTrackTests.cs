@@ -15,13 +15,13 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
 
-            Assert.IsFalse(publishInstruction.IsError, "PublishDataTrack should not error");
+            Assert.IsFalse(publishInstruction.IsError);
             Assert.IsNotNull(publishInstruction.Track);
         }
 
@@ -30,7 +30,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
@@ -46,7 +46,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
@@ -61,7 +61,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
@@ -81,7 +81,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
@@ -105,27 +105,27 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
             var expectation = new Expectation(timeoutSeconds: 10f);
+            RemoteDataTrack receivedTrack = null;
 
             subscriberRoom.RemoteDataTrackPublished += (track) =>
             {
-                if (track.Info.Name == TestTrackName && track.PublisherIdentity == publisher.Identity)
-                    expectation.Fulfill();
-                else
-                    expectation.Fail($"Unexpected track: name={track.Info.Name}, publisher={track.PublisherIdentity}");
+                receivedTrack = track;
+                expectation.Fulfill();
             };
 
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
-            if (publishInstruction.IsError)
-                Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
+            Assert.IsFalse(publishInstruction.IsError);
 
             yield return expectation.Wait();
-            if (expectation.Error != null) Assert.Fail(expectation.Error);
+            Assert.IsNull(expectation.Error);
+            Assert.AreEqual(TestTrackName, receivedTrack.Info.Name);
+            Assert.AreEqual(publisher.Identity, receivedTrack.PublisherIdentity);
         }
 
         [UnityTest, Category("E2E")]
@@ -138,7 +138,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
             var trackExpectation = new Expectation(timeoutSeconds: 10f);
@@ -153,16 +153,15 @@ namespace LiveKit.PlayModeTests
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
-            if (publishInstruction.IsError)
-                Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
+            Assert.IsFalse(publishInstruction.IsError);
 
             yield return trackExpectation.Wait();
-            if (trackExpectation.Error != null) Assert.Fail(trackExpectation.Error);
+            Assert.IsNull(trackExpectation.Error);
 
             var subInstruction = remoteTrack.Subscribe();
             yield return subInstruction;
 
-            Assert.IsFalse(subInstruction.IsError, "Subscribe should not error");
+            Assert.IsFalse(subInstruction.IsError);
             Assert.IsNotNull(subInstruction.Subscription);
         }
 
@@ -176,7 +175,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
             var trackExpectation = new Expectation(timeoutSeconds: 10f);
@@ -191,16 +190,14 @@ namespace LiveKit.PlayModeTests
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
-            if (publishInstruction.IsError)
-                Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
+            Assert.IsFalse(publishInstruction.IsError);
 
             yield return trackExpectation.Wait();
-            if (trackExpectation.Error != null) Assert.Fail(trackExpectation.Error);
+            Assert.IsNull(trackExpectation.Error);
 
             var subInstruction = remoteTrack.Subscribe();
             yield return subInstruction;
-            if (subInstruction.IsError)
-                Assert.Fail($"Failed to subscribe: {subInstruction.Error.Message}");
+            Assert.IsFalse(subInstruction.IsError);
 
             var subscription = subInstruction.Subscription;
 
@@ -224,7 +221,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
             yield return context.ConnectAll();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
             var trackExpectation = new Expectation(timeoutSeconds: 10f);
@@ -239,16 +236,14 @@ namespace LiveKit.PlayModeTests
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
-            if (publishInstruction.IsError)
-                Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
+            Assert.IsFalse(publishInstruction.IsError);
 
             yield return trackExpectation.Wait();
-            if (trackExpectation.Error != null) Assert.Fail(trackExpectation.Error);
+            Assert.IsNull(trackExpectation.Error);
 
             var subInstruction = remoteTrack.Subscribe();
             yield return subInstruction;
-            if (subInstruction.IsError)
-                Assert.Fail($"Failed to subscribe: {subInstruction.Error.Message}");
+            Assert.IsFalse(subInstruction.IsError);
 
             var subscription = subInstruction.Subscription;
 
