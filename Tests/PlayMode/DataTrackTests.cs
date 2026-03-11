@@ -8,6 +8,8 @@ namespace LiveKit.PlayModeTests
 {
     public class DataTrackTests
     {
+        const string TestTrackName = "test-track";
+
         [UnityTest, Category("E2E")]
         public IEnumerator PublishDataTrack_Succeeds()
         {
@@ -16,7 +18,7 @@ namespace LiveKit.PlayModeTests
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
-            var publishInstruction = room.LocalParticipant.PublishDataTrack("test-track");
+            var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
 
             Assert.IsFalse(publishInstruction.IsError, "PublishDataTrack should not error");
@@ -31,12 +33,12 @@ namespace LiveKit.PlayModeTests
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
-            var publishInstruction = room.LocalParticipant.PublishDataTrack("my-sensor");
+            var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
 
             Assert.IsFalse(publishInstruction.IsError);
             var track = publishInstruction.Track;
-            Assert.AreEqual("my-sensor", track.Info.Name);
+            Assert.AreEqual(TestTrackName, track.Info.Name);
         }
 
         [UnityTest, Category("E2E")]
@@ -47,7 +49,7 @@ namespace LiveKit.PlayModeTests
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
-            var publishInstruction = room.LocalParticipant.PublishDataTrack("test-track");
+            var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
 
             Assert.IsFalse(publishInstruction.IsError);
@@ -62,7 +64,7 @@ namespace LiveKit.PlayModeTests
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
-            var publishInstruction = room.LocalParticipant.PublishDataTrack("test-track");
+            var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
 
             Assert.IsFalse(publishInstruction.IsError);
@@ -82,7 +84,7 @@ namespace LiveKit.PlayModeTests
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
-            var publishInstruction = room.LocalParticipant.PublishDataTrack("test-track");
+            var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
 
             Assert.IsFalse(publishInstruction.IsError);
@@ -110,14 +112,14 @@ namespace LiveKit.PlayModeTests
 
             subscriberRoom.RemoteDataTrackPublished += (track) =>
             {
-                if (track.Info.Name == "shared-track" && track.PublisherIdentity == publisher.Identity)
+                if (track.Info.Name == TestTrackName && track.PublisherIdentity == publisher.Identity)
                     expectation.Fulfill();
                 else
                     expectation.Fail($"Unexpected track: name={track.Info.Name}, publisher={track.PublisherIdentity}");
             };
 
             var publisherRoom = context.Rooms[0];
-            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack("shared-track");
+            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
             if (publishInstruction.IsError)
                 Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
@@ -149,7 +151,7 @@ namespace LiveKit.PlayModeTests
             };
 
             var publisherRoom = context.Rooms[0];
-            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack("sub-test");
+            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
             if (publishInstruction.IsError)
                 Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
@@ -187,7 +189,7 @@ namespace LiveKit.PlayModeTests
             };
 
             var publisherRoom = context.Rooms[0];
-            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack("payload-test");
+            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
             if (publishInstruction.IsError)
                 Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
@@ -235,7 +237,7 @@ namespace LiveKit.PlayModeTests
             };
 
             var publisherRoom = context.Rooms[0];
-            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack("ts-test");
+            var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
             yield return publishInstruction;
             if (publishInstruction.IsError)
                 Assert.Fail($"Failed to publish: {publishInstruction.Error.Message}");
