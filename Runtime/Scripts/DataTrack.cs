@@ -311,19 +311,19 @@ namespace LiveKit
             FfiClient.Instance.SubscribeDataTrackReceived += OnSubscribe;
         }
 
-        internal void OnSubscribe(SubscribeDataTrackCallback e)
+        internal void OnSubscribe(SubscribeDataTrackCallback callback)
         {
-            if (e.AsyncId != _asyncId)
+            if (callback.AsyncId != _asyncId)
                 return;
 
-            switch (e.ResultCase)
+            switch (callback.ResultCase)
             {
                 case SubscribeDataTrackCallback.ResultOneofCase.Error:
-                    Error = new SubscribeDataTrackError(e.Error);
+                    Error = new SubscribeDataTrackError(callback.Error);
                     IsError = true;
                     break;
                 case SubscribeDataTrackCallback.ResultOneofCase.Subscription:
-                    _subscription = new DataTrackSubscription(e.Subscription);
+                    _subscription = new DataTrackSubscription(callback.Subscription);
                     break;
             }
             IsDone = true;
@@ -396,25 +396,19 @@ namespace LiveKit
             return _currentInstruction;
         }
 
-        private void OnSubscriptionEvent(DataTrackSubscriptionEvent e)
+        private void OnSubscriptionEvent(DataTrackSubscriptionEvent callback)
         {
-            if (e.SubscriptionHandle != _handleId)
+            if (callback.SubscriptionHandle != _handleId)
                 return;
 
-            switch (e.DetailCase)
+            switch (callback.DetailCase)
             {
                 case DataTrackSubscriptionEvent.DetailOneofCase.FrameReceived:
-                    if (_currentInstruction != null)
-                    {
-                        _currentInstruction.SetFrame(new DataTrackFrame(e.FrameReceived.Frame));
-                    }
+                    _currentInstruction?.SetFrame(new DataTrackFrame(callback.FrameReceived.Frame));
                     break;
                 case DataTrackSubscriptionEvent.DetailOneofCase.Eos:
                     IsEos = true;
-                    if (_currentInstruction != null)
-                    {
-                        _currentInstruction.SetEos();
-                    }
+                    _currentInstruction?.SetEos();
                     Cleanup();
                     break;
             }
