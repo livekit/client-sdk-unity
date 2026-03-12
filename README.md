@@ -133,5 +133,50 @@ void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, Rem
 }
 ```
 
+## Building Native Libraries (macOS)
+
+Both native libraries ship as **universal (fat) binaries** containing x86_64 (Intel) and arm64 (Apple Silicon) slices in a single `.dylib`. This avoids needing separate per-architecture plugin folders in Unity.
+
+### LiveKit FFI (`liblivekit_ffi.dylib`)
+
+Download the prebuilt macOS binaries (`ffi-macos-x86_64.zip` and `ffi-macos-arm64.zip`) from the [livekit/rust-sdks releases](https://github.com/livekit/rust-sdks/releases) page. Look for the latest `livekit-ffi` release.
+
+Extract both zips into `Runtime/Plugins/ffi-macos-x86_64/` and `Runtime/Plugins/ffi-macos-arm64/` respectively, then combine them into a single universal binary:
+
+```bash
+mkdir -p Runtime/Plugins/mac_cross
+
+lipo -create \
+  -output Runtime/Plugins/mac_cross/liblivekit_ffi.dylib \
+  Runtime/Plugins/ffi-macos-x86_64/liblivekit_ffi.dylib \
+  Runtime/Plugins/ffi-macos-arm64/liblivekit_ffi.dylib
+```
+
+Verify the result:
+
+```bash
+lipo -info Runtime/Plugins/mac_cross/liblivekit_ffi.dylib
+# Expected: Architectures in the fat file: x86_64 arm64
+```
+
+The Unity `.meta` for this plugin must target **Standalone: OSXUniversal** with **CPU: AnyCPU** so Unity loads it on both architectures.
+
+### RustAudio (`librust_audio.dylib`)
+
+A build script is provided at `RustAudio/rust-audio/build.sh`. From the repo root:
+
+```bash
+cd RustAudio/rust-audio
+./build.sh
+```
+
+This builds for both `x86_64-apple-darwin` and `aarch64-apple-darwin`, merges them with `lipo`, and outputs the universal binary to `RustAudio/Wrap/Libraries/librust_audio.dylib`.
+
+**Prerequisites:** Rust toolchain with both targets installed:
+
+```bash
+rustup target add x86_64-apple-darwin aarch64-apple-darwin
+```
+
 <!--BEGIN_REPO_NAV-->
 <!--END_REPO_NAV-->
