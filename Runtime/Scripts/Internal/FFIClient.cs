@@ -218,7 +218,6 @@ namespace LiveKit.Internal
             }
         }
 
-
         [AOT.MonoPInvokeCallback(typeof(FFICallbackDelegate))]
         static unsafe void FFICallback(UIntPtr data, UIntPtr size)
         {
@@ -243,6 +242,7 @@ namespace LiveKit.Internal
                 switch (r?.MessageCase)
                 {
                     case FfiEvent.MessageOneofCase.Logs:
+                        Utils.HandleLogBatch(r.Logs);
                         break;
                     case FfiEvent.MessageOneofCase.PublishData:
                         break;
