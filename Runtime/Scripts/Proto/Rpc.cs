@@ -25,33 +25,33 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CglycGMucHJvdG8SDWxpdmVraXQucHJvdG8iNwoIUnBjRXJyb3ISDAoEY29k",
-            "ZRgBIAIoDRIPCgdtZXNzYWdlGAIgAigJEgwKBGRhdGEYAyABKAkikQEKEVBl",
+            "ZRgBIAIoDRIPCgdtZXNzYWdlGAIgAigJEgwKBGRhdGEYAyABKAkiqwEKEVBl",
             "cmZvcm1ScGNSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgB",
             "IAIoBBIcChRkZXN0aW5hdGlvbl9pZGVudGl0eRgCIAIoCRIOCgZtZXRob2QY",
             "AyACKAkSDwoHcGF5bG9hZBgEIAIoCRIbChNyZXNwb25zZV90aW1lb3V0X21z",
-            "GAUgASgNIkwKGFJlZ2lzdGVyUnBjTWV0aG9kUmVxdWVzdBIgChhsb2NhbF9w",
-            "YXJ0aWNpcGFudF9oYW5kbGUYASACKAQSDgoGbWV0aG9kGAIgAigJIk4KGlVu",
-            "cmVnaXN0ZXJScGNNZXRob2RSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50",
-            "X2hhbmRsZRgBIAIoBBIOCgZtZXRob2QYAiACKAkilgEKIlJwY01ldGhvZElu",
-            "dm9jYXRpb25SZXNwb25zZVJlcXVlc3QSIAoYbG9jYWxfcGFydGljaXBhbnRf",
-            "aGFuZGxlGAEgAigEEhUKDWludm9jYXRpb25faWQYAiACKAQSDwoHcGF5bG9h",
-            "ZBgDIAEoCRImCgVlcnJvchgEIAEoCzIXLmxpdmVraXQucHJvdG8uUnBjRXJy",
-            "b3IiJgoSUGVyZm9ybVJwY1Jlc3BvbnNlEhAKCGFzeW5jX2lkGAEgAigEIhsK",
-            "GVJlZ2lzdGVyUnBjTWV0aG9kUmVzcG9uc2UiHQobVW5yZWdpc3RlclJwY01l",
-            "dGhvZFJlc3BvbnNlIjQKI1JwY01ldGhvZEludm9jYXRpb25SZXNwb25zZVJl",
-            "c3BvbnNlEg0KBWVycm9yGAEgASgJIl8KElBlcmZvcm1ScGNDYWxsYmFjaxIQ",
-            "Cghhc3luY19pZBgBIAIoBBIPCgdwYXlsb2FkGAIgASgJEiYKBWVycm9yGAMg",
-            "ASgLMhcubGl2ZWtpdC5wcm90by5ScGNFcnJvciK+AQoYUnBjTWV0aG9kSW52",
-            "b2NhdGlvbkV2ZW50EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgBIAIo",
-            "BBIVCg1pbnZvY2F0aW9uX2lkGAIgAigEEg4KBm1ldGhvZBgDIAIoCRISCgpy",
-            "ZXF1ZXN0X2lkGAQgAigJEhcKD2NhbGxlcl9pZGVudGl0eRgFIAIoCRIPCgdw",
-            "YXlsb2FkGAYgAigJEhsKE3Jlc3BvbnNlX3RpbWVvdXRfbXMYByACKA1CEKoC",
-            "DUxpdmVLaXQuUHJvdG8="));
+            "GAUgASgNEhgKEHJlcXVlc3RfYXN5bmNfaWQYBiABKAQiTAoYUmVnaXN0ZXJS",
+            "cGNNZXRob2RSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgB",
+            "IAIoBBIOCgZtZXRob2QYAiACKAkiTgoaVW5yZWdpc3RlclJwY01ldGhvZFJl",
+            "cXVlc3QSIAoYbG9jYWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEg4KBm1l",
+            "dGhvZBgCIAIoCSKWAQoiUnBjTWV0aG9kSW52b2NhdGlvblJlc3BvbnNlUmVx",
+            "dWVzdBIgChhsb2NhbF9wYXJ0aWNpcGFudF9oYW5kbGUYASACKAQSFQoNaW52",
+            "b2NhdGlvbl9pZBgCIAIoBBIPCgdwYXlsb2FkGAMgASgJEiYKBWVycm9yGAQg",
+            "ASgLMhcubGl2ZWtpdC5wcm90by5ScGNFcnJvciImChJQZXJmb3JtUnBjUmVz",
+            "cG9uc2USEAoIYXN5bmNfaWQYASACKAQiGwoZUmVnaXN0ZXJScGNNZXRob2RS",
+            "ZXNwb25zZSIdChtVbnJlZ2lzdGVyUnBjTWV0aG9kUmVzcG9uc2UiNAojUnBj",
+            "TWV0aG9kSW52b2NhdGlvblJlc3BvbnNlUmVzcG9uc2USDQoFZXJyb3IYASAB",
+            "KAkiXwoSUGVyZm9ybVJwY0NhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigEEg8K",
+            "B3BheWxvYWQYAiABKAkSJgoFZXJyb3IYAyABKAsyFy5saXZla2l0LnByb3Rv",
+            "LlJwY0Vycm9yIr4BChhScGNNZXRob2RJbnZvY2F0aW9uRXZlbnQSIAoYbG9j",
+            "YWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEhUKDWludm9jYXRpb25faWQY",
+            "AiACKAQSDgoGbWV0aG9kGAMgAigJEhIKCnJlcXVlc3RfaWQYBCACKAkSFwoP",
+            "Y2FsbGVyX2lkZW50aXR5GAUgAigJEg8KB3BheWxvYWQYBiACKAkSGwoTcmVz",
+            "cG9uc2VfdGltZW91dF9tcxgHIAIoDUIQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RpcError), global::LiveKit.Proto.RpcError.Parser, new[]{ "Code", "Message", "Data" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PerformRpcRequest), global::LiveKit.Proto.PerformRpcRequest.Parser, new[]{ "LocalParticipantHandle", "DestinationIdentity", "Method", "Payload", "ResponseTimeoutMs" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PerformRpcRequest), global::LiveKit.Proto.PerformRpcRequest.Parser, new[]{ "LocalParticipantHandle", "DestinationIdentity", "Method", "Payload", "ResponseTimeoutMs", "RequestAsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RegisterRpcMethodRequest), global::LiveKit.Proto.RegisterRpcMethodRequest.Parser, new[]{ "LocalParticipantHandle", "Method" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UnregisterRpcMethodRequest), global::LiveKit.Proto.UnregisterRpcMethodRequest.Parser, new[]{ "LocalParticipantHandle", "Method" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RpcMethodInvocationResponseRequest), global::LiveKit.Proto.RpcMethodInvocationResponseRequest.Parser, new[]{ "LocalParticipantHandle", "InvocationId", "Payload", "Error" }, null, null, null, null),
@@ -429,6 +429,7 @@ namespace LiveKit.Proto {
       method_ = other.method_;
       payload_ = other.payload_;
       responseTimeoutMs_ = other.responseTimeoutMs_;
+      requestAsyncId_ = other.requestAsyncId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -570,6 +571,33 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~2;
     }
 
+    /// <summary>Field number for the "request_async_id" field.</summary>
+    public const int RequestAsyncIdFieldNumber = 6;
+    private readonly static ulong RequestAsyncIdDefaultValue = 0UL;
+
+    private ulong requestAsyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong RequestAsyncId {
+      get { if ((_hasBits0 & 4) != 0) { return requestAsyncId_; } else { return RequestAsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 4;
+        requestAsyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "request_async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRequestAsyncId {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "request_async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRequestAsyncId() {
+      _hasBits0 &= ~4;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -590,6 +618,7 @@ namespace LiveKit.Proto {
       if (Method != other.Method) return false;
       if (Payload != other.Payload) return false;
       if (ResponseTimeoutMs != other.ResponseTimeoutMs) return false;
+      if (RequestAsyncId != other.RequestAsyncId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -602,6 +631,7 @@ namespace LiveKit.Proto {
       if (HasMethod) hash ^= Method.GetHashCode();
       if (HasPayload) hash ^= Payload.GetHashCode();
       if (HasResponseTimeoutMs) hash ^= ResponseTimeoutMs.GetHashCode();
+      if (HasRequestAsyncId) hash ^= RequestAsyncId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -640,6 +670,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(40);
         output.WriteUInt32(ResponseTimeoutMs);
       }
+      if (HasRequestAsyncId) {
+        output.WriteRawTag(48);
+        output.WriteUInt64(RequestAsyncId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -670,6 +704,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(40);
         output.WriteUInt32(ResponseTimeoutMs);
       }
+      if (HasRequestAsyncId) {
+        output.WriteRawTag(48);
+        output.WriteUInt64(RequestAsyncId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -694,6 +732,9 @@ namespace LiveKit.Proto {
       }
       if (HasResponseTimeoutMs) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ResponseTimeoutMs);
+      }
+      if (HasRequestAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestAsyncId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -721,6 +762,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasResponseTimeoutMs) {
         ResponseTimeoutMs = other.ResponseTimeoutMs;
+      }
+      if (other.HasRequestAsyncId) {
+        RequestAsyncId = other.RequestAsyncId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -761,6 +805,10 @@ namespace LiveKit.Proto {
             ResponseTimeoutMs = input.ReadUInt32();
             break;
           }
+          case 48: {
+            RequestAsyncId = input.ReadUInt64();
+            break;
+          }
         }
       }
     #endif
@@ -798,6 +846,10 @@ namespace LiveKit.Proto {
           }
           case 40: {
             ResponseTimeoutMs = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            RequestAsyncId = input.ReadUInt64();
             break;
           }
         }

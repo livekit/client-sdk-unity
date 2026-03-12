@@ -25,33 +25,49 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFwYXJ0aWNpcGFudC5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvIrECCg9QYXJ0aWNpcGFudEluZm8SCwoDc2lkGAEgAigJEgwKBG5hbWUY",
-            "AiACKAkSEAoIaWRlbnRpdHkYAyACKAkSEAoIbWV0YWRhdGEYBCACKAkSQgoK",
-            "YXR0cmlidXRlcxgFIAMoCzIuLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRJ",
-            "bmZvLkF0dHJpYnV0ZXNFbnRyeRIsCgRraW5kGAYgAigOMh4ubGl2ZWtpdC5w",
-            "cm90by5QYXJ0aWNpcGFudEtpbmQSOgoRZGlzY29ubmVjdF9yZWFzb24YByAC",
-            "KA4yHy5saXZla2l0LnByb3RvLkRpc2Nvbm5lY3RSZWFzb24aMQoPQXR0cmli",
-            "dXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEibwoQ",
-            "T3duZWRQYXJ0aWNpcGFudBItCgZoYW5kbGUYASACKAsyHS5saXZla2l0LnBy",
-            "b3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiACKAsyHi5saXZla2l0LnBy",
-            "b3RvLlBhcnRpY2lwYW50SW5mbyqhAQoPUGFydGljaXBhbnRLaW5kEh0KGVBB",
-            "UlRJQ0lQQU5UX0tJTkRfU1RBTkRBUkQQABIcChhQQVJUSUNJUEFOVF9LSU5E",
-            "X0lOR1JFU1MQARIbChdQQVJUSUNJUEFOVF9LSU5EX0VHUkVTUxACEhgKFFBB",
-            "UlRJQ0lQQU5UX0tJTkRfU0lQEAMSGgoWUEFSVElDSVBBTlRfS0lORF9BR0VO",
-            "VBAEKtcCChBEaXNjb25uZWN0UmVhc29uEhIKDlVOS05PV05fUkVBU09OEAAS",
-            "FAoQQ0xJRU5UX0lOSVRJQVRFRBABEhYKEkRVUExJQ0FURV9JREVOVElUWRAC",
-            "EhMKD1NFUlZFUl9TSFVURE9XThADEhcKE1BBUlRJQ0lQQU5UX1JFTU9WRUQQ",
-            "BBIQCgxST09NX0RFTEVURUQQBRISCg5TVEFURV9NSVNNQVRDSBAGEhAKDEpP",
-            "SU5fRkFJTFVSRRAHEg0KCU1JR1JBVElPThAIEhAKDFNJR05BTF9DTE9TRRAJ",
-            "Eg8KC1JPT01fQ0xPU0VEEAoSFAoQVVNFUl9VTkFWQUlMQUJMRRALEhEKDVVT",
-            "RVJfUkVKRUNURUQQDBIVChFTSVBfVFJVTktfRkFJTFVSRRANEhYKEkNPTk5F",
-            "Q1RJT05fVElNRU9VVBAOEhEKDU1FRElBX0ZBSUxVUkUQD0IQqgINTGl2ZUtp",
-            "dC5Qcm90bw=="));
+            "b3RvGgt0cmFjay5wcm90byKnAwoPUGFydGljaXBhbnRJbmZvEgsKA3NpZBgB",
+            "IAIoCRIMCgRuYW1lGAIgAigJEhAKCGlkZW50aXR5GAMgAigJEhAKCG1ldGFk",
+            "YXRhGAQgAigJEkIKCmF0dHJpYnV0ZXMYBSADKAsyLi5saXZla2l0LnByb3Rv",
+            "LlBhcnRpY2lwYW50SW5mby5BdHRyaWJ1dGVzRW50cnkSLAoEa2luZBgGIAIo",
+            "DjIeLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRLaW5kEjoKEWRpc2Nvbm5l",
+            "Y3RfcmVhc29uGAcgAigOMh8ubGl2ZWtpdC5wcm90by5EaXNjb25uZWN0UmVh",
+            "c29uEjoKDGtpbmRfZGV0YWlscxgIIAMoDjIkLmxpdmVraXQucHJvdG8uUGFy",
+            "dGljaXBhbnRLaW5kRGV0YWlsEjgKCnBlcm1pc3Npb24YCSABKAsyJC5saXZl",
+            "a2l0LnByb3RvLlBhcnRpY2lwYW50UGVybWlzc2lvbhoxCg9BdHRyaWJ1dGVz",
+            "RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJvChBPd25l",
+            "ZFBhcnRpY2lwYW50Ei0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8u",
+            "RmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8u",
+            "UGFydGljaXBhbnRJbmZvIoQCChVQYXJ0aWNpcGFudFBlcm1pc3Npb24SFQoN",
+            "Y2FuX3N1YnNjcmliZRgBIAIoCBITCgtjYW5fcHVibGlzaBgCIAIoCBIYChBj",
+            "YW5fcHVibGlzaF9kYXRhGAMgAigIEjcKE2Nhbl9wdWJsaXNoX3NvdXJjZXMY",
+            "CSADKA4yGi5saXZla2l0LnByb3RvLlRyYWNrU291cmNlEg4KBmhpZGRlbhgH",
+            "IAIoCBIbChNjYW5fdXBkYXRlX21ldGFkYXRhGAogAigIEh0KFWNhbl9zdWJz",
+            "Y3JpYmVfbWV0cmljcxgMIAIoCBIgChhjYW5fbWFuYWdlX2FnZW50X3Nlc3Np",
+            "b24YDSACKAgq3gEKD1BhcnRpY2lwYW50S2luZBIdChlQQVJUSUNJUEFOVF9L",
+            "SU5EX1NUQU5EQVJEEAASHAoYUEFSVElDSVBBTlRfS0lORF9JTkdSRVNTEAES",
+            "GwoXUEFSVElDSVBBTlRfS0lORF9FR1JFU1MQAhIYChRQQVJUSUNJUEFOVF9L",
+            "SU5EX1NJUBADEhoKFlBBUlRJQ0lQQU5UX0tJTkRfQUdFTlQQBBIeChpQQVJU",
+            "SUNJUEFOVF9LSU5EX0NPTk5FQ1RPUhAFEhsKF1BBUlRJQ0lQQU5UX0tJTkRf",
+            "QlJJREdFEAYq7gEKFVBhcnRpY2lwYW50S2luZERldGFpbBInCiNQQVJUSUNJ",
+            "UEFOVF9LSU5EX0RFVEFJTF9DTE9VRF9BR0VOVBAAEiUKIVBBUlRJQ0lQQU5U",
+            "X0tJTkRfREVUQUlMX0ZPUldBUkRFRBABEi4KKlBBUlRJQ0lQQU5UX0tJTkRf",
+            "REVUQUlMX0NPTk5FQ1RPUl9XSEFUU0FQUBACEiwKKFBBUlRJQ0lQQU5UX0tJ",
+            "TkRfREVUQUlMX0NPTk5FQ1RPUl9UV0lMSU8QAxInCiNQQVJUSUNJUEFOVF9L",
+            "SU5EX0RFVEFJTF9CUklER0VfUlRTUBAEKtcCChBEaXNjb25uZWN0UmVhc29u",
+            "EhIKDlVOS05PV05fUkVBU09OEAASFAoQQ0xJRU5UX0lOSVRJQVRFRBABEhYK",
+            "EkRVUExJQ0FURV9JREVOVElUWRACEhMKD1NFUlZFUl9TSFVURE9XThADEhcK",
+            "E1BBUlRJQ0lQQU5UX1JFTU9WRUQQBBIQCgxST09NX0RFTEVURUQQBRISCg5T",
+            "VEFURV9NSVNNQVRDSBAGEhAKDEpPSU5fRkFJTFVSRRAHEg0KCU1JR1JBVElP",
+            "ThAIEhAKDFNJR05BTF9DTE9TRRAJEg8KC1JPT01fQ0xPU0VEEAoSFAoQVVNF",
+            "Ul9VTkFWQUlMQUJMRRALEhEKDVVTRVJfUkVKRUNURUQQDBIVChFTSVBfVFJV",
+            "TktfRkFJTFVSRRANEhYKEkNPTk5FQ1RJT05fVElNRU9VVBAOEhEKDU1FRElB",
+            "X0ZBSUxVUkUQD0IQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Attributes", "Kind", "DisconnectReason" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null)
+          new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.ParticipantKindDetail), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Attributes", "Kind", "DisconnectReason", "KindDetails", "Permission" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantPermission), global::LiveKit.Proto.ParticipantPermission.Parser, new[]{ "CanSubscribe", "CanPublish", "CanPublishData", "CanPublishSources", "Hidden", "CanUpdateMetadata", "CanSubscribeMetrics", "CanManageAgentSession" }, null, null, null, null)
           }));
     }
     #endregion
@@ -64,6 +80,16 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("PARTICIPANT_KIND_EGRESS")] Egress = 2,
     [pbr::OriginalName("PARTICIPANT_KIND_SIP")] Sip = 3,
     [pbr::OriginalName("PARTICIPANT_KIND_AGENT")] Agent = 4,
+    [pbr::OriginalName("PARTICIPANT_KIND_CONNECTOR")] Connector = 5,
+    [pbr::OriginalName("PARTICIPANT_KIND_BRIDGE")] Bridge = 6,
+  }
+
+  public enum ParticipantKindDetail {
+    [pbr::OriginalName("PARTICIPANT_KIND_DETAIL_CLOUD_AGENT")] CloudAgent = 0,
+    [pbr::OriginalName("PARTICIPANT_KIND_DETAIL_FORWARDED")] Forwarded = 1,
+    [pbr::OriginalName("PARTICIPANT_KIND_DETAIL_CONNECTOR_WHATSAPP")] ConnectorWhatsapp = 2,
+    [pbr::OriginalName("PARTICIPANT_KIND_DETAIL_CONNECTOR_TWILIO")] ConnectorTwilio = 3,
+    [pbr::OriginalName("PARTICIPANT_KIND_DETAIL_BRIDGE_RTSP")] BridgeRtsp = 4,
   }
 
   public enum DisconnectReason {
@@ -171,6 +197,8 @@ namespace LiveKit.Proto {
       attributes_ = other.attributes_.Clone();
       kind_ = other.kind_;
       disconnectReason_ = other.disconnectReason_;
+      kindDetails_ = other.kindDetails_.Clone();
+      permission_ = other.permission_ != null ? other.permission_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -349,6 +377,29 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~2;
     }
 
+    /// <summary>Field number for the "kind_details" field.</summary>
+    public const int KindDetailsFieldNumber = 8;
+    private static readonly pb::FieldCodec<global::LiveKit.Proto.ParticipantKindDetail> _repeated_kindDetails_codec
+        = pb::FieldCodec.ForEnum(64, x => (int) x, x => (global::LiveKit.Proto.ParticipantKindDetail) x);
+    private readonly pbc::RepeatedField<global::LiveKit.Proto.ParticipantKindDetail> kindDetails_ = new pbc::RepeatedField<global::LiveKit.Proto.ParticipantKindDetail>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::LiveKit.Proto.ParticipantKindDetail> KindDetails {
+      get { return kindDetails_; }
+    }
+
+    /// <summary>Field number for the "permission" field.</summary>
+    public const int PermissionFieldNumber = 9;
+    private global::LiveKit.Proto.ParticipantPermission permission_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.ParticipantPermission Permission {
+      get { return permission_; }
+      set {
+        permission_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -371,6 +422,8 @@ namespace LiveKit.Proto {
       if (!Attributes.Equals(other.Attributes)) return false;
       if (Kind != other.Kind) return false;
       if (DisconnectReason != other.DisconnectReason) return false;
+      if(!kindDetails_.Equals(other.kindDetails_)) return false;
+      if (!object.Equals(Permission, other.Permission)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -385,6 +438,8 @@ namespace LiveKit.Proto {
       hash ^= Attributes.GetHashCode();
       if (HasKind) hash ^= Kind.GetHashCode();
       if (HasDisconnectReason) hash ^= DisconnectReason.GetHashCode();
+      hash ^= kindDetails_.GetHashCode();
+      if (permission_ != null) hash ^= Permission.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -428,6 +483,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(56);
         output.WriteEnum((int) DisconnectReason);
       }
+      kindDetails_.WriteTo(output, _repeated_kindDetails_codec);
+      if (permission_ != null) {
+        output.WriteRawTag(74);
+        output.WriteMessage(Permission);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -463,6 +523,11 @@ namespace LiveKit.Proto {
         output.WriteRawTag(56);
         output.WriteEnum((int) DisconnectReason);
       }
+      kindDetails_.WriteTo(ref output, _repeated_kindDetails_codec);
+      if (permission_ != null) {
+        output.WriteRawTag(74);
+        output.WriteMessage(Permission);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -491,6 +556,10 @@ namespace LiveKit.Proto {
       }
       if (HasDisconnectReason) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) DisconnectReason);
+      }
+      size += kindDetails_.CalculateSize(_repeated_kindDetails_codec);
+      if (permission_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Permission);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -522,6 +591,13 @@ namespace LiveKit.Proto {
       }
       if (other.HasDisconnectReason) {
         DisconnectReason = other.DisconnectReason;
+      }
+      kindDetails_.Add(other.kindDetails_);
+      if (other.permission_ != null) {
+        if (permission_ == null) {
+          Permission = new global::LiveKit.Proto.ParticipantPermission();
+        }
+        Permission.MergeFrom(other.Permission);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -570,6 +646,18 @@ namespace LiveKit.Proto {
             DisconnectReason = (global::LiveKit.Proto.DisconnectReason) input.ReadEnum();
             break;
           }
+          case 66:
+          case 64: {
+            kindDetails_.AddEntriesFrom(input, _repeated_kindDetails_codec);
+            break;
+          }
+          case 74: {
+            if (permission_ == null) {
+              Permission = new global::LiveKit.Proto.ParticipantPermission();
+            }
+            input.ReadMessage(Permission);
+            break;
+          }
         }
       }
     #endif
@@ -615,6 +703,18 @@ namespace LiveKit.Proto {
           }
           case 56: {
             DisconnectReason = (global::LiveKit.Proto.DisconnectReason) input.ReadEnum();
+            break;
+          }
+          case 66:
+          case 64: {
+            kindDetails_.AddEntriesFrom(ref input, _repeated_kindDetails_codec);
+            break;
+          }
+          case 74: {
+            if (permission_ == null) {
+              Permission = new global::LiveKit.Proto.ParticipantPermission();
+            }
+            input.ReadMessage(Permission);
             break;
           }
         }
@@ -868,6 +968,588 @@ namespace LiveKit.Proto {
               Info = new global::LiveKit.Proto.ParticipantInfo();
             }
             input.ReadMessage(Info);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// copied from livekit-protocol/protocol/protobufs/livekit_models.proto and removed deprecated fields
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class ParticipantPermission : pb::IMessage<ParticipantPermission>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ParticipantPermission> _parser = new pb::MessageParser<ParticipantPermission>(() => new ParticipantPermission());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ParticipantPermission> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.ParticipantReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ParticipantPermission() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ParticipantPermission(ParticipantPermission other) : this() {
+      _hasBits0 = other._hasBits0;
+      canSubscribe_ = other.canSubscribe_;
+      canPublish_ = other.canPublish_;
+      canPublishData_ = other.canPublishData_;
+      canPublishSources_ = other.canPublishSources_.Clone();
+      hidden_ = other.hidden_;
+      canUpdateMetadata_ = other.canUpdateMetadata_;
+      canSubscribeMetrics_ = other.canSubscribeMetrics_;
+      canManageAgentSession_ = other.canManageAgentSession_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ParticipantPermission Clone() {
+      return new ParticipantPermission(this);
+    }
+
+    /// <summary>Field number for the "can_subscribe" field.</summary>
+    public const int CanSubscribeFieldNumber = 1;
+    private readonly static bool CanSubscribeDefaultValue = false;
+
+    private bool canSubscribe_;
+    /// <summary>
+    /// allow participant to subscribe to other tracks in the room
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool CanSubscribe {
+      get { if ((_hasBits0 & 1) != 0) { return canSubscribe_; } else { return CanSubscribeDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        canSubscribe_ = value;
+      }
+    }
+    /// <summary>Gets whether the "can_subscribe" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCanSubscribe {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "can_subscribe" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCanSubscribe() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "can_publish" field.</summary>
+    public const int CanPublishFieldNumber = 2;
+    private readonly static bool CanPublishDefaultValue = false;
+
+    private bool canPublish_;
+    /// <summary>
+    /// allow participant to publish new tracks to room
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool CanPublish {
+      get { if ((_hasBits0 & 2) != 0) { return canPublish_; } else { return CanPublishDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        canPublish_ = value;
+      }
+    }
+    /// <summary>Gets whether the "can_publish" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCanPublish {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "can_publish" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCanPublish() {
+      _hasBits0 &= ~2;
+    }
+
+    /// <summary>Field number for the "can_publish_data" field.</summary>
+    public const int CanPublishDataFieldNumber = 3;
+    private readonly static bool CanPublishDataDefaultValue = false;
+
+    private bool canPublishData_;
+    /// <summary>
+    /// allow participant to publish data
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool CanPublishData {
+      get { if ((_hasBits0 & 4) != 0) { return canPublishData_; } else { return CanPublishDataDefaultValue; } }
+      set {
+        _hasBits0 |= 4;
+        canPublishData_ = value;
+      }
+    }
+    /// <summary>Gets whether the "can_publish_data" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCanPublishData {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "can_publish_data" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCanPublishData() {
+      _hasBits0 &= ~4;
+    }
+
+    /// <summary>Field number for the "can_publish_sources" field.</summary>
+    public const int CanPublishSourcesFieldNumber = 9;
+    private static readonly pb::FieldCodec<global::LiveKit.Proto.TrackSource> _repeated_canPublishSources_codec
+        = pb::FieldCodec.ForEnum(72, x => (int) x, x => (global::LiveKit.Proto.TrackSource) x);
+    private readonly pbc::RepeatedField<global::LiveKit.Proto.TrackSource> canPublishSources_ = new pbc::RepeatedField<global::LiveKit.Proto.TrackSource>();
+    /// <summary>
+    /// sources that are allowed to be published
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::LiveKit.Proto.TrackSource> CanPublishSources {
+      get { return canPublishSources_; }
+    }
+
+    /// <summary>Field number for the "hidden" field.</summary>
+    public const int HiddenFieldNumber = 7;
+    private readonly static bool HiddenDefaultValue = false;
+
+    private bool hidden_;
+    /// <summary>
+    /// indicates that it's hidden to others
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Hidden {
+      get { if ((_hasBits0 & 8) != 0) { return hidden_; } else { return HiddenDefaultValue; } }
+      set {
+        _hasBits0 |= 8;
+        hidden_ = value;
+      }
+    }
+    /// <summary>Gets whether the "hidden" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHidden {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "hidden" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHidden() {
+      _hasBits0 &= ~8;
+    }
+
+    /// <summary>Field number for the "can_update_metadata" field.</summary>
+    public const int CanUpdateMetadataFieldNumber = 10;
+    private readonly static bool CanUpdateMetadataDefaultValue = false;
+
+    private bool canUpdateMetadata_;
+    /// <summary>
+    /// indicates that participant can update own metadata and attributes
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool CanUpdateMetadata {
+      get { if ((_hasBits0 & 16) != 0) { return canUpdateMetadata_; } else { return CanUpdateMetadataDefaultValue; } }
+      set {
+        _hasBits0 |= 16;
+        canUpdateMetadata_ = value;
+      }
+    }
+    /// <summary>Gets whether the "can_update_metadata" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCanUpdateMetadata {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "can_update_metadata" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCanUpdateMetadata() {
+      _hasBits0 &= ~16;
+    }
+
+    /// <summary>Field number for the "can_subscribe_metrics" field.</summary>
+    public const int CanSubscribeMetricsFieldNumber = 12;
+    private readonly static bool CanSubscribeMetricsDefaultValue = false;
+
+    private bool canSubscribeMetrics_;
+    /// <summary>
+    /// if a participant can subscribe to metrics
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool CanSubscribeMetrics {
+      get { if ((_hasBits0 & 32) != 0) { return canSubscribeMetrics_; } else { return CanSubscribeMetricsDefaultValue; } }
+      set {
+        _hasBits0 |= 32;
+        canSubscribeMetrics_ = value;
+      }
+    }
+    /// <summary>Gets whether the "can_subscribe_metrics" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCanSubscribeMetrics {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "can_subscribe_metrics" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCanSubscribeMetrics() {
+      _hasBits0 &= ~32;
+    }
+
+    /// <summary>Field number for the "can_manage_agent_session" field.</summary>
+    public const int CanManageAgentSessionFieldNumber = 13;
+    private readonly static bool CanManageAgentSessionDefaultValue = false;
+
+    private bool canManageAgentSession_;
+    /// <summary>
+    /// if a participant can manage an agent session via RemoteSession (control and access state)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool CanManageAgentSession {
+      get { if ((_hasBits0 & 64) != 0) { return canManageAgentSession_; } else { return CanManageAgentSessionDefaultValue; } }
+      set {
+        _hasBits0 |= 64;
+        canManageAgentSession_ = value;
+      }
+    }
+    /// <summary>Gets whether the "can_manage_agent_session" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCanManageAgentSession {
+      get { return (_hasBits0 & 64) != 0; }
+    }
+    /// <summary>Clears the value of the "can_manage_agent_session" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCanManageAgentSession() {
+      _hasBits0 &= ~64;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ParticipantPermission);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ParticipantPermission other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (CanSubscribe != other.CanSubscribe) return false;
+      if (CanPublish != other.CanPublish) return false;
+      if (CanPublishData != other.CanPublishData) return false;
+      if(!canPublishSources_.Equals(other.canPublishSources_)) return false;
+      if (Hidden != other.Hidden) return false;
+      if (CanUpdateMetadata != other.CanUpdateMetadata) return false;
+      if (CanSubscribeMetrics != other.CanSubscribeMetrics) return false;
+      if (CanManageAgentSession != other.CanManageAgentSession) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasCanSubscribe) hash ^= CanSubscribe.GetHashCode();
+      if (HasCanPublish) hash ^= CanPublish.GetHashCode();
+      if (HasCanPublishData) hash ^= CanPublishData.GetHashCode();
+      hash ^= canPublishSources_.GetHashCode();
+      if (HasHidden) hash ^= Hidden.GetHashCode();
+      if (HasCanUpdateMetadata) hash ^= CanUpdateMetadata.GetHashCode();
+      if (HasCanSubscribeMetrics) hash ^= CanSubscribeMetrics.GetHashCode();
+      if (HasCanManageAgentSession) hash ^= CanManageAgentSession.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasCanSubscribe) {
+        output.WriteRawTag(8);
+        output.WriteBool(CanSubscribe);
+      }
+      if (HasCanPublish) {
+        output.WriteRawTag(16);
+        output.WriteBool(CanPublish);
+      }
+      if (HasCanPublishData) {
+        output.WriteRawTag(24);
+        output.WriteBool(CanPublishData);
+      }
+      if (HasHidden) {
+        output.WriteRawTag(56);
+        output.WriteBool(Hidden);
+      }
+      canPublishSources_.WriteTo(output, _repeated_canPublishSources_codec);
+      if (HasCanUpdateMetadata) {
+        output.WriteRawTag(80);
+        output.WriteBool(CanUpdateMetadata);
+      }
+      if (HasCanSubscribeMetrics) {
+        output.WriteRawTag(96);
+        output.WriteBool(CanSubscribeMetrics);
+      }
+      if (HasCanManageAgentSession) {
+        output.WriteRawTag(104);
+        output.WriteBool(CanManageAgentSession);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasCanSubscribe) {
+        output.WriteRawTag(8);
+        output.WriteBool(CanSubscribe);
+      }
+      if (HasCanPublish) {
+        output.WriteRawTag(16);
+        output.WriteBool(CanPublish);
+      }
+      if (HasCanPublishData) {
+        output.WriteRawTag(24);
+        output.WriteBool(CanPublishData);
+      }
+      if (HasHidden) {
+        output.WriteRawTag(56);
+        output.WriteBool(Hidden);
+      }
+      canPublishSources_.WriteTo(ref output, _repeated_canPublishSources_codec);
+      if (HasCanUpdateMetadata) {
+        output.WriteRawTag(80);
+        output.WriteBool(CanUpdateMetadata);
+      }
+      if (HasCanSubscribeMetrics) {
+        output.WriteRawTag(96);
+        output.WriteBool(CanSubscribeMetrics);
+      }
+      if (HasCanManageAgentSession) {
+        output.WriteRawTag(104);
+        output.WriteBool(CanManageAgentSession);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasCanSubscribe) {
+        size += 1 + 1;
+      }
+      if (HasCanPublish) {
+        size += 1 + 1;
+      }
+      if (HasCanPublishData) {
+        size += 1 + 1;
+      }
+      size += canPublishSources_.CalculateSize(_repeated_canPublishSources_codec);
+      if (HasHidden) {
+        size += 1 + 1;
+      }
+      if (HasCanUpdateMetadata) {
+        size += 1 + 1;
+      }
+      if (HasCanSubscribeMetrics) {
+        size += 1 + 1;
+      }
+      if (HasCanManageAgentSession) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ParticipantPermission other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasCanSubscribe) {
+        CanSubscribe = other.CanSubscribe;
+      }
+      if (other.HasCanPublish) {
+        CanPublish = other.CanPublish;
+      }
+      if (other.HasCanPublishData) {
+        CanPublishData = other.CanPublishData;
+      }
+      canPublishSources_.Add(other.canPublishSources_);
+      if (other.HasHidden) {
+        Hidden = other.Hidden;
+      }
+      if (other.HasCanUpdateMetadata) {
+        CanUpdateMetadata = other.CanUpdateMetadata;
+      }
+      if (other.HasCanSubscribeMetrics) {
+        CanSubscribeMetrics = other.CanSubscribeMetrics;
+      }
+      if (other.HasCanManageAgentSession) {
+        CanManageAgentSession = other.CanManageAgentSession;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            CanSubscribe = input.ReadBool();
+            break;
+          }
+          case 16: {
+            CanPublish = input.ReadBool();
+            break;
+          }
+          case 24: {
+            CanPublishData = input.ReadBool();
+            break;
+          }
+          case 56: {
+            Hidden = input.ReadBool();
+            break;
+          }
+          case 74:
+          case 72: {
+            canPublishSources_.AddEntriesFrom(input, _repeated_canPublishSources_codec);
+            break;
+          }
+          case 80: {
+            CanUpdateMetadata = input.ReadBool();
+            break;
+          }
+          case 96: {
+            CanSubscribeMetrics = input.ReadBool();
+            break;
+          }
+          case 104: {
+            CanManageAgentSession = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            CanSubscribe = input.ReadBool();
+            break;
+          }
+          case 16: {
+            CanPublish = input.ReadBool();
+            break;
+          }
+          case 24: {
+            CanPublishData = input.ReadBool();
+            break;
+          }
+          case 56: {
+            Hidden = input.ReadBool();
+            break;
+          }
+          case 74:
+          case 72: {
+            canPublishSources_.AddEntriesFrom(ref input, _repeated_canPublishSources_codec);
+            break;
+          }
+          case 80: {
+            CanUpdateMetadata = input.ReadBool();
+            break;
+          }
+          case 96: {
+            CanSubscribeMetrics = input.ReadBool();
+            break;
+          }
+          case 104: {
+            CanManageAgentSession = input.ReadBool();
             break;
           }
         }
