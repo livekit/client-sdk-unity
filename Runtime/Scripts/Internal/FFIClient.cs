@@ -185,7 +185,7 @@ namespace LiveKit.Internal
             ffiResponsePool.Release(response);
         }
 
-        public FfiResponse SendRequest(FfiRequest request)
+        public FfiResponse SendRequest(FfiRequest request, bool requiresResponse = true)
         {
             try
             {
@@ -203,9 +203,18 @@ namespace LiveKit.Internal
                             out UIntPtr dataLen
                         );
                         var dataSpan = new Span<byte>(dataPtr, (int)dataLen.ToUInt64());
-                        var response = responseParser.ParseFrom(dataSpan)!;
-                        NativeMethods.FfiDropHandle(handle);
-                        return response;
+
+                        if (requiresResponse)
+                        {
+                            var response = responseParser.ParseFrom(dataSpan)!;
+                            NativeMethods.FfiDropHandle(handle);
+                            return response;
+                        }
+                        else
+                        {
+                            NativeMethods.FfiDropHandle(handle);
+                            return null;
+                        }
                     }
                 }
             }

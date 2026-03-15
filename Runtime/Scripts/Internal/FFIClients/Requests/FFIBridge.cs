@@ -15,8 +15,8 @@ namespace LiveKit.Internal.FFIClients.Requests
 
         public static FFIBridge Instance => instance.Value;
 
-        private readonly IFFIClient ffiClient;
-        private readonly IMultiPool multiPool;
+        public readonly IFFIClient ffiClient;
+        public readonly IMultiPool multiPool;
 
         public FFIBridge(IFFIClient client, IMultiPool multiPool)
         {
