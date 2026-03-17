@@ -37,58 +37,59 @@ namespace LiveKit.Proto {
             "cm90by5UcmFja1NvdXJjZRIuCgZmb3JtYXQYBCABKA4yHi5saXZla2l0LnBy",
             "b3RvLlZpZGVvQnVmZmVyVHlwZRIYChBub3JtYWxpemVfc3RyaWRlGAUgASgI",
             "IlUKIlZpZGVvU3RyZWFtRnJvbVBhcnRpY2lwYW50UmVzcG9uc2USLwoGc3Ry",
-            "ZWFtGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvU3RyZWFtIn8K",
-            "FU5ld1ZpZGVvU291cmNlUmVxdWVzdBIsCgR0eXBlGAEgAigOMh4ubGl2ZWtp",
-            "dC5wcm90by5WaWRlb1NvdXJjZVR5cGUSOAoKcmVzb2x1dGlvbhgCIAIoCzIk",
-            "LmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VSZXNvbHV0aW9uIkkKFk5ld1Zp",
-            "ZGVvU291cmNlUmVzcG9uc2USLwoGc291cmNlGAEgAigLMh8ubGl2ZWtpdC5w",
-            "cm90by5Pd25lZFZpZGVvU291cmNlIqcBChhDYXB0dXJlVmlkZW9GcmFtZVJl",
-            "cXVlc3QSFQoNc291cmNlX2hhbmRsZRgBIAIoBBIuCgZidWZmZXIYAiACKAsy",
-            "Hi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVySW5mbxIUCgx0aW1lc3RhbXBf",
-            "dXMYAyACKAMSLgoIcm90YXRpb24YBCACKA4yHC5saXZla2l0LnByb3RvLlZp",
-            "ZGVvUm90YXRpb24iGwoZQ2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZSKHAQoT",
-            "VmlkZW9Db252ZXJ0UmVxdWVzdBIOCgZmbGlwX3kYASABKAgSLgoGYnVmZmVy",
-            "GAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8SMAoIZHN0",
-            "X3R5cGUYAyACKA4yHi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVyVHlwZSJl",
-            "ChRWaWRlb0NvbnZlcnRSZXNwb25zZRIPCgVlcnJvchgBIAEoCUgAEjEKBmJ1",
-            "ZmZlchgCIAEoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlckgA",
-            "QgkKB21lc3NhZ2UiRAoPVmlkZW9SZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigN",
-            "Eg4KBmhlaWdodBgCIAIoDRISCgpmcmFtZV9yYXRlGAMgAigBIoMCCg9WaWRl",
-            "b0J1ZmZlckluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlk",
-            "ZW9CdWZmZXJUeXBlEg0KBXdpZHRoGAIgAigNEg4KBmhlaWdodBgDIAIoDRIQ",
-            "CghkYXRhX3B0chgEIAIoBBIOCgZzdHJpZGUYBiABKA0SQAoKY29tcG9uZW50",
-            "cxgHIAMoCzIsLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBv",
-            "bmVudEluZm8aPwoNQ29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgBIAIoBBIO",
-            "CgZzdHJpZGUYAiACKA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVm",
-            "ZmVyEi0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRI",
-            "YW5kbGUSLAoEaW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZm",
-            "ZXJJbmZvIj8KD1ZpZGVvU3RyZWFtSW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2",
-            "ZWtpdC5wcm90by5WaWRlb1N0cmVhbVR5cGUibwoQT3duZWRWaWRlb1N0cmVh",
-            "bRItCgZoYW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFu",
-            "ZGxlEiwKBGluZm8YAiACKAsyHi5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFt",
-            "SW5mbyKfAQoQVmlkZW9TdHJlYW1FdmVudBIVCg1zdHJlYW1faGFuZGxlGAEg",
-            "AigEEjsKDmZyYW1lX3JlY2VpdmVkGAIgASgLMiEubGl2ZWtpdC5wcm90by5W",
-            "aWRlb0ZyYW1lUmVjZWl2ZWRIABIsCgNlb3MYAyABKAsyHS5saXZla2l0LnBy",
-            "b3RvLlZpZGVvU3RyZWFtRU9TSABCCQoHbWVzc2FnZSKLAQoSVmlkZW9GcmFt",
-            "ZVJlY2VpdmVkEi8KBmJ1ZmZlchgBIAIoCzIfLmxpdmVraXQucHJvdG8uT3du",
-            "ZWRWaWRlb0J1ZmZlchIUCgx0aW1lc3RhbXBfdXMYAiACKAMSLgoIcm90YXRp",
-            "b24YAyACKA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24iEAoOVmlk",
-            "ZW9TdHJlYW1FT1MiNgoVVmlkZW9Tb3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRo",
-            "GAEgAigNEg4KBmhlaWdodBgCIAIoDSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoE",
-            "dHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8K",
-            "EE93bmVkVmlkZW9Tb3VyY2USLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5w",
-            "cm90by5GZmlPd25lZEhhbmRsZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5w",
-            "cm90by5WaWRlb1NvdXJjZUluZm8qOwoKVmlkZW9Db2RlYxIHCgNWUDgQABII",
-            "CgRIMjY0EAESBwoDQVYxEAISBwoDVlA5EAMSCAoESDI2NRAEKmwKDVZpZGVv",
-            "Um90YXRpb24SFAoQVklERU9fUk9UQVRJT05fMBAAEhUKEVZJREVPX1JPVEFU",
-            "SU9OXzkwEAESFgoSVklERU9fUk9UQVRJT05fMTgwEAISFgoSVklERU9fUk9U",
-            "QVRJT05fMjcwEAMqgQEKD1ZpZGVvQnVmZmVyVHlwZRIICgRSR0JBEAASCAoE",
-            "QUJHUhABEggKBEFSR0IQAhIICgRCR1JBEAMSCQoFUkdCMjQQBBIICgRJNDIw",
-            "EAUSCQoFSTQyMEEQBhIICgRJNDIyEAcSCAoESTQ0NBAIEggKBEkwMTAQCRII",
-            "CgROVjEyEAoqWQoPVmlkZW9TdHJlYW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9O",
-            "QVRJVkUQABIWChJWSURFT19TVFJFQU1fV0VCR0wQARIVChFWSURFT19TVFJF",
-            "QU1fSFRNTBACKioKD1ZpZGVvU291cmNlVHlwZRIXChNWSURFT19TT1VSQ0Vf",
-            "TkFUSVZFEABCEKoCDUxpdmVLaXQuUHJvdG8="));
+            "ZWFtGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvU3RyZWFtIpYB",
+            "ChVOZXdWaWRlb1NvdXJjZVJlcXVlc3QSLAoEdHlwZRgBIAIoDjIeLmxpdmVr",
+            "aXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlEjgKCnJlc29sdXRpb24YAiACKAsy",
+            "JC5saXZla2l0LnByb3RvLlZpZGVvU291cmNlUmVzb2x1dGlvbhIVCg1pc19z",
+            "Y3JlZW5jYXN0GAMgASgIIkkKFk5ld1ZpZGVvU291cmNlUmVzcG9uc2USLwoG",
+            "c291cmNlGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvU291cmNl",
+            "IqcBChhDYXB0dXJlVmlkZW9GcmFtZVJlcXVlc3QSFQoNc291cmNlX2hhbmRs",
+            "ZRgBIAIoBBIuCgZidWZmZXIYAiACKAsyHi5saXZla2l0LnByb3RvLlZpZGVv",
+            "QnVmZmVySW5mbxIUCgx0aW1lc3RhbXBfdXMYAyACKAMSLgoIcm90YXRpb24Y",
+            "BCACKA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24iGwoZQ2FwdHVy",
+            "ZVZpZGVvRnJhbWVSZXNwb25zZSKHAQoTVmlkZW9Db252ZXJ0UmVxdWVzdBIO",
+            "CgZmbGlwX3kYASABKAgSLgoGYnVmZmVyGAIgAigLMh4ubGl2ZWtpdC5wcm90",
+            "by5WaWRlb0J1ZmZlckluZm8SMAoIZHN0X3R5cGUYAyACKA4yHi5saXZla2l0",
+            "LnByb3RvLlZpZGVvQnVmZmVyVHlwZSJlChRWaWRlb0NvbnZlcnRSZXNwb25z",
+            "ZRIPCgVlcnJvchgBIAEoCUgAEjEKBmJ1ZmZlchgCIAEoCzIfLmxpdmVraXQu",
+            "cHJvdG8uT3duZWRWaWRlb0J1ZmZlckgAQgkKB21lc3NhZ2UiRAoPVmlkZW9S",
+            "ZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgCIAIoDRISCgpm",
+            "cmFtZV9yYXRlGAMgAigBIoMCCg9WaWRlb0J1ZmZlckluZm8SLAoEdHlwZRgB",
+            "IAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJUeXBlEg0KBXdpZHRo",
+            "GAIgAigNEg4KBmhlaWdodBgDIAIoDRIQCghkYXRhX3B0chgEIAIoBBIOCgZz",
+            "dHJpZGUYBiABKA0SQAoKY29tcG9uZW50cxgHIAMoCzIsLmxpdmVraXQucHJv",
+            "dG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBvbmVudEluZm8aPwoNQ29tcG9uZW50",
+            "SW5mbxIQCghkYXRhX3B0chgBIAIoBBIOCgZzdHJpZGUYAiACKA0SDAoEc2l6",
+            "ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVmZmVyEi0KBmhhbmRsZRgBIAIoCzId",
+            "LmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAIoCzIe",
+            "LmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvIj8KD1ZpZGVvU3RyZWFt",
+            "SW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVh",
+            "bVR5cGUibwoQT3duZWRWaWRlb1N0cmVhbRItCgZoYW5kbGUYASACKAsyHS5s",
+            "aXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiACKAsyHi5s",
+            "aXZla2l0LnByb3RvLlZpZGVvU3RyZWFtSW5mbyKfAQoQVmlkZW9TdHJlYW1F",
+            "dmVudBIVCg1zdHJlYW1faGFuZGxlGAEgAigEEjsKDmZyYW1lX3JlY2VpdmVk",
+            "GAIgASgLMiEubGl2ZWtpdC5wcm90by5WaWRlb0ZyYW1lUmVjZWl2ZWRIABIs",
+            "CgNlb3MYAyABKAsyHS5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtRU9TSABC",
+            "CQoHbWVzc2FnZSKLAQoSVmlkZW9GcmFtZVJlY2VpdmVkEi8KBmJ1ZmZlchgB",
+            "IAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlchIUCgx0aW1l",
+            "c3RhbXBfdXMYAiACKAMSLgoIcm90YXRpb24YAyACKA4yHC5saXZla2l0LnBy",
+            "b3RvLlZpZGVvUm90YXRpb24iEAoOVmlkZW9TdHJlYW1FT1MiNgoVVmlkZW9T",
+            "b3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgCIAIo",
+            "DSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQu",
+            "cHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8KEE93bmVkVmlkZW9Tb3VyY2USLQoG",
+            "aGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZRIs",
+            "CgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZUluZm8q",
+            "OwoKVmlkZW9Db2RlYxIHCgNWUDgQABIICgRIMjY0EAESBwoDQVYxEAISBwoD",
+            "VlA5EAMSCAoESDI2NRAEKmwKDVZpZGVvUm90YXRpb24SFAoQVklERU9fUk9U",
+            "QVRJT05fMBAAEhUKEVZJREVPX1JPVEFUSU9OXzkwEAESFgoSVklERU9fUk9U",
+            "QVRJT05fMTgwEAISFgoSVklERU9fUk9UQVRJT05fMjcwEAMqgQEKD1ZpZGVv",
+            "QnVmZmVyVHlwZRIICgRSR0JBEAASCAoEQUJHUhABEggKBEFSR0IQAhIICgRC",
+            "R1JBEAMSCQoFUkdCMjQQBBIICgRJNDIwEAUSCQoFSTQyMEEQBhIICgRJNDIy",
+            "EAcSCAoESTQ0NBAIEggKBEkwMTAQCRIICgROVjEyEAoqWQoPVmlkZW9TdHJl",
+            "YW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9OQVRJVkUQABIWChJWSURFT19TVFJF",
+            "QU1fV0VCR0wQARIVChFWSURFT19TVFJFQU1fSFRNTBACKioKD1ZpZGVvU291",
+            "cmNlVHlwZRIXChNWSURFT19TT1VSQ0VfTkFUSVZFEABCEKoCDUxpdmVLaXQu",
+            "UHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -96,7 +97,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamResponse), global::LiveKit.Proto.NewVideoStreamResponse.Parser, new[]{ "Stream" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantRequest), global::LiveKit.Proto.VideoStreamFromParticipantRequest.Parser, new[]{ "ParticipantHandle", "Type", "TrackSource", "Format", "NormalizeStride" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantResponse), global::LiveKit.Proto.VideoStreamFromParticipantResponse.Parser, new[]{ "Stream" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceRequest), global::LiveKit.Proto.NewVideoSourceRequest.Parser, new[]{ "Type", "Resolution" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceRequest), global::LiveKit.Proto.NewVideoSourceRequest.Parser, new[]{ "Type", "Resolution", "IsScreencast" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceResponse), global::LiveKit.Proto.NewVideoSourceResponse.Parser, new[]{ "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureVideoFrameRequest), global::LiveKit.Proto.CaptureVideoFrameRequest.Parser, new[]{ "SourceHandle", "Buffer", "TimestampUs", "Rotation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureVideoFrameResponse), global::LiveKit.Proto.CaptureVideoFrameResponse.Parser, null, null, null, null, null),
@@ -1429,6 +1430,7 @@ namespace LiveKit.Proto {
       _hasBits0 = other._hasBits0;
       type_ = other.type_;
       resolution_ = other.resolution_ != null ? other.resolution_.Clone() : null;
+      isScreencast_ = other.isScreencast_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1470,7 +1472,7 @@ namespace LiveKit.Proto {
     private global::LiveKit.Proto.VideoSourceResolution resolution_;
     /// <summary>
     /// Used to determine which encodings to use + simulcast layers
-    /// Most of the time it corresponds to the source resolution 
+    /// Most of the time it corresponds to the source resolution
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1479,6 +1481,33 @@ namespace LiveKit.Proto {
       set {
         resolution_ = value;
       }
+    }
+
+    /// <summary>Field number for the "is_screencast" field.</summary>
+    public const int IsScreencastFieldNumber = 3;
+    private readonly static bool IsScreencastDefaultValue = false;
+
+    private bool isScreencast_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsScreencast {
+      get { if ((_hasBits0 & 2) != 0) { return isScreencast_; } else { return IsScreencastDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        isScreencast_ = value;
+      }
+    }
+    /// <summary>Gets whether the "is_screencast" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasIsScreencast {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "is_screencast" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearIsScreencast() {
+      _hasBits0 &= ~2;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1498,6 +1527,7 @@ namespace LiveKit.Proto {
       }
       if (Type != other.Type) return false;
       if (!object.Equals(Resolution, other.Resolution)) return false;
+      if (IsScreencast != other.IsScreencast) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1507,6 +1537,7 @@ namespace LiveKit.Proto {
       int hash = 1;
       if (HasType) hash ^= Type.GetHashCode();
       if (resolution_ != null) hash ^= Resolution.GetHashCode();
+      if (HasIsScreencast) hash ^= IsScreencast.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1533,6 +1564,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Resolution);
       }
+      if (HasIsScreencast) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsScreencast);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1551,6 +1586,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteMessage(Resolution);
       }
+      if (HasIsScreencast) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsScreencast);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1566,6 +1605,9 @@ namespace LiveKit.Proto {
       }
       if (resolution_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Resolution);
+      }
+      if (HasIsScreencast) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1587,6 +1629,9 @@ namespace LiveKit.Proto {
           Resolution = new global::LiveKit.Proto.VideoSourceResolution();
         }
         Resolution.MergeFrom(other.Resolution);
+      }
+      if (other.HasIsScreencast) {
+        IsScreencast = other.IsScreencast;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1618,6 +1663,10 @@ namespace LiveKit.Proto {
             input.ReadMessage(Resolution);
             break;
           }
+          case 24: {
+            IsScreencast = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1646,6 +1695,10 @@ namespace LiveKit.Proto {
               Resolution = new global::LiveKit.Proto.VideoSourceResolution();
             }
             input.ReadMessage(Resolution);
+            break;
+          }
+          case 24: {
+            IsScreencast = input.ReadBool();
             break;
           }
         }

@@ -14,7 +14,8 @@ download_dir = 'downloads~'
 def main():
     config = configparser.ConfigParser()
     config.read('version.ini')
-    tag_path = urllib.parse.quote(config['ffi']['tag'], safe='')
+    # replace '@' to '/'
+    tag_path = config['ffi']['tag'].replace("@","/")
 
     for platform in platforms:
         archs = ['arm64', 'x86_64']
