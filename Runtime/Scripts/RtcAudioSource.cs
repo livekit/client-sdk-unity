@@ -142,11 +142,12 @@ namespace LiveKit
             pushFrame.Buffer.SampleRate = (uint)sampleRate;
             pushFrame.Buffer.SamplesPerChannel = (uint)data.Length / (uint)channels;
 
-            // Wait for async callback, log an error if the capture fails.
+            // Wait for async callback, log an error if the capture fails. The callback's AsyncId
+            // echoes the RequestAsyncId that Unity wrote onto the request.
             var requestAsyncId = request.RequestAsyncId;
             void Callback(CaptureAudioFrameCallback callback)
             {
-                if (callback.RequestAsyncId != requestAsyncId) return;
+                if (callback.AsyncId != requestAsyncId) return;
                 if (callback.HasError)
                     Utils.Error($"Audio capture failed: {callback.Error}");
             }

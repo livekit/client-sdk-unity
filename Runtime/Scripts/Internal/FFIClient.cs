@@ -39,6 +39,12 @@ namespace LiveKit.Internal
         // - cancellation (send failure / dispose) also removes the same entry exactly once
         // - the side that wins TryRemove is the only side allowed to invoke user completion
         //
+        // Wire contract:
+        // - Unity writes the generated ID into request.RequestAsyncId
+        // - Rust echoes that same numeric value back through callback.AsyncId
+        // - the pending map stays keyed by the original request ID, and callback dispatch
+        //   extracts AsyncId from the completion event for lookup
+        //
         // ConcurrentDictionary is sufficient here because we only need atomic add/remove
         // semantics per request ID; there is no requirement for cross-entry transactions.
         private readonly ConcurrentDictionary<ulong, PendingCallbackBase> pendingCallbacks = new();
@@ -182,6 +188,9 @@ namespace LiveKit.Internal
             // Request registration must happen before the request is sent. That ordering is what
             // removes the original race: Rust can no longer produce the callback before Unity has
             // somewhere to store it.
+            //
+            // The request is registered under request.RequestAsyncId. The eventual callback comes
+            // back with callback.AsyncId carrying the same value.
             //
             // Duplicate IDs are treated as a hard error because they would allow two unrelated
             // requests to compete for the same completion slot.
@@ -359,32 +368,32 @@ namespace LiveKit.Internal
 
         private static ulong? ExtractRequestAsyncId(FfiEvent ffiEvent)
         {
-            // This switch is only concerned with one-shot async completion callbacks that echo the
-            // client-generated request_async_id back from Rust. Streaming/incremental events such
-            // as RoomEvent or TextStreamReaderEvent are intentionally excluded because they are not
-            // modeled as pending one-shot completions.
+            // This switch is only concerned with one-shot async completion callbacks that echo
+            // request.RequestAsyncId back through callback.AsyncId. Streaming/incremental events
+            // such as RoomEvent or TextStreamReaderEvent are intentionally excluded because they
+            // are not modeled as pending one-shot completions.
             return ffiEvent.MessageCase switch
             {
-                FfiEvent.MessageOneofCase.Connect => ffiEvent.Connect?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.PublishTrack => ffiEvent.PublishTrack?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.UnpublishTrack => ffiEvent.UnpublishTrack?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.SetLocalName => ffiEvent.SetLocalName?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.SetLocalMetadata => ffiEvent.SetLocalMetadata?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.SetLocalAttributes => ffiEvent.SetLocalAttributes?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.GetStats => ffiEvent.GetStats?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.CaptureAudioFrame => ffiEvent.CaptureAudioFrame?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.PerformRpc => ffiEvent.PerformRpc?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.ByteStreamReaderReadAll => ffiEvent.ByteStreamReaderReadAll?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.ByteStreamReaderWriteToFile => ffiEvent.ByteStreamReaderWriteToFile?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.ByteStreamOpen => ffiEvent.ByteStreamOpen?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.ByteStreamWriterWrite => ffiEvent.ByteStreamWriterWrite?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.ByteStreamWriterClose => ffiEvent.ByteStreamWriterClose?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.SendFile => ffiEvent.SendFile?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.TextStreamReaderReadAll => ffiEvent.TextStreamReaderReadAll?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.TextStreamOpen => ffiEvent.TextStreamOpen?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.TextStreamWriterWrite => ffiEvent.TextStreamWriterWrite?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.TextStreamWriterClose => ffiEvent.TextStreamWriterClose?.RequestAsyncId,
-                FfiEvent.MessageOneofCase.SendText => ffiEvent.SendText?.RequestAsyncId,
+                FfiEvent.MessageOneofCase.Connect => ffiEvent.Connect?.AsyncId,
+                FfiEvent.MessageOneofCase.PublishTrack => ffiEvent.PublishTrack?.AsyncId,
+                FfiEvent.MessageOneofCase.UnpublishTrack => ffiEvent.UnpublishTrack?.AsyncId,
+                FfiEvent.MessageOneofCase.SetLocalName => ffiEvent.SetLocalName?.AsyncId,
+                FfiEvent.MessageOneofCase.SetLocalMetadata => ffiEvent.SetLocalMetadata?.AsyncId,
+                FfiEvent.MessageOneofCase.SetLocalAttributes => ffiEvent.SetLocalAttributes?.AsyncId,
+                FfiEvent.MessageOneofCase.GetStats => ffiEvent.GetStats?.AsyncId,
+                FfiEvent.MessageOneofCase.CaptureAudioFrame => ffiEvent.CaptureAudioFrame?.AsyncId,
+                FfiEvent.MessageOneofCase.PerformRpc => ffiEvent.PerformRpc?.AsyncId,
+                FfiEvent.MessageOneofCase.ByteStreamReaderReadAll => ffiEvent.ByteStreamReaderReadAll?.AsyncId,
+                FfiEvent.MessageOneofCase.ByteStreamReaderWriteToFile => ffiEvent.ByteStreamReaderWriteToFile?.AsyncId,
+                FfiEvent.MessageOneofCase.ByteStreamOpen => ffiEvent.ByteStreamOpen?.AsyncId,
+                FfiEvent.MessageOneofCase.ByteStreamWriterWrite => ffiEvent.ByteStreamWriterWrite?.AsyncId,
+                FfiEvent.MessageOneofCase.ByteStreamWriterClose => ffiEvent.ByteStreamWriterClose?.AsyncId,
+                FfiEvent.MessageOneofCase.SendFile => ffiEvent.SendFile?.AsyncId,
+                FfiEvent.MessageOneofCase.TextStreamReaderReadAll => ffiEvent.TextStreamReaderReadAll?.AsyncId,
+                FfiEvent.MessageOneofCase.TextStreamOpen => ffiEvent.TextStreamOpen?.AsyncId,
+                FfiEvent.MessageOneofCase.TextStreamWriterWrite => ffiEvent.TextStreamWriterWrite?.AsyncId,
+                FfiEvent.MessageOneofCase.TextStreamWriterClose => ffiEvent.TextStreamWriterClose?.AsyncId,
+                FfiEvent.MessageOneofCase.SendText => ffiEvent.SendText?.AsyncId,
                 _ => null,
             };
         }

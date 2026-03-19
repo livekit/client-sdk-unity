@@ -185,7 +185,7 @@ namespace LiveKit
 
         private void OnGetSessionStatsReceived(GetStatsCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             Error = e.Error;

@@ -589,13 +589,14 @@ namespace LiveKit
             _room = room;
             _roomOptions = options;
             // Register before the request is sent so a fast native completion cannot race ahead
-            // of Unity's listener setup.
+            // of Unity's listener setup. The callback later arrives with AsyncId equal to the
+            // request's RequestAsyncId.
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.Connect, OnConnect, OnCanceled);
         }
 
         void OnConnect(ConnectCallback e)
         {
-            if (_asyncId != e.RequestAsyncId)
+            if (_asyncId != e.AsyncId)
                 return;
 
             bool success = string.IsNullOrEmpty(e.Error);

@@ -563,13 +563,14 @@ namespace LiveKit
             _internalTracks = internalTracks;
             _localTrack = localTrack;
             // One-shot completion keyed by request_async_id. Concurrent requests simply occupy
-            // different slots in FfiClient's pending map and can complete in any order.
+            // different slots in FfiClient's pending map and can complete in any order. Rust
+            // returns the same value through callback.AsyncId.
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PublishTrack, OnPublish, OnCanceled);
         }
 
         internal void OnPublish(PublishTrackCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);
@@ -599,7 +600,7 @@ namespace LiveKit
 
         internal void OnSetLocalMetadata(SetLocalMetadataCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);
@@ -625,7 +626,7 @@ namespace LiveKit
 
         internal void OnSetLocalName(SetLocalNameCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);
@@ -651,7 +652,7 @@ namespace LiveKit
 
         internal void OnSetLocalAttributes(SetLocalAttributesCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);
@@ -677,7 +678,7 @@ namespace LiveKit
 
         internal void OnUnpublish(UnpublishTrackCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             IsError = !string.IsNullOrEmpty(e.Error);
@@ -710,7 +711,7 @@ namespace LiveKit
 
         internal void OnRpcResponse(PerformRpcCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
 
@@ -776,7 +777,7 @@ namespace LiveKit
 
         internal void OnSendText(StreamSendTextCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             switch (e.ResultCase)
@@ -830,7 +831,7 @@ namespace LiveKit
 
         internal void OnSendFile(StreamSendFileCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             switch (e.ResultCase)
@@ -884,7 +885,7 @@ namespace LiveKit
 
         internal void OnStreamOpen(TextStreamOpenCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             switch (e.ResultCase)
@@ -938,7 +939,7 @@ namespace LiveKit
 
         internal void OnStreamOpen(ByteStreamOpenCallback e)
         {
-            if (e.RequestAsyncId != _asyncId)
+            if (e.AsyncId != _asyncId)
                 return;
 
             switch (e.ResultCase)

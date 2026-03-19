@@ -189,13 +189,14 @@ namespace LiveKit
             {
                 _asyncId = asyncId;
                 // ReadAll is modeled as a single async completion rather than a stream of
-                // incremental events, so it uses the request_async_id pending map.
+                // incremental events, so it uses the request_async_id pending map. Rust returns
+                // the same value through callback.AsyncId.
                 FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamReaderReadAll, OnReadAll, OnCanceled);
             }
 
             internal void OnReadAll(TextStreamReaderReadAllCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 switch (e.ResultCase)
@@ -405,7 +406,7 @@ namespace LiveKit
 
             internal void OnReadAll(ByteStreamReaderReadAllCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 switch (e.ResultCase)
@@ -519,7 +520,7 @@ namespace LiveKit
 
             internal void OnWriteToFile(ByteStreamReaderWriteToFileCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 switch (e.ResultCase)
@@ -699,12 +700,12 @@ namespace LiveKit
             internal WriteInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterWrite, OnWrite, OnCanceled);
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterWrite, OnWrite, OnCanceled);
             }
 
-            internal void OnWrite(ByteStreamWriterWriteCallback e)
+            internal void OnWrite(TextStreamWriterWriteCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 if (e.Error != null)
@@ -738,12 +739,12 @@ namespace LiveKit
             internal CloseInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterClose, OnClose, OnCanceled);
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterClose, OnClose, OnCanceled);
             }
 
-            internal void OnClose(ByteStreamWriterCloseCallback e)
+            internal void OnClose(TextStreamWriterCloseCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 if (e.Error != null)
@@ -832,12 +833,12 @@ namespace LiveKit
             internal WriteInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterWrite, OnWrite, OnCanceled);
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterWrite, OnWrite, OnCanceled);
             }
 
-            internal void OnWrite(TextStreamWriterWriteCallback e)
+            internal void OnWrite(ByteStreamWriterWriteCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 if (e.Error != null)
@@ -871,12 +872,12 @@ namespace LiveKit
             internal CloseInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterClose, OnClose, OnCanceled);
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterClose, OnClose, OnCanceled);
             }
 
-            internal void OnClose(TextStreamWriterCloseCallback e)
+            internal void OnClose(ByteStreamWriterCloseCallback e)
             {
-                if (e.RequestAsyncId != _asyncId)
+                if (e.AsyncId != _asyncId)
                     return;
 
                 if (e.Error != null)
