@@ -145,7 +145,8 @@ namespace LiveKit.Internal
             const bool captureLogs = false;
 #endif
 
-            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", ""); // TODO: Get SDK version
+            var sdkVersion = PackageVersion.Get();
+            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", sdkVersion); // TODO: Get SDK version
 
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
