@@ -48,7 +48,15 @@ You can use the package manager to import local `client-sdk-unity` into your Uni
 
 Or you can import the git url `https://github.com/livekit/client-sdk-unity.git` from the package manager.
 
+### Building Livekit plugins locally
 
+For local development, initialize the git submodule containing the Rust code for the LiveKit plugin libraries. 
+
+There is a [helper script](https://github.com/livekit/client-sdk-unity/blob/main/BuildScripts~/build_ffi_locally.sh) to build the libraries locally and exchange the downloaded libraries with the build artifacts.
+
+Currently, the build script supports the following arguments:
+- macos
+- android
 
 ### iOS
 
