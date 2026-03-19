@@ -9,6 +9,7 @@ namespace LiveKit.Internal.FFIClients.Requests
     public struct FfiRequestWrap<T> : IDisposable where T : class, new()
     {
         public readonly T request;
+        public ulong RequestAsyncId { get; }
         private readonly IMultiPool multiPool;
         private readonly IFFIClient ffiClient;
         private readonly FfiRequest ffiRequest;
@@ -43,6 +44,7 @@ namespace LiveKit.Internal.FFIClients.Requests
             this.ffiClient = ffiClient;
             this.releaseFfiRequest = releaseFfiRequest;
             this.releaseRequest = releaseRequest;
+            RequestAsyncId = request.InitializeRequestAsyncId();
             sent = false;
         }
 
@@ -55,8 +57,24 @@ namespace LiveKit.Internal.FFIClients.Requests
 
             sent = true;
             ffiRequest.Inject(request);
-            var response = ffiClient.SendRequest(ffiRequest);
-            return new FfiResponseWrap(response, ffiClient);
+            try
+            {
+                // The pending completion is registered by the caller before Send() is invoked.
+                // If SendRequest throws here (serialization failure, native failure, parse
+                // failure, etc), Rust will never produce the matching callback. We therefore
+                // cancel the pending entry eagerly so the waiting instruction does not hang.
+                var response = ffiClient.SendRequest(ffiRequest);
+                return new FfiResponseWrap(response, ffiClient);
+            }
+            catch
+            {
+                if (RequestAsyncId != 0 && ffiClient is LiveKit.Internal.FfiClient client)
+                {
+                    client.CancelPendingCallback(RequestAsyncId);
+                }
+
+                throw;
+            }
         }
 
         public SmartWrap<TK> TempResource<TK>() where TK : class, IMessage, new()
