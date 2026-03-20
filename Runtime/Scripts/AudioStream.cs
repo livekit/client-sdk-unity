@@ -17,6 +17,7 @@ namespace LiveKit
         private readonly AudioSource _audioSource;
         private RingBuffer _buffer;
         private short[] _tempBuffer;
+        private short[] _upmixBuffer;
         private uint _numChannels;
         private uint _sampleRate;
         private AudioResampler _resampler = new AudioResampler();
@@ -106,10 +107,34 @@ namespace LiveKit
                 unsafe
                 {
                     var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    if (uFrame != null)
+                    if (uFrame != null && uFrame.Length > 0)
                     {
                         var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
                         _buffer?.Write(data);
+                    }
+                    else if (frame.Length > 0 && frame.NumChannels == 1 && _numChannels == 2 && frame.SampleRate == _sampleRate)
+                    {
+                        int monoSamples = (int)frame.SamplesPerChannel;
+                        int stereoSamples = monoSamples * 2;
+                        if (_upmixBuffer == null || _upmixBuffer.Length < stereoSamples)
+                            _upmixBuffer = new short[stereoSamples];
+
+                        var input = new ReadOnlySpan<short>(frame.Data.ToPointer(), monoSamples);
+                        for (int i = 0; i < monoSamples; i++)
+                        {
+                            short sample = input[i];
+                            int idx = i * 2;
+                            _upmixBuffer[idx] = sample;
+                            _upmixBuffer[idx + 1] = sample;
+                        }
+
+                        var upmixed = MemoryMarshal.Cast<short, byte>(_upmixBuffer.AsSpan(0, stereoSamples));
+                        _buffer?.Write(upmixed);
+                    }
+                    else if (frame.Length > 0 && frame.NumChannels == _numChannels && frame.SampleRate == _sampleRate)
+                    {
+                        var raw = new Span<byte>(frame.Data.ToPointer(), frame.Length);
+                        _buffer?.Write(raw);
                     }
 
                 }
