@@ -5,14 +5,42 @@ namespace LiveKit.EditModeTests
 {
     public class MediaStreamLifetimeTests
     {
-        private const string AudioStreamPath = "Runtime/Scripts/AudioStream.cs";
-        private const string VideoStreamPath = "Runtime/Scripts/VideoStream.cs";
-        private const string AudioResamplerPath = "Runtime/Scripts/Internal/AudioResampler.cs";
+        private static readonly string[] AudioStreamPaths =
+        {
+            "Runtime/Scripts/AudioStream.cs",
+            "Assets/client-sdk-unity/Runtime/Scripts/AudioStream.cs",
+        };
+
+        private static readonly string[] VideoStreamPaths =
+        {
+            "Runtime/Scripts/VideoStream.cs",
+            "Assets/client-sdk-unity/Runtime/Scripts/VideoStream.cs",
+        };
+
+        private static readonly string[] AudioResamplerPaths =
+        {
+            "Runtime/Scripts/Internal/AudioResampler.cs",
+            "Assets/client-sdk-unity/Runtime/Scripts/Internal/AudioResampler.cs",
+        };
+
+        private static string ReadSource(params string[] candidates)
+        {
+            foreach (var candidate in candidates)
+            {
+                if (File.Exists(candidate))
+                {
+                    return File.ReadAllText(candidate);
+                }
+            }
+
+            Assert.Fail($"Could not find source file. Tried: {string.Join(", ", candidates)}");
+            return string.Empty;
+        }
 
         [Test]
         public void AudioStream_Dispose_UnsubscribesAndReleasesOwnedResources()
         {
-            var source = File.ReadAllText(AudioStreamPath);
+            var source = ReadSource(AudioStreamPaths);
 
             StringAssert.Contains("FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;", source);
             StringAssert.Contains("_probe.AudioRead -= OnAudioRead;", source);
@@ -24,7 +52,7 @@ namespace LiveKit.EditModeTests
         [Test]
         public void AudioStream_AudioFrames_AreDisposedAfterProcessing()
         {
-            var source = File.ReadAllText(AudioStreamPath);
+            var source = ReadSource(AudioStreamPaths);
 
             // Both the inbound native frame and the remixed output frame should be scoped so their
             // handles are released after each callback rather than accumulating over time.
@@ -35,7 +63,7 @@ namespace LiveKit.EditModeTests
         [Test]
         public void AudioResampler_IsDisposable_AndReleasesNativeHandle()
         {
-            var source = File.ReadAllText(AudioResamplerPath);
+            var source = ReadSource(AudioResamplerPaths);
 
             StringAssert.Contains("public sealed class AudioResampler : IDisposable", source);
             StringAssert.Contains("_handle.Dispose();", source);
@@ -44,7 +72,7 @@ namespace LiveKit.EditModeTests
         [Test]
         public void VideoStream_Dispose_UnsubscribesAndReleasesOwnedResources()
         {
-            var source = File.ReadAllText(VideoStreamPath);
+            var source = ReadSource(VideoStreamPaths);
 
             StringAssert.Contains("FfiClient.Instance.VideoStreamEventReceived -= OnVideoStreamEvent;", source);
             StringAssert.Contains("VideoBuffer?.Dispose();", source);
@@ -55,7 +83,7 @@ namespace LiveKit.EditModeTests
         [Test]
         public void VideoStream_UsesLatestFrameWinsCoalescing()
         {
-            var source = File.ReadAllText(VideoStreamPath);
+            var source = ReadSource(VideoStreamPaths);
 
             // The intake path should maintain a dedicated pending slot and replace/drop superseded
             // frames so Unity uploads at most the latest frame per tick.
