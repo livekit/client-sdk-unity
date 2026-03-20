@@ -60,16 +60,19 @@ namespace LiveKit
         private bool _started = false;
         private bool _disposed = false;
 
-        protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
+        protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom, uint? sampleRate = null)
         {
             _sourceType = audioSourceType;
+
+            // Use provided sample rate, or fall back to defaults
+            uint actualSampleRate = sampleRate ?? 
+                (_sourceType == RtcAudioSourceType.AudioSourceMicrophone ? DefaultMicrophoneSampleRate : DefaultSampleRate);
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
             newAudioSource.NumChannels = (uint)channels;
-            newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
-                DefaultMicrophoneSampleRate : DefaultSampleRate;
+            newAudioSource.SampleRate = actualSampleRate;
 
             UnityEngine.Debug.Log($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
 
