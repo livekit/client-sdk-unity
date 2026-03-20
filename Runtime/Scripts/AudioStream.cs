@@ -15,12 +15,13 @@ namespace LiveKit
     {
         internal readonly FfiHandle Handle;
         private readonly AudioSource _audioSource;
+        private readonly AudioProbe _probe;
         private RingBuffer _buffer;
         private short[] _tempBuffer;
         private uint _numChannels;
         private uint _sampleRate;
         private AudioResampler _resampler = new AudioResampler();
-        private object _lock = new object();
+        private readonly object _lock = new object();
         private bool _disposed = false;
 
         /// <summary>
@@ -50,14 +51,20 @@ namespace LiveKit
             FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
 
             _audioSource = source;
-            var probe = _audioSource.gameObject.AddComponent<AudioProbe>();
-            probe.AudioRead += OnAudioRead;
+            _probe = _audioSource.gameObject.AddComponent<AudioProbe>();
+            _probe.AudioRead += OnAudioRead;
             _audioSource.Play();
         }
 
         // Called on Unity audio thread
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
+            if (_disposed)
+            {
+                Array.Clear(data, 0, data.Length);
+                return;
+            }
+
             lock (_lock)
             {
                 if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
@@ -90,13 +97,16 @@ namespace LiveKit
         // Called on the MainThread (See FfiClient)
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
+            if (_disposed)
+                return;
+
             if ((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
                 return;
 
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            var frame = new AudioFrame(e.FrameReceived.Frame);
+            using var frame = new AudioFrame(e.FrameReceived.Frame);
 
             lock (_lock)
             {
@@ -105,7 +115,7 @@ namespace LiveKit
 
                 unsafe
                 {
-                    var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
+                    using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
                     if (uFrame != null)
                     {
                         var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
@@ -124,11 +134,39 @@ namespace LiveKit
 
         private void Dispose(bool disposing)
         {
-            if (!_disposed && disposing)
+            if (_disposed)
             {
-                _audioSource.Stop();
-                UnityEngine.Object.Destroy(_audioSource.GetComponent<AudioProbe>());
+                return;
             }
+
+            // Remove long-lived delegate references first so this instance can become collectible
+            // as soon as user code drops it. This also prevents late native callbacks from
+            // touching partially disposed state.
+            FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
+
+            lock (_lock)
+            {
+                // Native resources can be released on both the explicit-dispose and finalizer
+                // paths. Unity objects are only touched when Dispose() is called explicitly on the
+                // main thread.
+                if (disposing)
+                {
+                    _audioSource.Stop();
+                    if (_probe != null)
+                    {
+                        _probe.AudioRead -= OnAudioRead;
+                        UnityEngine.Object.Destroy(_probe);
+                    }
+                }
+
+                _buffer?.Dispose();
+                _buffer = null;
+                _tempBuffer = null;
+                _resampler?.Dispose();
+                _resampler = null;
+                Handle.Dispose();
+            }
+
             _disposed = true;
         }
 
