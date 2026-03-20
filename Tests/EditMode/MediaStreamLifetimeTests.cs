@@ -1,5 +1,6 @@
 using System.IO;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace LiveKit.EditModeTests
 {
@@ -25,6 +26,53 @@ namespace LiveKit.EditModeTests
 
         private static string ReadSource(params string[] candidates)
         {
+            foreach (var root in SearchRoots())
+            {
+                foreach (var candidate in candidates)
+                {
+                    var combined = Path.GetFullPath(Path.Combine(root, candidate));
+                    if (File.Exists(combined))
+                    {
+                        return File.ReadAllText(combined);
+                    }
+                }
+            }
+
+            foreach (var root in SearchRoots())
+            {
+                foreach (var candidate in candidates)
+                {
+                    var fileName = Path.GetFileName(candidate);
+                    if (string.IsNullOrEmpty(fileName) || !Directory.Exists(root))
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        foreach (var match in Directory.EnumerateFiles(root, fileName, SearchOption.AllDirectories))
+                        {
+                            // Keep the search specific to the intended suffix so a duplicate file
+                            // name elsewhere in the repo does not satisfy the test accidentally.
+                            var normalizedMatch = match.Replace('\\', '/');
+                            var normalizedCandidate = candidate.Replace('\\', '/');
+                            if (normalizedMatch.EndsWith(normalizedCandidate))
+                            {
+                                return File.ReadAllText(match);
+                            }
+                        }
+                    }
+                    catch (IOException)
+                    {
+                        // Best-effort lookup for CI layout differences.
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        // Best-effort lookup for CI layout differences.
+                    }
+                }
+            }
+
             foreach (var candidate in candidates)
             {
                 if (File.Exists(candidate))
@@ -35,6 +83,35 @@ namespace LiveKit.EditModeTests
 
             Assert.Fail($"Could not find source file. Tried: {string.Join(", ", candidates)}");
             return string.Empty;
+        }
+
+        private static string[] SearchRoots()
+        {
+            var roots = new System.Collections.Generic.List<string>();
+
+            void AddWithParents(string path)
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    return;
+                }
+
+                var fullPath = Path.GetFullPath(path);
+                var dir = new DirectoryInfo(fullPath);
+                while (dir != null)
+                {
+                    if (!roots.Contains(dir.FullName))
+                    {
+                        roots.Add(dir.FullName);
+                    }
+                    dir = dir.Parent;
+                }
+            }
+
+            AddWithParents(Directory.GetCurrentDirectory());
+            AddWithParents(Application.dataPath);
+
+            return roots.ToArray();
         }
 
         [Test]
