@@ -164,21 +164,29 @@ namespace LiveKit
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
-            using var response = FFIBridge.Instance.SendConnectRequest(url, token, options);
             Utils.Debug("Connect....");
-            FfiResponse res = response;
+            using var request = FFIBridge.Instance.NewRequest<ConnectRequest>();
+            var connect = request.request;
+            connect.Url = url;
+            connect.Token = token;
+            connect.Options = options.ToProto();
+
+            var instruction = new ConnectInstruction(request.RequestAsyncId, this, options);
+            using var response = request.Send();
             Utils.Debug($"Connect response.... {response}");
-            return new ConnectInstruction(res.Connect.AsyncId, this, options);
+            return instruction;
         }
 
         public void Disconnect()
         {
             if (this.RoomHandle == null)
                 return;
-            using var response = FFIBridge.Instance.SendDisconnectRequest(this);
-            Utils.Debug($"Disconnect.... {RoomHandle}");
-            FfiResponse resp = response;
-            Utils.Debug($"Disconnect response.... {resp}");
+            var (response, _) = FFIBridge.Instance.SendDisconnectRequest(this);
+            using (response)
+            {
+                Utils.Debug($"Disconnect.... {RoomHandle}");
+                Utils.Debug($"Disconnect response.... {response}");
+            }
         }
 
         /// <summary>
@@ -580,15 +588,16 @@ namespace LiveKit
             _asyncId = asyncId;
             _room = room;
             _roomOptions = options;
-            FfiClient.Instance.ConnectReceived += OnConnect;
+            // Register before the request is sent so a fast native completion cannot race ahead
+            // of Unity's listener setup. The callback later arrives with AsyncId equal to the
+            // request's RequestAsyncId.
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.Connect, OnConnect, OnCanceled);
         }
 
         void OnConnect(ConnectCallback e)
         {
             if (_asyncId != e.AsyncId)
                 return;
-
-            FfiClient.Instance.ConnectReceived -= OnConnect;
 
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
@@ -602,6 +611,12 @@ namespace LiveKit
             }
 
             IsError = !success;
+            IsDone = true;
+        }
+
+        void OnCanceled()
+        {
+            IsError = true;
             IsDone = true;
         }
     }

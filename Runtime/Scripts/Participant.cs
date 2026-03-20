@@ -76,9 +76,9 @@ namespace LiveKit
             publish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             publish.TrackHandle = (ulong)track.Handle.DangerousGetHandle();
             publish.Options = options;
+            var instruction = new PublishTrackInstruction(request.RequestAsyncId, localTrack, _tracks);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new PublishTrackInstruction(res.PublishTrack.AsyncId, localTrack, _tracks);
+            return instruction;
         }
 
         public UnpublishTrackInstruction UnpublishTrack(ILocalTrack localTrack, bool stopOnUnpublish)
@@ -91,10 +91,10 @@ namespace LiveKit
             unpublish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             unpublish.StopOnUnpublish = false;
             unpublish.TrackSid = localTrack.Sid;
+            var instruction = new UnpublishTrackInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
             _tracks.Remove(localTrack.Sid);
-            return new UnpublishTrackInstruction(res.UnpublishTrack.AsyncId);
+            return instruction;
         }
 
         public void PublishData(byte[] data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
@@ -139,9 +139,9 @@ namespace LiveKit
             setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             setReq.Metadata = metadata;
 
+            var instruction = new SetLocalMetadataInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new SetLocalMetadataInstruction(res.SetLocalMetadata.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -158,9 +158,9 @@ namespace LiveKit
             setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             setReq.Name = name;
 
+            var instruction = new SetLocalNameInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new SetLocalNameInstruction(res.SetLocalName.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -194,9 +194,9 @@ namespace LiveKit
                 setReq.Attributes.Add(entry);
             }
 
+            var instruction = new SetLocalAttributesInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new SetLocalAttributesInstruction(res.SetLocalAttributes.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -227,9 +227,9 @@ namespace LiveKit
             rpcReq.Payload = rpcParams.Payload;
             rpcReq.ResponseTimeoutMs = (uint)(rpcParams.ResponseTimeout * 1000);
 
+            var instruction = new PerformRpcInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new PerformRpcInstruction(res.PerformRpc.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -380,9 +380,9 @@ namespace LiveKit
             sendTextReq.Text = text;
             sendTextReq.Options = options.ToProto();
 
+            var instruction = new SendTextInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new SendTextInstruction(res.SendText.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -426,9 +426,9 @@ namespace LiveKit
             sendFileReq.FilePath = path;
             sendFileReq.Options = options.ToProto();
 
+            var instruction = new SendFileInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new SendFileInstruction(res.SendFile.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -474,9 +474,9 @@ namespace LiveKit
             streamTextReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             streamTextReq.Options = options.ToProto();
 
+            var instruction = new StreamTextInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new StreamTextInstruction(res.TextStreamOpen.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -501,9 +501,9 @@ namespace LiveKit
             streamBytesReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             streamBytesReq.Options = options.ToProto();
 
+            var instruction = new StreamBytesInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new StreamBytesInstruction(res.ByteStreamOpen.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -562,7 +562,10 @@ namespace LiveKit
             _asyncId = asyncId;
             _internalTracks = internalTracks;
             _localTrack = localTrack;
-            FfiClient.Instance.PublishTrackReceived += OnPublish;
+            // One-shot completion keyed by request_async_id. Concurrent requests simply occupy
+            // different slots in FfiClient's pending map and can complete in any order. Rust
+            // returns the same value through callback.AsyncId.
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PublishTrack, OnPublish, OnCanceled);
         }
 
         internal void OnPublish(PublishTrackCallback e)
@@ -576,7 +579,12 @@ namespace LiveKit
             publication.UpdateTrack(_localTrack as Track);
             _localTrack.UpdateSid(publication.Sid);
             _internalTracks.Add(e.Publication.Info.Sid, publication);
-            FfiClient.Instance.PublishTrackReceived -= OnPublish;
+        }
+
+        void OnCanceled()
+        {
+            IsError = true;
+            IsDone = true;
         }
     }
 
@@ -587,7 +595,7 @@ namespace LiveKit
         internal SetLocalMetadataInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.SetLocalMetadataReceived += OnSetLocalMetadata;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalMetadata, OnSetLocalMetadata, OnCanceled);
         }
 
         internal void OnSetLocalMetadata(SetLocalMetadataCallback e)
@@ -597,7 +605,12 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            FfiClient.Instance.SetLocalMetadataReceived -= OnSetLocalMetadata;
+        }
+
+        void OnCanceled()
+        {
+            IsError = true;
+            IsDone = true;
         }
     }
 
@@ -608,7 +621,7 @@ namespace LiveKit
         internal SetLocalNameInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.SetLocalNameReceived += OnSetLocalName;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalName, OnSetLocalName, OnCanceled);
         }
 
         internal void OnSetLocalName(SetLocalNameCallback e)
@@ -618,7 +631,12 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            FfiClient.Instance.SetLocalNameReceived -= OnSetLocalName;
+        }
+
+        void OnCanceled()
+        {
+            IsError = true;
+            IsDone = true;
         }
     }
 
@@ -629,7 +647,7 @@ namespace LiveKit
         internal SetLocalAttributesInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.SetLocalAttributesReceived += OnSetLocalAttributes;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalAttributes, OnSetLocalAttributes, OnCanceled);
         }
 
         internal void OnSetLocalAttributes(SetLocalAttributesCallback e)
@@ -639,7 +657,12 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            FfiClient.Instance.SetLocalAttributesReceived -= OnSetLocalAttributes;
+        }
+
+        void OnCanceled()
+        {
+            IsError = true;
+            IsDone = true;
         }
     }
 
@@ -650,7 +673,7 @@ namespace LiveKit
         internal UnpublishTrackInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.UnpublishTrackReceived += OnUnpublish;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.UnpublishTrack, OnUnpublish, OnCanceled);
         }
 
         internal void OnUnpublish(UnpublishTrackCallback e)
@@ -660,7 +683,12 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            FfiClient.Instance.UnpublishTrackReceived -= OnUnpublish;
+        }
+
+        void OnCanceled()
+        {
+            IsError = true;
+            IsDone = true;
         }
     }
 
@@ -678,7 +706,7 @@ namespace LiveKit
         internal PerformRpcInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.PerformRpcReceived += OnRpcResponse;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PerformRpc, OnRpcResponse, OnCanceled);
         }
 
         internal void OnRpcResponse(PerformRpcCallback e)
@@ -698,7 +726,13 @@ namespace LiveKit
                 _payload = e.Payload;
             }
             IsDone = true;
-            FfiClient.Instance.PerformRpcReceived -= OnRpcResponse;
+        }
+
+        void OnCanceled()
+        {
+            Error = new RpcError((uint)RpcError.ErrorCode.APPLICATION_ERROR, "Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         /// <summary>
@@ -738,7 +772,7 @@ namespace LiveKit
         internal SendTextInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.SendTextReceived += OnSendText;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SendText, OnSendText, OnCanceled);
         }
 
         internal void OnSendText(StreamSendTextCallback e)
@@ -757,7 +791,13 @@ namespace LiveKit
                     break;
             }
             IsDone = true;
-            FfiClient.Instance.SendTextReceived -= OnSendText;
+        }
+
+        void OnCanceled()
+        {
+            Error = new StreamError("Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         public TextStreamInfo Info
@@ -786,7 +826,7 @@ namespace LiveKit
         internal SendFileInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.SendFileReceived += OnSendFile;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SendFile, OnSendFile, OnCanceled);
         }
 
         internal void OnSendFile(StreamSendFileCallback e)
@@ -805,7 +845,13 @@ namespace LiveKit
                     break;
             }
             IsDone = true;
-            FfiClient.Instance.SendFileReceived -= OnSendFile;
+        }
+
+        void OnCanceled()
+        {
+            Error = new StreamError("Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         public ByteStreamInfo Info
@@ -834,7 +880,7 @@ namespace LiveKit
         internal StreamTextInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.TextStreamOpenReceived += OnStreamOpen;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamOpen, OnStreamOpen, OnCanceled);
         }
 
         internal void OnStreamOpen(TextStreamOpenCallback e)
@@ -853,7 +899,13 @@ namespace LiveKit
                     break;
             }
             IsDone = true;
-            FfiClient.Instance.TextStreamOpenReceived -= OnStreamOpen;
+        }
+
+        void OnCanceled()
+        {
+            Error = new StreamError("Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         public TextStreamWriter Writer
@@ -882,7 +934,7 @@ namespace LiveKit
         internal StreamBytesInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.ByteStreamOpenReceived += OnStreamOpen;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamOpen, OnStreamOpen, OnCanceled);
         }
 
         internal void OnStreamOpen(ByteStreamOpenCallback e)
@@ -901,7 +953,13 @@ namespace LiveKit
                     break;
             }
             IsDone = true;
-            FfiClient.Instance.ByteStreamOpenReceived -= OnStreamOpen;
+        }
+
+        void OnCanceled()
+        {
+            Error = new StreamError("Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         public ByteStreamWriter Writer

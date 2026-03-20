@@ -21,9 +21,9 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<GetStatsRequest>();
             var getStats = request.request;
             getStats.TrackHandle = (ulong)TrackHandle.DangerousGetHandle();
+            var instruction = new GetSessionStatsInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new GetSessionStatsInstruction(res.GetStats.AsyncId);
+            return instruction;
         }
 
     }
@@ -178,7 +178,9 @@ namespace LiveKit
         internal GetSessionStatsInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.GetSessionStatsReceived += OnGetSessionStatsReceived;
+            // This waiter is a one-shot response; cancellation and completion race through the
+            // same pending entry, so only one path can finish the instruction.
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.GetStats, OnGetSessionStatsReceived, OnCanceled);
         }
 
         private void OnGetSessionStatsReceived(GetStatsCallback e)
@@ -194,7 +196,13 @@ namespace LiveKit
             {
                 Stats[i] = e.Stats[i];
             }
-            FfiClient.Instance.GetSessionStatsReceived -= OnGetSessionStatsReceived;
+        }
+
+        private void OnCanceled()
+        {
+            Error = "Canceled";
+            IsError = true;
+            IsDone = true;
         }
     }
 }
