@@ -17,6 +17,7 @@ usage() {
     echo "Platforms:"
     echo "  macos       Build for aarch64-apple-darwin"
     echo "  android     Build for aarch64-linux-android"
+    echo "  ios         Build for aarch64-apple-ios"
     echo ""
     echo "Build types (optional, defaults to 'debug'):"
     echo "  release     Optimized release build"
@@ -82,6 +83,22 @@ case "$PLATFORM" in
         DST="$BASE_DST/ffi-android-arm64/liblivekit_ffi.so"
         JAR_SRC="$BASE_TARGET/aarch64-linux-android/$BUILD_DIR/libwebrtc.jar"
         JAR_DST="$BASE_DST/ffi-android-arm64/libwebrtc.jar"
+        ;;
+    # IOS
+    ios)
+        echo "Building for iOS (aarch64-apple-ios) [$BUILD_TYPE]..."
+        pushd "$ROOT/client-sdk-rust~/livekit-ffi" > /dev/null
+        cargo rustc \
+            --crate-type staticlib \
+            $BUILD_FLAG \
+            --target aarch64-apple-ios \
+            --no-default-features \
+            --features "rustls-tls-webpki-roots"
+        BUILD_STATUS=$?
+        popd > /dev/null
+
+        SRC="$BASE_TARGET/aarch64-apple-ios/$BUILD_DIR/liblivekit_ffi.a"
+        DST="$BASE_DST/ffi-ios-arm64/liblivekit_ffi.a"
         ;;
     *)
         echo -e "${RED}Error: Unknown platform '$PLATFORM'.${RESET}"

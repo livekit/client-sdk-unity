@@ -798,6 +798,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: LK_VERBOSE
     Standalone: LK_VERBOSE
+    iPhone: LK_VERBOSE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
