@@ -12,42 +12,64 @@ GREEN='\033[0;32m'
 RESET='\033[0m'
 
 usage() {
-    echo "Usage: $0 <platform>"
+    echo "Usage: $0 <platform> [build_type]"
     echo ""
     echo "Platforms:"
     echo "  macos       Build for aarch64-apple-darwin"
     echo "  android     Build for aarch64-linux-android"
+    echo ""
+    echo "Build types (optional, defaults to 'debug'):"
+    echo "  release     Optimized release build"
+    echo "  debug       Debug build"
     exit 1
 }
 
-if [ $# -ne 1 ]; then
-    echo -e "${RED}Error: Expected exactly one argument.${RESET}"
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo -e "${RED}Error: Expected one or two arguments.${RESET}"
     usage
 fi
 
 PLATFORM="$1"
+BUILD_TYPE="${2:-debug}"
+
+case "$BUILD_TYPE" in
+    release)
+        BUILD_FLAG="--release"
+        BUILD_DIR="release"
+        ;;
+    debug)
+        BUILD_FLAG=""
+        BUILD_DIR="debug"
+        ;;
+    *)
+        echo -e "${RED}Error: Unknown build type '$BUILD_TYPE'. Expected 'release' or 'debug'.${RESET}"
+        usage
+        ;;
+esac
 
 case "$PLATFORM" in
+    # MACOS
     macos)
-        echo "Building for macOS (aarch64-apple-darwin)..."
+        echo "Building for macOS (aarch64-apple-darwin) [$BUILD_TYPE]..."
         cargo build \
             --manifest-path "$MANIFEST" \
-            --release \
+            $BUILD_FLAG \
             --workspace \
             -p livekit \
             --target aarch64-apple-darwin
         BUILD_STATUS=$?
 
-        SRC="$BASE_TARGET/aarch64-apple-darwin/release/liblivekit_ffi.dylib"
+        SRC="$BASE_TARGET/aarch64-apple-darwin/$BUILD_DIR/liblivekit_ffi.dylib"
         DST="$BASE_DST/ffi-macos-arm64/liblivekit_ffi.dylib"
         ;;
+    # ANDROID
     android)
-        echo "Building for Android (aarch64-linux-android)..."
+        echo "Building for Android (aarch64-linux-android) [$BUILD_TYPE]..."
         pushd "$ROOT/client-sdk-rust~" > /dev/null
         cargo ndk \
             --target aarch64-linux-android \
             build \
-            --release \
+            $BUILD_FLAG \
             -p livekit \
             --workspace \
             -v \
@@ -56,8 +78,10 @@ case "$PLATFORM" in
         BUILD_STATUS=$?
         popd > /dev/null
 
-        SRC="$BASE_TARGET/aarch64-linux-android/release/liblivekit_ffi.so"
+        SRC="$BASE_TARGET/aarch64-linux-android/$BUILD_DIR/liblivekit_ffi.so"
         DST="$BASE_DST/ffi-android-arm64/liblivekit_ffi.so"
+        JAR_SRC="$BASE_TARGET/aarch64-linux-android/$BUILD_DIR/libwebrtc.jar"
+        JAR_DST="$BASE_DST/ffi-android-arm64/libwebrtc.jar"
         ;;
     *)
         echo -e "${RED}Error: Unknown platform '$PLATFORM'.${RESET}"
@@ -70,6 +94,7 @@ if [ $BUILD_STATUS -ne 0 ]; then
     exit 1
 fi
 
+# Copy the built lib
 echo ""
 echo "Copying to $DST..."
 cp -f "$SRC" "$DST"
@@ -83,4 +108,18 @@ if [ $? -eq 0 ]; then
 else
     echo -e "${RED}Failed to copy $(basename "$DST"). Check that the source file exists and the destination directory is writable.${RESET}"
     exit 1
+fi
+
+# For android, also copy the built libwebrtc.jar
+if [ "$PLATFORM" = "android" ]; then
+    echo ""
+    echo "Copying to $JAR_DST..."
+    cp -f "$JAR_SRC" "$JAR_DST"
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Copied $(basename "$JAR_DST") successfully.${RESET}"
+    else
+        echo -e "${RED}Failed to copy $(basename "$JAR_DST"). Check that the source file exists and the destination directory is writable.${RESET}"
+        exit 1
+    fi
 fi
