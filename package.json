@@ -13,6 +13,11 @@
       "displayName": "Basic",
       "description": "Basic example of how to connect to a room",
       "path": "Samples~/Basic"
+    },
+    {
+      "displayName": "Meet",
+      "description": "LiveKit Meet like sample app",
+      "path": "Samples~/Meet"
     }
   ],
   "type": "library"
