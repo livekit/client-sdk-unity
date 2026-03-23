@@ -5,8 +5,8 @@
             "type": "lldb",
             "request": "attach",
             "name": "Rust Unity 22",
-            "pid": "${command:pickProcess}",
-            // "program": "/Applications/Unity/Hub/Editor/2022.3.20f1/Unity.app/Contents/MacOS/Unity",
+            // "pid": "${command:pickProcess}", // For manual picking, if there are multiple Unity instances running
+            "program": "/Applications/Unity/Hub/Editor/2022.3.20f1/Unity.app/Contents/MacOS/Unity",
             "sourceLanguages": ["rust"]
         },
         {
