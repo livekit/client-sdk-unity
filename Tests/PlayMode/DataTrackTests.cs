@@ -95,7 +95,7 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest, Category("E2E")]
-        public IEnumerator DataTrackPublished_TriggersEvent()
+        public IEnumerator PublishAndUnpublish_TriggersEvents()
         {
             var publisher = TestRoomContext.ConnectionOptions.Default;
             publisher.Identity = "publisher";
@@ -107,13 +107,13 @@ namespace LiveKit.PlayModeTests
             Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
-            var expectation = new Expectation(timeoutSeconds: 10f);
+            var publishedExpectation = new Expectation(timeoutSeconds: 10f);
             RemoteDataTrack receivedTrack = null;
 
             subscriberRoom.DataTrackPublished += (track) =>
             {
                 receivedTrack = track;
-                expectation.Fulfill();
+                publishedExpectation.Fulfill();
             };
 
             var publisherRoom = context.Rooms[0];
@@ -121,10 +121,25 @@ namespace LiveKit.PlayModeTests
             yield return publishInstruction;
             Assert.IsFalse(publishInstruction.IsError);
 
-            yield return expectation.Wait();
-            Assert.IsNull(expectation.Error);
+            yield return publishedExpectation.Wait();
+            Assert.IsNull(publishedExpectation.Error);
             Assert.AreEqual(TestTrackName, receivedTrack.Info.Name);
             Assert.AreEqual(publisher.Identity, receivedTrack.PublisherIdentity);
+
+            var unpublishedExpectation = new Expectation(timeoutSeconds: 10f);
+            string unpublishedSid = null;
+
+            subscriberRoom.DataTrackUnpublished += (sid) =>
+            {
+                unpublishedSid = sid;
+                unpublishedExpectation.Fulfill();
+            };
+
+            publishInstruction.Track.Unpublish();
+
+            yield return unpublishedExpectation.Wait();
+            Assert.IsNull(unpublishedExpectation.Error);
+            Assert.AreEqual(receivedTrack.Info.Sid, unpublishedSid);
         }
 
         [UnityTest, Category("E2E")]

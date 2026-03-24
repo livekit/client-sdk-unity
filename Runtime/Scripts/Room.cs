@@ -127,6 +127,7 @@ namespace LiveKit
         public delegate void ConnectionDelegate(Room room);
         public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
         public delegate void DataTrackPublishedDelegate(RemoteDataTrack track);
+        public delegate void DataTrackUnpublishedDelegate(string sid);
 
         public string Sid { private set; get; }
         public string Name { private set; get; }
@@ -163,6 +164,7 @@ namespace LiveKit
         public event ParticipantDelegate ParticipantNameChanged;
         public event ParticipantDelegate ParticipantAttributesChanged;
         public event DataTrackPublishedDelegate DataTrackPublished;
+        public event DataTrackUnpublishedDelegate DataTrackUnpublished;
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
@@ -510,6 +512,11 @@ namespace LiveKit
                     {
                         var track = new RemoteDataTrack(e.DataTrackPublished.Track);
                         DataTrackPublished?.Invoke(track);
+                    }
+                    break;
+                case RoomEvent.MessageOneofCase.DataTrackUnpublished:
+                    {
+                        DataTrackUnpublished?.Invoke(e.DataTrackUnpublished.Sid);
                     }
                     break;
             }
