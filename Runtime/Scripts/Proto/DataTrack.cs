@@ -50,25 +50,28 @@ namespace LiveKit.Proto {
             "cHJvdG8uRmZpT3duZWRIYW5kbGUSKgoEaW5mbxgCIAIoCzIcLmxpdmVraXQu",
             "cHJvdG8uRGF0YVRyYWNrSW5mbxIaChJwdWJsaXNoZXJfaWRlbnRpdHkYAyAC",
             "KAkiSwoaT3duZWREYXRhVHJhY2tTdWJzY3JpcHRpb24SLQoGaGFuZGxlGAEg",
-            "AigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZSIbChlEYXRhVHJh",
-            "Y2tTdWJzY3JpYmVPcHRpb25zIjkKIVJlbW90ZURhdGFUcmFja0lzUHVibGlz",
-            "aGVkUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQiOgoiUmVtb3RlRGF0",
-            "YVRyYWNrSXNQdWJsaXNoZWRSZXNwb25zZRIUCgxpc19wdWJsaXNoZWQYASAC",
-            "KAgihgEKGVN1YnNjcmliZURhdGFUcmFja1JlcXVlc3QSFAoMdHJhY2tfaGFu",
-            "ZGxlGAEgAigEEjkKB29wdGlvbnMYAiACKAsyKC5saXZla2l0LnByb3RvLkRh",
-            "dGFUcmFja1N1YnNjcmliZU9wdGlvbnMSGAoQcmVxdWVzdF9hc3luY19pZBgD",
-            "IAEoBCIuChpTdWJzY3JpYmVEYXRhVHJhY2tSZXNwb25zZRIQCghhc3luY19p",
-            "ZBgBIAIoBCKMAQoaU3Vic2NyaWJlRGF0YVRyYWNrQ2FsbGJhY2sSEAoIYXN5",
-            "bmNfaWQYASACKAQSQQoMc3Vic2NyaXB0aW9uGAIgASgLMikubGl2ZWtpdC5w",
-            "cm90by5Pd25lZERhdGFUcmFja1N1YnNjcmlwdGlvbkgAEg8KBWVycm9yGAMg",
-            "ASgJSABCCAoGcmVzdWx0IsgBChpEYXRhVHJhY2tTdWJzY3JpcHRpb25FdmVu",
-            "dBIbChNzdWJzY3JpcHRpb25faGFuZGxlGAEgAigEEksKDmZyYW1lX3JlY2Vp",
-            "dmVkGAIgASgLMjEubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTdWJzY3JpcHRp",
-            "b25GcmFtZVJlY2VpdmVkSAASNgoDZW9zGAMgASgLMicubGl2ZWtpdC5wcm90",
-            "by5EYXRhVHJhY2tTdWJzY3JpcHRpb25FT1NIAEIICgZkZXRhaWwiUgoiRGF0",
-            "YVRyYWNrU3Vic2NyaXB0aW9uRnJhbWVSZWNlaXZlZBIsCgVmcmFtZRgBIAIo",
-            "CzIdLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrRnJhbWUiGgoYRGF0YVRyYWNr",
-            "U3Vic2NyaXB0aW9uRU9TQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "AigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZSIwChlEYXRhVHJh",
+            "Y2tTdWJzY3JpYmVPcHRpb25zEhMKC2J1ZmZlcl9zaXplGAEgASgNIjkKIVJl",
+            "bW90ZURhdGFUcmFja0lzUHVibGlzaGVkUmVxdWVzdBIUCgx0cmFja19oYW5k",
+            "bGUYASACKAQiOgoiUmVtb3RlRGF0YVRyYWNrSXNQdWJsaXNoZWRSZXNwb25z",
+            "ZRIUCgxpc19wdWJsaXNoZWQYASACKAgihgEKGVN1YnNjcmliZURhdGFUcmFj",
+            "a1JlcXVlc3QSFAoMdHJhY2tfaGFuZGxlGAEgAigEEjkKB29wdGlvbnMYAiAC",
+            "KAsyKC5saXZla2l0LnByb3RvLkRhdGFUcmFja1N1YnNjcmliZU9wdGlvbnMS",
+            "GAoQcmVxdWVzdF9hc3luY19pZBgDIAEoBCIuChpTdWJzY3JpYmVEYXRhVHJh",
+            "Y2tSZXNwb25zZRIQCghhc3luY19pZBgBIAIoBCKMAQoaU3Vic2NyaWJlRGF0",
+            "YVRyYWNrQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASACKAQSQQoMc3Vic2NyaXB0",
+            "aW9uGAIgASgLMikubGl2ZWtpdC5wcm90by5Pd25lZERhdGFUcmFja1N1YnNj",
+            "cmlwdGlvbkgAEg8KBWVycm9yGAMgASgJSABCCAoGcmVzdWx0Ij8KIERhdGFU",
+            "cmFja1N1YnNjcmlwdGlvblJlYWRSZXF1ZXN0EhsKE3N1YnNjcmlwdGlvbl9o",
+            "YW5kbGUYASACKAQiIwohRGF0YVRyYWNrU3Vic2NyaXB0aW9uUmVhZFJlc3Bv",
+            "bnNlIsgBChpEYXRhVHJhY2tTdWJzY3JpcHRpb25FdmVudBIbChNzdWJzY3Jp",
+            "cHRpb25faGFuZGxlGAEgAigEEksKDmZyYW1lX3JlY2VpdmVkGAIgASgLMjEu",
+            "bGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTdWJzY3JpcHRpb25GcmFtZVJlY2Vp",
+            "dmVkSAASNgoDZW9zGAMgASgLMicubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tT",
+            "dWJzY3JpcHRpb25FT1NIAEIICgZkZXRhaWwiUgoiRGF0YVRyYWNrU3Vic2Ny",
+            "aXB0aW9uRnJhbWVSZWNlaXZlZBIsCgVmcmFtZRgBIAIoCzIdLmxpdmVraXQu",
+            "cHJvdG8uRGF0YVRyYWNrRnJhbWUiGgoYRGF0YVRyYWNrU3Vic2NyaXB0aW9u",
+            "RU9TQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -87,12 +90,14 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LocalDataTrackUnpublishResponse), global::LiveKit.Proto.LocalDataTrackUnpublishResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedRemoteDataTrack), global::LiveKit.Proto.OwnedRemoteDataTrack.Parser, new[]{ "Handle", "Info", "PublisherIdentity" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedDataTrackSubscription), global::LiveKit.Proto.OwnedDataTrackSubscription.Parser, new[]{ "Handle" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscribeOptions), global::LiveKit.Proto.DataTrackSubscribeOptions.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscribeOptions), global::LiveKit.Proto.DataTrackSubscribeOptions.Parser, new[]{ "BufferSize" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RemoteDataTrackIsPublishedRequest), global::LiveKit.Proto.RemoteDataTrackIsPublishedRequest.Parser, new[]{ "TrackHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RemoteDataTrackIsPublishedResponse), global::LiveKit.Proto.RemoteDataTrackIsPublishedResponse.Parser, new[]{ "IsPublished" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackRequest), global::LiveKit.Proto.SubscribeDataTrackRequest.Parser, new[]{ "TrackHandle", "Options", "RequestAsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackResponse), global::LiveKit.Proto.SubscribeDataTrackResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackCallback), global::LiveKit.Proto.SubscribeDataTrackCallback.Parser, new[]{ "AsyncId", "Subscription", "Error" }, new[]{ "Result" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionReadRequest), global::LiveKit.Proto.DataTrackSubscriptionReadRequest.Parser, new[]{ "SubscriptionHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionReadResponse), global::LiveKit.Proto.DataTrackSubscriptionReadResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionEvent), global::LiveKit.Proto.DataTrackSubscriptionEvent.Parser, new[]{ "SubscriptionHandle", "FrameReceived", "Eos" }, new[]{ "Detail" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionFrameReceived), global::LiveKit.Proto.DataTrackSubscriptionFrameReceived.Parser, new[]{ "Frame" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionEOS), global::LiveKit.Proto.DataTrackSubscriptionEOS.Parser, null, null, null, null, null)
@@ -3871,6 +3876,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<DataTrackSubscribeOptions> _parser = new pb::MessageParser<DataTrackSubscribeOptions>(() => new DataTrackSubscribeOptions());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<DataTrackSubscribeOptions> Parser { get { return _parser; } }
@@ -3898,6 +3904,8 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DataTrackSubscribeOptions(DataTrackSubscribeOptions other) : this() {
+      _hasBits0 = other._hasBits0;
+      bufferSize_ = other.bufferSize_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3905,6 +3913,36 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DataTrackSubscribeOptions Clone() {
       return new DataTrackSubscribeOptions(this);
+    }
+
+    /// <summary>Field number for the "buffer_size" field.</summary>
+    public const int BufferSizeFieldNumber = 1;
+    private readonly static uint BufferSizeDefaultValue = 0;
+
+    private uint bufferSize_;
+    /// <summary>
+    /// Maximum number of frames to buffer internally.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint BufferSize {
+      get { if ((_hasBits0 & 1) != 0) { return bufferSize_; } else { return BufferSizeDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        bufferSize_ = value;
+      }
+    }
+    /// <summary>Gets whether the "buffer_size" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasBufferSize {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "buffer_size" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearBufferSize() {
+      _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3922,6 +3960,7 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (BufferSize != other.BufferSize) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3929,6 +3968,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (HasBufferSize) hash ^= BufferSize.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3947,6 +3987,10 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (HasBufferSize) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(BufferSize);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3957,6 +4001,10 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasBufferSize) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(BufferSize);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3967,6 +4015,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (HasBufferSize) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(BufferSize);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3978,6 +4029,9 @@ namespace LiveKit.Proto {
     public void MergeFrom(DataTrackSubscribeOptions other) {
       if (other == null) {
         return;
+      }
+      if (other.HasBufferSize) {
+        BufferSize = other.BufferSize;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -3998,6 +4052,10 @@ namespace LiveKit.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
+          case 8: {
+            BufferSize = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -4017,6 +4075,10 @@ namespace LiveKit.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
+          case 8: {
+            BufferSize = input.ReadUInt32();
+            break;
+          }
         }
       }
     }
@@ -5338,6 +5400,389 @@ namespace LiveKit.Proto {
   }
 
   /// <summary>
+  /// Signal readiness to handle the next frame.
+  ///
+  /// This allows the client to put backpressure on the internal receive buffer.
+  /// Sending this request will cause the next frame to be sent via `DataTrackSubscriptionFrameReceived`
+  /// once one is available.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DataTrackSubscriptionReadRequest : pb::IMessage<DataTrackSubscriptionReadRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DataTrackSubscriptionReadRequest> _parser = new pb::MessageParser<DataTrackSubscriptionReadRequest>(() => new DataTrackSubscriptionReadRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DataTrackSubscriptionReadRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[21]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSubscriptionReadRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSubscriptionReadRequest(DataTrackSubscriptionReadRequest other) : this() {
+      _hasBits0 = other._hasBits0;
+      subscriptionHandle_ = other.subscriptionHandle_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSubscriptionReadRequest Clone() {
+      return new DataTrackSubscriptionReadRequest(this);
+    }
+
+    /// <summary>Field number for the "subscription_handle" field.</summary>
+    public const int SubscriptionHandleFieldNumber = 1;
+    private readonly static ulong SubscriptionHandleDefaultValue = 0UL;
+
+    private ulong subscriptionHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong SubscriptionHandle {
+      get { if ((_hasBits0 & 1) != 0) { return subscriptionHandle_; } else { return SubscriptionHandleDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        subscriptionHandle_ = value;
+      }
+    }
+    /// <summary>Gets whether the "subscription_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSubscriptionHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "subscription_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSubscriptionHandle() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DataTrackSubscriptionReadRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DataTrackSubscriptionReadRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SubscriptionHandle != other.SubscriptionHandle) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasSubscriptionHandle) hash ^= SubscriptionHandle.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasSubscriptionHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(SubscriptionHandle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasSubscriptionHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(SubscriptionHandle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasSubscriptionHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SubscriptionHandle);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DataTrackSubscriptionReadRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasSubscriptionHandle) {
+        SubscriptionHandle = other.SubscriptionHandle;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            SubscriptionHandle = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            SubscriptionHandle = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DataTrackSubscriptionReadResponse : pb::IMessage<DataTrackSubscriptionReadResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DataTrackSubscriptionReadResponse> _parser = new pb::MessageParser<DataTrackSubscriptionReadResponse>(() => new DataTrackSubscriptionReadResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DataTrackSubscriptionReadResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[22]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSubscriptionReadResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSubscriptionReadResponse(DataTrackSubscriptionReadResponse other) : this() {
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSubscriptionReadResponse Clone() {
+      return new DataTrackSubscriptionReadResponse(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DataTrackSubscriptionReadResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DataTrackSubscriptionReadResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DataTrackSubscriptionReadResponse other) {
+      if (other == null) {
+        return;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
   /// Event emitted on an active subscription.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
@@ -5356,7 +5801,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[21]; }
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5706,7 +6151,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[22]; }
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5916,7 +6361,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[23]; }
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[25]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
