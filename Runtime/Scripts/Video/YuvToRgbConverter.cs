@@ -133,7 +133,12 @@ namespace LiveKit
 			{
 				tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
 				tempTex.Apply();
+#if !UNITY_EDITOR
+				// Mirror horizontally by flipping the UV scale on the X axis and offsetting.
+				Graphics.Blit(tempTex, Output, new Vector2(-1f, 1f), new Vector2(1f, 0f));
+#else
 				Graphics.Blit(tempTex, Output);
+#endif
 			}
 			finally
 			{
@@ -148,8 +153,13 @@ namespace LiveKit
 			_yuvToRgbMaterial.SetTexture("_TexY", _planeY);
 			_yuvToRgbMaterial.SetTexture("_TexU", _planeU);
 			_yuvToRgbMaterial.SetTexture("_TexV", _planeV);
+#if !UNITY_EDITOR
+			// Mirror horizontally by flipping the UV scale on the X axis and offsetting.
+			_yuvToRgbMaterial.SetVector("_MainTex_ST", new Vector4(-1f, 1f, 1f, 0f));
+#else
+			_yuvToRgbMaterial.SetVector("_MainTex_ST", new Vector4(1f, 1f, 0f, 0f));
+#endif
 			Graphics.Blit(Texture2D.blackTexture, Output, _yuvToRgbMaterial);
 		}
 	}
 }
-
