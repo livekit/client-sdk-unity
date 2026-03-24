@@ -432,6 +432,11 @@ namespace LiveKit
         public ReadFrameInstruction ReadFrame()
         {
             _currentInstruction = new ReadFrameInstruction();
+
+            using var request = FFIBridge.Instance.NewRequest<DataTrackSubscriptionReadRequest>();
+            request.request.SubscriptionHandle = _handleId;
+            using var response = request.Send();
+
             return _currentInstruction;
         }
 

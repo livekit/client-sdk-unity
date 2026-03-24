@@ -165,6 +165,9 @@ namespace LiveKit.Internal.FFIClients
                 case RemoteDataTrackIsPublishedRequest remoteDataTrackIsPublishedRequest:
                     ffiRequest.RemoteDataTrackIsPublished = remoteDataTrackIsPublishedRequest;
                     break;
+                case DataTrackSubscriptionReadRequest dataTrackSubscriptionReadRequest:
+                    ffiRequest.DataTrackSubscriptionRead = dataTrackSubscriptionReadRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }
@@ -229,6 +232,7 @@ namespace LiveKit.Internal.FFIClients
                 || request.LocalDataTrackIsPublished != null
                 || request.SubscribeDataTrack != null
                 || request.RemoteDataTrackIsPublished != null
+                || request.DataTrackSubscriptionRead != null
             )
             {
                 throw new InvalidOperationException("Request is not cleared");
@@ -294,6 +298,7 @@ namespace LiveKit.Internal.FFIClients
                 || response.LocalDataTrackIsPublished != null
                 || response.SubscribeDataTrack != null
                 || response.RemoteDataTrackIsPublished != null
+                || response.DataTrackSubscriptionRead != null
             )
             {
                 throw new InvalidOperationException("Response is not cleared: ");
