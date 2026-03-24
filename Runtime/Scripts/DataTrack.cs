@@ -56,6 +56,23 @@ namespace LiveKit
     }
 
     /// <summary>
+    /// Options for subscribing to a remote data track.
+    /// </summary>
+    public class DataTrackSubscribeOptions
+    {
+        /// <summary>
+        /// Sets the maximum number of received frames buffered internally.
+        /// </summary>
+        /// <remarks>
+        /// Zero is not a valid buffer size; if a value of zero is provided, it will be clamped to one.
+        ///
+        /// If there is already an active subscription for a given track, specifying a
+        /// different buffer size when obtaining a new subscription will have no effect.
+        /// </remarks>
+        public uint? BufferSize { get; set; }
+    }
+
+    /// <summary>
     /// A frame published on a data track, consisting of a payload and optional metadata.
     /// </summary>
     public class DataTrackFrame
@@ -260,6 +277,35 @@ namespace LiveKit
         /// <summary>
         /// Subscribes to the data track to receive frames.
         /// </summary>
+        /// <param name="options">Options for the subscription, such as buffer size.</param>
+        /// <returns>
+        /// A <see cref="SubscribeDataTrackInstruction"/> that completes when the subscription
+        /// is established or errors.
+        /// Check <see cref="SubscribeDataTrackInstruction.IsError"/> and access
+        /// <see cref="SubscribeDataTrackInstruction.Subscription"/> to handle the result.
+        /// </returns>
+        public SubscribeDataTrackInstruction Subscribe(DataTrackSubscribeOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SubscribeDataTrackRequest>();
+            var subReq = request.request;
+            subReq.TrackHandle = (ulong)_handle.DangerousGetHandle();
+
+            var protoOptions = new Proto.DataTrackSubscribeOptions();
+            if (options.BufferSize.HasValue)
+                protoOptions.BufferSize = options.BufferSize.Value;
+            subReq.Options = protoOptions;
+
+            using var response = request.Send();
+            FfiResponse res = response;
+            return new SubscribeDataTrackInstruction(res.SubscribeDataTrack.AsyncId);
+        }
+
+        /// <summary>
+        /// Subscribes to the data track to receive frames using default options.
+        /// </summary>
+        /// <remarks>
+        /// Use the <see cref="Subscribe(DataTrackSubscribeOptions)"/> overload to configure subscription options.
+        /// </remarks>
         /// <returns>
         /// A <see cref="SubscribeDataTrackInstruction"/> that completes when the subscription
         /// is established or errors.
@@ -268,14 +314,7 @@ namespace LiveKit
         /// </returns>
         public SubscribeDataTrackInstruction Subscribe()
         {
-            using var request = FFIBridge.Instance.NewRequest<SubscribeDataTrackRequest>();
-            var subReq = request.request;
-            subReq.TrackHandle = (ulong)_handle.DangerousGetHandle();
-            subReq.Options = new DataTrackSubscribeOptions();
-
-            using var response = request.Send();
-            FfiResponse res = response;
-            return new SubscribeDataTrackInstruction(res.SubscribeDataTrack.AsyncId);
+            return Subscribe(new DataTrackSubscribeOptions());
         }
 
         /// <summary>
