@@ -4,9 +4,6 @@
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2021.3",
-  "author": {
-    "name": "LiveKit",
-  },
   "samples": [
     {
       "displayName": "Basic",
