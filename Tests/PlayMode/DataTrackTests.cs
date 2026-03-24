@@ -95,7 +95,7 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest, Category("E2E")]
-        public IEnumerator RemoteDataTrackPublished_TriggersEvent()
+        public IEnumerator DataTrackPublished_TriggersEvent()
         {
             var publisher = TestRoomContext.ConnectionOptions.Default;
             publisher.Identity = "publisher";
@@ -110,7 +110,7 @@ namespace LiveKit.PlayModeTests
             var expectation = new Expectation(timeoutSeconds: 10f);
             RemoteDataTrack receivedTrack = null;
 
-            subscriberRoom.RemoteDataTrackPublished += (track) =>
+            subscriberRoom.DataTrackPublished += (track) =>
             {
                 receivedTrack = track;
                 expectation.Fulfill();
@@ -143,7 +143,7 @@ namespace LiveKit.PlayModeTests
             var trackExpectation = new Expectation(timeoutSeconds: 10f);
             RemoteDataTrack remoteTrack = null;
 
-            subscriberRoom.RemoteDataTrackPublished += (track) =>
+            subscriberRoom.DataTrackPublished += (track) =>
             {
                 remoteTrack = track;
                 trackExpectation.Fulfill();
@@ -180,7 +180,7 @@ namespace LiveKit.PlayModeTests
             var trackExpectation = new Expectation(timeoutSeconds: 10f);
             RemoteDataTrack remoteTrack = null;
 
-            subscriberRoom.RemoteDataTrackPublished += (track) =>
+            subscriberRoom.DataTrackPublished += (track) =>
             {
                 remoteTrack = track;
                 trackExpectation.Fulfill();
@@ -226,7 +226,7 @@ namespace LiveKit.PlayModeTests
             var trackExpectation = new Expectation(timeoutSeconds: 10f);
             RemoteDataTrack remoteTrack = null;
 
-            subscriberRoom.RemoteDataTrackPublished += (track) =>
+            subscriberRoom.DataTrackPublished += (track) =>
             {
                 remoteTrack = track;
                 trackExpectation.Fulfill();
