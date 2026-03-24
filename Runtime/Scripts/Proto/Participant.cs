@@ -53,7 +53,7 @@ namespace LiveKit.Proto {
             "X0tJTkRfREVUQUlMX0ZPUldBUkRFRBABEi4KKlBBUlRJQ0lQQU5UX0tJTkRf",
             "REVUQUlMX0NPTk5FQ1RPUl9XSEFUU0FQUBACEiwKKFBBUlRJQ0lQQU5UX0tJ",
             "TkRfREVUQUlMX0NPTk5FQ1RPUl9UV0lMSU8QAxInCiNQQVJUSUNJUEFOVF9L",
-            "SU5EX0RFVEFJTF9CUklER0VfUlRTUBAEKtcCChBEaXNjb25uZWN0UmVhc29u",
+            "SU5EX0RFVEFJTF9CUklER0VfUlRTUBAEKugCChBEaXNjb25uZWN0UmVhc29u",
             "EhIKDlVOS05PV05fUkVBU09OEAASFAoQQ0xJRU5UX0lOSVRJQVRFRBABEhYK",
             "EkRVUExJQ0FURV9JREVOVElUWRACEhMKD1NFUlZFUl9TSFVURE9XThADEhcK",
             "E1BBUlRJQ0lQQU5UX1JFTU9WRUQQBBIQCgxST09NX0RFTEVURUQQBRISCg5T",
@@ -61,7 +61,7 @@ namespace LiveKit.Proto {
             "ThAIEhAKDFNJR05BTF9DTE9TRRAJEg8KC1JPT01fQ0xPU0VEEAoSFAoQVVNF",
             "Ul9VTkFWQUlMQUJMRRALEhEKDVVTRVJfUkVKRUNURUQQDBIVChFTSVBfVFJV",
             "TktfRkFJTFVSRRANEhYKEkNPTk5FQ1RJT05fVElNRU9VVBAOEhEKDU1FRElB",
-            "X0ZBSUxVUkUQD0IQqgINTGl2ZUtpdC5Qcm90bw=="));
+            "X0ZBSUxVUkUQDxIPCgtBR0VOVF9FUlJPUhAQQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.ParticipantKindDetail), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -148,6 +148,7 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("SIP_TRUNK_FAILURE")] SipTrunkFailure = 13,
     [pbr::OriginalName("CONNECTION_TIMEOUT")] ConnectionTimeout = 14,
     [pbr::OriginalName("MEDIA_FAILURE")] MediaFailure = 15,
+    [pbr::OriginalName("AGENT_ERROR")] AgentError = 16,
   }
 
   #endregion
