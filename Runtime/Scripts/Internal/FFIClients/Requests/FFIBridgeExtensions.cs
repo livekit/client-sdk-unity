@@ -3,7 +3,7 @@ namespace LiveKit.Internal.FFIClients.Requests
 {
     public static class FFIBridgeExtensions
     {
-        public static FfiResponseWrap SendConnectRequest(this IFFIBridge ffiBridge, string url, string authToken, RoomOptions roomOptions)
+        public static (FfiResponseWrap response, ulong requestAsyncId) SendConnectRequest(this IFFIBridge ffiBridge, string url, string authToken, RoomOptions roomOptions)
         {
             Utils.Debug("Connect....");
             using var request = ffiBridge.NewRequest<ConnectRequest>();
@@ -14,10 +14,10 @@ namespace LiveKit.Internal.FFIClients.Requests
             connect.Options = roomOptions.ToProto();
             var response = request.Send();
             Utils.Debug($"Connect response.... {response}");
-            return response;
+            return (response, request.RequestAsyncId);
         }
         
-        public static FfiResponseWrap SendDisconnectRequest(this IFFIBridge ffiBridge, Room room)
+        public static (FfiResponseWrap response, ulong requestAsyncId) SendDisconnectRequest(this IFFIBridge ffiBridge, Room room)
         {
             using var request = ffiBridge.NewRequest<DisconnectRequest>();
             var disconnect = request.request;
@@ -26,7 +26,7 @@ namespace LiveKit.Internal.FFIClients.Requests
             var response = request.Send();
             // ReSharper disable once RedundantAssignment
             Utils.Debug($"Disconnect response.... {response}");
-            return response;
+            return (response, request.RequestAsyncId);
         }
     }
 }

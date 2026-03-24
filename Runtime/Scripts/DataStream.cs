@@ -169,9 +169,9 @@ namespace LiveKit
             var readAllReq = request.request;
             readAllReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
 
+            var instruction = new ReadAllInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new ReadAllInstruction(res.TextReadAll.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -188,7 +188,10 @@ namespace LiveKit
             internal ReadAllInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.TextStreamReaderReadAllReceived += OnReadAll;
+                // ReadAll is modeled as a single async completion rather than a stream of
+                // incremental events, so it uses the request_async_id pending map. Rust returns
+                // the same value through callback.AsyncId.
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamReaderReadAll, OnReadAll, OnCanceled);
             }
 
             internal void OnReadAll(TextStreamReaderReadAllCallback e)
@@ -207,7 +210,13 @@ namespace LiveKit
                         break;
                 }
                 IsDone = true;
-                FfiClient.Instance.TextStreamReaderReadAllReceived -= OnReadAll;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             public string Text
@@ -331,9 +340,9 @@ namespace LiveKit
             var readAllReq = request.request;
             readAllReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
 
+            var instruction = new ReadAllInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new ReadAllInstruction(res.ByteReadAll.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -373,9 +382,9 @@ namespace LiveKit
             writeToFileReq.Directory = directory;
             writeToFileReq.NameOverride = nameOverride;
 
+            var instruction = new WriteToFileInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new WriteToFileInstruction(res.ByteWriteToFile.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -392,7 +401,7 @@ namespace LiveKit
             internal ReadAllInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.ByteStreamReaderReadAllReceived += OnReadAll;
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamReaderReadAll, OnReadAll, OnCanceled);
             }
 
             internal void OnReadAll(ByteStreamReaderReadAllCallback e)
@@ -411,7 +420,13 @@ namespace LiveKit
                         break;
                 }
                 IsDone = true;
-                FfiClient.Instance.ByteStreamReaderReadAllReceived -= OnReadAll;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             public byte[] Bytes
@@ -500,7 +515,7 @@ namespace LiveKit
             internal WriteToFileInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.ByteStreamReaderWriteToFileReceived += OnWriteToFile;
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamReaderWriteToFile, OnWriteToFile, OnCanceled);
             }
 
             internal void OnWriteToFile(ByteStreamReaderWriteToFileCallback e)
@@ -519,7 +534,13 @@ namespace LiveKit
                         break;
                 }
                 IsDone = true;
-                FfiClient.Instance.ByteStreamReaderWriteToFileReceived -= OnWriteToFile;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             /// <summary>
@@ -641,9 +662,9 @@ namespace LiveKit
             writeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
             writeReq.Text = text;
 
+            var instruction = new WriteInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new WriteInstruction(res.TextStreamWrite.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -661,9 +682,9 @@ namespace LiveKit
             closeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
             closeReq.Reason = reason;
 
+            var instruction = new CloseInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new CloseInstruction(res.TextStreamWrite.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -679,10 +700,10 @@ namespace LiveKit
             internal WriteInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.ByteStreamWriterWriteReceived += OnWrite;
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterWrite, OnWrite, OnCanceled);
             }
 
-            internal void OnWrite(ByteStreamWriterWriteCallback e)
+            internal void OnWrite(TextStreamWriterWriteCallback e)
             {
                 if (e.AsyncId != _asyncId)
                     return;
@@ -693,7 +714,13 @@ namespace LiveKit
                     IsError = true;
                 }
                 IsDone = true;
-                FfiClient.Instance.ByteStreamWriterWriteReceived -= OnWrite;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             public StreamError Error { get; private set; }
@@ -712,10 +739,10 @@ namespace LiveKit
             internal CloseInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.ByteStreamWriterCloseReceived += OnClose;
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterClose, OnClose, OnCanceled);
             }
 
-            internal void OnClose(ByteStreamWriterCloseCallback e)
+            internal void OnClose(TextStreamWriterCloseCallback e)
             {
                 if (e.AsyncId != _asyncId)
                     return;
@@ -726,7 +753,13 @@ namespace LiveKit
                     IsError = true;
                 }
                 IsDone = true;
-                FfiClient.Instance.ByteStreamWriterCloseReceived -= OnClose;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             public StreamError Error { get; private set; }
@@ -763,9 +796,9 @@ namespace LiveKit
             writeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
             writeReq.Bytes = Google.Protobuf.ByteString.CopyFrom(bytes);
 
+            var instruction = new WriteInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new WriteInstruction(res.ByteStreamWrite.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -782,9 +815,9 @@ namespace LiveKit
             closeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
             closeReq.Reason = reason;
 
+            var instruction = new CloseInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new CloseInstruction(res.ByteStreamWrite.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -800,10 +833,10 @@ namespace LiveKit
             internal WriteInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.TextStreamWriterWriteReceived += OnWrite;
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterWrite, OnWrite, OnCanceled);
             }
 
-            internal void OnWrite(TextStreamWriterWriteCallback e)
+            internal void OnWrite(ByteStreamWriterWriteCallback e)
             {
                 if (e.AsyncId != _asyncId)
                     return;
@@ -814,7 +847,13 @@ namespace LiveKit
                     IsError = true;
                 }
                 IsDone = true;
-                FfiClient.Instance.TextStreamWriterWriteReceived -= OnWrite;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             public StreamError Error { get; private set; }
@@ -833,10 +872,10 @@ namespace LiveKit
             internal CloseInstruction(ulong asyncId)
             {
                 _asyncId = asyncId;
-                FfiClient.Instance.TextStreamWriterCloseReceived += OnClose;
+                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterClose, OnClose, OnCanceled);
             }
 
-            internal void OnClose(TextStreamWriterCloseCallback e)
+            internal void OnClose(ByteStreamWriterCloseCallback e)
             {
                 if (e.AsyncId != _asyncId)
                     return;
@@ -847,7 +886,13 @@ namespace LiveKit
                     IsError = true;
                 }
                 IsDone = true;
-                FfiClient.Instance.TextStreamWriterCloseReceived -= OnClose;
+            }
+
+            void OnCanceled()
+            {
+                Error = new StreamError("Canceled");
+                IsError = true;
+                IsDone = true;
             }
 
             public StreamError Error { get; private set; }
