@@ -62,8 +62,6 @@ namespace LiveKit.Internal
         public event TextStreamReaderEventReceivedDelegate? TextStreamReaderEventReceived;
 
         // Data Track
-        public event PublishDataTrackReceivedDelegate? PublishDataTrackReceived;
-        public event SubscribeDataTrackReceivedDelegate? SubscribeDataTrackReceived;
         public event DataTrackSubscriptionEventReceivedDelegate? DataTrackSubscriptionEventReceived;
 
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
@@ -337,12 +335,6 @@ namespace LiveKit.Internal
                         Instance.TextStreamReaderEventReceived?.Invoke(r.TextStreamReaderEvent!);
                         break;
                     // Data Track
-                    case FfiEvent.MessageOneofCase.PublishDataTrack:
-                        Instance.PublishDataTrackReceived?.Invoke(r.PublishDataTrack!);
-                        break;
-                    case FfiEvent.MessageOneofCase.SubscribeDataTrack:
-                        Instance.SubscribeDataTrackReceived?.Invoke(r.SubscribeDataTrack!);
-                        break;
                     case FfiEvent.MessageOneofCase.DataTrackSubscriptionEvent:
                         Instance.DataTrackSubscriptionEventReceived?.Invoke(r.DataTrackSubscriptionEvent!);
                         break;
@@ -410,6 +402,8 @@ namespace LiveKit.Internal
                 FfiEvent.MessageOneofCase.TextStreamWriterWrite => ffiEvent.TextStreamWriterWrite?.AsyncId,
                 FfiEvent.MessageOneofCase.TextStreamWriterClose => ffiEvent.TextStreamWriterClose?.AsyncId,
                 FfiEvent.MessageOneofCase.SendText => ffiEvent.SendText?.AsyncId,
+                FfiEvent.MessageOneofCase.PublishDataTrack => ffiEvent.PublishDataTrack?.AsyncId,
+                FfiEvent.MessageOneofCase.SubscribeDataTrack => ffiEvent.SubscribeDataTrack?.AsyncId,
                 _ => null,
             };
         }

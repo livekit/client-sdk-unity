@@ -559,9 +559,9 @@ namespace LiveKit
             publishReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             publishReq.Options = new Proto.DataTrackOptions { Name = options.Name };
 
+            var instruction = new PublishDataTrackInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new PublishDataTrackInstruction(res.PublishDataTrack.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -1029,7 +1029,7 @@ namespace LiveKit
         internal PublishDataTrackInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.PublishDataTrackReceived += OnPublishDataTrack;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PublishDataTrack, OnPublishDataTrack, OnCanceled);
         }
 
         internal void OnPublishDataTrack(PublishDataTrackCallback e)
@@ -1048,7 +1048,13 @@ namespace LiveKit
                     break;
             }
             IsDone = true;
-            FfiClient.Instance.PublishDataTrackReceived -= OnPublishDataTrack;
+        }
+
+        void OnCanceled()
+        {
+            Error = new PublishDataTrackError("Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         /// <summary>

@@ -295,9 +295,9 @@ namespace LiveKit
                 protoOptions.BufferSize = options.BufferSize.Value;
             subReq.Options = protoOptions;
 
+            var instruction = new SubscribeDataTrackInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            FfiResponse res = response;
-            return new SubscribeDataTrackInstruction(res.SubscribeDataTrack.AsyncId);
+            return instruction;
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace LiveKit
         internal SubscribeDataTrackInstruction(ulong asyncId)
         {
             _asyncId = asyncId;
-            FfiClient.Instance.SubscribeDataTrackReceived += OnSubscribe;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SubscribeDataTrack, OnSubscribe, OnCanceled);
         }
 
         internal void OnSubscribe(SubscribeDataTrackCallback callback)
@@ -366,7 +366,13 @@ namespace LiveKit
                     break;
             }
             IsDone = true;
-            FfiClient.Instance.SubscribeDataTrackReceived -= OnSubscribe;
+        }
+
+        void OnCanceled()
+        {
+            Error = new SubscribeDataTrackError("Canceled");
+            IsError = true;
+            IsDone = true;
         }
 
         /// <summary>
