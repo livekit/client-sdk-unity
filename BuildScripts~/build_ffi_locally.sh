@@ -55,8 +55,7 @@ case "$PLATFORM" in
         cargo build \
             --manifest-path "$MANIFEST" \
             $BUILD_FLAG \
-            --workspace \
-            -p livekit \
+            -p livekit-ffi \
             --target aarch64-apple-darwin
         BUILD_STATUS=$?
 
@@ -71,8 +70,7 @@ case "$PLATFORM" in
             --target aarch64-linux-android \
             build \
             $BUILD_FLAG \
-            -p livekit \
-            --workspace \
+            -p livekit-ffi \
             -v \
             --no-default-features \
             --features "rustls-tls-webpki-roots"
