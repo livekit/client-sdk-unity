@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "attach",
+            "name": "Rust/C++ Unity auto",
+            "waitFor": true,
+            "program": "Unity",
+            "sourceLanguages": ["rust"]
+        },
+        {
+            "type": "lldb",
+            "request": "attach",
+            "name": "Rust/C++ Unity manual",
+            "pid": "${command:pickProcess}", // For manual picking, if there are multiple Unity instances running
+            "sourceLanguages": ["rust"]
+        }
+    ]
+}
