@@ -5,7 +5,8 @@
         "RichTypes",
         "UniTask",
         "RustAudio",
-        "RustAudio.Def"
+        "RustAudio.Def",
+        "LiveKitBridge"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

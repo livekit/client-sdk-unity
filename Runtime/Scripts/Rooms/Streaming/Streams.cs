@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !UNITY_WEBGL || UNITY_EDITOR
+
+using System;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -11,14 +13,14 @@ namespace LiveKit.Rooms.Streaming
 {
     public abstract class Streams<T, TInfo> : IStreams<T, TInfo> where T : class, IDisposable
     {
-        private readonly TrackKind requiredKind;
+        private readonly LiveKit.Proto.TrackKind requiredKind;
         private readonly IParticipantsHub participantsHub;
         private readonly Dictionary<StreamKey, Owned<T>> streams = new();
 
-        private Room? room;
+        private global::LiveKit.Rooms.Room? room;
         private bool isDisposed;
 
-        public Streams(IParticipantsHub participantsHub, TrackKind requiredKind)
+        public Streams(IParticipantsHub participantsHub, LiveKit.Proto.TrackKind requiredKind)
         {
             this.participantsHub = participantsHub;
             this.requiredKind = requiredKind;
@@ -28,7 +30,7 @@ namespace LiveKit.Rooms.Streaming
         {
             lock (this)
             {
-                if (isDisposed) Utils.Error("Attempt to dispose an already disposed Streams instance");
+                if (isDisposed) LiveKit.Internal.Utils.Error("Attempt to dispose an already disposed Streams instance");
                 Free();
 
                 if (room != null)
@@ -40,7 +42,7 @@ namespace LiveKit.Rooms.Streaming
             }
         }
 
-        public void AssignRoom(Room newRoom)
+        public void AssignRoom(global::LiveKit.Rooms.Room newRoom)
         {
             lock (this)
             {
@@ -54,7 +56,7 @@ namespace LiveKit.Rooms.Streaming
             }
         }
 
-        private void RoomOnTrackUnpublished(TrackPublication publication, Participant participant)
+        private void RoomOnTrackUnpublished(LiveKit.Rooms.TrackPublications.TrackPublication publication, LKParticipant participant)
         {
             Release(new StreamKey(participant.Identity, publication.Sid));
         }
@@ -65,7 +67,7 @@ namespace LiveKit.Rooms.Streaming
             {
                 if (isDisposed)
                 {
-                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    LiveKit.Internal.Utils.Error("Attempt to access to an already disposed Streams instance");
                     return Weak<T>.Null;
                 }
 
@@ -121,7 +123,7 @@ namespace LiveKit.Rooms.Streaming
             {
                 if (isDisposed)
                 {
-                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    LiveKit.Internal.Utils.Error("Attempt to access to an already disposed Streams instance");
                     return false;
                 }
 
@@ -143,7 +145,7 @@ namespace LiveKit.Rooms.Streaming
             {
                 if (isDisposed)
                 {
-                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    LiveKit.Internal.Utils.Error("Attempt to access to an already disposed Streams instance");
                 }
 
                 foreach (Owned<T> stream in streams.Values)
@@ -162,7 +164,7 @@ namespace LiveKit.Rooms.Streaming
             {
                 if (isDisposed)
                 {
-                    Utils.Error("Attempt to access to an already disposed Streams instance");
+                    LiveKit.Internal.Utils.Error("Attempt to access to an already disposed Streams instance");
                     return;
                 }
 
@@ -177,6 +179,8 @@ namespace LiveKit.Rooms.Streaming
 
         protected abstract TInfo InfoFromStream(T stream);
 
-        protected abstract T NewStreamInstance(StreamKey streamKey, ITrack track);
+        protected abstract T NewStreamInstance(StreamKey streamKey, LiveKit.Rooms.Tracks.ITrack track);
     }
 }
+
+#endif

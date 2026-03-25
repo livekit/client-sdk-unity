@@ -1,5 +1,6 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Streaming;
@@ -14,7 +15,7 @@ namespace LiveKit.Rooms.VideoStreaming
         private readonly TextureFormat textureFormat;
 
         public VideoStreams(IParticipantsHub participantsHub, VideoBufferType bufferType = VideoBufferType.Bgra) : base(
-            participantsHub, TrackKind.KindVideo
+            participantsHub, LiveKit.Proto.TrackKind.KindVideo
         )
         {
             this.bufferType = bufferType;
@@ -29,9 +30,9 @@ namespace LiveKit.Rooms.VideoStreaming
                 _ => throw new Exception($"Format conversion for {videoBufferType} is not supported")
             };
 
-        protected override IVideoStream NewStreamInstance(StreamKey streamKey, ITrack track)
+        protected override IVideoStream NewStreamInstance(StreamKey streamKey, LiveKit.Rooms.Tracks.ITrack track)
         {
-            using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
+            using var request = LiveKit.Internal.FFIClients.Requests.FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
             var newVideoStream = request.request;
             newVideoStream.TrackHandle = (ulong)track.Handle!.DangerousGetHandle();
             newVideoStream.Format = bufferType;
@@ -50,3 +51,5 @@ namespace LiveKit.Rooms.VideoStreaming
         }
     }
 }
+
+#endif

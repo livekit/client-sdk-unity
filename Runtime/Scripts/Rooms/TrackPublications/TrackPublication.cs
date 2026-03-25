@@ -1,4 +1,5 @@
-using LiveKit.Internal.FFIClients.Requests;
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using LiveKit.Proto;
 using LiveKit.Rooms.Tracks;
 
@@ -11,15 +12,15 @@ namespace LiveKit.Rooms.TrackPublications
         public Origin Origin => info.Remote ? Origin.Remote : Origin.Local;
         public string Sid => info.Sid!;
         public string Name => info.Name!;
-        public TrackKind Kind => info.Kind;
-        public TrackSource Source => info.Source;
+        public LiveKit.Proto.TrackKind Kind => info.Kind;
+        public LiveKit.Proto.TrackSource Source => info.Source;
         public bool Simulcasted => info.Simulcasted;
         public uint Width => info.Width;
         public uint Height => info.Height;
         public string MimeType => info.MimeType!;
         public bool Muted => info.Muted;
 
-        public ITrack? Track { get; private set; }
+        public LiveKit.Rooms.Tracks.ITrack? Track { get; private set; }
         public FfiOwnedHandle? Handle { get; private set; }
 
         internal void Construct(FfiOwnedHandle handle, TrackPublicationInfo info)
@@ -34,12 +35,12 @@ namespace LiveKit.Rooms.TrackPublications
             Track = null;
         }
 
-        internal void UpdateTrack(ITrack track)
+        internal void UpdateTrack(LiveKit.Rooms.Tracks.ITrack track)
         {
             Track = track;
         }
 
-        public void RemoveTrack(out ITrack? removedTrack)
+        public void RemoveTrack(out LiveKit.Rooms.Tracks.ITrack? removedTrack)
         {
             removedTrack = Track;
             Track = null;
@@ -57,7 +58,7 @@ namespace LiveKit.Rooms.TrackPublications
             {
                 throw new System.InvalidOperationException("Cannot set subscribed on non-remote track");
             }
-            using var request = FFIBridge.Instance.NewRequest<SetSubscribedRequest>();
+            using var request = LiveKit.Internal.FFIClients.Requests.FFIBridge.Instance.NewRequest<SetSubscribedRequest>();
             var setSubscribed = request.request;
             setSubscribed.Subscribe = subscribed;
             setSubscribed.PublicationHandle = Handle.Id;
@@ -66,3 +67,5 @@ namespace LiveKit.Rooms.TrackPublications
     }
 
 }
+
+#endif

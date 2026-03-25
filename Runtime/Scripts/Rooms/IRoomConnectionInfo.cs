@@ -1,15 +1,15 @@
-using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
+using DCL.LiveKit.Public;
 
 namespace LiveKit.Rooms
 {
-    public delegate void ConnectionQualityChangeDelegate(ConnectionQuality quality, Participant participant);
+    public delegate void ConnectionQualityChangeDelegate(LKConnectionQuality quality, LKParticipant participant);
 
 
-    public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
+    public delegate void ConnectionStateChangeDelegate(LKConnectionState connectionState);
 
 
-    public delegate void ConnectionDelegate(IRoom room, ConnectionUpdate connectionUpdate, DisconnectReason? disconnectReason = null);
+    public delegate void ConnectionDelegate(IRoom room, ConnectionUpdate connectionUpdate, LKDisconnectReason? disconnectReason = null);
 
 
     public enum ConnectionUpdate

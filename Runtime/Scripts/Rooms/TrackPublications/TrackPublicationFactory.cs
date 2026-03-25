@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System.Collections.Generic;
 using LiveKit.Proto;
 
@@ -31,3 +33,5 @@ namespace LiveKit.Rooms.TrackPublications
         }
     }
 }
+
+#endif

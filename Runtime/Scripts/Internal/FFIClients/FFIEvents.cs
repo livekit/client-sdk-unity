@@ -19,10 +19,10 @@ namespace LiveKit.Internal
 
 
     // Events
-    internal delegate void RoomEventReceivedDelegate(RoomEvent e);
+    internal delegate void RoomEventReceivedDelegate(LiveKit.Proto.RoomEvent e);
 
 
-    internal delegate void TrackEventReceivedDelegate(TrackEvent e);
+    internal delegate void TrackEventReceivedDelegate(LiveKit.Proto.TrackEvent e);
 
 
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);

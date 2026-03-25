@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System;
 using LiveKit.Proto;
 
@@ -32,3 +34,5 @@ namespace LiveKit.Internal.FFIClients
         }
     }
 }
+
+#endif

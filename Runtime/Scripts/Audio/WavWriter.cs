@@ -149,7 +149,7 @@ namespace LiveKit.Audio
             }
             catch (Exception e)
             {
-                Utils.Error($"Cannot instantiate BinaryWriter: {e.Message}");
+                LiveKit.Internal.Utils.Error($"Cannot instantiate BinaryWriter: {e.Message}");
             }
         }
 
@@ -157,7 +157,7 @@ namespace LiveKit.Audio
         {
             if (IsDisposed())
             {
-                Utils.Error("WavWriter is already disposed");
+                LiveKit.Internal.Utils.Error("WavWriter is already disposed");
                 return;
             }
 

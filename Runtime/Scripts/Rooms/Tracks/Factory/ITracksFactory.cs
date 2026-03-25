@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
@@ -11,6 +13,8 @@ namespace LiveKit.Rooms.Tracks.Factory
 
         ITrack NewVideoTrack(string name, RtcVideoSource source, IRoom room);
 
-        ITrack NewTrack(FfiHandle? handle, TrackInfo info, Room room, Participant participant);
+        ITrack NewTrack(FfiHandle? handle, TrackInfo info, Room room, LKParticipant participant);
     }
 }
+
+#endif

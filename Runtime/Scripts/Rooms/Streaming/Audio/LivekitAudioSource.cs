@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !UNITY_WEBGL || UNITY_EDITOR
+
+using System;
 using LiveKit.Audio;
 using LiveKit.Internal;
 using RichTypes;
@@ -120,7 +122,7 @@ namespace LiveKit.Rooms.Streaming.Audio
                 Result result = StartRecordWavOutput();
                 if (result.Success == false)
                 {
-                    Utils.Error($"Cannot restart wav recording for output: {result.ErrorMessage}");
+                    LiveKit.Internal.Utils.Error($"Cannot restart wav recording for output: {result.ErrorMessage}");
                 }
             }
         }
@@ -153,3 +155,5 @@ namespace LiveKit.Rooms.Streaming.Audio
         }
     }
 }
+
+#endif

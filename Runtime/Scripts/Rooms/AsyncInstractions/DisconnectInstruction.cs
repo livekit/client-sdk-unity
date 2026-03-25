@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System.Threading;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -18,7 +20,7 @@ namespace LiveKit.Rooms.AsyncInstractions
 
         private void OnDisconnect(DisconnectCallback e)
         {
-            Utils.Debug($"OnConnect.... {e}");
+            LiveKit.Internal.Utils.Debug($"OnConnect.... {e}");
             if (asyncId != e.AsyncId)
                 return;
 
@@ -31,3 +33,5 @@ namespace LiveKit.Rooms.AsyncInstractions
         }
     }
 }
+
+#endif

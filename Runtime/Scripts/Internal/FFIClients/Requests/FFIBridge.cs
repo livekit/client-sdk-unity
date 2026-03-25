@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System;
 using Google.Protobuf;
 using LiveKit.Internal.FFIClients.Pools;
@@ -32,3 +34,5 @@ namespace LiveKit.Internal.FFIClients.Requests
         }
     }
 }
+
+#endif

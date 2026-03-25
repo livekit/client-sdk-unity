@@ -1,9 +1,12 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
+using DCL.LiveKit.Public;
 
 namespace LiveKit.Rooms.DataPipes
 {
@@ -17,7 +20,7 @@ namespace LiveKit.Rooms.DataPipes
             Span<byte> data,
             string topic,
             IReadOnlyCollection<string> identities,
-            DataPacketKind kind = DataPacketKind.KindLossy
+            LKDataPacketKind kind = LKDataPacketKind.KindLossy
         )
         {
             unsafe
@@ -34,7 +37,7 @@ namespace LiveKit.Rooms.DataPipes
             int len,
             string topic,
             IReadOnlyCollection<string> identities,
-            DataPacketKind kind = DataPacketKind.KindLossy
+            LKDataPacketKind kind = LKDataPacketKind.KindLossy
         )
         {
             using var request = FFIBridge.Instance.NewRequest<PublishDataRequest>();
@@ -43,10 +46,10 @@ namespace LiveKit.Rooms.DataPipes
             dataRequest.DestinationIdentities.AddRange(identities);
             dataRequest.DataLen = (ulong)len;
             dataRequest.DataPtr = (ulong)data;
-            dataRequest.Reliable = kind == DataPacketKind.KindReliable;
+            dataRequest.Reliable = LKDataPacketKindUtils.ToProto(kind) == global::LiveKit.Proto.DataPacketKind.KindReliable;
             dataRequest.Topic = topic;
             dataRequest.LocalParticipantHandle = (ulong)participantsHub.LocalParticipant().Handle.DangerousGetHandle();
-            Utils.Debug("Sending message: " + topic);
+            LiveKit.Internal.Utils.Debug("Sending message: " + topic);
             using var response = request.Send();
         }
 
@@ -55,9 +58,11 @@ namespace LiveKit.Rooms.DataPipes
             participantsHub = participants;
         }
 
-        public void Notify(ReadOnlySpan<byte> data, Participant participant, string topic, DataPacketKind kind)
+        public void Notify(ReadOnlySpan<byte> data, LKParticipant participant, string topic, LKDataPacketKind kind)
         {
             DataReceived?.Invoke(data, participant, topic, kind);
         }
     }
 }
+
+#endif

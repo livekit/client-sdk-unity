@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,10 +8,10 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Audio;
 using LiveKit.Internal.FFIClients;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.Tracks;
 using Livekit.Types;
 using RichTypes;
+using LiveKit.Internal.FFIClients.Requests;
 
 namespace LiveKit.Rooms.Streaming.Audio
 {
@@ -26,7 +28,7 @@ namespace LiveKit.Rooms.Streaming.Audio
 
         public WavTeeControl WavTeeControl => currentInternal.WavTeeControl;
 
-        public AudioStream(StreamKey streamKey, ITrack track)
+        public AudioStream(StreamKey streamKey, LiveKit.Rooms.Tracks.ITrack track)
         {
             this.streamKey = streamKey;
             trackHandle = (ulong)track.Handle!.DangerousGetHandle();
@@ -42,7 +44,7 @@ namespace LiveKit.Rooms.Streaming.Audio
             uint sampleRate
         )
         {
-            using FfiRequestWrap<NewAudioStreamRequest> request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
+            using FfiRequestWrap<NewAudioStreamRequest> request = LiveKit.Internal.FFIClients.Requests.FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
             var newStream = request.request;
             newStream.TrackHandle = trackHandle;
             newStream.Type = AudioStreamType.AudioStreamNative;
@@ -166,7 +168,7 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             if (channels != internalChannels || sampleRate != internalSampleRate)
             {
-                Utils.Error(
+                LiveKit.Internal.Utils.Error(
                     $"Calling ReadAudio on {nameof(AudioStreamInternal)} with wrong args: channels {channels}, sampleRate: {sampleRate}; but intended: channels {internalChannels}, sampleRate {internalSampleRate}"
                 );
                 return;
@@ -214,7 +216,7 @@ namespace LiveKit.Rooms.Streaming.Audio
 
             if (frame.NumChannels != internalChannels || frame.SampleRate != internalSampleRate)
             {
-                Utils.Error(
+                LiveKit.Internal.Utils.Error(
                     $"Received frame on {nameof(AudioStreamInternal)} with wrong args from frame: channels {frame.NumChannels}, sampleRate: {frame.SampleRate}; but intended: channels {internalChannels}, sampleRate {internalSampleRate}"
                 );
                 return;
@@ -244,3 +246,5 @@ namespace LiveKit.Rooms.Streaming.Audio
         }
     }
 }
+
+#endif

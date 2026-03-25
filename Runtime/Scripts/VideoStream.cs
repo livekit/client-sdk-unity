@@ -1,5 +1,6 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Tracks;
 using System;
@@ -76,7 +77,7 @@ namespace LiveKit
         
         private readonly object _lock = new();
 
-        public VideoStream(ITrack videoTrack, VideoBufferType format)
+        public VideoStream(LiveKit.Rooms.Tracks.ITrack videoTrack, VideoBufferType format)
         {
             if (!videoTrack.Room.TryGetTarget(out var room))
                 throw new InvalidOperationException("videotrack's room is invalid");
@@ -84,7 +85,7 @@ namespace LiveKit
             if (!videoTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("videotrack's participant is invalid");
              
-            using var request = FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
+            using var request = LiveKit.Internal.FFIClients.Requests.FFIBridge.Instance.NewRequest<NewVideoStreamRequest>();
             var newVideoStream = request.request;
             newVideoStream.TrackHandle = (ulong)videoTrack.Handle.DangerousGetHandle();
             newVideoStream.Format = format;
@@ -191,3 +192,5 @@ namespace LiveKit
         }
     }
 }
+
+#endif

@@ -1,4 +1,4 @@
-﻿#if !UNITY_WEBGL
+﻿#if !UNITY_WEBGL || UNITY_EDITOR
 
 using System.Text;
 using LiveKit.Runtime.Scripts.Audio;

@@ -1,3 +1,5 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -284,7 +286,7 @@ public class ExampleRoom : MonoBehaviour
         }
 
         int index = publishedVideoTracks.Count - 1;
-        (ITrack track, RtcVideoSource videoSource) last = publishedVideoTracks[index];
+        (LiveKit.Rooms.Tracks.ITrack track, RtcVideoSource videoSource) last = publishedVideoTracks[index];
         publishedVideoTracks.RemoveAt(index);
         m_Room?.Participants.LocalParticipant().UnpublishTrack(last.track, stopOnUnpublish: true);
         Debug.Log($"Unpublished video track, current count: {publishedVideoTracks.Count}");
@@ -307,7 +309,7 @@ public class ExampleRoom : MonoBehaviour
     {
         await UniTask.WhenAll(
             botInstances
-                .Select(r => r.room!.DisconnectAsync(destroyCancellationToken).AsUniTask())!
+                .Select(r => r.room!.DisconnectAsync(destroyCancellationToken))!
                 .ToArray()
         );
         foreach (var botInstance in botInstances)
@@ -402,3 +404,5 @@ public enum BotCaptureMode
     FromClip,
     FromMicrophone
 }
+
+#endif
