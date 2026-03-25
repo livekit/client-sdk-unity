@@ -26,77 +26,81 @@ namespace LiveKit.Proto {
           string.Concat(
             "CgplMmVlLnByb3RvEg1saXZla2l0LnByb3RvImMKDEZyYW1lQ3J5cHRvchIc",
             "ChRwYXJ0aWNpcGFudF9pZGVudGl0eRgBIAIoCRIRCgl0cmFja19zaWQYAiAC",
-            "KAkSEQoJa2V5X2luZGV4GAMgAigFEg8KB2VuYWJsZWQYBCACKAgidgoSS2V5",
-            "UHJvdmlkZXJPcHRpb25zEhIKCnNoYXJlZF9rZXkYASABKAwSGwoTcmF0Y2hl",
-            "dF93aW5kb3dfc2l6ZRgCIAIoBRIUCgxyYXRjaGV0X3NhbHQYAyACKAwSGQoR",
-            "ZmFpbHVyZV90b2xlcmFuY2UYBCACKAUihgEKC0UyZWVPcHRpb25zEjYKD2Vu",
-            "Y3J5cHRpb25fdHlwZRgBIAIoDjIdLmxpdmVraXQucHJvdG8uRW5jcnlwdGlv",
-            "blR5cGUSPwoUa2V5X3Byb3ZpZGVyX29wdGlvbnMYAiACKAsyIS5saXZla2l0",
-            "LnByb3RvLktleVByb3ZpZGVyT3B0aW9ucyIvChxFMmVlTWFuYWdlclNldEVu",
-            "YWJsZWRSZXF1ZXN0Eg8KB2VuYWJsZWQYASACKAgiHwodRTJlZU1hbmFnZXJT",
-            "ZXRFbmFibGVkUmVzcG9uc2UiJAoiRTJlZU1hbmFnZXJHZXRGcmFtZUNyeXB0",
-            "b3JzUmVxdWVzdCJaCiNFMmVlTWFuYWdlckdldEZyYW1lQ3J5cHRvcnNSZXNw",
-            "b25zZRIzCg5mcmFtZV9jcnlwdG9ycxgBIAMoCzIbLmxpdmVraXQucHJvdG8u",
-            "RnJhbWVDcnlwdG9yImEKHUZyYW1lQ3J5cHRvclNldEVuYWJsZWRSZXF1ZXN0",
-            "EhwKFHBhcnRpY2lwYW50X2lkZW50aXR5GAEgAigJEhEKCXRyYWNrX3NpZBgC",
-            "IAIoCRIPCgdlbmFibGVkGAMgAigIIiAKHkZyYW1lQ3J5cHRvclNldEVuYWJs",
-            "ZWRSZXNwb25zZSJkCh5GcmFtZUNyeXB0b3JTZXRLZXlJbmRleFJlcXVlc3QS",
-            "HAoUcGFydGljaXBhbnRfaWRlbnRpdHkYASACKAkSEQoJdHJhY2tfc2lkGAIg",
-            "AigJEhEKCWtleV9pbmRleBgDIAIoBSIhCh9GcmFtZUNyeXB0b3JTZXRLZXlJ",
-            "bmRleFJlc3BvbnNlIjwKE1NldFNoYXJlZEtleVJlcXVlc3QSEgoKc2hhcmVk",
-            "X2tleRgBIAIoDBIRCglrZXlfaW5kZXgYAiACKAUiFgoUU2V0U2hhcmVkS2V5",
-            "UmVzcG9uc2UiLAoXUmF0Y2hldFNoYXJlZEtleVJlcXVlc3QSEQoJa2V5X2lu",
-            "ZGV4GAEgAigFIisKGFJhdGNoZXRTaGFyZWRLZXlSZXNwb25zZRIPCgduZXdf",
-            "a2V5GAEgASgMIigKE0dldFNoYXJlZEtleVJlcXVlc3QSEQoJa2V5X2luZGV4",
-            "GAEgAigFIiMKFEdldFNoYXJlZEtleVJlc3BvbnNlEgsKA2tleRgBIAEoDCJN",
-            "Cg1TZXRLZXlSZXF1ZXN0EhwKFHBhcnRpY2lwYW50X2lkZW50aXR5GAEgAigJ",
-            "EgsKA2tleRgCIAIoDBIRCglrZXlfaW5kZXgYAyACKAUiEAoOU2V0S2V5UmVz",
-            "cG9uc2UiRAoRUmF0Y2hldEtleVJlcXVlc3QSHAoUcGFydGljaXBhbnRfaWRl",
-            "bnRpdHkYASACKAkSEQoJa2V5X2luZGV4GAIgAigFIiUKElJhdGNoZXRLZXlS",
-            "ZXNwb25zZRIPCgduZXdfa2V5GAEgASgMIkAKDUdldEtleVJlcXVlc3QSHAoU",
-            "cGFydGljaXBhbnRfaWRlbnRpdHkYASACKAkSEQoJa2V5X2luZGV4GAIgAigF",
-            "Ih0KDkdldEtleVJlc3BvbnNlEgsKA2tleRgBIAEoDCLMBQoLRTJlZVJlcXVl",
-            "c3QSEwoLcm9vbV9oYW5kbGUYASACKAQSSgoTbWFuYWdlcl9zZXRfZW5hYmxl",
-            "ZBgCIAEoCzIrLmxpdmVraXQucHJvdG8uRTJlZU1hbmFnZXJTZXRFbmFibGVk",
-            "UmVxdWVzdEgAElcKGm1hbmFnZXJfZ2V0X2ZyYW1lX2NyeXB0b3JzGAMgASgL",
-            "MjEubGl2ZWtpdC5wcm90by5FMmVlTWFuYWdlckdldEZyYW1lQ3J5cHRvcnNS",
-            "ZXF1ZXN0SAASSwoTY3J5cHRvcl9zZXRfZW5hYmxlZBgEIAEoCzIsLmxpdmVr",
-            "aXQucHJvdG8uRnJhbWVDcnlwdG9yU2V0RW5hYmxlZFJlcXVlc3RIABJOChVj",
-            "cnlwdG9yX3NldF9rZXlfaW5kZXgYBSABKAsyLS5saXZla2l0LnByb3RvLkZy",
-            "YW1lQ3J5cHRvclNldEtleUluZGV4UmVxdWVzdEgAEjwKDnNldF9zaGFyZWRf",
-            "a2V5GAYgASgLMiIubGl2ZWtpdC5wcm90by5TZXRTaGFyZWRLZXlSZXF1ZXN0",
-            "SAASRAoScmF0Y2hldF9zaGFyZWRfa2V5GAcgASgLMiYubGl2ZWtpdC5wcm90",
-            "by5SYXRjaGV0U2hhcmVkS2V5UmVxdWVzdEgAEjwKDmdldF9zaGFyZWRfa2V5",
-            "GAggASgLMiIubGl2ZWtpdC5wcm90by5HZXRTaGFyZWRLZXlSZXF1ZXN0SAAS",
-            "LwoHc2V0X2tleRgJIAEoCzIcLmxpdmVraXQucHJvdG8uU2V0S2V5UmVxdWVz",
-            "dEgAEjcKC3JhdGNoZXRfa2V5GAogASgLMiAubGl2ZWtpdC5wcm90by5SYXRj",
-            "aGV0S2V5UmVxdWVzdEgAEi8KB2dldF9rZXkYCyABKAsyHC5saXZla2l0LnBy",
-            "b3RvLkdldEtleVJlcXVlc3RIAEIJCgdtZXNzYWdlIsIFCgxFMmVlUmVzcG9u",
-            "c2USSwoTbWFuYWdlcl9zZXRfZW5hYmxlZBgBIAEoCzIsLmxpdmVraXQucHJv",
-            "dG8uRTJlZU1hbmFnZXJTZXRFbmFibGVkUmVzcG9uc2VIABJYChptYW5hZ2Vy",
-            "X2dldF9mcmFtZV9jcnlwdG9ycxgCIAEoCzIyLmxpdmVraXQucHJvdG8uRTJl",
-            "ZU1hbmFnZXJHZXRGcmFtZUNyeXB0b3JzUmVzcG9uc2VIABJMChNjcnlwdG9y",
-            "X3NldF9lbmFibGVkGAMgASgLMi0ubGl2ZWtpdC5wcm90by5GcmFtZUNyeXB0",
-            "b3JTZXRFbmFibGVkUmVzcG9uc2VIABJPChVjcnlwdG9yX3NldF9rZXlfaW5k",
-            "ZXgYBCABKAsyLi5saXZla2l0LnByb3RvLkZyYW1lQ3J5cHRvclNldEtleUlu",
-            "ZGV4UmVzcG9uc2VIABI9Cg5zZXRfc2hhcmVkX2tleRgFIAEoCzIjLmxpdmVr",
-            "aXQucHJvdG8uU2V0U2hhcmVkS2V5UmVzcG9uc2VIABJFChJyYXRjaGV0X3No",
-            "YXJlZF9rZXkYBiABKAsyJy5saXZla2l0LnByb3RvLlJhdGNoZXRTaGFyZWRL",
-            "ZXlSZXNwb25zZUgAEj0KDmdldF9zaGFyZWRfa2V5GAcgASgLMiMubGl2ZWtp",
-            "dC5wcm90by5HZXRTaGFyZWRLZXlSZXNwb25zZUgAEjAKB3NldF9rZXkYCCAB",
-            "KAsyHS5saXZla2l0LnByb3RvLlNldEtleVJlc3BvbnNlSAASOAoLcmF0Y2hl",
-            "dF9rZXkYCSABKAsyIS5saXZla2l0LnByb3RvLlJhdGNoZXRLZXlSZXNwb25z",
-            "ZUgAEjAKB2dldF9rZXkYCiABKAsyHS5saXZla2l0LnByb3RvLkdldEtleVJl",
-            "c3BvbnNlSABCCQoHbWVzc2FnZSovCg5FbmNyeXB0aW9uVHlwZRIICgROT05F",
-            "EAASBwoDR0NNEAESCgoGQ1VTVE9NEAIqiAEKD0VuY3J5cHRpb25TdGF0ZRIH",
-            "CgNORVcQABIGCgJPSxABEhUKEUVOQ1JZUFRJT05fRkFJTEVEEAISFQoRREVD",
-            "UllQVElPTl9GQUlMRUQQAxIPCgtNSVNTSU5HX0tFWRAEEhEKDUtFWV9SQVRD",
-            "SEVURUQQBRISCg5JTlRFUk5BTF9FUlJPUhAGQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "KAkSEQoJa2V5X2luZGV4GAMgAigFEg8KB2VuYWJsZWQYBCACKAgi1AEKEktl",
+            "eVByb3ZpZGVyT3B0aW9ucxISCgpzaGFyZWRfa2V5GAEgASgMEhsKE3JhdGNo",
+            "ZXRfd2luZG93X3NpemUYAiACKAUSFAoMcmF0Y2hldF9zYWx0GAMgAigMEhkK",
+            "EWZhaWx1cmVfdG9sZXJhbmNlGAQgAigFEhUKDWtleV9yaW5nX3NpemUYBSAC",
+            "KAUSRQoXa2V5X2Rlcml2YXRpb25fZnVuY3Rpb24YBiACKA4yJC5saXZla2l0",
+            "LnByb3RvLktleURlcml2YXRpb25GdW5jdGlvbiKGAQoLRTJlZU9wdGlvbnMS",
+            "NgoPZW5jcnlwdGlvbl90eXBlGAEgAigOMh0ubGl2ZWtpdC5wcm90by5FbmNy",
+            "eXB0aW9uVHlwZRI/ChRrZXlfcHJvdmlkZXJfb3B0aW9ucxgCIAIoCzIhLmxp",
+            "dmVraXQucHJvdG8uS2V5UHJvdmlkZXJPcHRpb25zIi8KHEUyZWVNYW5hZ2Vy",
+            "U2V0RW5hYmxlZFJlcXVlc3QSDwoHZW5hYmxlZBgBIAIoCCIfCh1FMmVlTWFu",
+            "YWdlclNldEVuYWJsZWRSZXNwb25zZSIkCiJFMmVlTWFuYWdlckdldEZyYW1l",
+            "Q3J5cHRvcnNSZXF1ZXN0IloKI0UyZWVNYW5hZ2VyR2V0RnJhbWVDcnlwdG9y",
+            "c1Jlc3BvbnNlEjMKDmZyYW1lX2NyeXB0b3JzGAEgAygLMhsubGl2ZWtpdC5w",
+            "cm90by5GcmFtZUNyeXB0b3IiYQodRnJhbWVDcnlwdG9yU2V0RW5hYmxlZFJl",
+            "cXVlc3QSHAoUcGFydGljaXBhbnRfaWRlbnRpdHkYASACKAkSEQoJdHJhY2tf",
+            "c2lkGAIgAigJEg8KB2VuYWJsZWQYAyACKAgiIAoeRnJhbWVDcnlwdG9yU2V0",
+            "RW5hYmxlZFJlc3BvbnNlImQKHkZyYW1lQ3J5cHRvclNldEtleUluZGV4UmVx",
+            "dWVzdBIcChRwYXJ0aWNpcGFudF9pZGVudGl0eRgBIAIoCRIRCgl0cmFja19z",
+            "aWQYAiACKAkSEQoJa2V5X2luZGV4GAMgAigFIiEKH0ZyYW1lQ3J5cHRvclNl",
+            "dEtleUluZGV4UmVzcG9uc2UiPAoTU2V0U2hhcmVkS2V5UmVxdWVzdBISCgpz",
+            "aGFyZWRfa2V5GAEgAigMEhEKCWtleV9pbmRleBgCIAIoBSIWChRTZXRTaGFy",
+            "ZWRLZXlSZXNwb25zZSIsChdSYXRjaGV0U2hhcmVkS2V5UmVxdWVzdBIRCglr",
+            "ZXlfaW5kZXgYASACKAUiKwoYUmF0Y2hldFNoYXJlZEtleVJlc3BvbnNlEg8K",
+            "B25ld19rZXkYASABKAwiKAoTR2V0U2hhcmVkS2V5UmVxdWVzdBIRCglrZXlf",
+            "aW5kZXgYASACKAUiIwoUR2V0U2hhcmVkS2V5UmVzcG9uc2USCwoDa2V5GAEg",
+            "ASgMIk0KDVNldEtleVJlcXVlc3QSHAoUcGFydGljaXBhbnRfaWRlbnRpdHkY",
+            "ASACKAkSCwoDa2V5GAIgAigMEhEKCWtleV9pbmRleBgDIAIoBSIQCg5TZXRL",
+            "ZXlSZXNwb25zZSJEChFSYXRjaGV0S2V5UmVxdWVzdBIcChRwYXJ0aWNpcGFu",
+            "dF9pZGVudGl0eRgBIAIoCRIRCglrZXlfaW5kZXgYAiACKAUiJQoSUmF0Y2hl",
+            "dEtleVJlc3BvbnNlEg8KB25ld19rZXkYASABKAwiQAoNR2V0S2V5UmVxdWVz",
+            "dBIcChRwYXJ0aWNpcGFudF9pZGVudGl0eRgBIAIoCRIRCglrZXlfaW5kZXgY",
+            "AiACKAUiHQoOR2V0S2V5UmVzcG9uc2USCwoDa2V5GAEgASgMIswFCgtFMmVl",
+            "UmVxdWVzdBITCgtyb29tX2hhbmRsZRgBIAIoBBJKChNtYW5hZ2VyX3NldF9l",
+            "bmFibGVkGAIgASgLMisubGl2ZWtpdC5wcm90by5FMmVlTWFuYWdlclNldEVu",
+            "YWJsZWRSZXF1ZXN0SAASVwoabWFuYWdlcl9nZXRfZnJhbWVfY3J5cHRvcnMY",
+            "AyABKAsyMS5saXZla2l0LnByb3RvLkUyZWVNYW5hZ2VyR2V0RnJhbWVDcnlw",
+            "dG9yc1JlcXVlc3RIABJLChNjcnlwdG9yX3NldF9lbmFibGVkGAQgASgLMiwu",
+            "bGl2ZWtpdC5wcm90by5GcmFtZUNyeXB0b3JTZXRFbmFibGVkUmVxdWVzdEgA",
+            "Ek4KFWNyeXB0b3Jfc2V0X2tleV9pbmRleBgFIAEoCzItLmxpdmVraXQucHJv",
+            "dG8uRnJhbWVDcnlwdG9yU2V0S2V5SW5kZXhSZXF1ZXN0SAASPAoOc2V0X3No",
+            "YXJlZF9rZXkYBiABKAsyIi5saXZla2l0LnByb3RvLlNldFNoYXJlZEtleVJl",
+            "cXVlc3RIABJEChJyYXRjaGV0X3NoYXJlZF9rZXkYByABKAsyJi5saXZla2l0",
+            "LnByb3RvLlJhdGNoZXRTaGFyZWRLZXlSZXF1ZXN0SAASPAoOZ2V0X3NoYXJl",
+            "ZF9rZXkYCCABKAsyIi5saXZla2l0LnByb3RvLkdldFNoYXJlZEtleVJlcXVl",
+            "c3RIABIvCgdzZXRfa2V5GAkgASgLMhwubGl2ZWtpdC5wcm90by5TZXRLZXlS",
+            "ZXF1ZXN0SAASNwoLcmF0Y2hldF9rZXkYCiABKAsyIC5saXZla2l0LnByb3Rv",
+            "LlJhdGNoZXRLZXlSZXF1ZXN0SAASLwoHZ2V0X2tleRgLIAEoCzIcLmxpdmVr",
+            "aXQucHJvdG8uR2V0S2V5UmVxdWVzdEgAQgkKB21lc3NhZ2UiwgUKDEUyZWVS",
+            "ZXNwb25zZRJLChNtYW5hZ2VyX3NldF9lbmFibGVkGAEgASgLMiwubGl2ZWtp",
+            "dC5wcm90by5FMmVlTWFuYWdlclNldEVuYWJsZWRSZXNwb25zZUgAElgKGm1h",
+            "bmFnZXJfZ2V0X2ZyYW1lX2NyeXB0b3JzGAIgASgLMjIubGl2ZWtpdC5wcm90",
+            "by5FMmVlTWFuYWdlckdldEZyYW1lQ3J5cHRvcnNSZXNwb25zZUgAEkwKE2Ny",
+            "eXB0b3Jfc2V0X2VuYWJsZWQYAyABKAsyLS5saXZla2l0LnByb3RvLkZyYW1l",
+            "Q3J5cHRvclNldEVuYWJsZWRSZXNwb25zZUgAEk8KFWNyeXB0b3Jfc2V0X2tl",
+            "eV9pbmRleBgEIAEoCzIuLmxpdmVraXQucHJvdG8uRnJhbWVDcnlwdG9yU2V0",
+            "S2V5SW5kZXhSZXNwb25zZUgAEj0KDnNldF9zaGFyZWRfa2V5GAUgASgLMiMu",
+            "bGl2ZWtpdC5wcm90by5TZXRTaGFyZWRLZXlSZXNwb25zZUgAEkUKEnJhdGNo",
+            "ZXRfc2hhcmVkX2tleRgGIAEoCzInLmxpdmVraXQucHJvdG8uUmF0Y2hldFNo",
+            "YXJlZEtleVJlc3BvbnNlSAASPQoOZ2V0X3NoYXJlZF9rZXkYByABKAsyIy5s",
+            "aXZla2l0LnByb3RvLkdldFNoYXJlZEtleVJlc3BvbnNlSAASMAoHc2V0X2tl",
+            "eRgIIAEoCzIdLmxpdmVraXQucHJvdG8uU2V0S2V5UmVzcG9uc2VIABI4Cgty",
+            "YXRjaGV0X2tleRgJIAEoCzIhLmxpdmVraXQucHJvdG8uUmF0Y2hldEtleVJl",
+            "c3BvbnNlSAASMAoHZ2V0X2tleRgKIAEoCzIdLmxpdmVraXQucHJvdG8uR2V0",
+            "S2V5UmVzcG9uc2VIAEIJCgdtZXNzYWdlKi8KDkVuY3J5cHRpb25UeXBlEggK",
+            "BE5PTkUQABIHCgNHQ00QARIKCgZDVVNUT00QAiotChVLZXlEZXJpdmF0aW9u",
+            "RnVuY3Rpb24SCgoGUEJLREYyEAASCAoESEtERhABKogBCg9FbmNyeXB0aW9u",
+            "U3RhdGUSBwoDTkVXEAASBgoCT0sQARIVChFFTkNSWVBUSU9OX0ZBSUxFRBAC",
+            "EhUKEURFQ1JZUFRJT05fRkFJTEVEEAMSDwoLTUlTU0lOR19LRVkQBBIRCg1L",
+            "RVlfUkFUQ0hFVEVEEAUSEgoOSU5URVJOQUxfRVJST1IQBkIQqgINTGl2ZUtp",
+            "dC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.EncryptionType), typeof(global::LiveKit.Proto.EncryptionState), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.EncryptionType), typeof(global::LiveKit.Proto.KeyDerivationFunction), typeof(global::LiveKit.Proto.EncryptionState), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FrameCryptor), global::LiveKit.Proto.FrameCryptor.Parser, new[]{ "ParticipantIdentity", "TrackSid", "KeyIndex", "Enabled" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.KeyProviderOptions), global::LiveKit.Proto.KeyProviderOptions.Parser, new[]{ "SharedKey", "RatchetWindowSize", "RatchetSalt", "FailureTolerance" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.KeyProviderOptions), global::LiveKit.Proto.KeyProviderOptions.Parser, new[]{ "SharedKey", "RatchetWindowSize", "RatchetSalt", "FailureTolerance", "KeyRingSize", "KeyDerivationFunction" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeOptions), global::LiveKit.Proto.E2eeOptions.Parser, new[]{ "EncryptionType", "KeyProviderOptions" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeManagerSetEnabledRequest), global::LiveKit.Proto.E2eeManagerSetEnabledRequest.Parser, new[]{ "Enabled" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.E2eeManagerSetEnabledResponse), global::LiveKit.Proto.E2eeManagerSetEnabledResponse.Parser, null, null, null, null, null),
@@ -130,6 +134,11 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("NONE")] None = 0,
     [pbr::OriginalName("GCM")] Gcm = 1,
     [pbr::OriginalName("CUSTOM")] Custom = 2,
+  }
+
+  public enum KeyDerivationFunction {
+    [pbr::OriginalName("PBKDF2")] Pbkdf2 = 0,
+    [pbr::OriginalName("HKDF")] Hkdf = 1,
   }
 
   public enum EncryptionState {
@@ -555,6 +564,8 @@ namespace LiveKit.Proto {
       ratchetWindowSize_ = other.ratchetWindowSize_;
       ratchetSalt_ = other.ratchetSalt_;
       failureTolerance_ = other.failureTolerance_;
+      keyRingSize_ = other.keyRingSize_;
+      keyDerivationFunction_ = other.keyDerivationFunction_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -676,6 +687,60 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~2;
     }
 
+    /// <summary>Field number for the "key_ring_size" field.</summary>
+    public const int KeyRingSizeFieldNumber = 5;
+    private readonly static int KeyRingSizeDefaultValue = 0;
+
+    private int keyRingSize_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int KeyRingSize {
+      get { if ((_hasBits0 & 4) != 0) { return keyRingSize_; } else { return KeyRingSizeDefaultValue; } }
+      set {
+        _hasBits0 |= 4;
+        keyRingSize_ = value;
+      }
+    }
+    /// <summary>Gets whether the "key_ring_size" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyRingSize {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "key_ring_size" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyRingSize() {
+      _hasBits0 &= ~4;
+    }
+
+    /// <summary>Field number for the "key_derivation_function" field.</summary>
+    public const int KeyDerivationFunctionFieldNumber = 6;
+    private readonly static global::LiveKit.Proto.KeyDerivationFunction KeyDerivationFunctionDefaultValue = global::LiveKit.Proto.KeyDerivationFunction.Pbkdf2;
+
+    private global::LiveKit.Proto.KeyDerivationFunction keyDerivationFunction_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.KeyDerivationFunction KeyDerivationFunction {
+      get { if ((_hasBits0 & 8) != 0) { return keyDerivationFunction_; } else { return KeyDerivationFunctionDefaultValue; } }
+      set {
+        _hasBits0 |= 8;
+        keyDerivationFunction_ = value;
+      }
+    }
+    /// <summary>Gets whether the "key_derivation_function" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyDerivationFunction {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "key_derivation_function" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyDerivationFunction() {
+      _hasBits0 &= ~8;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -695,6 +760,8 @@ namespace LiveKit.Proto {
       if (RatchetWindowSize != other.RatchetWindowSize) return false;
       if (RatchetSalt != other.RatchetSalt) return false;
       if (FailureTolerance != other.FailureTolerance) return false;
+      if (KeyRingSize != other.KeyRingSize) return false;
+      if (KeyDerivationFunction != other.KeyDerivationFunction) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -706,6 +773,8 @@ namespace LiveKit.Proto {
       if (HasRatchetWindowSize) hash ^= RatchetWindowSize.GetHashCode();
       if (HasRatchetSalt) hash ^= RatchetSalt.GetHashCode();
       if (HasFailureTolerance) hash ^= FailureTolerance.GetHashCode();
+      if (HasKeyRingSize) hash ^= KeyRingSize.GetHashCode();
+      if (HasKeyDerivationFunction) hash ^= KeyDerivationFunction.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -740,6 +809,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteInt32(FailureTolerance);
       }
+      if (HasKeyRingSize) {
+        output.WriteRawTag(40);
+        output.WriteInt32(KeyRingSize);
+      }
+      if (HasKeyDerivationFunction) {
+        output.WriteRawTag(48);
+        output.WriteEnum((int) KeyDerivationFunction);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -766,6 +843,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteInt32(FailureTolerance);
       }
+      if (HasKeyRingSize) {
+        output.WriteRawTag(40);
+        output.WriteInt32(KeyRingSize);
+      }
+      if (HasKeyDerivationFunction) {
+        output.WriteRawTag(48);
+        output.WriteEnum((int) KeyDerivationFunction);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -787,6 +872,12 @@ namespace LiveKit.Proto {
       }
       if (HasFailureTolerance) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(FailureTolerance);
+      }
+      if (HasKeyRingSize) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(KeyRingSize);
+      }
+      if (HasKeyDerivationFunction) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) KeyDerivationFunction);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -811,6 +902,12 @@ namespace LiveKit.Proto {
       }
       if (other.HasFailureTolerance) {
         FailureTolerance = other.FailureTolerance;
+      }
+      if (other.HasKeyRingSize) {
+        KeyRingSize = other.KeyRingSize;
+      }
+      if (other.HasKeyDerivationFunction) {
+        KeyDerivationFunction = other.KeyDerivationFunction;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -847,6 +944,14 @@ namespace LiveKit.Proto {
             FailureTolerance = input.ReadInt32();
             break;
           }
+          case 40: {
+            KeyRingSize = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            KeyDerivationFunction = (global::LiveKit.Proto.KeyDerivationFunction) input.ReadEnum();
+            break;
+          }
         }
       }
     #endif
@@ -880,6 +985,14 @@ namespace LiveKit.Proto {
           }
           case 32: {
             FailureTolerance = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            KeyRingSize = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            KeyDerivationFunction = (global::LiveKit.Proto.KeyDerivationFunction) input.ReadEnum();
             break;
           }
         }
