@@ -48,15 +48,42 @@ You can use the package manager to import local `client-sdk-unity` into your Uni
 
 Or you can import the git url `https://github.com/livekit/client-sdk-unity.git` from the package manager.
 
+## Local development
+
 ### Building Livekit plugins locally
 
 For local development, initialize the git submodule containing the Rust code for the LiveKit plugin libraries. 
 
-There is a [helper script](https://github.com/livekit/client-sdk-unity/blob/main/BuildScripts~/build_ffi_locally.sh) to build the libraries locally and exchange the downloaded libraries with the build artifacts.
+There is a [helper script](https://github.com/livekit/client-sdk-unity/blob/main/BuildScripts~/build_ffi_locally.sh) to build the libraries locally and exchange the downloaded libraries with the local build artifacts in the correct `Runtime/Plugins` folder.
 
 Currently, the build script supports the following arguments:
 - macos
 - android
+- ios
+
+In the following options:
+- debug (default)
+- release
+
+So a build command is for example:
+`./BuildScripts~/build_ffi_locally.sh macos release`
+
+### VSCode setup
+
+Look at the Unity-SDK.code-workspace setup for VSCode. This will use the Meet Sample as the Unity project and the Unity SDK package as two roots in a multi-root workspace and the Meet.sln as the `dotnet.defaultSolution`, enabling Rust and C# IDE support. 
+
+### Debugging
+
+For C# debugging, there is a simple attach launch option called `C# Unity`, for example in the `Meet/.vscode/launch.json`.
+
+For Rust / C++ debugging on MacOS, you need to install the [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) extension installed. 
+
+1. Build the livekit-ffi lib locally in debug mode with `./BuildScripts~/build_ffi_locally.sh macos debug`
+2. Start the Unity Editor
+3. Attach to the Unity Editor process
+4. Start the Scene in Editor
+
+For step 3. you can have a look at `.vscode/launch.json` to improve the process picking for your setup.
 
 ### iOS
 
