@@ -143,7 +143,8 @@ namespace LiveKit.Internal
 #endif
 
             var sdkVersion = PackageVersion.Get();
-            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", sdkVersion);
+            var deviceModel = UnityEngine.SystemInfo.deviceModel;
+            NativeMethods.LiveKitInitialize(FFICallback, captureLogs, "unity", sdkVersion, deviceModel);
 
             Utils.Debug("FFIServer - Initialized");
             initialized = true;
