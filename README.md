@@ -76,14 +76,12 @@ Look at the Unity-SDK.code-workspace setup for VSCode. This will use the Meet Sa
 
 For C# debugging, there is a simple attach launch option called `C# Unity`, for example in the `Meet/.vscode/launch.json`.
 
-For Rust / C++ debugging on MacOS, you need to install the [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) extension installed. 
+For Rust / C++ debugging on MacOS, you need to install the [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) extension. The debug attach is defined in `.vscode/launch.json`.
 
 1. Build the livekit-ffi lib locally in debug mode with `./BuildScripts~/build_ffi_locally.sh macos debug`
 2. Start the Unity Editor
-3. Attach to the Unity Editor process
+3. Attach to the Unity Editor process (either auto or manual process picker)
 4. Start the Scene in Editor
-
-For step 3. you can have a look at `.vscode/launch.json` to improve the process picking for your setup.
 
 ### iOS
 
