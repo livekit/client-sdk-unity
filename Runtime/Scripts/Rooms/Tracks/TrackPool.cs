@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using UnityEngine.Pool;
 
 namespace LiveKit.Rooms.Tracks
@@ -39,5 +37,3 @@ namespace LiveKit.Rooms.Tracks
         public int CountInactive => trackPool.CountInactive;
     }
 }
-
-#endif

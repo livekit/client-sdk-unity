@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
-using DCL.LiveKit.Public;
 
 namespace LiveKit.Rooms.DataPipes
 {
     public delegate void ReceivedDataDelegate(
         ReadOnlySpan<byte> data,
-        LKParticipant participant,
+        Participant participant,
         string topic,
-        LKDataPacketKind kind
+        DataPacketKind kind
     );
 
     public interface IDataPipe
@@ -21,7 +20,7 @@ namespace LiveKit.Rooms.DataPipes
             Span<byte> data,
             string topic,
             IReadOnlyCollection<string> destinationSids,
-            LKDataPacketKind kind = LKDataPacketKind.KindLossy
+            DataPacketKind kind = DataPacketKind.KindLossy
         );
     }
     
@@ -29,11 +28,6 @@ namespace LiveKit.Rooms.DataPipes
     {
         void Assign(IParticipantsHub participants);
         
-        void Notify(
-                ReadOnlySpan<byte> data, 
-                LKParticipant participant, 
-                string topic, 
-                LKDataPacketKind kind
-                );
+        void Notify(ReadOnlySpan<byte> data, Participant participant, string topic, DataPacketKind kind);
     }
 }

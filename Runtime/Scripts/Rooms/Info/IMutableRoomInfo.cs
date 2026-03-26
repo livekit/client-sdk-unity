@@ -1,11 +1,10 @@
 using LiveKit.Proto;
-using DCL.LiveKit.Public;
 
 namespace LiveKit.Rooms.Info
 {
     public interface IMutableRoomInfo : IRoomInfo
     {
-        void UpdateConnectionState(LKConnectionState state);
+        void UpdateConnectionState(ConnectionState state);
         
         void UpdateSid(string sid);
 

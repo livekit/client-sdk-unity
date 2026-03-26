@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using LiveKit.Internal;
 using LiveKit.Proto;
 using LiveKit.Rooms.Tracks.Factory;
@@ -25,5 +23,3 @@ namespace LiveKit.Rooms.Tracks
             tracksFactory.NewVideoTrack(name, source, room);
     }
 }
-
-#endif

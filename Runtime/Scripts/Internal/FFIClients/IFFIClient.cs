@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit.Proto;
 
@@ -21,5 +19,3 @@ namespace LiveKit.Internal.FFIClients
         static readonly IFFIClient Default = FfiClient.Instance;
     }
 }
-
-#endif

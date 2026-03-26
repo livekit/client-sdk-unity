@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using System.Collections.Generic;
 using LiveKit.Internal;
@@ -10,16 +8,16 @@ namespace LiveKit.Rooms.Participants.Factory
 {
     public interface IParticipantFactory
     {
-        LKParticipant NewParticipant(ParticipantInfo info, Room room, FfiHandle handle, Origin origin);
+        Participant NewParticipant(ParticipantInfo info, Room room, FfiHandle handle, Origin origin);
 
-        void Release(LKParticipant participant);
+        void Release(Participant participant);
 
         static readonly IParticipantFactory Default = new ParticipantFactory();
     }
 
     public static class ParticipantFactoryExtension
     {
-        public static LKParticipant NewRemote(
+        public static Participant NewRemote(
             this IParticipantFactory factory,
             Room room,
             ParticipantInfo info,
@@ -39,5 +37,3 @@ namespace LiveKit.Rooms.Participants.Factory
         }
     }
 }
-
-#endif

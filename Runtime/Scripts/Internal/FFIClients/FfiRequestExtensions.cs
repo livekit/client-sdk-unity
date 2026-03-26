@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using System.Runtime.CompilerServices;
 using Google.Protobuf;
@@ -218,5 +216,3 @@ namespace LiveKit.Internal.FFIClients
         }
     }
 }
-
-#endif

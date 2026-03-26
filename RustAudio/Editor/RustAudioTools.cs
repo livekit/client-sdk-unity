@@ -1,14 +1,10 @@
-#if !UNITY_WEBGL && UNITY_EDITOR
-
 using System.Collections.Generic;
 using System.Text;
+using LiveKit.Scripts.Audio;
 using RichTypes;
 using RustAudio;
 using UnityEditor;
 using UnityEngine;
-
-
-using LiveKit.Scripts.Audio;
 
 public static class RustAudioTools
 {
@@ -74,5 +70,3 @@ public static class RustAudioTools
         Debug.Log("ReInit complete");
     }
 }
-
-#endif

@@ -6,12 +6,12 @@ namespace LiveKit.Rooms.Participants
 {
     public class ParticipantsHub : IMutableParticipantsHub
     {
-        private readonly ConcurrentDictionary<string, LKParticipant> remoteParticipants = new();
-        private LKParticipant? local;
+        private readonly ConcurrentDictionary<string, Participant> remoteParticipants = new();
+        private Participant? local;
 
         public event ParticipantDelegate? UpdatesFromParticipant;
 
-        public LKParticipant LocalParticipant()
+        public Participant LocalParticipant()
         {
             return local
                    ?? throw new InvalidOperationException(
@@ -19,7 +19,7 @@ namespace LiveKit.Rooms.Participants
                    );
         }
 
-        public LKParticipant? RemoteParticipant(string identity)
+        public Participant? RemoteParticipant(string identity)
         {
             remoteParticipants.TryGetValue(identity, out var remoteParticipant);
             return remoteParticipant;
@@ -28,45 +28,39 @@ namespace LiveKit.Rooms.Participants
         /// <summary>
         ///     Don't expose ConcurrentDictionary.Keys as it creates a whole new collection on get
         /// </summary>
-        public IReadOnlyDictionary<string, LKParticipant> RemoteParticipantIdentities()
+        public IReadOnlyDictionary<string, Participant> RemoteParticipantIdentities()
         {
             return remoteParticipants;
         }
 
-        public void AssignLocal(LKParticipant participant)
+        public void AssignLocal(Participant participant)
         {
             local = participant;
         }
 
-        public void AddRemote(LKParticipant participant)
+        public void AddRemote(Participant participant)
         {
             remoteParticipants[participant.Identity] = participant;
         }
 
-        public void RemoveRemote(LKParticipant participant)
+        public void RemoveRemote(Participant participant)
         {
             remoteParticipants.TryRemove(participant.Identity, out _);
         }
 
-        public void NotifyParticipantUpdate(LKParticipant participant, UpdateFromParticipant update)
+        public void NotifyParticipantUpdate(Participant participant, UpdateFromParticipant update)
         {
             UpdatesFromParticipant?.Invoke(participant, update);
         }
 
         public void Clear()
         {
-#if !UNITY_WEBGL || UNITY_EDITOR
             local?.Clear();
-#endif
-
             local = null;
-
-#if !UNITY_WEBGL || UNITY_EDITOR
             foreach (var participant in remoteParticipants.Values)
             {
                 participant.Clear();
             }
-#endif
 
             remoteParticipants.Clear();
         }

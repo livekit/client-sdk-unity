@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -30,5 +28,3 @@ namespace LiveKit.Rooms.VideoStreaming
         }
     }
 }
-
-#endif

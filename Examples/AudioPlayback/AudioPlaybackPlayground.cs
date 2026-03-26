@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit;
 using LiveKit.Audio;
@@ -26,5 +24,3 @@ namespace Examples.AudioPlayback
         }
     }
 }
-
-#endif

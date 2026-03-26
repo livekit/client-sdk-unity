@@ -1,6 +1,5 @@
-﻿#if !UNITY_WEBGL || UNITY_EDITOR
-
-using LiveKit.Audio;
+﻿using LiveKit.Audio;
+using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Proto;
 using LiveKit.Rooms.Participants;
 using LiveKit.Rooms.Tracks;
@@ -9,11 +8,11 @@ namespace LiveKit.Rooms.Streaming.Audio
 {
     public class AudioStreams : Streams<AudioStream, AudioStreamInfo>, IAudioStreams
     {
-        public AudioStreams(IParticipantsHub participantsHub) : base(participantsHub, LiveKit.Proto.TrackKind.KindAudio)
+        public AudioStreams(IParticipantsHub participantsHub) : base(participantsHub, TrackKind.KindAudio)
         {
         }
 
-        protected override AudioStream NewStreamInstance(StreamKey streamKey, LiveKit.Rooms.Tracks.ITrack track)
+        protected override AudioStream NewStreamInstance(StreamKey streamKey, ITrack track)
         {
             return new AudioStream(streamKey, track);
         }
@@ -24,5 +23,3 @@ namespace LiveKit.Rooms.Streaming.Audio
         }
     }
 }
-
-#endif

@@ -1,15 +1,15 @@
-using DCL.LiveKit.Public;
+using LiveKit.Proto;
 
 namespace LiveKit.Rooms.Info
 {
     public class MemoryRoomInfo : IMutableRoomInfo
     {
-        public LKConnectionState ConnectionState { get; private set; }
+        public ConnectionState ConnectionState { get; private set; }
         public string Sid { get; private set; }
         public string Name { get; private set; }
         public string Metadata { get; private set; }
 
-        public void UpdateConnectionState(LKConnectionState state)
+        public void UpdateConnectionState(ConnectionState state)
         {
             ConnectionState = state;
         }
