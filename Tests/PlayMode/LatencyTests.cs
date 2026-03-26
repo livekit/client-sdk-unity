@@ -277,13 +277,13 @@ namespace LiveKit.PlayModeTests
         }
 
         // =====================================================================
-        // Test 3: Video Latency Measurement using Bright Pulses
+        // Test 3: Video Latency Measurement using Spatial Binary Encoding
         // =====================================================================
 
         // Video configuration
         const int kVideoWidth = 64;
         const int kVideoHeight = 64;
-        const int kVideoBrightnessThreshold = 50;
+        const int kVideoStripThreshold = 128;
         const float kVideoPulseDurationSeconds = 0.5f;
         const float kVideoPulseIntervalSeconds = 2f;
         const float kVideoEchoTimeoutSeconds = 3f;
@@ -293,7 +293,7 @@ namespace LiveKit.PlayModeTests
         public IEnumerator VideoLatency()
         {
             Debug.Log("\n=== Video Latency Measurement Test ===");
-            Debug.Log("Using bright pulses to measure video round-trip latency");
+            Debug.Log("Using spatial binary encoding to measure video round-trip latency");
 
             // --- Connect two participants ---
             var sender = TestRoomContext.ConnectionOptions.Default;
@@ -369,9 +369,8 @@ namespace LiveKit.PlayModeTests
 
             // --- Shared state for latency measurement ---
             var stats = new LatencyStats();
-            long lastSendTimeTicks = 0;
-            bool waitingForEcho = false;
-            int pulsesSent = 0;
+            var sendTimestamps = new long[kTotalPulses];
+            var pulseReceived = new bool[kTotalPulses];
             int missedPulses = 0;
 
             // Subscribe to received video frames (fires on main thread)
@@ -388,28 +387,51 @@ namespace LiveKit.PlayModeTests
                 if (!yComponent.HasDataPtr)
                     return;
 
-                // Sample Y plane to get average brightness
+                // Decode spatial binary pattern from Y plane
+                // Sample the center of each vertical strip at 3 rows to get reliable values
                 var yPtr = (IntPtr)yComponent.DataPtr;
-                int sampleCount = Math.Min(16, (int)(buffer.Width * buffer.Height));
-                int ySum = 0;
-                for (int i = 0; i < sampleCount; i++)
-                {
-                    ySum += Marshal.ReadByte(yPtr, i);
-                }
-                int avgY = ySum / sampleCount;
+                int width = (int)buffer.Width;
+                int stripWidth = width / TestVideoSource.NumStrips;
+                int[] sampleRows = { (int)buffer.Height / 4, (int)buffer.Height / 2, (int)(buffer.Height * 3 / 4) };
 
-                if (!waitingForEcho || avgY <= kVideoBrightnessThreshold)
+                int decodedIndex = 0;
+                for (int strip = 0; strip < TestVideoSource.NumStrips; strip++)
+                {
+                    int centerX = strip * stripWidth + stripWidth / 2;
+                    int ySum = 0;
+                    foreach (int row in sampleRows)
+                    {
+                        int offset = row * width + centerX;
+                        ySum += Marshal.ReadByte(yPtr, offset);
+                    }
+                    int avgY = ySum / sampleRows.Length;
+
+                    if (avgY > kVideoStripThreshold)
+                        decodedIndex |= (1 << strip);
+                }
+
+                // Index 0 = all black = no pulse
+                if (decodedIndex == 0)
+                    return;
+
+                // Pulse indices are 1-based in encoding (pulse 0 sends index 1, etc.)
+                int pulseIndex = decodedIndex - 1;
+                if (pulseIndex < 0 || pulseIndex >= kTotalPulses)
+                    return;
+                if (pulseReceived[pulseIndex])
+                    return;
+                if (sendTimestamps[pulseIndex] == 0)
                     return;
 
                 long receiveTimeTicks = Stopwatch.GetTimestamp();
-                double latencyMs = (receiveTimeTicks - lastSendTimeTicks)
+                double latencyMs = (receiveTimeTicks - sendTimestamps[pulseIndex])
                     * 1000.0 / Stopwatch.Frequency;
 
                 if (latencyMs > 0 && latencyMs < 5000)
                 {
-                    waitingForEcho = false;
+                    pulseReceived[pulseIndex] = true;
                     stats.AddMeasurement(latencyMs);
-                    Debug.Log($"  Pulse {pulsesSent + 1}: latency {latencyMs:F2} ms (Y: {avgY})");
+                    Debug.Log($"  Pulse {pulseIndex}: latency {latencyMs:F2} ms (decoded: {decodedIndex})");
                 }
             };
 
@@ -420,34 +442,33 @@ namespace LiveKit.PlayModeTests
             // --- Send video pulses ---
             Debug.Log("Starting video pulse transmission...");
 
-            for (pulsesSent = 0; pulsesSent < kTotalPulses; pulsesSent++)
+            // Encode pulse index as 1-based so that index 0 (all black) means "no pulse"
+            for (int pulsesSent = 0; pulsesSent < kTotalPulses; pulsesSent++)
             {
-                // Send bright pulse
-                videoSource.SetBright(true);
-                lastSendTimeTicks = Stopwatch.GetTimestamp();
-                waitingForEcho = true;
-                Debug.Log($"Sent pulse {pulsesSent + 1}/{kTotalPulses}");
+                int encodedIndex = pulsesSent + 1;
+                videoSource.SetPulseIndex(encodedIndex);
+                sendTimestamps[pulsesSent] = Stopwatch.GetTimestamp();
+                Debug.Log($"Sent pulse {pulsesSent + 1}/{kTotalPulses} (pattern: {Convert.ToString(encodedIndex, 2).PadLeft(4, '0')})");
 
-                // Hold pulse for kVideoPulseDurationSeconds (time-based, not frame-count)
+                // Hold pulse so encoder has time to process
                 yield return new WaitForSeconds(kVideoPulseDurationSeconds);
 
                 // Reset to black between pulses
-                videoSource.SetBright(false);
+                videoSource.SetPulseIndex(-1);
 
                 // Wait before next pulse
                 yield return new WaitForSeconds(kVideoPulseIntervalSeconds);
-
-                // Check for timeout
-                if (waitingForEcho)
-                {
-                    Debug.Log($"  Echo timeout for pulse {pulsesSent + 1}, moving on...");
-                    waitingForEcho = false;
-                    missedPulses++;
-                }
             }
 
-            // Wait for last echo
+            // Wait for last echoes to arrive
             yield return new WaitForSeconds(kVideoEchoTimeoutSeconds);
+
+            // Count missed pulses
+            for (int i = 0; i < kTotalPulses; i++)
+            {
+                if (sendTimestamps[i] > 0 && !pulseReceived[i])
+                    missedPulses++;
+            }
 
             // --- Print results ---
             stats.PrintStats("Video Latency Statistics");
