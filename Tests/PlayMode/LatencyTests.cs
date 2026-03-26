@@ -19,8 +19,10 @@ namespace LiveKit.PlayModeTests
         const int kAudioFrameDurationMs = 10;
         const int kSamplesPerFrame = kAudioSampleRate * kAudioFrameDurationMs / 1000; // 480
 
-        // Energy detection
-        const double kHighEnergyThreshold = 0.3;
+        // Pulse frequency tagging
+        const double kBaseFrequency = 500.0;   // Pulse 0 = 500 Hz
+        const double kFrequencyStep = 100.0;   // Pulse i = 500 + i*100 Hz
+        const double kMagnitudeThreshold = 0.15;
         const int kHighEnergyFramesPerPulse = 5;
 
         // Test parameters
@@ -67,14 +69,14 @@ namespace LiveKit.PlayModeTests
         }
 
         // =====================================================================
-        // Test 2: Audio Latency Measurement using Energy Detection
+        // Test 2: Audio Latency Measurement using Frequency-Tagged Pulses
         // =====================================================================
 
         [UnityTest, Category("E2E")]
         public IEnumerator AudioLatency()
         {
             Debug.Log("\n=== Audio Latency Measurement Test ===");
-            Debug.Log("Using energy detection to measure audio round-trip latency");
+            Debug.Log("Using frequency-tagged pulses to measure audio round-trip latency");
 
             // --- Connect two participants ---
             var sender = TestRoomContext.ConnectionOptions.Default;
@@ -140,50 +142,54 @@ namespace LiveKit.PlayModeTests
 
             Debug.Log("Audio track subscribed, creating audio stream...");
 
-            // --- Set up receiver audio stream + energy detector ---
+            // --- Set up receiver audio stream + pulse detector ---
             var listenerGO = new GameObject("LatencyTestAudioListener");
-            listenerGO.AddComponent<AudioListener>(); // Required for OnAudioFilterRead to fire
+            listenerGO.AddComponent<AudioListener>();
 
             var receiverGO = new GameObject("LatencyTestReceiver");
             var unityAudioSource = receiverGO.AddComponent<AudioSource>();
-            unityAudioSource.spatialBlend = 0f; // 2D audio
+            unityAudioSource.spatialBlend = 0f;
             unityAudioSource.volume = 1f;
 
             // AudioStream constructor adds AudioProbe and starts playback
             var audioStream = new AudioStream(subscribedTrack, unityAudioSource);
 
-            // Add EnergyDetector AFTER AudioStream so OnAudioFilterRead order is correct
-            var energyDetector = receiverGO.AddComponent<EnergyDetector>();
+            // Add PulseDetector AFTER AudioStream so OnAudioFilterRead order is correct
+            var pulseDetector = receiverGO.AddComponent<PulseDetector>();
+            pulseDetector.TotalPulses = kTotalPulses;
+            pulseDetector.BaseFrequency = kBaseFrequency;
+            pulseDetector.FrequencyStep = kFrequencyStep;
+            pulseDetector.MagnitudeThreshold = kMagnitudeThreshold;
 
             // --- Shared state for latency measurement ---
             var stats = new LatencyStats();
             var lockObj = new object();
-            long lastHighEnergySendTimeTicks = 0;
-            bool waitingForEcho = false;
+            var sendTimestamps = new long[kTotalPulses]; // per-pulse send timestamps
+            var pulseReceived = new bool[kTotalPulses];  // track which pulses have been matched
             int missedPulses = 0;
 
-            // Energy detector callback (runs on audio thread)
-            energyDetector.EnergyDetected += (energy) =>
+            // Pulse detector callback (runs on audio thread)
+            pulseDetector.PulseReceived += (pulseIndex, magnitude) =>
             {
                 lock (lockObj)
                 {
-                    if (!waitingForEcho || energy <= kHighEnergyThreshold)
+                    if (pulseIndex < 0 || pulseIndex >= kTotalPulses)
                         return;
+                    if (pulseReceived[pulseIndex])
+                        return; // already matched this pulse
+                    if (sendTimestamps[pulseIndex] == 0)
+                        return; // not sent yet
 
                     long receiveTimeTicks = Stopwatch.GetTimestamp();
-                    long sendTimeTicks = lastHighEnergySendTimeTicks;
+                    double latencyMs = (receiveTimeTicks - sendTimestamps[pulseIndex])
+                        * 1000.0 / Stopwatch.Frequency;
 
-                    if (sendTimeTicks > 0)
+                    if (latencyMs > 0 && latencyMs < 5000)
                     {
-                        double latencyMs = (receiveTimeTicks - sendTimeTicks)
-                            * 1000.0 / Stopwatch.Frequency;
-
-                        if (latencyMs > 0 && latencyMs < 5000)
-                        {
-                            stats.AddMeasurement(latencyMs);
-                            Debug.Log($"Audio latency: {latencyMs:F2} ms (energy: {energy:F3})");
-                        }
-                        waitingForEcho = false;
+                        pulseReceived[pulseIndex] = true;
+                        stats.AddMeasurement(latencyMs);
+                        Debug.Log($"  Pulse {pulseIndex}: latency {latencyMs:F2} ms " +
+                                  $"(freq: {kBaseFrequency + pulseIndex * kFrequencyStep} Hz, mag: {magnitude:F3})");
                     }
                 }
             };
@@ -194,6 +200,7 @@ namespace LiveKit.PlayModeTests
             int frameCount = 0;
             int pulsesSent = 0;
             int highEnergyFramesRemaining = 0;
+            double currentPulseFrequency = 0;
             var frameDuration = TimeSpan.FromMilliseconds(kAudioFrameDurationMs);
             var nextFrameTime = Stopwatch.GetTimestamp();
 
@@ -204,66 +211,54 @@ namespace LiveKit.PlayModeTests
                 double waitMs = (nextFrameTime - now) * 1000.0 / Stopwatch.Frequency;
                 if (waitMs > 1.0)
                 {
-                    yield return null; // yield to Unity, come back next frame
+                    yield return null;
                     continue;
                 }
                 nextFrameTime += (long)(frameDuration.TotalSeconds * Stopwatch.Frequency);
 
                 float[] frameData;
 
-                // Check for echo timeout
-                lock (lockObj)
-                {
-                    if (waitingForEcho && lastHighEnergySendTimeTicks > 0)
-                    {
-                        double elapsedMs = (Stopwatch.GetTimestamp() - lastHighEnergySendTimeTicks)
-                            * 1000.0 / Stopwatch.Frequency;
-                        if (elapsedMs > kEchoTimeoutSeconds * 1000)
-                        {
-                            Debug.Log($"  Echo timeout for pulse {pulsesSent}, moving on...");
-                            waitingForEcho = false;
-                            missedPulses++;
-                        }
-                    }
-                }
-
                 if (highEnergyFramesRemaining > 0)
                 {
-                    // Continue sending high-energy frames for current pulse
-                    frameData = GenerateHighEnergyFrame(kSamplesPerFrame);
+                    frameData = GenerateToneFrame(kSamplesPerFrame, currentPulseFrequency);
                     highEnergyFramesRemaining--;
+                }
+                else if (frameCount % kFramesBetweenPulses == 0)
+                {
+                    // Start a new pulse with unique frequency
+                    currentPulseFrequency = kBaseFrequency + pulsesSent * kFrequencyStep;
+                    frameData = GenerateToneFrame(kSamplesPerFrame, currentPulseFrequency);
+                    highEnergyFramesRemaining = kHighEnergyFramesPerPulse - 1;
+
+                    lock (lockObj)
+                    {
+                        sendTimestamps[pulsesSent] = Stopwatch.GetTimestamp();
+                    }
+                    Debug.Log($"Sent pulse {pulsesSent}/{kTotalPulses} " +
+                              $"(freq: {currentPulseFrequency} Hz, {kHighEnergyFramesPerPulse} frames)");
+                    pulsesSent++;
                 }
                 else
                 {
-                    bool shouldPulse;
-                    lock (lockObj) { shouldPulse = !waitingForEcho; }
-
-                    if (frameCount % kFramesBetweenPulses == 0 && shouldPulse)
-                    {
-                        // Start a new pulse
-                        frameData = GenerateHighEnergyFrame(kSamplesPerFrame);
-                        highEnergyFramesRemaining = kHighEnergyFramesPerPulse - 1;
-
-                        lock (lockObj)
-                        {
-                            lastHighEnergySendTimeTicks = Stopwatch.GetTimestamp();
-                            waitingForEcho = true;
-                        }
-                        pulsesSent++;
-                        Debug.Log($"Sent pulse {pulsesSent}/{kTotalPulses} ({kHighEnergyFramesPerPulse} frames)");
-                    }
-                    else
-                    {
-                        frameData = GenerateSilentFrame(kSamplesPerFrame);
-                    }
+                    frameData = GenerateSilentFrame(kSamplesPerFrame);
                 }
 
                 audioSource.PushFrame(frameData, kAudioChannels, kAudioSampleRate);
                 frameCount++;
             }
 
-            // Wait for last echo
+            // Wait for last echoes to arrive
             yield return new WaitForSeconds(kEchoTimeoutSeconds);
+
+            // Count missed pulses
+            lock (lockObj)
+            {
+                for (int i = 0; i < kTotalPulses; i++)
+                {
+                    if (sendTimestamps[i] > 0 && !pulseReceived[i])
+                        missedPulses++;
+                }
+            }
 
             // --- Print results ---
             stats.PrintStats("Audio Latency Statistics");
@@ -284,10 +279,9 @@ namespace LiveKit.PlayModeTests
         // Audio Generation Helpers
         // =====================================================================
 
-        static float[] GenerateHighEnergyFrame(int samplesPerChannel)
+        static float[] GenerateToneFrame(int samplesPerChannel, double frequency)
         {
             var data = new float[samplesPerChannel * kAudioChannels];
-            const double frequency = 1000.0; // 1kHz sine wave
             const double amplitude = 0.9;
 
             for (int i = 0; i < samplesPerChannel; i++)
