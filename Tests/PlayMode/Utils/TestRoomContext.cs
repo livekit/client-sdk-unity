@@ -7,7 +7,8 @@ namespace LiveKit.PlayModeTests.Utils
 {
     public class TestRoomContext : IDisposable
     {
-        public readonly string RoomName = $"unity-test-{Guid.NewGuid()}";
+        // public readonly string RoomName = $"unity-test-{Guid.NewGuid()}";
+        public readonly string RoomName = $"unity-test-max";
         public List<Room> Rooms { get; private set; } = new List<Room>();
         public string? ConnectionError { get; private set; }
 
