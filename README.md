@@ -97,9 +97,13 @@ add other linker flags to `UnityFramework`:
 
 `-ObjC`
 
-Since `libiPhone-lib.a` has built-in old versions of `celt` and `libvpx` (This will cause the opus and vp8/vp9 codecs to not be called correctly and cause a crash.), so you need to adjust the link order to ensure that it is linked to `liblivekit_ffi.a` first.
+Since `libiPhone-lib.a` has built-in old versions of `celt` and `libvpx` (This will cause the opus and vp8/vp9 codecs to not be called correctly and cause a crash.), you need to ensure that `liblivekit_ffi.a` is linked before `libiPhone-lib.a`.
 
-The fix is ​​to remove and re-add `libiPhone-lib.a` from `Frameworks and Libraries`, making sure to link after `liblivekit_ffi.a`.
+The package now applies an iOS post-build fix that rewrites the exported Xcode project so `libiPhone-lib.a` is moved after `liblivekit_ffi.a` in `UnityFramework -> Frameworks and Libraries`.
+
+It also strips the old CELT object cluster from the exported `Libraries/libiPhone-lib.a` so Xcode cannot resolve those codec symbols from Unity's archive.
+
+If your project disables package editor scripts or uses a custom Xcode export pipeline that overwrites `project.pbxproj` after LiveKit runs, you may still need to adjust the order manually by removing and re-adding `libiPhone-lib.a`.
 
 ## Examples
 

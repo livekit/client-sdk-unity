@@ -100,11 +100,17 @@ namespace LiveKit
                 Microphone.End(_deviceName);
 
             var probe = _sourceObject.GetComponent<AudioProbe>();
-            probe.AudioRead -= OnAudioRead;
-            UnityEngine.Object.Destroy(probe);
+            if (probe != null)
+            {
+                probe.AudioRead -= OnAudioRead;
+                UnityEngine.Object.Destroy(probe);
+            }
 
             var source = _sourceObject.GetComponent<AudioSource>();
-            UnityEngine.Object.Destroy(source);
+            if (source != null)
+                UnityEngine.Object.Destroy(source);
+
+            Utils.Debug($"MicrophoneSource device='{_deviceName}' stopped");
             yield return null;
         }
 

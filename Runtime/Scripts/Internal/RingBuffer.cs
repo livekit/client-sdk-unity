@@ -58,6 +58,11 @@ namespace LiveKit.Internal
             return readCount;
         }
 
+        public int SkipRead(int len)
+        {
+            return MoveReadPtr(len);
+        }
+
         private int MoveReadPtr(int len)
         {
             int free = AvailableWrite();
