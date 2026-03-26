@@ -8,7 +8,7 @@ namespace LiveKit.PlayModeTests.Utils
     /// Attach to the same GameObject as an AudioSource after AudioStream has added its
     /// AudioProbe, so this filter runs second and sees the filled audio data.
     /// </summary>
-    public class PulseDetector : MonoBehaviour
+    public class AudioPulseDetector : MonoBehaviour
     {
         public int TotalPulses;
         public double BaseFrequency;
