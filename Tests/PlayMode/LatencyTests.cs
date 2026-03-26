@@ -446,6 +446,305 @@ namespace LiveKit.PlayModeTests
         }
 
         // =====================================================================
+        // Test 4: A/V Sync Measurement
+        // =====================================================================
+
+        // A/V sync configuration
+        const float kAVSyncPulseDurationSeconds = 0.5f;
+        const float kAVSyncPulseIntervalSeconds = 2f;
+        const float kAVSyncEchoTimeoutSeconds = 3f;
+        const float kAVSyncWarmupSeconds = 3f;
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator AVSync()
+        {
+            Debug.Log("\n=== A/V Sync Measurement Test ===");
+            Debug.Log("Measuring audio-video desync by sending simultaneous tagged pulses");
+
+            // --- Connect two participants ---
+            var sender = TestRoomContext.ConnectionOptions.Default;
+            sender.Identity = "avsync-sender";
+            var receiver = TestRoomContext.ConnectionOptions.Default;
+            receiver.Identity = "avsync-receiver";
+
+            using var context = new TestRoomContext(new[] { receiver, sender });
+            yield return context.ConnectAll();
+            if (context.ConnectionError != null)
+                Assert.Fail(context.ConnectionError);
+
+            var receiverRoom = context.Rooms[0];
+            var senderRoom = context.Rooms[1];
+
+            // --- Wait for sender to be visible to receiver ---
+            var participantExpectation = new Expectation(timeoutSeconds: 10f);
+            if (receiverRoom.RemoteParticipants.ContainsKey(sender.Identity))
+            {
+                participantExpectation.Fulfill();
+            }
+            else
+            {
+                receiverRoom.ParticipantConnected += (p) =>
+                {
+                    if (p.Identity == sender.Identity)
+                        participantExpectation.Fulfill();
+                };
+            }
+            yield return participantExpectation.Wait();
+            if (participantExpectation.Error != null)
+                Assert.Fail($"Sender not visible to receiver: {participantExpectation.Error}");
+
+            // --- Publish audio track ---
+            var audioSource = new TestAudioSource(channels: kAudioChannels);
+            audioSource.Start();
+            var audioTrack = LocalAudioTrack.CreateAudioTrack("avsync-audio", audioSource, senderRoom);
+            var audioPublish = senderRoom.LocalParticipant.PublishTrack(audioTrack, new TrackPublishOptions());
+            yield return audioPublish;
+            if (audioPublish.IsError)
+                Assert.Fail("Failed to publish audio track");
+
+            // --- Publish video track ---
+            var videoSource = new TestVideoSource(kVideoWidth, kVideoHeight);
+            videoSource.Start();
+            var videoTrack = LocalVideoTrack.CreateVideoTrack("avsync-video", videoSource, senderRoom);
+            var videoPublish = senderRoom.LocalParticipant.PublishTrack(videoTrack, new TrackPublishOptions());
+            yield return videoPublish;
+            if (videoPublish.IsError)
+                Assert.Fail("Failed to publish video track");
+
+            var videoSourceCoroutine = TestCoroutineRunner.Start(videoSource.Update());
+
+            Debug.Log("Both tracks published, waiting for subscriptions...");
+
+            // --- Wait for receiver to subscribe to both tracks ---
+            RemoteAudioTrack subscribedAudioTrack = null;
+            RemoteVideoTrack subscribedVideoTrack = null;
+            var bothTracksExpectation = new Expectation(
+                predicate: () => subscribedAudioTrack != null && subscribedVideoTrack != null,
+                timeoutSeconds: 15f);
+
+            receiverRoom.TrackSubscribed += (track, publication, participant) =>
+            {
+                if (participant.Identity != sender.Identity) return;
+                if (track is RemoteAudioTrack rat) subscribedAudioTrack = rat;
+                if (track is RemoteVideoTrack rvt) subscribedVideoTrack = rvt;
+            };
+            yield return bothTracksExpectation.Wait();
+            if (bothTracksExpectation.Error != null)
+                Assert.Fail($"Failed to subscribe to both tracks: {bothTracksExpectation.Error}");
+
+            Debug.Log("Both tracks subscribed, setting up receivers...");
+
+            // --- Set up audio receiver ---
+            var listenerGO = new GameObject("AVSyncAudioListener");
+            listenerGO.AddComponent<AudioListener>();
+
+            var audioReceiverGO = new GameObject("AVSyncAudioReceiver");
+            var unityAudioSource = audioReceiverGO.AddComponent<AudioSource>();
+            unityAudioSource.spatialBlend = 0f;
+            unityAudioSource.volume = 1f;
+
+            var audioStream = new AudioStream(subscribedAudioTrack, unityAudioSource);
+
+            var audioPulseDetector = audioReceiverGO.AddComponent<AudioPulseDetector>();
+            audioPulseDetector.TotalPulses = kTotalPulses;
+            audioPulseDetector.BaseFrequency = kBaseFrequency;
+            audioPulseDetector.FrequencyStep = kFrequencyStep;
+            audioPulseDetector.MagnitudeThreshold = kMagnitudeThreshold;
+
+            // --- Set up video receiver ---
+            var videoStream = new VideoStream(subscribedVideoTrack);
+            videoStream.Start();
+            var videoStreamCoroutine = TestCoroutineRunner.Start(videoStream.Update());
+
+            // --- Shared state ---
+            var lockObj = new object();
+            var sendTimestamps = new long[kTotalPulses];
+            var audioReceiveTicks = new long[kTotalPulses];
+            var videoReceiveTicks = new long[kTotalPulses];
+
+            // Audio detection (runs on audio thread)
+            audioPulseDetector.PulseReceived += (pulseIndex, magnitude) =>
+            {
+                lock (lockObj)
+                {
+                    if (pulseIndex < 0 || pulseIndex >= kTotalPulses) return;
+                    if (audioReceiveTicks[pulseIndex] != 0) return;
+                    if (sendTimestamps[pulseIndex] == 0) return;
+
+                    audioReceiveTicks[pulseIndex] = Stopwatch.GetTimestamp();
+                    Debug.Log($"  [Audio] Pulse {pulseIndex} received " +
+                              $"(freq: {kBaseFrequency + pulseIndex * kFrequencyStep} Hz)");
+                }
+            };
+
+            // Video detection (runs on main thread)
+            videoStream.FrameReceived += (frame) =>
+            {
+                int pulseIndex = VideoPulseCodec.Decode(videoStream.VideoBuffer, kVideoStripThreshold);
+                if (pulseIndex < 0 || pulseIndex >= kTotalPulses) return;
+                if (videoReceiveTicks[pulseIndex] != 0) return;
+                if (sendTimestamps[pulseIndex] == 0) return;
+
+                videoReceiveTicks[pulseIndex] = Stopwatch.GetTimestamp();
+                Debug.Log($"  [Video] Pulse {pulseIndex} received");
+            };
+
+            // --- Audio frame pusher (runs concurrently) ---
+            int currentAudioPulseIndex = -1;
+            bool audioRunning = true;
+
+            IEnumerator PushAudioFrames()
+            {
+                var frameDuration = TimeSpan.FromMilliseconds(kAudioFrameDurationMs);
+                var nextFrameTime = Stopwatch.GetTimestamp();
+                int highEnergyFramesRemaining = 0;
+                double currentFrequency = 0;
+                int lastPulseIndex = -1;
+
+                while (audioRunning)
+                {
+                    long now = Stopwatch.GetTimestamp();
+                    double waitMs = (nextFrameTime - now) * 1000.0 / Stopwatch.Frequency;
+                    if (waitMs > 1.0)
+                    {
+                        yield return null;
+                        continue;
+                    }
+                    nextFrameTime += (long)(frameDuration.TotalSeconds * Stopwatch.Frequency);
+
+                    int pulseIdx = currentAudioPulseIndex;
+                    float[] frameData;
+
+                    if (highEnergyFramesRemaining > 0)
+                    {
+                        frameData = GenerateToneFrame(kSamplesPerFrame, currentFrequency);
+                        highEnergyFramesRemaining--;
+                    }
+                    else if (pulseIdx >= 0 && pulseIdx != lastPulseIndex)
+                    {
+                        // New pulse started
+                        currentFrequency = kBaseFrequency + pulseIdx * kFrequencyStep;
+                        frameData = GenerateToneFrame(kSamplesPerFrame, currentFrequency);
+                        highEnergyFramesRemaining = kHighEnergyFramesPerPulse - 1;
+                        lastPulseIndex = pulseIdx;
+                    }
+                    else
+                    {
+                        frameData = GenerateSilentFrame(kSamplesPerFrame);
+                    }
+
+                    audioSource.PushFrame(frameData, kAudioChannels, kAudioSampleRate);
+                }
+            }
+
+            var audioFrameCoroutine = TestCoroutineRunner.Start(PushAudioFrames());
+
+            // --- Warm up ---
+            Debug.Log($"Warming up for {kAVSyncWarmupSeconds}s...");
+            yield return new WaitForSeconds(kAVSyncWarmupSeconds);
+
+            // --- Send simultaneous A/V pulses ---
+            Debug.Log("Starting A/V pulse transmission...");
+
+            for (int pulsesSent = 0; pulsesSent < kTotalPulses; pulsesSent++)
+            {
+                // Start both audio and video pulse simultaneously
+                int videoEncoded = VideoPulseCodec.Encode(pulsesSent);
+                videoSource.SetPulseIndex(videoEncoded);
+                lock (lockObj)
+                {
+                    sendTimestamps[pulsesSent] = Stopwatch.GetTimestamp();
+                }
+                currentAudioPulseIndex = pulsesSent;
+
+                Debug.Log($"Sent A/V pulse {pulsesSent + 1}/{kTotalPulses}");
+
+                // Hold pulse
+                yield return new WaitForSeconds(kAVSyncPulseDurationSeconds);
+
+                // Reset both to idle
+                videoSource.SetPulseIndex(VideoPulseCodec.Encode(-1));
+                currentAudioPulseIndex = -1;
+
+                // Wait before next pulse
+                yield return new WaitForSeconds(kAVSyncPulseIntervalSeconds);
+            }
+
+            // Wait for last echoes
+            yield return new WaitForSeconds(kAVSyncEchoTimeoutSeconds);
+
+            // Stop audio pusher
+            audioRunning = false;
+            yield return null;
+
+            // --- Compute results ---
+            var audioStats = new LatencyStats();
+            var videoStats = new LatencyStats();
+            var desyncStats = new LatencyStats();
+            int audioMissed = 0, videoMissed = 0, bothReceived = 0;
+
+            lock (lockObj)
+            {
+                for (int i = 0; i < kTotalPulses; i++)
+                {
+                    if (sendTimestamps[i] == 0) continue;
+
+                    bool hasAudio = audioReceiveTicks[i] != 0;
+                    bool hasVideo = videoReceiveTicks[i] != 0;
+
+                    if (!hasAudio) audioMissed++;
+                    if (!hasVideo) videoMissed++;
+
+                    double audioLatencyMs = hasAudio
+                        ? (audioReceiveTicks[i] - sendTimestamps[i]) * 1000.0 / Stopwatch.Frequency
+                        : -1;
+                    double videoLatencyMs = hasVideo
+                        ? (videoReceiveTicks[i] - sendTimestamps[i]) * 1000.0 / Stopwatch.Frequency
+                        : -1;
+
+                    if (hasAudio && audioLatencyMs > 0 && audioLatencyMs < 5000)
+                        audioStats.AddMeasurement(audioLatencyMs);
+                    if (hasVideo && videoLatencyMs > 0 && videoLatencyMs < 5000)
+                        videoStats.AddMeasurement(videoLatencyMs);
+
+                    if (hasAudio && hasVideo && audioLatencyMs > 0 && videoLatencyMs > 0)
+                    {
+                        double desyncMs = videoLatencyMs - audioLatencyMs;
+                        desyncStats.AddMeasurement(desyncMs);
+                        bothReceived++;
+                        Debug.Log($"  Pulse {i}: audio={audioLatencyMs:F2}ms video={videoLatencyMs:F2}ms desync={desyncMs:F2}ms");
+                    }
+                }
+            }
+
+            // --- Print results ---
+            audioStats.PrintStats("A/V Sync - Audio Latency");
+            videoStats.PrintStats("A/V Sync - Video Latency");
+            desyncStats.PrintStats("A/V Sync - Desync (positive = video lags audio)");
+
+            Debug.Log($"Pulses with both A+V received: {bothReceived}/{kTotalPulses}");
+            if (audioMissed > 0) Debug.Log($"Audio missed: {audioMissed}");
+            if (videoMissed > 0) Debug.Log($"Video missed: {videoMissed}");
+
+            // --- Cleanup ---
+            TestCoroutineRunner.Stop(audioFrameCoroutine);
+            audioStream.Dispose();
+            UnityEngine.Object.Destroy(audioReceiverGO);
+            UnityEngine.Object.Destroy(listenerGO);
+            audioSource.Stop();
+            audioSource.Dispose();
+
+            videoStream.Stop();
+            videoStream.Dispose();
+            TestCoroutineRunner.Stop(videoStreamCoroutine);
+            videoSource.Stop();
+            videoSource.Dispose();
+            TestCoroutineRunner.Stop(videoSourceCoroutine);
+
+            Assert.Greater(bothReceived, 0, "At least one pulse should be received by both audio and video");
+        }
+
+        // =====================================================================
         // Audio Generation Helpers
         // =====================================================================
 
