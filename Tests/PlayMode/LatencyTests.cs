@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -156,7 +155,7 @@ namespace LiveKit.PlayModeTests
             var audioStream = new AudioStream(subscribedTrack, unityAudioSource);
 
             // Add PulseDetector AFTER AudioStream so OnAudioFilterRead order is correct
-            var pulseDetector = receiverGO.AddComponent<PulseDetector>();
+            var pulseDetector = receiverGO.AddComponent<AudioPulseDetector>();
             pulseDetector.TotalPulses = kTotalPulses;
             pulseDetector.BaseFrequency = kBaseFrequency;
             pulseDetector.FrequencyStep = kFrequencyStep;
@@ -376,46 +375,7 @@ namespace LiveKit.PlayModeTests
             // Subscribe to received video frames (fires on main thread)
             videoStream.FrameReceived += (frame) =>
             {
-                var buffer = videoStream.VideoBuffer;
-                if (buffer == null || !buffer.IsValid)
-                    return;
-
-                if (buffer.Info.Components.Count == 0)
-                    return;
-
-                var yComponent = buffer.Info.Components[0];
-                if (!yComponent.HasDataPtr)
-                    return;
-
-                // Decode spatial binary pattern from Y plane
-                // Sample the center of each vertical strip at 3 rows to get reliable values
-                var yPtr = (IntPtr)yComponent.DataPtr;
-                int width = (int)buffer.Width;
-                int stripWidth = width / TestVideoSource.NumStrips;
-                int[] sampleRows = { (int)buffer.Height / 4, (int)buffer.Height / 2, (int)(buffer.Height * 3 / 4) };
-
-                int decodedIndex = 0;
-                for (int strip = 0; strip < TestVideoSource.NumStrips; strip++)
-                {
-                    int centerX = strip * stripWidth + stripWidth / 2;
-                    int ySum = 0;
-                    foreach (int row in sampleRows)
-                    {
-                        int offset = row * width + centerX;
-                        ySum += Marshal.ReadByte(yPtr, offset);
-                    }
-                    int avgY = ySum / sampleRows.Length;
-
-                    if (avgY > kVideoStripThreshold)
-                        decodedIndex |= (1 << strip);
-                }
-
-                // Index 0 = all black = no pulse
-                if (decodedIndex == 0)
-                    return;
-
-                // Pulse indices are 1-based in encoding (pulse 0 sends index 1, etc.)
-                int pulseIndex = decodedIndex - 1;
+                int pulseIndex = VideoPulseCodec.Decode(videoStream.VideoBuffer, kVideoStripThreshold);
                 if (pulseIndex < 0 || pulseIndex >= kTotalPulses)
                     return;
                 if (pulseReceived[pulseIndex])
@@ -431,7 +391,7 @@ namespace LiveKit.PlayModeTests
                 {
                     pulseReceived[pulseIndex] = true;
                     stats.AddMeasurement(latencyMs);
-                    Debug.Log($"  Pulse {pulseIndex}: latency {latencyMs:F2} ms (decoded: {decodedIndex})");
+                    Debug.Log($"  Pulse {pulseIndex}: latency {latencyMs:F2} ms");
                 }
             };
 
@@ -442,19 +402,18 @@ namespace LiveKit.PlayModeTests
             // --- Send video pulses ---
             Debug.Log("Starting video pulse transmission...");
 
-            // Encode pulse index as 1-based so that index 0 (all black) means "no pulse"
             for (int pulsesSent = 0; pulsesSent < kTotalPulses; pulsesSent++)
             {
-                int encodedIndex = pulsesSent + 1;
-                videoSource.SetPulseIndex(encodedIndex);
+                int encoded = VideoPulseCodec.Encode(pulsesSent);
+                videoSource.SetPulseIndex(encoded);
                 sendTimestamps[pulsesSent] = Stopwatch.GetTimestamp();
-                Debug.Log($"Sent pulse {pulsesSent + 1}/{kTotalPulses} (pattern: {Convert.ToString(encodedIndex, 2).PadLeft(4, '0')})");
+                Debug.Log($"Sent pulse {pulsesSent + 1}/{kTotalPulses} (pattern: {Convert.ToString(encoded, 2).PadLeft(4, '0')})");
 
                 // Hold pulse so encoder has time to process
                 yield return new WaitForSeconds(kVideoPulseDurationSeconds);
 
                 // Reset to black between pulses
-                videoSource.SetPulseIndex(-1);
+                videoSource.SetPulseIndex(VideoPulseCodec.Encode(-1));
 
                 // Wait before next pulse
                 yield return new WaitForSeconds(kVideoPulseIntervalSeconds);
