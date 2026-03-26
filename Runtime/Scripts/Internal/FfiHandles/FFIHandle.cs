@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
@@ -95,5 +93,3 @@ namespace LiveKit.Internal
         }
     }
 }
-
-#endif

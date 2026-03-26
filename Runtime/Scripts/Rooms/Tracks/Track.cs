@@ -1,9 +1,8 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using System.Threading;
+using LiveKit.Internal.FFIClients.Requests;
 using LiveKit.Rooms.Participants;
 
 namespace LiveKit.Rooms.Tracks
@@ -13,11 +12,11 @@ namespace LiveKit.Rooms.Tracks
         Origin Origin { get; }
         string Sid { get; }
         string Name { get; }
-        LiveKit.Proto.TrackKind Kind { get; }
+        TrackKind Kind { get; }
         StreamState StreamState { get; }
         bool Muted { get; }
         WeakReference<IRoom> Room { get; }
-        WeakReference<LKParticipant> Participant { get; }
+        WeakReference<Participant> Participant { get; }
         FfiHandle? Handle { get; }
         
         void UpdateMuted(bool muted);
@@ -31,20 +30,20 @@ namespace LiveKit.Rooms.Tracks
         public Origin Origin => info.Remote ? Origin.Remote : Origin.Local;
         public string Sid => info.Sid!;
         public string Name => info.Name!;
-        public LiveKit.Proto.TrackKind Kind => info.Kind;
+        public TrackKind Kind => info.Kind;
         public StreamState StreamState => info.StreamState;
         public bool Muted => info.Muted;
         // IsOwned is true if C# owns the handle
         public bool IsOwned => Handle is { IsInvalid: false };
 
         public WeakReference<IRoom> Room { get; private set; }
-        public WeakReference<LKParticipant> Participant { get; private set;}
+        public WeakReference<Participant> Participant { get; private set;}
         public FfiHandle? Handle { get; private set; }
 
-        public void Construct(FfiHandle? handle, TrackInfo info, IRoom room, LKParticipant participant)
+        public void Construct(FfiHandle? handle, TrackInfo info, IRoom room, Participant participant)
         {
             Room = new WeakReference<IRoom>(room);
-            Participant = new WeakReference<LKParticipant>(participant);
+            Participant = new WeakReference<Participant>(participant);
             Handle = handle;
             this.info = info;
         }
@@ -63,5 +62,3 @@ namespace LiveKit.Rooms.Tracks
         }
     }
 }
-
-#endif

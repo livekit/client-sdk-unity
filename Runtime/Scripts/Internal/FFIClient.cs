@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using AOT;
 using LiveKit.Proto;
@@ -431,5 +429,3 @@ namespace LiveKit.Internal
         }
     }
 }
-
-#endif

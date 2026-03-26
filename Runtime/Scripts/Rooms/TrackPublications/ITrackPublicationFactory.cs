@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using LiveKit.Proto;
 
 namespace LiveKit.Rooms.TrackPublications
@@ -13,5 +11,3 @@ namespace LiveKit.Rooms.TrackPublications
         static readonly ITrackPublicationFactory Default = new TrackPublicationFactory();
     }
 }
-
-#endif

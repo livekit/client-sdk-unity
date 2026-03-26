@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using System.Security;
 using System.Runtime.ConstrainedExecution;
@@ -50,5 +48,3 @@ namespace LiveKit.Internal
 #endif
     }
 }
-
-#endif

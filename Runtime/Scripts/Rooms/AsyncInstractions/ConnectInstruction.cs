@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System.Threading;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -21,7 +19,7 @@ namespace LiveKit.Rooms.AsyncInstractions
 
         void OnConnect(ConnectCallback e)
         {
-            LiveKit.Internal.Utils.Debug($"OnConnect.... {e}");
+            Utils.Debug($"OnConnect.... {e}");
             if (_asyncId != e.AsyncId)
                 return;
 
@@ -31,7 +29,7 @@ namespace LiveKit.Rooms.AsyncInstractions
 
             ErrorMessage = e.Error;
             bool success = IsError == false;
-            LiveKit.Internal.Utils.Debug("Connection success: " + success);
+            Utils.Debug("Connection success: " + success);
             if (success)
                 _room.OnConnect(e.Result.Room.Handle, e.Result.Room.Info, e.Result.LocalParticipant, e.Result.Participants);
 
@@ -39,5 +37,3 @@ namespace LiveKit.Rooms.AsyncInstractions
         }
     }
 }
-
-#endif

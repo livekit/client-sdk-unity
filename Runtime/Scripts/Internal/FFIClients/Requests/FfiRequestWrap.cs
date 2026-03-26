@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using Google.Protobuf;
 using LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients;
@@ -67,5 +65,3 @@ namespace LiveKit.Internal.FFIClients.Requests
         }
     }
 }
-
-#endif
