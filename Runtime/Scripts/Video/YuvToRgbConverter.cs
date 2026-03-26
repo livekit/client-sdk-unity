@@ -149,8 +149,6 @@ namespace LiveKit
 		// GPU-side YUV->RGB conversion using shader material.
 		private void GpuConvertToRenderTarget()
 		{
-			Debug.Log($"GPU conversion");
-
 			_yuvToRgbMaterial.SetTexture("_TexY", _planeY);
 			_yuvToRgbMaterial.SetTexture("_TexU", _planeU);
 			_yuvToRgbMaterial.SetTexture("_TexV", _planeV);
