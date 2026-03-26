@@ -127,13 +127,17 @@ namespace LiveKit
 		// CPU-side conversion to RGBA and blit to the output render target.
 		private void CpuConvertToRenderTarget(VideoFrameBuffer buffer, int width, int height)
 		{
+			Debug.Log($"CPU conversion");
+
 			var rgba = buffer.ToRGBA();
 			var tempTex = new Texture2D(width, height, TextureFormat.RGBA32, false);
 			try
 			{
 				tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
 				tempTex.Apply();
-				Graphics.Blit(tempTex, Output);
+				
+				// Also mirror horizontally by flipping the UV scale on the X axis and offsetting.
+				Graphics.Blit(tempTex, Output, new Vector2(-1f, 1f), new Vector2(1f, 0f));
 			}
 			finally
 			{
@@ -145,9 +149,12 @@ namespace LiveKit
 		// GPU-side YUV->RGB conversion using shader material.
 		private void GpuConvertToRenderTarget()
 		{
+			Debug.Log($"GPU conversion");
+
 			_yuvToRgbMaterial.SetTexture("_TexY", _planeY);
 			_yuvToRgbMaterial.SetTexture("_TexU", _planeU);
 			_yuvToRgbMaterial.SetTexture("_TexV", _planeV);
+			
 			Graphics.Blit(Texture2D.blackTexture, Output, _yuvToRgbMaterial);
 		}
 	}
