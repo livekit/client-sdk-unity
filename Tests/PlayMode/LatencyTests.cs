@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -273,6 +274,195 @@ namespace LiveKit.PlayModeTests
             audioSource.Dispose();
 
             Assert.Greater(stats.Count, 0, "At least one audio latency measurement should be recorded");
+        }
+
+        // =====================================================================
+        // Test 3: Video Latency Measurement using Bright Pulses
+        // =====================================================================
+
+        // Video configuration
+        const int kVideoWidth = 64;
+        const int kVideoHeight = 64;
+        const int kVideoBrightnessThreshold = 50;
+        const float kVideoPulseDurationSeconds = 0.5f;
+        const float kVideoPulseIntervalSeconds = 2f;
+        const float kVideoEchoTimeoutSeconds = 3f;
+        const float kVideoWarmupSeconds = 3f;
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator VideoLatency()
+        {
+            Debug.Log("\n=== Video Latency Measurement Test ===");
+            Debug.Log("Using bright pulses to measure video round-trip latency");
+
+            // --- Connect two participants ---
+            var sender = TestRoomContext.ConnectionOptions.Default;
+            sender.Identity = "video-sender";
+            var receiver = TestRoomContext.ConnectionOptions.Default;
+            receiver.Identity = "video-receiver";
+
+            using var context = new TestRoomContext(new[] { receiver, sender });
+            yield return context.ConnectAll();
+            if (context.ConnectionError != null)
+                Assert.Fail(context.ConnectionError);
+
+            var receiverRoom = context.Rooms[0];
+            var senderRoom = context.Rooms[1];
+            Debug.Log($"Receiver connected as: {receiverRoom.LocalParticipant.Identity}");
+            Debug.Log($"Sender connected as: {senderRoom.LocalParticipant.Identity}");
+
+            // --- Wait for sender to be visible to receiver ---
+            var participantExpectation = new Expectation(timeoutSeconds: 10f);
+            if (receiverRoom.RemoteParticipants.ContainsKey(sender.Identity))
+            {
+                participantExpectation.Fulfill();
+            }
+            else
+            {
+                receiverRoom.ParticipantConnected += (p) =>
+                {
+                    if (p.Identity == sender.Identity)
+                        participantExpectation.Fulfill();
+                };
+            }
+            yield return participantExpectation.Wait();
+            if (participantExpectation.Error != null)
+                Assert.Fail($"Sender not visible to receiver: {participantExpectation.Error}");
+
+            // --- Create and publish video track from sender ---
+            var videoSource = new TestVideoSource(kVideoWidth, kVideoHeight);
+            videoSource.Start();
+
+            var videoTrack = LocalVideoTrack.CreateVideoTrack("video-latency-test", videoSource, senderRoom);
+            var publishOptions = new TrackPublishOptions();
+            var publish = senderRoom.LocalParticipant.PublishTrack(videoTrack, publishOptions);
+            yield return publish;
+            if (publish.IsError)
+                Assert.Fail("Failed to publish video track");
+
+            // Start the video source update coroutine (drives ReadBuffer + SendFrame each frame)
+            var sourceUpdateCoroutine = TestCoroutineRunner.Start(videoSource.Update());
+
+            Debug.Log("Video track published, waiting for subscription...");
+
+            // --- Wait for receiver to subscribe to the video track ---
+            RemoteVideoTrack subscribedTrack = null;
+            var trackExpectation = new Expectation(timeoutSeconds: 10f);
+            receiverRoom.TrackSubscribed += (track, publication, participant) =>
+            {
+                if (track is RemoteVideoTrack rvt && participant.Identity == sender.Identity)
+                {
+                    subscribedTrack = rvt;
+                    trackExpectation.Fulfill();
+                }
+            };
+            yield return trackExpectation.Wait();
+            if (trackExpectation.Error != null)
+                Assert.Fail($"Receiver did not subscribe to video track: {trackExpectation.Error}");
+
+            Debug.Log("Video track subscribed, creating video stream...");
+
+            // --- Set up receiver video stream ---
+            var videoStream = new VideoStream(subscribedTrack);
+            videoStream.Start();
+            var streamUpdateCoroutine = TestCoroutineRunner.Start(videoStream.Update());
+
+            // --- Shared state for latency measurement ---
+            var stats = new LatencyStats();
+            long lastSendTimeTicks = 0;
+            bool waitingForEcho = false;
+            int pulsesSent = 0;
+            int missedPulses = 0;
+
+            // Subscribe to received video frames (fires on main thread)
+            videoStream.FrameReceived += (frame) =>
+            {
+                var buffer = videoStream.VideoBuffer;
+                if (buffer == null || !buffer.IsValid)
+                    return;
+
+                if (buffer.Info.Components.Count == 0)
+                    return;
+
+                var yComponent = buffer.Info.Components[0];
+                if (!yComponent.HasDataPtr)
+                    return;
+
+                // Sample Y plane to get average brightness
+                var yPtr = (IntPtr)yComponent.DataPtr;
+                int sampleCount = Math.Min(16, (int)(buffer.Width * buffer.Height));
+                int ySum = 0;
+                for (int i = 0; i < sampleCount; i++)
+                {
+                    ySum += Marshal.ReadByte(yPtr, i);
+                }
+                int avgY = ySum / sampleCount;
+
+                if (!waitingForEcho || avgY <= kVideoBrightnessThreshold)
+                    return;
+
+                long receiveTimeTicks = Stopwatch.GetTimestamp();
+                double latencyMs = (receiveTimeTicks - lastSendTimeTicks)
+                    * 1000.0 / Stopwatch.Frequency;
+
+                if (latencyMs > 0 && latencyMs < 5000)
+                {
+                    waitingForEcho = false;
+                    stats.AddMeasurement(latencyMs);
+                    Debug.Log($"  Pulse {pulsesSent + 1}: latency {latencyMs:F2} ms (Y: {avgY})");
+                }
+            };
+
+            // --- Warm up: send black frames so the encoder stabilizes ---
+            Debug.Log($"Warming up encoder for {kVideoWarmupSeconds}s...");
+            yield return new WaitForSeconds(kVideoWarmupSeconds);
+
+            // --- Send video pulses ---
+            Debug.Log("Starting video pulse transmission...");
+
+            for (pulsesSent = 0; pulsesSent < kTotalPulses; pulsesSent++)
+            {
+                // Send bright pulse
+                videoSource.SetBright(true);
+                lastSendTimeTicks = Stopwatch.GetTimestamp();
+                waitingForEcho = true;
+                Debug.Log($"Sent pulse {pulsesSent + 1}/{kTotalPulses}");
+
+                // Hold pulse for kVideoPulseDurationSeconds (time-based, not frame-count)
+                yield return new WaitForSeconds(kVideoPulseDurationSeconds);
+
+                // Reset to black between pulses
+                videoSource.SetBright(false);
+
+                // Wait before next pulse
+                yield return new WaitForSeconds(kVideoPulseIntervalSeconds);
+
+                // Check for timeout
+                if (waitingForEcho)
+                {
+                    Debug.Log($"  Echo timeout for pulse {pulsesSent + 1}, moving on...");
+                    waitingForEcho = false;
+                    missedPulses++;
+                }
+            }
+
+            // Wait for last echo
+            yield return new WaitForSeconds(kVideoEchoTimeoutSeconds);
+
+            // --- Print results ---
+            stats.PrintStats("Video Latency Statistics");
+            if (missedPulses > 0)
+                Debug.Log($"Missed pulses (timeout): {missedPulses}");
+
+            // --- Cleanup ---
+            videoStream.Stop();
+            videoStream.Dispose();
+            TestCoroutineRunner.Stop(streamUpdateCoroutine);
+            videoSource.Stop();
+            videoSource.Dispose();
+            TestCoroutineRunner.Stop(sourceUpdateCoroutine);
+
+            Assert.Greater(stats.Count, 0, "At least one video latency measurement should be recorded");
         }
 
         // =====================================================================
