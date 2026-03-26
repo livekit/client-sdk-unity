@@ -1,4 +1,3 @@
-
 using Cysharp.Threading.Tasks;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -7,8 +6,6 @@ using UnityEngine;
 
 namespace LiveKit.Rooms.VideoStreaming
 {
-
-#if !UNITY_WEBGL || UNITY_EDITOR
     public class VideoStream : IVideoStream
     {
         private static readonly ProfilerMarker marker = new("LiveKit.VideoStream.DecodeLastFrame");
@@ -104,7 +101,6 @@ namespace LiveKit.Rooms.VideoStreaming
             }
         }
     }
-#endif
 
     public readonly struct VideoStreamInfo
     {

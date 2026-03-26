@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LiveKit.Rooms.Participants
 {
-    public delegate void ParticipantDelegate(LKParticipant participant, UpdateFromParticipant update);
+    public delegate void ParticipantDelegate(Participant participant, UpdateFromParticipant update);
     
     public enum UpdateFromParticipant
     {
@@ -17,22 +17,22 @@ namespace LiveKit.Rooms.Participants
     {
         event ParticipantDelegate UpdatesFromParticipant;
         
-        LKParticipant LocalParticipant();
+        Participant LocalParticipant();
 
-        LKParticipant? RemoteParticipant(string identity);
+        Participant? RemoteParticipant(string identity);
 
-        IReadOnlyDictionary<string, LKParticipant> RemoteParticipantIdentities();
+        IReadOnlyDictionary<string, Participant> RemoteParticipantIdentities();
     }
 
     public interface IMutableParticipantsHub : IParticipantsHub
     {
-        void AssignLocal(LKParticipant participant);
+        void AssignLocal(Participant participant);
 
-        void AddRemote(LKParticipant participant);
+        void AddRemote(Participant participant);
         
-        void RemoveRemote(LKParticipant participant);
+        void RemoveRemote(Participant participant);
         
-        void NotifyParticipantUpdate(LKParticipant participant, UpdateFromParticipant update);
+        void NotifyParticipantUpdate(Participant participant, UpdateFromParticipant update);
 
         void Clear();
     }

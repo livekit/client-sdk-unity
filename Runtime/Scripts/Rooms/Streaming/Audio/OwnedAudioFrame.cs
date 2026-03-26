@@ -1,6 +1,4 @@
-﻿#if !UNITY_WEBGL || UNITY_EDITOR
-
-using System;
+﻿using System;
 using LiveKit.Audio;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -36,5 +34,3 @@ namespace LiveKit.Rooms.Streaming.Audio
         }
     }
 }
-
-#endif

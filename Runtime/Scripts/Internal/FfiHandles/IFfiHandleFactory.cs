@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 
 namespace LiveKit.Internal
@@ -15,5 +13,3 @@ namespace LiveKit.Internal
         static readonly IFfiHandleFactory Default = new FfiHandleFactory();
     }
 }
-
-#endif

@@ -1,6 +1,4 @@
 #if DCL_LIVEKIT_CAMERA_VIDEO_INPUT_ON
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit.RtcSources.Video;
 using RichTypes;
@@ -99,7 +97,4 @@ namespace Examples.CameraCapture
         }
     }
 }
-
-#endif
-
 #endif

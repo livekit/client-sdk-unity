@@ -1,12 +1,13 @@
-﻿#if !UNITY_WEBGL || UNITY_EDITOR
-
-using System;
+﻿using System;
 using LiveKit.Audio;
 using LiveKit.Internal;
 using Livekit.Types;
 using RichTypes;
 using UnityEngine;
+
+#if !UNITY_WEBGL
 using LiveKit.Scripts.Audio;
+#endif
 
 namespace LiveKit.Audio
 {
@@ -128,5 +129,3 @@ namespace LiveKit.Audio
         }
     }
 }
-
-#endif

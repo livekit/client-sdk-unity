@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Pools.Memory;
@@ -28,5 +26,3 @@ namespace LiveKit.Rooms.Tracks
         }
     }
 }
-
-#endif

@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System.Threading;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -13,9 +11,9 @@ namespace LiveKit.Rooms.AsyncInstractions
     {
         private ulong _asyncId;
         private Room _room;
-        private LiveKit.Rooms.Tracks.ITrack _track;
+        private ITrack _track;
 
-        internal PublishTrackInstruction(ulong asyncId, Room room, LiveKit.Rooms.Tracks.ITrack track, CancellationToken token) : base(token)
+        internal PublishTrackInstruction(ulong asyncId, Room room, ITrack track, CancellationToken token) : base(token)
         {
             _asyncId = asyncId;
             _room = room;
@@ -48,5 +46,3 @@ namespace LiveKit.Rooms.AsyncInstractions
         }
     }
 }
-
-#endif

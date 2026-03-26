@@ -1,5 +1,3 @@
-#if !UNITY_WEBGL || UNITY_EDITOR
-
 using System;
 using LiveKit.Internal;
 
@@ -21,5 +19,3 @@ namespace LiveKit
         void Stop();
     }
 }
-
-#endif
