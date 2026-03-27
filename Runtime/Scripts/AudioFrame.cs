@@ -57,6 +57,8 @@ namespace LiveKit
                 {
                     _allocatedData.Dispose();
                 }
+
+                _handle?.Dispose();
                 _disposed = true;
             }
         }

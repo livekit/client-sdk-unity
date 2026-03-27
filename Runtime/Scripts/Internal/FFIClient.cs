@@ -276,67 +276,80 @@ namespace LiveKit.Internal
             var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
 
+            // Keep remote audio delivery off the Unity main-thread dispatch queue. Audio playback
+            // has its own synchronization path and benefits from handling frames as soon as the
+            // native callback arrives.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
+            {
+                DispatchEvent(response);
+                return;
+            }
+
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
-            Instance._context?.Post((resp) =>
+            Instance._context?.Post(static (resp) =>
             {
                 var r = resp as FfiEvent;
                 if (r == null)
                 {
                     return;
                 }
-#if LK_VERBOSE
-                if (r.MessageCase != FfiEvent.MessageOneofCase.Logs)
-                    Utils.Debug("Callback: " + r.MessageCase);
-#endif
-                var requestAsyncId = ExtractRequestAsyncId(r);
-                if (requestAsyncId.HasValue && Instance.TryDispatchPendingCallback(requestAsyncId.Value, r))
-                {
-                    // Async request/response callbacks are one-shot. Once matched, they should not
-                    // also flow through the general event switch below.
-                    return;
-                }
-
-                switch (r.MessageCase)
-                {
-                    case FfiEvent.MessageOneofCase.Logs:
-                        Utils.HandleLogBatch(r.Logs);
-                        break;
-                    case FfiEvent.MessageOneofCase.PublishData:
-                        break;
-                    case FfiEvent.MessageOneofCase.RoomEvent:
-                        Instance.RoomEventReceived?.Invoke(r.RoomEvent);
-                        break;
-                    case FfiEvent.MessageOneofCase.TrackEvent:
-                        Instance.TrackEventReceived?.Invoke(r.TrackEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.RpcMethodInvocation:
-                        Instance.RpcMethodInvocationReceived?.Invoke(r.RpcMethodInvocation);
-                        break;
-                    case FfiEvent.MessageOneofCase.Disconnect:
-                        Instance.DisconnectReceived?.Invoke(r.Disconnect!);
-                        break;
-                    case FfiEvent.MessageOneofCase.PublishTranscription:
-                        break;
-                    case FfiEvent.MessageOneofCase.VideoStreamEvent:
-                        Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
-                        break;
-                    // Uses high-level data stream interface
-                    case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
-                        Instance.ByteStreamReaderEventReceived?.Invoke(r.ByteStreamReaderEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
-                        Instance.TextStreamReaderEventReceived?.Invoke(r.TextStreamReaderEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.Panic:
-                        break;
-                    default:
-                        break;
-                }
+                DispatchEvent(r);
             }, response);
+        }
+
+        private static void DispatchEvent(FfiEvent ffiEvent)
+        {
+#if LK_VERBOSE
+            if (ffiEvent.MessageCase != FfiEvent.MessageOneofCase.Logs)
+                Utils.Debug("Callback: " + ffiEvent.MessageCase);
+#endif
+            var requestAsyncId = ExtractRequestAsyncId(ffiEvent);
+            if (requestAsyncId.HasValue && Instance.TryDispatchPendingCallback(requestAsyncId.Value, ffiEvent))
+            {
+                // Async request/response callbacks are one-shot. Once matched, they should not
+                // also flow through the general event switch below.
+                return;
+            }
+
+            switch (ffiEvent.MessageCase)
+            {
+                case FfiEvent.MessageOneofCase.Logs:
+                    Utils.HandleLogBatch(ffiEvent.Logs);
+                    break;
+                case FfiEvent.MessageOneofCase.PublishData:
+                    break;
+                case FfiEvent.MessageOneofCase.RoomEvent:
+                    Instance.RoomEventReceived?.Invoke(ffiEvent.RoomEvent);
+                    break;
+                case FfiEvent.MessageOneofCase.TrackEvent:
+                    Instance.TrackEventReceived?.Invoke(ffiEvent.TrackEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.RpcMethodInvocation:
+                    Instance.RpcMethodInvocationReceived?.Invoke(ffiEvent.RpcMethodInvocation);
+                    break;
+                case FfiEvent.MessageOneofCase.Disconnect:
+                    Instance.DisconnectReceived?.Invoke(ffiEvent.Disconnect!);
+                    break;
+                case FfiEvent.MessageOneofCase.PublishTranscription:
+                    break;
+                case FfiEvent.MessageOneofCase.VideoStreamEvent:
+                    Instance.VideoStreamEventReceived?.Invoke(ffiEvent.VideoStreamEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.AudioStreamEvent:
+                    Instance.AudioStreamEventReceived?.Invoke(ffiEvent.AudioStreamEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
+                    Instance.ByteStreamReaderEventReceived?.Invoke(ffiEvent.ByteStreamReaderEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
+                    Instance.TextStreamReaderEventReceived?.Invoke(ffiEvent.TextStreamReaderEvent!);
+                    break;
+                case FfiEvent.MessageOneofCase.Panic:
+                    break;
+                default:
+                    break;
+            }
         }
 
         private bool TryDispatchPendingCallback(ulong requestAsyncId, FfiEvent ffiEvent)
