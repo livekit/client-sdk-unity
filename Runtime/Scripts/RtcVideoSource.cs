@@ -42,7 +42,7 @@ namespace LiveKit
         private bool _muted = false;
         public override bool Muted => _muted;
 
-        internal RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
+        protected RtcVideoSource(VideoStreamSource sourceType, VideoBufferType bufferType)
         {
             _sourceType = sourceType;
             _bufferType = bufferType;
