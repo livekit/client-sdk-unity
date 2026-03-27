@@ -88,3 +88,7 @@ downloads~
 # Ignore temporaries from GameCI
 **/[Aa]rtifacts/
 **/[Cc]odeCoverage/
+
+# Here we keep private credentials
+LiveKitCredentialsExtension.cs
+LiveKitCredentialsExtension.cs.meta
