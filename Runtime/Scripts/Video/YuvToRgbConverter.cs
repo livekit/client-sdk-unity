@@ -25,7 +25,7 @@ namespace LiveKit
 					Output.Release();
 					UnityEngine.Object.Destroy(Output);
 				}
-				Output = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32);
+				Output = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
 				Output.Create();
 				changed = true;
 			}
@@ -133,7 +133,9 @@ namespace LiveKit
 			{
 				tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
 				tempTex.Apply();
-				Graphics.Blit(tempTex, Output);
+				
+				// Also mirror horizontally by flipping the UV scale on the X axis and offsetting.
+				Graphics.Blit(tempTex, Output, new Vector2(-1f, 1f), new Vector2(1f, 0f));
 			}
 			finally
 			{
@@ -148,6 +150,7 @@ namespace LiveKit
 			_yuvToRgbMaterial.SetTexture("_TexY", _planeY);
 			_yuvToRgbMaterial.SetTexture("_TexU", _planeU);
 			_yuvToRgbMaterial.SetTexture("_TexV", _planeV);
+			
 			Graphics.Blit(Texture2D.blackTexture, Output, _yuvToRgbMaterial);
 		}
 	}

@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "Meet",
+			"path": "Samples~/Meet"
+		},
+		{
+			"name": "client-sdk-unity",
+			"path": "."
+		}
+	],
+	"settings": {
+		"dotnet.defaultSolution": "Meet.sln"
+	}
+}
