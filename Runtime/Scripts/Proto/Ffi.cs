@@ -269,7 +269,7 @@ namespace LiveKit.Proto {
             "ZW1vdGVEYXRhVHJhY2tJc1B1Ymxpc2hlZFJlc3BvbnNlSAASWAocZGF0YV90",
             "cmFja19zdWJzY3JpcHRpb25fcmVhZBhKIAEoCzIwLmxpdmVraXQucHJvdG8u",
             "RGF0YVRyYWNrU3Vic2NyaXB0aW9uUmVhZFJlc3BvbnNlSABCCQoHbWVzc2Fn",
-            "ZSLrFgoIRmZpRXZlbnQSLgoKcm9vbV9ldmVudBgBIAEoCzIYLmxpdmVraXQu",
+            "ZSKgFgoIRmZpRXZlbnQSLgoKcm9vbV9ldmVudBgBIAEoCzIYLmxpdmVraXQu",
             "cHJvdG8uUm9vbUV2ZW50SAASMAoLdHJhY2tfZXZlbnQYAiABKAsyGS5saXZl",
             "a2l0LnByb3RvLlRyYWNrRXZlbnRIABI9ChJ2aWRlb19zdHJlYW1fZXZlbnQY",
             "AyABKAsyHy5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtRXZlbnRIABI9ChJh",
@@ -330,26 +330,24 @@ namespace LiveKit.Proto {
             "VGV4dENhbGxiYWNrSAASPAoKc2VuZF9ieXRlcxgpIAEoCzImLmxpdmVraXQu",
             "cHJvdG8uU3RyZWFtU2VuZEJ5dGVzQ2FsbGJhY2tIABJFChJwdWJsaXNoX2Rh",
             "dGFfdHJhY2sYKiABKAsyJy5saXZla2l0LnByb3RvLlB1Ymxpc2hEYXRhVHJh",
-            "Y2tDYWxsYmFja0gAEkkKFHN1YnNjcmliZV9kYXRhX3RyYWNrGCsgASgLMiku",
-            "bGl2ZWtpdC5wcm90by5TdWJzY3JpYmVEYXRhVHJhY2tDYWxsYmFja0gAElIK",
-            "HWRhdGFfdHJhY2tfc3Vic2NyaXB0aW9uX2V2ZW50GCwgASgLMikubGl2ZWtp",
-            "dC5wcm90by5EYXRhVHJhY2tTdWJzY3JpcHRpb25FdmVudEgAQgkKB21lc3Nh",
-            "Z2UiHwoORGlzcG9zZVJlcXVlc3QSDQoFYXN5bmMYASACKAgiIwoPRGlzcG9z",
-            "ZVJlc3BvbnNlEhAKCGFzeW5jX2lkGAEgASgEIiMKD0Rpc3Bvc2VDYWxsYmFj",
-            "axIQCghhc3luY19pZBgBIAIoBCKFAQoJTG9nUmVjb3JkEiYKBWxldmVsGAEg",
-            "AigOMhcubGl2ZWtpdC5wcm90by5Mb2dMZXZlbBIOCgZ0YXJnZXQYAiACKAkS",
-            "EwoLbW9kdWxlX3BhdGgYAyABKAkSDAoEZmlsZRgEIAEoCRIMCgRsaW5lGAUg",
-            "ASgNEg8KB21lc3NhZ2UYBiACKAkiNQoITG9nQmF0Y2gSKQoHcmVjb3JkcxgB",
-            "IAMoCzIYLmxpdmVraXQucHJvdG8uTG9nUmVjb3JkIhgKBVBhbmljEg8KB21l",
-            "c3NhZ2UYASACKAkqUwoITG9nTGV2ZWwSDQoJTE9HX0VSUk9SEAASDAoITE9H",
-            "X1dBUk4QARIMCghMT0dfSU5GTxACEg0KCUxPR19ERUJVRxADEg0KCUxPR19U",
-            "UkFDRRAEQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "Y2tDYWxsYmFja0gAElIKHWRhdGFfdHJhY2tfc3Vic2NyaXB0aW9uX2V2ZW50",
+            "GCsgASgLMikubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTdWJzY3JpcHRpb25F",
+            "dmVudEgAQgkKB21lc3NhZ2UiHwoORGlzcG9zZVJlcXVlc3QSDQoFYXN5bmMY",
+            "ASACKAgiIwoPRGlzcG9zZVJlc3BvbnNlEhAKCGFzeW5jX2lkGAEgASgEIiMK",
+            "D0Rpc3Bvc2VDYWxsYmFjaxIQCghhc3luY19pZBgBIAIoBCKFAQoJTG9nUmVj",
+            "b3JkEiYKBWxldmVsGAEgAigOMhcubGl2ZWtpdC5wcm90by5Mb2dMZXZlbBIO",
+            "CgZ0YXJnZXQYAiACKAkSEwoLbW9kdWxlX3BhdGgYAyABKAkSDAoEZmlsZRgE",
+            "IAEoCRIMCgRsaW5lGAUgASgNEg8KB21lc3NhZ2UYBiACKAkiNQoITG9nQmF0",
+            "Y2gSKQoHcmVjb3JkcxgBIAMoCzIYLmxpdmVraXQucHJvdG8uTG9nUmVjb3Jk",
+            "IhgKBVBhbmljEg8KB21lc3NhZ2UYASACKAkqUwoITG9nTGV2ZWwSDQoJTE9H",
+            "X0VSUk9SEAASDAoITE9HX1dBUk4QARIMCghMT0dfSU5GTxACEg0KCUxPR19E",
+            "RUJVRxADEg0KCUxPR19UUkFDRRAEQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, global::LiveKit.Proto.TrackPublicationReflection.Descriptor, global::LiveKit.Proto.RoomReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.AudioFrameReflection.Descriptor, global::LiveKit.Proto.RpcReflection.Descriptor, global::LiveKit.Proto.DataStreamReflection.Descriptor, global::LiveKit.Proto.DataTrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.LogLevel), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "E2Ee", "AudioStreamFromParticipant", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "EditChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose", "SendBytes", "SetRemoteTrackPublicationQuality", "PublishDataTrack", "LocalDataTrackTryPush", "LocalDataTrackUnpublish", "LocalDataTrackIsPublished", "SubscribeDataTrack", "RemoteDataTrackIsPublished", "DataTrackSubscriptionRead" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "AudioStreamFromParticipant", "E2Ee", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose", "SendBytes", "SetRemoteTrackPublicationQuality", "PublishDataTrack", "LocalDataTrackTryPush", "LocalDataTrackUnpublish", "LocalDataTrackIsPublished", "SubscribeDataTrack", "RemoteDataTrackIsPublished", "DataTrackSubscriptionRead" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "PublishTranscription", "CaptureAudioFrame", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetStats", "Logs", "GetSessionStats", "Panic", "PublishSipDtmf", "ChatMessage", "PerformRpc", "RpcMethodInvocation", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "ByteStreamReaderEvent", "ByteStreamReaderReadAll", "ByteStreamReaderWriteToFile", "ByteStreamOpen", "ByteStreamWriterWrite", "ByteStreamWriterClose", "SendFile", "TextStreamReaderEvent", "TextStreamReaderReadAll", "TextStreamOpen", "TextStreamWriterWrite", "TextStreamWriterClose", "SendText", "SendBytes", "PublishDataTrack", "SubscribeDataTrack", "DataTrackSubscriptionEvent" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "PublishTranscription", "CaptureAudioFrame", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetStats", "Logs", "GetSessionStats", "Panic", "PublishSipDtmf", "ChatMessage", "PerformRpc", "RpcMethodInvocation", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "ByteStreamReaderEvent", "ByteStreamReaderReadAll", "ByteStreamReaderWriteToFile", "ByteStreamOpen", "ByteStreamWriterWrite", "ByteStreamWriterClose", "SendFile", "TextStreamReaderEvent", "TextStreamReaderReadAll", "TextStreamOpen", "TextStreamWriterWrite", "TextStreamWriterClose", "SendText", "SendBytes", "PublishDataTrack", "DataTrackSubscriptionEvent" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeRequest), global::LiveKit.Proto.DisposeRequest.Parser, new[]{ "Async" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeResponse), global::LiveKit.Proto.DisposeResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeCallback), global::LiveKit.Proto.DisposeCallback.Parser, new[]{ "AsyncId" }, null, null, null, null),
@@ -8783,9 +8781,6 @@ namespace LiveKit.Proto {
         case MessageOneofCase.PublishDataTrack:
           PublishDataTrack = other.PublishDataTrack.Clone();
           break;
-        case MessageOneofCase.SubscribeDataTrack:
-          SubscribeDataTrack = other.SubscribeDataTrack.Clone();
-          break;
         case MessageOneofCase.DataTrackSubscriptionEvent:
           DataTrackSubscriptionEvent = other.DataTrackSubscriptionEvent.Clone();
           break;
@@ -9301,23 +9296,11 @@ namespace LiveKit.Proto {
       }
     }
 
-    /// <summary>Field number for the "subscribe_data_track" field.</summary>
-    public const int SubscribeDataTrackFieldNumber = 43;
+    /// <summary>Field number for the "data_track_subscription_event" field.</summary>
+    public const int DataTrackSubscriptionEventFieldNumber = 43;
     /// <summary>
     /// Data Track (remote)
     /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.SubscribeDataTrackCallback SubscribeDataTrack {
-      get { return messageCase_ == MessageOneofCase.SubscribeDataTrack ? (global::LiveKit.Proto.SubscribeDataTrackCallback) message_ : null; }
-      set {
-        message_ = value;
-        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.SubscribeDataTrack;
-      }
-    }
-
-    /// <summary>Field number for the "data_track_subscription_event" field.</summary>
-    public const int DataTrackSubscriptionEventFieldNumber = 44;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.DataTrackSubscriptionEvent DataTrackSubscriptionEvent {
@@ -9373,8 +9356,7 @@ namespace LiveKit.Proto {
       SendText = 40,
       SendBytes = 41,
       PublishDataTrack = 42,
-      SubscribeDataTrack = 43,
-      DataTrackSubscriptionEvent = 44,
+      DataTrackSubscriptionEvent = 43,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -9446,7 +9428,6 @@ namespace LiveKit.Proto {
       if (!object.Equals(SendText, other.SendText)) return false;
       if (!object.Equals(SendBytes, other.SendBytes)) return false;
       if (!object.Equals(PublishDataTrack, other.PublishDataTrack)) return false;
-      if (!object.Equals(SubscribeDataTrack, other.SubscribeDataTrack)) return false;
       if (!object.Equals(DataTrackSubscriptionEvent, other.DataTrackSubscriptionEvent)) return false;
       if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -9497,7 +9478,6 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SendText) hash ^= SendText.GetHashCode();
       if (messageCase_ == MessageOneofCase.SendBytes) hash ^= SendBytes.GetHashCode();
       if (messageCase_ == MessageOneofCase.PublishDataTrack) hash ^= PublishDataTrack.GetHashCode();
-      if (messageCase_ == MessageOneofCase.SubscribeDataTrack) hash ^= SubscribeDataTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.DataTrackSubscriptionEvent) hash ^= DataTrackSubscriptionEvent.GetHashCode();
       hash ^= (int) messageCase_;
       if (_unknownFields != null) {
@@ -9682,12 +9662,8 @@ namespace LiveKit.Proto {
         output.WriteRawTag(210, 2);
         output.WriteMessage(PublishDataTrack);
       }
-      if (messageCase_ == MessageOneofCase.SubscribeDataTrack) {
-        output.WriteRawTag(218, 2);
-        output.WriteMessage(SubscribeDataTrack);
-      }
       if (messageCase_ == MessageOneofCase.DataTrackSubscriptionEvent) {
-        output.WriteRawTag(226, 2);
+        output.WriteRawTag(218, 2);
         output.WriteMessage(DataTrackSubscriptionEvent);
       }
       if (_unknownFields != null) {
@@ -9864,12 +9840,8 @@ namespace LiveKit.Proto {
         output.WriteRawTag(210, 2);
         output.WriteMessage(PublishDataTrack);
       }
-      if (messageCase_ == MessageOneofCase.SubscribeDataTrack) {
-        output.WriteRawTag(218, 2);
-        output.WriteMessage(SubscribeDataTrack);
-      }
       if (messageCase_ == MessageOneofCase.DataTrackSubscriptionEvent) {
-        output.WriteRawTag(226, 2);
+        output.WriteRawTag(218, 2);
         output.WriteMessage(DataTrackSubscriptionEvent);
       }
       if (_unknownFields != null) {
@@ -10004,9 +9976,6 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.PublishDataTrack) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(PublishDataTrack);
-      }
-      if (messageCase_ == MessageOneofCase.SubscribeDataTrack) {
-        size += 2 + pb::CodedOutputStream.ComputeMessageSize(SubscribeDataTrack);
       }
       if (messageCase_ == MessageOneofCase.DataTrackSubscriptionEvent) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(DataTrackSubscriptionEvent);
@@ -10269,12 +10238,6 @@ namespace LiveKit.Proto {
             PublishDataTrack = new global::LiveKit.Proto.PublishDataTrackCallback();
           }
           PublishDataTrack.MergeFrom(other.PublishDataTrack);
-          break;
-        case MessageOneofCase.SubscribeDataTrack:
-          if (SubscribeDataTrack == null) {
-            SubscribeDataTrack = new global::LiveKit.Proto.SubscribeDataTrackCallback();
-          }
-          SubscribeDataTrack.MergeFrom(other.SubscribeDataTrack);
           break;
         case MessageOneofCase.DataTrackSubscriptionEvent:
           if (DataTrackSubscriptionEvent == null) {
@@ -10673,15 +10636,6 @@ namespace LiveKit.Proto {
             break;
           }
           case 346: {
-            global::LiveKit.Proto.SubscribeDataTrackCallback subBuilder = new global::LiveKit.Proto.SubscribeDataTrackCallback();
-            if (messageCase_ == MessageOneofCase.SubscribeDataTrack) {
-              subBuilder.MergeFrom(SubscribeDataTrack);
-            }
-            input.ReadMessage(subBuilder);
-            SubscribeDataTrack = subBuilder;
-            break;
-          }
-          case 354: {
             global::LiveKit.Proto.DataTrackSubscriptionEvent subBuilder = new global::LiveKit.Proto.DataTrackSubscriptionEvent();
             if (messageCase_ == MessageOneofCase.DataTrackSubscriptionEvent) {
               subBuilder.MergeFrom(DataTrackSubscriptionEvent);
@@ -11079,15 +11033,6 @@ namespace LiveKit.Proto {
             break;
           }
           case 346: {
-            global::LiveKit.Proto.SubscribeDataTrackCallback subBuilder = new global::LiveKit.Proto.SubscribeDataTrackCallback();
-            if (messageCase_ == MessageOneofCase.SubscribeDataTrack) {
-              subBuilder.MergeFrom(SubscribeDataTrack);
-            }
-            input.ReadMessage(subBuilder);
-            SubscribeDataTrack = subBuilder;
-            break;
-          }
-          case 354: {
             global::LiveKit.Proto.DataTrackSubscriptionEvent subBuilder = new global::LiveKit.Proto.DataTrackSubscriptionEvent();
             if (messageCase_ == MessageOneofCase.DataTrackSubscriptionEvent) {
               subBuilder.MergeFrom(DataTrackSubscriptionEvent);
