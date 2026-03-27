@@ -25,7 +25,7 @@ namespace LiveKit
 					Output.Release();
 					UnityEngine.Object.Destroy(Output);
 				}
-				Output = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32);
+				Output = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
 				Output.Create();
 				changed = true;
 			}
