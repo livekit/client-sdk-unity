@@ -61,6 +61,9 @@ namespace LiveKit.Internal
         public event ByteStreamReaderEventReceivedDelegate? ByteStreamReaderEventReceived;
         public event TextStreamReaderEventReceivedDelegate? TextStreamReaderEventReceived;
 
+        // Data Track
+        public event DataTrackSubscriptionEventReceivedDelegate? DataTrackSubscriptionEventReceived;
+
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
@@ -331,6 +334,10 @@ namespace LiveKit.Internal
                     case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
                         Instance.TextStreamReaderEventReceived?.Invoke(r.TextStreamReaderEvent!);
                         break;
+                    // Data Track
+                    case FfiEvent.MessageOneofCase.DataTrackSubscriptionEvent:
+                        Instance.DataTrackSubscriptionEventReceived?.Invoke(r.DataTrackSubscriptionEvent!);
+                        break;
                     case FfiEvent.MessageOneofCase.Panic:
                         break;
                     default:
@@ -395,6 +402,7 @@ namespace LiveKit.Internal
                 FfiEvent.MessageOneofCase.TextStreamWriterWrite => ffiEvent.TextStreamWriterWrite?.AsyncId,
                 FfiEvent.MessageOneofCase.TextStreamWriterClose => ffiEvent.TextStreamWriterClose?.AsyncId,
                 FfiEvent.MessageOneofCase.SendText => ffiEvent.SendText?.AsyncId,
+                FfiEvent.MessageOneofCase.PublishDataTrack => ffiEvent.PublishDataTrack?.AsyncId,
                 _ => null,
             };
         }

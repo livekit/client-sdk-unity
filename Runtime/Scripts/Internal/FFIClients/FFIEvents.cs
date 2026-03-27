@@ -70,4 +70,9 @@ namespace LiveKit.Internal
     internal delegate void ByteStreamReaderEventReceivedDelegate(ByteStreamReaderEvent e);
 
     internal delegate void TextStreamReaderEventReceivedDelegate(TextStreamReaderEvent e);
+
+    // Data Track
+    internal delegate void PublishDataTrackReceivedDelegate(PublishDataTrackCallback e);
+
+    internal delegate void DataTrackSubscriptionEventReceivedDelegate(DataTrackSubscriptionEvent e);
 }
