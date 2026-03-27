@@ -278,13 +278,8 @@ namespace LiveKit
         /// Subscribes to the data track to receive frames.
         /// </summary>
         /// <param name="options">Options for the subscription, such as buffer size.</param>
-        /// <returns>
-        /// A <see cref="SubscribeDataTrackInstruction"/> that completes when the subscription
-        /// is established or errors.
-        /// Check <see cref="SubscribeDataTrackInstruction.IsError"/> and access
-        /// <see cref="SubscribeDataTrackInstruction.Subscription"/> to handle the result.
-        /// </returns>
-        public SubscribeDataTrackInstruction Subscribe(DataTrackSubscribeOptions options)
+        /// <returns>A <see cref="DataTrackSubscription"/> for reading frames.</returns>
+        public DataTrackSubscription Subscribe(DataTrackSubscribeOptions options)
         {
             using var request = FFIBridge.Instance.NewRequest<SubscribeDataTrackRequest>();
             var subReq = request.request;
@@ -295,9 +290,9 @@ namespace LiveKit
                 protoOptions.BufferSize = options.BufferSize.Value;
             subReq.Options = protoOptions;
 
-            var instruction = new SubscribeDataTrackInstruction(request.RequestAsyncId);
             using var response = request.Send();
-            return instruction;
+            FfiResponse res = response;
+            return new DataTrackSubscription(res.SubscribeDataTrack.Subscription);
         }
 
         /// <summary>
@@ -306,13 +301,8 @@ namespace LiveKit
         /// <remarks>
         /// Use the <see cref="Subscribe(DataTrackSubscribeOptions)"/> overload to configure subscription options.
         /// </remarks>
-        /// <returns>
-        /// A <see cref="SubscribeDataTrackInstruction"/> that completes when the subscription
-        /// is established or errors.
-        /// Check <see cref="SubscribeDataTrackInstruction.IsError"/> and access
-        /// <see cref="SubscribeDataTrackInstruction.Subscription"/> to handle the result.
-        /// </returns>
-        public SubscribeDataTrackInstruction Subscribe()
+        /// <returns>A <see cref="DataTrackSubscription"/> for reading frames.</returns>
+        public DataTrackSubscription Subscribe()
         {
             return Subscribe(new DataTrackSubscribeOptions());
         }
@@ -331,64 +321,6 @@ namespace LiveKit
             FfiResponse res = response;
             return res.RemoteDataTrackIsPublished.IsPublished;
         }
-    }
-
-    /// <summary>
-    /// YieldInstruction for <see cref="RemoteDataTrack.Subscribe"/>.
-    /// </summary>
-    /// <remarks>
-    /// Access <see cref="Subscription"/> after checking <see cref="YieldInstruction.IsError"/>.
-    /// </remarks>
-    public sealed class SubscribeDataTrackInstruction : YieldInstruction
-    {
-        private ulong _asyncId;
-        private DataTrackSubscription _subscription;
-
-        internal SubscribeDataTrackInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SubscribeDataTrack, OnSubscribe, OnCanceled);
-        }
-
-        internal void OnSubscribe(SubscribeDataTrackCallback callback)
-        {
-            if (callback.AsyncId != _asyncId)
-                return;
-
-            switch (callback.ResultCase)
-            {
-                case SubscribeDataTrackCallback.ResultOneofCase.Error:
-                    Error = new SubscribeDataTrackError(callback.Error);
-                    IsError = true;
-                    break;
-                case SubscribeDataTrackCallback.ResultOneofCase.Subscription:
-                    _subscription = new DataTrackSubscription(callback.Subscription);
-                    break;
-            }
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            Error = new SubscribeDataTrackError("Canceled");
-            IsError = true;
-            IsDone = true;
-        }
-
-        /// <summary>
-        /// The active subscription to the data track.
-        /// </summary>
-        /// <exception cref="SubscribeDataTrackError">Thrown if the subscription failed.</exception>
-        public DataTrackSubscription Subscription
-        {
-            get
-            {
-                if (IsError) throw Error;
-                return _subscription;
-            }
-        }
-
-        public SubscribeDataTrackError Error { get; private set; }
     }
 
     /// <summary>
@@ -457,8 +389,11 @@ namespace LiveKit
                     _currentInstruction?.SetFrame(new DataTrackFrame(callback.FrameReceived.Frame));
                     break;
                 case DataTrackSubscriptionEvent.DetailOneofCase.Eos:
+                    SubscribeDataTrackError error = null;
+                    if (callback.Eos.HasError)
+                        error = new SubscribeDataTrackError(callback.Eos.Error);
                     IsEos = true;
-                    _currentInstruction?.SetEos();
+                    _currentInstruction?.SetEos(error);
                     Cleanup();
                     break;
             }
@@ -513,10 +448,17 @@ namespace LiveKit
                 IsCurrentReadDone = true;
             }
 
-            internal void SetEos()
+            internal void SetEos(SubscribeDataTrackError error = null)
             {
+                Error = error;
                 IsEos = true;
             }
+
+            /// <summary>
+            /// If the track could not be subscribed to, a desciption of the error.
+            /// Null if the stream ended normally (i.e., due to the track being unpublished).
+            /// </summary>
+            public SubscribeDataTrackError Error { get; private set; }
 
             /// <summary>
             /// The received data track frame.

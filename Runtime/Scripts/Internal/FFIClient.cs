@@ -403,7 +403,6 @@ namespace LiveKit.Internal
                 FfiEvent.MessageOneofCase.TextStreamWriterClose => ffiEvent.TextStreamWriterClose?.AsyncId,
                 FfiEvent.MessageOneofCase.SendText => ffiEvent.SendText?.AsyncId,
                 FfiEvent.MessageOneofCase.PublishDataTrack => ffiEvent.PublishDataTrack?.AsyncId,
-                FfiEvent.MessageOneofCase.SubscribeDataTrack => ffiEvent.SubscribeDataTrack?.AsyncId,
                 _ => null,
             };
         }

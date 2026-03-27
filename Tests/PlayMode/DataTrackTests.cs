@@ -172,11 +172,8 @@ namespace LiveKit.PlayModeTests
             yield return trackExpectation.Wait();
             Assert.IsNull(trackExpectation.Error);
 
-            var subInstruction = remoteTrack.Subscribe();
-            yield return subInstruction;
-
-            Assert.IsFalse(subInstruction.IsError);
-            Assert.IsNotNull(subInstruction.Subscription);
+            var subscription = remoteTrack.Subscribe();
+            Assert.IsNotNull(subscription);
         }
 
         [UnityTest, Category("E2E")]
@@ -209,11 +206,7 @@ namespace LiveKit.PlayModeTests
             yield return trackExpectation.Wait();
             Assert.IsNull(trackExpectation.Error);
 
-            var subInstruction = remoteTrack.Subscribe();
-            yield return subInstruction;
-            Assert.IsFalse(subInstruction.IsError);
-
-            var subscription = subInstruction.Subscription;
+            var subscription = remoteTrack.Subscribe();
 
             var sentPayload = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF };
             publishInstruction.Track.TryPush(new DataTrackFrame(sentPayload));
@@ -221,6 +214,7 @@ namespace LiveKit.PlayModeTests
             var frameInstruction = subscription.ReadFrame();
             yield return frameInstruction;
 
+            Assert.IsNull(frameInstruction.Error);
             Assert.IsTrue(frameInstruction.IsCurrentReadDone, "Should have received a frame");
             Assert.AreEqual(sentPayload, frameInstruction.Frame.Payload);
         }
@@ -255,11 +249,7 @@ namespace LiveKit.PlayModeTests
             yield return trackExpectation.Wait();
             Assert.IsNull(trackExpectation.Error);
 
-            var subInstruction = remoteTrack.Subscribe();
-            yield return subInstruction;
-            Assert.IsFalse(subInstruction.IsError);
-
-            var subscription = subInstruction.Subscription;
+            var subscription = remoteTrack.Subscribe();
 
             var frame = new DataTrackFrame(new byte[] { 0x01 }).WithUserTimestampNow();
             publishInstruction.Track.TryPush(frame);
@@ -267,6 +257,7 @@ namespace LiveKit.PlayModeTests
             var frameInstruction = subscription.ReadFrame();
             yield return frameInstruction;
 
+            Assert.IsNull(frameInstruction.Error);
             Assert.IsTrue(frameInstruction.IsCurrentReadDone, "Should have received a frame");
             Assert.IsNotNull(frameInstruction.Frame.UserTimestamp, "Timestamp should be preserved");
 
