@@ -36,16 +36,19 @@ Shader "Hidden/LiveKit/YUV2RGB"
                 return o;
             }
 
-            inline half3 yuvToRgb709Full(half y, half u, half v)
+            inline half3 yuvToRgb709Limited(half y, half u, half v)
             {
-                // BT.709 full range (0-255)
+                // BT.709 limited range (Y: 16-235, UV: 16-240)
+                half c = y - half(16.0 / 255.0);
                 half d = u - half(128.0 / 255.0);
                 half e = v - half(128.0 / 255.0);
 
+                half Y = half(1.16438356) * c;
+
                 half3 rgb;
-                rgb.r = y + half(1.5748) * e;
-                rgb.g = y - half(0.18733) * d - half(0.46813) * e;
-                rgb.b = y + half(1.8556) * d;
+                rgb.r = Y + half(1.79274107) * e;
+                rgb.g = Y - half(0.21324861) * d - half(0.53290933) * e;
+                rgb.b = Y + half(2.11240179) * d;
                 return saturate(rgb);
             }
 
@@ -57,7 +60,7 @@ Shader "Hidden/LiveKit/YUV2RGB"
                 half y = tex2D(_TexY, uv).r;
                 half u = tex2D(_TexU, uv).r;
                 half v = tex2D(_TexV, uv).r;
-                half3 rgb = yuvToRgb709Full(y, u, v);
+                half3 rgb = yuvToRgb709Limited(y, u, v);
                 // YUV→RGB produces sRGB/gamma values; convert to linear so the
                 // hardware's linear→sRGB write to the sRGB RT gives correct output.
                 rgb = GammaToLinearSpace(rgb);
