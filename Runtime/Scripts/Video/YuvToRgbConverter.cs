@@ -127,8 +127,6 @@ namespace LiveKit
 		// CPU-side conversion to RGBA and blit to the output render target.
 		private void CpuConvertToRenderTarget(VideoFrameBuffer buffer, int width, int height)
 		{
-			Debug.Log($"CPU conversion");
-
 			var rgba = buffer.ToRGBA();
 			var tempTex = new Texture2D(width, height, TextureFormat.RGBA32, false);
 			try
