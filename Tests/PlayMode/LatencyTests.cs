@@ -468,6 +468,8 @@ namespace LiveKit.PlayModeTests
             receiver.Identity = "avsync-receiver";
 
             using var context = new TestRoomContext(new[] { receiver, sender });
+            Debug.Log($"Server used: {context.GetServerUrl()}");
+            
             yield return context.ConnectAll();
             if (context.ConnectionError != null)
                 Assert.Fail(context.ConnectionError);

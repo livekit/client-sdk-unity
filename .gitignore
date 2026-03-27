@@ -91,3 +91,6 @@ downloads~
 
 # Temp generated SDK version file
 **/LiveKitSdkVersionInfo.txt
+# Here we keep private credentials
+LiveKitCredentialsExtension.cs
+LiveKitCredentialsExtension.cs.meta
