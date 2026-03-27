@@ -24,6 +24,11 @@ namespace LiveKit
         private readonly object _lock = new object();
         private bool _disposed = false;
 
+        // Pre-buffering state to prevent audio underruns
+        private bool _isPrimed = false;
+        private const float BufferSizeSeconds = 0.2f;  // 200ms ring buffer for all platforms
+        private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
+
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
         /// given <see cref="AudioSource"/> in the scene.
@@ -54,6 +59,9 @@ namespace LiveKit
             _probe = _audioSource.gameObject.AddComponent<AudioProbe>();
             _probe.AudioRead += OnAudioRead;
             _audioSource.Play();
+
+            // Subscribe to application pause events to handle background/foreground transitions
+            MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
         }
 
         // Called on Unity audio thread
@@ -67,14 +75,19 @@ namespace LiveKit
 
             lock (_lock)
             {
+                // Initialize or reinitialize buffer if audio format changed
                 if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
                 {
-                    int size = (int)(channels * sampleRate * 0.2);
+                    // Always use 200ms ring buffer for all platforms
+                    int bufferSize = (int)(channels * sampleRate * BufferSizeSeconds);
                     _buffer?.Dispose();
-                    _buffer = new RingBuffer(size * sizeof(short));
+                    _buffer = new RingBuffer(bufferSize * sizeof(short));
                     _tempBuffer = new short[data.Length];
                     _numChannels = (uint)channels;
                     _sampleRate = (uint)sampleRate;
+
+                    // Buffer was recreated, need to re-prime
+                    _isPrimed = false;
                 }
 
                 static float S16ToFloat(short v)
@@ -82,14 +95,82 @@ namespace LiveKit
                     return v / 32768f;
                 }
 
-                // "Send" the data to Unity
-                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, data.Length));
-                int read = _buffer.Read(temp);
+                // Check if we have enough data in the buffer to start/continue playback.
+                // Pre-buffering strategy: wait for 30ms of data before playing to avoid underruns.
+                int primingThresholdBytes = (int)(channels * sampleRate * PrimingThresholdSeconds * sizeof(short));
+                int availableBytes = _buffer.AvailableRead();
 
+                if (!_isPrimed)
+                {
+                    // Not yet primed - check if we have enough data to start playing
+                    if (availableBytes >= primingThresholdBytes)
+                    {
+                        _isPrimed = true;
+                        Utils.Debug($"AudioStream primed with {availableBytes} bytes ({availableBytes / (channels * sampleRate * sizeof(short)) * 1000f:F1}ms)");
+                    }
+                    else
+                    {
+                        // Not enough data yet, output silence and wait
+                        Array.Clear(data, 0, data.Length);
+                        return;
+                    }
+                }
+
+                // Try to read audio samples from the ring buffer into our temp buffer.
+                // The ring buffer acts as a jitter buffer between:
+                // - Rust FFI pushing frames (on main thread, with network timing)
+                // - Unity audio thread pulling samples (real-time, consistent timing)
+                var temp = MemoryMarshal.Cast<short, byte>(_tempBuffer.AsSpan().Slice(0, data.Length));
+                int bytesRead = _buffer.Read(temp);
+
+                // Calculate how many samples (shorts) were actually read from the ring buffer.
+                // If the buffer is empty or doesn't have enough data, bytesRead will be less than requested.
+                int samplesRead = bytesRead / sizeof(short);
+
+                // Underrun detection: If we couldn't read enough samples, immediately output silence
+                // and wait for the buffer to refill to 30ms before resuming playback.
+                // This prevents choppy audio from playing partial samples during underrun.
+                if (samplesRead < data.Length * 0.5f)  // If we got less than 50% of requested samples
+                {
+                    _isPrimed = false;
+                    Utils.Debug($"AudioStream underrun detected, re-priming (got {samplesRead}/{data.Length} samples)");
+
+                    // Output silence immediately instead of playing partial/choppy samples.
+                    // On next frames, the !_isPrimed check above will ensure we wait for 30ms
+                    // of data before resuming playback smoothly.
+                    Array.Clear(data, 0, data.Length);
+                    return;
+                }
+
+                // Clear the entire output buffer to silence, then fill with the samples
+                // we successfully read from the ring buffer.
                 Array.Clear(data, 0, data.Length);
-                for (int i = 0; i < data.Length; i++)
+                for (int i = 0; i < samplesRead; i++)
                 {
                     data[i] = S16ToFloat(_tempBuffer[i]);
+                }
+            }
+        }
+
+        // Called when application goes to background or returns to foreground
+        private void OnApplicationPause(bool pause)
+        {
+            if (_disposed)
+                return;
+
+            // When returning from background, clear the ring buffer and reset priming state.
+            // This ensures we don't play stale audio data and forces the stream to wait
+            // for fresh data (30ms) before resuming playback, preventing audio glitches.
+            if (!pause)  // Returning to foreground
+            {
+                lock (_lock)
+                {
+                    if (_buffer != null)
+                    {
+                        _buffer.Clear();
+                        _isPrimed = false;
+                        Utils.Debug("AudioStream cleared buffer on app resume, waiting to re-prime");
+                    }
                 }
             }
         }
@@ -143,6 +224,7 @@ namespace LiveKit
             // as soon as user code drops it. This also prevents late native callbacks from
             // touching partially disposed state.
             FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
+            MonoBehaviourContext.OnApplicationPauseEvent -= OnApplicationPause;
 
             lock (_lock)
             {

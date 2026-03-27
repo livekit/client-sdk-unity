@@ -130,6 +130,17 @@ namespace LiveKit.Internal
             return _buffer.Length - AvailableRead();
         }
 
+        /// <summary>
+        /// Clears all data from the ring buffer, resetting read and write positions.
+        /// Useful when resuming from background to discard stale audio data.
+        /// </summary>
+        public void Clear()
+        {
+            _writePos = 0;
+            _readPos = 0;
+            _sameWrap = true;
+        }
+
         public void Dispose()
         {
             _buffer.Dispose();
