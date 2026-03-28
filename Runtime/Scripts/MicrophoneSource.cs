@@ -14,6 +14,7 @@ namespace LiveKit
     {
         private readonly GameObject _sourceObject;
         private readonly string _deviceName;
+        private readonly uint _sampleRate;
 
         public override event Action<float[], int, int> AudioRead;
 
@@ -27,10 +28,14 @@ namespace LiveKit
         /// get the list of available devices.</param>
         /// <param name="sourceObject">The GameObject to attach the AudioSource to. The object must be kept in the scene
         /// for the duration of the source's lifetime.</param>
-        public MicrophoneSource(string deviceName, GameObject sourceObject) : base(2, RtcAudioSourceType.AudioSourceMicrophone)
+        /// <param name="channels">Number of audio channels (default: 2 for stereo). Configurable at runtime.</param>
+        /// <param name="sampleRate">Sample rate in Hz (default: 48000). Configurable at runtime.</param>
+        public MicrophoneSource(string deviceName, GameObject sourceObject, int channels = 2, uint sampleRate = 48000) 
+            : base(channels, RtcAudioSourceType.AudioSourceMicrophone, sampleRate)
         {
             _deviceName = deviceName;
             _sourceObject = sourceObject;
+            _sampleRate = sampleRate;
         }
 
         /// <summary>
@@ -48,7 +53,6 @@ namespace LiveKit
             base.Start();
             if (_started) return;
 
-
             if (!Application.HasUserAuthorization(mode: UserAuthorization.Microphone))
                 throw new InvalidOperationException("Microphone access not authorized");
 
@@ -60,11 +64,11 @@ namespace LiveKit
 
         private IEnumerator StartMicrophone()
         {
-             var clip = Microphone.Start(
+            var clip = Microphone.Start(
                 _deviceName,
                 loop: true,
                 lengthSec: 1,
-                frequency: (int)DefaultMicrophoneSampleRate
+                frequency: (int)_sampleRate  // Uses configurable sample rate instead of hardcoded default
             );
             if (clip == null)
                 throw new InvalidOperationException("Microphone start failed");
