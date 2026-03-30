@@ -307,6 +307,8 @@ public class LivekitSamples : MonoBehaviour
 
     private IEnumerator PublishLocalMicrophone()
     {
+        Microphone.Start(null, true, 10, 44100);
+
         if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
 
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");

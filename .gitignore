@@ -88,3 +88,6 @@ downloads~
 # Ignore temporaries from GameCI
 **/[Aa]rtifacts/
 **/[Cc]odeCoverage/
+
+# Temp generated SDK version file
+**/LiveKitSdkVersionInfo.txt
