@@ -162,11 +162,59 @@ namespace LiveKit.PlayModeTests
             pulseDetector.MagnitudeThreshold = kMagnitudeThreshold;
 
             // --- Shared state for latency measurement ---
-            var stats = new LatencyStats();
+            var audioThreadStats = new LatencyStats();
+            var frameReceivedStats = new LatencyStats();
             var lockObj = new object();
             var sendTimestamps = new long[kTotalPulses]; // per-pulse send timestamps
             var pulseReceived = new bool[kTotalPulses];  // track which pulses have been matched
+            var frameReceivedPulse = new bool[kTotalPulses]; // track FrameReceived detections
             int missedPulses = 0;
+
+            // FrameReceived callback (runs on main thread, before ring buffer)
+            audioStream.FrameReceived += (frame) =>
+            {
+                int samples = (int)frame.SamplesPerChannel;
+                int channels = (int)frame.NumChannels;
+                int sampleRate = (int)frame.SampleRate;
+                if (samples == 0) return;
+
+                int bestPulse = -1;
+                double bestMag = 0;
+
+                for (int p = 0; p < kTotalPulses; p++)
+                {
+                    double freq = kBaseFrequency + p * kFrequencyStep;
+                    double mag = GoertzelS16(frame.Data, channels, samples, sampleRate, freq);
+                    if (mag > bestMag)
+                    {
+                        bestMag = mag;
+                        bestPulse = p;
+                    }
+                }
+
+                if (bestPulse < 0 || bestMag <= kMagnitudeThreshold)
+                    return;
+
+                lock (lockObj)
+                {
+                    if (bestPulse >= kTotalPulses || frameReceivedPulse[bestPulse])
+                        return;
+                    if (sendTimestamps[bestPulse] == 0)
+                        return;
+
+                    long receiveTimeTicks = Stopwatch.GetTimestamp();
+                    double latencyMs = (receiveTimeTicks - sendTimestamps[bestPulse])
+                        * 1000.0 / Stopwatch.Frequency;
+
+                    if (latencyMs > 0 && latencyMs < 5000)
+                    {
+                        frameReceivedPulse[bestPulse] = true;
+                        frameReceivedStats.AddMeasurement(latencyMs);
+                        Debug.Log($"  Pulse {bestPulse} (FrameReceived): latency {latencyMs:F2} ms " +
+                                  $"(freq: {kBaseFrequency + bestPulse * kFrequencyStep} Hz, mag: {bestMag:F3})");
+                    }
+                }
+            };
 
             // Pulse detector callback (runs on audio thread)
             pulseDetector.PulseReceived += (pulseIndex, magnitude) =>
@@ -187,8 +235,8 @@ namespace LiveKit.PlayModeTests
                     if (latencyMs > 0 && latencyMs < 5000)
                     {
                         pulseReceived[pulseIndex] = true;
-                        stats.AddMeasurement(latencyMs);
-                        Debug.Log($"  Pulse {pulseIndex}: latency {latencyMs:F2} ms " +
+                        audioThreadStats.AddMeasurement(latencyMs);
+                        Debug.Log($"  Pulse {pulseIndex} (AudioThread): latency {latencyMs:F2} ms " +
                                   $"(freq: {kBaseFrequency + pulseIndex * kFrequencyStep} Hz, mag: {magnitude:F3})");
                     }
                 }
@@ -261,7 +309,8 @@ namespace LiveKit.PlayModeTests
             }
 
             // --- Print results ---
-            stats.PrintStats("Audio Latency Statistics");
+            frameReceivedStats.PrintStats("Audio Latency (FrameReceived / main thread)");
+            audioThreadStats.PrintStats("Audio Latency (AudioThread / OnAudioFilterRead)");
             if (missedPulses > 0)
                 Debug.Log($"Missed pulses (timeout): {missedPulses}");
 
@@ -272,7 +321,7 @@ namespace LiveKit.PlayModeTests
             audioSource.Stop();
             audioSource.Dispose();
 
-            Assert.Greater(stats.Count, 0, "At least one audio latency measurement should be recorded");
+            Assert.Greater(audioThreadStats.Count, 0, "At least one audio latency measurement should be recorded");
         }
 
         // =====================================================================
@@ -765,6 +814,30 @@ namespace LiveKit.PlayModeTests
                 }
             }
             return data;
+        }
+
+        /// <summary>
+        /// Goertzel algorithm for S16 PCM data accessed via IntPtr.
+        /// Mirrors AudioPulseDetector.Goertzel but reads short samples from native memory.
+        /// </summary>
+        static unsafe double GoertzelS16(IntPtr data, int channels, int N, int sampleRate, double freq)
+        {
+            short* samples = (short*)data;
+            double k = 0.5 + (double)N * freq / sampleRate;
+            double w = 2.0 * Math.PI * k / N;
+            double coeff = 2.0 * Math.Cos(w);
+            double s0 = 0, s1 = 0, s2 = 0;
+
+            for (int i = 0; i < N; i++)
+            {
+                double sample = samples[i * channels] / 32768.0;
+                s0 = sample + coeff * s1 - s2;
+                s2 = s1;
+                s1 = s0;
+            }
+
+            double power = s1 * s1 + s2 * s2 - coeff * s1 * s2;
+            return Math.Sqrt(Math.Abs(power)) / N;
         }
 
         static float[] GenerateSilentFrame(int samplesPerChannel)
