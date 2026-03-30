@@ -13,6 +13,7 @@ namespace LiveKit
     /// </summary>
     public sealed class AudioStream : IDisposable
     {
+        public delegate void FrameReceiveDelegate(AudioFrame frame);
         internal readonly FfiHandle Handle;
         private readonly AudioSource _audioSource;
         private RingBuffer _buffer;
@@ -22,6 +23,9 @@ namespace LiveKit
         private AudioResampler _resampler = new AudioResampler();
         private object _lock = new object();
         private bool _disposed = false;
+
+        /// Called when we receive a new audio frame
+        public event FrameReceiveDelegate FrameReceived;
 
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
@@ -97,6 +101,7 @@ namespace LiveKit
                 return;
 
             var frame = new AudioFrame(e.FrameReceived.Frame);
+            FrameReceived?.Invoke(frame);
 
             lock (_lock)
             {
@@ -111,7 +116,6 @@ namespace LiveKit
                         var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
                         _buffer?.Write(data);
                     }
-
                 }
             }
         }
