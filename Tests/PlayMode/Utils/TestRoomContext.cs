@@ -14,6 +14,8 @@ namespace LiveKit.PlayModeTests.Utils
         private List<ConnectionOptions> _connectionOptions;
         private bool _disposed = false;
 
+        private static LiveKitCredentials _credentials;
+
         public TestRoomContext() : this(ConnectionOptions.Default) {}
         public TestRoomContext(ConnectionOptions options) : this(new[] { options }) {}
 
@@ -26,6 +28,15 @@ namespace LiveKit.PlayModeTests.Utils
                 return options;
             });
             _connectionOptions = withDefaults.ToList();
+
+            // _credentials = LiveKitCredentials.CreateFromEnv();
+            // _credentials = LiveKitCredentials.CreateLocalDevCredentials();               // Use for explicit dev server usage
+            _credentials = LiveKitCredentialsExtension.CreateSandboxCredentials();       // Use for explicit sandbox server usage
+        }
+
+        public String GetServerUrl()
+        {
+            return _credentials.ServerUrl;
         }
 
         public struct ConnectionOptions
@@ -57,7 +68,7 @@ namespace LiveKit.PlayModeTests.Utils
                 var token = CreateToken(options);
                 var room = new Room();
                 var roomOptions = new RoomOptions();
-                var connect = room.Connect(options.ServerUrl ?? _serverUrl, token, roomOptions);
+                var connect = room.Connect(options.ServerUrl ?? _credentials.ServerUrl, token, roomOptions);
                 yield return connect;
 
                 if (connect.IsError)
@@ -81,7 +92,7 @@ namespace LiveKit.PlayModeTests.Utils
         {
             var claims = new AccessToken.Claims
             {
-                iss = _apiKey,
+                iss = _credentials.ApiKey,
                 sub = options.Identity,
                 name = options.DisplayName,
                 video = new AccessToken.VideoGrants
@@ -96,7 +107,7 @@ namespace LiveKit.PlayModeTests.Utils
                 },
                 metadata = options.Metadata
             };
-            return AccessToken.Encode(claims, _apiSecret);
+            return AccessToken.Encode(claims, _credentials.ApiSecret);
         }
 
         public void Dispose()
@@ -110,18 +121,6 @@ namespace LiveKit.PlayModeTests.Utils
             if (_disposed) return;
             if (disposing) DisconnectAll();
             _disposed = true;
-        }
-
-        private static string _serverUrl => ReadEnv("LK_TEST_URL", "ws://localhost:7880");
-        private static string _apiKey => ReadEnv("LK_TEST_API_KEY", "devkey");
-        private static string _apiSecret => ReadEnv("LK_TEST_API_SECRET", "secret");
-
-        private static string ReadEnv(string key, string defaultValue)
-        {
-            var value = Environment.GetEnvironmentVariable(key);
-            if (string.IsNullOrEmpty(value))
-                return defaultValue;
-            return value.Trim();
         }
     }
 }
