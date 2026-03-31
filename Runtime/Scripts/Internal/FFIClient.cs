@@ -277,12 +277,11 @@ namespace LiveKit.Internal
             var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
 
-            // Keep remote audio delivery off the Unity main-thread dispatch queue. Audio playback
-            // has its own synchronization path and benefits from handling frames as soon as the
-            // native callback arrives.
+            // Audio stream events are handled directly on the FFI callback thread
+            // to bypass the main thread, since the audio thread consumes the data
             if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
             {
-                DispatchEvent(response);
+                Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
                 return;
             }
 
