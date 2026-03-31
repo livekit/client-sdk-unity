@@ -215,9 +215,9 @@ namespace LiveKit
 
             using var response = request.Send();
             FfiResponse res = response;
-            if (res.LocalDataTrackTryPush.HasError)
+            if (res.LocalDataTrackTryPush.Error != null)
             {
-                throw new PushFrameError(res.LocalDataTrackTryPush.Error);
+                throw new PushFrameError(res.LocalDataTrackTryPush.Error.Message);
             }
         }
 

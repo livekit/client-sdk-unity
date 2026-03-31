@@ -1040,7 +1040,7 @@ namespace LiveKit
             switch (e.ResultCase)
             {
                 case PublishDataTrackCallback.ResultOneofCase.Error:
-                    Error = new PublishDataTrackError(e.Error);
+                    Error = new PublishDataTrackError(e.Error.Message);
                     IsError = true;
                     break;
                 case PublishDataTrackCallback.ResultOneofCase.Track:
