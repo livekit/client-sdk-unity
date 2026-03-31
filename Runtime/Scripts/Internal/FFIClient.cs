@@ -279,6 +279,12 @@ namespace LiveKit.Internal
             var response = FfiEvent.Parser!.ParseFrom(respData);
             long ffiTimestampTicks = Stopwatch.GetTimestamp();
 
+            if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
+            {
+                Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent, ffiTimestampTicks);
+                return;
+            }
+
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
             Instance._context?.Post((resp) =>
@@ -323,9 +329,6 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.VideoStreamEvent:
                         Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
-                        break;
-                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!, ffiTimestampTicks);
                         break;
                     // Uses high-level data stream interface
                     case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
