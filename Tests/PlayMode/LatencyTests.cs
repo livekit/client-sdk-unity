@@ -21,7 +21,7 @@ namespace LiveKit.PlayModeTests
 
         // Pulse frequency tagging
         const double kBaseFrequency = 500.0;   // Pulse 0 = 500 Hz
-        const double kFrequencyStep = 100.0;   // Pulse i = 500 + i*100 Hz
+        const double kFrequencyStep = 300.0;   // Pulse i = 500 + i*300 Hz (≥3x Goertzel resolution at 480 samples)
         const double kMagnitudeThreshold = 0.15;
         const int kHighEnergyFramesPerPulse = 5;
 
@@ -164,15 +164,20 @@ namespace LiveKit.PlayModeTests
             // --- Shared state for latency measurement ---
             var audioThreadStats = new LatencyStats();
             var frameReceivedStats = new LatencyStats();
+            var ffiReceivedStats = new LatencyStats();
             var lockObj = new object();
             var sendTimestamps = new long[kTotalPulses]; // per-pulse send timestamps
             var pulseReceived = new bool[kTotalPulses];  // track which pulses have been matched
             var frameReceivedPulse = new bool[kTotalPulses]; // track FrameReceived detections
+            var ffiReceivedPulse = new bool[kTotalPulses]; // track FFI-timestamped detections
             int missedPulses = 0;
 
-            // FrameReceived callback (runs on main thread, before ring buffer)
-            audioStream.FrameReceived += (frame) =>
+            // FrameReceived callback — measures latency at two points:
+            // 1. ffiTimestampTicks: captured on the Rust callback thread (before main-thread dispatch)
+            // 2. receiveTimeTicks: captured here on the main thread (after dispatch)
+            audioStream.FrameReceived += (frame, ffiTimestampTicks) =>
             {
+                long receiveTimeTicks = Stopwatch.GetTimestamp();
                 int samples = (int)frame.SamplesPerChannel;
                 int channels = (int)frame.NumChannels;
                 int sampleRate = (int)frame.SampleRate;
@@ -197,27 +202,34 @@ namespace LiveKit.PlayModeTests
 
                 lock (lockObj)
                 {
-                    if (bestPulse >= kTotalPulses || frameReceivedPulse[bestPulse])
-                        return;
-                    if (sendTimestamps[bestPulse] == 0)
+                    if (bestPulse >= kTotalPulses || sendTimestamps[bestPulse] == 0)
                         return;
 
-                    long receiveTimeTicks = Stopwatch.GetTimestamp();
-                    double latencyMs = (receiveTimeTicks - sendTimestamps[bestPulse])
+                    double ffiLatencyMs = (ffiTimestampTicks - sendTimestamps[bestPulse])
+                        * 1000.0 / Stopwatch.Frequency;
+                    double mainThreadLatencyMs = (receiveTimeTicks - sendTimestamps[bestPulse])
                         * 1000.0 / Stopwatch.Frequency;
 
-                    if (latencyMs > 0 && latencyMs < 5000)
+                    if (ffiLatencyMs > 0 && ffiLatencyMs < 5000 && !ffiReceivedPulse[bestPulse])
+                    {
+                        ffiReceivedPulse[bestPulse] = true;
+                        ffiReceivedStats.AddMeasurement(ffiLatencyMs);
+                        Debug.Log($"  Pulse {bestPulse} (FFI arrival): latency {ffiLatencyMs:F2} ms " +
+                                  $"(freq: {kBaseFrequency + bestPulse * kFrequencyStep} Hz, mag: {bestMag:F3})");
+                    }
+
+                    if (mainThreadLatencyMs > 0 && mainThreadLatencyMs < 5000 && !frameReceivedPulse[bestPulse])
                     {
                         frameReceivedPulse[bestPulse] = true;
-                        frameReceivedStats.AddMeasurement(latencyMs);
-                        Debug.Log($"  Pulse {bestPulse} (FrameReceived): latency {latencyMs:F2} ms " +
+                        frameReceivedStats.AddMeasurement(mainThreadLatencyMs);
+                        Debug.Log($"  Pulse {bestPulse} (FrameReceived): latency {mainThreadLatencyMs:F2} ms " +
                                   $"(freq: {kBaseFrequency + bestPulse * kFrequencyStep} Hz, mag: {bestMag:F3})");
                     }
                 }
             };
 
             // Pulse detector callback (runs on audio thread)
-            pulseDetector.PulseReceived += (pulseIndex, magnitude) =>
+            pulseDetector.PulseReceived += (receiveTimeTicks, pulseIndex, magnitude) =>
             {
                 lock (lockObj)
                 {
@@ -228,7 +240,6 @@ namespace LiveKit.PlayModeTests
                     if (sendTimestamps[pulseIndex] == 0)
                         return; // not sent yet
 
-                    long receiveTimeTicks = Stopwatch.GetTimestamp();
                     double latencyMs = (receiveTimeTicks - sendTimestamps[pulseIndex])
                         * 1000.0 / Stopwatch.Frequency;
 
@@ -309,6 +320,7 @@ namespace LiveKit.PlayModeTests
             }
 
             // --- Print results ---
+            ffiReceivedStats.PrintStats("Audio Latency (FFI arrival / Rust callback thread)");
             frameReceivedStats.PrintStats("Audio Latency (FrameReceived / main thread)");
             audioThreadStats.PrintStats("Audio Latency (AudioThread / OnAudioFilterRead)");
             if (missedPulses > 0)
@@ -424,7 +436,7 @@ namespace LiveKit.PlayModeTests
             // Subscribe to received video frames (fires on main thread)
             videoStream.FrameReceived += (frame) =>
             {
-                int pulseIndex = VideoPulseCodec.Decode(videoStream.VideoBuffer, kVideoStripThreshold);
+                (int pulseIndex, long receiveTimeTicks) = VideoPulseCodec.Decode(videoStream.VideoBuffer, kVideoStripThreshold);
                 if (pulseIndex < 0 || pulseIndex >= kTotalPulses)
                     return;
                 if (pulseReceived[pulseIndex])
@@ -432,7 +444,6 @@ namespace LiveKit.PlayModeTests
                 if (sendTimestamps[pulseIndex] == 0)
                     return;
 
-                long receiveTimeTicks = Stopwatch.GetTimestamp();
                 double latencyMs = (receiveTimeTicks - sendTimestamps[pulseIndex])
                     * 1000.0 / Stopwatch.Frequency;
 
@@ -614,7 +625,7 @@ namespace LiveKit.PlayModeTests
             var videoReceiveTicks = new long[kTotalPulses];
 
             // Audio detection (runs on audio thread)
-            audioPulseDetector.PulseReceived += (pulseIndex, magnitude) =>
+            audioPulseDetector.PulseReceived += (receiveTimeTicks, pulseIndex, magnitude) =>
             {
                 lock (lockObj)
                 {
@@ -622,7 +633,7 @@ namespace LiveKit.PlayModeTests
                     if (audioReceiveTicks[pulseIndex] != 0) return;
                     if (sendTimestamps[pulseIndex] == 0) return;
 
-                    audioReceiveTicks[pulseIndex] = Stopwatch.GetTimestamp();
+                    audioReceiveTicks[pulseIndex] = receiveTimeTicks;
                     Debug.Log($"  [Audio] Pulse {pulseIndex} received " +
                               $"(freq: {kBaseFrequency + pulseIndex * kFrequencyStep} Hz)");
                 }
@@ -631,12 +642,12 @@ namespace LiveKit.PlayModeTests
             // Video detection (runs on main thread)
             videoStream.FrameReceived += (frame) =>
             {
-                int pulseIndex = VideoPulseCodec.Decode(videoStream.VideoBuffer, kVideoStripThreshold);
+                (int pulseIndex, long receiveTimeTicks) = VideoPulseCodec.Decode(videoStream.VideoBuffer, kVideoStripThreshold);
                 if (pulseIndex < 0 || pulseIndex >= kTotalPulses) return;
                 if (videoReceiveTicks[pulseIndex] != 0) return;
                 if (sendTimestamps[pulseIndex] == 0) return;
 
-                videoReceiveTicks[pulseIndex] = Stopwatch.GetTimestamp();
+                videoReceiveTicks[pulseIndex] = receiveTimeTicks;
                 Debug.Log($"  [Video] Pulse {pulseIndex} received");
             };
 

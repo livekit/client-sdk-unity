@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LiveKit;
 
@@ -26,17 +27,19 @@ namespace LiveKit.PlayModeTests.Utils
         /// the Y plane at the center of each vertical strip.
         /// Returns the 0-based pulse index, or -1 if no pulse is detected.
         /// </summary>
-        public static int Decode(VideoFrameBuffer buffer, int stripThreshold = 128)
+        public static (int, long) Decode(VideoFrameBuffer buffer, int stripThreshold = 128)
         {
+            long receiveTimeTicks = Stopwatch.GetTimestamp();
+            
             if (buffer == null || !buffer.IsValid)
-                return -1;
+                return (-1, 0);
 
             if (buffer.Info.Components.Count == 0)
-                return -1;
+                return (-1, 0);
 
             var yComponent = buffer.Info.Components[0];
             if (!yComponent.HasDataPtr)
-                return -1;
+                return (-1, 0);
 
             var yPtr = (IntPtr)yComponent.DataPtr;
             int width = (int)buffer.Width;
@@ -61,7 +64,10 @@ namespace LiveKit.PlayModeTests.Utils
             }
 
             // 0 = all black = no pulse; otherwise subtract 1 to get 0-based pulse index
-            return decodedIndex == 0 ? -1 : decodedIndex - 1;
+            if (decodedIndex == 0)
+                return (-1, 0);
+            else
+                return (decodedIndex - 1, receiveTimeTicks);
         }
     }
 }

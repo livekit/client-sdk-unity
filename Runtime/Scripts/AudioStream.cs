@@ -13,7 +13,7 @@ namespace LiveKit
     /// </summary>
     public sealed class AudioStream : IDisposable
     {
-        public delegate void FrameReceiveDelegate(AudioFrame frame);
+        public delegate void FrameReceiveDelegate(AudioFrame frame, long ffiTimestampTicks);
         internal readonly FfiHandle Handle;
         private readonly AudioSource _audioSource;
         private RingBuffer _buffer;
@@ -92,7 +92,7 @@ namespace LiveKit
         }
 
         // Called on the MainThread (See FfiClient)
-        private void OnAudioStreamEvent(AudioStreamEvent e)
+        private void OnAudioStreamEvent(AudioStreamEvent e, long ffiTimestampTicks)
         {
             if ((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
                 return;
@@ -101,7 +101,7 @@ namespace LiveKit
                 return;
 
             var frame = new AudioFrame(e.FrameReceived.Frame);
-            FrameReceived?.Invoke(frame);
+            FrameReceived?.Invoke(frame, ffiTimestampTicks);
 
             lock (_lock)
             {

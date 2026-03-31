@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using LiveKit.Proto;
 using UnityEngine;
 using Google.Protobuf;
@@ -276,6 +277,7 @@ namespace LiveKit.Internal
 
             var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
+            long ffiTimestampTicks = Stopwatch.GetTimestamp();
 
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
@@ -323,7 +325,7 @@ namespace LiveKit.Internal
                         Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
+                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!, ffiTimestampTicks);
                         break;
                     // Uses high-level data stream interface
                     case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:

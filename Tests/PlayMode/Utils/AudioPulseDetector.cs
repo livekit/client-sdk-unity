@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace LiveKit.PlayModeTests.Utils
@@ -19,7 +20,7 @@ namespace LiveKit.PlayModeTests.Utils
         /// Fired on the audio thread when a pulse is detected.
         /// Parameters: (pulseIndex, magnitude).
         /// </summary>
-        public event Action<int, double> PulseReceived;
+        public event Action<long, int, double> PulseReceived;
 
         private int _sampleRate;
 
@@ -41,6 +42,7 @@ namespace LiveKit.PlayModeTests.Utils
 
         void OnAudioFilterRead(float[] data, int channels)
         {
+            long receiveTimeTicks = Stopwatch.GetTimestamp();
             int sampleRate = _sampleRate;
             int samples = data.Length / channels;
             if (samples == 0) return;
@@ -61,7 +63,7 @@ namespace LiveKit.PlayModeTests.Utils
 
             // Debug.Log($"bestPulse: {bestPulse} | bestMag: {bestMag}");
             if (bestPulse >= 0 && bestMag > MagnitudeThreshold)
-                PulseReceived?.Invoke(bestPulse, bestMag);
+                PulseReceived?.Invoke(receiveTimeTicks, bestPulse, bestMag);
         }
 
         /// <summary>

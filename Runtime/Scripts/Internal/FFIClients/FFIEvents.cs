@@ -62,7 +62,7 @@ namespace LiveKit.Internal
     internal delegate void VideoStreamEventReceivedDelegate(VideoStreamEvent e);
 
 
-    internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e);
+    internal delegate void AudioStreamEventReceivedDelegate(AudioStreamEvent e, long ffiTimestampTicks);
 
     internal delegate void PerformRpcReceivedDelegate(PerformRpcCallback e);
 

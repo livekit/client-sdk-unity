@@ -30,8 +30,8 @@ namespace LiveKit.PlayModeTests.Utils
             _connectionOptions = withDefaults.ToList();
 
             // _credentials = LiveKitCredentials.CreateFromEnv();
-            // _credentials = LiveKitCredentials.CreateLocalDevCredentials();               // Use for explicit dev server usage
-            _credentials = LiveKitCredentialsExtension.CreateSandboxCredentials();       // Use for explicit sandbox server usage
+            _credentials = LiveKitCredentials.CreateLocalDevCredentials();               // Use for explicit dev server usage
+            // _credentials = LiveKitCredentialsExtension.CreateSandboxCredentials();       // Use for explicit sandbox server usage
         }
 
         public String GetServerUrl()
