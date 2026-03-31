@@ -35,6 +35,7 @@ namespace LiveKit.PlayModeTests
         // Test 1: Connection Time Measurement
         // =====================================================================
 
+#region Connection 
         [UnityTest, Category("E2E")]
         public IEnumerator ConnectionTime()
         {
@@ -67,14 +68,18 @@ namespace LiveKit.PlayModeTests
             stats.PrintStats("Connection Time Statistics");
             Assert.Greater(stats.Count, 0, "At least one connection should succeed");
         }
+#endregion
 
         // =====================================================================
         // Test 2: Audio Latency Measurement using Frequency-Tagged Pulses
         // =====================================================================
+        #region Audio Latency
 
         [UnityTest, Category("E2E")]
         public IEnumerator AudioLatency()
         {
+            Application.targetFrameRate = 10;
+
             Debug.Log("\n=== Audio Latency Measurement Test ===");
             Debug.Log("Using frequency-tagged pulses to measure audio round-trip latency");
 
@@ -112,6 +117,18 @@ namespace LiveKit.PlayModeTests
             if (participantExpectation.Error != null)
                 Assert.Fail($"Sender not visible to receiver: {participantExpectation.Error}");
 
+            // --- Set up subscription handler before publishing (avoid race at low frame rates) ---
+            RemoteAudioTrack subscribedTrack = null;
+            var trackExpectation = new Expectation(timeoutSeconds: 10f);
+            receiverRoom.TrackSubscribed += (track, publication, participant) =>
+            {
+                if (track is RemoteAudioTrack rat && participant.Identity == sender.Identity)
+                {
+                    subscribedTrack = rat;
+                    trackExpectation.Fulfill();
+                }
+            };
+
             // --- Create and publish audio track from sender ---
             var audioSource = new TestAudioSource(channels: kAudioChannels);
             audioSource.Start();
@@ -124,18 +141,6 @@ namespace LiveKit.PlayModeTests
                 Assert.Fail("Failed to publish audio track");
 
             Debug.Log("Audio track published, waiting for subscription...");
-
-            // --- Wait for receiver to subscribe to the audio track ---
-            RemoteAudioTrack subscribedTrack = null;
-            var trackExpectation = new Expectation(timeoutSeconds: 10f);
-            receiverRoom.TrackSubscribed += (track, publication, participant) =>
-            {
-                if (track is RemoteAudioTrack rat && participant.Identity == sender.Identity)
-                {
-                    subscribedTrack = rat;
-                    trackExpectation.Fulfill();
-                }
-            };
             yield return trackExpectation.Wait();
             if (trackExpectation.Error != null)
                 Assert.Fail($"Receiver did not subscribe to audio track: {trackExpectation.Error}");
@@ -335,11 +340,13 @@ namespace LiveKit.PlayModeTests
 
             Assert.Greater(audioThreadStats.Count, 0, "At least one audio latency measurement should be recorded");
         }
+        #endregion
 
         // =====================================================================
         // Test 3: Video Latency Measurement using Spatial Binary Encoding
         // =====================================================================
 
+        #region Video latency
         // Video configuration
         const int kVideoWidth = 64;
         const int kVideoHeight = 64;
@@ -389,6 +396,18 @@ namespace LiveKit.PlayModeTests
             if (participantExpectation.Error != null)
                 Assert.Fail($"Sender not visible to receiver: {participantExpectation.Error}");
 
+            // --- Set up subscription handler before publishing (avoid race at low frame rates) ---
+            RemoteVideoTrack subscribedTrack = null;
+            var trackExpectation = new Expectation(timeoutSeconds: 10f);
+            receiverRoom.TrackSubscribed += (track, publication, participant) =>
+            {
+                if (track is RemoteVideoTrack rvt && participant.Identity == sender.Identity)
+                {
+                    subscribedTrack = rvt;
+                    trackExpectation.Fulfill();
+                }
+            };
+
             // --- Create and publish video track from sender ---
             var videoSource = new TestVideoSource(kVideoWidth, kVideoHeight);
             videoSource.Start();
@@ -404,18 +423,6 @@ namespace LiveKit.PlayModeTests
             var sourceUpdateCoroutine = TestCoroutineRunner.Start(videoSource.Update());
 
             Debug.Log("Video track published, waiting for subscription...");
-
-            // --- Wait for receiver to subscribe to the video track ---
-            RemoteVideoTrack subscribedTrack = null;
-            var trackExpectation = new Expectation(timeoutSeconds: 10f);
-            receiverRoom.TrackSubscribed += (track, publication, participant) =>
-            {
-                if (track is RemoteVideoTrack rvt && participant.Identity == sender.Identity)
-                {
-                    subscribedTrack = rvt;
-                    trackExpectation.Fulfill();
-                }
-            };
             yield return trackExpectation.Wait();
             if (trackExpectation.Error != null)
                 Assert.Fail($"Receiver did not subscribe to video track: {trackExpectation.Error}");
@@ -504,11 +511,13 @@ namespace LiveKit.PlayModeTests
 
             Assert.Greater(stats.Count, 0, "At least one video latency measurement should be recorded");
         }
+#endregion
 
         // =====================================================================
         // Test 4: A/V Sync Measurement
         // =====================================================================
 
+#region A/V sync
         // A/V sync configuration
         const float kAVSyncPulseDurationSeconds = 0.5f;
         const float kAVSyncPulseIntervalSeconds = 2f;
@@ -555,6 +564,20 @@ namespace LiveKit.PlayModeTests
             if (participantExpectation.Error != null)
                 Assert.Fail($"Sender not visible to receiver: {participantExpectation.Error}");
 
+            // --- Set up subscription handler before publishing (avoid race at low frame rates) ---
+            RemoteAudioTrack subscribedAudioTrack = null;
+            RemoteVideoTrack subscribedVideoTrack = null;
+            var bothTracksExpectation = new Expectation(
+                predicate: () => subscribedAudioTrack != null && subscribedVideoTrack != null,
+                timeoutSeconds: 15f);
+
+            receiverRoom.TrackSubscribed += (track, publication, participant) =>
+            {
+                if (participant.Identity != sender.Identity) return;
+                if (track is RemoteAudioTrack rat) subscribedAudioTrack = rat;
+                if (track is RemoteVideoTrack rvt) subscribedVideoTrack = rvt;
+            };
+
             // --- Publish audio track ---
             var audioSource = new TestAudioSource(channels: kAudioChannels);
             audioSource.Start();
@@ -576,20 +599,6 @@ namespace LiveKit.PlayModeTests
             var videoSourceCoroutine = TestCoroutineRunner.Start(videoSource.Update());
 
             Debug.Log("Both tracks published, waiting for subscriptions...");
-
-            // --- Wait for receiver to subscribe to both tracks ---
-            RemoteAudioTrack subscribedAudioTrack = null;
-            RemoteVideoTrack subscribedVideoTrack = null;
-            var bothTracksExpectation = new Expectation(
-                predicate: () => subscribedAudioTrack != null && subscribedVideoTrack != null,
-                timeoutSeconds: 15f);
-
-            receiverRoom.TrackSubscribed += (track, publication, participant) =>
-            {
-                if (participant.Identity != sender.Identity) return;
-                if (track is RemoteAudioTrack rat) subscribedAudioTrack = rat;
-                if (track is RemoteVideoTrack rvt) subscribedVideoTrack = rvt;
-            };
             yield return bothTracksExpectation.Wait();
             if (bothTracksExpectation.Error != null)
                 Assert.Fail($"Failed to subscribe to both tracks: {bothTracksExpectation.Error}");
@@ -913,3 +922,4 @@ namespace LiveKit.PlayModeTests
         }
     }
 }
+#endregion
