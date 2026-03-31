@@ -58,6 +58,11 @@ namespace LiveKit.Internal
             return readCount;
         }
 
+        public int SkipRead(int len)
+        {
+            return MoveReadPtr(len);
+        }
+
         private int MoveReadPtr(int len)
         {
             int free = AvailableWrite();
@@ -123,6 +128,17 @@ namespace LiveKit.Internal
         public int AvailableWrite()
         {
             return _buffer.Length - AvailableRead();
+        }
+
+        /// <summary>
+        /// Clears all data from the ring buffer, resetting read and write positions.
+        /// Useful when resuming from background to discard stale audio data.
+        /// </summary>
+        public void Clear()
+        {
+            _writePos = 0;
+            _readPos = 0;
+            _sameWrap = true;
         }
 
         public void Dispose()
