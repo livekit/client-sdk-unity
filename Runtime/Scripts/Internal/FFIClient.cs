@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using LiveKit.Proto;
 using UnityEngine;
 using Google.Protobuf;
@@ -277,12 +276,18 @@ namespace LiveKit.Internal
 
             var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
-            long ffiTimestampTicks = Stopwatch.GetTimestamp();
 
-            if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
-            {
-                Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent, ffiTimestampTicks);
-                return;
+            bool skipDispatchForAudio = true;
+
+            if (skipDispatchForAudio)
+            {                
+                // Audio stream events are handled directly on the FFI callback thread
+                // to bypass the main thread
+                if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
+                {
+                    Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
+                    return;
+                }
             }
 
             // Run on the main thread, the order of execution is guaranteed by Unity
@@ -329,6 +334,9 @@ namespace LiveKit.Internal
                         break;
                     case FfiEvent.MessageOneofCase.VideoStreamEvent:
                         Instance.VideoStreamEventReceived?.Invoke(r.VideoStreamEvent!);
+                        break;
+                    case FfiEvent.MessageOneofCase.AudioStreamEvent:
+                        Instance.AudioStreamEventReceived?.Invoke(r.AudioStreamEvent!);
                         break;
                     // Uses high-level data stream interface
                     case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:

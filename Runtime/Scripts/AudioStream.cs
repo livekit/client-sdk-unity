@@ -13,7 +13,6 @@ namespace LiveKit
     /// </summary>
     public sealed class AudioStream : IDisposable
     {
-        public delegate void FrameReceiveDelegate(AudioFrame frame, long ffiTimestampTicks);
         internal readonly FfiHandle Handle;
         private readonly AudioSource _audioSource;
         private RingBuffer _buffer;
@@ -22,10 +21,7 @@ namespace LiveKit
         private uint _sampleRate;
         private AudioResampler _resampler = new AudioResampler();
         private object _lock = new object();
-        private bool _disposed = false;
-
-        /// Called when we receive a new audio frame
-        public event FrameReceiveDelegate FrameReceived;
+        private volatile bool _disposed = false;
 
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
@@ -91,9 +87,12 @@ namespace LiveKit
             }
         }
 
-        // Called on the MainThread (See FfiClient)
-        private void OnAudioStreamEvent(AudioStreamEvent e, long ffiTimestampTicks)
+        // Called on the FFI callback thread (bypasses main thread for iOS background audio)
+        private void OnAudioStreamEvent(AudioStreamEvent e)
         {
+            if (_disposed)
+                return;
+
             if ((ulong)Handle.DangerousGetHandle() != e.StreamHandle)
                 return;
 
@@ -101,7 +100,6 @@ namespace LiveKit
                 return;
 
             var frame = new AudioFrame(e.FrameReceived.Frame);
-            FrameReceived?.Invoke(frame, ffiTimestampTicks);
 
             lock (_lock)
             {
@@ -130,10 +128,16 @@ namespace LiveKit
         {
             if (!_disposed && disposing)
             {
+                _disposed = true;
+                FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
                 _audioSource.Stop();
                 UnityEngine.Object.Destroy(_audioSource.GetComponent<AudioProbe>());
+                lock (_lock)
+                {
+                    _buffer?.Dispose();
+                    _buffer = null;
+                }
             }
-            _disposed = true;
         }
 
         ~AudioStream()
