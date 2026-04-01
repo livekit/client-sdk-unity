@@ -130,6 +130,16 @@ namespace LiveKit.Internal
             return _buffer.Length - AvailableRead();
         }
 
+        public float AvailableReadInPercent()
+        {
+            return (float)AvailableRead() / _buffer.Length;
+        }
+
+        public float AvailableWriteInPercent()
+        {
+            return (float)AvailableWrite() / _buffer.Length;
+        }
+
         /// <summary>
         /// Clears all data from the ring buffer, resetting read and write positions.
         /// Useful when resuming from background to discard stale audio data.
