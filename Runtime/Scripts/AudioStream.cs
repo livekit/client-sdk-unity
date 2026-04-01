@@ -29,10 +29,6 @@ namespace LiveKit
         private const float BufferSizeSeconds = 0.2f;  // 200ms ring buffer for all platforms
         private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
 
-        // Used to discard stale FFI callbacks after returning from background
-        private double _resumeTimestamp = 0;
-        private const double DiscardWindowSeconds = 0.02;  // Discard callbacks for 20ms after resume
-
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
         /// given <see cref="AudioSource"/> in the scene.
@@ -68,7 +64,7 @@ namespace LiveKit
             MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
         }
 
-        // Called on Unity audio thread
+        // Called on FFI callback thread
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             if (_disposed)
@@ -170,7 +166,6 @@ namespace LiveKit
             {
                 lock (_lock)
                 {
-                    _resumeTimestamp = Time.realtimeSinceStartupAsDouble;
                     if (_buffer != null)
                     {
                         _buffer.Clear();
@@ -197,13 +192,6 @@ namespace LiveKit
 
             lock (_lock)
             {
-                // Discard stale FFI callbacks that arrive shortly after returning from background.
-                // These callbacks may contain audio data buffered while the app was paused.
-                if (_resumeTimestamp > 0 && Time.realtimeSinceStartupAsDouble - _resumeTimestamp < DiscardWindowSeconds)
-                {
-                    return;
-                }
-
                 if (_numChannels == 0)
                     return;
 
