@@ -59,62 +59,60 @@ namespace LiveKit.Proto {
             "VW5wdWJsaXNoUmVzcG9uc2UijQEKFE93bmVkUmVtb3RlRGF0YVRyYWNrEi0K",
             "BmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUS",
             "KgoEaW5mbxgCIAIoCzIcLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrSW5mbxIa",
-            "ChJwdWJsaXNoZXJfaWRlbnRpdHkYAyACKAkiSwoaT3duZWREYXRhVHJhY2tT",
-            "dWJzY3JpcHRpb24SLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5G",
-            "ZmlPd25lZEhhbmRsZSIwChlEYXRhVHJhY2tTdWJzY3JpYmVPcHRpb25zEhMK",
-            "C2J1ZmZlcl9zaXplGAEgASgNIjkKIVJlbW90ZURhdGFUcmFja0lzUHVibGlz",
-            "aGVkUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQiOgoiUmVtb3RlRGF0",
-            "YVRyYWNrSXNQdWJsaXNoZWRSZXNwb25zZRIUCgxpc19wdWJsaXNoZWQYASAC",
-            "KAgibAoZU3Vic2NyaWJlRGF0YVRyYWNrUmVxdWVzdBIUCgx0cmFja19oYW5k",
-            "bGUYASACKAQSOQoHb3B0aW9ucxgCIAIoCzIoLmxpdmVraXQucHJvdG8uRGF0",
-            "YVRyYWNrU3Vic2NyaWJlT3B0aW9ucyJdChpTdWJzY3JpYmVEYXRhVHJhY2tS",
-            "ZXNwb25zZRI/CgxzdWJzY3JpcHRpb24YASACKAsyKS5saXZla2l0LnByb3Rv",
-            "Lk93bmVkRGF0YVRyYWNrU3Vic2NyaXB0aW9uIj8KIERhdGFUcmFja1N1YnNj",
-            "cmlwdGlvblJlYWRSZXF1ZXN0EhsKE3N1YnNjcmlwdGlvbl9oYW5kbGUYASAC",
-            "KAQiIwohRGF0YVRyYWNrU3Vic2NyaXB0aW9uUmVhZFJlc3BvbnNlIsgBChpE",
-            "YXRhVHJhY2tTdWJzY3JpcHRpb25FdmVudBIbChNzdWJzY3JpcHRpb25faGFu",
-            "ZGxlGAEgAigEEksKDmZyYW1lX3JlY2VpdmVkGAIgASgLMjEubGl2ZWtpdC5w",
-            "cm90by5EYXRhVHJhY2tTdWJzY3JpcHRpb25GcmFtZVJlY2VpdmVkSAASNgoD",
-            "ZW9zGAMgASgLMicubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTdWJzY3JpcHRp",
-            "b25FT1NIAEIICgZkZXRhaWwiUgoiRGF0YVRyYWNrU3Vic2NyaXB0aW9uRnJh",
-            "bWVSZWNlaXZlZBIsCgVmcmFtZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRGF0",
-            "YVRyYWNrRnJhbWUiKQoYRGF0YVRyYWNrU3Vic2NyaXB0aW9uRU9TEg0KBWVy",
-            "cm9yGAEgASgJKocDChJEYXRhVHJhY2tFcnJvckNvZGUSIQodREFUQV9UUkFD",
-            "S19FUlJPUl9DT0RFX1VOS05PV04QABIoCiREQVRBX1RSQUNLX0VSUk9SX0NP",
-            "REVfSU5WQUxJRF9IQU5ETEUQARIuCipEQVRBX1RSQUNLX0VSUk9SX0NPREVf",
-            "RFVQTElDQVRFX1RSQUNLX05BTUUQAhIrCidEQVRBX1RSQUNLX0VSUk9SX0NP",
-            "REVfVFJBQ0tfVU5QVUJMSVNIRUQQAxIlCiFEQVRBX1RSQUNLX0VSUk9SX0NP",
-            "REVfQlVGRkVSX0ZVTEwQBBItCilEQVRBX1RSQUNLX0VSUk9SX0NPREVfU1VC",
-            "U0NSSVBUSU9OX0NMT1NFRBAFEiMKH0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9D",
-            "QU5DRUxMRUQQBhIoCiREQVRBX1RSQUNLX0VSUk9SX0NPREVfUFJPVE9DT0xf",
-            "RVJST1IQBxIiCh5EQVRBX1RSQUNLX0VSUk9SX0NPREVfSU5URVJOQUwQCCrz",
-            "AwoZUHVibGlzaERhdGFUcmFja0Vycm9yQ29kZRIpCiVQVUJMSVNIX0RBVEFf",
-            "VFJBQ0tfRVJST1JfQ09ERV9VTktOT1dOEAASMAosUFVCTElTSF9EQVRBX1RS",
-            "QUNLX0VSUk9SX0NPREVfSU5WQUxJRF9IQU5ETEUQARIwCixQVUJMSVNIX0RB",
-            "VEFfVFJBQ0tfRVJST1JfQ09ERV9EVVBMSUNBVEVfTkFNRRACEikKJVBVQkxJ",
-            "U0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX1RJTUVPVVQQAxIuCipQVUJMSVNI",
-            "X0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9ESVNDT05ORUNURUQQBBItCilQVUJM",
-            "SVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9OT1RfQUxMT1dFRBAFEi4KKlBV",
-            "QkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX0lOVkFMSURfTkFNRRAGEi8K",
-            "K1BVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX0xJTUlUX1JFQUNIRUQQ",
-            "BxIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9QUk9UT0NPTF9F",
-            "UlJPUhAIEioKJlBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX0lOVEVS",
-            "TkFMEAkqrwIKHkxvY2FsRGF0YVRyYWNrVHJ5UHVzaEVycm9yQ29kZRIwCixM",
-            "T0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VSUk9SX0NPREVfVU5LTk9XThAA",
-            "EjcKM0xPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9JTlZB",
-            "TElEX0hBTkRMRRABEjoKNkxPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BVU0hfRVJS",
-            "T1JfQ09ERV9UUkFDS19VTlBVQkxJU0hFRBACEjMKL0xPQ0FMX0RBVEFfVFJB",
-            "Q0tfVFJZX1BVU0hfRVJST1JfQ09ERV9RVUVVRV9GVUxMEAMSMQotTE9DQUxf",
-            "REFUQV9UUkFDS19UUllfUFVTSF9FUlJPUl9DT0RFX0lOVEVSTkFMEAQq8AIK",
-            "G1N1YnNjcmliZURhdGFUcmFja0Vycm9yQ29kZRIrCidTVUJTQ1JJQkVfREFU",
-            "QV9UUkFDS19FUlJPUl9DT0RFX1VOS05PV04QABIyCi5TVUJTQ1JJQkVfREFU",
-            "QV9UUkFDS19FUlJPUl9DT0RFX0lOVkFMSURfSEFORExFEAESLworU1VCU0NS",
-            "SUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9VTlBVQkxJU0hFRBACEisKJ1NV",
-            "QlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NPREVfVElNRU9VVBADEjAKLFNV",
-            "QlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NPREVfRElTQ09OTkVDVEVEEAQS",
-            "MgouU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9QUk9UT0NPTF9F",
-            "UlJPUhAFEiwKKFNVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NPREVfSU5U",
-            "RVJOQUwQBkIQqgINTGl2ZUtpdC5Qcm90bw=="));
+            "ChJwdWJsaXNoZXJfaWRlbnRpdHkYAyACKAkiRQoUT3duZWREYXRhVHJhY2tT",
+            "dHJlYW0SLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25l",
+            "ZEhhbmRsZSIwChlEYXRhVHJhY2tTdWJzY3JpYmVPcHRpb25zEhMKC2J1ZmZl",
+            "cl9zaXplGAEgASgNIjkKIVJlbW90ZURhdGFUcmFja0lzUHVibGlzaGVkUmVx",
+            "dWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQiOgoiUmVtb3RlRGF0YVRyYWNr",
+            "SXNQdWJsaXNoZWRSZXNwb25zZRIUCgxpc19wdWJsaXNoZWQYASACKAgibAoZ",
+            "U3Vic2NyaWJlRGF0YVRyYWNrUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASAC",
+            "KAQSOQoHb3B0aW9ucxgCIAIoCzIoLmxpdmVraXQucHJvdG8uRGF0YVRyYWNr",
+            "U3Vic2NyaWJlT3B0aW9ucyJRChpTdWJzY3JpYmVEYXRhVHJhY2tSZXNwb25z",
+            "ZRIzCgZzdHJlYW0YASACKAsyIy5saXZla2l0LnByb3RvLk93bmVkRGF0YVRy",
+            "YWNrU3RyZWFtIjMKGkRhdGFUcmFja1N0cmVhbVJlYWRSZXF1ZXN0EhUKDXN0",
+            "cmVhbV9oYW5kbGUYASACKAQiHQobRGF0YVRyYWNrU3RyZWFtUmVhZFJlc3Bv",
+            "bnNlIrABChREYXRhVHJhY2tTdHJlYW1FdmVudBIVCg1zdHJlYW1faGFuZGxl",
+            "GAEgAigEEkUKDmZyYW1lX3JlY2VpdmVkGAIgASgLMisubGl2ZWtpdC5wcm90",
+            "by5EYXRhVHJhY2tTdHJlYW1GcmFtZVJlY2VpdmVkSAASMAoDZW9zGAMgASgL",
+            "MiEubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTdHJlYW1FT1NIAEIICgZkZXRh",
+            "aWwiTAocRGF0YVRyYWNrU3RyZWFtRnJhbWVSZWNlaXZlZBIsCgVmcmFtZRgB",
+            "IAIoCzIdLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrRnJhbWUiIwoSRGF0YVRy",
+            "YWNrU3RyZWFtRU9TEg0KBWVycm9yGAEgASgJKocDChJEYXRhVHJhY2tFcnJv",
+            "ckNvZGUSIQodREFUQV9UUkFDS19FUlJPUl9DT0RFX1VOS05PV04QABIoCiRE",
+            "QVRBX1RSQUNLX0VSUk9SX0NPREVfSU5WQUxJRF9IQU5ETEUQARIuCipEQVRB",
+            "X1RSQUNLX0VSUk9SX0NPREVfRFVQTElDQVRFX1RSQUNLX05BTUUQAhIrCidE",
+            "QVRBX1RSQUNLX0VSUk9SX0NPREVfVFJBQ0tfVU5QVUJMSVNIRUQQAxIlCiFE",
+            "QVRBX1RSQUNLX0VSUk9SX0NPREVfQlVGRkVSX0ZVTEwQBBItCilEQVRBX1RS",
+            "QUNLX0VSUk9SX0NPREVfU1VCU0NSSVBUSU9OX0NMT1NFRBAFEiMKH0RBVEFf",
+            "VFJBQ0tfRVJST1JfQ09ERV9DQU5DRUxMRUQQBhIoCiREQVRBX1RSQUNLX0VS",
+            "Uk9SX0NPREVfUFJPVE9DT0xfRVJST1IQBxIiCh5EQVRBX1RSQUNLX0VSUk9S",
+            "X0NPREVfSU5URVJOQUwQCCrzAwoZUHVibGlzaERhdGFUcmFja0Vycm9yQ29k",
+            "ZRIpCiVQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9VTktOT1dOEAAS",
+            "MAosUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfSU5WQUxJRF9IQU5E",
+            "TEUQARIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9EVVBMSUNB",
+            "VEVfTkFNRRACEikKJVBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX1RJ",
+            "TUVPVVQQAxIuCipQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9ESVND",
+            "T05ORUNURUQQBBItCilQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9O",
+            "T1RfQUxMT1dFRBAFEi4KKlBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RF",
+            "X0lOVkFMSURfTkFNRRAGEi8KK1BVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9D",
+            "T0RFX0xJTUlUX1JFQUNIRUQQBxIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJS",
+            "T1JfQ09ERV9QUk9UT0NPTF9FUlJPUhAIEioKJlBVQkxJU0hfREFUQV9UUkFD",
+            "S19FUlJPUl9DT0RFX0lOVEVSTkFMEAkqrwIKHkxvY2FsRGF0YVRyYWNrVHJ5",
+            "UHVzaEVycm9yQ29kZRIwCixMT0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VS",
+            "Uk9SX0NPREVfVU5LTk9XThAAEjcKM0xPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BV",
+            "U0hfRVJST1JfQ09ERV9JTlZBTElEX0hBTkRMRRABEjoKNkxPQ0FMX0RBVEFf",
+            "VFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9UUkFDS19VTlBVQkxJU0hFRBAC",
+            "EjMKL0xPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9RVUVV",
+            "RV9GVUxMEAMSMQotTE9DQUxfREFUQV9UUkFDS19UUllfUFVTSF9FUlJPUl9D",
+            "T0RFX0lOVEVSTkFMEAQq8AIKG1N1YnNjcmliZURhdGFUcmFja0Vycm9yQ29k",
+            "ZRIrCidTVUJTQ1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX1VOS05PV04Q",
+            "ABIyCi5TVUJTQ1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX0lOVkFMSURf",
+            "SEFORExFEAESLworU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9V",
+            "TlBVQkxJU0hFRBACEisKJ1NVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NP",
+            "REVfVElNRU9VVBADEjAKLFNVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NP",
+            "REVfRElTQ09OTkVDVEVEEAQSMgouU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJS",
+            "T1JfQ09ERV9QUk9UT0NPTF9FUlJPUhAFEiwKKFNVQlNDUklCRV9EQVRBX1RS",
+            "QUNLX0VSUk9SX0NPREVfSU5URVJOQUwQBkIQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.DataTrackErrorCode), typeof(global::LiveKit.Proto.PublishDataTrackErrorCode), typeof(global::LiveKit.Proto.LocalDataTrackTryPushErrorCode), typeof(global::LiveKit.Proto.SubscribeDataTrackErrorCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -136,17 +134,17 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LocalDataTrackUnpublishRequest), global::LiveKit.Proto.LocalDataTrackUnpublishRequest.Parser, new[]{ "TrackHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LocalDataTrackUnpublishResponse), global::LiveKit.Proto.LocalDataTrackUnpublishResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedRemoteDataTrack), global::LiveKit.Proto.OwnedRemoteDataTrack.Parser, new[]{ "Handle", "Info", "PublisherIdentity" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedDataTrackSubscription), global::LiveKit.Proto.OwnedDataTrackSubscription.Parser, new[]{ "Handle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedDataTrackStream), global::LiveKit.Proto.OwnedDataTrackStream.Parser, new[]{ "Handle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscribeOptions), global::LiveKit.Proto.DataTrackSubscribeOptions.Parser, new[]{ "BufferSize" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RemoteDataTrackIsPublishedRequest), global::LiveKit.Proto.RemoteDataTrackIsPublishedRequest.Parser, new[]{ "TrackHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RemoteDataTrackIsPublishedResponse), global::LiveKit.Proto.RemoteDataTrackIsPublishedResponse.Parser, new[]{ "IsPublished" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackRequest), global::LiveKit.Proto.SubscribeDataTrackRequest.Parser, new[]{ "TrackHandle", "Options" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackResponse), global::LiveKit.Proto.SubscribeDataTrackResponse.Parser, new[]{ "Subscription" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionReadRequest), global::LiveKit.Proto.DataTrackSubscriptionReadRequest.Parser, new[]{ "SubscriptionHandle" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionReadResponse), global::LiveKit.Proto.DataTrackSubscriptionReadResponse.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionEvent), global::LiveKit.Proto.DataTrackSubscriptionEvent.Parser, new[]{ "SubscriptionHandle", "FrameReceived", "Eos" }, new[]{ "Detail" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionFrameReceived), global::LiveKit.Proto.DataTrackSubscriptionFrameReceived.Parser, new[]{ "Frame" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSubscriptionEOS), global::LiveKit.Proto.DataTrackSubscriptionEOS.Parser, new[]{ "Error" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackResponse), global::LiveKit.Proto.SubscribeDataTrackResponse.Parser, new[]{ "Stream" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamReadRequest), global::LiveKit.Proto.DataTrackStreamReadRequest.Parser, new[]{ "StreamHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamReadResponse), global::LiveKit.Proto.DataTrackStreamReadResponse.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamEvent), global::LiveKit.Proto.DataTrackStreamEvent.Parser, new[]{ "StreamHandle", "FrameReceived", "Eos" }, new[]{ "Detail" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamFrameReceived), global::LiveKit.Proto.DataTrackStreamFrameReceived.Parser, new[]{ "Frame" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamEOS), global::LiveKit.Proto.DataTrackStreamEOS.Parser, new[]{ "Error" }, null, null, null, null)
           }));
     }
     #endregion
@@ -4809,16 +4807,16 @@ namespace LiveKit.Proto {
   /// Dropping the handle will unsubscribe from the track.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class OwnedDataTrackSubscription : pb::IMessage<OwnedDataTrackSubscription>
+  public sealed partial class OwnedDataTrackStream : pb::IMessage<OwnedDataTrackStream>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<OwnedDataTrackSubscription> _parser = new pb::MessageParser<OwnedDataTrackSubscription>(() => new OwnedDataTrackSubscription());
+    private static readonly pb::MessageParser<OwnedDataTrackStream> _parser = new pb::MessageParser<OwnedDataTrackStream>(() => new OwnedDataTrackStream());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<OwnedDataTrackSubscription> Parser { get { return _parser; } }
+    public static pb::MessageParser<OwnedDataTrackStream> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4834,7 +4832,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OwnedDataTrackSubscription() {
+    public OwnedDataTrackStream() {
       OnConstruction();
     }
 
@@ -4842,15 +4840,15 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OwnedDataTrackSubscription(OwnedDataTrackSubscription other) : this() {
+    public OwnedDataTrackStream(OwnedDataTrackStream other) : this() {
       handle_ = other.handle_ != null ? other.handle_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public OwnedDataTrackSubscription Clone() {
-      return new OwnedDataTrackSubscription(this);
+    public OwnedDataTrackStream Clone() {
+      return new OwnedDataTrackStream(this);
     }
 
     /// <summary>Field number for the "handle" field.</summary>
@@ -4868,12 +4866,12 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as OwnedDataTrackSubscription);
+      return Equals(other as OwnedDataTrackStream);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(OwnedDataTrackSubscription other) {
+    public bool Equals(OwnedDataTrackStream other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -4946,7 +4944,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(OwnedDataTrackSubscription other) {
+    public void MergeFrom(OwnedDataTrackStream other) {
       if (other == null) {
         return;
       }
@@ -5968,7 +5966,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SubscribeDataTrackResponse(SubscribeDataTrackResponse other) : this() {
-      subscription_ = other.subscription_ != null ? other.subscription_.Clone() : null;
+      stream_ = other.stream_ != null ? other.stream_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -5978,15 +5976,15 @@ namespace LiveKit.Proto {
       return new SubscribeDataTrackResponse(this);
     }
 
-    /// <summary>Field number for the "subscription" field.</summary>
-    public const int SubscriptionFieldNumber = 1;
-    private global::LiveKit.Proto.OwnedDataTrackSubscription subscription_;
+    /// <summary>Field number for the "stream" field.</summary>
+    public const int StreamFieldNumber = 1;
+    private global::LiveKit.Proto.OwnedDataTrackStream stream_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.OwnedDataTrackSubscription Subscription {
-      get { return subscription_; }
+    public global::LiveKit.Proto.OwnedDataTrackStream Stream {
+      get { return stream_; }
       set {
-        subscription_ = value;
+        stream_ = value;
       }
     }
 
@@ -6005,7 +6003,7 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(Subscription, other.Subscription)) return false;
+      if (!object.Equals(Stream, other.Stream)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -6013,7 +6011,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (subscription_ != null) hash ^= Subscription.GetHashCode();
+      if (stream_ != null) hash ^= Stream.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6032,9 +6030,9 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (subscription_ != null) {
+      if (stream_ != null) {
         output.WriteRawTag(10);
-        output.WriteMessage(Subscription);
+        output.WriteMessage(Stream);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -6046,9 +6044,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (subscription_ != null) {
+      if (stream_ != null) {
         output.WriteRawTag(10);
-        output.WriteMessage(Subscription);
+        output.WriteMessage(Stream);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -6060,8 +6058,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (subscription_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Subscription);
+      if (stream_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Stream);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6075,11 +6073,11 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.subscription_ != null) {
-        if (subscription_ == null) {
-          Subscription = new global::LiveKit.Proto.OwnedDataTrackSubscription();
+      if (other.stream_ != null) {
+        if (stream_ == null) {
+          Stream = new global::LiveKit.Proto.OwnedDataTrackStream();
         }
-        Subscription.MergeFrom(other.Subscription);
+        Stream.MergeFrom(other.Stream);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -6101,10 +6099,10 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (subscription_ == null) {
-              Subscription = new global::LiveKit.Proto.OwnedDataTrackSubscription();
+            if (stream_ == null) {
+              Stream = new global::LiveKit.Proto.OwnedDataTrackStream();
             }
-            input.ReadMessage(Subscription);
+            input.ReadMessage(Stream);
             break;
           }
         }
@@ -6127,10 +6125,10 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            if (subscription_ == null) {
-              Subscription = new global::LiveKit.Proto.OwnedDataTrackSubscription();
+            if (stream_ == null) {
+              Stream = new global::LiveKit.Proto.OwnedDataTrackStream();
             }
-            input.ReadMessage(Subscription);
+            input.ReadMessage(Stream);
             break;
           }
         }
@@ -6144,21 +6142,21 @@ namespace LiveKit.Proto {
   /// Signal readiness to handle the next frame.
   ///
   /// This allows the client to put backpressure on the internal receive buffer.
-  /// Sending this request will cause the next frame to be sent via `DataTrackSubscriptionFrameReceived`
+  /// Sending this request will cause the next frame to be sent via `DataTrackStreamFrameReceived`
   /// once one is available.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class DataTrackSubscriptionReadRequest : pb::IMessage<DataTrackSubscriptionReadRequest>
+  public sealed partial class DataTrackStreamReadRequest : pb::IMessage<DataTrackStreamReadRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<DataTrackSubscriptionReadRequest> _parser = new pb::MessageParser<DataTrackSubscriptionReadRequest>(() => new DataTrackSubscriptionReadRequest());
+    private static readonly pb::MessageParser<DataTrackStreamReadRequest> _parser = new pb::MessageParser<DataTrackStreamReadRequest>(() => new DataTrackStreamReadRequest());
     private pb::UnknownFieldSet _unknownFields;
     private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DataTrackSubscriptionReadRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataTrackStreamReadRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -6174,7 +6172,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionReadRequest() {
+    public DataTrackStreamReadRequest() {
       OnConstruction();
     }
 
@@ -6182,61 +6180,61 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionReadRequest(DataTrackSubscriptionReadRequest other) : this() {
+    public DataTrackStreamReadRequest(DataTrackStreamReadRequest other) : this() {
       _hasBits0 = other._hasBits0;
-      subscriptionHandle_ = other.subscriptionHandle_;
+      streamHandle_ = other.streamHandle_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionReadRequest Clone() {
-      return new DataTrackSubscriptionReadRequest(this);
+    public DataTrackStreamReadRequest Clone() {
+      return new DataTrackStreamReadRequest(this);
     }
 
-    /// <summary>Field number for the "subscription_handle" field.</summary>
-    public const int SubscriptionHandleFieldNumber = 1;
-    private readonly static ulong SubscriptionHandleDefaultValue = 0UL;
+    /// <summary>Field number for the "stream_handle" field.</summary>
+    public const int StreamHandleFieldNumber = 1;
+    private readonly static ulong StreamHandleDefaultValue = 0UL;
 
-    private ulong subscriptionHandle_;
+    private ulong streamHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ulong SubscriptionHandle {
-      get { if ((_hasBits0 & 1) != 0) { return subscriptionHandle_; } else { return SubscriptionHandleDefaultValue; } }
+    public ulong StreamHandle {
+      get { if ((_hasBits0 & 1) != 0) { return streamHandle_; } else { return StreamHandleDefaultValue; } }
       set {
         _hasBits0 |= 1;
-        subscriptionHandle_ = value;
+        streamHandle_ = value;
       }
     }
-    /// <summary>Gets whether the "subscription_handle" field is set</summary>
+    /// <summary>Gets whether the "stream_handle" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasSubscriptionHandle {
+    public bool HasStreamHandle {
       get { return (_hasBits0 & 1) != 0; }
     }
-    /// <summary>Clears the value of the "subscription_handle" field</summary>
+    /// <summary>Clears the value of the "stream_handle" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearSubscriptionHandle() {
+    public void ClearStreamHandle() {
       _hasBits0 &= ~1;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as DataTrackSubscriptionReadRequest);
+      return Equals(other as DataTrackStreamReadRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DataTrackSubscriptionReadRequest other) {
+    public bool Equals(DataTrackStreamReadRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (SubscriptionHandle != other.SubscriptionHandle) return false;
+      if (StreamHandle != other.StreamHandle) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -6244,7 +6242,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasSubscriptionHandle) hash ^= SubscriptionHandle.GetHashCode();
+      if (HasStreamHandle) hash ^= StreamHandle.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -6263,9 +6261,9 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasSubscriptionHandle) {
+      if (HasStreamHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(SubscriptionHandle);
+        output.WriteUInt64(StreamHandle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -6277,9 +6275,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasSubscriptionHandle) {
+      if (HasStreamHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(SubscriptionHandle);
+        output.WriteUInt64(StreamHandle);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -6291,8 +6289,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasSubscriptionHandle) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SubscriptionHandle);
+      if (HasStreamHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(StreamHandle);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6302,12 +6300,12 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DataTrackSubscriptionReadRequest other) {
+    public void MergeFrom(DataTrackStreamReadRequest other) {
       if (other == null) {
         return;
       }
-      if (other.HasSubscriptionHandle) {
-        SubscriptionHandle = other.SubscriptionHandle;
+      if (other.HasStreamHandle) {
+        StreamHandle = other.StreamHandle;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -6329,7 +6327,7 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            SubscriptionHandle = input.ReadUInt64();
+            StreamHandle = input.ReadUInt64();
             break;
           }
         }
@@ -6352,7 +6350,7 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            SubscriptionHandle = input.ReadUInt64();
+            StreamHandle = input.ReadUInt64();
             break;
           }
         }
@@ -6363,16 +6361,16 @@ namespace LiveKit.Proto {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class DataTrackSubscriptionReadResponse : pb::IMessage<DataTrackSubscriptionReadResponse>
+  public sealed partial class DataTrackStreamReadResponse : pb::IMessage<DataTrackStreamReadResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<DataTrackSubscriptionReadResponse> _parser = new pb::MessageParser<DataTrackSubscriptionReadResponse>(() => new DataTrackSubscriptionReadResponse());
+    private static readonly pb::MessageParser<DataTrackStreamReadResponse> _parser = new pb::MessageParser<DataTrackStreamReadResponse>(() => new DataTrackStreamReadResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DataTrackSubscriptionReadResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataTrackStreamReadResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -6388,7 +6386,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionReadResponse() {
+    public DataTrackStreamReadResponse() {
       OnConstruction();
     }
 
@@ -6396,25 +6394,25 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionReadResponse(DataTrackSubscriptionReadResponse other) : this() {
+    public DataTrackStreamReadResponse(DataTrackStreamReadResponse other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionReadResponse Clone() {
-      return new DataTrackSubscriptionReadResponse(this);
+    public DataTrackStreamReadResponse Clone() {
+      return new DataTrackStreamReadResponse(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as DataTrackSubscriptionReadResponse);
+      return Equals(other as DataTrackStreamReadResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DataTrackSubscriptionReadResponse other) {
+    public bool Equals(DataTrackStreamReadResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -6474,7 +6472,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DataTrackSubscriptionReadResponse other) {
+    public void MergeFrom(DataTrackStreamReadResponse other) {
       if (other == null) {
         return;
       }
@@ -6524,20 +6522,20 @@ namespace LiveKit.Proto {
   }
 
   /// <summary>
-  /// Event emitted on an active subscription.
+  /// Event emitted on an active stream.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class DataTrackSubscriptionEvent : pb::IMessage<DataTrackSubscriptionEvent>
+  public sealed partial class DataTrackStreamEvent : pb::IMessage<DataTrackStreamEvent>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<DataTrackSubscriptionEvent> _parser = new pb::MessageParser<DataTrackSubscriptionEvent>(() => new DataTrackSubscriptionEvent());
+    private static readonly pb::MessageParser<DataTrackStreamEvent> _parser = new pb::MessageParser<DataTrackStreamEvent>(() => new DataTrackStreamEvent());
     private pb::UnknownFieldSet _unknownFields;
     private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DataTrackSubscriptionEvent> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataTrackStreamEvent> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -6553,7 +6551,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionEvent() {
+    public DataTrackStreamEvent() {
       OnConstruction();
     }
 
@@ -6561,9 +6559,9 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionEvent(DataTrackSubscriptionEvent other) : this() {
+    public DataTrackStreamEvent(DataTrackStreamEvent other) : this() {
       _hasBits0 = other._hasBits0;
-      subscriptionHandle_ = other.subscriptionHandle_;
+      streamHandle_ = other.streamHandle_;
       switch (other.DetailCase) {
         case DetailOneofCase.FrameReceived:
           FrameReceived = other.FrameReceived.Clone();
@@ -6578,34 +6576,34 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionEvent Clone() {
-      return new DataTrackSubscriptionEvent(this);
+    public DataTrackStreamEvent Clone() {
+      return new DataTrackStreamEvent(this);
     }
 
-    /// <summary>Field number for the "subscription_handle" field.</summary>
-    public const int SubscriptionHandleFieldNumber = 1;
-    private readonly static ulong SubscriptionHandleDefaultValue = 0UL;
+    /// <summary>Field number for the "stream_handle" field.</summary>
+    public const int StreamHandleFieldNumber = 1;
+    private readonly static ulong StreamHandleDefaultValue = 0UL;
 
-    private ulong subscriptionHandle_;
+    private ulong streamHandle_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ulong SubscriptionHandle {
-      get { if ((_hasBits0 & 1) != 0) { return subscriptionHandle_; } else { return SubscriptionHandleDefaultValue; } }
+    public ulong StreamHandle {
+      get { if ((_hasBits0 & 1) != 0) { return streamHandle_; } else { return StreamHandleDefaultValue; } }
       set {
         _hasBits0 |= 1;
-        subscriptionHandle_ = value;
+        streamHandle_ = value;
       }
     }
-    /// <summary>Gets whether the "subscription_handle" field is set</summary>
+    /// <summary>Gets whether the "stream_handle" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasSubscriptionHandle {
+    public bool HasStreamHandle {
       get { return (_hasBits0 & 1) != 0; }
     }
-    /// <summary>Clears the value of the "subscription_handle" field</summary>
+    /// <summary>Clears the value of the "stream_handle" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearSubscriptionHandle() {
+    public void ClearStreamHandle() {
       _hasBits0 &= ~1;
     }
 
@@ -6613,8 +6611,8 @@ namespace LiveKit.Proto {
     public const int FrameReceivedFieldNumber = 2;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.DataTrackSubscriptionFrameReceived FrameReceived {
-      get { return detailCase_ == DetailOneofCase.FrameReceived ? (global::LiveKit.Proto.DataTrackSubscriptionFrameReceived) detail_ : null; }
+    public global::LiveKit.Proto.DataTrackStreamFrameReceived FrameReceived {
+      get { return detailCase_ == DetailOneofCase.FrameReceived ? (global::LiveKit.Proto.DataTrackStreamFrameReceived) detail_ : null; }
       set {
         detail_ = value;
         detailCase_ = value == null ? DetailOneofCase.None : DetailOneofCase.FrameReceived;
@@ -6625,8 +6623,8 @@ namespace LiveKit.Proto {
     public const int EosFieldNumber = 3;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::LiveKit.Proto.DataTrackSubscriptionEOS Eos {
-      get { return detailCase_ == DetailOneofCase.Eos ? (global::LiveKit.Proto.DataTrackSubscriptionEOS) detail_ : null; }
+    public global::LiveKit.Proto.DataTrackStreamEOS Eos {
+      get { return detailCase_ == DetailOneofCase.Eos ? (global::LiveKit.Proto.DataTrackStreamEOS) detail_ : null; }
       set {
         detail_ = value;
         detailCase_ = value == null ? DetailOneofCase.None : DetailOneofCase.Eos;
@@ -6657,19 +6655,19 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as DataTrackSubscriptionEvent);
+      return Equals(other as DataTrackStreamEvent);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DataTrackSubscriptionEvent other) {
+    public bool Equals(DataTrackStreamEvent other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (SubscriptionHandle != other.SubscriptionHandle) return false;
+      if (StreamHandle != other.StreamHandle) return false;
       if (!object.Equals(FrameReceived, other.FrameReceived)) return false;
       if (!object.Equals(Eos, other.Eos)) return false;
       if (DetailCase != other.DetailCase) return false;
@@ -6680,7 +6678,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasSubscriptionHandle) hash ^= SubscriptionHandle.GetHashCode();
+      if (HasStreamHandle) hash ^= StreamHandle.GetHashCode();
       if (detailCase_ == DetailOneofCase.FrameReceived) hash ^= FrameReceived.GetHashCode();
       if (detailCase_ == DetailOneofCase.Eos) hash ^= Eos.GetHashCode();
       hash ^= (int) detailCase_;
@@ -6702,9 +6700,9 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasSubscriptionHandle) {
+      if (HasStreamHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(SubscriptionHandle);
+        output.WriteUInt64(StreamHandle);
       }
       if (detailCase_ == DetailOneofCase.FrameReceived) {
         output.WriteRawTag(18);
@@ -6724,9 +6722,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasSubscriptionHandle) {
+      if (HasStreamHandle) {
         output.WriteRawTag(8);
-        output.WriteUInt64(SubscriptionHandle);
+        output.WriteUInt64(StreamHandle);
       }
       if (detailCase_ == DetailOneofCase.FrameReceived) {
         output.WriteRawTag(18);
@@ -6746,8 +6744,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasSubscriptionHandle) {
-        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SubscriptionHandle);
+      if (HasStreamHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(StreamHandle);
       }
       if (detailCase_ == DetailOneofCase.FrameReceived) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(FrameReceived);
@@ -6763,23 +6761,23 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DataTrackSubscriptionEvent other) {
+    public void MergeFrom(DataTrackStreamEvent other) {
       if (other == null) {
         return;
       }
-      if (other.HasSubscriptionHandle) {
-        SubscriptionHandle = other.SubscriptionHandle;
+      if (other.HasStreamHandle) {
+        StreamHandle = other.StreamHandle;
       }
       switch (other.DetailCase) {
         case DetailOneofCase.FrameReceived:
           if (FrameReceived == null) {
-            FrameReceived = new global::LiveKit.Proto.DataTrackSubscriptionFrameReceived();
+            FrameReceived = new global::LiveKit.Proto.DataTrackStreamFrameReceived();
           }
           FrameReceived.MergeFrom(other.FrameReceived);
           break;
         case DetailOneofCase.Eos:
           if (Eos == null) {
-            Eos = new global::LiveKit.Proto.DataTrackSubscriptionEOS();
+            Eos = new global::LiveKit.Proto.DataTrackStreamEOS();
           }
           Eos.MergeFrom(other.Eos);
           break;
@@ -6805,11 +6803,11 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            SubscriptionHandle = input.ReadUInt64();
+            StreamHandle = input.ReadUInt64();
             break;
           }
           case 18: {
-            global::LiveKit.Proto.DataTrackSubscriptionFrameReceived subBuilder = new global::LiveKit.Proto.DataTrackSubscriptionFrameReceived();
+            global::LiveKit.Proto.DataTrackStreamFrameReceived subBuilder = new global::LiveKit.Proto.DataTrackStreamFrameReceived();
             if (detailCase_ == DetailOneofCase.FrameReceived) {
               subBuilder.MergeFrom(FrameReceived);
             }
@@ -6818,7 +6816,7 @@ namespace LiveKit.Proto {
             break;
           }
           case 26: {
-            global::LiveKit.Proto.DataTrackSubscriptionEOS subBuilder = new global::LiveKit.Proto.DataTrackSubscriptionEOS();
+            global::LiveKit.Proto.DataTrackStreamEOS subBuilder = new global::LiveKit.Proto.DataTrackStreamEOS();
             if (detailCase_ == DetailOneofCase.Eos) {
               subBuilder.MergeFrom(Eos);
             }
@@ -6846,11 +6844,11 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            SubscriptionHandle = input.ReadUInt64();
+            StreamHandle = input.ReadUInt64();
             break;
           }
           case 18: {
-            global::LiveKit.Proto.DataTrackSubscriptionFrameReceived subBuilder = new global::LiveKit.Proto.DataTrackSubscriptionFrameReceived();
+            global::LiveKit.Proto.DataTrackStreamFrameReceived subBuilder = new global::LiveKit.Proto.DataTrackStreamFrameReceived();
             if (detailCase_ == DetailOneofCase.FrameReceived) {
               subBuilder.MergeFrom(FrameReceived);
             }
@@ -6859,7 +6857,7 @@ namespace LiveKit.Proto {
             break;
           }
           case 26: {
-            global::LiveKit.Proto.DataTrackSubscriptionEOS subBuilder = new global::LiveKit.Proto.DataTrackSubscriptionEOS();
+            global::LiveKit.Proto.DataTrackStreamEOS subBuilder = new global::LiveKit.Proto.DataTrackStreamEOS();
             if (detailCase_ == DetailOneofCase.Eos) {
               subBuilder.MergeFrom(Eos);
             }
@@ -6878,16 +6876,16 @@ namespace LiveKit.Proto {
   /// A frame was received.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class DataTrackSubscriptionFrameReceived : pb::IMessage<DataTrackSubscriptionFrameReceived>
+  public sealed partial class DataTrackStreamFrameReceived : pb::IMessage<DataTrackStreamFrameReceived>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<DataTrackSubscriptionFrameReceived> _parser = new pb::MessageParser<DataTrackSubscriptionFrameReceived>(() => new DataTrackSubscriptionFrameReceived());
+    private static readonly pb::MessageParser<DataTrackStreamFrameReceived> _parser = new pb::MessageParser<DataTrackStreamFrameReceived>(() => new DataTrackStreamFrameReceived());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DataTrackSubscriptionFrameReceived> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataTrackStreamFrameReceived> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -6903,7 +6901,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionFrameReceived() {
+    public DataTrackStreamFrameReceived() {
       OnConstruction();
     }
 
@@ -6911,15 +6909,15 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionFrameReceived(DataTrackSubscriptionFrameReceived other) : this() {
+    public DataTrackStreamFrameReceived(DataTrackStreamFrameReceived other) : this() {
       frame_ = other.frame_ != null ? other.frame_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionFrameReceived Clone() {
-      return new DataTrackSubscriptionFrameReceived(this);
+    public DataTrackStreamFrameReceived Clone() {
+      return new DataTrackStreamFrameReceived(this);
     }
 
     /// <summary>Field number for the "frame" field.</summary>
@@ -6937,12 +6935,12 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as DataTrackSubscriptionFrameReceived);
+      return Equals(other as DataTrackStreamFrameReceived);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DataTrackSubscriptionFrameReceived other) {
+    public bool Equals(DataTrackStreamFrameReceived other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -7015,7 +7013,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DataTrackSubscriptionFrameReceived other) {
+    public void MergeFrom(DataTrackStreamFrameReceived other) {
       if (other == null) {
         return;
       }
@@ -7085,19 +7083,19 @@ namespace LiveKit.Proto {
   }
 
   /// <summary>
-  /// Subscription has ended (end of stream).
+  /// Stream has ended.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class DataTrackSubscriptionEOS : pb::IMessage<DataTrackSubscriptionEOS>
+  public sealed partial class DataTrackStreamEOS : pb::IMessage<DataTrackStreamEOS>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<DataTrackSubscriptionEOS> _parser = new pb::MessageParser<DataTrackSubscriptionEOS>(() => new DataTrackSubscriptionEOS());
+    private static readonly pb::MessageParser<DataTrackStreamEOS> _parser = new pb::MessageParser<DataTrackStreamEOS>(() => new DataTrackStreamEOS());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DataTrackSubscriptionEOS> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataTrackStreamEOS> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -7113,7 +7111,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionEOS() {
+    public DataTrackStreamEOS() {
       OnConstruction();
     }
 
@@ -7121,15 +7119,15 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionEOS(DataTrackSubscriptionEOS other) : this() {
+    public DataTrackStreamEOS(DataTrackStreamEOS other) : this() {
       error_ = other.error_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DataTrackSubscriptionEOS Clone() {
-      return new DataTrackSubscriptionEOS(this);
+    public DataTrackStreamEOS Clone() {
+      return new DataTrackStreamEOS(this);
     }
 
     /// <summary>Field number for the "error" field.</summary>
@@ -7165,12 +7163,12 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as DataTrackSubscriptionEOS);
+      return Equals(other as DataTrackStreamEOS);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DataTrackSubscriptionEOS other) {
+    public bool Equals(DataTrackStreamEOS other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -7243,7 +7241,7 @@ namespace LiveKit.Proto {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DataTrackSubscriptionEOS other) {
+    public void MergeFrom(DataTrackStreamEOS other) {
       if (other == null) {
         return;
       }
