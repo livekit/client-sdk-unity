@@ -116,6 +116,22 @@ namespace LiveKit
                     }
                 }
 
+                int valuesAvailableToRead = _buffer.AvailableRead() / sizeof(short);
+                // Underrun detection: If we couldn't read enough samples, immediately output silence
+                // and wait for the buffer to refill enough to offer Unity a full sample.
+                // This prevents choppy audio from playing partial samples during underrun.
+                if (valuesAvailableToRead < data.Length)
+                {
+                    _isPrimed = false;
+                    Utils.Debug($"AudioStream underrun detected, re-priming (got {valuesAvailableToRead} samples)");
+
+                    // Output silence immediately instead of playing partial/choppy samples.
+                    // On next frames, the !_isPrimed check above will ensure we wait for 30ms
+                    // of data before resuming playback smoothly.
+                    Array.Clear(data, 0, data.Length);
+                    return;
+                }
+
                 // Try to read audio samples from the ring buffer into our temp buffer.
                 // The ring buffer acts as a jitter buffer between:
                 // - Rust FFI pushing frames (on main thread, with network timing)
@@ -126,21 +142,6 @@ namespace LiveKit
                 // Calculate how many samples (shorts) were actually read from the ring buffer.
                 // If the buffer is empty or doesn't have enough data, bytesRead will be less than requested.
                 int samplesRead = bytesRead / sizeof(short);
-
-                // Underrun detection: If we couldn't read enough samples, immediately output silence
-                // and wait for the buffer to refill enough to offer Unity a full sample.
-                // This prevents choppy audio from playing partial samples during underrun.
-                if (samplesRead < data.Length)
-                {
-                    _isPrimed = false;
-                    Utils.Debug($"AudioStream underrun detected, re-priming (got {samplesRead}/{data.Length} samples)");
-
-                    // Output silence immediately instead of playing partial/choppy samples.
-                    // On next frames, the !_isPrimed check above will ensure we wait for 30ms
-                    // of data before resuming playback smoothly.
-                    Array.Clear(data, 0, data.Length);
-                    return;
-                }
 
                 // Clear the entire output buffer to silence, then fill with the samples
                 // we successfully read from the ring buffer.
