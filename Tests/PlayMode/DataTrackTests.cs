@@ -172,8 +172,8 @@ namespace LiveKit.PlayModeTests
             yield return trackExpectation.Wait();
             Assert.IsNull(trackExpectation.Error);
 
-            var subscription = remoteTrack.Subscribe();
-            Assert.IsNotNull(subscription);
+            var stream = remoteTrack.Subscribe();
+            Assert.IsNotNull(stream);
         }
 
         [UnityTest, Category("E2E")]
@@ -206,12 +206,12 @@ namespace LiveKit.PlayModeTests
             yield return trackExpectation.Wait();
             Assert.IsNull(trackExpectation.Error);
 
-            var subscription = remoteTrack.Subscribe();
+            var stream = remoteTrack.Subscribe();
 
             var sentPayload = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF };
             publishInstruction.Track.TryPush(new DataTrackFrame(sentPayload));
 
-            var frameInstruction = subscription.ReadFrame();
+            var frameInstruction = stream.ReadFrame();
             yield return frameInstruction;
 
             Assert.IsNull(frameInstruction.Error);
@@ -249,12 +249,12 @@ namespace LiveKit.PlayModeTests
             yield return trackExpectation.Wait();
             Assert.IsNull(trackExpectation.Error);
 
-            var subscription = remoteTrack.Subscribe();
+            var stream = remoteTrack.Subscribe();
 
             var frame = new DataTrackFrame(new byte[] { 0x01 }).WithUserTimestampNow();
             publishInstruction.Track.TryPush(frame);
 
-            var frameInstruction = subscription.ReadFrame();
+            var frameInstruction = stream.ReadFrame();
             yield return frameInstruction;
 
             Assert.IsNull(frameInstruction.Error);

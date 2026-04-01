@@ -62,7 +62,7 @@ namespace LiveKit.Internal
         public event TextStreamReaderEventReceivedDelegate? TextStreamReaderEventReceived;
 
         // Data Track
-        public event DataTrackSubscriptionEventReceivedDelegate? DataTrackSubscriptionEventReceived;
+        public event DataTrackStreamEventReceivedDelegate? DataTrackStreamEventReceived;
 
         public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
@@ -335,8 +335,8 @@ namespace LiveKit.Internal
                         Instance.TextStreamReaderEventReceived?.Invoke(r.TextStreamReaderEvent!);
                         break;
                     // Data Track
-                    case FfiEvent.MessageOneofCase.DataTrackSubscriptionEvent:
-                        Instance.DataTrackSubscriptionEventReceived?.Invoke(r.DataTrackSubscriptionEvent!);
+                    case FfiEvent.MessageOneofCase.DataTrackStreamEvent:
+                        Instance.DataTrackStreamEventReceived?.Invoke(r.DataTrackStreamEvent!);
                         break;
                     case FfiEvent.MessageOneofCase.Panic:
                         break;

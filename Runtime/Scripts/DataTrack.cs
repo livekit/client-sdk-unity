@@ -278,8 +278,8 @@ namespace LiveKit
         /// Subscribes to the data track to receive frames.
         /// </summary>
         /// <param name="options">Options for the subscription, such as buffer size.</param>
-        /// <returns>A <see cref="DataTrackSubscription"/> for reading frames.</returns>
-        public DataTrackSubscription Subscribe(DataTrackSubscribeOptions options)
+        /// <returns>A <see cref="DataTrackStream"/> for reading frames.</returns>
+        public DataTrackStream Subscribe(DataTrackSubscribeOptions options)
         {
             using var request = FFIBridge.Instance.NewRequest<SubscribeDataTrackRequest>();
             var subReq = request.request;
@@ -292,7 +292,7 @@ namespace LiveKit
 
             using var response = request.Send();
             FfiResponse res = response;
-            return new DataTrackSubscription(res.SubscribeDataTrack.Subscription);
+            return new DataTrackStream(res.SubscribeDataTrack.Stream);
         }
 
         /// <summary>
@@ -301,8 +301,8 @@ namespace LiveKit
         /// <remarks>
         /// Use the <see cref="Subscribe(DataTrackSubscribeOptions)"/> overload to configure subscription options.
         /// </remarks>
-        /// <returns>A <see cref="DataTrackSubscription"/> for reading frames.</returns>
-        public DataTrackSubscription Subscribe()
+        /// <returns>A <see cref="DataTrackStream"/> for reading frames.</returns>
+        public DataTrackStream Subscribe()
         {
             return Subscribe(new DataTrackSubscribeOptions());
         }
@@ -341,18 +341,18 @@ namespace LiveKit
     /// </code>
     /// Calling <see cref="Close"/> or dropping the subscription unsubscribes from the track.
     /// </remarks>
-    public sealed class DataTrackSubscription
+    public sealed class DataTrackStream
     {
         private readonly FfiHandle _handle;
         private readonly ulong _handleId;
         private ReadFrameInstruction _currentInstruction;
         private bool _closed;
 
-        internal DataTrackSubscription(OwnedDataTrackSubscription owned)
+        internal DataTrackStream(OwnedDataTrackStream owned)
         {
             _handle = FfiHandle.FromOwnedHandle(owned.Handle);
             _handleId = owned.Handle.Id;
-            FfiClient.Instance.DataTrackSubscriptionEventReceived += OnSubscriptionEvent;
+            FfiClient.Instance.DataTrackStreamEventReceived += OnSubscriptionEvent;
         }
 
         /// <summary>
@@ -371,24 +371,24 @@ namespace LiveKit
         {
             _currentInstruction = new ReadFrameInstruction();
 
-            using var request = FFIBridge.Instance.NewRequest<DataTrackSubscriptionReadRequest>();
-            request.request.SubscriptionHandle = _handleId;
+            using var request = FFIBridge.Instance.NewRequest<DataTrackStreamReadRequest>();
+            request.request.StreamHandle = _handleId;
             using var response = request.Send();
 
             return _currentInstruction;
         }
 
-        private void OnSubscriptionEvent(DataTrackSubscriptionEvent callback)
+        private void OnSubscriptionEvent(DataTrackStreamEvent callback)
         {
-            if (callback.SubscriptionHandle != _handleId)
+            if (callback.StreamHandle != _handleId)
                 return;
 
             switch (callback.DetailCase)
             {
-                case DataTrackSubscriptionEvent.DetailOneofCase.FrameReceived:
+                case DataTrackStreamEvent.DetailOneofCase.FrameReceived:
                     _currentInstruction?.SetFrame(new DataTrackFrame(callback.FrameReceived.Frame));
                     break;
-                case DataTrackSubscriptionEvent.DetailOneofCase.Eos:
+                case DataTrackStreamEvent.DetailOneofCase.Eos:
                     SubscribeDataTrackError error = null;
                     if (callback.Eos.HasError)
                         error = new SubscribeDataTrackError(callback.Eos.Error);
@@ -413,15 +413,15 @@ namespace LiveKit
         {
             if (_closed) return;
             _closed = true;
-            FfiClient.Instance.DataTrackSubscriptionEventReceived -= OnSubscriptionEvent;
+            FfiClient.Instance.DataTrackStreamEventReceived -= OnSubscriptionEvent;
         }
 
         /// <summary>
-        /// YieldInstruction for reading a single frame from a <see cref="DataTrackSubscription"/>.
+        /// YieldInstruction for reading a single frame from a <see cref="DataTrackStream"/>.
         /// </summary>
         /// <remarks>
         /// Usage: while <see cref="IsEos"/> is false (i.e. the subscription has not ended),
-        /// call <see cref="DataTrackSubscription.ReadFrame"/>, yield the instruction,
+        /// call <see cref="DataTrackStream.ReadFrame"/>, yield the instruction,
         /// then check <see cref="IsCurrentReadDone"/> and access <see cref="Frame"/>.
         /// </remarks>
         public sealed class ReadFrameInstruction : CustomYieldInstruction
