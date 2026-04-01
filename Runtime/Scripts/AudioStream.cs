@@ -64,7 +64,7 @@ namespace LiveKit
             MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
         }
 
-        // Called on FFI callback thread
+        // Called on Unity audio thread
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
             if (_disposed)
@@ -128,9 +128,9 @@ namespace LiveKit
                 int samplesRead = bytesRead / sizeof(short);
 
                 // Underrun detection: If we couldn't read enough samples, immediately output silence
-                // and wait for the buffer to refill to 30ms before resuming playback.
+                // and wait for the buffer to refill enough to offer Unity a full sample.
                 // This prevents choppy audio from playing partial samples during underrun.
-                if (samplesRead < data.Length * 0.5f)  // If we got less than 50% of requested samples
+                if (samplesRead < data.Length)
                 {
                     _isPrimed = false;
                     Utils.Debug($"AudioStream underrun detected, re-priming (got {samplesRead}/{data.Length} samples)");
@@ -176,7 +176,7 @@ namespace LiveKit
             }
         }
 
-        // Called on the MainThread (See FfiClient)
+        // Called on FFI callback thread       
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (_disposed)
