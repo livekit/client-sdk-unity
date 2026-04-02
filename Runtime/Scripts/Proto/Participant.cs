@@ -25,47 +25,52 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFwYXJ0aWNpcGFudC5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvGgt0cmFjay5wcm90byKnAwoPUGFydGljaXBhbnRJbmZvEgsKA3NpZBgB",
-            "IAIoCRIMCgRuYW1lGAIgAigJEhAKCGlkZW50aXR5GAMgAigJEhAKCG1ldGFk",
-            "YXRhGAQgAigJEkIKCmF0dHJpYnV0ZXMYBSADKAsyLi5saXZla2l0LnByb3Rv",
-            "LlBhcnRpY2lwYW50SW5mby5BdHRyaWJ1dGVzRW50cnkSLAoEa2luZBgGIAIo",
-            "DjIeLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRLaW5kEjoKEWRpc2Nvbm5l",
-            "Y3RfcmVhc29uGAcgAigOMh8ubGl2ZWtpdC5wcm90by5EaXNjb25uZWN0UmVh",
-            "c29uEjoKDGtpbmRfZGV0YWlscxgIIAMoDjIkLmxpdmVraXQucHJvdG8uUGFy",
-            "dGljaXBhbnRLaW5kRGV0YWlsEjgKCnBlcm1pc3Npb24YCSABKAsyJC5saXZl",
-            "a2l0LnByb3RvLlBhcnRpY2lwYW50UGVybWlzc2lvbhoxCg9BdHRyaWJ1dGVz",
-            "RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJvChBPd25l",
-            "ZFBhcnRpY2lwYW50Ei0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8u",
-            "RmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8u",
-            "UGFydGljaXBhbnRJbmZvIoQCChVQYXJ0aWNpcGFudFBlcm1pc3Npb24SFQoN",
-            "Y2FuX3N1YnNjcmliZRgBIAIoCBITCgtjYW5fcHVibGlzaBgCIAIoCBIYChBj",
-            "YW5fcHVibGlzaF9kYXRhGAMgAigIEjcKE2Nhbl9wdWJsaXNoX3NvdXJjZXMY",
-            "CSADKA4yGi5saXZla2l0LnByb3RvLlRyYWNrU291cmNlEg4KBmhpZGRlbhgH",
-            "IAIoCBIbChNjYW5fdXBkYXRlX21ldGFkYXRhGAogAigIEh0KFWNhbl9zdWJz",
-            "Y3JpYmVfbWV0cmljcxgMIAIoCBIgChhjYW5fbWFuYWdlX2FnZW50X3Nlc3Np",
-            "b24YDSACKAgq3gEKD1BhcnRpY2lwYW50S2luZBIdChlQQVJUSUNJUEFOVF9L",
-            "SU5EX1NUQU5EQVJEEAASHAoYUEFSVElDSVBBTlRfS0lORF9JTkdSRVNTEAES",
-            "GwoXUEFSVElDSVBBTlRfS0lORF9FR1JFU1MQAhIYChRQQVJUSUNJUEFOVF9L",
-            "SU5EX1NJUBADEhoKFlBBUlRJQ0lQQU5UX0tJTkRfQUdFTlQQBBIeChpQQVJU",
-            "SUNJUEFOVF9LSU5EX0NPTk5FQ1RPUhAFEhsKF1BBUlRJQ0lQQU5UX0tJTkRf",
-            "QlJJREdFEAYq7gEKFVBhcnRpY2lwYW50S2luZERldGFpbBInCiNQQVJUSUNJ",
-            "UEFOVF9LSU5EX0RFVEFJTF9DTE9VRF9BR0VOVBAAEiUKIVBBUlRJQ0lQQU5U",
-            "X0tJTkRfREVUQUlMX0ZPUldBUkRFRBABEi4KKlBBUlRJQ0lQQU5UX0tJTkRf",
-            "REVUQUlMX0NPTk5FQ1RPUl9XSEFUU0FQUBACEiwKKFBBUlRJQ0lQQU5UX0tJ",
-            "TkRfREVUQUlMX0NPTk5FQ1RPUl9UV0lMSU8QAxInCiNQQVJUSUNJUEFOVF9L",
-            "SU5EX0RFVEFJTF9CUklER0VfUlRTUBAEKugCChBEaXNjb25uZWN0UmVhc29u",
-            "EhIKDlVOS05PV05fUkVBU09OEAASFAoQQ0xJRU5UX0lOSVRJQVRFRBABEhYK",
-            "EkRVUExJQ0FURV9JREVOVElUWRACEhMKD1NFUlZFUl9TSFVURE9XThADEhcK",
-            "E1BBUlRJQ0lQQU5UX1JFTU9WRUQQBBIQCgxST09NX0RFTEVURUQQBRISCg5T",
-            "VEFURV9NSVNNQVRDSBAGEhAKDEpPSU5fRkFJTFVSRRAHEg0KCU1JR1JBVElP",
-            "ThAIEhAKDFNJR05BTF9DTE9TRRAJEg8KC1JPT01fQ0xPU0VEEAoSFAoQVVNF",
-            "Ul9VTkFWQUlMQUJMRRALEhEKDVVTRVJfUkVKRUNURUQQDBIVChFTSVBfVFJV",
-            "TktfRkFJTFVSRRANEhYKEkNPTk5FQ1RJT05fVElNRU9VVBAOEhEKDU1FRElB",
-            "X0ZBSUxVUkUQDxIPCgtBR0VOVF9FUlJPUhAQQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "b3RvGgt0cmFjay5wcm90byLqAwoPUGFydGljaXBhbnRJbmZvEgsKA3NpZBgB",
+            "IAIoCRIMCgRuYW1lGAIgAigJEhAKCGlkZW50aXR5GAMgAigJEi4KBXN0YXRl",
+            "GAQgAigOMh8ubGl2ZWtpdC5wcm90by5QYXJ0aWNpcGFudFN0YXRlEhAKCG1l",
+            "dGFkYXRhGAUgAigJEkIKCmF0dHJpYnV0ZXMYBiADKAsyLi5saXZla2l0LnBy",
+            "b3RvLlBhcnRpY2lwYW50SW5mby5BdHRyaWJ1dGVzRW50cnkSLAoEa2luZBgH",
+            "IAIoDjIeLmxpdmVraXQucHJvdG8uUGFydGljaXBhbnRLaW5kEjoKEWRpc2Nv",
+            "bm5lY3RfcmVhc29uGAggAigOMh8ubGl2ZWtpdC5wcm90by5EaXNjb25uZWN0",
+            "UmVhc29uEhEKCWpvaW5lZF9hdBgJIAIoAxI6CgxraW5kX2RldGFpbHMYCiAD",
+            "KA4yJC5saXZla2l0LnByb3RvLlBhcnRpY2lwYW50S2luZERldGFpbBI4Cgpw",
+            "ZXJtaXNzaW9uGAsgASgLMiQubGl2ZWtpdC5wcm90by5QYXJ0aWNpcGFudFBl",
+            "cm1pc3Npb24aMQoPQXR0cmlidXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2",
+            "YWx1ZRgCIAEoCToCOAEibwoQT3duZWRQYXJ0aWNpcGFudBItCgZoYW5kbGUY",
+            "ASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8Y",
+            "AiACKAsyHi5saXZla2l0LnByb3RvLlBhcnRpY2lwYW50SW5mbyKEAgoVUGFy",
+            "dGljaXBhbnRQZXJtaXNzaW9uEhUKDWNhbl9zdWJzY3JpYmUYASACKAgSEwoL",
+            "Y2FuX3B1Ymxpc2gYAiACKAgSGAoQY2FuX3B1Ymxpc2hfZGF0YRgDIAIoCBI3",
+            "ChNjYW5fcHVibGlzaF9zb3VyY2VzGAkgAygOMhoubGl2ZWtpdC5wcm90by5U",
+            "cmFja1NvdXJjZRIOCgZoaWRkZW4YByACKAgSGwoTY2FuX3VwZGF0ZV9tZXRh",
+            "ZGF0YRgKIAIoCBIdChVjYW5fc3Vic2NyaWJlX21ldHJpY3MYDCACKAgSIAoY",
+            "Y2FuX21hbmFnZV9hZ2VudF9zZXNzaW9uGA0gAigIKpEBChBQYXJ0aWNpcGFu",
+            "dFN0YXRlEh0KGVBBUlRJQ0lQQU5UX1NUQVRFX0pPSU5JTkcQABIcChhQQVJU",
+            "SUNJUEFOVF9TVEFURV9KT0lORUQQARIcChhQQVJUSUNJUEFOVF9TVEFURV9B",
+            "Q1RJVkUQAhIiCh5QQVJUSUNJUEFOVF9TVEFURV9ESVNDT05ORUNURUQQAyre",
+            "AQoPUGFydGljaXBhbnRLaW5kEh0KGVBBUlRJQ0lQQU5UX0tJTkRfU1RBTkRB",
+            "UkQQABIcChhQQVJUSUNJUEFOVF9LSU5EX0lOR1JFU1MQARIbChdQQVJUSUNJ",
+            "UEFOVF9LSU5EX0VHUkVTUxACEhgKFFBBUlRJQ0lQQU5UX0tJTkRfU0lQEAMS",
+            "GgoWUEFSVElDSVBBTlRfS0lORF9BR0VOVBAEEh4KGlBBUlRJQ0lQQU5UX0tJ",
+            "TkRfQ09OTkVDVE9SEAUSGwoXUEFSVElDSVBBTlRfS0lORF9CUklER0UQBiru",
+            "AQoVUGFydGljaXBhbnRLaW5kRGV0YWlsEicKI1BBUlRJQ0lQQU5UX0tJTkRf",
+            "REVUQUlMX0NMT1VEX0FHRU5UEAASJQohUEFSVElDSVBBTlRfS0lORF9ERVRB",
+            "SUxfRk9SV0FSREVEEAESLgoqUEFSVElDSVBBTlRfS0lORF9ERVRBSUxfQ09O",
+            "TkVDVE9SX1dIQVRTQVBQEAISLAooUEFSVElDSVBBTlRfS0lORF9ERVRBSUxf",
+            "Q09OTkVDVE9SX1RXSUxJTxADEicKI1BBUlRJQ0lQQU5UX0tJTkRfREVUQUlM",
+            "X0JSSURHRV9SVFNQEAQq6AIKEERpc2Nvbm5lY3RSZWFzb24SEgoOVU5LTk9X",
+            "Tl9SRUFTT04QABIUChBDTElFTlRfSU5JVElBVEVEEAESFgoSRFVQTElDQVRF",
+            "X0lERU5USVRZEAISEwoPU0VSVkVSX1NIVVRET1dOEAMSFwoTUEFSVElDSVBB",
+            "TlRfUkVNT1ZFRBAEEhAKDFJPT01fREVMRVRFRBAFEhIKDlNUQVRFX01JU01B",
+            "VENIEAYSEAoMSk9JTl9GQUlMVVJFEAcSDQoJTUlHUkFUSU9OEAgSEAoMU0lH",
+            "TkFMX0NMT1NFEAkSDwoLUk9PTV9DTE9TRUQQChIUChBVU0VSX1VOQVZBSUxB",
+            "QkxFEAsSEQoNVVNFUl9SRUpFQ1RFRBAMEhUKEVNJUF9UUlVOS19GQUlMVVJF",
+            "EA0SFgoSQ09OTkVDVElPTl9USU1FT1VUEA4SEQoNTUVESUFfRkFJTFVSRRAP",
+            "Eg8KC0FHRU5UX0VSUk9SEBBCEKoCDUxpdmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.ParticipantKindDetail), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "Metadata", "Attributes", "Kind", "DisconnectReason", "KindDetails", "Permission" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantState), typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.ParticipantKindDetail), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "State", "Metadata", "Attributes", "Kind", "DisconnectReason", "JoinedAt", "KindDetails", "Permission" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantPermission), global::LiveKit.Proto.ParticipantPermission.Parser, new[]{ "CanSubscribe", "CanPublish", "CanPublishData", "CanPublishSources", "Hidden", "CanUpdateMetadata", "CanSubscribeMetrics", "CanManageAgentSession" }, null, null, null, null)
           }));
@@ -74,6 +79,13 @@ namespace LiveKit.Proto {
 
   }
   #region Enums
+  public enum ParticipantState {
+    [pbr::OriginalName("PARTICIPANT_STATE_JOINING")] Joining = 0,
+    [pbr::OriginalName("PARTICIPANT_STATE_JOINED")] Joined = 1,
+    [pbr::OriginalName("PARTICIPANT_STATE_ACTIVE")] Active = 2,
+    [pbr::OriginalName("PARTICIPANT_STATE_DISCONNECTED")] Disconnected = 3,
+  }
+
   public enum ParticipantKind {
     [pbr::OriginalName("PARTICIPANT_KIND_STANDARD")] Standard = 0,
     [pbr::OriginalName("PARTICIPANT_KIND_INGRESS")] Ingress = 1,
@@ -194,10 +206,12 @@ namespace LiveKit.Proto {
       sid_ = other.sid_;
       name_ = other.name_;
       identity_ = other.identity_;
+      state_ = other.state_;
       metadata_ = other.metadata_;
       attributes_ = other.attributes_.Clone();
       kind_ = other.kind_;
       disconnectReason_ = other.disconnectReason_;
+      joinedAt_ = other.joinedAt_;
       kindDetails_ = other.kindDetails_.Clone();
       permission_ = other.permission_ != null ? other.permission_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -287,8 +301,35 @@ namespace LiveKit.Proto {
       identity_ = null;
     }
 
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 4;
+    private readonly static global::LiveKit.Proto.ParticipantState StateDefaultValue = global::LiveKit.Proto.ParticipantState.Joining;
+
+    private global::LiveKit.Proto.ParticipantState state_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.ParticipantState State {
+      get { if ((_hasBits0 & 1) != 0) { return state_; } else { return StateDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        state_ = value;
+      }
+    }
+    /// <summary>Gets whether the "state" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasState {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "state" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearState() {
+      _hasBits0 &= ~1;
+    }
+
     /// <summary>Field number for the "metadata" field.</summary>
-    public const int MetadataFieldNumber = 4;
+    public const int MetadataFieldNumber = 5;
     private readonly static string MetadataDefaultValue = "";
 
     private string metadata_;
@@ -314,9 +355,9 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "attributes" field.</summary>
-    public const int AttributesFieldNumber = 5;
+    public const int AttributesFieldNumber = 6;
     private static readonly pbc::MapField<string, string>.Codec _map_attributes_codec
-        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 42);
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 50);
     private readonly pbc::MapField<string, string> attributes_ = new pbc::MapField<string, string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -325,16 +366,16 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "kind" field.</summary>
-    public const int KindFieldNumber = 6;
+    public const int KindFieldNumber = 7;
     private readonly static global::LiveKit.Proto.ParticipantKind KindDefaultValue = global::LiveKit.Proto.ParticipantKind.Standard;
 
     private global::LiveKit.Proto.ParticipantKind kind_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.ParticipantKind Kind {
-      get { if ((_hasBits0 & 1) != 0) { return kind_; } else { return KindDefaultValue; } }
+      get { if ((_hasBits0 & 2) != 0) { return kind_; } else { return KindDefaultValue; } }
       set {
-        _hasBits0 |= 1;
+        _hasBits0 |= 2;
         kind_ = value;
       }
     }
@@ -342,26 +383,26 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasKind {
-      get { return (_hasBits0 & 1) != 0; }
+      get { return (_hasBits0 & 2) != 0; }
     }
     /// <summary>Clears the value of the "kind" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearKind() {
-      _hasBits0 &= ~1;
+      _hasBits0 &= ~2;
     }
 
     /// <summary>Field number for the "disconnect_reason" field.</summary>
-    public const int DisconnectReasonFieldNumber = 7;
+    public const int DisconnectReasonFieldNumber = 8;
     private readonly static global::LiveKit.Proto.DisconnectReason DisconnectReasonDefaultValue = global::LiveKit.Proto.DisconnectReason.UnknownReason;
 
     private global::LiveKit.Proto.DisconnectReason disconnectReason_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LiveKit.Proto.DisconnectReason DisconnectReason {
-      get { if ((_hasBits0 & 2) != 0) { return disconnectReason_; } else { return DisconnectReasonDefaultValue; } }
+      get { if ((_hasBits0 & 4) != 0) { return disconnectReason_; } else { return DisconnectReasonDefaultValue; } }
       set {
-        _hasBits0 |= 2;
+        _hasBits0 |= 4;
         disconnectReason_ = value;
       }
     }
@@ -369,19 +410,49 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasDisconnectReason {
-      get { return (_hasBits0 & 2) != 0; }
+      get { return (_hasBits0 & 4) != 0; }
     }
     /// <summary>Clears the value of the "disconnect_reason" field</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearDisconnectReason() {
-      _hasBits0 &= ~2;
+      _hasBits0 &= ~4;
+    }
+
+    /// <summary>Field number for the "joined_at" field.</summary>
+    public const int JoinedAtFieldNumber = 9;
+    private readonly static long JoinedAtDefaultValue = 0L;
+
+    private long joinedAt_;
+    /// <summary>
+    /// ms timestamp of when the participant joined the room, maps to joined_at_ms in livekit_models
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long JoinedAt {
+      get { if ((_hasBits0 & 8) != 0) { return joinedAt_; } else { return JoinedAtDefaultValue; } }
+      set {
+        _hasBits0 |= 8;
+        joinedAt_ = value;
+      }
+    }
+    /// <summary>Gets whether the "joined_at" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasJoinedAt {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "joined_at" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearJoinedAt() {
+      _hasBits0 &= ~8;
     }
 
     /// <summary>Field number for the "kind_details" field.</summary>
-    public const int KindDetailsFieldNumber = 8;
+    public const int KindDetailsFieldNumber = 10;
     private static readonly pb::FieldCodec<global::LiveKit.Proto.ParticipantKindDetail> _repeated_kindDetails_codec
-        = pb::FieldCodec.ForEnum(64, x => (int) x, x => (global::LiveKit.Proto.ParticipantKindDetail) x);
+        = pb::FieldCodec.ForEnum(80, x => (int) x, x => (global::LiveKit.Proto.ParticipantKindDetail) x);
     private readonly pbc::RepeatedField<global::LiveKit.Proto.ParticipantKindDetail> kindDetails_ = new pbc::RepeatedField<global::LiveKit.Proto.ParticipantKindDetail>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -390,7 +461,7 @@ namespace LiveKit.Proto {
     }
 
     /// <summary>Field number for the "permission" field.</summary>
-    public const int PermissionFieldNumber = 9;
+    public const int PermissionFieldNumber = 11;
     private global::LiveKit.Proto.ParticipantPermission permission_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -419,10 +490,12 @@ namespace LiveKit.Proto {
       if (Sid != other.Sid) return false;
       if (Name != other.Name) return false;
       if (Identity != other.Identity) return false;
+      if (State != other.State) return false;
       if (Metadata != other.Metadata) return false;
       if (!Attributes.Equals(other.Attributes)) return false;
       if (Kind != other.Kind) return false;
       if (DisconnectReason != other.DisconnectReason) return false;
+      if (JoinedAt != other.JoinedAt) return false;
       if(!kindDetails_.Equals(other.kindDetails_)) return false;
       if (!object.Equals(Permission, other.Permission)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -435,10 +508,12 @@ namespace LiveKit.Proto {
       if (HasSid) hash ^= Sid.GetHashCode();
       if (HasName) hash ^= Name.GetHashCode();
       if (HasIdentity) hash ^= Identity.GetHashCode();
+      if (HasState) hash ^= State.GetHashCode();
       if (HasMetadata) hash ^= Metadata.GetHashCode();
       hash ^= Attributes.GetHashCode();
       if (HasKind) hash ^= Kind.GetHashCode();
       if (HasDisconnectReason) hash ^= DisconnectReason.GetHashCode();
+      if (HasJoinedAt) hash ^= JoinedAt.GetHashCode();
       hash ^= kindDetails_.GetHashCode();
       if (permission_ != null) hash ^= Permission.GetHashCode();
       if (_unknownFields != null) {
@@ -471,22 +546,30 @@ namespace LiveKit.Proto {
         output.WriteRawTag(26);
         output.WriteString(Identity);
       }
+      if (HasState) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) State);
+      }
       if (HasMetadata) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(Metadata);
       }
       attributes_.WriteTo(output, _map_attributes_codec);
       if (HasKind) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteEnum((int) Kind);
       }
       if (HasDisconnectReason) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteEnum((int) DisconnectReason);
+      }
+      if (HasJoinedAt) {
+        output.WriteRawTag(72);
+        output.WriteInt64(JoinedAt);
       }
       kindDetails_.WriteTo(output, _repeated_kindDetails_codec);
       if (permission_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(90);
         output.WriteMessage(Permission);
       }
       if (_unknownFields != null) {
@@ -511,22 +594,30 @@ namespace LiveKit.Proto {
         output.WriteRawTag(26);
         output.WriteString(Identity);
       }
+      if (HasState) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) State);
+      }
       if (HasMetadata) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(Metadata);
       }
       attributes_.WriteTo(ref output, _map_attributes_codec);
       if (HasKind) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteEnum((int) Kind);
       }
       if (HasDisconnectReason) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteEnum((int) DisconnectReason);
+      }
+      if (HasJoinedAt) {
+        output.WriteRawTag(72);
+        output.WriteInt64(JoinedAt);
       }
       kindDetails_.WriteTo(ref output, _repeated_kindDetails_codec);
       if (permission_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(90);
         output.WriteMessage(Permission);
       }
       if (_unknownFields != null) {
@@ -548,6 +639,9 @@ namespace LiveKit.Proto {
       if (HasIdentity) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Identity);
       }
+      if (HasState) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
+      }
       if (HasMetadata) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Metadata);
       }
@@ -557,6 +651,9 @@ namespace LiveKit.Proto {
       }
       if (HasDisconnectReason) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) DisconnectReason);
+      }
+      if (HasJoinedAt) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(JoinedAt);
       }
       size += kindDetails_.CalculateSize(_repeated_kindDetails_codec);
       if (permission_ != null) {
@@ -583,6 +680,9 @@ namespace LiveKit.Proto {
       if (other.HasIdentity) {
         Identity = other.Identity;
       }
+      if (other.HasState) {
+        State = other.State;
+      }
       if (other.HasMetadata) {
         Metadata = other.Metadata;
       }
@@ -592,6 +692,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasDisconnectReason) {
         DisconnectReason = other.DisconnectReason;
+      }
+      if (other.HasJoinedAt) {
+        JoinedAt = other.JoinedAt;
       }
       kindDetails_.Add(other.kindDetails_);
       if (other.permission_ != null) {
@@ -631,28 +734,36 @@ namespace LiveKit.Proto {
             Identity = input.ReadString();
             break;
           }
-          case 34: {
-            Metadata = input.ReadString();
+          case 32: {
+            State = (global::LiveKit.Proto.ParticipantState) input.ReadEnum();
             break;
           }
           case 42: {
+            Metadata = input.ReadString();
+            break;
+          }
+          case 50: {
             attributes_.AddEntriesFrom(input, _map_attributes_codec);
             break;
           }
-          case 48: {
+          case 56: {
             Kind = (global::LiveKit.Proto.ParticipantKind) input.ReadEnum();
             break;
           }
-          case 56: {
+          case 64: {
             DisconnectReason = (global::LiveKit.Proto.DisconnectReason) input.ReadEnum();
             break;
           }
-          case 66:
-          case 64: {
+          case 72: {
+            JoinedAt = input.ReadInt64();
+            break;
+          }
+          case 82:
+          case 80: {
             kindDetails_.AddEntriesFrom(input, _repeated_kindDetails_codec);
             break;
           }
-          case 74: {
+          case 90: {
             if (permission_ == null) {
               Permission = new global::LiveKit.Proto.ParticipantPermission();
             }
@@ -690,28 +801,36 @@ namespace LiveKit.Proto {
             Identity = input.ReadString();
             break;
           }
-          case 34: {
-            Metadata = input.ReadString();
+          case 32: {
+            State = (global::LiveKit.Proto.ParticipantState) input.ReadEnum();
             break;
           }
           case 42: {
+            Metadata = input.ReadString();
+            break;
+          }
+          case 50: {
             attributes_.AddEntriesFrom(ref input, _map_attributes_codec);
             break;
           }
-          case 48: {
+          case 56: {
             Kind = (global::LiveKit.Proto.ParticipantKind) input.ReadEnum();
             break;
           }
-          case 56: {
+          case 64: {
             DisconnectReason = (global::LiveKit.Proto.DisconnectReason) input.ReadEnum();
             break;
           }
-          case 66:
-          case 64: {
+          case 72: {
+            JoinedAt = input.ReadInt64();
+            break;
+          }
+          case 82:
+          case 80: {
             kindDetails_.AddEntriesFrom(ref input, _repeated_kindDetails_codec);
             break;
           }
-          case 74: {
+          case 90: {
             if (permission_ == null) {
               Permission = new global::LiveKit.Proto.ParticipantPermission();
             }
