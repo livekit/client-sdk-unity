@@ -39,6 +39,9 @@ jobs:
       - name: Install LiveKit Server
         run: curl -sSL https://get.livekit.io | bash
       - name: Run LiveKit Server
+        env:
+          # TODO: once data tracks is enabled by default in a subsequent SFU release, remove this.
+          LIVEKIT_CONFIG: "enable_data_tracks: true"
         run: livekit-server --dev &
       - name: Run Tests
         uses: game-ci/unity-test-runner@v4
