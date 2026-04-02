@@ -898,8 +898,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db9b9042ff694d7f813bbd65d1e01c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: wss://test1-e8c0340u.livekit.cloud
-  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4MDQ4NjEwNTIsImlkZW50aXR5IjoidW5pdHlfZXhhbXBsZSIsImlzcyI6IkFQSTlRc1p0ZEJiVXloQiIsIm5iZiI6MTc3MzMyNTA1Miwic3ViIjoidW5pdHlfZXhhbXBsZSIsInZpZGVvIjp7ImNhblB1Ymxpc2giOnRydWUsImNhblB1Ymxpc2hEYXRhIjp0cnVlLCJjYW5TdWJzY3JpYmUiOnRydWUsInJvb20iOiJteS1yb29tIiwicm9vbUpvaW4iOnRydWV9fQ.NPCvOA-ptgQrXL6jW-_Lc_FWG-1ta-M1b-OPxty9Jnk
+  url: 
+  token: 
   cameraButton: {fileID: 545116324}
   microphoneButton: {fileID: 719911560}
   startCallButton: {fileID: 2130404894}
