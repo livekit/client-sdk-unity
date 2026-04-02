@@ -25,77 +25,78 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChF2aWRlb19mcmFtZS5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvGgt0cmFjay5wcm90byKlAQoVTmV3VmlkZW9TdHJlYW1SZXF1ZXN0EhQK",
+            "b3RvGgt0cmFjay5wcm90byLAAQoVTmV3VmlkZW9TdHJlYW1SZXF1ZXN0EhQK",
             "DHRyYWNrX2hhbmRsZRgBIAIoBBIsCgR0eXBlGAIgAigOMh4ubGl2ZWtpdC5w",
             "cm90by5WaWRlb1N0cmVhbVR5cGUSLgoGZm9ybWF0GAMgASgOMh4ubGl2ZWtp",
             "dC5wcm90by5WaWRlb0J1ZmZlclR5cGUSGAoQbm9ybWFsaXplX3N0cmlkZRgE",
-            "IAEoCCJJChZOZXdWaWRlb1N0cmVhbVJlc3BvbnNlEi8KBnN0cmVhbRgBIAIo",
-            "CzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb1N0cmVhbSLpAQohVmlkZW9T",
-            "dHJlYW1Gcm9tUGFydGljaXBhbnRSZXF1ZXN0EhoKEnBhcnRpY2lwYW50X2hh",
-            "bmRsZRgBIAIoBBIsCgR0eXBlGAIgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRl",
-            "b1N0cmVhbVR5cGUSMAoMdHJhY2tfc291cmNlGAMgAigOMhoubGl2ZWtpdC5w",
-            "cm90by5UcmFja1NvdXJjZRIuCgZmb3JtYXQYBCABKA4yHi5saXZla2l0LnBy",
-            "b3RvLlZpZGVvQnVmZmVyVHlwZRIYChBub3JtYWxpemVfc3RyaWRlGAUgASgI",
-            "IlUKIlZpZGVvU3RyZWFtRnJvbVBhcnRpY2lwYW50UmVzcG9uc2USLwoGc3Ry",
-            "ZWFtGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvU3RyZWFtIpYB",
-            "ChVOZXdWaWRlb1NvdXJjZVJlcXVlc3QSLAoEdHlwZRgBIAIoDjIeLmxpdmVr",
-            "aXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlEjgKCnJlc29sdXRpb24YAiACKAsy",
-            "JC5saXZla2l0LnByb3RvLlZpZGVvU291cmNlUmVzb2x1dGlvbhIVCg1pc19z",
-            "Y3JlZW5jYXN0GAMgASgIIkkKFk5ld1ZpZGVvU291cmNlUmVzcG9uc2USLwoG",
-            "c291cmNlGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVvU291cmNl",
-            "IqcBChhDYXB0dXJlVmlkZW9GcmFtZVJlcXVlc3QSFQoNc291cmNlX2hhbmRs",
-            "ZRgBIAIoBBIuCgZidWZmZXIYAiACKAsyHi5saXZla2l0LnByb3RvLlZpZGVv",
-            "QnVmZmVySW5mbxIUCgx0aW1lc3RhbXBfdXMYAyACKAMSLgoIcm90YXRpb24Y",
-            "BCACKA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24iGwoZQ2FwdHVy",
-            "ZVZpZGVvRnJhbWVSZXNwb25zZSKHAQoTVmlkZW9Db252ZXJ0UmVxdWVzdBIO",
-            "CgZmbGlwX3kYASABKAgSLgoGYnVmZmVyGAIgAigLMh4ubGl2ZWtpdC5wcm90",
-            "by5WaWRlb0J1ZmZlckluZm8SMAoIZHN0X3R5cGUYAyACKA4yHi5saXZla2l0",
-            "LnByb3RvLlZpZGVvQnVmZmVyVHlwZSJlChRWaWRlb0NvbnZlcnRSZXNwb25z",
-            "ZRIPCgVlcnJvchgBIAEoCUgAEjEKBmJ1ZmZlchgCIAEoCzIfLmxpdmVraXQu",
-            "cHJvdG8uT3duZWRWaWRlb0J1ZmZlckgAQgkKB21lc3NhZ2UiRAoPVmlkZW9S",
-            "ZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgCIAIoDRISCgpm",
-            "cmFtZV9yYXRlGAMgAigBIoMCCg9WaWRlb0J1ZmZlckluZm8SLAoEdHlwZRgB",
-            "IAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJUeXBlEg0KBXdpZHRo",
-            "GAIgAigNEg4KBmhlaWdodBgDIAIoDRIQCghkYXRhX3B0chgEIAIoBBIOCgZz",
-            "dHJpZGUYBiABKA0SQAoKY29tcG9uZW50cxgHIAMoCzIsLmxpdmVraXQucHJv",
-            "dG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBvbmVudEluZm8aPwoNQ29tcG9uZW50",
-            "SW5mbxIQCghkYXRhX3B0chgBIAIoBBIOCgZzdHJpZGUYAiACKA0SDAoEc2l6",
-            "ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVmZmVyEi0KBmhhbmRsZRgBIAIoCzId",
-            "LmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSLAoEaW5mbxgCIAIoCzIe",
-            "LmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvIj8KD1ZpZGVvU3RyZWFt",
-            "SW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVh",
-            "bVR5cGUibwoQT3duZWRWaWRlb1N0cmVhbRItCgZoYW5kbGUYASACKAsyHS5s",
-            "aXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiACKAsyHi5s",
-            "aXZla2l0LnByb3RvLlZpZGVvU3RyZWFtSW5mbyKfAQoQVmlkZW9TdHJlYW1F",
-            "dmVudBIVCg1zdHJlYW1faGFuZGxlGAEgAigEEjsKDmZyYW1lX3JlY2VpdmVk",
-            "GAIgASgLMiEubGl2ZWtpdC5wcm90by5WaWRlb0ZyYW1lUmVjZWl2ZWRIABIs",
-            "CgNlb3MYAyABKAsyHS5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtRU9TSABC",
-            "CQoHbWVzc2FnZSKLAQoSVmlkZW9GcmFtZVJlY2VpdmVkEi8KBmJ1ZmZlchgB",
-            "IAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlchIUCgx0aW1l",
-            "c3RhbXBfdXMYAiACKAMSLgoIcm90YXRpb24YAyACKA4yHC5saXZla2l0LnBy",
-            "b3RvLlZpZGVvUm90YXRpb24iEAoOVmlkZW9TdHJlYW1FT1MiNgoVVmlkZW9T",
-            "b3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgCIAIo",
-            "DSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQu",
-            "cHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8KEE93bmVkVmlkZW9Tb3VyY2USLQoG",
-            "aGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZRIs",
-            "CgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZUluZm8q",
-            "OwoKVmlkZW9Db2RlYxIHCgNWUDgQABIICgRIMjY0EAESBwoDQVYxEAISBwoD",
-            "VlA5EAMSCAoESDI2NRAEKmwKDVZpZGVvUm90YXRpb24SFAoQVklERU9fUk9U",
-            "QVRJT05fMBAAEhUKEVZJREVPX1JPVEFUSU9OXzkwEAESFgoSVklERU9fUk9U",
-            "QVRJT05fMTgwEAISFgoSVklERU9fUk9UQVRJT05fMjcwEAMqgQEKD1ZpZGVv",
-            "QnVmZmVyVHlwZRIICgRSR0JBEAASCAoEQUJHUhABEggKBEFSR0IQAhIICgRC",
-            "R1JBEAMSCQoFUkdCMjQQBBIICgRJNDIwEAUSCQoFSTQyMEEQBhIICgRJNDIy",
-            "EAcSCAoESTQ0NBAIEggKBEkwMTAQCRIICgROVjEyEAoqWQoPVmlkZW9TdHJl",
-            "YW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9OQVRJVkUQABIWChJWSURFT19TVFJF",
-            "QU1fV0VCR0wQARIVChFWSURFT19TVFJFQU1fSFRNTBACKioKD1ZpZGVvU291",
-            "cmNlVHlwZRIXChNWSURFT19TT1VSQ0VfTkFUSVZFEABCEKoCDUxpdmVLaXQu",
-            "UHJvdG8="));
+            "IAEoCBIZChFxdWV1ZV9zaXplX2ZyYW1lcxgFIAEoDSJJChZOZXdWaWRlb1N0",
+            "cmVhbVJlc3BvbnNlEi8KBnN0cmVhbRgBIAIoCzIfLmxpdmVraXQucHJvdG8u",
+            "T3duZWRWaWRlb1N0cmVhbSKEAgohVmlkZW9TdHJlYW1Gcm9tUGFydGljaXBh",
+            "bnRSZXF1ZXN0EhoKEnBhcnRpY2lwYW50X2hhbmRsZRgBIAIoBBIsCgR0eXBl",
+            "GAIgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVhbVR5cGUSMAoMdHJh",
+            "Y2tfc291cmNlGAMgAigOMhoubGl2ZWtpdC5wcm90by5UcmFja1NvdXJjZRIu",
+            "CgZmb3JtYXQYBCABKA4yHi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVyVHlw",
+            "ZRIYChBub3JtYWxpemVfc3RyaWRlGAUgASgIEhkKEXF1ZXVlX3NpemVfZnJh",
+            "bWVzGAYgASgNIlUKIlZpZGVvU3RyZWFtRnJvbVBhcnRpY2lwYW50UmVzcG9u",
+            "c2USLwoGc3RyZWFtGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZpZGVv",
+            "U3RyZWFtIpYBChVOZXdWaWRlb1NvdXJjZVJlcXVlc3QSLAoEdHlwZRgBIAIo",
+            "DjIeLmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlEjgKCnJlc29sdXRp",
+            "b24YAiACKAsyJC5saXZla2l0LnByb3RvLlZpZGVvU291cmNlUmVzb2x1dGlv",
+            "bhIVCg1pc19zY3JlZW5jYXN0GAMgASgIIkkKFk5ld1ZpZGVvU291cmNlUmVz",
+            "cG9uc2USLwoGc291cmNlGAEgAigLMh8ubGl2ZWtpdC5wcm90by5Pd25lZFZp",
+            "ZGVvU291cmNlIqcBChhDYXB0dXJlVmlkZW9GcmFtZVJlcXVlc3QSFQoNc291",
+            "cmNlX2hhbmRsZRgBIAIoBBIuCgZidWZmZXIYAiACKAsyHi5saXZla2l0LnBy",
+            "b3RvLlZpZGVvQnVmZmVySW5mbxIUCgx0aW1lc3RhbXBfdXMYAyACKAMSLgoI",
+            "cm90YXRpb24YBCACKA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24i",
+            "GwoZQ2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZSKHAQoTVmlkZW9Db252ZXJ0",
+            "UmVxdWVzdBIOCgZmbGlwX3kYASABKAgSLgoGYnVmZmVyGAIgAigLMh4ubGl2",
+            "ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8SMAoIZHN0X3R5cGUYAyACKA4y",
+            "Hi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVyVHlwZSJlChRWaWRlb0NvbnZl",
+            "cnRSZXNwb25zZRIPCgVlcnJvchgBIAEoCUgAEjEKBmJ1ZmZlchgCIAEoCzIf",
+            "LmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlckgAQgkKB21lc3NhZ2Ui",
+            "RAoPVmlkZW9SZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgC",
+            "IAIoDRISCgpmcmFtZV9yYXRlGAMgAigBIoMCCg9WaWRlb0J1ZmZlckluZm8S",
+            "LAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJUeXBl",
+            "Eg0KBXdpZHRoGAIgAigNEg4KBmhlaWdodBgDIAIoDRIQCghkYXRhX3B0chgE",
+            "IAIoBBIOCgZzdHJpZGUYBiABKA0SQAoKY29tcG9uZW50cxgHIAMoCzIsLmxp",
+            "dmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBvbmVudEluZm8aPwoN",
+            "Q29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgBIAIoBBIOCgZzdHJpZGUYAiAC",
+            "KA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVmZmVyEi0KBmhhbmRs",
+            "ZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSLAoEaW5m",
+            "bxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvIj8KD1Zp",
+            "ZGVvU3RyZWFtSW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5wcm90by5W",
+            "aWRlb1N0cmVhbVR5cGUibwoQT3duZWRWaWRlb1N0cmVhbRItCgZoYW5kbGUY",
+            "ASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8Y",
+            "AiACKAsyHi5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtSW5mbyKfAQoQVmlk",
+            "ZW9TdHJlYW1FdmVudBIVCg1zdHJlYW1faGFuZGxlGAEgAigEEjsKDmZyYW1l",
+            "X3JlY2VpdmVkGAIgASgLMiEubGl2ZWtpdC5wcm90by5WaWRlb0ZyYW1lUmVj",
+            "ZWl2ZWRIABIsCgNlb3MYAyABKAsyHS5saXZla2l0LnByb3RvLlZpZGVvU3Ry",
+            "ZWFtRU9TSABCCQoHbWVzc2FnZSKLAQoSVmlkZW9GcmFtZVJlY2VpdmVkEi8K",
+            "BmJ1ZmZlchgBIAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZl",
+            "chIUCgx0aW1lc3RhbXBfdXMYAiACKAMSLgoIcm90YXRpb24YAyACKA4yHC5s",
+            "aXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24iEAoOVmlkZW9TdHJlYW1FT1Mi",
+            "NgoVVmlkZW9Tb3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhl",
+            "aWdodBgCIAIoDSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoEdHlwZRgBIAIoDjIe",
+            "LmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8KEE93bmVkVmlkZW9T",
+            "b3VyY2USLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25l",
+            "ZEhhbmRsZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb1Nv",
+            "dXJjZUluZm8qOwoKVmlkZW9Db2RlYxIHCgNWUDgQABIICgRIMjY0EAESBwoD",
+            "QVYxEAISBwoDVlA5EAMSCAoESDI2NRAEKmwKDVZpZGVvUm90YXRpb24SFAoQ",
+            "VklERU9fUk9UQVRJT05fMBAAEhUKEVZJREVPX1JPVEFUSU9OXzkwEAESFgoS",
+            "VklERU9fUk9UQVRJT05fMTgwEAISFgoSVklERU9fUk9UQVRJT05fMjcwEAMq",
+            "gQEKD1ZpZGVvQnVmZmVyVHlwZRIICgRSR0JBEAASCAoEQUJHUhABEggKBEFS",
+            "R0IQAhIICgRCR1JBEAMSCQoFUkdCMjQQBBIICgRJNDIwEAUSCQoFSTQyMEEQ",
+            "BhIICgRJNDIyEAcSCAoESTQ0NBAIEggKBEkwMTAQCRIICgROVjEyEAoqWQoP",
+            "VmlkZW9TdHJlYW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9OQVRJVkUQABIWChJW",
+            "SURFT19TVFJFQU1fV0VCR0wQARIVChFWSURFT19TVFJFQU1fSFRNTBACKioK",
+            "D1ZpZGVvU291cmNlVHlwZRIXChNWSURFT19TT1VSQ0VfTkFUSVZFEABCEKoC",
+            "DUxpdmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamRequest), global::LiveKit.Proto.NewVideoStreamRequest.Parser, new[]{ "TrackHandle", "Type", "Format", "NormalizeStride" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamRequest), global::LiveKit.Proto.NewVideoStreamRequest.Parser, new[]{ "TrackHandle", "Type", "Format", "NormalizeStride", "QueueSizeFrames" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamResponse), global::LiveKit.Proto.NewVideoStreamResponse.Parser, new[]{ "Stream" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantRequest), global::LiveKit.Proto.VideoStreamFromParticipantRequest.Parser, new[]{ "ParticipantHandle", "Type", "TrackSource", "Format", "NormalizeStride" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantRequest), global::LiveKit.Proto.VideoStreamFromParticipantRequest.Parser, new[]{ "ParticipantHandle", "Type", "TrackSource", "Format", "NormalizeStride", "QueueSizeFrames" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantResponse), global::LiveKit.Proto.VideoStreamFromParticipantResponse.Parser, new[]{ "Stream" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceRequest), global::LiveKit.Proto.NewVideoSourceRequest.Parser, new[]{ "Type", "Resolution", "IsScreencast" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceResponse), global::LiveKit.Proto.NewVideoSourceResponse.Parser, new[]{ "Source" }, null, null, null, null),
@@ -211,6 +212,7 @@ namespace LiveKit.Proto {
       type_ = other.type_;
       format_ = other.format_;
       normalizeStride_ = other.normalizeStride_;
+      queueSizeFrames_ = other.queueSizeFrames_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -334,6 +336,43 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~8;
     }
 
+    /// <summary>Field number for the "queue_size_frames" field.</summary>
+    public const int QueueSizeFramesFieldNumber = 5;
+    private readonly static uint QueueSizeFramesDefaultValue = 0;
+
+    private uint queueSizeFrames_;
+    /// <summary>
+    /// Maximum number of queued WebRTC sink frames on the receive path. Omit this
+    /// field to use the default bounded queue size of 1 frame. Set it to 0 to
+    /// request unbounded buffering.
+    ///
+    /// If your application consumes both audio and video, keep the queue sizing
+    /// strategy coordinated across both streams. Using a much larger queue, or
+    /// unbounded buffering, for only one of them can increase end-to-end latency
+    /// for that stream and cause audio/video drift.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint QueueSizeFrames {
+      get { if ((_hasBits0 & 16) != 0) { return queueSizeFrames_; } else { return QueueSizeFramesDefaultValue; } }
+      set {
+        _hasBits0 |= 16;
+        queueSizeFrames_ = value;
+      }
+    }
+    /// <summary>Gets whether the "queue_size_frames" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQueueSizeFrames {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "queue_size_frames" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQueueSizeFrames() {
+      _hasBits0 &= ~16;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -353,6 +392,7 @@ namespace LiveKit.Proto {
       if (Type != other.Type) return false;
       if (Format != other.Format) return false;
       if (NormalizeStride != other.NormalizeStride) return false;
+      if (QueueSizeFrames != other.QueueSizeFrames) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -364,6 +404,7 @@ namespace LiveKit.Proto {
       if (HasType) hash ^= Type.GetHashCode();
       if (HasFormat) hash ^= Format.GetHashCode();
       if (HasNormalizeStride) hash ^= NormalizeStride.GetHashCode();
+      if (HasQueueSizeFrames) hash ^= QueueSizeFrames.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -398,6 +439,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteBool(NormalizeStride);
       }
+      if (HasQueueSizeFrames) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(QueueSizeFrames);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -424,6 +469,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(32);
         output.WriteBool(NormalizeStride);
       }
+      if (HasQueueSizeFrames) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(QueueSizeFrames);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -445,6 +494,9 @@ namespace LiveKit.Proto {
       }
       if (HasNormalizeStride) {
         size += 1 + 1;
+      }
+      if (HasQueueSizeFrames) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(QueueSizeFrames);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -469,6 +521,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasNormalizeStride) {
         NormalizeStride = other.NormalizeStride;
+      }
+      if (other.HasQueueSizeFrames) {
+        QueueSizeFrames = other.QueueSizeFrames;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -505,6 +560,10 @@ namespace LiveKit.Proto {
             NormalizeStride = input.ReadBool();
             break;
           }
+          case 40: {
+            QueueSizeFrames = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -538,6 +597,10 @@ namespace LiveKit.Proto {
           }
           case 32: {
             NormalizeStride = input.ReadBool();
+            break;
+          }
+          case 40: {
+            QueueSizeFrames = input.ReadUInt32();
             break;
           }
         }
@@ -799,6 +862,7 @@ namespace LiveKit.Proto {
       trackSource_ = other.trackSource_;
       format_ = other.format_;
       normalizeStride_ = other.normalizeStride_;
+      queueSizeFrames_ = other.queueSizeFrames_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -943,6 +1007,43 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~16;
     }
 
+    /// <summary>Field number for the "queue_size_frames" field.</summary>
+    public const int QueueSizeFramesFieldNumber = 6;
+    private readonly static uint QueueSizeFramesDefaultValue = 0;
+
+    private uint queueSizeFrames_;
+    /// <summary>
+    /// Maximum number of queued WebRTC sink frames on the receive path. Omit this
+    /// field to use the default bounded queue size of 1 frame. Set it to 0 to
+    /// request unbounded buffering.
+    ///
+    /// If your application consumes both audio and video, keep the queue sizing
+    /// strategy coordinated across both streams. Using a much larger queue, or
+    /// unbounded buffering, for only one of them can increase end-to-end latency
+    /// for that stream and cause audio/video drift.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint QueueSizeFrames {
+      get { if ((_hasBits0 & 32) != 0) { return queueSizeFrames_; } else { return QueueSizeFramesDefaultValue; } }
+      set {
+        _hasBits0 |= 32;
+        queueSizeFrames_ = value;
+      }
+    }
+    /// <summary>Gets whether the "queue_size_frames" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasQueueSizeFrames {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "queue_size_frames" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearQueueSizeFrames() {
+      _hasBits0 &= ~32;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -963,6 +1064,7 @@ namespace LiveKit.Proto {
       if (TrackSource != other.TrackSource) return false;
       if (Format != other.Format) return false;
       if (NormalizeStride != other.NormalizeStride) return false;
+      if (QueueSizeFrames != other.QueueSizeFrames) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -975,6 +1077,7 @@ namespace LiveKit.Proto {
       if (HasTrackSource) hash ^= TrackSource.GetHashCode();
       if (HasFormat) hash ^= Format.GetHashCode();
       if (HasNormalizeStride) hash ^= NormalizeStride.GetHashCode();
+      if (HasQueueSizeFrames) hash ^= QueueSizeFrames.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1013,6 +1116,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(40);
         output.WriteBool(NormalizeStride);
       }
+      if (HasQueueSizeFrames) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(QueueSizeFrames);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1043,6 +1150,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(40);
         output.WriteBool(NormalizeStride);
       }
+      if (HasQueueSizeFrames) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(QueueSizeFrames);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1067,6 +1178,9 @@ namespace LiveKit.Proto {
       }
       if (HasNormalizeStride) {
         size += 1 + 1;
+      }
+      if (HasQueueSizeFrames) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(QueueSizeFrames);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1094,6 +1208,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasNormalizeStride) {
         NormalizeStride = other.NormalizeStride;
+      }
+      if (other.HasQueueSizeFrames) {
+        QueueSizeFrames = other.QueueSizeFrames;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1134,6 +1251,10 @@ namespace LiveKit.Proto {
             NormalizeStride = input.ReadBool();
             break;
           }
+          case 48: {
+            QueueSizeFrames = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -1171,6 +1292,10 @@ namespace LiveKit.Proto {
           }
           case 40: {
             NormalizeStride = input.ReadBool();
+            break;
+          }
+          case 48: {
+            QueueSizeFrames = input.ReadUInt32();
             break;
           }
         }

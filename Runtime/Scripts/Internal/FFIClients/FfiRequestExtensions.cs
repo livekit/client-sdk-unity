@@ -211,6 +211,28 @@ namespace LiveKit.Internal.FFIClients
                 case SetRemoteTrackPublicationQualityRequest setRemoteTrackPublicationQualityRequest:
                     ffiRequest.SetRemoteTrackPublicationQuality = setRemoteTrackPublicationQualityRequest;
                     break;
+                // Data Track
+                case PublishDataTrackRequest publishDataTrackRequest:
+                    ffiRequest.PublishDataTrack = publishDataTrackRequest;
+                    break;
+                case LocalDataTrackTryPushRequest localDataTrackTryPushRequest:
+                    ffiRequest.LocalDataTrackTryPush = localDataTrackTryPushRequest;
+                    break;
+                case LocalDataTrackUnpublishRequest localDataTrackUnpublishRequest:
+                    ffiRequest.LocalDataTrackUnpublish = localDataTrackUnpublishRequest;
+                    break;
+                case LocalDataTrackIsPublishedRequest localDataTrackIsPublishedRequest:
+                    ffiRequest.LocalDataTrackIsPublished = localDataTrackIsPublishedRequest;
+                    break;
+                case SubscribeDataTrackRequest subscribeDataTrackRequest:
+                    ffiRequest.SubscribeDataTrack = subscribeDataTrackRequest;
+                    break;
+                case RemoteDataTrackIsPublishedRequest remoteDataTrackIsPublishedRequest:
+                    ffiRequest.RemoteDataTrackIsPublished = remoteDataTrackIsPublishedRequest;
+                    break;
+                case DataTrackStreamReadRequest dataTrackStreamReadRequest:
+                    ffiRequest.DataTrackStreamRead = dataTrackStreamReadRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }
@@ -266,6 +288,16 @@ namespace LiveKit.Internal.FFIClients
                 || request.UnregisterRpcMethod != null
                 || request.PerformRpc != null
                 || request.RpcMethodInvocationResponse != null
+                ||
+
+                // Data Track
+                request.PublishDataTrack != null
+                || request.LocalDataTrackTryPush != null
+                || request.LocalDataTrackUnpublish != null
+                || request.LocalDataTrackIsPublished != null
+                || request.SubscribeDataTrack != null
+                || request.RemoteDataTrackIsPublished != null
+                || request.DataTrackStreamRead != null
             )
             {
                 throw new InvalidOperationException("Request is not cleared");
@@ -322,6 +354,16 @@ namespace LiveKit.Internal.FFIClients
                 || response.UnregisterRpcMethod != null
                 || response.PerformRpc != null
                 || response.RpcMethodInvocationResponse != null
+                ||
+
+                // Data Track
+                response.PublishDataTrack != null
+                || response.LocalDataTrackTryPush != null
+                || response.LocalDataTrackUnpublish != null
+                || response.LocalDataTrackIsPublished != null
+                || response.SubscribeDataTrack != null
+                || response.RemoteDataTrackIsPublished != null
+                || response.DataTrackStreamRead != null
             )
             {
                 throw new InvalidOperationException("Response is not cleared: ");

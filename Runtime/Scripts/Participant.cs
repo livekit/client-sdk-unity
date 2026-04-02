@@ -541,6 +541,47 @@ namespace LiveKit
             var options = new StreamTextOptions { Topic = topic };
             return StreamText(options);
         }
+
+        /// <summary>
+        /// Publishes a data track.
+        /// </summary>
+        /// <param name="options">Options for the data track, including the track name.</param>
+        /// <returns>
+        /// A <see cref="PublishDataTrackInstruction"/> that completes when the track is published or errors.
+        /// Check <see cref="PublishDataTrackInstruction.IsError"/> and access
+        /// <see cref="PublishDataTrackInstruction.Track"/> to get the published track.
+        /// Use <see cref="LocalDataTrack.TryPush"/> to send data frames on the track.
+        /// </returns>
+        public PublishDataTrackInstruction PublishDataTrack(DataTrackOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<PublishDataTrackRequest>();
+            var publishReq = request.request;
+            publishReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
+            publishReq.Options = new Proto.DataTrackOptions { Name = options.Name };
+
+            var instruction = new PublishDataTrackInstruction(request.RequestAsyncId);
+            using var response = request.Send();
+            return instruction;
+        }
+
+        /// <summary>
+        /// Publishes a data track.
+        /// </summary>
+        /// <param name="name">The track name used to identify the track to other participants.
+        /// Must not be empty and must be unique per publisher.</param>
+        /// <remarks>
+        /// Use the <see cref="PublishDataTrack(DataTrackOptions)"/> overload to set additional options.
+        /// </remarks>
+        /// <returns>
+        /// A <see cref="PublishDataTrackInstruction"/> that completes when the track is published or errors.
+        /// Check <see cref="PublishDataTrackInstruction.IsError"/> and access
+        /// <see cref="PublishDataTrackInstruction.Track"/> to get the published track.
+        /// Use <see cref="LocalDataTrack.TryPush"/> to send data frames on the track.
+        /// </returns>
+        public PublishDataTrackInstruction PublishDataTrack(string name)
+        {
+            return PublishDataTrack(new DataTrackOptions(name));
+        }
     }
 
     public sealed class RemoteParticipant : Participant
@@ -972,5 +1013,64 @@ namespace LiveKit
         }
 
         public StreamError Error { get; private set; }
+    }
+
+    /// <summary>
+    /// YieldInstruction for publishing a data track. Returned by <see cref="LocalParticipant.PublishDataTrack(DataTrackOptions)"/>.
+    /// </summary>
+    /// <remarks>
+    /// Access <see cref="Track"/> after checking <see cref="YieldInstruction.IsError"/>.
+    /// </remarks>
+    public sealed class PublishDataTrackInstruction : YieldInstruction
+    {
+        private ulong _asyncId;
+        private LocalDataTrack _track;
+
+        internal PublishDataTrackInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PublishDataTrack, OnPublishDataTrack, OnCanceled);
+        }
+
+        internal void OnPublishDataTrack(PublishDataTrackCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            switch (e.ResultCase)
+            {
+                case PublishDataTrackCallback.ResultOneofCase.Error:
+                    Error = new PublishDataTrackError(e.Error.Message);
+                    IsError = true;
+                    break;
+                case PublishDataTrackCallback.ResultOneofCase.Track:
+                    _track = new LocalDataTrack(e.Track);
+                    break;
+            }
+            IsDone = true;
+        }
+
+        void OnCanceled()
+        {
+            Error = new PublishDataTrackError("Canceled");
+            IsError = true;
+            IsDone = true;
+        }
+
+        /// <summary>
+        /// The published data track. Use <see cref="LocalDataTrack.TryPush"/> to send
+        /// data frames on the track.
+        /// </summary>
+        /// <exception cref="PublishDataTrackError">Thrown if the publish operation failed.</exception>
+        public LocalDataTrack Track
+        {
+            get
+            {
+                if (IsError) throw Error;
+                return _track;
+            }
+        }
+
+        public PublishDataTrackError Error { get; private set; }
     }
 }
