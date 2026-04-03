@@ -29,9 +29,9 @@ namespace LiveKit
         private const float BufferSizeSeconds = 0.2f;  // 200ms ring buffer for all platforms
         private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
 
-        // Used to discard stale FFI callbacks after returning from background
-        private double _resumeTimestamp = 0;
-        private const double DiscardWindowSeconds = 0.02;  // Discard callbacks for 20ms after resume
+        // Drift correction: skip samples when buffer fills up due to clock drift
+        private const float HighWaterMarkPercent = 0.50f;    // Target 50% fill level after correction
+        private const float SkipPerCallbackPercent = 0.05f;  // Skip 5% of callback samples per call
 
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
@@ -120,6 +120,22 @@ namespace LiveKit
                     }
                 }
 
+                int valuesAvailableToRead = _buffer.AvailableRead() / sizeof(short);
+                // Underrun detection: If we couldn't read enough samples, immediately output silence
+                // and wait for the buffer to refill enough to offer Unity a full sample.
+                // This prevents choppy audio from playing partial samples during underrun.
+                if (valuesAvailableToRead < data.Length)
+                {
+                    _isPrimed = false;
+                    Utils.Debug($"AudioStream underrun detected, re-priming (got {valuesAvailableToRead} samples)");
+
+                    // Output silence immediately instead of playing partial/choppy samples.
+                    // On next frames, the !_isPrimed check above will ensure we wait for 30ms
+                    // of data before resuming playback smoothly.
+                    Array.Clear(data, 0, data.Length);
+                    return;
+                }
+
                 // Try to read audio samples from the ring buffer into our temp buffer.
                 // The ring buffer acts as a jitter buffer between:
                 // - Rust FFI pushing frames (on main thread, with network timing)
@@ -131,20 +147,21 @@ namespace LiveKit
                 // If the buffer is empty or doesn't have enough data, bytesRead will be less than requested.
                 int samplesRead = bytesRead / sizeof(short);
 
-                // Underrun detection: If we couldn't read enough samples, immediately output silence
-                // and wait for the buffer to refill to 30ms before resuming playback.
-                // This prevents choppy audio from playing partial samples during underrun.
-                if (samplesRead < data.Length * 0.5f)  // If we got less than 50% of requested samples
+                // Drift correction: if buffer is filling up (producer faster than consumer),
+                // skip a small number of samples to prevent overflow and keep latency bounded.
+                int highWaterBytes = (int)(_buffer.Capacity * HighWaterMarkPercent);
+                int remainingBytes = _buffer.AvailableRead();
+                if (remainingBytes > highWaterBytes)
                 {
-                    _isPrimed = false;
-                    Utils.Debug($"AudioStream underrun detected, re-priming (got {samplesRead}/{data.Length} samples)");
+                    int skipBytes = (int)(data.Length * sizeof(short) * SkipPerCallbackPercent);
+                    int frameSize = channels * sizeof(short);
+                    skipBytes -= skipBytes % frameSize; // align to frame boundary
 
-                    // Output silence immediately instead of playing partial/choppy samples.
-                    // On next frames, the !_isPrimed check above will ensure we wait for 30ms
-                    // of data before resuming playback smoothly.
-                    Array.Clear(data, 0, data.Length);
-                    return;
-                }
+                    if (skipBytes > 0)
+                    {
+                        _buffer.SkipRead(skipBytes);
+                    }
+                }                
 
                 // Clear the entire output buffer to silence, then fill with the samples
                 // we successfully read from the ring buffer.
@@ -170,7 +187,6 @@ namespace LiveKit
             {
                 lock (_lock)
                 {
-                    _resumeTimestamp = Time.realtimeSinceStartupAsDouble;
                     if (_buffer != null)
                     {
                         _buffer.Clear();
@@ -181,7 +197,7 @@ namespace LiveKit
             }
         }
 
-        // Called on the MainThread (See FfiClient)
+        // Called on FFI callback thread       
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (_disposed)
@@ -197,13 +213,6 @@ namespace LiveKit
 
             lock (_lock)
             {
-                // Discard stale FFI callbacks that arrive shortly after returning from background.
-                // These callbacks may contain audio data buffered while the app was paused.
-                if (_resumeTimestamp > 0 && Time.realtimeSinceStartupAsDouble - _resumeTimestamp < DiscardWindowSeconds)
-                {
-                    return;
-                }
-
                 if (_numChannels == 0)
                     return;
 
