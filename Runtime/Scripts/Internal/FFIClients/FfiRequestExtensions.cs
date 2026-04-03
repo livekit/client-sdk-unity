@@ -134,8 +134,8 @@ namespace LiveKit.Internal.FFIClients
                     ffiRequest.VideoConvert = videoConvertRequest;
                     break;
                 // Audio
-                case NewAudioStreamRequest wewAudioStreamRequest:
-                    ffiRequest.NewAudioStream = wewAudioStreamRequest;
+                case NewAudioStreamRequest newAudioStreamRequest:
+                    ffiRequest.NewAudioStream = newAudioStreamRequest;
                     break;
                 case NewAudioSourceRequest newAudioSourceRequest:
                     ffiRequest.NewAudioSource = newAudioSourceRequest;
