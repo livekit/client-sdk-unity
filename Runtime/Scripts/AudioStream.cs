@@ -30,10 +30,8 @@ namespace LiveKit
         private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
 
         // Drift correction: skip samples when buffer fills up due to clock drift
-        private const float HighWaterMarkPercent = 0.80f;       // Start correcting at 70% fill
-        private const float TargetFillPercent = 0.40f;          // Target fill level after correction
-        private const float MaxSkipPerCallbackPercent = 0.05f;  // Skip at most 5% of callback samples per call
-        private float _lastSkipLogTime = 0f;
+        private const float HighWaterMarkPercent = 0.50f;    // Target 50% fill level after correction
+        private const float SkipPerCallbackPercent = 0.05f;  // Skip 5% of callback samples per call
 
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
@@ -155,24 +153,13 @@ namespace LiveKit
                 int remainingBytes = _buffer.AvailableRead();
                 if (remainingBytes > highWaterBytes)
                 {
-                    int targetBytes = (int)(_buffer.Capacity * TargetFillPercent);
-                    int excessBytes = remainingBytes - targetBytes;
-                    int maxSkipBytes = (int)(data.Length * sizeof(short) * MaxSkipPerCallbackPercent);
-                    int skipBytes = Math.Min(excessBytes, maxSkipBytes);
+                    int skipBytes = (int)(data.Length * sizeof(short) * SkipPerCallbackPercent);
                     int frameSize = channels * sizeof(short);
                     skipBytes -= skipBytes % frameSize; // align to frame boundary
 
                     if (skipBytes > 0)
                     {
                         _buffer.SkipRead(skipBytes);
-
-                        float now = Time.realtimeSinceStartup;
-                        if (now - _lastSkipLogTime > 1f)
-                        {
-                            _lastSkipLogTime = now;
-                            float fillPercent = _buffer.AvailableReadInPercent() * 100f;
-                            Utils.Debug($"AudioStream drift correction: skipped {skipBytes / sizeof(short)} samples, buffer fill now {fillPercent:F1}%");
-                        }
                     }
                 }                
 
