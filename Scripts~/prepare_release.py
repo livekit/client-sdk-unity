@@ -17,6 +17,7 @@ def update_package_json(version):
     with open("package.json", "r") as f:
         data = json.load(f)
     data["version"] = version
+    data["changelogUrl"] = f"https://github.com/livekit/client-sdk-unity/releases/tag/v{version}"
     with open("package.json", "w") as f:
         json.dump(data, f, indent=2)
         f.write("\n")
