@@ -1,0 +1,16 @@
+name: PR Merge Alignment Reminder
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  reminder:
+    uses: decentraland/actions/.github/workflows/pr-comment-reminder.yml@main
+    with:
+      message: |
+        ## 🔗 Merge Alignment Reminder
+
+        If this PR targets `main`, please make sure the corresponding changes in **[unity-explorer](https://github.com/decentraland/unity-explorer/)** are also ready to merge.
+
+        Both repos should be merged in coordination to avoid breaking changes. **Do not merge one without the other being ready.**
