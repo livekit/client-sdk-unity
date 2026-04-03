@@ -2,11 +2,14 @@ import argparse
 import configparser
 import json
 import os
+from pathlib import Path
 import shutil
 import subprocess
 import sys
 
-import install
+import download_libs
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def update_package_json(version):
@@ -36,7 +39,7 @@ def download_ffi_binaries():
     if os.path.isdir("downloads~"):
         print("Removing existing downloads~ directory...")
         shutil.rmtree("downloads~")
-    install.main()
+    download_libs.main()
     print("Done.")
 
 
@@ -52,7 +55,7 @@ def regenerate_protos():
     print("\n=== Regenerating protobuf files ===")
     subprocess.run(
         ["./generate_proto.sh"],
-        cwd="BuildScripts~",
+        cwd=REPO_ROOT / "Scripts~",
         check=True,
     )
     print("Done.")
@@ -72,6 +75,8 @@ def stage_all_changes():
 
 
 def main():
+    os.chdir(REPO_ROOT)
+
     parser = argparse.ArgumentParser(description="Prepare the repo for a new release.")
     parser.add_argument("sdk_version", help="SDK version (e.g. 1.4.0)")
     parser.add_argument("ffi_version", help="FFI version (e.g. 0.12.53)")

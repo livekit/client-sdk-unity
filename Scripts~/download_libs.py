@@ -1,8 +1,11 @@
 import os
+from pathlib import Path
 import urllib.request
 import urllib.parse
 import configparser
 import zipfile
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # prepare progressbar
 def show_progress(block_num, block_size, total_size):
@@ -13,6 +16,7 @@ download_dir = 'downloads~'
 files_to_delete = ['LICENSE.md', 'livekit_ffi.h']
 
 def main():
+    os.chdir(REPO_ROOT)
     config = configparser.ConfigParser()
     config.read('version.ini')
     # replace '@' to '/'

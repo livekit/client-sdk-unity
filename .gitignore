@@ -92,3 +92,5 @@ downloads~
 # Temp generated SDK version file
 **/LiveKitSdkVersionInfo.txt
 **/LiveKitSdkVersionInfo.txt.meta
+
+.claude
