@@ -4,6 +4,10 @@
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2022.3",
+  "author": {
+	  "name": "LiveKit",
+    "url": "https://livekit.com/"
+  },
   "samples": [
     {
       "displayName": "Basic",
@@ -16,5 +20,7 @@
       "path": "Samples~/Meet"
     }
   ],
+  "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v1.3.5",
+  "documentationUrl": "https://github.com/livekit/client-sdk-unity/blob/main/README.md",
   "type": "library"
 }
