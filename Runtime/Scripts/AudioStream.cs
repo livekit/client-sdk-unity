@@ -29,6 +29,10 @@ namespace LiveKit
         private const float BufferSizeSeconds = 0.2f;  // 200ms ring buffer for all platforms
         private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
 
+        // Drift correction: skip samples when buffer fills up due to clock drift
+        private const float HighWaterMarkPercent = 0.50f;    // Target 50% fill level after correction
+        private const float SkipPerCallbackPercent = 0.05f;  // Skip 5% of callback samples per call
+
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
         /// given <see cref="AudioSource"/> in the scene.
@@ -142,6 +146,22 @@ namespace LiveKit
                 // Calculate how many samples (shorts) were actually read from the ring buffer.
                 // If the buffer is empty or doesn't have enough data, bytesRead will be less than requested.
                 int samplesRead = bytesRead / sizeof(short);
+
+                // Drift correction: if buffer is filling up (producer faster than consumer),
+                // skip a small number of samples to prevent overflow and keep latency bounded.
+                int highWaterBytes = (int)(_buffer.Capacity * HighWaterMarkPercent);
+                int remainingBytes = _buffer.AvailableRead();
+                if (remainingBytes > highWaterBytes)
+                {
+                    int skipBytes = (int)(data.Length * sizeof(short) * SkipPerCallbackPercent);
+                    int frameSize = channels * sizeof(short);
+                    skipBytes -= skipBytes % frameSize; // align to frame boundary
+
+                    if (skipBytes > 0)
+                    {
+                        _buffer.SkipRead(skipBytes);
+                    }
+                }                
 
                 // Clear the entire output buffer to silence, then fill with the samples
                 // we successfully read from the ring buffer.

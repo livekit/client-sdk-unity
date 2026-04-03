@@ -135,6 +135,8 @@ namespace LiveKit.Internal
             return (float)AvailableRead() / _buffer.Length;
         }
 
+        public int Capacity => _buffer.Length;
+
         public float AvailableWriteInPercent()
         {
             return (float)AvailableWrite() / _buffer.Length;
