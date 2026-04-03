@@ -11,7 +11,7 @@ LiveKit Unity SDK — a C# wrapper around LiveKit's Rust SDK using FFI (Foreign 
 ### Build FFI locally from Rust source
 ```bash
 # Requires the client-sdk-rust~ submodule and Rust toolchain
-BuildScripts~/build_ffi_locally.sh <platform> [build_type]
+Scripts~/build_ffi_locally.sh <platform> [build_type]
 # Platforms: macos, android, ios
 # Build types: debug (default), release
 ```
