@@ -20,7 +20,10 @@ namespace LiveKit.Rooms.Streaming.Audio
 
         private float azimuth;
         private float elevation;
+        private float prevGainL = 0.707f;
+        private float prevGainR = 0.707f;
         public float IldStrength { private get; set; } = 1f;
+        public bool SmoothPanning { get; set; }
 
         public void SetSpatialAngles(float azimuth, float elevation)
         {
@@ -152,17 +155,42 @@ namespace LiveKit.Rooms.Streaming.Audio
                     using var _ = s_MarkerEqualPower.Auto();
                     
                     int samplesPerChannel = data.Length / channels;
+                    
                     float pan = math.sin(azimuth) * math.cos(elevation) * IldStrength;
+                    
                     float p = (pan + 1f) * 0.5f;
                     float gainL = math.cos(p * HALF_PI);
                     float gainR = math.sin(p * HALF_PI);
 
-                    for (int i = 0; i < samplesPerChannel; i++)
+                    if (SmoothPanning)
                     {
-                        int offset = i * channels;
-                        float mono = data[offset];
-                        data[offset] = mono * gainL;
-                        data[offset + 1] = mono * gainR;
+                        float invLen = 1f / samplesPerChannel;
+                        float pL = prevGainL;
+                        float pR = prevGainR;
+
+                        for (int i = 0; i < samplesPerChannel; i++)
+                        {
+                            float t = i * invLen;
+                            float gL = math.lerp(pL, gainL, t);
+                            float gR = math.lerp(pR, gainR, t);
+                            int offset = i * channels;
+                            float mono = data[offset];
+                            data[offset] = mono * gL;
+                            data[offset + 1] = mono * gR;
+                        }
+
+                        prevGainL = gainL;
+                        prevGainR = gainR;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < samplesPerChannel; i++)
+                        {
+                            int offset = i * channels;
+                            float mono = data[offset];
+                            data[offset] = mono * gainL;
+                            data[offset + 1] = mono * gainR;
+                        }
                     }
                 }
 
