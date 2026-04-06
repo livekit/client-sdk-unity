@@ -186,36 +186,22 @@ namespace LiveKit.Rooms.Streaming.Audio
             float gainL = math.cos(p * HALF_PI);
             float gainR = math.sin(p * HALF_PI);
 
-            if (SmoothPanning)
+            float invLen = 1f / samplesPerChannel;
+            
+            for (int i = 0; i < samplesPerChannel; i++)
             {
-                float invLen = 1f / samplesPerChannel;
-                float pL = prevGainL;
-                float pR = prevGainR;
-
-                for (int i = 0; i < samplesPerChannel; i++)
-                {
-                    float t = i * invLen;
-                    float gL = math.lerp(pL, gainL, t);
-                    float gR = math.lerp(pR, gainR, t);
-                    int offset = i * channels;
-                    float mono = data[offset];
-                    data[offset] = mono * gL;
-                    data[offset + 1] = mono * gR;
-                }
-
-                prevGainL = gainL;
-                prevGainR = gainR;
+                float t = i * invLen;
+                float gL = SmoothPanning ? math.lerp(prevGainL, gainL, t) : gainL;
+                float gR = SmoothPanning ? math.lerp(prevGainR, gainR, t) : gainR;
+                    
+                int offset = i * channels;
+                float mono = data[offset];
+                data[offset] = mono * gL;
+                data[offset + 1] = mono * gR;
             }
-            else
-            {
-                for (int i = 0; i < samplesPerChannel; i++)
-                {
-                    int offset = i * channels;
-                    float mono = data[offset];
-                    data[offset] = mono * gainL;
-                    data[offset + 1] = mono * gainR;
-                }
-            }
+            
+            prevGainL = gainL;
+            prevGainR = gainR;
         }
     }
 }
