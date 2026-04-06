@@ -2,17 +2,31 @@
 using LiveKit.Audio;
 using LiveKit.Internal;
 using RichTypes;
+using Unity.Mathematics;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace LiveKit.Rooms.Streaming.Audio
 {
     public class LivekitAudioSource : MonoBehaviour
     {
+        private static readonly ProfilerMarker s_MarkerEqualPower = new ("LiveKit.Spatial.ILD.EqualPower");
+        private const float HALF_PI = math.PI * 0.5f;
         private static ulong counter;
 
         private int sampleRate;
         private Weak<AudioStream> stream = Weak<AudioStream>.Null;
         private AudioSource audioSource = null!;
+
+        private float azimuth;
+        private float elevation;
+        public float IldStrength { private get; set; } = 1f;
+
+        public void SetSpatialAngles(float azimuth, float elevation)
+        {
+            this.azimuth = azimuth;
+            this.elevation = elevation;
+        }
 
         private WavWriter? wavWriter;
         private PCMSample[] wavBuffer = Array.Empty<PCMSample>();
@@ -132,6 +146,26 @@ namespace LiveKit.Rooms.Streaming.Audio
             if (resource.Has)
             {
                 resource.Value.ReadAudio(data.AsSpan(), channels, sampleRate);
+
+                if (channels >= 2)
+                {
+                    using var _ = s_MarkerEqualPower.Auto();
+                    
+                    int samplesPerChannel = data.Length / channels;
+                    float pan = math.sin(azimuth) * math.cos(elevation) * IldStrength;
+                    float p = (pan + 1f) * 0.5f;
+                    float gainL = math.cos(p * HALF_PI);
+                    float gainR = math.sin(p * HALF_PI);
+
+                    for (int i = 0; i < samplesPerChannel; i++)
+                    {
+                        int offset = i * channels;
+                        float mono = data[offset];
+                        data[offset] = mono * gainL;
+                        data[offset + 1] = mono * gainR;
+                    }
+                }
+
                 if (wavWriter.HasValue)
                 {
                     if (data.Length != wavBuffer.Length)
