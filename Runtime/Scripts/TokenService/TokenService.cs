@@ -50,15 +50,11 @@ namespace LiveKit
         {
             var jsonBody = JsonUtility.ToJson(new SandboxRequest { roomName = roomName, participantName = participantName });
 
-            Debug.Log($"Room name requested {roomName}");
-
             var request = new HttpRequestMessage(HttpMethod.Post, SandboxUrl);
             request.Headers.Add("X-Sandbox-ID", sandboxId);
             var content = new StringContent(jsonBody, System.Text.Encoding.UTF8);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             request.Content = content;
-
-            Debug.Log(jsonBody);
 
             var response = await HttpClient.SendAsync(request);
 
@@ -66,7 +62,6 @@ namespace LiveKit
                 throw new InvalidOperationException($"Error from LiveKit Cloud sandbox: {response.StatusCode}, response: {response}");
 
             var jsonContent = await response.Content.ReadAsStringAsync();
-            Debug.Log(jsonContent);
             return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
         }
     }

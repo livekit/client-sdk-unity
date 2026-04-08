@@ -166,10 +166,6 @@ public class MeetManager : MonoBehaviour
 
         var details = connectionDetailsTask.Result;
 
-        Debug.Log($"ParticipantToken: {details.participantToken}");
-        Debug.Log($"RoomName: {details.roomName}");
-        Debug.Log($"ServerUrl: {details.serverUrl}");
-
         _room = new Room();
         _room.TrackSubscribed += OnTrackSubscribed;
         _room.TrackUnsubscribed += OnTrackUnsubscribed;
