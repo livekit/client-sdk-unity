@@ -864,6 +864,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1478206702}
   - component: {fileID: 1478206704}
+  - component: {fileID: 1478206705}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -898,8 +899,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db9b9042ff694d7f813bbd65d1e01c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: 
-  token: 
   cameraButton: {fileID: 545116324}
   microphoneButton: {fileID: 719911560}
   startCallButton: {fileID: 2130404894}
@@ -907,6 +906,19 @@ MonoBehaviour:
   publishDataButton: {fileID: 55547283}
   videoTrackParent: {fileID: 2128321498}
   frameRate: 30
+--- !u!114 &1478206705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478206700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a498c208deeab40c39b4ba609d7d222c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: 932201532c3334b5795468d1802ad4b2, type: 2}
 --- !u!1 &1651282853
 GameObject:
   m_ObjectHideFlags: 0

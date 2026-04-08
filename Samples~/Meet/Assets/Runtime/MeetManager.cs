@@ -15,7 +15,8 @@ using UnityEngine.Android;
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
 /// </summary>
-public class LivekitSamples : MonoBehaviour
+[RequireComponent(typeof(TokenService))]
+public class MeetManager : MonoBehaviour
 {
     private const string LocalVideoTrackName = "my-video-track";
     private const string LocalAudioTrackName = "my-audio-track";
@@ -24,10 +25,6 @@ public class LivekitSamples : MonoBehaviour
     private const string MicOffIcon = "e02b";
     private const string CamOnIcon = "e04b";
     private const string CamOffIcon = "e04c";
-
-    [Header("LiveKit Connection")]
-    [SerializeField] private string url = "ws://localhost:7880";
-    [SerializeField] private string token = "YOUR_TOKEN";
 
     [Header("UI Buttons")]
     [SerializeField] private Button cameraButton;
@@ -40,6 +37,7 @@ public class LivekitSamples : MonoBehaviour
     [SerializeField] private GridLayoutGroup videoTrackParent;
     [SerializeField] private int frameRate = 30;
 
+    private TokenService _tokenService;
     private Room _room;
     private WebCamTexture _webCamTexture;
     private Transform _audioTrackParent;
@@ -61,6 +59,7 @@ public class LivekitSamples : MonoBehaviour
 
     private void Start()
     {
+        _tokenService = GetComponent<TokenService>();
         startCallButton.onClick.AddListener(OnStartCall);
         endCallButton.onClick.AddListener(OnEndCall);
         cameraButton.onClick.AddListener(OnToggleCamera);
@@ -156,12 +155,27 @@ public class LivekitSamples : MonoBehaviour
     {
         if (_room != null) yield break;
 
+        var connectionDetailsTask = _tokenService.FetchConnectionDetails();
+        yield return new WaitUntil(() => connectionDetailsTask.IsCompleted);
+
+        if (connectionDetailsTask.IsFaulted)
+        {
+            Debug.LogError($"Failed to fetch connection details: {connectionDetailsTask.Exception?.InnerException?.Message}");
+            yield break;
+        }
+
+        var details = connectionDetailsTask.Result;
+
+        Debug.Log($"ParticipantToken: {details.participantToken}");
+        Debug.Log($"RoomName: {details.roomName}");
+        Debug.Log($"ServerUrl: {details.serverUrl}");
+
         _room = new Room();
         _room.TrackSubscribed += OnTrackSubscribed;
         _room.TrackUnsubscribed += OnTrackUnsubscribed;
         _room.DataReceived += OnDataReceived;
 
-        var connect = _room.Connect(url, token, new RoomOptions());
+        var connect = _room.Connect(details.serverUrl, details.participantToken, new RoomOptions());
         yield return connect;
 
         if (connect.IsError)
