@@ -81,7 +81,7 @@ namespace LiveKit
             return instruction;
         }
 
-        public UnpublishTrackInstruction UnpublishTrack(ILocalTrack localTrack, bool stopOnUnpublish)
+        public FfiInstruction<UnpublishTrackCallback> UnpublishTrack(ILocalTrack localTrack, bool stopOnUnpublish)
         {
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
@@ -91,7 +91,10 @@ namespace LiveKit
             unpublish.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             unpublish.StopOnUnpublish = false;
             unpublish.TrackSid = localTrack.Sid;
-            var instruction = new UnpublishTrackInstruction(request.RequestAsyncId);
+            var instruction = new FfiInstruction<UnpublishTrackCallback>(
+                request.RequestAsyncId,
+                static e => e.UnpublishTrack,
+                static e => e.Error);
             using var response = request.Send();
             _tracks.Remove(localTrack.Sid);
             return instruction;
@@ -132,14 +135,17 @@ namespace LiveKit
         /// This requires `canUpdateOwnMetadata` permission.
         /// </remarks>
         /// <param name="metadata">The new metadata.</param>
-        public SetLocalMetadataInstruction SetMetadata(string metadata)
+        public FfiInstruction<SetLocalMetadataCallback> SetMetadata(string metadata)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalMetadataRequest>();
             var setReq = request.request;
             setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             setReq.Metadata = metadata;
 
-            var instruction = new SetLocalMetadataInstruction(request.RequestAsyncId);
+            var instruction = new FfiInstruction<SetLocalMetadataCallback>(
+                request.RequestAsyncId,
+                static e => e.SetLocalMetadata,
+                static e => e.Error);
             using var response = request.Send();
             return instruction;
         }
@@ -151,14 +157,17 @@ namespace LiveKit
         /// This requires `canUpdateOwnMetadata` permission.
         /// </remarks>
         /// <param name="name">The new name.</param>
-        public new SetLocalNameInstruction SetName(string name)
+        public new FfiInstruction<SetLocalNameCallback> SetName(string name)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalNameRequest>();
             var setReq = request.request;
             setReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
             setReq.Name = name;
 
-            var instruction = new SetLocalNameInstruction(request.RequestAsyncId);
+            var instruction = new FfiInstruction<SetLocalNameCallback>(
+                request.RequestAsyncId,
+                static e => e.SetLocalName,
+                static e => e.Error);
             using var response = request.Send();
             return instruction;
         }
@@ -171,7 +180,7 @@ namespace LiveKit
         /// </remarks>
         /// <param name="attributes">The new attributes. Existing attributes that
         /// are not overridden will remain unchanged.</param>
-        public SetLocalAttributesInstruction SetAttributes(IDictionary<string, string> attributes)
+        public FfiInstruction<SetLocalAttributesCallback> SetAttributes(IDictionary<string, string> attributes)
         {
             using var request = FFIBridge.Instance.NewRequest<SetLocalAttributesRequest>();
             var setReq = request.request;
@@ -194,7 +203,10 @@ namespace LiveKit
                 setReq.Attributes.Add(entry);
             }
 
-            var instruction = new SetLocalAttributesInstruction(request.RequestAsyncId);
+            var instruction = new FfiInstruction<SetLocalAttributesCallback>(
+                request.RequestAsyncId,
+                static e => e.SetLocalAttributes,
+                static e => e.Error);
             using var response = request.Send();
             return instruction;
         }
@@ -629,109 +641,6 @@ namespace LiveKit
         }
     }
 
-    public sealed class SetLocalMetadataInstruction : YieldInstruction
-    {
-        private ulong _asyncId;
-
-        internal SetLocalMetadataInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalMetadata, OnSetLocalMetadata, OnCanceled);
-        }
-
-        internal void OnSetLocalMetadata(SetLocalMetadataCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
-    }
-
-    public sealed class SetLocalNameInstruction : YieldInstruction
-    {
-        private ulong _asyncId;
-
-        internal SetLocalNameInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalName, OnSetLocalName, OnCanceled);
-        }
-
-        internal void OnSetLocalName(SetLocalNameCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
-    }
-
-    public sealed class SetLocalAttributesInstruction : YieldInstruction
-    {
-        private ulong _asyncId;
-
-        internal SetLocalAttributesInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalAttributes, OnSetLocalAttributes, OnCanceled);
-        }
-
-        internal void OnSetLocalAttributes(SetLocalAttributesCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
-    }
-
-    public sealed class UnpublishTrackInstruction : YieldInstruction
-    {
-        private ulong _asyncId;
-
-        internal UnpublishTrackInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.UnpublishTrack, OnUnpublish, OnCanceled);
-        }
-
-        internal void OnUnpublish(UnpublishTrackCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
-    }
 
     /// <summary>
     /// YieldInstruction for RPC calls. Returned by <see cref="LocalParticipant.PerformRpc"/>.

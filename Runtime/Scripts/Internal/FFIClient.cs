@@ -26,7 +26,7 @@ namespace LiveKit.Internal
 
         internal SynchronizationContext? _context;
 
-        private static bool _isDisposed = false;
+        private static volatile bool _isDisposed = false;
 
         private readonly IObjectPool<FfiResponse> ffiResponsePool;
         private readonly MessageParser<FfiResponse> responseParser;
@@ -54,7 +54,7 @@ namespace LiveKit.Internal
         public event TrackEventReceivedDelegate? TrackEventReceived;
         public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
 
-        // participant events are not allowed in the fii protocol public event ParticipantEventReceivedDelegate ParticipantEventReceived;
+        // Participant events are not exposed in the FFI protocol; they arrive as RoomEvents instead.
         public event VideoStreamEventReceivedDelegate? VideoStreamEventReceived;
         public event AudioStreamEventReceivedDelegate? AudioStreamEventReceived;
 

@@ -21,13 +21,8 @@ namespace LiveKit.Internal.FFIClients.Pools
 
         private IObjectPool<object> Pool<T>() where T : class, new()
         {
-            var type = typeof(T);
-            if (!pools.TryGetValue(type, out var pool))
-            {
-                pool = pools[type] = new ThreadSafeObjectPool<object>(() => new T());
-            }
-
-            return pool!;
+            return pools.GetOrAdd(typeof(T),
+                _ => new ThreadSafeObjectPool<object>(() => new T()));
         }
     }
 }
