@@ -23,20 +23,20 @@ public class AuthConfigEditor : Editor
     }
 }
 
-[CustomEditor(typeof(HardcodedAuth))]
+[CustomEditor(typeof(HardcodedAuthConfig))]
 public class HardcodedAuthEditor : AuthConfigEditor
 {
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        EditorGUILayout.HelpBox("Use this if you have a pregenerated token from your own token source.", MessageType.Info);
+        EditorGUILayout.HelpBox("Use this if you have a pregenerated token from your own token source. \nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE ONLY ONE PARTICIPANT CAN USE THE TOKEN AT A TIME AND TOKENS EXPIRE.", MessageType.Info);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_serverUrl"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_token"));
         serializedObject.ApplyModifiedProperties();
     }
 }
 
-[CustomEditor(typeof(SandboxAuth))]
+[CustomEditor(typeof(SandboxAuthConfig))]
 public class SandboxAuthEditor : AuthConfigEditor
 {
     public override void OnInspectorGUI()
@@ -49,7 +49,7 @@ public class SandboxAuthEditor : AuthConfigEditor
     }
 }
 
-[CustomEditor(typeof(LocalAuth))]
+[CustomEditor(typeof(LocalAuthConfig))]
 public class LocalAuthEditor : AuthConfigEditor
 {
     public override void OnInspectorGUI()

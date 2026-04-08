@@ -28,10 +28,10 @@ namespace LiveKit
             if (!_config.IsValid)
                 throw new InvalidOperationException("Auth configuration is invalid");
 
-            if (_config is SandboxAuth sandboxConfig)
+            if (_config is SandboxAuthConfig sandboxConfig)
                 return await FetchConnectionDetailsFromSandbox(roomName, participantName, sandboxConfig.SandboxId);
 
-            if (_config is HardcodedAuth hardcodedConfig)
+            if (_config is HardcodedAuthConfig hardcodedConfig)
                 return new ConnectionDetails
                 {
                     serverUrl = hardcodedConfig.ServerUrl,
@@ -40,7 +40,7 @@ namespace LiveKit
                     participantToken = hardcodedConfig.Token
                 };
 
-            if (_config is LocalAuth localConfig)
+            if (_config is LocalAuthConfig localConfig)
                 return localConfig.GenerateConnectionDetails(roomName, participantName);
 
             throw new InvalidOperationException("Unknown auth type");

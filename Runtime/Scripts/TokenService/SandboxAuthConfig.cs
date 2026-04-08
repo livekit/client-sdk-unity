@@ -3,7 +3,7 @@ using UnityEngine;
 namespace LiveKit
 {
     [CreateAssetMenu(fileName = "TokenService", menuName = "LiveKit/Sandbox Auth")]
-    public class SandboxAuth : AuthConfig
+    public class SandboxAuthConfig : AuthConfig
     {
         [SerializeField] private string _sandboxId;
 

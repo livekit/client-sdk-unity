@@ -3,7 +3,7 @@ using UnityEngine;
 namespace LiveKit
 {
     [CreateAssetMenu(fileName = "TokenService", menuName = "LiveKit/Local Auth")]
-    public class LocalAuth : AuthConfig
+    public class LocalAuthConfig : AuthConfig
     {
         [SerializeField] private string _liveKitUrl;
         [SerializeField] private string _apiKey;
