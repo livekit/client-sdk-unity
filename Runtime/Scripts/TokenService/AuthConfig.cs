@@ -8,7 +8,7 @@ namespace LiveKit
         [SerializeField] private bool _randomRoomName = true;
         [SerializeField] private bool _randomParticipantName = true;
         [SerializeField] private string _roomName = "my-room";
-        [SerializeField] private string _participantName = "participant";
+        [SerializeField] private string _participantName = "unity-participant";
 
         public abstract bool IsValid { get; }
 

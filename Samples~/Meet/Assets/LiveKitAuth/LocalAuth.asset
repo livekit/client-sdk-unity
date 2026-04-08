@@ -15,7 +15,7 @@ MonoBehaviour:
   _randomRoomName: 1
   _randomParticipantName: 1
   _roomName: my-room
-  _participantName: participant-unity
+  _participantName: unity-participant
   _liveKitUrl: 
   _apiKey: 
   _apiSecret: 

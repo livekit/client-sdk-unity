@@ -15,5 +15,5 @@ MonoBehaviour:
   _randomRoomName: 1
   _randomParticipantName: 1
   _roomName: my-room
-  _participantName: participant-test-source
+  _participantName: unity-participant
   _sandboxId: 
