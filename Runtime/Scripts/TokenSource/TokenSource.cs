@@ -60,6 +60,18 @@ namespace LiveKit
             AddJsonField(parts, "participant_identity", config.ParticipantIdentity);
             AddJsonField(parts, "participant_metadata", config.ParticipantMetadata);
 
+            if (config.ParticipantAttributes != null && config.ParticipantAttributes.Count > 0)
+            {
+                var attrParts = new List<string>();
+                foreach (var attr in config.ParticipantAttributes)
+                {
+                    if (!string.IsNullOrEmpty(attr.key))
+                        attrParts.Add($"\"{attr.key}\":\"{attr.value}\"");
+                }
+                if (attrParts.Count > 0)
+                    parts.Add("\"participant_attributes\":{" + string.Join(",", attrParts) + "}");
+            }
+
             if (!string.IsNullOrEmpty(config.AgentName) || !string.IsNullOrEmpty(config.AgentMetadata))
             {
                 var agentParts = new List<string>();

@@ -30,6 +30,7 @@ public class SandboxAuthEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantName"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantIdentity"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantMetadata"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantAttributes"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentName"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentMetadata"));
 
