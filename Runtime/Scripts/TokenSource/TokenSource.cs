@@ -8,7 +8,7 @@ namespace LiveKit
 {
     public class TokenSource : MonoBehaviour
     {
-        [SerializeField] private AuthConfig _config;
+        [SerializeField] private TokenServerConfig _config;
 
         private static readonly string SandboxUrl = "https://cloud-api.livekit.io/api/v2/sandbox/connection-details";
         private static readonly HttpClient HttpClient = new HttpClient();
@@ -20,20 +20,24 @@ namespace LiveKit
             if (!_config.IsValid)
                 throw new InvalidOperationException("Auth configuration is invalid");
 
-            if (_config is SandboxAuthConfig sandboxConfig)
-                return await FetchConnectionDetailsFromSandbox(sandboxConfig);
+            switch (_config.AuthType)
+            {
+                case AuthType.Sandbox:
+                    return await FetchConnectionDetailsFromSandbox(_config);
 
-            if (_config is LiteralAuthConfig literalConfig)
-                return new ConnectionDetails
-                {
-                    server_url = literalConfig.ServerUrl,
-                    participant_token = literalConfig.Token
-                };
+                case AuthType.Literal:
+                    return new ConnectionDetails
+                    {
+                        server_url = _config.ServerUrl,
+                        participant_token = _config.Token
+                    };
 
-            throw new InvalidOperationException("Unknown auth type");
+                default:
+                    throw new InvalidOperationException("Unknown auth type");
+            }
         }
 
-        private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(SandboxAuthConfig config)
+        private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(TokenServerConfig config)
         {
             var jsonBody = BuildSandboxRequestJson(config);
 
@@ -52,7 +56,7 @@ namespace LiveKit
             return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
         }
 
-        private static string BuildSandboxRequestJson(SandboxAuthConfig config)
+        private static string BuildSandboxRequestJson(TokenServerConfig config)
         {
             var parts = new List<string>();
             AddJsonField(parts, "room_name", config.RoomName);

@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace LiveKit
 {
+    public enum AuthType
+    {
+        Literal,
+        Sandbox
+    }
+
     [Serializable]
     public struct StringPair
     {
@@ -11,9 +17,16 @@ namespace LiveKit
         public string value;
     }
 
-    [CreateAssetMenu(fileName = "TokenSource", menuName = "LiveKit/Sandbox Auth")]
-    public class SandboxAuthConfig : AuthConfig
+    [CreateAssetMenu(fileName = "TokenServerConfig", menuName = "LiveKit/Auth Config")]
+    public class TokenServerConfig : ScriptableObject
     {
+        [SerializeField] private AuthType _authType;
+
+        // Literal fields
+        [SerializeField] private string _serverUrl;
+        [SerializeField] private string _token;
+
+        // Sandbox fields
         [SerializeField] private string _sandboxId;
         [SerializeField] private string _roomName;
         [SerializeField] private string _participantName;
@@ -23,6 +36,13 @@ namespace LiveKit
         [SerializeField] private string _agentName;
         [SerializeField] private string _agentMetadata;
 
+        public AuthType AuthType => _authType;
+
+        // Literal
+        public string ServerUrl => _serverUrl;
+        public string Token => _token;
+
+        // Sandbox
         public string SandboxId => _sandboxId?.Trim('"');
         public string RoomName => _roomName;
         public string ParticipantName => _participantName;
@@ -32,7 +52,11 @@ namespace LiveKit
         public string AgentName => _agentName;
         public string AgentMetadata => _agentMetadata;
 
-        public override bool IsValid =>
-            !string.IsNullOrEmpty(SandboxId);
+        public bool IsValid => _authType switch
+        {
+            AuthType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
+            AuthType.Sandbox => !string.IsNullOrEmpty(SandboxId),
+            _ => false
+        };
     }
 }
