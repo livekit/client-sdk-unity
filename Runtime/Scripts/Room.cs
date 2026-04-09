@@ -477,14 +477,22 @@ namespace LiveKit
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ByteStreamOpened:
-                    var byteReader = new ByteStreamReader(e.ByteStreamOpened.Reader);
-                    _streamHandlers.Dispatch(byteReader, e.ByteStreamOpened.ParticipantIdentity);
-                    // TODO: Immediately dispose unhandled stream reader
+                    {
+                        var byteReader = new ByteStreamReader(e.ByteStreamOpened.Reader);
+                        if (!_streamHandlers.Dispatch(byteReader, e.ByteStreamOpened.ParticipantIdentity))
+                        {
+                            byteReader.Dispose();
+                        }
+                    }
                     break;
                 case RoomEvent.MessageOneofCase.TextStreamOpened:
-                    var textReader = new TextStreamReader(e.TextStreamOpened.Reader);
-                    _streamHandlers.Dispatch(textReader, e.TextStreamOpened.ParticipantIdentity);
-                    // TODO: Immediately dispose unhandled stream reader
+                    {
+                        var textReader = new TextStreamReader(e.TextStreamOpened.Reader);
+                        if (!_streamHandlers.Dispatch(textReader, e.TextStreamOpened.ParticipantIdentity))
+                        {
+                            textReader.Dispose();
+                        }
+                    }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
                     ConnectionState = e.ConnectionStateChanged.State;
