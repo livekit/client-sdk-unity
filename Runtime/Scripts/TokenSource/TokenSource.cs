@@ -45,7 +45,12 @@ namespace LiveKit
 
         private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(string roomName, string participantName, string sandboxId)
         {
-            var jsonBody = JsonUtility.ToJson(new SandboxRequest { roomName = roomName, participantName = participantName });
+            var parts = new System.Collections.Generic.List<string>();
+            if (roomName != null)
+                parts.Add($"\"roomName\":\"{roomName}\"");
+            if (participantName != null)
+                parts.Add($"\"participantName\":\"{participantName}\"");
+            var jsonBody = "{" + string.Join(",", parts) + "}";
 
             var request = new HttpRequestMessage(HttpMethod.Post, SandboxUrl);
             request.Headers.Add("X-Sandbox-ID", sandboxId);
@@ -61,13 +66,6 @@ namespace LiveKit
             var jsonContent = await response.Content.ReadAsStringAsync();
             return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
         }
-    }
-
-    [Serializable]
-    struct SandboxRequest
-    {
-        public string roomName;
-        public string participantName;
     }
 
     [Serializable]

@@ -14,12 +14,8 @@ namespace LiveKit
 
         public (string roomName, string participantName) ResolveNames()
         {
-            var roomName = _randomRoomName
-                ? $"room-{Guid.NewGuid().ToString().Substring(0, 8)}"
-                : _roomName;
-            var participantName = _randomParticipantName
-                ? $"participant-{Guid.NewGuid().ToString().Substring(0, 8)}"
-                : _participantName;
+            var roomName = _randomRoomName ? null : _roomName;
+            var participantName = _randomParticipantName ? null : _participantName;
             return (roomName, participantName);
         }
     }
