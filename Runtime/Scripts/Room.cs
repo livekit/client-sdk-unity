@@ -356,11 +356,6 @@ namespace LiveKit
                         var participant = RemoteParticipants[e.TrackSubscribed.ParticipantIdentity];
                         var publication = participant.Tracks[info.Sid];
 
-                        if (publication == null)
-                        {
-                            participant._tracks.Add(publication.Sid, publication);
-                        }
-
                         if (info.Kind == TrackKind.KindVideo)
                         {
                             var videoTrack = new RemoteVideoTrack(track, this, participant);
