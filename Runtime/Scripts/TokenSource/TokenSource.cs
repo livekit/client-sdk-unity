@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,44 +17,35 @@ namespace LiveKit
         {
             if (_config == null)
                 throw new InvalidOperationException("Auth configuration was not provided");
-
-            var (roomName, participantName) = _config.ResolveNames();
-            return await FetchConnectionDetails(roomName, participantName);
-        }
-
-        public async Task<ConnectionDetails> FetchConnectionDetails(string roomName, string participantName)
-        {
-            if (_config == null)
-                throw new InvalidOperationException("Auth configuration was not provided");
             if (!_config.IsValid)
                 throw new InvalidOperationException("Auth configuration is invalid");
 
             if (_config is SandboxAuthConfig sandboxConfig)
-                return await FetchConnectionDetailsFromSandbox(roomName, participantName, sandboxConfig.SandboxId);
+                return await FetchConnectionDetailsFromSandbox(sandboxConfig);
 
-            if (_config is LiteralAuthConfig hardcodedConfig)
+            if (_config is LiteralAuthConfig literalConfig)
                 return new ConnectionDetails
                 {
-                    serverUrl = hardcodedConfig.ServerUrl,
-                    roomName = roomName,
-                    participantName = participantName,
-                    participantToken = hardcodedConfig.Token
+                    serverUrl = literalConfig.ServerUrl,
+                    participantToken = literalConfig.Token
                 };
 
             throw new InvalidOperationException("Unknown auth type");
         }
 
-        private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(string roomName, string participantName, string sandboxId)
+        private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(SandboxAuthConfig config)
         {
-            var parts = new System.Collections.Generic.List<string>();
-            if (roomName != null)
-                parts.Add($"\"roomName\":\"{roomName}\"");
-            if (participantName != null)
-                parts.Add($"\"participantName\":\"{participantName}\"");
+            var parts = new List<string>();
+            AddJsonField(parts, "roomName", config.RoomName);
+            AddJsonField(parts, "participantName", config.ParticipantName);
+            AddJsonField(parts, "participantIdentity", config.ParticipantIdentity);
+            AddJsonField(parts, "participantMetadata", config.ParticipantMetadata);
+            AddJsonField(parts, "agentName", config.AgentName);
+            AddJsonField(parts, "agentMetadata", config.AgentMetadata);
             var jsonBody = "{" + string.Join(",", parts) + "}";
 
             var request = new HttpRequestMessage(HttpMethod.Post, SandboxUrl);
-            request.Headers.Add("X-Sandbox-ID", sandboxId);
+            request.Headers.Add("X-Sandbox-ID", config.SandboxId);
             var content = new StringContent(jsonBody, System.Text.Encoding.UTF8);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             request.Content = content;
@@ -65,6 +57,12 @@ namespace LiveKit
 
             var jsonContent = await response.Content.ReadAsStringAsync();
             return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
+        }
+
+        private static void AddJsonField(List<string> parts, string key, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+                parts.Add($"\"{key}\":\"{value}\"");
         }
     }
 

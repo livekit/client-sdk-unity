@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11966062e58e040bebafa4b01cc11da0, type: 3}
   m_Name: SandboxAuth
   m_EditorClassIdentifier: 
-  _randomRoomName: 1
-  _randomParticipantName: 1
-  _roomName: my-room
-  _participantName: unity-participant
-  _sandboxId: 
+  _sandboxId: test1-x6vz7u
+  _roomName: 
+  _participantName: 
+  _participantIdentity: 
+  _participantMetadata: 
+  _agentName: 
+  _agentMetadata: 

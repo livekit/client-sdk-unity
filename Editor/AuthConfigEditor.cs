@@ -2,29 +2,8 @@ using UnityEditor;
 using UnityEngine;
 using LiveKit;
 
-public class AuthConfigEditor : Editor
-{
-    protected void DrawNameFields()
-    {
-        var randomRoomName = serializedObject.FindProperty("_randomRoomName");
-        var roomName = serializedObject.FindProperty("_roomName");
-        var randomParticipantName = serializedObject.FindProperty("_randomParticipantName");
-        var participantName = serializedObject.FindProperty("_participantName");
-
-        EditorGUILayout.Space();
-
-        EditorGUILayout.PropertyField(randomRoomName, new GUIContent("Random Room Name"));
-        if (!randomRoomName.boolValue)
-            EditorGUILayout.PropertyField(roomName, new GUIContent("Room Name"));
-
-        EditorGUILayout.PropertyField(randomParticipantName, new GUIContent("Random Participant Name"));
-        if (!randomParticipantName.boolValue)
-            EditorGUILayout.PropertyField(participantName, new GUIContent("Participant Name"));
-    }
-}
-
 [CustomEditor(typeof(LiteralAuthConfig))]
-public class LiteralAuthEditor : AuthConfigEditor
+public class LiteralAuthEditor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -37,14 +16,23 @@ public class LiteralAuthEditor : AuthConfigEditor
 }
 
 [CustomEditor(typeof(SandboxAuthConfig))]
-public class SandboxAuthEditor : AuthConfigEditor
+public class SandboxAuthEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
         EditorGUILayout.HelpBox("Use this for development to create tokens from a sandbox token server. \nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE THE SANDBOX TOKEN SERVER NEEDS NO AUTHENTICATION.", MessageType.Info);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_sandboxId"));
-        DrawNameFields();
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Connection Options", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_roomName"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantName"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantIdentity"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantMetadata"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentName"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentMetadata"));
+
         serializedObject.ApplyModifiedProperties();
     }
 }
