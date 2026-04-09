@@ -40,9 +40,6 @@ namespace LiveKit
                     participantToken = hardcodedConfig.Token
                 };
 
-            if (_config is LocalAuthConfig localConfig)
-                return localConfig.GenerateConnectionDetails(roomName, participantName);
-
             throw new InvalidOperationException("Unknown auth type");
         }
 

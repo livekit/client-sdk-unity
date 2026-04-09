@@ -48,18 +48,4 @@ public class SandboxAuthEditor : AuthConfigEditor
         serializedObject.ApplyModifiedProperties();
     }
 }
-
-[CustomEditor(typeof(LocalAuthConfig))]
-public class LocalAuthEditor : AuthConfigEditor
-{
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-        EditorGUILayout.HelpBox("Use this for local development by creating tokens locally.\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE YOU EXPOSE YOUR CREDENTIALS.", MessageType.Info);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_liveKitUrl"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_apiKey"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_apiSecret"));
-        DrawNameFields();
-        serializedObject.ApplyModifiedProperties();
-    }
 }
