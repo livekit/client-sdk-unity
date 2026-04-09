@@ -10,7 +10,7 @@ namespace LiveKit
     {
         [SerializeField] private AuthConfig _config;
 
-        private static readonly string SandboxUrl = "https://cloud-api.livekit.io/api/sandbox/connection-details";
+        private static readonly string SandboxUrl = "https://cloud-api.livekit.io/api/v2/sandbox/connection-details";
         private static readonly HttpClient HttpClient = new HttpClient();
 
         public async Task<ConnectionDetails> FetchConnectionDetails()
@@ -26,8 +26,8 @@ namespace LiveKit
             if (_config is LiteralAuthConfig literalConfig)
                 return new ConnectionDetails
                 {
-                    serverUrl = literalConfig.ServerUrl,
-                    participantToken = literalConfig.Token
+                    server_url = literalConfig.ServerUrl,
+                    participant_token = literalConfig.Token
                 };
 
             throw new InvalidOperationException("Unknown auth type");
@@ -35,14 +35,7 @@ namespace LiveKit
 
         private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(SandboxAuthConfig config)
         {
-            var parts = new List<string>();
-            AddJsonField(parts, "roomName", config.RoomName);
-            AddJsonField(parts, "participantName", config.ParticipantName);
-            AddJsonField(parts, "participantIdentity", config.ParticipantIdentity);
-            AddJsonField(parts, "participantMetadata", config.ParticipantMetadata);
-            AddJsonField(parts, "agentName", config.AgentName);
-            AddJsonField(parts, "agentMetadata", config.AgentMetadata);
-            var jsonBody = "{" + string.Join(",", parts) + "}";
+            var jsonBody = BuildSandboxRequestJson(config);
 
             var request = new HttpRequestMessage(HttpMethod.Post, SandboxUrl);
             request.Headers.Add("X-Sandbox-ID", config.SandboxId);
@@ -59,6 +52,26 @@ namespace LiveKit
             return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
         }
 
+        private static string BuildSandboxRequestJson(SandboxAuthConfig config)
+        {
+            var parts = new List<string>();
+            AddJsonField(parts, "room_name", config.RoomName);
+            AddJsonField(parts, "participant_name", config.ParticipantName);
+            AddJsonField(parts, "participant_identity", config.ParticipantIdentity);
+            AddJsonField(parts, "participant_metadata", config.ParticipantMetadata);
+
+            if (!string.IsNullOrEmpty(config.AgentName) || !string.IsNullOrEmpty(config.AgentMetadata))
+            {
+                var agentParts = new List<string>();
+                AddJsonField(agentParts, "agent_name", config.AgentName);
+                AddJsonField(agentParts, "metadata", config.AgentMetadata);
+                var agentDispatch = "{" + string.Join(",", agentParts) + "}";
+                parts.Add($"\"room_config\":{{\"agents\":[{agentDispatch}]}}");
+            }
+
+            return "{" + string.Join(",", parts) + "}";
+        }
+
         private static void AddJsonField(List<string> parts, string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -69,9 +82,7 @@ namespace LiveKit
     [Serializable]
     public struct ConnectionDetails
     {
-        public string serverUrl;
-        public string roomName;
-        public string participantName;
-        public string participantToken;
+        public string server_url;
+        public string participant_token;
     }
 }
