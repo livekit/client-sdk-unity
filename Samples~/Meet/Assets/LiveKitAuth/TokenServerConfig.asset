@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43a37cf88c3004e1e868c55101f680a5, type: 3}
-  m_Name: AuthConfig
+  m_Name: TokenServerConfig
   m_EditorClassIdentifier: 
-  _authType: 1
+  _authType: 0
   _serverUrl: 
   _token: 
-  _sandboxId: test1-x6vz7u
+  _sandboxId: 
+  _endpointUrl: 
+  _endpointHeaders: []
   _roomName: 
   _participantName: 
   _participantIdentity: 
   _participantMetadata: 
   _participantAttributes: []
-  _agentName: my-agent-two
+  _agentName: 
   _agentMetadata: 

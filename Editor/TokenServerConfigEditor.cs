@@ -31,19 +31,33 @@ public class TokenServerConfigEditor : Editor
                     "\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE THE SANDBOX TOKEN SERVER NEEDS NO AUTHENTICATION.",
                     MessageType.Info);
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_sandboxId"));
+                DrawConnectionOptions();
+                break;
 
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Connection Options", EditorStyles.boldLabel);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_roomName"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantName"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantIdentity"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantMetadata"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantAttributes"), true);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentName"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentMetadata"));
+            case AuthType.Endpoint:
+                EditorGUILayout.HelpBox(
+                    "Use this for production with your own token endpoint. " +
+                    "Provide the URL and any authentication headers your endpoint requires.",
+                    MessageType.Info);
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_endpointUrl"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_endpointHeaders"), true);
+                DrawConnectionOptions();
                 break;
         }
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private void DrawConnectionOptions()
+    {
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Connection Options", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_roomName"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantName"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantIdentity"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantMetadata"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantAttributes"), true);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentName"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentMetadata"));
     }
 }

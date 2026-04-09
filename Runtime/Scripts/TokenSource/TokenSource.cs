@@ -23,7 +23,10 @@ namespace LiveKit
             switch (_config.AuthType)
             {
                 case AuthType.Sandbox:
-                    return await FetchConnectionDetailsFromSandbox(_config);
+                    return await FetchFromTokenServer(SandboxUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = _config.SandboxId } });
+
+                case AuthType.Endpoint:
+                    return await FetchFromTokenServer(_config.EndpointUrl, _config.EndpointHeaders);
 
                 case AuthType.Literal:
                     return new ConnectionDetails
@@ -37,12 +40,19 @@ namespace LiveKit
             }
         }
 
-        private async Task<ConnectionDetails> FetchConnectionDetailsFromSandbox(TokenServerConfig config)
+        private async Task<ConnectionDetails> FetchFromTokenServer(string url, IEnumerable<StringPair> headers)
         {
-            var jsonBody = BuildSandboxRequestJson(config);
+            var jsonBody = BuildRequestJson(_config);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, SandboxUrl);
-            request.Headers.Add("X-Sandbox-ID", config.SandboxId);
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    if (!string.IsNullOrEmpty(header.key))
+                        request.Headers.TryAddWithoutValidation(header.key, header.value);
+                }
+            }
             var content = new StringContent(jsonBody, System.Text.Encoding.UTF8);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             request.Content = content;
@@ -50,13 +60,13 @@ namespace LiveKit
             var response = await HttpClient.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
-                throw new InvalidOperationException($"Error from LiveKit Cloud sandbox: {response.StatusCode}, response: {response}");
+                throw new InvalidOperationException($"Token server error: {response.StatusCode}, response: {await response.Content.ReadAsStringAsync()}");
 
             var jsonContent = await response.Content.ReadAsStringAsync();
             return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
         }
 
-        private static string BuildSandboxRequestJson(TokenServerConfig config)
+        private static string BuildRequestJson(TokenServerConfig config)
         {
             var parts = new List<string>();
             AddJsonField(parts, "room_name", config.RoomName);

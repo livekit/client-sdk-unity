@@ -7,7 +7,8 @@ namespace LiveKit
     public enum AuthType
     {
         Literal,
-        Sandbox
+        Sandbox,
+        Endpoint
     }
 
     [Serializable]
@@ -28,6 +29,12 @@ namespace LiveKit
 
         // Sandbox fields
         [SerializeField] private string _sandboxId;
+
+        // Endpoint fields
+        [SerializeField] private string _endpointUrl;
+        [SerializeField] private List<StringPair> _endpointHeaders;
+
+        // Shared connection options (Sandbox + Endpoint)
         [SerializeField] private string _roomName;
         [SerializeField] private string _participantName;
         [SerializeField] private string _participantIdentity;
@@ -44,6 +51,12 @@ namespace LiveKit
 
         // Sandbox
         public string SandboxId => _sandboxId?.Trim('"');
+
+        // Endpoint
+        public string EndpointUrl => _endpointUrl;
+        public List<StringPair> EndpointHeaders => _endpointHeaders;
+
+        // Shared connection options
         public string RoomName => _roomName;
         public string ParticipantName => _participantName;
         public string ParticipantIdentity => _participantIdentity;
@@ -56,6 +69,7 @@ namespace LiveKit
         {
             AuthType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
             AuthType.Sandbox => !string.IsNullOrEmpty(SandboxId),
+            AuthType.Endpoint => !string.IsNullOrEmpty(EndpointUrl),
             _ => false
         };
     }
