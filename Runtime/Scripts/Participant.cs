@@ -594,13 +594,11 @@ namespace LiveKit
 
     public sealed class PublishTrackInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private Dictionary<string, TrackPublication> _internalTracks;
         private ILocalTrack _localTrack;
 
         internal PublishTrackInstruction(ulong asyncId, ILocalTrack localTrack, Dictionary<string, TrackPublication> internalTracks)
         {
-            _asyncId = asyncId;
             _internalTracks = internalTracks;
             _localTrack = localTrack;
             // One-shot completion keyed by request_async_id. Concurrent requests simply occupy
@@ -611,9 +609,6 @@ namespace LiveKit
 
         internal void OnPublish(PublishTrackCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
             var publication = new LocalTrackPublication(e.Publication.Info);
@@ -741,21 +736,15 @@ namespace LiveKit
     /// </remarks>
     public sealed class PerformRpcInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private string _payload;
 
         internal PerformRpcInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PerformRpc, OnRpcResponse, OnCanceled);
         }
 
         internal void OnRpcResponse(PerformRpcCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
-
             if (e.Error != null)
             {
                 Error = RpcError.FromProto(e.Error);
@@ -807,20 +796,15 @@ namespace LiveKit
     /// </remarks>
     public sealed class SendTextInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private TextStreamInfo _info;
 
         internal SendTextInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SendText, OnSendText, OnCanceled);
         }
 
         internal void OnSendText(StreamSendTextCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             switch (e.ResultCase)
             {
                 case StreamSendTextCallback.ResultOneofCase.Error:
@@ -861,20 +845,15 @@ namespace LiveKit
     /// </remarks>
     public sealed class SendFileInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private ByteStreamInfo _info;
 
         internal SendFileInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SendFile, OnSendFile, OnCanceled);
         }
 
         internal void OnSendFile(StreamSendFileCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             switch (e.ResultCase)
             {
                 case StreamSendFileCallback.ResultOneofCase.Error:
@@ -915,20 +894,15 @@ namespace LiveKit
     /// </remarks>
     public sealed class StreamTextInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private TextStreamWriter _writer;
 
         internal StreamTextInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamOpen, OnStreamOpen, OnCanceled);
         }
 
         internal void OnStreamOpen(TextStreamOpenCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             switch (e.ResultCase)
             {
                 case TextStreamOpenCallback.ResultOneofCase.Error:
@@ -969,20 +943,15 @@ namespace LiveKit
     /// </remarks>
     public sealed class StreamBytesInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private ByteStreamWriter _writer;
 
         internal StreamBytesInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamOpen, OnStreamOpen, OnCanceled);
         }
 
         internal void OnStreamOpen(ByteStreamOpenCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             switch (e.ResultCase)
             {
                 case ByteStreamOpenCallback.ResultOneofCase.Error:
@@ -1023,20 +992,15 @@ namespace LiveKit
     /// </remarks>
     public sealed class PublishDataTrackInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private LocalDataTrack _track;
 
         internal PublishDataTrackInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.PublishDataTrack, OnPublishDataTrack, OnCanceled);
         }
 
         internal void OnPublishDataTrack(PublishDataTrackCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             switch (e.ResultCase)
             {
                 case PublishDataTrackCallback.ResultOneofCase.Error:
