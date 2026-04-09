@@ -223,9 +223,7 @@ Use the samples of the package to see how to use the SDK.
 
 You need a token to join a LiveKit room as a participant. Read more about tokens here: https://docs.livekit.io/frontends/reference/tokens-grants/
 
-To help getting started with tokens, use the TokenService.cs for local development. There are three authentication options available from scratch:
-
-WARNING: These options are all meant for local development. For a production setup, read more at https://docs.livekit.io/frontends/build/authentication/custom/ 
+To help getting started with tokens, use the `TokenSource.cs` (see https://docs.livekit.io/frontends/build/authentication/#tokensource). There are four TokenSources available:
 
 #### 1. Hardcoded Auth:
 Use this to pass a pregenerated token from a token source. 
@@ -241,10 +239,10 @@ Create tokens locally based on your API key and secret.
 
 #### Usage:
 
-In order to use one of the options, create an instance of the Scriptable Object via the RightClick > Create > LiveKit menu and pass it to the TokenService script instance. Then use the TokenService before connecting to a room:
+In order to use one of the options, create an instance of the Scriptable Object via the RightClick > Create > LiveKit menu and pass it to the TokenSource script instance. Then use the TokenSource before connecting to a room:
 
 ```cs
-var  connectionDetailsTask  =  _tokenService.FetchConnectionDetails();
+var  connectionDetailsTask  =  _tokenSource.FetchConnectionDetails();
 
 yield  return  new  WaitUntil(() =>  connectionDetailsTask.IsCompleted);
 

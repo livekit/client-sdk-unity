@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LiveKit
 {
-    [CreateAssetMenu(fileName = "TokenService", menuName = "LiveKit/Hardcoded Auth")]
+    [CreateAssetMenu(fileName = "TokenSource", menuName = "LiveKit/Hardcoded Auth")]
     public class HardcodedAuthConfig : AuthConfig
     {
         [SerializeField] private string _serverUrl;

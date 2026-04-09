@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LiveKit
 {
-    public class TokenService : MonoBehaviour
+    public class TokenSource : MonoBehaviour
     {
         [SerializeField] private AuthConfig _config;
 
