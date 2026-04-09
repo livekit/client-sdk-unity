@@ -43,7 +43,7 @@ namespace LiveKit
     {
         IceTransportType IceTransportType = IceTransportType.TRANSPORT_ALL;
         ContinualGatheringPolicy ContinualGatheringPolicy = ContinualGatheringPolicy.GATHER_ONCE;
-        IceServer[] IceServers;
+        IceServer[] IceServers = System.Array.Empty<IceServer>();
 
         public Proto.RtcConfig ToProto()
         {
