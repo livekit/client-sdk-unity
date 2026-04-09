@@ -326,14 +326,22 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ParticipantDisconnected:
                     {
                         var sid = e.ParticipantDisconnected.ParticipantIdentity;
-                        var participant = RemoteParticipants[sid];
+                        if (!_participants.TryGetValue(sid, out var participant))
+                        {
+                            Utils.Debug($"ParticipantDisconnected: unknown participant {sid}");
+                            return;
+                        }
                         _participants.Remove(sid);
                         ParticipantDisconnected?.Invoke(participant);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
                     {
-                        var participant = RemoteParticipants[e.TrackPublished.ParticipantIdentity];
+                        if (!_participants.TryGetValue(e.TrackPublished.ParticipantIdentity, out var participant))
+                        {
+                            Utils.Debug($"TrackPublished: unknown participant {e.TrackPublished.ParticipantIdentity}");
+                            return;
+                        }
                         var publication = new RemoteTrackPublication(e.TrackPublished.Publication.Info, FfiHandle.FromOwnedHandle(e.TrackPublished.Publication.Handle));
                         participant._tracks.Add(publication.Sid, publication);
                         participant.OnTrackPublished(publication);
@@ -342,8 +350,16 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnpublished:
                     {
-                        var participant = RemoteParticipants[e.TrackUnpublished.ParticipantIdentity];
-                        var publication = participant.Tracks[e.TrackUnpublished.PublicationSid];
+                        if (!_participants.TryGetValue(e.TrackUnpublished.ParticipantIdentity, out var participant))
+                        {
+                            Utils.Debug($"TrackUnpublished: unknown participant {e.TrackUnpublished.ParticipantIdentity}");
+                            return;
+                        }
+                        if (!participant.Tracks.TryGetValue(e.TrackUnpublished.PublicationSid, out var publication))
+                        {
+                            Utils.Debug($"TrackUnpublished: unknown track {e.TrackUnpublished.PublicationSid}");
+                            return;
+                        }
                         participant._tracks.Remove(publication.Sid);
                         participant.OnTrackUnpublished(publication);
                         TrackUnpublished?.Invoke(publication, participant);
@@ -353,12 +369,15 @@ namespace LiveKit
                     {
                         var track = e.TrackSubscribed.Track;
                         var info = track.Info;
-                        var participant = RemoteParticipants[e.TrackSubscribed.ParticipantIdentity];
-                        var publication = participant.Tracks[info.Sid];
-
-                        if (publication == null)
+                        if (!_participants.TryGetValue(e.TrackSubscribed.ParticipantIdentity, out var participant))
                         {
-                            participant._tracks.Add(publication.Sid, publication);
+                            Utils.Debug($"TrackSubscribed: unknown participant {e.TrackSubscribed.ParticipantIdentity}");
+                            return;
+                        }
+                        if (!participant.Tracks.TryGetValue(info.Sid, out var publication))
+                        {
+                            Utils.Debug($"TrackSubscribed: unknown track {info.Sid}");
+                            return;
                         }
 
                         if (info.Kind == TrackKind.KindVideo)
@@ -377,8 +396,16 @@ namespace LiveKit
                     break;
                 case RoomEvent.MessageOneofCase.TrackUnsubscribed:
                     {
-                        var participant = RemoteParticipants[e.TrackUnsubscribed.ParticipantIdentity];
-                        var publication = participant.Tracks[e.TrackUnsubscribed.TrackSid];
+                        if (!_participants.TryGetValue(e.TrackUnsubscribed.ParticipantIdentity, out var participant))
+                        {
+                            Utils.Debug($"TrackUnsubscribed: unknown participant {e.TrackUnsubscribed.ParticipantIdentity}");
+                            return;
+                        }
+                        if (!participant.Tracks.TryGetValue(e.TrackUnsubscribed.TrackSid, out var publication))
+                        {
+                            Utils.Debug($"TrackUnsubscribed: unknown track {e.TrackUnsubscribed.TrackSid}");
+                            return;
+                        }
                         var track = publication.Track;
                         publication.UpdateTrack(null);
                         TrackUnsubscribed?.Invoke(track, publication, participant);
@@ -413,7 +440,16 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.TrackMuted:
                     {
                         var participant = GetParticipant(e.TrackMuted.ParticipantIdentity);
-                        var publication = participant.Tracks[e.TrackMuted.TrackSid];
+                        if (participant == null)
+                        {
+                            Utils.Debug($"TrackMuted: unknown participant {e.TrackMuted.ParticipantIdentity}");
+                            return;
+                        }
+                        if (!participant._tracks.TryGetValue(e.TrackMuted.TrackSid, out var publication))
+                        {
+                            Utils.Debug($"TrackMuted: unknown track {e.TrackMuted.TrackSid}");
+                            return;
+                        }
                         publication.UpdateMuted(true);
                         TrackMuted?.Invoke(publication, participant);
                     }
@@ -421,7 +457,16 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.TrackUnmuted:
                     {
                         var participant = GetParticipant(e.TrackUnmuted.ParticipantIdentity);
-                        var publication = participant.Tracks[e.TrackUnmuted.TrackSid];
+                        if (participant == null)
+                        {
+                            Utils.Debug($"TrackUnmuted: unknown participant {e.TrackUnmuted.ParticipantIdentity}");
+                            return;
+                        }
+                        if (!participant._tracks.TryGetValue(e.TrackUnmuted.TrackSid, out var publication))
+                        {
+                            Utils.Debug($"TrackUnmuted: unknown track {e.TrackUnmuted.TrackSid}");
+                            return;
+                        }
                         publication.UpdateMuted(false);
                         TrackUnmuted?.Invoke(publication, participant);
                     }
@@ -440,6 +485,11 @@ namespace LiveKit
                 case RoomEvent.MessageOneofCase.ConnectionQualityChanged:
                     {
                         var participant = GetParticipant(e.ConnectionQualityChanged.ParticipantIdentity);
+                        if (participant == null)
+                        {
+                            Utils.Debug($"ConnectionQualityChanged: unknown participant {e.ConnectionQualityChanged.ParticipantIdentity}");
+                            return;
+                        }
                         var quality = e.ConnectionQualityChanged.Quality;
                         participant.ConnectionQuality = quality;
                         ConnectionQualityChanged?.Invoke(quality, participant);
