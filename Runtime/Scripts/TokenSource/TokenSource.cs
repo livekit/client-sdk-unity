@@ -31,7 +31,7 @@ namespace LiveKit
             if (_config is SandboxAuthConfig sandboxConfig)
                 return await FetchConnectionDetailsFromSandbox(roomName, participantName, sandboxConfig.SandboxId);
 
-            if (_config is HardcodedAuthConfig hardcodedConfig)
+            if (_config is LiteralAuthConfig hardcodedConfig)
                 return new ConnectionDetails
                 {
                     serverUrl = hardcodedConfig.ServerUrl,

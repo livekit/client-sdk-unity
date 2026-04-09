@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e8d98233ba844b75aa96f6921897a90, type: 3}
-  m_Name: HardCodedAuth
+  m_Name: LiteralAuth
   m_EditorClassIdentifier: 
   _randomRoomName: 1
   _randomParticipantName: 1

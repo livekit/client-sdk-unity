@@ -23,8 +23,8 @@ public class AuthConfigEditor : Editor
     }
 }
 
-[CustomEditor(typeof(HardcodedAuthConfig))]
-public class HardcodedAuthEditor : AuthConfigEditor
+[CustomEditor(typeof(LiteralAuthConfig))]
+public class LiteralAuthEditor : AuthConfigEditor
 {
     public override void OnInspectorGUI()
     {
@@ -47,5 +47,4 @@ public class SandboxAuthEditor : AuthConfigEditor
         DrawNameFields();
         serializedObject.ApplyModifiedProperties();
     }
-}
 }
