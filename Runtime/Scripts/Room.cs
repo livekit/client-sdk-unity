@@ -432,7 +432,11 @@ namespace LiveKit
                         var speakers = new List<Participant>(identities.Count);
 
                         foreach (var id in identities)
-                            speakers.Add(GetParticipant(id));
+                        {
+                            var participant = GetParticipant(id);
+                            if (participant != null)
+                                speakers.Add(participant);
+                        }
 
                         ActiveSpeakersChanged?.Invoke(speakers);
                     }
