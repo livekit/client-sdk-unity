@@ -557,6 +557,7 @@ namespace LiveKit
         private void OnDisconnect()
         {
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
+            FfiClient.Instance.RpcMethodInvocationReceived -= OnRpcMethodInvocationReceived;
         }
 
         internal RemoteParticipant CreateRemoteParticipantWithTracks(ConnectCallback.Types.ParticipantWithTracks item)
