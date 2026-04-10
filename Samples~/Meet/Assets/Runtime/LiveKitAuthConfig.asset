@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43a37cf88c3004e1e868c55101f680a5, type: 3}
-  m_Name: TokenServerConfig
+  m_Name: LiveKitAuthConfig
   m_EditorClassIdentifier: 
-  _authType: 0
+  _authType: 1
   _serverUrl: 
   _token: 
   _sandboxId: 

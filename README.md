@@ -223,46 +223,34 @@ Use the samples of the package to see how to use the SDK.
 
 You need a token to join a LiveKit room as a participant. Read more about tokens here: https://docs.livekit.io/frontends/reference/tokens-grants/
 
-To help getting started with tokens, use the `TokenSource.cs` (see https://docs.livekit.io/frontends/build/authentication/#tokensource). There are four TokenSources available:
+To help getting started with tokens, use `TokenSource.cs` with a `TokenServerConfig` ScriptableObject (see https://docs.livekit.io/frontends/build/authentication/#tokensource). Create a config asset via **Right Click > Create > LiveKit > Auth Config** and select one of three auth types:
 
-#### 1. Hardcoded Auth:
-Use this to pass a pregenerated token from a token source. 
-Generate tokens via a script: https://docs.livekit.io/frontends/build/authentication/custom/#manual-token-creation.
-You can also generate a token at your API key overview page on your https://cloud.livekit.io/ project.
- 
-#### 2. Sandbox Auth:
- 
-Follow https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/ to use your projects sandbox token server and get the id.
- 
-#### 3. Local Auth:
-Create tokens locally based on your API key and secret.
+#### 1. Literal
+Use this to pass a pregenerated server URL and token. Generate tokens via the [LiveKit CLI](https://docs.livekit.io/frontends/build/authentication/custom/#manual-token-creation) or from your [LiveKit Cloud](https://cloud.livekit.io/) project's API key page.
 
-#### Usage:
+#### 2. Sandbox
+For development and testing. Follow the [sandbox token server guide](https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/) to enable your project's sandbox and get the sandbox ID. Optional connection fields (room name, participant name, agent name, etc.) can be configured in the inspector — leave blank for server defaults.
 
-In order to use one of the options, create an instance of the Scriptable Object via the RightClick > Create > LiveKit menu and pass it to the TokenSource script instance. Then use the TokenSource before connecting to a room:
+#### 3. Endpoint
+For production. Point to your own token endpoint URL and add any required authentication headers. Uses the same connection options as Sandbox. See the [endpoint token generation guide](https://docs.livekit.io/frontends/build/authentication/endpoint/).
+
+#### Usage
+
+Add a `TokenSource` component to a GameObject, assign your `TokenServerConfig` asset, then fetch connection details before connecting:
 
 ```cs
-var  connectionDetailsTask  =  _tokenSource.FetchConnectionDetails();
-
-yield  return  new  WaitUntil(() =>  connectionDetailsTask.IsCompleted);
-
-  
+var connectionDetailsTask = _tokenSource.FetchConnectionDetails();
+yield return new WaitUntil(() => connectionDetailsTask.IsCompleted);
 
 if (connectionDetailsTask.IsFaulted)
-
 {
+    Debug.LogError($"Failed to fetch connection details: {connectionDetailsTask.Exception?.InnerException?.Message}");
+    yield break;
+}
 
-Debug.LogError($"Failed to fetch connection details: {connectionDetailsTask.Exception?.InnerException?.Message}");
-
-yield  break;
-
-}  
-
-var  details  =  connectionDetailsTask.Result; 
-
-_room  =  new  Room(); 
-
-var  connect  =  _room.Connect(details.serverUrl, details.participantToken, new  RoomOptions());
+var details = connectionDetailsTask.Result;
+_room = new Room();
+var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
 ```
 
  
