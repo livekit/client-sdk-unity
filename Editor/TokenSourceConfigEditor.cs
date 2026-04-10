@@ -2,21 +2,21 @@ using UnityEditor;
 using UnityEngine;
 using LiveKit;
 
-[CustomEditor(typeof(TokenServerConfig))]
-public class TokenServerConfigEditor : Editor
+[CustomEditor(typeof(TokenSourceConfig))]
+public class TokenSourceConfigEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
-        var authType = serializedObject.FindProperty("_authType");
-        EditorGUILayout.PropertyField(authType);
+        var tokenSourceType = serializedObject.FindProperty("_tokenSourceType");
+        EditorGUILayout.PropertyField(tokenSourceType);
 
         EditorGUILayout.Space();
 
-        switch ((AuthType)authType.enumValueIndex)
+        switch ((TokenSourceType)tokenSourceType.enumValueIndex)
         {
-            case AuthType.Literal:
+            case TokenSourceType.Literal:
                 EditorGUILayout.HelpBox(
                     "Use this if you have a pregenerated token from your own token source. " +
                     "\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE ONLY ONE PARTICIPANT CAN USE THE TOKEN AT A TIME AND TOKENS EXPIRE.",
@@ -25,7 +25,7 @@ public class TokenServerConfigEditor : Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_token"));
                 break;
 
-            case AuthType.Sandbox:
+            case TokenSourceType.Sandbox:
                 EditorGUILayout.HelpBox(
                     "Use this for development to create tokens from a sandbox token server. " +
                     "\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE THE SANDBOX TOKEN SERVER NEEDS NO AUTHENTICATION.",
@@ -34,7 +34,7 @@ public class TokenServerConfigEditor : Editor
                 DrawConnectionOptions();
                 break;
 
-            case AuthType.Endpoint:
+            case TokenSourceType.Endpoint:
                 EditorGUILayout.HelpBox(
                     "Use this for production with your own token endpoint. " +
                     "Provide the URL and any authentication headers your endpoint requires.",

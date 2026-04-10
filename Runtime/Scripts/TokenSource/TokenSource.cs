@@ -10,7 +10,7 @@ namespace LiveKit
 {
     public class TokenSource : MonoBehaviour
     {
-        [SerializeField] private TokenServerConfig _config;
+        [SerializeField] private TokenSourceConfig _config;
 
         private static readonly string SandboxUrl = "https://cloud-api.livekit.io/api/v2/sandbox/connection-details";
         private static readonly HttpClient HttpClient = new HttpClient();
@@ -18,19 +18,19 @@ namespace LiveKit
         public async Task<ConnectionDetails> FetchConnectionDetails()
         {
             if (_config == null)
-                throw new InvalidOperationException("Auth configuration was not provided");
+                throw new InvalidOperationException("Token source configuration was not provided");
             if (!_config.IsValid)
-                throw new InvalidOperationException("Auth configuration is invalid");
+                throw new InvalidOperationException("Token source configuration is invalid");
 
-            switch (_config.AuthType)
+            switch (_config.TokenSourceType)
             {
-                case AuthType.Sandbox:
-                    return await FetchFromTokenServer(SandboxUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = _config.SandboxId } });
+                case TokenSourceType.Sandbox:
+                    return await FetchFromTokenSource(SandboxUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = _config.SandboxId } });
 
-                case AuthType.Endpoint:
-                    return await FetchFromTokenServer(_config.EndpointUrl, _config.EndpointHeaders);
+                case TokenSourceType.Endpoint:
+                    return await FetchFromTokenSource(_config.EndpointUrl, _config.EndpointHeaders);
 
-                case AuthType.Literal:
+                case TokenSourceType.Literal:
                     return new ConnectionDetails
                     {
                         ServerUrl = _config.ServerUrl,
@@ -38,11 +38,11 @@ namespace LiveKit
                     };
 
                 default:
-                    throw new InvalidOperationException("Unknown auth type");
+                    throw new InvalidOperationException("Unknown token source type");
             }
         }
 
-        private async Task<ConnectionDetails> FetchFromTokenServer(string url, IEnumerable<StringPair> headers)
+        private async Task<ConnectionDetails> FetchFromTokenSource(string url, IEnumerable<StringPair> headers)
         {
             var requestBody = BuildRequest(_config);
             var jsonBody = JsonConvert.SerializeObject(requestBody);
@@ -69,7 +69,7 @@ namespace LiveKit
             return JsonConvert.DeserializeObject<ConnectionDetails>(jsonContent);
         }
 
-        private static TokenSourceRequest BuildRequest(TokenServerConfig config)
+        private static TokenSourceRequest BuildRequest(TokenSourceConfig config)
         {
             var request = new TokenSourceRequest
             {

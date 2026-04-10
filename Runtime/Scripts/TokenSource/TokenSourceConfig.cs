@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LiveKit
 {
-    public enum AuthType
+    public enum TokenSourceType
     {
         Literal,
         Sandbox,
@@ -18,10 +18,10 @@ namespace LiveKit
         public string value;
     }
 
-    [CreateAssetMenu(fileName = "TokenServerConfig", menuName = "LiveKit/Auth Config")]
-    public class TokenServerConfig : ScriptableObject
+    [CreateAssetMenu(fileName = "TokenSourceConfig", menuName = "LiveKit/TokenSourceConfig")]
+    public class TokenSourceConfig : ScriptableObject
     {
-        [SerializeField] private AuthType _authType;
+        [SerializeField] private TokenSourceType _tokenSourceType;
 
         // Literal fields
         [SerializeField] private string _serverUrl;
@@ -43,7 +43,7 @@ namespace LiveKit
         [SerializeField] private string _agentName;
         [SerializeField] private string _agentMetadata;
 
-        public AuthType AuthType => _authType;
+        public TokenSourceType TokenSourceType => _tokenSourceType;
 
         // Literal
         public string ServerUrl => _serverUrl;
@@ -65,11 +65,11 @@ namespace LiveKit
         public string AgentName => _agentName;
         public string AgentMetadata => _agentMetadata;
 
-        public bool IsValid => _authType switch
+        public bool IsValid => _tokenSourceType switch
         {
-            AuthType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
-            AuthType.Sandbox => !string.IsNullOrEmpty(SandboxId),
-            AuthType.Endpoint => !string.IsNullOrEmpty(EndpointUrl),
+            TokenSourceType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
+            TokenSourceType.Sandbox => !string.IsNullOrEmpty(SandboxId),
+            TokenSourceType.Endpoint => !string.IsNullOrEmpty(EndpointUrl),
             _ => false
         };
     }

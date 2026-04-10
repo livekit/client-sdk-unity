@@ -223,7 +223,7 @@ Use the samples of the package to see how to use the SDK.
 
 You need a token to join a LiveKit room as a participant. Read more about tokens here: https://docs.livekit.io/frontends/reference/tokens-grants/
 
-To help getting started with tokens, use `TokenSource.cs` with a `TokenServerConfig` ScriptableObject (see https://docs.livekit.io/frontends/build/authentication/#tokensource). Create a config asset via **Right Click > Create > LiveKit > Auth Config** and select one of three auth types:
+To help getting started with tokens, use `TokenSource.cs` with a `TokenSourceConfig` ScriptableObject (see https://docs.livekit.io/frontends/build/authentication/#tokensource). Create a config asset via **Right Click > Create > LiveKit > Token Source Config** and select one of three token source types:
 
 #### 1. Literal
 Use this to pass a pregenerated server URL and token. Generate tokens via the [LiveKit CLI](https://docs.livekit.io/frontends/build/authentication/custom/#manual-token-creation) or from your [LiveKit Cloud](https://cloud.livekit.io/) project's API key page.
@@ -236,7 +236,7 @@ For production. Point to your own token endpoint URL and add any required authen
 
 #### Usage
 
-Add a `TokenSource` component to a GameObject, assign your `TokenServerConfig` asset, then fetch connection details before connecting:
+Add a `TokenSource` component to a GameObject, assign your `TokenSourceConfig` asset, then fetch connection details before connecting:
 
 ```cs
 var connectionDetailsTask = _tokenSource.FetchConnectionDetails();
