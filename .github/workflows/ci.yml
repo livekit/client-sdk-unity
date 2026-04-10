@@ -58,10 +58,11 @@ jobs:
           packageMode: true
           useHostNetwork: true
       - name: Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test results (${{ matrix.unityVersion }})
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+          path: ${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}
   # For platforms with build support on Linux
   build-linux:
    env:
