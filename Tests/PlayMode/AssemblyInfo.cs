@@ -1,4 +1,2 @@
-using NUnit.Framework;
-
-// Default timeout for all PlayMode tests: 30 seconds
-[assembly: Timeout(30000)]
+// NUnit's [Timeout] attribute does not work with [UnityTest] coroutines.
+// Use .WithTimeout() extension from LiveKit.PlayModeTests.Utils instead.

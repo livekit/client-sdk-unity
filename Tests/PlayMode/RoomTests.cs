@@ -3,6 +3,7 @@ using NUnit.Framework;
 using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
+using static LiveKit.PlayModeTests.Utils.TimeoutExtensions;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace LiveKit.PlayModeTests
             LogAssert.Expect(LogType.Error, new Regex(".*LiveKit.*"));
 
             using var context = new TestRoomContext(options);
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError == null)
                 Assert.Fail("Expected connection to fail");
         }
@@ -29,7 +30,7 @@ namespace LiveKit.PlayModeTests
         public IEnumerator RoomName_MatchesProvided()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             Assert.AreEqual(context.RoomName, context.Rooms[0].Name);
@@ -39,7 +40,7 @@ namespace LiveKit.PlayModeTests
         public IEnumerator RoomSid_StartsWithRM()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             StringAssert.StartsWith("RM_", context.Rooms[0].Sid);
@@ -49,7 +50,7 @@ namespace LiveKit.PlayModeTests
         public IEnumerator ConnectionState_IsConnected()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
@@ -65,7 +66,7 @@ namespace LiveKit.PlayModeTests
             second.Identity = "second-participant";
 
             using var context = new TestRoomContext(new[] { first, second });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
@@ -97,7 +98,7 @@ namespace LiveKit.PlayModeTests
             second.Identity = "second-participant";
 
             using var context = new TestRoomContext(new[] { first, second });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
@@ -124,7 +125,7 @@ namespace LiveKit.PlayModeTests
             second.Identity = "second-participant";
 
             using var context = new TestRoomContext(new[] { first, second });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
 
             var room = context.Rooms[0];
@@ -150,7 +151,7 @@ namespace LiveKit.PlayModeTests
         public IEnumerator Disconnect_TriggersEvent()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             if (context.ConnectionError != null)
                 Assert.Fail(context.ConnectionError);
 
