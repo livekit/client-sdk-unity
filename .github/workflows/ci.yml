@@ -69,6 +69,7 @@ jobs:
           packageMode: true
           useHostNetwork: true
       - name: Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test results (${{ matrix.unityVersion }})
