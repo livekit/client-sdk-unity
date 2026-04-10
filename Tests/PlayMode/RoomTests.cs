@@ -22,8 +22,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(options);
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError == null)
-                Assert.Fail("Expected connection to fail");
+            Assert.IsNotNull(context.ConnectionError, "Expected connection to fail");
         }
 
         [UnityTest, Category("E2E"), Ignore("Known issue")]
@@ -31,7 +30,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             Assert.AreEqual(context.RoomName, context.Rooms[0].Name);
         }
@@ -41,7 +40,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             StringAssert.StartsWith("RM_", context.Rooms[0].Sid);
         }
@@ -51,7 +50,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var room = context.Rooms[0];
             Assert.IsTrue(room.IsConnected);
@@ -67,7 +66,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { first, second });
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var room = context.Rooms[0];
             var expectation = new Expectation(timeoutSeconds: 10f);
@@ -99,7 +98,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { first, second });
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var room = context.Rooms[0];
             var expectation = new Expectation(timeoutSeconds: 10f);
@@ -126,7 +125,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(new[] { first, second });
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var room = context.Rooms[0];
             var expectation = new Expectation(timeoutSeconds: 10f);
@@ -152,8 +151,7 @@ namespace LiveKit.PlayModeTests
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null)
-                Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var room = context.Rooms[0];
             var expectation = new Expectation();

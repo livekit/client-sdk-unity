@@ -16,7 +16,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(options);
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var localParticipant = context.Rooms[0].LocalParticipant;
             StringAssert.StartsWith("PA_", localParticipant.Sid);
@@ -30,7 +30,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(options);
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var localParticipant = context.Rooms[0].LocalParticipant;
             Assert.AreEqual(options.Identity, localParticipant.Identity);
@@ -44,7 +44,7 @@ namespace LiveKit.PlayModeTests
 
             using var context = new TestRoomContext(options);
             yield return context.ConnectAll().WithTimeout();
-            if (context.ConnectionError != null) Assert.Fail(context.ConnectionError);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var localParticipant = context.Rooms[0].LocalParticipant;
             Assert.AreEqual(options.DisplayName, localParticipant.Name);
