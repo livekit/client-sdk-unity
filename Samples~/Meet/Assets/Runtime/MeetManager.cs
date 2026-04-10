@@ -171,7 +171,7 @@ public class MeetManager : MonoBehaviour
         _room.TrackUnsubscribed += OnTrackUnsubscribed;
         _room.DataReceived += OnDataReceived;
 
-        var connect = _room.Connect(details.server_url, details.participant_token, new RoomOptions());
+        var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
         yield return connect;
 
         if (connect.IsError)

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace LiveKit
@@ -31,8 +33,8 @@ namespace LiveKit
                 case AuthType.Literal:
                     return new ConnectionDetails
                     {
-                        server_url = _config.ServerUrl,
-                        participant_token = _config.Token
+                        ServerUrl = _config.ServerUrl,
+                        ParticipantToken = _config.Token
                     };
 
                 default:
@@ -42,7 +44,8 @@ namespace LiveKit
 
         private async Task<ConnectionDetails> FetchFromTokenServer(string url, IEnumerable<StringPair> headers)
         {
-            var jsonBody = BuildRequestJson(_config);
+            var requestBody = BuildRequest(_config);
+            var jsonBody = JsonConvert.SerializeObject(requestBody);
 
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             if (headers != null)
@@ -63,52 +66,93 @@ namespace LiveKit
                 throw new InvalidOperationException($"Token server error: {response.StatusCode}, response: {await response.Content.ReadAsStringAsync()}");
 
             var jsonContent = await response.Content.ReadAsStringAsync();
-            return JsonUtility.FromJson<ConnectionDetails>(jsonContent);
+            return JsonConvert.DeserializeObject<ConnectionDetails>(jsonContent);
         }
 
-        private static string BuildRequestJson(TokenServerConfig config)
+        private static TokenSourceRequest BuildRequest(TokenServerConfig config)
         {
-            var parts = new List<string>();
-            AddJsonField(parts, "room_name", config.RoomName);
-            AddJsonField(parts, "participant_name", config.ParticipantName);
-            AddJsonField(parts, "participant_identity", config.ParticipantIdentity);
-            AddJsonField(parts, "participant_metadata", config.ParticipantMetadata);
+            var request = new TokenSourceRequest
+            {
+                RoomName = NullIfEmpty(config.RoomName),
+                ParticipantName = NullIfEmpty(config.ParticipantName),
+                ParticipantIdentity = NullIfEmpty(config.ParticipantIdentity),
+                ParticipantMetadata = NullIfEmpty(config.ParticipantMetadata),
+            };
 
             if (config.ParticipantAttributes != null && config.ParticipantAttributes.Count > 0)
             {
-                var attrParts = new List<string>();
-                foreach (var attr in config.ParticipantAttributes)
-                {
-                    if (!string.IsNullOrEmpty(attr.key))
-                        attrParts.Add($"\"{attr.key}\":\"{attr.value}\"");
-                }
-                if (attrParts.Count > 0)
-                    parts.Add("\"participant_attributes\":{" + string.Join(",", attrParts) + "}");
+                request.ParticipantAttributes = config.ParticipantAttributes
+                    .Where(a => !string.IsNullOrEmpty(a.key))
+                    .ToDictionary(a => a.key, a => a.value);
+                if (request.ParticipantAttributes.Count == 0)
+                    request.ParticipantAttributes = null;
             }
 
             if (!string.IsNullOrEmpty(config.AgentName) || !string.IsNullOrEmpty(config.AgentMetadata))
             {
-                var agentParts = new List<string>();
-                AddJsonField(agentParts, "agent_name", config.AgentName);
-                AddJsonField(agentParts, "metadata", config.AgentMetadata);
-                var agentDispatch = "{" + string.Join(",", agentParts) + "}";
-                parts.Add($"\"room_config\":{{\"agents\":[{agentDispatch}]}}");
+                request.RoomConfig = new RoomConfig
+                {
+                    Agents = new List<AgentDispatch>
+                    {
+                        new AgentDispatch
+                        {
+                            AgentName = NullIfEmpty(config.AgentName),
+                            Metadata = NullIfEmpty(config.AgentMetadata)
+                        }
+                    }
+                };
             }
 
-            return "{" + string.Join(",", parts) + "}";
+            return request;
         }
 
-        private static void AddJsonField(List<string> parts, string key, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-                parts.Add($"\"{key}\":\"{value}\"");
-        }
+        private static string NullIfEmpty(string value) =>
+            string.IsNullOrEmpty(value) ? null : value;
+    }
+
+    class TokenSourceRequest
+    {
+        [JsonProperty("room_name", NullValueHandling = NullValueHandling.Ignore)]
+        public string RoomName;
+
+        [JsonProperty("participant_name", NullValueHandling = NullValueHandling.Ignore)]
+        public string ParticipantName;
+
+        [JsonProperty("participant_identity", NullValueHandling = NullValueHandling.Ignore)]
+        public string ParticipantIdentity;
+
+        [JsonProperty("participant_metadata", NullValueHandling = NullValueHandling.Ignore)]
+        public string ParticipantMetadata;
+
+        [JsonProperty("participant_attributes", NullValueHandling = NullValueHandling.Ignore)]
+        public Dictionary<string, string> ParticipantAttributes;
+
+        [JsonProperty("room_config", NullValueHandling = NullValueHandling.Ignore)]
+        public RoomConfig RoomConfig;
+    }
+
+    class RoomConfig
+    {
+        [JsonProperty("agents", NullValueHandling = NullValueHandling.Ignore)]
+        public List<AgentDispatch> Agents;
+    }
+
+    class AgentDispatch
+    {
+        [JsonProperty("agent_name", NullValueHandling = NullValueHandling.Ignore)]
+        public string AgentName;
+
+        [JsonProperty("metadata", NullValueHandling = NullValueHandling.Ignore)]
+        public string Metadata;
     }
 
     [Serializable]
     public struct ConnectionDetails
     {
-        public string server_url;
-        public string participant_token;
+        [JsonProperty("server_url")]
+        public string ServerUrl;
+
+        [JsonProperty("participant_token")]
+        public string ParticipantToken;
     }
 }
