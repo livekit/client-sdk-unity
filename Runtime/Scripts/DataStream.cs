@@ -140,10 +140,11 @@ namespace LiveKit
     /// <summary>
     /// Reader for an incoming text data stream.
     /// </summary>
-    public sealed class TextStreamReader
+    public sealed class TextStreamReader : IDisposable
     {
         private readonly FfiHandle _handle;
         private readonly TextStreamInfo _info;
+        private bool _disposed;
 
         internal TextStreamReader(OwnedTextStreamReader info)
         {
@@ -165,6 +166,7 @@ namespace LiveKit
         /// </returns>
         public ReadAllInstruction ReadAll()
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadAllRequest>();
             var readAllReq = request.request;
             readAllReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -172,6 +174,13 @@ namespace LiveKit
             var instruction = new ReadAllInstruction(request.RequestAsyncId);
             using var response = request.Send();
             return instruction;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _handle?.Dispose();
         }
 
         /// <summary>
@@ -239,6 +248,7 @@ namespace LiveKit
         /// </returns>
         public ReadIncrementalInstruction ReadIncremental()
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
             var readIncReq = request.request;
             readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -311,10 +321,11 @@ namespace LiveKit
     /// <summary>
     /// Reader for an incoming byte data stream.
     /// </summary>
-    public sealed class ByteStreamReader
+    public sealed class ByteStreamReader : IDisposable
     {
         private FfiHandle _handle;
         private readonly ByteStreamInfo _info;
+        private bool _disposed;
 
         internal ByteStreamReader(OwnedByteStreamReader info)
         {
@@ -336,6 +347,7 @@ namespace LiveKit
         /// </returns>
         public ReadAllInstruction ReadAll()
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadAllRequest>();
             var readAllReq = request.request;
             readAllReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -353,6 +365,7 @@ namespace LiveKit
         /// </returns>
         public ReadIncrementalInstruction ReadIncremental()
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadIncrementalRequest>();
             var readIncReq = request.request;
             readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -376,6 +389,7 @@ namespace LiveKit
         /// </returns>
         public WriteToFileInstruction WriteToFile(string directory = null, string nameOverride = null)
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderWriteToFileRequest>();
             var writeToFileReq = request.request;
             writeToFileReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -385,6 +399,13 @@ namespace LiveKit
             var instruction = new WriteToFileInstruction(request.RequestAsyncId);
             using var response = request.Send();
             return instruction;
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _handle?.Dispose();
         }
 
         /// <summary>
@@ -634,10 +655,11 @@ namespace LiveKit
     /// <summary>
     /// Writer for an outgoing text data stream.
     /// </summary>
-    public class TextStreamWriter
+    public class TextStreamWriter : IDisposable
     {
         private FfiHandle _handle;
         private readonly TextStreamInfo _info;
+        private bool _disposed;
 
         internal TextStreamWriter(OwnedTextStreamWriter info)
         {
@@ -657,6 +679,7 @@ namespace LiveKit
         /// </returns>
         public WriteInstruction Write(string text)
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterWriteRequest>();
             var writeReq = request.request;
             writeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -677,6 +700,7 @@ namespace LiveKit
         /// </returns>
         public CloseInstruction Close(string reason = null)
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterCloseRequest>();
             var closeReq = request.request;
             closeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -764,15 +788,23 @@ namespace LiveKit
 
             public StreamError Error { get; private set; }
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _handle?.Dispose();
+        }
     }
 
     /// <summary>
     /// Writer for an outgoing byte data stream.
     /// </summary>
-    public class ByteStreamWriter
+    public class ByteStreamWriter : IDisposable
     {
         private FfiHandle _handle;
         private readonly ByteStreamInfo _info;
+        private bool _disposed;
 
         internal ByteStreamWriter(OwnedByteStreamWriter info)
         {
@@ -791,6 +823,7 @@ namespace LiveKit
         /// </returns>
         public WriteInstruction Write(byte[] bytes)
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterWriteRequest>();
             var writeReq = request.request;
             writeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -810,6 +843,7 @@ namespace LiveKit
         /// </returns>
         public CloseInstruction Close(string reason = null)
         {
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterCloseRequest>();
             var closeReq = request.request;
             closeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -896,6 +930,13 @@ namespace LiveKit
             }
 
             public StreamError Error { get; private set; }
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            _handle?.Dispose();
         }
     }
 
