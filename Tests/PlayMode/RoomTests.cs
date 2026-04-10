@@ -35,7 +35,7 @@ namespace LiveKit.PlayModeTests
             Assert.AreEqual(context.RoomName, context.Rooms[0].Name);
         }
 
-        [UnityTest, Category("E2E"), Ignore("Known issue")]
+        [UnityTest, Category("E2E")]
         public IEnumerator RoomSid_StartsWithRM()
         {
             using var context = new TestRoomContext();
