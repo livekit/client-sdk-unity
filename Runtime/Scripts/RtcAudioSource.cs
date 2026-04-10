@@ -76,11 +76,11 @@ namespace LiveKit
         private readonly Dictionary<ulong, PendingAudioFrame> _pendingFrameData = new();
         private readonly object _pendingFrameDataLock = new object();
 
-        private bool _muted = false;
+        private volatile bool _muted = false;
         public override bool Muted => _muted;
 
         private bool _started = false;
-        private bool _disposed = false;
+        private volatile bool _disposed = false;
         private int _audioReadCount = 0;
 
         protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
