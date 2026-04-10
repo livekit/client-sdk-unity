@@ -594,13 +594,11 @@ namespace LiveKit
 
     public sealed class ConnectInstruction : YieldInstruction
     {
-        private ulong _asyncId;
         private Room _room;
         private RoomOptions _roomOptions;
 
         internal ConnectInstruction(ulong asyncId, Room room, RoomOptions options)
         {
-            _asyncId = asyncId;
             _room = room;
             _roomOptions = options;
             // Register before the request is sent so a fast native completion cannot race ahead
@@ -611,9 +609,6 @@ namespace LiveKit
 
         void OnConnect(ConnectCallback e)
         {
-            if (_asyncId != e.AsyncId)
-                return;
-
             bool success = string.IsNullOrEmpty(e.Error);
             if (success)
             {

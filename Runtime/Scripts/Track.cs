@@ -171,13 +171,11 @@ namespace LiveKit
     
     public sealed class GetSessionStatsInstruction : YieldInstruction
     {
-        private readonly ulong _asyncId;
         public RtcStats[] Stats;
         public string Error;
 
         internal GetSessionStatsInstruction(ulong asyncId)
         {
-            _asyncId = asyncId;
             // This waiter is a one-shot response; cancellation and completion race through the
             // same pending entry, so only one path can finish the instruction.
             FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.GetStats, OnGetSessionStatsReceived, OnCanceled);
@@ -185,9 +183,6 @@ namespace LiveKit
 
         private void OnGetSessionStatsReceived(GetStatsCallback e)
         {
-            if (e.AsyncId != _asyncId)
-                return;
-
             Error = e.Error;
             IsError = !string.IsNullOrEmpty(Error);
             IsDone = true;

@@ -182,12 +182,10 @@ namespace LiveKit
         /// </remarks>
         public sealed class ReadAllInstruction : YieldInstruction
         {
-            private ulong _asyncId;
             private string _text;
 
             internal ReadAllInstruction(ulong asyncId)
             {
-                _asyncId = asyncId;
                 // ReadAll is modeled as a single async completion rather than a stream of
                 // incremental events, so it uses the request_async_id pending map. Rust returns
                 // the same value through callback.AsyncId.
@@ -196,9 +194,6 @@ namespace LiveKit
 
             internal void OnReadAll(TextStreamReaderReadAllCallback e)
             {
-                if (e.AsyncId != _asyncId)
-                    return;
-
                 switch (e.ResultCase)
                 {
                     case TextStreamReaderReadAllCallback.ResultOneofCase.Error:
@@ -395,20 +390,15 @@ namespace LiveKit
         /// </remarks>
         public sealed class ReadAllInstruction : YieldInstruction
         {
-            private ulong _asyncId;
             private byte[] _bytes;
 
             internal ReadAllInstruction(ulong asyncId)
             {
-                _asyncId = asyncId;
                 FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamReaderReadAll, OnReadAll, OnCanceled);
             }
 
             internal void OnReadAll(ByteStreamReaderReadAllCallback e)
             {
-                if (e.AsyncId != _asyncId)
-                    return;
-
                 switch (e.ResultCase)
                 {
                     case ByteStreamReaderReadAllCallback.ResultOneofCase.Error:
@@ -509,20 +499,15 @@ namespace LiveKit
         /// </remarks>
         public sealed class WriteToFileInstruction : YieldInstruction
         {
-            private ulong _asyncId;
             private string _filePath;
 
             internal WriteToFileInstruction(ulong asyncId)
             {
-                _asyncId = asyncId;
                 FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamReaderWriteToFile, OnWriteToFile, OnCanceled);
             }
 
             internal void OnWriteToFile(ByteStreamReaderWriteToFileCallback e)
             {
-                if (e.AsyncId != _asyncId)
-                    return;
-
                 switch (e.ResultCase)
                 {
                     case ByteStreamReaderWriteToFileCallback.ResultOneofCase.Error:
