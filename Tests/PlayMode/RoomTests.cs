@@ -3,6 +3,8 @@ using NUnit.Framework;
 using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace LiveKit.PlayModeTests
 {
@@ -13,6 +15,9 @@ namespace LiveKit.PlayModeTests
         {
             var options = TestRoomContext.ConnectionOptions.Default;
             options.ServerUrl = "invalid-url";
+
+            // Tell Unity to expect the error log so it doesn't fail the test
+            LogAssert.Expect(LogType.Error, new Regex(".*LiveKit.*"));
 
             using var context = new TestRoomContext(options);
             yield return context.ConnectAll();
