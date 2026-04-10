@@ -95,3 +95,6 @@ downloads~
 **/LiveKitSdkVersionInfo.txt.meta
 
 .claude
+
+**/MyTokenSourceConfigs
+**/MyTokenSourceConfigs.meta

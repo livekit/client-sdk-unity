@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace LiveKit.PlayModeTests.Utils
+namespace LiveKit
 {
-    public static class AccessToken
+    public static class LiveKitToken
     {
         [Serializable]
         public struct Claims

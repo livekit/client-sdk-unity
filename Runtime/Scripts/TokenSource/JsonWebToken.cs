@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-namespace LiveKit.PlayModeTests.Utils
+namespace LiveKit
 {
     public static class JsonWebToken
     {
