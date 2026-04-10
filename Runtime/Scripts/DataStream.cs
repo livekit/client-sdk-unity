@@ -166,7 +166,7 @@ namespace LiveKit
         /// </returns>
         public ReadAllInstruction ReadAll()
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadAllRequest>();
             var readAllReq = request.request;
             readAllReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -248,7 +248,7 @@ namespace LiveKit
         /// </returns>
         public ReadIncrementalInstruction ReadIncremental()
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
             var readIncReq = request.request;
             readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -347,7 +347,7 @@ namespace LiveKit
         /// </returns>
         public ReadAllInstruction ReadAll()
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadAllRequest>();
             var readAllReq = request.request;
             readAllReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -365,7 +365,7 @@ namespace LiveKit
         /// </returns>
         public ReadIncrementalInstruction ReadIncremental()
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderReadIncrementalRequest>();
             var readIncReq = request.request;
             readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -389,7 +389,7 @@ namespace LiveKit
         /// </returns>
         public WriteToFileInstruction WriteToFile(string directory = null, string nameOverride = null)
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderWriteToFileRequest>();
             var writeToFileReq = request.request;
             writeToFileReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
@@ -679,7 +679,7 @@ namespace LiveKit
         /// </returns>
         public WriteInstruction Write(string text)
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterWriteRequest>();
             var writeReq = request.request;
             writeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -700,7 +700,7 @@ namespace LiveKit
         /// </returns>
         public CloseInstruction Close(string reason = null)
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterCloseRequest>();
             var closeReq = request.request;
             closeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -823,7 +823,7 @@ namespace LiveKit
         /// </returns>
         public WriteInstruction Write(byte[] bytes)
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterWriteRequest>();
             var writeReq = request.request;
             writeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
@@ -843,7 +843,7 @@ namespace LiveKit
         /// </returns>
         public CloseInstruction Close(string reason = null)
         {
-            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterCloseRequest>();
             var closeReq = request.request;
             closeReq.WriterHandle = (ulong)_handle.DangerousGetHandle();
