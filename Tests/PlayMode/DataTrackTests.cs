@@ -2,6 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using LiveKit.PlayModeTests.Utils;
+using static LiveKit.PlayModeTests.Utils.TimeoutExtensions;
 
 namespace LiveKit.PlayModeTests
 {
@@ -13,12 +14,12 @@ namespace LiveKit.PlayModeTests
         public IEnumerator PublishDataTrack_Succeeds()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
 
             Assert.IsFalse(publishInstruction.IsError);
             Assert.IsNotNull(publishInstruction.Track);
@@ -28,12 +29,12 @@ namespace LiveKit.PlayModeTests
         public IEnumerator PublishDataTrack_TrackInfoMatchesOptions()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
 
             Assert.IsFalse(publishInstruction.IsError);
             var track = publishInstruction.Track;
@@ -44,12 +45,12 @@ namespace LiveKit.PlayModeTests
         public IEnumerator PublishDataTrack_IsPublishedReturnsTrue()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
 
             Assert.IsFalse(publishInstruction.IsError);
             Assert.IsTrue(publishInstruction.Track.IsPublished());
@@ -59,12 +60,12 @@ namespace LiveKit.PlayModeTests
         public IEnumerator TryPush_Succeeds()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
 
             Assert.IsFalse(publishInstruction.IsError);
             var track = publishInstruction.Track;
@@ -79,12 +80,12 @@ namespace LiveKit.PlayModeTests
         public IEnumerator Unpublish_IsPublishedReturnsFalse()
         {
             using var context = new TestRoomContext();
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var room = context.Rooms[0];
             var publishInstruction = room.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
 
             Assert.IsFalse(publishInstruction.IsError);
             var track = publishInstruction.Track;
@@ -103,7 +104,7 @@ namespace LiveKit.PlayModeTests
             subscriber.Identity = "subscriber";
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
@@ -118,7 +119,7 @@ namespace LiveKit.PlayModeTests
 
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
             Assert.IsFalse(publishInstruction.IsError);
 
             yield return publishedExpectation.Wait();
@@ -151,7 +152,7 @@ namespace LiveKit.PlayModeTests
             subscriber.Identity = "subscriber";
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
@@ -166,7 +167,7 @@ namespace LiveKit.PlayModeTests
 
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
             Assert.IsFalse(publishInstruction.IsError);
 
             yield return trackExpectation.Wait();
@@ -185,7 +186,7 @@ namespace LiveKit.PlayModeTests
             subscriber.Identity = "subscriber";
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
@@ -200,7 +201,7 @@ namespace LiveKit.PlayModeTests
 
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
             Assert.IsFalse(publishInstruction.IsError);
 
             yield return trackExpectation.Wait();
@@ -212,7 +213,7 @@ namespace LiveKit.PlayModeTests
             publishInstruction.Track.TryPush(new DataTrackFrame(sentPayload));
 
             var frameInstruction = stream.ReadFrame();
-            yield return frameInstruction;
+            yield return frameInstruction.WithTimeout();
 
             Assert.IsNull(frameInstruction.Error);
             Assert.IsTrue(frameInstruction.IsCurrentReadDone, "Should have received a frame");
@@ -228,7 +229,7 @@ namespace LiveKit.PlayModeTests
             subscriber.Identity = "subscriber";
 
             using var context = new TestRoomContext(new[] { publisher, subscriber });
-            yield return context.ConnectAll();
+            yield return context.ConnectAll().WithTimeout();
             Assert.IsNull(context.ConnectionError);
 
             var subscriberRoom = context.Rooms[1];
@@ -243,7 +244,7 @@ namespace LiveKit.PlayModeTests
 
             var publisherRoom = context.Rooms[0];
             var publishInstruction = publisherRoom.LocalParticipant.PublishDataTrack(TestTrackName);
-            yield return publishInstruction;
+            yield return publishInstruction.WithTimeout();
             Assert.IsFalse(publishInstruction.IsError);
 
             yield return trackExpectation.Wait();
@@ -255,7 +256,7 @@ namespace LiveKit.PlayModeTests
             publishInstruction.Track.TryPush(frame);
 
             var frameInstruction = stream.ReadFrame();
-            yield return frameInstruction;
+            yield return frameInstruction.WithTimeout();
 
             Assert.IsNull(frameInstruction.Error);
             Assert.IsTrue(frameInstruction.IsCurrentReadDone, "Should have received a frame");
