@@ -629,108 +629,28 @@ namespace LiveKit
         }
     }
 
-    public sealed class SetLocalMetadataInstruction : YieldInstruction
+    public sealed class SetLocalMetadataInstruction : FfiInstruction<SetLocalMetadataCallback>
     {
-        private ulong _asyncId;
-
         internal SetLocalMetadataInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalMetadata, OnSetLocalMetadata, OnCanceled);
-        }
-
-        internal void OnSetLocalMetadata(SetLocalMetadataCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
+            : base(asyncId, static e => e.SetLocalMetadata, static e => e.Error) { }
     }
 
-    public sealed class SetLocalNameInstruction : YieldInstruction
+    public sealed class SetLocalNameInstruction : FfiInstruction<SetLocalNameCallback>
     {
-        private ulong _asyncId;
-
         internal SetLocalNameInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalName, OnSetLocalName, OnCanceled);
-        }
-
-        internal void OnSetLocalName(SetLocalNameCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
+            : base(asyncId, static e => e.SetLocalName, static e => e.Error) { }
     }
 
-    public sealed class SetLocalAttributesInstruction : YieldInstruction
+    public sealed class SetLocalAttributesInstruction : FfiInstruction<SetLocalAttributesCallback>
     {
-        private ulong _asyncId;
-
         internal SetLocalAttributesInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.SetLocalAttributes, OnSetLocalAttributes, OnCanceled);
-        }
-
-        internal void OnSetLocalAttributes(SetLocalAttributesCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
+            : base(asyncId, static e => e.SetLocalAttributes, static e => e.Error) { }
     }
 
-    public sealed class UnpublishTrackInstruction : YieldInstruction
+    public sealed class UnpublishTrackInstruction : FfiInstruction<UnpublishTrackCallback>
     {
-        private ulong _asyncId;
-
         internal UnpublishTrackInstruction(ulong asyncId)
-        {
-            _asyncId = asyncId;
-            FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.UnpublishTrack, OnUnpublish, OnCanceled);
-        }
-
-        internal void OnUnpublish(UnpublishTrackCallback e)
-        {
-            if (e.AsyncId != _asyncId)
-                return;
-
-            IsError = !string.IsNullOrEmpty(e.Error);
-            IsDone = true;
-        }
-
-        void OnCanceled()
-        {
-            IsError = true;
-            IsDone = true;
-        }
+            : base(asyncId, static e => e.UnpublishTrack, static e => e.Error) { }
     }
 
     /// <summary>
