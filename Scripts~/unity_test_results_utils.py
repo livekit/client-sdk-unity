@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert NUnit3 XML test results to a self-contained HTML report."""
+"""Convert NUnit3 XML test results to HTML or GitHub-flavored Markdown."""
 
 import argparse
 import xml.etree.ElementTree as ET
@@ -167,10 +167,52 @@ def render_html(summaries, all_cases):
 </html>"""
 
 
+def render_markdown(summaries, all_cases):
+    total = sum(s["total"] for s in summaries)
+    passed = sum(s["passed"] for s in summaries)
+    failed = sum(s["failed"] for s in summaries)
+    skipped = sum(s["skipped"] for s in summaries)
+    duration = sum(s["duration"] for s in summaries)
+
+    if failed > 0:
+        status = "\U0001f534 FAILED"
+    elif total == passed + skipped:
+        status = "\U0001f7e2 PASSED"
+    else:
+        status = "\u2753 UNKNOWN"
+
+    lines = [
+        f"### {status}",
+        f"**{total}** tests \u2014 **{passed}** passed, **{failed}** failed, **{skipped}** skipped \u2014 {duration:.1f}s",
+        "",
+        "| Test | Fixture | Result | Duration |",
+        "|------|---------|--------|----------|",
+    ]
+
+    icons = {"Failed": "\u274c", "Skipped": "\u26a0\ufe0f", "Passed": "\u2705"}
+
+    for case in sorted(all_cases, key=sort_key):
+        result = case["result"]
+        icon = icons.get(result, "")
+        fixture = case["classname"].split(".")[-1] if case["classname"] else ""
+        dur = f"{case['duration']:.3f}s"
+        lines.append(f"| {case['name']} | {fixture} | {icon} {result} | {dur} |")
+
+        if result == "Failed" and (case["message"] or case["stack_trace"]):
+            detail = f"<details><summary>Details</summary><code>{escape(case['message'])}</code>"
+            if case["stack_trace"]:
+                detail += f"<br><pre>{escape(case['stack_trace'])}</pre>"
+            detail += "</details>"
+            lines.append(f"| {detail} | | | |")
+
+    return "\n".join(lines)
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Convert NUnit3 XML results to HTML")
+    parser = argparse.ArgumentParser(description="Convert NUnit3 XML test results to HTML or Markdown")
     parser.add_argument("files", nargs="+", type=Path, help="NUnit3 XML result files")
-    parser.add_argument("-o", "--output", type=Path, default=Path("test-results.html"), help="Output HTML file (default: test-results.html)")
+    parser.add_argument("-o", "--output", type=Path, default=None, help="Output file (default: test-results.html or stdout for markdown)")
+    parser.add_argument("-f", "--format", choices=["html", "markdown"], default="html", help="Output format (default: html)")
     args = parser.parse_args()
 
     summaries = []
@@ -187,9 +229,18 @@ def main():
         print("No valid XML files found")
         return
 
-    html = render_html(summaries, all_cases)
-    args.output.write_text(html)
-    print(f"Report written to {args.output}")
+    if args.format == "markdown":
+        output = render_markdown(summaries, all_cases)
+        if args.output:
+            args.output.write_text(output)
+            print(f"Report written to {args.output}")
+        else:
+            print(output)
+    else:
+        output = render_html(summaries, all_cases)
+        out_path = args.output or Path("test-results.html")
+        out_path.write_text(output)
+        print(f"Report written to {out_path}")
 
 
 if __name__ == "__main__":

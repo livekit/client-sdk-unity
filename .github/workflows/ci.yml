@@ -61,9 +61,16 @@ jobs:
         if: always()
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
-          python3 root/Scripts~/test_results_to_html.py \
+          python3 root/Scripts~/unity_test_results_utils.py \
             "$ARTIFACTS"/*.xml \
             -o test-results.html
+      - name: Test Summary
+        if: always()
+        run: |
+          ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
+          python3 root/Scripts~/unity_test_results_utils.py \
+            "$ARTIFACTS"/*.xml \
+            -f markdown >> $GITHUB_STEP_SUMMARY
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -72,11 +79,6 @@ jobs:
           path: |
             ${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}
             test-results.html
-      - name: Job Summary
-        if: always()
-        run: |
-          echo "### Test Results (${{ matrix.unityVersion }})" >> $GITHUB_STEP_SUMMARY
-          echo "[Download HTML Report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)" >> $GITHUB_STEP_SUMMARY
   # For platforms with build support on Linux
   build-linux:
    env:
