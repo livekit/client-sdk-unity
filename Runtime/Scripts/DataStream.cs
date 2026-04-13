@@ -717,37 +717,10 @@ namespace LiveKit
         /// <remarks>
         /// Check if the operation was successful by accessing <see cref="Error"/>.
         /// </remarks>
-        public sealed class WriteInstruction : YieldInstruction
+        public sealed class WriteInstruction : FfiStreamInstruction<TextStreamWriterWriteCallback>
         {
-            private ulong _asyncId;
-
             internal WriteInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterWrite, OnWrite, OnCanceled);
-            }
-
-            internal void OnWrite(TextStreamWriterWriteCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                if (e.Error != null)
-                {
-                    Error = new StreamError(e.Error);
-                    IsError = true;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
-
-            public StreamError Error { get; private set; }
+                : base(asyncId, static e => e.TextStreamWriterWrite, static e => e.Error) { }
         }
 
         /// <summary>
@@ -756,37 +729,10 @@ namespace LiveKit
         /// <remarks>
         /// Check if the operation was successful by accessing <see cref="Error"/>.
         /// </remarks>
-        public sealed class CloseInstruction : YieldInstruction
+        public sealed class CloseInstruction : FfiStreamInstruction<TextStreamWriterCloseCallback>
         {
-            private ulong _asyncId;
-
             internal CloseInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamWriterClose, OnClose, OnCanceled);
-            }
-
-            internal void OnClose(TextStreamWriterCloseCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                if (e.Error != null)
-                {
-                    Error = new StreamError(e.Error);
-                    IsError = true;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
-
-            public StreamError Error { get; private set; }
+                : base(asyncId, static e => e.TextStreamWriterClose, static e => e.Error) { }
         }
 
         public void Dispose()
@@ -860,37 +806,10 @@ namespace LiveKit
         /// <remarks>
         /// Check if the operation was successful by accessing <see cref="Error"/>.
         /// </remarks>
-        public sealed class WriteInstruction : YieldInstruction
+        public sealed class WriteInstruction : FfiStreamInstruction<ByteStreamWriterWriteCallback>
         {
-            private ulong _asyncId;
-
             internal WriteInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterWrite, OnWrite, OnCanceled);
-            }
-
-            internal void OnWrite(ByteStreamWriterWriteCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                if (e.Error != null)
-                {
-                    Error = new StreamError(e.Error);
-                    IsError = true;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
-
-            public StreamError Error { get; private set; }
+                : base(asyncId, static e => e.ByteStreamWriterWrite, static e => e.Error) { }
         }
 
         /// <summary>
@@ -899,37 +818,10 @@ namespace LiveKit
         /// <remarks>
         /// Check if the operation was successful by accessing <see cref="Error"/>.
         /// </remarks>
-        public sealed class CloseInstruction : YieldInstruction
+        public sealed class CloseInstruction : FfiStreamInstruction<ByteStreamWriterCloseCallback>
         {
-            private ulong _asyncId;
-
             internal CloseInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamWriterClose, OnClose, OnCanceled);
-            }
-
-            internal void OnClose(ByteStreamWriterCloseCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                if (e.Error != null)
-                {
-                    Error = new StreamError(e.Error);
-                    IsError = true;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
-
-            public StreamError Error { get; private set; }
+                : base(asyncId, static e => e.ByteStreamWriterClose, static e => e.Error) { }
         }
 
         public void Dispose()
