@@ -57,12 +57,24 @@ jobs:
           checkName: Test Results (${{ matrix.unityVersion }})
           packageMode: true
           useHostNetwork: true
+      - name: Generate HTML Test Report
+        if: always()
+        run: |
+          ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
+          python3 root/Scripts~/test_results_to_html.py \
+            "$ARTIFACTS"/*.xml \
+            -o "$ARTIFACTS/test-results.html"
       - name: Upload Test Results
         if: always()
+        id: uploadResults
         uses: actions/upload-artifact@v4
         with:
           name: Test results (${{ matrix.unityVersion }})
           path: ${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}
+      - name: Print Test Results URL
+        if: always()
+        run: |
+          echo "::notice::Test Results: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.uploadResults.outputs.artifact-id }}"
   # For platforms with build support on Linux
   build-linux:
    env:
