@@ -4,9 +4,6 @@ using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
 using static LiveKit.PlayModeTests.Utils.TimeoutExtensions;
-using System.Text.RegularExpressions;
-using UnityEngine;
-
 namespace LiveKit.PlayModeTests
 {
     public class RoomTests
@@ -17,11 +14,16 @@ namespace LiveKit.PlayModeTests
             var options = TestRoomContext.ConnectionOptions.Default;
             options.ServerUrl = "invalid-url";
 
-            // Tell Unity to expect the error log so it doesn't fail the test
-            LogAssert.Expect(LogType.Error, new Regex(".*LiveKit.*"));
+            // Suppress error logs from the native layer so they don't fail the test.
+            // We use ignoreFailingMessages instead of LogAssert.Expect because the native
+            // error log only appears when LK_VERBOSE is defined.
+            LogAssert.ignoreFailingMessages = true;
 
             using var context = new TestRoomContext(options);
             yield return context.ConnectAll().WithTimeout();
+
+            LogAssert.ignoreFailingMessages = false;
+
             Assert.IsNotNull(context.ConnectionError, "Expected connection to fail");
         }
 
