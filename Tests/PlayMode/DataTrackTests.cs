@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.TestTools;
 using LiveKit.PlayModeTests.Utils;
 using static LiveKit.PlayModeTests.Utils.TimeoutExtensions;
@@ -9,6 +11,35 @@ namespace LiveKit.PlayModeTests
     public class DataTrackTests
     {
         const string TestTrackName = "test-track";
+
+        /// <summary>
+        /// Reads a frame from the stream while pushing repeatedly via the supplied action.
+        /// The SFU data path may not be ready immediately after Subscribe(), so early
+        /// pushes can be silently dropped. This retries until a frame arrives or the
+        /// timeout is reached.
+        /// </summary>
+        static IEnumerator PushUntilReceived(
+            DataTrackStream.ReadFrameInstruction instruction,
+            Action push,
+            float timeoutSeconds = 10f,
+            float intervalSeconds = 0.2f)
+        {
+            var start = Time.realtimeSinceStartup;
+            var lastPush = -1f;
+            while (instruction.keepWaiting)
+            {
+                var elapsed = Time.realtimeSinceStartup - start;
+                if (elapsed > timeoutSeconds)
+                    Assert.Fail($"Timed out after {timeoutSeconds}s waiting for data track frame");
+                if (elapsed - lastPush >= intervalSeconds)
+                {
+                    try { push(); }
+                    catch (PushFrameError) { }
+                    lastPush = elapsed;
+                }
+                yield return null;
+            }
+        }
 
         [UnityTest, Category("E2E")]
         public IEnumerator PublishDataTrack_Succeeds()
@@ -208,12 +239,11 @@ namespace LiveKit.PlayModeTests
             Assert.IsNull(trackExpectation.Error);
 
             var stream = remoteTrack.Subscribe();
-
             var sentPayload = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF };
-            publishInstruction.Track.TryPush(new DataTrackFrame(sentPayload));
 
             var frameInstruction = stream.ReadFrame();
-            yield return frameInstruction.WithTimeout();
+            yield return PushUntilReceived(frameInstruction,
+                () => publishInstruction.Track.TryPush(new DataTrackFrame(sentPayload)));
 
             Assert.IsNull(frameInstruction.Error);
             Assert.IsTrue(frameInstruction.IsCurrentReadDone, "Should have received a frame");
@@ -252,11 +282,10 @@ namespace LiveKit.PlayModeTests
 
             var stream = remoteTrack.Subscribe();
 
-            var frame = new DataTrackFrame(new byte[] { 0x01 }).WithUserTimestampNow();
-            publishInstruction.Track.TryPush(frame);
-
             var frameInstruction = stream.ReadFrame();
-            yield return frameInstruction.WithTimeout();
+            yield return PushUntilReceived(frameInstruction,
+                () => publishInstruction.Track.TryPush(
+                    new DataTrackFrame(new byte[] { 0x01 }).WithUserTimestampNow()));
 
             Assert.IsNull(frameInstruction.Error);
             Assert.IsTrue(frameInstruction.IsCurrentReadDone, "Should have received a frame");
