@@ -22,5 +22,8 @@
   ],
   "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v1.3.5",
   "documentationUrl": "https://github.com/livekit/client-sdk-unity/blob/main/README.md",
-  "type": "library"
+  "type": "library",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
 }

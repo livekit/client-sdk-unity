@@ -79,12 +79,12 @@ namespace LiveKit.PlayModeTests.Utils
 
         private string CreateToken(ConnectionOptions options)
         {
-            var claims = new AccessToken.Claims
+            var claims = new LiveKitToken.Claims
             {
                 iss = _apiKey,
                 sub = options.Identity,
                 name = options.DisplayName,
-                video = new AccessToken.VideoGrants
+                video = new LiveKitToken.VideoGrants
                 {
                     room = RoomName,
                     roomJoin = true,
@@ -96,7 +96,7 @@ namespace LiveKit.PlayModeTests.Utils
                 },
                 metadata = options.Metadata
             };
-            return AccessToken.Encode(claims, _apiSecret);
+            return LiveKitToken.Encode(claims, _apiSecret);
         }
 
         public void Dispose()
