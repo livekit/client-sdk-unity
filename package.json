@@ -1,11 +1,11 @@
 {
   "name": "io.livekit.livekit-sdk",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2022.3",
   "author": {
-	  "name": "LiveKit",
+    "name": "LiveKit",
     "url": "https://livekit.com/"
   },
   "samples": [
@@ -20,7 +20,7 @@
       "path": "Samples~/Meet"
     }
   ],
-  "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v1.3.5",
+  "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v1.3.6",
   "documentationUrl": "https://github.com/livekit/client-sdk-unity/blob/main/README.md",
   "type": "library",
   "dependencies": {
