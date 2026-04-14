@@ -94,7 +94,12 @@ downloads~
 **/LiveKitSdkVersionInfo.txt
 **/LiveKitSdkVersionInfo.txt.meta
 
+# AI coding
 .claude
 
+# Local dev setup
 **/MyTokenSourceConfigs
 **/MyTokenSourceConfigs.meta
+
+# Temp logs
+Logs~

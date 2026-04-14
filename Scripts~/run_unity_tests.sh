@@ -1,9 +1,33 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-UNITY_PATH="${UNITY_PATH:-/Applications/Unity/Hub/Editor/2022.3.20f1/Unity.app/Contents/MacOS/Unity}"
-PROJECT_PATH="${PROJECT_PATH:-$SCRIPT_DIR/../Samples~/Meet}"
-OUTPUT_DIR="${OUTPUT_DIR:-$HOME/dev/unity/logs}"
+ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Auto-detect Unity: pick the latest installed version from Unity Hub
+find_unity() {
+    local hub_dir="/Applications/Unity/Hub/Editor"
+    if [ ! -d "$hub_dir" ]; then
+        return 1
+    fi
+    # Sort versions and pick the latest
+    local latest
+    latest=$(ls -1 "$hub_dir" | sort -V | tail -1)
+    if [ -z "$latest" ]; then
+        return 1
+    fi
+    echo "$hub_dir/$latest/Unity.app/Contents/MacOS/Unity"
+}
+
+if [ -z "$UNITY_PATH" ]; then
+    UNITY_PATH=$(find_unity)
+    if [ -z "$UNITY_PATH" ] || [ ! -x "$UNITY_PATH" ]; then
+        echo "Error: Could not find Unity installation. Set UNITY_PATH manually."
+        exit 1
+    fi
+fi
+
+PROJECT_PATH="${PROJECT_PATH:-$ROOT/Samples~/Meet}"
+OUTPUT_DIR="${OUTPUT_DIR:-$ROOT/Logs~}"
 UNITY_LOG="$HOME/Library/Logs/Unity/Editor.log"
 
 usage() {
@@ -15,7 +39,7 @@ usage() {
     echo "  -h, --help            Show this help"
     echo ""
     echo "Environment variables:"
-    echo "  UNITY_PATH    Path to Unity binary"
+    echo "  UNITY_PATH    Path to Unity binary (default: auto-detect latest from Unity Hub)"
     echo "  PROJECT_PATH  Path to Unity project"
     echo "  OUTPUT_DIR    Directory for test results"
 }
@@ -32,6 +56,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+echo "Unity: $UNITY_PATH"
 mkdir -p "$OUTPUT_DIR"
 
 OVERALL_EXIT=0
