@@ -3,19 +3,19 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Auto-detect Unity: pick the latest installed version from Unity Hub
+# Auto-detect Unity: pick the oldest installed version from Unity Hub
 find_unity() {
     local hub_dir="/Applications/Unity/Hub/Editor"
     if [ ! -d "$hub_dir" ]; then
         return 1
     fi
-    # Sort versions and pick the latest
-    local latest
-    latest=$(ls -1 "$hub_dir" | sort -V | tail -1)
-    if [ -z "$latest" ]; then
+    # Sort versions and pick the oldest
+    local version
+    version=$(ls -1 "$hub_dir" | sort -V | head -1)
+    if [ -z "$version" ]; then
         return 1
     fi
-    echo "$hub_dir/$latest/Unity.app/Contents/MacOS/Unity"
+    echo "$hub_dir/$version/Unity.app/Contents/MacOS/Unity"
 }
 
 if [ -z "$UNITY_PATH" ]; then

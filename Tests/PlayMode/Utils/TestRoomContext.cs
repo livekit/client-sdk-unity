@@ -26,6 +26,9 @@ namespace LiveKit.PlayModeTests.Utils
                 return options;
             });
             _connectionOptions = withDefaults.ToList();
+
+            for (int i = 0; i < _connectionOptions.Count; i++)
+                Rooms.Add(new Room());
         }
 
         public struct ConnectionOptions
@@ -52,10 +55,11 @@ namespace LiveKit.PlayModeTests.Utils
 
         public IEnumerator ConnectAll()
         {
-            foreach (var options in _connectionOptions)
+            for (int i = 0; i < _connectionOptions.Count; i++)
             {
+                ConnectionOptions options = _connectionOptions[i];
+                var room = Rooms[i];
                 var token = CreateToken(options);
-                var room = new Room();
                 var roomOptions = new RoomOptions();
                 var connect = room.Connect(options.ServerUrl ?? _serverUrl, token, roomOptions);
                 yield return connect;
@@ -66,7 +70,6 @@ namespace LiveKit.PlayModeTests.Utils
                     ConnectionError = $"Participant '{options.Identity}' failed to connect to test room";
                     yield break;
                 }
-                Rooms.Add(room);
             }
         }
 
