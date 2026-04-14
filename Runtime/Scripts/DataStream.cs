@@ -698,7 +698,7 @@ namespace LiveKit
         /// A <see cref="CloseInstruction"/> that completes when the close operation is complete or errors.
         /// Check <see cref="CloseInstruction.Error"/> to see if the operation was successful.
         /// </returns>
-        public CloseInstruction Close(string reason = null)
+        public CloseInstruction Close(string reason = "")
         {
             if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<TextStreamWriterCloseRequest>();
@@ -787,7 +787,7 @@ namespace LiveKit
         /// <returns>
         /// A <see cref="CloseInstruction"/> that completes when the close operation is complete or errors.
         /// </returns>
-        public CloseInstruction Close(string reason = null)
+        public CloseInstruction Close(string reason = "")
         {
             if (_disposed) throw new ObjectDisposedException(GetType().FullName);
             using var request = FFIBridge.Instance.NewRequest<ByteStreamWriterCloseRequest>();
