@@ -2,7 +2,6 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 using LiveKit.PlayModeTests.Utils;
-using static LiveKit.PlayModeTests.Utils.TimeoutExtensions;
 
 namespace LiveKit.PlayModeTests
 {
@@ -15,7 +14,7 @@ namespace LiveKit.PlayModeTests
             options.Identity = "test-identity";
 
             using var context = new TestRoomContext(options);
-            yield return context.ConnectAll().WithTimeout();
+            yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var localParticipant = context.Rooms[0].LocalParticipant;
@@ -29,7 +28,7 @@ namespace LiveKit.PlayModeTests
             options.Identity = "test-identity";
 
             using var context = new TestRoomContext(options);
-            yield return context.ConnectAll().WithTimeout();
+            yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var localParticipant = context.Rooms[0].LocalParticipant;
@@ -43,7 +42,7 @@ namespace LiveKit.PlayModeTests
             options.DisplayName = "test-display-name";
 
             using var context = new TestRoomContext(options);
-            yield return context.ConnectAll().WithTimeout();
+            yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
             var localParticipant = context.Rooms[0].LocalParticipant;
@@ -57,7 +56,7 @@ namespace LiveKit.PlayModeTests
             options.Metadata = "test-metadata";
 
             using var context = new TestRoomContext(options);
-            yield return context.ConnectAll().WithTimeout();
+            yield return context.ConnectAll();
 
             var localParticipant = context.Rooms[0].LocalParticipant;
             Assert.AreEqual(options.Metadata, localParticipant.Metadata);
