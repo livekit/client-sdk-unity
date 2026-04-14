@@ -173,5 +173,58 @@ namespace LiveKit.PlayModeTests
             Assert.IsNull(receivedExpectation.Error, receivedExpectation.Error);
             Assert.AreEqual("Hello World", receivedText);
         }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator StreamText_CloseWithoutReason_Succeeds()
+        {
+            var sender = TestRoomContext.ConnectionOptions.Default;
+            sender.Identity = "sender";
+            var receiver = TestRoomContext.ConnectionOptions.Default;
+            receiver.Identity = "receiver";
+
+            using var context = new TestRoomContext(new[] { sender, receiver });
+
+            string receivedText = null;
+            var receivedExpectation = new Expectation(timeoutSeconds: 10f);
+
+            context.Rooms[1].RegisterTextStreamHandler("close-topic", (reader, identity) =>
+            {
+                var readAll = reader.ReadAll();
+                System.Threading.Tasks.Task.Run(async () =>
+                {
+                    while (!readAll.IsDone) await System.Threading.Tasks.Task.Delay(10);
+                    if (!readAll.IsError)
+                    {
+                        receivedText = readAll.Text;
+                        receivedExpectation.Fulfill();
+                    }
+                    else receivedExpectation.Fail("ReadAll failed");
+                });
+            });
+
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            var streamInstruction = context.Rooms[0].LocalParticipant.StreamText("close-topic");
+            yield return streamInstruction;
+            Assert.IsFalse(streamInstruction.IsError, "StreamText open failed");
+
+            var writer = streamInstruction.Writer;
+
+            var write = writer.Write("test");
+            yield return write;
+            Assert.IsFalse(write.IsError, "Write failed");
+
+            // Call Close() with no arguments — this is the bug regression test.
+            // Before fix: throws ArgumentNullException because default reason=null
+            // hits ProtoPreconditions.CheckNotNull in the generated proto setter.
+            var close = writer.Close();
+            yield return close;
+            Assert.IsFalse(close.IsError, "Close without reason failed");
+
+            yield return receivedExpectation.Wait();
+            Assert.IsNull(receivedExpectation.Error, receivedExpectation.Error);
+            Assert.AreEqual("test", receivedText);
+        }
     }
 }
