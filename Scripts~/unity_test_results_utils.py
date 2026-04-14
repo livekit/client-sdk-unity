@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert NUnit3 XML test results to HTML or GitHub-flavored Markdown."""
+"""Convert NUnit3 XML test results to HTML, GitHub-flavored Markdown, or console summary."""
 
 import argparse
 import xml.etree.ElementTree as ET
@@ -277,11 +277,36 @@ def render_markdown(summaries, all_cases):
     return "\n".join(lines)
 
 
+def render_console(summaries, all_cases):
+    total = sum(s["total"] for s in summaries)
+    passed = sum(s["passed"] for s in summaries)
+    failed = sum(s["failed"] for s in summaries)
+    skipped = sum(s["skipped"] for s in summaries)
+    duration = sum(s["duration"] for s in summaries)
+
+    lines = [f"{total} tests: {passed} passed, {failed} failed, {skipped} skipped ({duration:.1f}s)"]
+
+    failed_cases = [c for c in all_cases if c["result"] == "Failed"]
+    if failed_cases:
+        lines.append("")
+        lines.append("FAILED TESTS:")
+        for case in failed_cases:
+            lines.append(f"  FAIL: {case['fullname']} ({case['duration']:.3f}s)")
+            if case["message"]:
+                for msg_line in case["message"].splitlines():
+                    lines.append(f"        {msg_line}")
+            if case["stack_trace"]:
+                for st_line in case["stack_trace"].splitlines()[:10]:
+                    lines.append(f"        {st_line}")
+
+    return "\n".join(lines)
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Convert NUnit3 XML test results to HTML or Markdown")
+    parser = argparse.ArgumentParser(description="Convert NUnit3 XML test results to HTML, Markdown, or console summary")
     parser.add_argument("files", nargs="+", type=Path, help="NUnit3 XML result files")
-    parser.add_argument("-o", "--output", type=Path, default=None, help="Output file (default: test-results.html or stdout for markdown)")
-    parser.add_argument("-f", "--format", choices=["html", "markdown"], default="html", help="Output format (default: html)")
+    parser.add_argument("-o", "--output", type=Path, default=None, help="Output file (default: test-results.html or stdout for markdown/console)")
+    parser.add_argument("-f", "--format", choices=["html", "markdown", "console"], default="html", help="Output format (default: html)")
     args = parser.parse_args()
 
     summaries = []
@@ -298,7 +323,13 @@ def main():
         print("No valid XML files found")
         return
 
-    if args.format == "markdown":
+    if args.format == "console":
+        output = render_console(summaries, all_cases)
+        if args.output:
+            args.output.write_text(output)
+        else:
+            print(output)
+    elif args.format == "markdown":
         output = render_markdown(summaries, all_cases)
         if args.output:
             args.output.write_text(output)
