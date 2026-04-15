@@ -43,6 +43,17 @@ jobs:
           # TODO: once data tracks is enabled by default in a subsequent SFU release, remove this.
           LIVEKIT_CONFIG: "enable_data_tracks: true"
         run: livekit-server --dev &
+      - name: Wait for LiveKit Server
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:7880 > /dev/null 2>&1; then
+              echo "LiveKit server is ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "LiveKit server failed to start within 30s"
+          exit 1
       - name: Run Tests
         uses: game-ci/unity-test-runner@v4
         id: testRunner

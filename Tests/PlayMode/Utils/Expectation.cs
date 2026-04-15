@@ -45,11 +45,11 @@ namespace LiveKit.PlayModeTests.Utils
 
         public IEnumerator Wait()
         {
-            _startTime = Time.time;
+            _startTime = Time.realtimeSinceStartup;
             yield return new WaitUntil(() =>
             {
                 if (_state != State.Pending) return true;
-                if (Time.time - _startTime > _timeout)
+                if (Time.realtimeSinceStartup - _startTime > _timeout)
                 {
                     _state = State.TimedOut;
                     return true;
