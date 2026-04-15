@@ -38,27 +38,21 @@ jobs:
             echo "No Rust submodule changes — skipping build"
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
-      - name: Install Rust toolchain
-        if: steps.check.outputs.changed == 'true'
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-unknown-linux-gnu
-      - name: Cache cargo build
-        if: steps.check.outputs.changed == 'true'
-        uses: actions/cache@v4
-        with:
-          path: client-sdk-rust~/target
-          key: ffi-linux-x86_64-${{ hashFiles('client-sdk-rust~/Cargo.lock') }}
-          restore-keys: ffi-linux-x86_64-
+      # Mirrors the Linux build from the upstream Rust SDK's ffi-builds.yml.
+      # If this breaks after an upstream change, check for updates there:
+      # https://github.com/livekit/client-sdk-rust/blob/main/.github/workflows/ffi-builds.yml
       - name: Build liblivekit_ffi.so
         if: steps.check.outputs.changed == 'true'
         run: |
-          cargo build \
-            --manifest-path client-sdk-rust~/Cargo.toml \
-            --release \
-            -p livekit-ffi \
-            --target x86_64-unknown-linux-gnu
-          cp client-sdk-rust~/target/x86_64-unknown-linux-gnu/release/liblivekit_ffi.so \
+          docker run --rm -v $PWD/client-sdk-rust~:/workspace -w /workspace \
+            sameli/manylinux_2_28_x86_64_cuda_12.3 bash -c "\
+              export PATH=/root/.cargo/bin:\$PATH && \
+              yum install -y llvm llvm-libs lld clang protobuf-compiler && \
+              yum groupinstall -y 'Development Tools' && \
+              yum install -y openssl-devel libX11-devel mesa-libGL-devel libXext-devel && \
+              curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+              cd livekit-ffi && cargo build --release --target x86_64-unknown-linux-gnu"
+          sudo cp client-sdk-rust~/target/x86_64-unknown-linux-gnu/release/liblivekit_ffi.so \
              Runtime/Plugins/ffi-linux-x86_64/liblivekit_ffi.so
       - name: Upload rebuilt library
         if: steps.check.outputs.changed == 'true'
