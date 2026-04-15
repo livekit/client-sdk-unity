@@ -72,16 +72,32 @@ jobs:
         if: always()
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
-          python3 root/Scripts~/unity_test_results_utils.py \
-            "$ARTIFACTS"/*.xml \
-            -o test-results.html
+          shopt -s nullglob
+          XML_FILES=("$ARTIFACTS"/*.xml)
+          if [ ${#XML_FILES[@]} -eq 0 ]; then
+            echo "No test result XML files found — Unity likely crashed before producing results."
+            echo "<h2>Unity crashed — no test results produced</h2><p>Check the raw logs for details.</p>" > test-results.html
+          else
+            python3 root/Scripts~/unity_test_results_utils.py \
+              "${XML_FILES[@]}" \
+              -o test-results.html
+          fi
       - name: Test Summary
         if: always()
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
-          python3 root/Scripts~/unity_test_results_utils.py \
-            "$ARTIFACTS"/*.xml \
-            -f markdown >> $GITHUB_STEP_SUMMARY
+          shopt -s nullglob
+          XML_FILES=("$ARTIFACTS"/*.xml)
+          if [ ${#XML_FILES[@]} -eq 0 ]; then
+            echo "## :boom: Unity crashed during tests" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "No test result XML was produced. Unity exited with a non-zero code before writing results." >> $GITHUB_STEP_SUMMARY
+            echo "Check the **Run Tests** step logs for a native stack trace or \`Abort trap\` signal." >> $GITHUB_STEP_SUMMARY
+          else
+            python3 root/Scripts~/unity_test_results_utils.py \
+              "${XML_FILES[@]}" \
+              -f markdown >> $GITHUB_STEP_SUMMARY
+          fi
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
