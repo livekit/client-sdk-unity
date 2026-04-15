@@ -23,7 +23,7 @@ namespace LiveKit.PlayModeTests
         // The FfiHandle.ReleaseHandle fix marshals the Rust drop to the main thread via
         // SynchronizationContext, but in batchmode on Linux the context may not be
         // available, so the GC finalizer still calls FfiDropHandle on a non-Tokio thread.
-        [UnityTest, Category("E2E"), Ignore("Known issue")]
+        [UnityTest, Category("E2E")]
         public IEnumerator StreamWriter_LeakedHandle_DoesNotCrashOnGC()
         {
             LogAssert.ignoreFailingMessages = true;
