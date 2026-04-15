@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
           submodules: recursive
           fetch-depth: 0
       - name: Check for Rust submodule changes
