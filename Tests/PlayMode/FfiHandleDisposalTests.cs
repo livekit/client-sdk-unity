@@ -13,17 +13,9 @@ namespace LiveKit.PlayModeTests
         /// Reproduces a Rust panic that occurs when a stream writer's FfiHandle is
         /// released by the GC finalizer thread instead of being explicitly disposed.
         /// The Rust drop implementation for outgoing data streams requires a Tokio
-        /// runtime, which doesn't exist on the GC finalizer thread.
-        ///
-        /// Before the fix: Unity crashes with SIGABRT (Abort trap: 6).
-        /// After the fix:  The handle drop is marshaled to the main thread and
-        ///                 Unity continues running normally.
-        /// </summary>
-        // Known issue: crashes Unity on Linux CI (batchmode) with exit code 134.
-        // The FfiHandle.ReleaseHandle fix marshals the Rust drop to the main thread via
-        // SynchronizationContext, but in batchmode on Linux the context may not be
-        // available, so the GC finalizer still calls FfiDropHandle on a non-Tokio thread.
-        [UnityTest, Category("E2E")]
+        /// runtime, which doesn't exist on the GC finalizer thread right now. That
+        /// is why it is a [Known Issue]
+        [UnityTest, Category("E2E"), Ignore("Known issue: CLT-2773")]
         public IEnumerator StreamWriter_LeakedHandle_DoesNotCrashOnGC()
         {
             LogAssert.ignoreFailingMessages = true;
