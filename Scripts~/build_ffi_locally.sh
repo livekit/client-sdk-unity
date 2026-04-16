@@ -16,7 +16,6 @@ usage() {
     echo ""
     echo "Platforms:"
     echo "  macos       Build for aarch64-apple-darwin"
-    echo "  linux       Build for x86_64-unknown-linux-gnu"
     echo "  android     Build for aarch64-linux-android"
     echo "  ios         Build for aarch64-apple-ios"
     echo ""
@@ -62,19 +61,6 @@ case "$PLATFORM" in
 
         SRC="$BASE_TARGET/aarch64-apple-darwin/$BUILD_DIR/liblivekit_ffi.dylib"
         DST="$BASE_DST/ffi-macos-arm64/liblivekit_ffi.dylib"
-        ;;
-    # LINUX
-    linux)
-        echo "Building for Linux (x86_64-unknown-linux-gnu) [$BUILD_TYPE]..."
-        cargo build \
-            --manifest-path "$MANIFEST" \
-            $BUILD_FLAG \
-            -p livekit-ffi \
-            --target x86_64-unknown-linux-gnu
-        BUILD_STATUS=$?
-
-        SRC="$BASE_TARGET/x86_64-unknown-linux-gnu/$BUILD_DIR/liblivekit_ffi.so"
-        DST="$BASE_DST/ffi-linux-x86_64/liblivekit_ffi.so"
         ;;
     # ANDROID
     android)
