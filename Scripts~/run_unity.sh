@@ -3,7 +3,7 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Auto-detect Unity: pick the latest installed version from Unity Hub
+# Auto-detect Unity: pick the oldest installed version from Unity Hub
 find_unity() {
     local hub_dir="/Applications/Unity/Hub/Editor"
     if [ ! -d "$hub_dir" ]; then
@@ -159,15 +159,15 @@ cmd_build() {
     case "$platform" in
         macos)
             build_target="OSXUniversal"
-            execute_method="BuildScript.BuildMac"
+            execute_method="LiveKit.Editor.BuildScript.BuildMac"
             ;;
         ios)
             build_target="iOS"
-            execute_method="BuildScript.BuildIOS"
+            execute_method="LiveKit.Editor.BuildScript.BuildIOS"
             ;;
         android)
             build_target="Android"
-            execute_method="BuildScript.BuildAndroid"
+            execute_method="LiveKit.Editor.BuildScript.BuildAndroid"
             ;;
         *)
             echo "Error: Unknown platform '$platform'"
