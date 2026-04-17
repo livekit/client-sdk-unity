@@ -35,16 +35,11 @@ namespace LiveKit.PlayModeTests
             yield return OpenAndLeakWriter(context);
 
             // Force the GC to collect the orphaned writer and run its finalizer.
-            // Before the fix, FfiHandle.ReleaseHandle() runs on the GC finalizer
+            // FfiHandle.ReleaseHandle() runs on the GC finalizer
             // thread, calling NativeMethods.FfiDropHandle() into Rust, which
             // panics because there is no Tokio runtime on that thread.
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
-
-            // Yield frames to let any marshaled main-thread work execute
-            // (after the fix, the drop is posted via SynchronizationContext)
-            yield return null;
-            yield return null;
 
             // If we reach this point, Unity didn't crash — the fix works.
             Assert.Pass("FfiHandle was safely released without crashing Unity");
