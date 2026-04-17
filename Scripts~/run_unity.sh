@@ -46,9 +46,10 @@ usage_test() {
     echo "Usage: $0 test [options]"
     echo ""
     echo "Options:"
-    echo "  -f, --filter FILTER   Unity test filter (passed to -testFilter)"
-    echo "  -m, --mode MODE       Test mode: EditMode, PlayMode, or both (default: both)"
-    echo "  -h, --help            Show this help"
+    echo "  -f, --filter FILTER      Unity test filter (passed to -testFilter)"
+    echo "  -m, --mode MODE          Test mode: EditMode, PlayMode, or both (default: both)"
+    echo "  -n, --iterations N       Run the test set N times, counting pass/fail per run (default: 1)"
+    echo "  -h, --help               Show this help"
     echo ""
     echo "Environment variables:"
     echo "  OUTPUT_DIR    Directory for test results (default: Logs~)"
@@ -69,15 +70,22 @@ usage_build() {
 cmd_test() {
     local test_filter=""
     local modes="EditMode PlayMode"
+    local iterations=1
 
     while [[ $# -gt 0 ]]; do
         case $1 in
             -f|--filter) test_filter="$2"; shift 2 ;;
             -m|--mode) modes="$2"; shift 2 ;;
+            -n|--iterations) iterations="$2"; shift 2 ;;
             -h|--help) usage_test; exit 0 ;;
             *) echo "Unknown option: $1"; usage_test; exit 1 ;;
         esac
     done
+
+    if ! [[ "$iterations" =~ ^[0-9]+$ ]] || [ "$iterations" -lt 1 ]; then
+        echo "Error: --iterations must be a positive integer (got: $iterations)"
+        exit 1
+    fi
 
     local output_dir="${OUTPUT_DIR:-$ROOT/Logs~}"
     local unity_log="$HOME/Library/Logs/Unity/Editor.log"
@@ -88,43 +96,78 @@ cmd_test() {
     local overall_exit=0
 
     for mode in $modes; do
-        local xml_path="$output_dir/${mode}-test-results.xml"
-        local html_path="$output_dir/${mode}-test-results.html"
+        local mode_passed=0
+        local mode_failed=0
 
-        local unity_args=(-runTests -projectPath "$PROJECT_PATH" -batchmode -testPlatform "$mode" -testResults "$xml_path")
-        if [ -n "$test_filter" ]; then
-            unity_args+=(-testFilter "$test_filter")
+        for (( i=1; i<=iterations; i++ )); do
+            local xml_path html_path
+            if [ "$iterations" -gt 1 ]; then
+                xml_path="$output_dir/${mode}-test-results-${i}.xml"
+                html_path="$output_dir/${mode}-test-results-${i}.html"
+            else
+                xml_path="$output_dir/${mode}-test-results.xml"
+                html_path="$output_dir/${mode}-test-results.html"
+            fi
+
+            local unity_args=(-runTests -projectPath "$PROJECT_PATH" -batchmode -testPlatform "$mode" -testResults "$xml_path")
+            if [ -n "$test_filter" ]; then
+                unity_args+=(-testFilter "$test_filter")
+            fi
+
+            echo "========================================="
+            if [ "$iterations" -gt 1 ]; then
+                echo "Running $mode tests (iteration $i/$iterations)..."
+            else
+                echo "Running $mode tests..."
+            fi
+            if [ -n "$test_filter" ]; then
+                echo "Filter: $test_filter"
+            fi
+            echo "========================================="
+            "$UNITY_PATH" "${unity_args[@]}"
+            local test_exit=$?
+
+            if [ ! -f "$xml_path" ]; then
+                echo "$mode iter $i: ERROR - test results XML not found at $xml_path"
+                echo "Unity editor log: $unity_log"
+                mode_failed=$(( mode_failed + 1 ))
+                continue
+            fi
+
+            if [ $test_exit -eq 0 ]; then
+                mode_passed=$(( mode_passed + 1 ))
+                if [ "$iterations" -gt 1 ]; then
+                    echo "$mode iter $i: PASSED (pass: $mode_passed, fail: $mode_failed)"
+                else
+                    echo "$mode: PASSED"
+                fi
+            else
+                mode_failed=$(( mode_failed + 1 ))
+                if [ "$iterations" -gt 1 ]; then
+                    echo "$mode iter $i: FAILED (pass: $mode_passed, fail: $mode_failed)"
+                else
+                    echo "$mode: FAILED"
+                fi
+            fi
+
+            # Print failure details to console
+            python3 "$SCRIPT_DIR/unity_test_results_utils.py" "$xml_path" -f console
+
+            # Generate HTML report
+            python3 "$SCRIPT_DIR/unity_test_results_utils.py" "$xml_path" -o "$html_path"
+            echo ""
+        done
+
+        if [ "$iterations" -gt 1 ]; then
+            echo "-----------------------------------------"
+            echo "$mode summary: $mode_passed/$iterations passed, $mode_failed failed"
+            echo "-----------------------------------------"
+            echo ""
         fi
 
-        echo "========================================="
-        echo "Running $mode tests..."
-        if [ -n "$test_filter" ]; then
-            echo "Filter: $test_filter"
-        fi
-        echo "========================================="
-        "$UNITY_PATH" "${unity_args[@]}"
-        local test_exit=$?
-
-        if [ ! -f "$xml_path" ]; then
-            echo "$mode: ERROR - test results XML not found at $xml_path"
-            echo "Unity editor log: $unity_log"
+        if [ $mode_failed -gt 0 ]; then
             overall_exit=1
-            continue
         fi
-
-        if [ $test_exit -eq 0 ]; then
-            echo "$mode: PASSED"
-        else
-            echo "$mode: FAILED"
-            overall_exit=1
-        fi
-
-        # Print failure details to console
-        python3 "$SCRIPT_DIR/unity_test_results_utils.py" "$xml_path" -f console
-
-        # Generate HTML report
-        python3 "$SCRIPT_DIR/unity_test_results_utils.py" "$xml_path" -o "$html_path"
-        echo ""
     done
 
     echo "========================================="
