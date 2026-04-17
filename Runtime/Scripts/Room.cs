@@ -33,7 +33,8 @@ namespace LiveKit
             var proto = new Proto.IceServer();
             proto.Username = Username;
             proto.Password = Password;
-            proto.Urls.AddRange(Urls);
+            if (Urls != null)
+                proto.Urls.AddRange(Urls);
 
             return proto;
         }
@@ -72,9 +73,12 @@ namespace LiveKit
                     break;
             }
 
-            foreach (var item in IceServers)
+            if (IceServers != null)
             {
-                proto.IceServers.Add(item.ToProto());
+                foreach (var item in IceServers)
+                {
+                    proto.IceServers.Add(item.ToProto());
+                }
             }
 
             return proto;
