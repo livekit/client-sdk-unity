@@ -73,14 +73,29 @@ jobs:
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
           python3 root/Scripts~/unity_test_results_utils.py \
-            "$ARTIFACTS"/*.xml \
+            "$ARTIFACTS/editmode-results.xml" \
+            "$ARTIFACTS/playmode-results.xml" \
             -o test-results.html
       - name: Test Summary
         if: always()
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
+          CRASHED=""
+          for MODE in editmode playmode; do
+            if [ ! -f "$ARTIFACTS/${MODE}-results.xml" ]; then
+              CRASHED="$CRASHED $MODE"
+            fi
+          done
+          if [ -n "$CRASHED" ]; then
+            echo "## :boom: Unity crashed during tests" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Missing results for:**$CRASHED**. Unity exited before writing results." >> $GITHUB_STEP_SUMMARY
+            echo "Check the **Run Tests** step logs for a native stack trace or abort signal." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
           python3 root/Scripts~/unity_test_results_utils.py \
-            "$ARTIFACTS"/*.xml \
+            "$ARTIFACTS/editmode-results.xml" \
+            "$ARTIFACTS/playmode-results.xml" \
             -f markdown >> $GITHUB_STEP_SUMMARY
       - name: Upload Test Results
         if: always()
