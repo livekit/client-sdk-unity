@@ -1,0 +1,62 @@
+using System;
+using System.Collections;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using LiveKit.PlayModeTests.Utils;
+
+namespace LiveKit.PlayModeTests
+{
+    public class FfiHandleDisposalTests
+    {
+        /// <summary>
+        /// Reproduces a Rust panic that occurs when a stream writer's FfiHandle is
+        /// released by the GC finalizer thread instead of being explicitly disposed.
+        /// The Rust drop implementation for outgoing data streams requires a Tokio
+        /// runtime, which doesn't exist on the GC finalizer thread right now. That
+        /// is why it is a [Known Issue]
+        [UnityTest, Category("E2E"), Ignore("Known issue: CLT-2773")]
+        public IEnumerator StreamWriter_LeakedHandle_DoesNotCrashOnGC()
+        {
+            LogAssert.ignoreFailingMessages = true;
+
+            var sender = TestRoomContext.ConnectionOptions.Default;
+            sender.Identity = "gc-sender";
+            var receiver = TestRoomContext.ConnectionOptions.Default;
+            receiver.Identity = "gc-receiver";
+
+            using var context = new TestRoomContext(new[] { sender, receiver });
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            // Open a text stream writer in a helper method so all references
+            // to the writer and its instruction go out of scope, making the
+            // writer eligible for GC finalization.
+            yield return OpenAndLeakWriter(context);
+
+            // Force the GC to collect the orphaned writer and run its finalizer.
+            // FfiHandle.ReleaseHandle() runs on the GC finalizer
+            // thread, calling NativeMethods.FfiDropHandle() into Rust, which
+            // panics because there is no Tokio runtime on that thread.
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            GC.WaitForPendingFinalizers();
+
+            // If we reach this point, Unity didn't crash — the fix works.
+            Assert.Pass("FfiHandle was safely released without crashing Unity");
+        }
+
+        /// <summary>
+        /// Opens a stream writer and returns without disposing it.
+        /// Once this method returns, the writer and instruction are only
+        /// reachable through the GC — no live references remain on the stack.
+        /// </summary>
+        private IEnumerator OpenAndLeakWriter(TestRoomContext context)
+        {
+            var streamInstruction = context.Rooms[0].LocalParticipant.StreamText("gc-test-topic");
+            yield return streamInstruction;
+            Assert.IsFalse(streamInstruction.IsError, "StreamText open failed");
+            Assert.IsNotNull(streamInstruction.Writer, "Writer should not be null");
+            // Method returns — streamInstruction and its Writer become unreachable
+        }
+    }
+}
