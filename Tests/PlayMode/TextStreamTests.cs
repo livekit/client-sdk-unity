@@ -215,8 +215,8 @@ namespace LiveKit.PlayModeTests
             yield return write;
             Assert.IsFalse(write.IsError, "Write failed");
 
-            // Call Close() with no arguments — this is the bug regression test.
-            // Before fix: throws ArgumentNullException because default reason=null
+            // Call Close() with no arguments — this is the known issue.
+            // Throws ArgumentNullException because default reason=null
             // hits ProtoPreconditions.CheckNotNull in the generated proto setter.
             var close = writer.Close();
             yield return close;
