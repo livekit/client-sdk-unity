@@ -174,7 +174,7 @@ namespace LiveKit.PlayModeTests
             Assert.AreEqual("Hello World", receivedText);
         }
 
-        [UnityTest, Category("E2E"), Ignore("Known issue: CLT-2774")]
+        [UnityTest, Category("E2E")]
         public IEnumerator StreamText_CloseWithoutReason_Succeeds()
         {
             var sender = TestRoomContext.ConnectionOptions.Default;
