@@ -152,6 +152,9 @@ namespace LiveKit.Internal.FFIClients
                 case LocalTrackMuteRequest localTrackMuteRequest:
                     ffiRequest.LocalTrackMute = localTrackMuteRequest;
                     break;
+                case EnableRemoteTrackRequest enableRemoteTrackRequest:
+                    ffiRequest.EnableRemoteTrack = enableRemoteTrackRequest;
+                    break;
                 case E2eeRequest e2EeRequest:
                     ffiRequest.E2Ee = e2EeRequest;
                     break;
