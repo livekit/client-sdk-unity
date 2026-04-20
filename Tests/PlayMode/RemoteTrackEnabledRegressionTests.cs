@@ -6,13 +6,11 @@ using UnityEngine.TestTools;
 
 namespace LiveKit.PlayModeTests
 {
-    /// <summary>
-    /// Regression test for IRemoteTrack.SetEnabled: EnableRemoteTrackRequest was missing
-    /// from FfiRequestExtensions.Inject, so every call threw "Unknown request type".
+    /// <summary>    
     /// This test publishes an audio track from a second room and exercises the FFI
     /// round-trip on the subscriber side.
     /// </summary>
-    public class RemoteTrackEnabledRegressionTests
+    public class RemoteTrackEnabledTests
     {
         [UnityTest, Category("E2E")]
         public IEnumerator RemoteTrack_SetEnabled_FalseAndTrue_DoesNotThrow()
