@@ -15,7 +15,14 @@ namespace LiveKit
         private static readonly string SandboxUrl = "https://cloud-api.livekit.io/api/v2/sandbox/connection-details";
         private static readonly HttpClient HttpClient = new HttpClient();
 
-        public async Task<ConnectionDetails> FetchConnectionDetails()
+        public Task<ConnectionDetails> FetchConnectionDetails() => FetchConnectionDetails(null);
+
+        /// <summary>
+        /// Fetches connection details, merging per-call <paramref name="options"/> over the asset-backed
+        /// <see cref="TokenSourceConfig"/>. For each field, a non-null value on <paramref name="options"/>
+        /// overrides the config value. Ignored when the token source type is <see cref="TokenSourceType.Literal"/>.
+        /// </summary>
+        public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
         {
             if (_config == null)
                 throw new InvalidOperationException("Token source configuration was not provided");
@@ -25,10 +32,10 @@ namespace LiveKit
             switch (_config.TokenSourceType)
             {
                 case TokenSourceType.Sandbox:
-                    return await FetchFromTokenSource(SandboxUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = _config.SandboxId } });
+                    return await FetchFromTokenSource(SandboxUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = _config.SandboxId } }, options);
 
                 case TokenSourceType.Endpoint:
-                    return await FetchFromTokenSource(_config.EndpointUrl, _config.EndpointHeaders);
+                    return await FetchFromTokenSource(_config.EndpointUrl, _config.EndpointHeaders, options);
 
                 case TokenSourceType.Literal:
                     return new ConnectionDetails
@@ -42,9 +49,9 @@ namespace LiveKit
             }
         }
 
-        private async Task<ConnectionDetails> FetchFromTokenSource(string url, IEnumerable<StringPair> headers)
+        private async Task<ConnectionDetails> FetchFromTokenSource(string url, IEnumerable<StringPair> headers, TokenSourceFetchOptions options)
         {
-            var requestBody = BuildRequest(_config);
+            var requestBody = BuildRequest(_config, options);
             var jsonBody = JsonConvert.SerializeObject(requestBody);
 
             var request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -69,26 +76,36 @@ namespace LiveKit
             return JsonConvert.DeserializeObject<ConnectionDetails>(jsonContent);
         }
 
-        private static TokenSourceRequest BuildRequest(TokenSourceConfig config)
+        private static TokenSourceRequest BuildRequest(TokenSourceConfig config, TokenSourceFetchOptions options)
         {
             var request = new TokenSourceRequest
             {
-                RoomName = NullIfEmpty(config.RoomName),
-                ParticipantName = NullIfEmpty(config.ParticipantName),
-                ParticipantIdentity = NullIfEmpty(config.ParticipantIdentity),
-                ParticipantMetadata = NullIfEmpty(config.ParticipantMetadata),
+                RoomName = NullIfEmpty(options?.RoomName ?? config.RoomName),
+                ParticipantName = NullIfEmpty(options?.ParticipantName ?? config.ParticipantName),
+                ParticipantIdentity = NullIfEmpty(options?.ParticipantIdentity ?? config.ParticipantIdentity),
+                ParticipantMetadata = NullIfEmpty(options?.ParticipantMetadata ?? config.ParticipantMetadata),
             };
 
-            if (config.ParticipantAttributes != null && config.ParticipantAttributes.Count > 0)
+            if (options?.ParticipantAttributes != null)
             {
-                request.ParticipantAttributes = config.ParticipantAttributes
+                var attrs = options.ParticipantAttributes
+                    .Where(kv => !string.IsNullOrEmpty(kv.Key))
+                    .ToDictionary(kv => kv.Key, kv => kv.Value);
+                if (attrs.Count > 0)
+                    request.ParticipantAttributes = attrs;
+            }
+            else if (config.ParticipantAttributes != null && config.ParticipantAttributes.Count > 0)
+            {
+                var attrs = config.ParticipantAttributes
                     .Where(a => !string.IsNullOrEmpty(a.key))
                     .ToDictionary(a => a.key, a => a.value);
-                if (request.ParticipantAttributes.Count == 0)
-                    request.ParticipantAttributes = null;
+                if (attrs.Count > 0)
+                    request.ParticipantAttributes = attrs;
             }
 
-            if (!string.IsNullOrEmpty(config.AgentName) || !string.IsNullOrEmpty(config.AgentMetadata))
+            var agentName = NullIfEmpty(options?.AgentName ?? config.AgentName);
+            var agentMetadata = NullIfEmpty(options?.AgentMetadata ?? config.AgentMetadata);
+            if (agentName != null || agentMetadata != null)
             {
                 request.RoomConfig = new RoomConfig
                 {
@@ -96,8 +113,8 @@ namespace LiveKit
                     {
                         new AgentDispatch
                         {
-                            AgentName = NullIfEmpty(config.AgentName),
-                            Metadata = NullIfEmpty(config.AgentMetadata)
+                            AgentName = agentName,
+                            Metadata = agentMetadata
                         }
                     }
                 };
