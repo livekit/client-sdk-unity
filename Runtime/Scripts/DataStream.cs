@@ -77,6 +77,7 @@ namespace LiveKit
     public abstract class ReadIncrementalInstructionBase<TContent> : StreamYieldInstruction
     {
         private readonly ulong _handleValue;
+        private readonly Queue<TContent> _pendingChunks = new();
         private TContent _latestChunk;
 
         /// <summary>
@@ -107,8 +108,26 @@ namespace LiveKit
 
         protected void OnChunk(TContent content)
         {
-            _latestChunk = content;
-            IsCurrentReadDone = true;
+            if (IsCurrentReadDone)
+            {
+                // Consumer hasn't yielded since the last chunk; buffer until Reset().
+                _pendingChunks.Enqueue(content);
+            }
+            else
+            {
+                _latestChunk = content;
+                IsCurrentReadDone = true;
+            }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            if (_pendingChunks.Count > 0)
+            {
+                _latestChunk = _pendingChunks.Dequeue();
+                IsCurrentReadDone = true;
+            }
         }
 
         protected void OnEos(Proto.StreamError protoError)

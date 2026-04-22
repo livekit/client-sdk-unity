@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using LiveKit;
 using LiveKit.Internal;
 using NUnit.Framework;
 
 namespace LiveKit.EditModeTests
 {
-    public class DataStreamIncrementalReadTests
+    public class DataStreamTests
     {
         private sealed class TestIncrementalReader : ReadIncrementalInstructionBase<string>
         {
