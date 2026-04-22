@@ -163,8 +163,7 @@ namespace LiveKit
         public string Metadata;
     }
 
-    [Serializable]
-    public struct ConnectionDetails
+    public class ConnectionDetails
     {
         [JsonProperty("server_url")]
         public string ServerUrl;
