@@ -80,10 +80,10 @@ namespace LiveKit
         {
             var request = new TokenSourceRequest
             {
-                RoomName = NullIfEmpty(options?.RoomName ?? config.RoomName),
-                ParticipantName = NullIfEmpty(options?.ParticipantName ?? config.ParticipantName),
-                ParticipantIdentity = NullIfEmpty(options?.ParticipantIdentity ?? config.ParticipantIdentity),
-                ParticipantMetadata = NullIfEmpty(options?.ParticipantMetadata ?? config.ParticipantMetadata),
+                RoomName = Coalesce(options?.RoomName, config.RoomName),
+                ParticipantName = Coalesce(options?.ParticipantName, config.ParticipantName),
+                ParticipantIdentity = Coalesce(options?.ParticipantIdentity, config.ParticipantIdentity),
+                ParticipantMetadata = Coalesce(options?.ParticipantMetadata, config.ParticipantMetadata),
             };
 
             if (options?.ParticipantAttributes != null)
@@ -103,8 +103,8 @@ namespace LiveKit
                     request.ParticipantAttributes = attrs;
             }
 
-            var agentName = NullIfEmpty(options?.AgentName ?? config.AgentName);
-            var agentMetadata = NullIfEmpty(options?.AgentMetadata ?? config.AgentMetadata);
+            var agentName = Coalesce(options?.AgentName, config.AgentName);
+            var agentMetadata = Coalesce(options?.AgentMetadata, config.AgentMetadata);
             if (agentName != null || agentMetadata != null)
             {
                 request.RoomConfig = new RoomConfig
@@ -125,6 +125,9 @@ namespace LiveKit
 
         private static string NullIfEmpty(string value) =>
             string.IsNullOrEmpty(value) ? null : value;
+
+        private static string Coalesce(string primary, string fallback) =>
+            NullIfEmpty(primary) ?? NullIfEmpty(fallback);
     }
 
     class TokenSourceRequest
