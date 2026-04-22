@@ -18,6 +18,7 @@ namespace LiveKit
         private readonly AudioProbe _probe;
         private RingBuffer _buffer;
         private short[] _tempBuffer;
+        private short[] _crossfadeScratch;
         private uint _numChannels;
         private uint _sampleRate;
         private AudioResampler _resampler = new AudioResampler();
@@ -29,9 +30,15 @@ namespace LiveKit
         private const float BufferSizeSeconds = 0.2f;  // 200ms ring buffer for all platforms
         private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
 
-        // Drift correction: skip samples when buffer fills up due to clock drift
-        private const float HighWaterMarkPercent = 0.50f;    // Target 50% fill level after correction
-        private const float SkipPerCallbackPercent = 0.05f;  // Skip 5% of callback samples per call
+        // Drift correction: skip samples when the buffer fills up due to clock drift.
+        // HWM at 80% (160ms of 200ms) so normal network jitter does not trip catch-up.
+        // Cooldown prevents back-to-back skips, which sound like a gravelly click train;
+        // one occasional skip is inaudible thanks to the crossfade in OnAudioRead.
+        private const float HighWaterMarkPercent = 0.80f;
+        private const float SkipPerCallbackPercent = 0.05f;
+        private const int SkipCooldownCallbacks = 10;
+        private const int CrossfadeFrames = 128;  // ~2.7ms @ 48kHz
+        private int _skipCooldown = 0;
 
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
@@ -87,11 +94,13 @@ namespace LiveKit
                     _buffer?.Dispose();
                     _buffer = new RingBuffer(bufferSize * sizeof(short));
                     _tempBuffer = new short[data.Length];
+                    _crossfadeScratch = new short[CrossfadeFrames * channels];
                     _numChannels = (uint)channels;
                     _sampleRate = (uint)sampleRate;
 
                     // Buffer was recreated, need to re-prime
                     _isPrimed = false;
+                    _skipCooldown = 0;
                 }
 
                 static float S16ToFloat(short v)
@@ -147,21 +156,50 @@ namespace LiveKit
                 // If the buffer is empty or doesn't have enough data, bytesRead will be less than requested.
                 int samplesRead = bytesRead / sizeof(short);
 
-                // Drift correction: if buffer is filling up (producer faster than consumer),
-                // skip a small number of samples to prevent overflow and keep latency bounded.
+                // Drift correction: if the buffer is filling up (producer faster than
+                // consumer), discard a small run of samples and crossfade the output tail
+                // into the post-skip window so the seam is inaudible. Cooldown spaces
+                // skips out so we never produce back-to-back artifacts.
+                if (_skipCooldown > 0)
+                    _skipCooldown--;
+
                 int highWaterBytes = (int)(_buffer.Capacity * HighWaterMarkPercent);
-                int remainingBytes = _buffer.AvailableRead();
-                if (remainingBytes > highWaterBytes)
+                if (_skipCooldown == 0 && _buffer.AvailableRead() > highWaterBytes)
                 {
-                    int skipBytes = (int)(data.Length * sizeof(short) * SkipPerCallbackPercent);
                     int frameSize = channels * sizeof(short);
+                    int skipBytes = (int)(data.Length * sizeof(short) * SkipPerCallbackPercent);
                     skipBytes -= skipBytes % frameSize; // align to frame boundary
 
-                    if (skipBytes > 0)
+                    int crossfadeShorts = CrossfadeFrames * channels;
+                    int crossfadeBytes = crossfadeShorts * sizeof(short);
+
+                    // Only skip if we still have enough data left to fill the crossfade
+                    // window; never trade a catch-up artifact for an underrun artifact.
+                    if (skipBytes > 0 && _buffer.AvailableRead() >= skipBytes + crossfadeBytes)
                     {
                         _buffer.SkipRead(skipBytes);
+
+                        var postBytes = MemoryMarshal.Cast<short, byte>(_crossfadeScratch.AsSpan().Slice(0, crossfadeShorts));
+                        _buffer.Read(postBytes);
+
+                        // Linearly crossfade the last crossfadeFrames frames of _tempBuffer
+                        // with the post-skip samples: the step discontinuity becomes a
+                        // short linear ramp that is continuous with the next callback.
+                        int tailStart = samplesRead - crossfadeShorts;
+                        if (tailStart >= 0)
+                        {
+                            for (int i = 0; i < crossfadeShorts; i++)
+                            {
+                                int frameIdx = i / channels;
+                                float t = (frameIdx + 1) / (float)CrossfadeFrames;
+                                short pre = _tempBuffer[tailStart + i];
+                                short post = _crossfadeScratch[i];
+                                _tempBuffer[tailStart + i] = (short)(pre * (1f - t) + post * t);
+                            }
+                            _skipCooldown = SkipCooldownCallbacks;
+                        }
                     }
-                }                
+                }
 
                 // Clear the entire output buffer to silence, then fill with the samples
                 // we successfully read from the ring buffer.
@@ -266,6 +304,7 @@ namespace LiveKit
                 _buffer?.Dispose();
                 _buffer = null;
                 _tempBuffer = null;
+                _crossfadeScratch = null;
                 _resampler?.Dispose();
                 _resampler = null;
                 Handle.Dispose();
