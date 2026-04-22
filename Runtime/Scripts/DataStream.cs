@@ -138,6 +138,59 @@ namespace LiveKit
     }
 
     /// <summary>
+    /// Shared state and helpers for incremental stream reader yield instructions.
+    /// Holds the latest chunk, end-of-stream flag, and error; subclasses own the
+    /// typed event subscription and convert raw event payloads via <see cref="OnChunk"/>
+    /// and <see cref="OnEos"/>.
+    /// </summary>
+    public abstract class ReadIncrementalInstructionBase<TContent> : StreamYieldInstruction
+    {
+        private readonly ulong _handleValue;
+        private TContent _latestChunk;
+
+        /// <summary>
+        /// Error that occurred on the last read, if any.
+        /// </summary>
+        public StreamError Error { get; private set; }
+
+        /// <summary>
+        /// True if an error occurred on the last read.
+        /// </summary>
+        public bool IsError => Error != null;
+
+        protected TContent LatestChunk
+        {
+            get
+            {
+                if (Error != null) throw Error;
+                return _latestChunk;
+            }
+        }
+
+        protected ReadIncrementalInstructionBase(FfiHandle readerHandle)
+        {
+            _handleValue = (ulong)readerHandle.DangerousGetHandle();
+        }
+
+        protected bool MatchesHandle(ulong eventHandle) => eventHandle == _handleValue;
+
+        protected void OnChunk(TContent content)
+        {
+            _latestChunk = content;
+            IsCurrentReadDone = true;
+        }
+
+        protected void OnEos(Proto.StreamError protoError)
+        {
+            IsEos = true;
+            if (protoError != null)
+            {
+                Error = new StreamError(protoError);
+            }
+        }
+    }
+
+    /// <summary>
     /// Reader for an incoming text data stream.
     /// </summary>
     public sealed class TextStreamReader : IDisposable
@@ -189,55 +242,12 @@ namespace LiveKit
         /// <remarks>
         /// Access <see cref="Text"/> after checking <see cref="IsError"/>
         /// </remarks>
-        public sealed class ReadAllInstruction : YieldInstruction
+        public sealed class ReadAllInstruction : FfiStreamResultInstruction<TextStreamReaderReadAllCallback, string>
         {
-            private ulong _asyncId;
-            private string _text;
-
             internal ReadAllInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                // ReadAll is modeled as a single async completion rather than a stream of
-                // incremental events, so it uses the request_async_id pending map. Rust returns
-                // the same value through callback.AsyncId.
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.TextStreamReaderReadAll, OnReadAll, OnCanceled);
-            }
+                : base(asyncId, static e => e.TextStreamReaderReadAll, static e => e.Error, static e => e.Content) { }
 
-            internal void OnReadAll(TextStreamReaderReadAllCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                switch (e.ResultCase)
-                {
-                    case TextStreamReaderReadAllCallback.ResultOneofCase.Error:
-                        Error = new StreamError(e.Error);
-                        IsError = true;
-                        break;
-                    case TextStreamReaderReadAllCallback.ResultOneofCase.Content:
-                        _text = e.Content;
-                        break;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
-
-            public string Text
-            {
-                get
-                {
-                    if (IsError) throw Error;
-                    return _text;
-                }
-            }
-
-            public StreamError Error { get; private set; }
+            public string Text => ResultValue;
         }
 
         /// <summary>
@@ -264,57 +274,30 @@ namespace LiveKit
         /// Usage: while <see cref="IsEos"/> is false (i.e. the stream has not ended),
         /// call <see cref="Reset"/>, yield the instruction, and then access <see cref="Text"/>.
         /// </remarks>
-        public sealed class ReadIncrementalInstruction : StreamYieldInstruction
+        public sealed class ReadIncrementalInstruction : ReadIncrementalInstructionBase<string>
         {
-            private readonly FfiHandle _handle;
-            private string _latestChunk;
-
-            internal ReadIncrementalInstruction(FfiHandle readerHandle)
+            internal ReadIncrementalInstruction(FfiHandle readerHandle) : base(readerHandle)
             {
-                _handle = readerHandle;
                 FfiClient.Instance.TextStreamReaderEventReceived += OnStreamEvent;
             }
 
             private void OnStreamEvent(TextStreamReaderEvent e)
             {
-                if (e.ReaderHandle != (ulong)_handle.DangerousGetHandle())
-                    return;
+                if (!MatchesHandle(e.ReaderHandle)) return;
 
                 switch (e.DetailCase)
                 {
                     case TextStreamReaderEvent.DetailOneofCase.ChunkReceived:
-                        _latestChunk = e.ChunkReceived.Content;
-                        IsCurrentReadDone = true;
+                        OnChunk(e.ChunkReceived.Content);
                         break;
                     case TextStreamReaderEvent.DetailOneofCase.Eos:
-                        IsEos = true;
-                        if (e.Eos.Error != null)
-                        {
-                            Error = new StreamError(e.Eos.Error);
-                        }
+                        OnEos(e.Eos.Error);
                         FfiClient.Instance.TextStreamReaderEventReceived -= OnStreamEvent;
                         break;
                 }
             }
 
-            public string Text
-            {
-                get
-                {
-                    if (Error != null) throw Error;
-                    return _latestChunk;
-                }
-            }
-
-            /// <summary>
-            /// True if an error occurred on the last read.
-            /// </summary>
-            public bool IsError => Error != null;
-
-            /// <summary>
-            /// Error that occurred on the last read, if any.
-            /// </summary>
-            public StreamError Error { get; private set; }
+            public string Text => LatestChunk;
         }
     }
 
@@ -414,52 +397,12 @@ namespace LiveKit
         /// <remarks>
         /// Access <see cref="Bytes"/> after checking <see cref="IsError"/>
         /// </remarks>
-        public sealed class ReadAllInstruction : YieldInstruction
+        public sealed class ReadAllInstruction : FfiStreamResultInstruction<ByteStreamReaderReadAllCallback, byte[]>
         {
-            private ulong _asyncId;
-            private byte[] _bytes;
-
             internal ReadAllInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamReaderReadAll, OnReadAll, OnCanceled);
-            }
+                : base(asyncId, static e => e.ByteStreamReaderReadAll, static e => e.Error, static e => e.Content.ToArray()) { }
 
-            internal void OnReadAll(ByteStreamReaderReadAllCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                switch (e.ResultCase)
-                {
-                    case ByteStreamReaderReadAllCallback.ResultOneofCase.Error:
-                        Error = new StreamError(e.Error);
-                        IsError = true;
-                        break;
-                    case ByteStreamReaderReadAllCallback.ResultOneofCase.Content:
-                        _bytes = e.Content.ToArray();
-                        break;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
-
-            public byte[] Bytes
-            {
-                get
-                {
-                    if (IsError) throw Error;
-                    return _bytes;
-                }
-            }
-
-            public StreamError Error { get; private set; }
+            public byte[] Bytes => ResultValue;
         }
 
         /// <summary>
@@ -469,57 +412,30 @@ namespace LiveKit
         /// Usage: while <see cref="IsEos"/> is false (i.e. the stream has not ended),
         /// call <see cref="Reset"/>, yield the instruction, and then access <see cref="Bytes"/>.
         /// </remarks>
-        public sealed class ReadIncrementalInstruction : StreamYieldInstruction
+        public sealed class ReadIncrementalInstruction : ReadIncrementalInstructionBase<byte[]>
         {
-            private readonly FfiHandle _handle;
-            private byte[] _latestChunk;
-
-            internal ReadIncrementalInstruction(FfiHandle readerHandle)
+            internal ReadIncrementalInstruction(FfiHandle readerHandle) : base(readerHandle)
             {
-                _handle = readerHandle;
                 FfiClient.Instance.ByteStreamReaderEventReceived += OnStreamEvent;
             }
 
             private void OnStreamEvent(ByteStreamReaderEvent e)
             {
-                if (e.ReaderHandle != (ulong)_handle.DangerousGetHandle())
-                    return;
+                if (!MatchesHandle(e.ReaderHandle)) return;
 
                 switch (e.DetailCase)
                 {
                     case ByteStreamReaderEvent.DetailOneofCase.ChunkReceived:
-                        _latestChunk = e.ChunkReceived.Content.ToByteArray();
-                        IsCurrentReadDone = true;
+                        OnChunk(e.ChunkReceived.Content.ToByteArray());
                         break;
                     case ByteStreamReaderEvent.DetailOneofCase.Eos:
-                        IsEos = true;
-                        if (e.Eos.Error != null)
-                        {
-                            Error = new StreamError(e.Eos.Error);
-                        }
+                        OnEos(e.Eos.Error);
                         FfiClient.Instance.ByteStreamReaderEventReceived -= OnStreamEvent;
                         break;
                 }
             }
 
-            public byte[] Bytes
-            {
-                get
-                {
-                    if (Error != null) throw Error;
-                    return _latestChunk;
-                }
-            }
-
-            /// <summary>
-            /// True if an error occurred on the last read.
-            /// </summary>
-            public bool IsError => Error != null;
-
-            /// <summary>
-            /// Error that occurred on the last read, if any.
-            /// </summary>
-            public StreamError Error { get; private set; }
+            public byte[] Bytes => LatestChunk;
         }
 
         /// <summary>
@@ -528,55 +444,15 @@ namespace LiveKit
         /// <remarks>
         /// Access <see cref="FilePath"/> after checking <see cref="IsError"/>
         /// </remarks>
-        public sealed class WriteToFileInstruction : YieldInstruction
+        public sealed class WriteToFileInstruction : FfiStreamResultInstruction<ByteStreamReaderWriteToFileCallback, string>
         {
-            private ulong _asyncId;
-            private string _filePath;
-
             internal WriteToFileInstruction(ulong asyncId)
-            {
-                _asyncId = asyncId;
-                FfiClient.Instance.RegisterPendingCallback(asyncId, static e => e.ByteStreamReaderWriteToFile, OnWriteToFile, OnCanceled);
-            }
-
-            internal void OnWriteToFile(ByteStreamReaderWriteToFileCallback e)
-            {
-                if (e.AsyncId != _asyncId)
-                    return;
-
-                switch (e.ResultCase)
-                {
-                    case ByteStreamReaderWriteToFileCallback.ResultOneofCase.Error:
-                        Error = new StreamError(e.Error);
-                        IsError = true;
-                        break;
-                    case ByteStreamReaderWriteToFileCallback.ResultOneofCase.FilePath:
-                        _filePath = e.FilePath;
-                        break;
-                }
-                IsDone = true;
-            }
-
-            void OnCanceled()
-            {
-                Error = new StreamError("Canceled");
-                IsError = true;
-                IsDone = true;
-            }
+                : base(asyncId, static e => e.ByteStreamReaderWriteToFile, static e => e.Error, static e => e.FilePath) { }
 
             /// <summary>
             /// Path to the file that was written.
             /// </summary>
-            public string FilePath
-            {
-                get
-                {
-                    if (IsError) throw Error;
-                    return _filePath;
-                }
-            }
-
-            public StreamError Error { get; private set; }
+            public string FilePath => ResultValue;
         }
     }
 
@@ -589,6 +465,14 @@ namespace LiveKit
         public IDictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
         public List<string> DestinationIdentities { get; set; } = new List<string>();
         public string Id { get; set; }
+
+        protected void RequireTopic()
+        {
+            if (Topic == null)
+            {
+                throw new InvalidOperationException("Topic field is required");
+            }
+        }
     }
 
     /// <summary>
@@ -604,11 +488,8 @@ namespace LiveKit
 
         internal Proto.StreamTextOptions ToProto()
         {
+            RequireTopic();
             var proto = new Proto.StreamTextOptions();
-            if (Topic == null)
-            {
-                throw new InvalidOperationException("Topic field is required");
-            }
             proto.Topic = Topic;
             proto.Attributes.Add(Attributes);
             proto.DestinationIdentities.AddRange(DestinationIdentities);
@@ -635,11 +516,8 @@ namespace LiveKit
 
         internal Proto.StreamByteOptions ToProto()
         {
+            RequireTopic();
             var proto = new Proto.StreamByteOptions();
-            if (Topic == null)
-            {
-                throw new InvalidOperationException("Topic field is required");
-            }
             proto.Topic = Topic;
             proto.Attributes.Add(Attributes);
             proto.DestinationIdentities.AddRange(DestinationIdentities);
