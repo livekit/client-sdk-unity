@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 
 namespace LiveKit.EditModeTests
@@ -29,6 +30,18 @@ namespace LiveKit.EditModeTests
 
             Assert.IsInstanceOf<System.Exception>(error);
             Assert.AreEqual("test message", error.Message);
+        }
+
+        [Test]
+        public void BuiltIn_HasMessageAndCodeForEveryErrorCode()
+        {
+            foreach (RpcError.ErrorCode code in Enum.GetValues(typeof(RpcError.ErrorCode)))
+            {
+                var error = RpcError.BuiltIn(code);
+                Assert.IsNotNull(error, $"BuiltIn returned null for {code}");
+                Assert.AreEqual((uint)code, error.Code, $"Code mismatch for {code}");
+                Assert.IsNotEmpty(error.Message, $"Empty message for {code}");
+            }
         }
     }
 }
