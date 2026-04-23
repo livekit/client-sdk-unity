@@ -151,7 +151,7 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest, Category("E2E")]
-        public IEnumerator RemoteTrackPublication_SetSubscribed_False_UpdatesSubscribedFlag()
+        public IEnumerator RemoteTrackPublication_Unsubscribe_UpdatesFlagAndTriggersEvent()
         {
             var (publisher, subscriber) = TwoPeers();
             using var context = new TestRoomContext(new[] { publisher, subscriber });
@@ -172,6 +172,14 @@ namespace LiveKit.PlayModeTests
                 subscribedExp.Fulfill();
             };
 
+            var unsubscribedExp = new Expectation(timeoutSeconds: 10f);
+            RemoteTrackPublication unsubscribedPublication = null;
+            subscriberRoom.TrackUnsubscribed += (remoteTrack, publication, participant) =>
+            {
+                unsubscribedPublication = publication;
+                unsubscribedExp.Fulfill();
+            };
+
             var pub = publisherRoom.LocalParticipant.PublishTrack(localTrack, AudioOptions());
             yield return pub;
             Assert.IsFalse(pub.IsError);
@@ -183,6 +191,10 @@ namespace LiveKit.PlayModeTests
 
             receivedPublication.SetSubscribed(false);
             Assert.IsFalse(receivedPublication.Subscribed);
+
+            yield return unsubscribedExp.Wait();
+            Assert.IsNull(unsubscribedExp.Error);
+            Assert.AreSame(receivedPublication, unsubscribedPublication);
         }
     }
 }
