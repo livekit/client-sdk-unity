@@ -393,8 +393,8 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<ByteStreamReaderWriteToFileRequest>();
             var writeToFileReq = request.request;
             writeToFileReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
-            writeToFileReq.Directory = directory;
-            writeToFileReq.NameOverride = nameOverride;
+            if (directory != null) writeToFileReq.Directory = directory;
+            if (nameOverride != null) writeToFileReq.NameOverride = nameOverride;
 
             var instruction = new WriteToFileInstruction(request.RequestAsyncId);
             using var response = request.Send();
