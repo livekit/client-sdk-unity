@@ -31,10 +31,10 @@ namespace LiveKit
         private const float PrimingThresholdSeconds = 0.03f;  // Wait for 30ms of data before playing
 
         // Drift correction: skip samples when the buffer fills up due to clock drift.
-        // HWM at 80% (160ms of 200ms) so normal network jitter does not trip catch-up.
+        // HWM at 50% (100ms of 200ms) so normal network jitter does not trip catch-up.
         // Cooldown prevents back-to-back skips, which sound like a gravelly click train;
         // one occasional skip is inaudible thanks to the crossfade in OnAudioRead.
-        private const float HighWaterMarkPercent = 0.80f;
+        private const float HighWaterMarkPercent = 0.50f;
         private const float SkipPerCallbackPercent = 0.05f;
         private const int SkipCooldownCallbacks = 10;
         private const int CrossfadeFrames = 128;  // ~2.7ms @ 48kHz
@@ -212,7 +212,7 @@ namespace LiveKit
         }
 
         // Called when application goes to background or returns to foreground
-        private void OnApplicationPause(bool pause)
+        internal void OnApplicationPause(bool pause)
         {
             if (_disposed)
                 return;
@@ -316,6 +316,18 @@ namespace LiveKit
         ~AudioStream()
         {
             Dispose(false);
+        }
+
+        // For testing and debugging
+        internal float GetBufferFill()
+        {
+            lock(_lock)
+            {
+                if (_buffer == null)
+                    return 0;
+                return _buffer.AvailableReadInPercent();
+            }
+                
         }
     }
 }
