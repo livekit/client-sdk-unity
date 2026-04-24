@@ -13,42 +13,29 @@ namespace LiveKit.PlayModeTests
         static TrackPublishOptions AudioOptions() =>
             new TrackPublishOptions { Source = TrackSource.SourceMicrophone };
 
-        [UnityTest]
-        public IEnumerator AudioBuffer_CatchesUp_WhenAudioConsumptionPausedAndContinued_Manual()
+        
+        AudioStream _audioStream;
+        AudioSource _audioSource;
+
+        TestRoomContext _context;
+        
+        private IEnumerator SetUp()
         {
-            // We need an AudioListener in the scene in order for an AudioThread to read from sources 
-            var listenerGO = new GameObject("LatencyTestAudioListener");
-            var audioListener = listenerGO.AddComponent<AudioListener>();
-
-            // This GO will be hooked up with the AudioStream
-            var receiverGO = new GameObject("LatencyTestReceiver");
-            var unityAudioSource = receiverGO.AddComponent<AudioSource>();
-
-
-            // AudioStream constructor adds AudioProbe and starts playback
-            var audioStream = new AudioStream(null, unityAudioSource);
-
-            yield return null;
-        }
-
-        [UnityTest, Category("E2E")]
-        public IEnumerator AudioBuffer_CatchesUp_WhenAudioConsumptionPausedAndContinued()
-        {
-            var audioSource = new SineWaveAudioSource();
+            var sineWaveAudioSource = new SineWaveAudioSource();
 
             var sender = TestRoomContext.ConnectionOptions.Default;
             sender.Identity = "sender";
             var receiver = TestRoomContext.ConnectionOptions.Default;
             receiver.Identity = "receiver";
 
-            using var context = new TestRoomContext(new[] { sender, receiver });
-            var senderRoom = context.Rooms[0];
-            var subscriberRoom = context.Rooms[1];
+            _context = new TestRoomContext(new[] { sender, receiver });
+            var senderRoom = _context.Rooms[0];
+            var subscriberRoom = _context.Rooms[1];
 
-            var audioTrack = LocalAudioTrack.CreateAudioTrack(AudioTrackName, audioSource, senderRoom);
+            var audioTrack = LocalAudioTrack.CreateAudioTrack(AudioTrackName, sineWaveAudioSource, senderRoom);
 
-            yield return context.ConnectAll();
-            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            yield return _context.ConnectAll();
+            Assert.IsNull(_context.ConnectionError, _context.ConnectionError);
 
             var publishAudioTrack = senderRoom.LocalParticipant.PublishTrack(audioTrack, AudioOptions());
 
@@ -66,7 +53,7 @@ namespace LiveKit.PlayModeTests
             yield return publishAudioTrack;
             Assert.IsFalse(publishAudioTrack.IsError);
 
-            audioSource.Start();
+            sineWaveAudioSource.Start();
             yield return subscribedExp.Wait();
             Assert.IsNull(subscribedExp.Error);
 
@@ -76,56 +63,89 @@ namespace LiveKit.PlayModeTests
 
             // This GO will be hooked up with the AudioStream
             var receiverGO = new GameObject("LatencyTestReceiver");
-            var unityAudioSource = receiverGO.AddComponent<AudioSource>();
+            _audioSource = receiverGO.AddComponent<AudioSource>();
 
             // AudioStream constructor adds AudioProbe and starts playback
-            var audioStream = new AudioStream(subscribedTrack, unityAudioSource);
+            _audioStream = new AudioStream(subscribedTrack, _audioSource);
+        }
+        
+
+        
+        [UnityTest, Category("E2E")]
+        public IEnumerator AudioBuffer_FillLevelStaysStable()
+        {
+            yield return SetUp();
+
+            // Fill buffer above prime within short time
+            var bufferFillsAbovePrime = new Expectation(() => { return _audioStream.GetBufferFill() > 0.15f; }, 0.1f);            
+            yield return bufferFillsAbovePrime.Wait();
+            Assert.IsNull(bufferFillsAbovePrime.Error);
+
+            // Buffer stays at stable levels over long time
+            var elapsedTime = 0f;
+            while (elapsedTime < 3f)
+            {
+                elapsedTime += Time.deltaTime;
+                Assert.That(_audioStream.GetBufferFill(), Is.GreaterThan(0.10f));
+                Assert.That(_audioStream.GetBufferFill(), Is.LessThan(0.8f));
+                yield return null;
+            }
+
+            _context.Dispose();
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator AudioBuffer_CatchesUp_WhenAudioConsumptionPausedAndContinued()
+        {
+            yield return SetUp();
 
             // NORMAL BEHAVIOUR
             var elapsed = 0f;
             while (elapsed < 1f)
             {                                                                           
-                var fill = audioStream.GetBufferFill();
+                var fill = _audioStream.GetBufferFill();
                 Debug.Log($"[AudioStream] t={elapsed:F2}s  filled={fill:P1}");
                 elapsed += Time.deltaTime;
                 yield return null;       
             }
 
             // The AudioBuffer should not be much filled
-            Assert.That(audioStream.GetBufferFill(), Is.LessThan(0.7));
+            Assert.That(_audioStream.GetBufferFill(), Is.LessThan(0.7));
 
             // BACKGROUNDED
             Debug.Log("Mock backgrounding");
-            MockApplicationBackgrounded(unityAudioSource, audioStream);
+            MockApplicationBackgrounded();
             
             // Buffer is full at this point
-            var BufferFillsInBackgroundExpectation = new Expectation(() => { return audioStream.GetBufferFill() == 1f; });            
+            var BufferFillsInBackgroundExpectation = new Expectation(() => { return _audioStream.GetBufferFill() == 1f; });            
             yield return BufferFillsInBackgroundExpectation.Wait();
             Assert.IsNull(BufferFillsInBackgroundExpectation.Error);
 
             // Backgrounding
-            MockApplicationForegrounded(unityAudioSource, audioStream);
+            MockApplicationForegrounded();
             
             // Buffer is cleared
-            var fillAfterForegrounded = audioStream.GetBufferFill();
+            var fillAfterForegrounded = _audioStream.GetBufferFill();
             Assert.That(fillAfterForegrounded, Is.EqualTo(0f));
 
             // Buffer refills above primed threshold of 30ms, I give it 100ms for that
-            var BufferRefillsUntilPrimed = new Expectation(() => { return audioStream.GetBufferFill() >= 0.15f; }, 0.1f);
+            var BufferRefillsUntilPrimed = new Expectation(() => { return _audioStream.GetBufferFill() >= 0.15f; }, 0.1f);
             yield return BufferFillsInBackgroundExpectation.Wait();
             Assert.IsNull(BufferFillsInBackgroundExpectation.Error);
+
+            _context.Dispose();
         }
 
-        private void MockApplicationBackgrounded(AudioSource audioSource, AudioStream audioStream)
+        private void MockApplicationBackgrounded()
         {            
-            audioSource.Pause();
-            audioStream.OnApplicationPause(true);
+            _audioSource.Pause();
+            _audioStream.OnApplicationPause(true);
         }
 
-        private void MockApplicationForegrounded(AudioSource audioSource, AudioStream audioStream)
+        private void MockApplicationForegrounded()
         {            
-            audioSource.UnPause();
-            audioStream.OnApplicationPause(false);
+            _audioSource.UnPause();
+            _audioStream.OnApplicationPause(false);
         }
     }
 }
