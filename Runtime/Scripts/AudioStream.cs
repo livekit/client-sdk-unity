@@ -136,7 +136,7 @@ namespace LiveKit
                 if (valuesAvailableToRead < data.Length)
                 {
                     _isPrimed = false;
-                    Utils.Debug($"AudioStream underrun detected, re-priming (got {valuesAvailableToRead} samples)");
+                    Utils.Debug($"AudioStream underrun detected, re-priming (got {valuesAvailableToRead} samples but want to read {data.Length})");
 
                     // Output silence immediately instead of playing partial/choppy samples.
                     // On next frames, the !_isPrimed check above will ensure we wait for 30ms
