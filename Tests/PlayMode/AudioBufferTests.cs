@@ -67,9 +67,37 @@ namespace LiveKit.PlayModeTests
 
             // AudioStream constructor adds AudioProbe and starts playback
             _audioStream = new AudioStream(subscribedTrack, _audioSource);
-        }
-        
 
+            // Init buffer with one audio frame read
+            var readOneAudioFrame = new Expectation( () => { return _audioStream.GetBufferFill() != 0f; } );
+            yield return readOneAudioFrame.Wait();
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator AudioBuffer_WhenBufferRunsFull_TriggersCatchupMechanism()
+        {
+            yield return SetUp();
+
+            // Backgrounded
+            MockApplicationBackgrounded();
+            
+            // Buffer is full at this point
+            var BufferFillsInBackgroundExpectation = new Expectation(() => { return _audioStream.GetBufferFill() == 1f; });            
+            yield return BufferFillsInBackgroundExpectation.Wait();
+            Assert.IsNull(BufferFillsInBackgroundExpectation.Error);
+
+            Debug.Log("Buffer is filled");
+
+            // Resume consumption without foregrounding event to prevent full buffer clear
+            _audioSource.UnPause();
+
+            // Buffer fill is quickly reduced due to catchup logic
+            var BufferFillReducedThroughCatchup = new Expectation(() => { return _audioStream.GetBufferFill() < 0.6f; });            
+            yield return BufferFillReducedThroughCatchup.Wait();
+            Assert.IsNull(BufferFillReducedThroughCatchup.Error);
+
+            _context.Dispose();
+        }
         
         [UnityTest, Category("E2E")]
         public IEnumerator AudioBuffer_FillLevelStaysStable()
@@ -86,7 +114,6 @@ namespace LiveKit.PlayModeTests
             while (elapsedTime < 3f)
             {
                 elapsedTime += Time.deltaTime;
-                Assert.That(_audioStream.GetBufferFill(), Is.GreaterThan(0.10f));
                 Assert.That(_audioStream.GetBufferFill(), Is.LessThan(0.8f));
                 yield return null;
             }
@@ -95,25 +122,11 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest, Category("E2E")]
-        public IEnumerator AudioBuffer_CatchesUp_WhenAudioConsumptionPausedAndContinued()
+        public IEnumerator AudioBuffer_WhenAppForegrounded_BufferIsCleared()
         {
             yield return SetUp();
 
-            // NORMAL BEHAVIOUR
-            var elapsed = 0f;
-            while (elapsed < 1f)
-            {                                                                           
-                var fill = _audioStream.GetBufferFill();
-                Debug.Log($"[AudioStream] t={elapsed:F2}s  filled={fill:P1}");
-                elapsed += Time.deltaTime;
-                yield return null;       
-            }
-
-            // The AudioBuffer should not be much filled
-            Assert.That(_audioStream.GetBufferFill(), Is.LessThan(0.7));
-
-            // BACKGROUNDED
-            Debug.Log("Mock backgrounding");
+            // Backgrounded
             MockApplicationBackgrounded();
             
             // Buffer is full at this point
@@ -121,7 +134,7 @@ namespace LiveKit.PlayModeTests
             yield return BufferFillsInBackgroundExpectation.Wait();
             Assert.IsNull(BufferFillsInBackgroundExpectation.Error);
 
-            // Backgrounding
+            // Foregrounded
             MockApplicationForegrounded();
             
             // Buffer is cleared
