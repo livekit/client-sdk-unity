@@ -46,7 +46,9 @@ public class MeetManager : MonoBehaviour
     private readonly Dictionary<string, GameObject> _videoDisplayObjects = new();
     private readonly Dictionary<string, ResizeTextureController> _resizeTextureControllers = new();
     private readonly Dictionary<string, GameObject> _audioObjects = new();
-    private readonly List<VideoStream> _videoStreams = new();
+    private readonly Dictionary<string, VideoStream> _videoStreams = new();
+
+    private readonly Dictionary<string, AudioStream> _audioStreams = new();
 
     private RtcVideoSource _rtcVideoSource;
     private RtcAudioSource _rtcAudioSource;
@@ -221,18 +223,20 @@ public class MeetManager : MonoBehaviour
 
         stream.Start();
         StartCoroutine(stream.Update());
-        _videoStreams.Add(stream);
+        _videoStreams.Add(sid, stream);
     }
 
     private void AddRemoteAudioTrack(RemoteAudioTrack audioTrack)
     {
-        var audioObject = new GameObject($"AudioTrack: {audioTrack.Sid}");
+        var sid = audioTrack.Sid;
+        var audioObject = new GameObject($"AudioTrack: {sid}");
         audioObject.transform.SetParent(_audioTrackParent);
 
         var source = audioObject.AddComponent<AudioSource>();
-        _ = new AudioStream(audioTrack, source);
+        var audiostream = new AudioStream(audioTrack, source);
+        _audioStreams.Add(sid, audiostream);
 
-        _audioObjects[audioTrack.Sid] = audioObject;
+        _audioObjects[sid] = audioObject;
     }
 
     private void RemoveRemoteVideoTrack(string sid)
@@ -241,6 +245,13 @@ public class MeetManager : MonoBehaviour
         {
             Destroy(obj);
             _videoDisplayObjects.Remove(sid);
+        }
+
+        if (_videoStreams.TryGetValue(sid, out var stream))
+        {
+            stream.Stop();
+            stream.Dispose();
+            _videoStreams.Remove(sid);
         }
 
         if (_resizeTextureControllers.TryGetValue(sid, out var controller))
@@ -257,6 +268,12 @@ public class MeetManager : MonoBehaviour
             obj.GetComponent<AudioSource>()?.Stop();
             Destroy(obj);
             _audioObjects.Remove(sid);
+        }
+
+        if (_audioStreams.TryGetValue(sid, out var stream))
+        {
+            stream.Dispose();
+            _audioStreams.Remove(sid);
         }
     }
 
@@ -325,6 +342,7 @@ public class MeetManager : MonoBehaviour
         audioObject.transform.SetParent(_audioTrackParent);
 
         var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject);
+        
         _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, rtcSource, _room);
 
         var options = new TrackPublishOptions
@@ -480,6 +498,12 @@ public class MeetManager : MonoBehaviour
         }
         _audioObjects.Clear();
 
+        foreach (var stream in _audioStreams.Values)
+        {
+            stream.Dispose();
+        }
+        _audioStreams.Clear();
+
         foreach (var obj in _videoDisplayObjects.Values)
         {
             var img = obj.GetComponent<RawImage>();
@@ -492,7 +516,7 @@ public class MeetManager : MonoBehaviour
             controller.Dispose();
         _resizeTextureControllers.Clear();
 
-        foreach (var stream in _videoStreams)
+        foreach (var stream in _videoStreams.Values)
         {
             stream.Stop();
             stream.Dispose();
