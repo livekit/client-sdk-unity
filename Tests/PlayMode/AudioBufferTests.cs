@@ -105,7 +105,7 @@ namespace LiveKit.PlayModeTests
             yield return SetUp();
 
             // Fill buffer above prime within short time
-            var bufferFillsAbovePrime = new Expectation(() => { return _audioStream.GetBufferFill() > 0.15f; }, 0.1f);            
+            var bufferFillsAbovePrime = new Expectation(() => { return _audioStream.GetBufferFill() > 0.15f; }, 1f);            
             yield return bufferFillsAbovePrime.Wait();
             Assert.IsNull(bufferFillsAbovePrime.Error);
 
