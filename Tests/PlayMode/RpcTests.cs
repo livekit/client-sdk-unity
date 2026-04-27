@@ -10,10 +10,10 @@ namespace LiveKit.PlayModeTests
 {
     public class RpcTests
     {
-        // Known Issue: fails when not run first. Passes in isolation or with Order(0),
+        // Known Issue: CLT-2778: fails when not run before error tests. Passes in isolation or with Order(0),
         // but fails with "custom error Expected: False But was: True" at the RPC invocation
         // assertion when other tests run before it — suggests leaked/shared state between tests.
-        [UnityTest, Category("E2E"), Ignore("Known Issue: CLT-2778")]
+        [UnityTest, Category("E2E"), Order(0)]
         public IEnumerator RegisterRpcMethod_AndPerformRpc_ReturnsResponse()
         {
             LogAssert.ignoreFailingMessages = true;
@@ -165,7 +165,10 @@ namespace LiveKit.PlayModeTests
             Assert.AreEqual((uint)RpcError.ErrorCode.UNSUPPORTED_METHOD, rpcInstruction.Error.Code);
         }
 
-        [UnityTest, Category("E2E")]
+        // Known Issue: CLT-2778: fails when not run before error tests. Passes in isolation or with Order(0),
+        // but fails with "custom error Expected: False But was: True" at the RPC invocation
+        // assertion when other tests run before it — suggests leaked/shared state between tests.
+        [UnityTest, Category("E2E"), Order(1)]
         public IEnumerator PerformRpc_NearLimitPayload_EchoesRoundTrip()
         {
             // 14 KiB is comfortably below the documented 15 KiB limit on both the
