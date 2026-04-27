@@ -112,6 +112,30 @@ namespace LiveKit.PlayModeTests
 
             Assert.IsFalse(statsInstruction.IsError, statsInstruction.Error);
             Assert.IsNotNull(statsInstruction.Stats);
+
+            var hasLocalCandidate = false;
+            var hasRemoteCandidate = false;
+            var hasCandidatePair = false;
+            var hasTransport = false;
+            RtcStats.Types.InboundRtp inboundRtp = null;
+            foreach (var stat in statsInstruction.Stats)
+            {
+                switch (stat.StatsCase)
+                {
+                    case RtcStats.StatsOneofCase.LocalCandidate: hasLocalCandidate = true; break;
+                    case RtcStats.StatsOneofCase.RemoteCandidate: hasRemoteCandidate = true; break;
+                    case RtcStats.StatsOneofCase.CandidatePair: hasCandidatePair = true; break;
+                    case RtcStats.StatsOneofCase.Transport: hasTransport = true; break;
+                    case RtcStats.StatsOneofCase.InboundRtp: inboundRtp = stat.InboundRtp; break;
+                }
+            }
+
+            Assert.IsTrue(hasLocalCandidate, "expected at least one LocalCandidate stat");
+            Assert.IsTrue(hasRemoteCandidate, "expected at least one RemoteCandidate stat");
+            Assert.IsTrue(hasCandidatePair, "expected at least one CandidatePair stat");
+            Assert.IsTrue(hasTransport, "expected at least one Transport stat");
+            Assert.IsNotNull(inboundRtp, "expected at least one InboundRtp stat");
+            Assert.AreEqual("audio", inboundRtp.Stream.Kind);
         }
 
         [UnityTest, Category("E2E")]
