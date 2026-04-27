@@ -66,4 +66,57 @@ namespace LiveKit
                 });
         }
     }
+
+    /// <summary>
+    /// Generic yield instruction for one-shot FFI callbacks that carry either a
+    /// <see cref="StreamError"/> or a typed success value.
+    /// </summary>
+    /// <typeparam name="TCallback">The protobuf callback type (e.g. TextStreamReaderReadAllCallback).</typeparam>
+    /// <typeparam name="TResult">The success value type (e.g. string, byte[]).</typeparam>
+    public class FfiStreamResultInstruction<TCallback, TResult> : YieldInstruction where TCallback : class
+    {
+        private TResult _result;
+
+        public StreamError Error { get; private set; }
+
+        protected TResult ResultValue
+        {
+            get
+            {
+                if (IsError) throw Error;
+                return _result;
+            }
+        }
+
+        internal FfiStreamResultInstruction(
+            ulong asyncId,
+            Func<FfiEvent, TCallback> selector,
+            Func<TCallback, Proto.StreamError> errorExtractor,
+            Func<TCallback, TResult> resultExtractor)
+        {
+            FfiClient.Instance.RegisterPendingCallback(
+                asyncId,
+                selector,
+                e =>
+                {
+                    var protoError = errorExtractor(e);
+                    if (protoError != null)
+                    {
+                        Error = new StreamError(protoError);
+                        IsError = true;
+                    }
+                    else
+                    {
+                        _result = resultExtractor(e);
+                    }
+                    IsDone = true;
+                },
+                () =>
+                {
+                    Error = new StreamError("Canceled");
+                    IsError = true;
+                    IsDone = true;
+                });
+        }
+    }
 }
