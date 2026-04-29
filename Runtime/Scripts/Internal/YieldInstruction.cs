@@ -21,14 +21,21 @@ namespace LiveKit
 
     public class StreamYieldInstruction : CustomYieldInstruction
     {
+        // Volatile so the main-thread coroutine's keepWaiting poll sees writes
+        // performed by the FFI-thread chunk dispatch (which goes through a lock
+        // that provides release semantics, but the unlocked reader still needs
+        // acquire semantics to observe the updated value promptly).
+        private volatile bool _isEos;
+        private volatile bool _isCurrentReadDone;
+
         /// <summary>
         /// True if the stream has reached the end.
         /// </summary>
-        public bool IsEos { protected set; get; }
+        public bool IsEos { get => _isEos; protected set => _isEos = value; }
 
-        internal bool IsCurrentReadDone { get; set; }
+        internal bool IsCurrentReadDone { get => _isCurrentReadDone; set => _isCurrentReadDone = value; }
 
-        public override bool keepWaiting => !IsCurrentReadDone && !IsEos;
+        public override bool keepWaiting => !_isCurrentReadDone && !_isEos;
 
         /// <summary>
         /// Resets the yield instruction for the next read.
@@ -38,11 +45,11 @@ namespace LiveKit
         /// </remarks>
         public override void Reset()
         {
-            if (IsEos)
+            if (_isEos)
             {
                 throw new InvalidOperationException("Cannot reset after end of stream");
             }
-            IsCurrentReadDone = false;
+            _isCurrentReadDone = false;
         }
     }
 }

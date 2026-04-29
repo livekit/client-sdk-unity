@@ -292,6 +292,16 @@ namespace LiveKit.Internal
                 return;
             }
 
+            // Byte stream reader events feed an internal incremental-read buffer that
+            // already serializes mutations under its own lock. Skipping the main-thread
+            // post lets chunks land in the buffer immediately rather than waiting for
+            // the next frame drain.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.ByteStreamReaderEvent)
+            {
+                Instance.ByteStreamReaderEventReceived?.Invoke(response.ByteStreamReaderEvent!);
+                return;
+            }
+
             // Raw-safe one-shot completions also bypass the main thread. The pending
             // callback's onComplete only mutates volatile YieldInstruction fields, so
             // resolving it here saves up to one frame of latency on async ops like
