@@ -302,6 +302,15 @@ namespace LiveKit.Internal
                 return;
             }
 
+            // Same treatment for text stream readers — they share
+            // ReadIncrementalInstructionBase<TContent> with the byte path, so the
+            // lock added there already protects all state mutations.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.TextStreamReaderEvent)
+            {
+                Instance.TextStreamReaderEventReceived?.Invoke(response.TextStreamReaderEvent!);
+                return;
+            }
+
             // Raw-safe one-shot completions also bypass the main thread. The pending
             // callback's onComplete only mutates volatile YieldInstruction fields, so
             // resolving it here saves up to one frame of latency on async ops like
