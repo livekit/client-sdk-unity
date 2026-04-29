@@ -287,6 +287,15 @@ namespace LiveKit.Internal
                 return;
             }
 
+            // Log batches are forwarded directly: UnityEngine.Debug.unityLogger is thread-safe,
+            // and in verbose builds logs can flood at a rate where round-tripping through the
+            // main-thread post queue would be wasteful with no user-visible benefit.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.Logs)
+            {
+                Utils.HandleLogBatch(response.Logs);
+                return;
+            }
+
             // Run on the main thread, the order of execution is guaranteed by Unity
             // It uses a Queue internally
             Instance._context?.Post(static (resp) =>
@@ -316,9 +325,6 @@ namespace LiveKit.Internal
 
             switch (ffiEvent.MessageCase)
             {
-                case FfiEvent.MessageOneofCase.Logs:
-                    Utils.HandleLogBatch(ffiEvent.Logs);
-                    break;
                 case FfiEvent.MessageOneofCase.PublishData:
                     break;
                 case FfiEvent.MessageOneofCase.RoomEvent:
