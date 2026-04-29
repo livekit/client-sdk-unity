@@ -28,7 +28,8 @@ namespace LiveKit
                 {
                     IsError = true;
                     IsDone = true;
-                });
+                },
+                rawSafe: true);
         }
     }
 

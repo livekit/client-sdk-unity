@@ -186,7 +186,8 @@ namespace LiveKit.Internal
             ulong requestAsyncId,
             Func<FfiEvent, TCallback?> selector,
             Action<TCallback> onComplete,
-            Action? onCancel = null
+            Action? onCancel = null,
+            bool rawSafe = false
         ) where TCallback : class
         {
             // Request registration must happen before the request is sent. That ordering is what
@@ -198,7 +199,11 @@ namespace LiveKit.Internal
             //
             // Duplicate IDs are treated as a hard error because they would allow two unrelated
             // requests to compete for the same completion slot.
-            var pending = new PendingCallback<TCallback>(selector, onComplete, onCancel);
+            //
+            // rawSafe == true means the onComplete is safe to invoke directly on the FFI callback
+            // thread (no Unity APIs touched, only volatile state mutations). The dispatcher will
+            // then bypass the main-thread SynchronizationContext post.
+            var pending = new PendingCallback<TCallback>(selector, onComplete, onCancel, rawSafe);
             if (!pendingCallbacks.TryAdd(requestAsyncId, pending))
             {
                 throw new InvalidOperationException($"Duplicate pending callback for request_async_id={requestAsyncId}");
@@ -284,6 +289,16 @@ namespace LiveKit.Internal
             if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
             {
                 Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
+                return;
+            }
+
+            // Raw-safe one-shot completions also bypass the main thread. The pending
+            // callback's onComplete only mutates volatile YieldInstruction fields, so
+            // resolving it here saves up to one frame of latency on async ops like
+            // SetMetadata / UnpublishTrack / stream Read/Write/Close.
+            var requestAsyncId = ExtractRequestAsyncId(response);
+            if (requestAsyncId.HasValue && Instance.TryDispatchRawSafe(requestAsyncId.Value, response))
+            {
                 return;
             }
 
@@ -385,6 +400,24 @@ namespace LiveKit.Internal
             return false;
         }
 
+        // FFI-thread fast path for one-shot completions whose onComplete only mutates
+        // volatile YieldInstruction state (no Unity APIs, no user-event invocations).
+        // Same race model as TryDispatchPendingCallback: the side that wins TryRemove
+        // is the only side that may invoke completion. If the entry isn't raw-safe we
+        // return false and let the caller fall through to the main-thread post.
+        private bool TryDispatchRawSafe(ulong requestAsyncId, FfiEvent ffiEvent)
+        {
+            if (!pendingCallbacks.TryGetValue(requestAsyncId, out var pending))
+            {
+                return false;
+            }
+            if (!pending.RawSafe)
+            {
+                return false;
+            }
+            return TryDispatchPendingCallback(requestAsyncId, ffiEvent);
+        }
+
         private static ulong? ExtractRequestAsyncId(FfiEvent ffiEvent)
         {
             // This switch is only concerned with one-shot async completion callbacks that echo
@@ -420,6 +453,7 @@ namespace LiveKit.Internal
 
         private abstract class PendingCallbackBase
         {
+            public abstract bool RawSafe { get; }
             public abstract bool TryComplete(FfiEvent ffiEvent);
             public abstract void Cancel();
         }
@@ -429,16 +463,21 @@ namespace LiveKit.Internal
             private readonly Func<FfiEvent, TCallback?> selector;
             private readonly Action<TCallback> onComplete;
             private readonly Action? onCancel;
+            private readonly bool rawSafe;
+
+            public override bool RawSafe => rawSafe;
 
             public PendingCallback(
                 Func<FfiEvent, TCallback?> selector,
                 Action<TCallback> onComplete,
-                Action? onCancel
+                Action? onCancel,
+                bool rawSafe
             )
             {
                 this.selector = selector;
                 this.onComplete = onComplete;
                 this.onCancel = onCancel;
+                this.rawSafe = rawSafe;
             }
 
             public override bool TryComplete(FfiEvent ffiEvent)
