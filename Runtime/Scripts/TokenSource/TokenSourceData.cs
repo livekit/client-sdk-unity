@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace LiveKit
 {
+    /// <summary>
+    /// Per-call overrides passed to <see cref="ITokenSourceConfigurable.FetchConnectionDetails"/>.
+    /// </summary>
     public class TokenSourceFetchOptions
     {
         public string RoomName { get; init; }
@@ -50,6 +53,10 @@ namespace LiveKit
         public string Metadata;
     }
 
+    /// <summary>
+    /// Server URL and participant token returned by a token source, ready to pass to
+    /// <c>Room.Connect</c>.
+    /// </summary>
     public class ConnectionDetails
     {
         [JsonProperty("server_url")]

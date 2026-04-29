@@ -7,20 +7,36 @@ using Newtonsoft.Json;
 
 namespace LiveKit
 {
+    /// <summary>
+    /// Marker interface for any source of LiveKit <see cref="ConnectionDetails"/>.
+    /// Implementations are either <see cref="ITokenSourceFixed"/> or <see cref="ITokenSourceConfigurable"/>.
+    /// </summary>
     public interface ITokenSource
     {
     }
 
+    /// <summary>
+    /// A token source whose connection details are fully determined at construction time and cannot be
+    /// influenced by per-call options (e.g. literal credentials or a user-supplied callback).
+    /// </summary>
     public interface ITokenSourceFixed : ITokenSource
     {
         public Task<ConnectionDetails> FetchConnectionDetails();
     }
 
+    /// <summary>
+    /// A token source that accepts per-call <see cref="TokenSourceFetchOptions"/> to parameterize the
+    /// request (e.g. an HTTP endpoint that needs room/participant info per fetch).
+    /// </summary>
     public interface ITokenSourceConfigurable : ITokenSource
     {
         public Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options);
     }
 
+    /// <summary>
+    /// Returns a fixed server URL and participant token. Suitable when credentials are pregenerated
+    /// (e.g. via the LiveKit CLI or LiveKit Cloud project page).
+    /// </summary>
     public class TokenSourceLiteral : ITokenSourceFixed
     {
         private string _serverUrl;
@@ -39,6 +55,10 @@ namespace LiveKit
         }
     }
 
+    /// <summary>
+    /// Delegates connection-detail retrieval to a user-supplied async function. Use this when your
+    /// app already has its own token-fetching code (custom auth flow, cached tokens, etc.).
+    /// </summary>
     public class TokenSourceCustom : ITokenSourceFixed
     {
         public delegate Task<ConnectionDetails> CustomTokenFunction();
@@ -56,6 +76,12 @@ namespace LiveKit
         }
     }
 
+    /// <summary>
+    /// Posts a JSON request to a token-server endpoint and returns the parsed <see cref="ConnectionDetails"/>.
+    /// The body is built from per-call <see cref="TokenSourceFetchOptions"/> (room name, participant info,
+    /// agent dispatch, etc.). Use for production token servers — see
+    /// https://docs.livekit.io/frontends/build/authentication/endpoint/.
+    /// </summary>
     public class TokenSourceEndpoint : ITokenSourceConfigurable
     {
         private string _endpointUrl;
@@ -136,6 +162,11 @@ namespace LiveKit
             string.IsNullOrEmpty(value) ? null : value;
     }
 
+    /// <summary>
+    /// Convenience <see cref="TokenSourceEndpoint"/> preconfigured for LiveKit Cloud sandbox token servers.
+    /// Intended for development and testing only — see
+    /// https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/.
+    /// </summary>
     public class TokenSourceSandbox : TokenSourceEndpoint
     {
         public TokenSourceSandbox(string sandboxId) : base("https://cloud-api.livekit.io/api/v2/sandbox/connection-details", new[] { new StringPair { key = "X-Sandbox-ID", value = sandboxId } }) {}

@@ -8,10 +8,20 @@ using UnityEngine;
 
 namespace LiveKit
 {
+    /// <summary>
+    /// MonoBehaviour wrapper that builds an <see cref="ITokenSource"/> from an inspector-assigned
+    /// <see cref="TokenSourceConfig"/> ScriptableObject. To skip the asset entirely, instantiate
+    /// <see cref="TokenSourceLiteral"/>, <see cref="TokenSourceSandbox"/>, <see cref="TokenSourceEndpoint"/>,
+    /// or <see cref="TokenSourceCustom"/> directly at runtime.
+    /// </summary>
     public class TokenSourceHelper : MonoBehaviour
     {
         [SerializeField] private TokenSourceConfig _config;
 
+        /// <summary>
+        /// Fetches connection details using only the values on the asset-backed
+        /// <see cref="TokenSourceConfig"/>. Equivalent to <c>FetchConnectionDetails(null)</c>.
+        /// </summary>
         public Task<ConnectionDetails> FetchConnectionDetails() => FetchConnectionDetails(null);
 
         ITokenSource _tokenSource;
@@ -44,8 +54,9 @@ namespace LiveKit
 
         /// <summary>
         /// Fetches connection details, merging per-call <paramref name="options"/> over the asset-backed
-        /// <see cref="TokenSourceConfig"/>. For each field, a non-null value on <paramref name="options"/>
-        /// overrides the config value. Ignored when the token source type is <see cref="TokenSourceType.Literal"/>.
+        /// <see cref="TokenSourceConfig"/>. For each field, a value provided on <paramref name="options"/>
+        /// overrides the config value (empty strings are treated as unset and fall through to the config).
+        /// Ignored for fixed token sources (<see cref="TokenSourceLiteral"/>, <see cref="TokenSourceCustom"/>).
         /// </summary>
         public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)   
         {
