@@ -29,7 +29,7 @@ namespace LiveKit
                     IsError = true;
                     IsDone = true;
                 },
-                rawSafe: true);
+                dispatchToMainThread: false);
         }
     }
 
@@ -65,7 +65,7 @@ namespace LiveKit
                     IsError = true;
                     IsDone = true;
                 },
-                rawSafe: true);
+                dispatchToMainThread: false);
         }
     }
 
@@ -119,7 +119,7 @@ namespace LiveKit
                     IsError = true;
                     IsDone = true;
                 },
-                rawSafe: true);
+                dispatchToMainThread: false);
         }
     }
 }

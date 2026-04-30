@@ -187,7 +187,7 @@ namespace LiveKit.Internal
             Func<FfiEvent, TCallback?> selector,
             Action<TCallback> onComplete,
             Action? onCancel = null,
-            bool rawSafe = false
+            bool dispatchToMainThread = true
         ) where TCallback : class
         {
             // Request registration must happen before the request is sent. That ordering is what
@@ -200,10 +200,12 @@ namespace LiveKit.Internal
             // Duplicate IDs are treated as a hard error because they would allow two unrelated
             // requests to compete for the same completion slot.
             //
-            // rawSafe == true means the onComplete is safe to invoke directly on the FFI callback
-            // thread (no Unity APIs touched, only volatile state mutations). The dispatcher will
-            // then bypass the main-thread SynchronizationContext post.
-            var pending = new PendingCallback<TCallback>(selector, onComplete, onCancel, rawSafe);
+            // dispatchToMainThread defaults to true: completion runs on Unity's main thread via
+            // SynchronizationContext.Post, which is safe for any onComplete that touches Unity
+            // APIs or fires user events. Pass false when the onComplete only mutates volatile
+            // YieldInstruction state — RouteFfiEvent will then run it inline on the FFI callback
+            // thread instead of paying a frame of latency for the post.
+            var pending = new PendingCallback<TCallback>(selector, onComplete, onCancel, dispatchToMainThread);
             if (!pendingCallbacks.TryAdd(requestAsyncId, pending))
             {
                 throw new InvalidOperationException($"Duplicate pending callback for request_async_id={requestAsyncId}");
@@ -332,12 +334,12 @@ namespace LiveKit.Internal
                 return;
             }
 
-            // Raw-safe one-shot completions also bypass the main thread. The pending
-            // callback's onComplete only mutates volatile YieldInstruction fields, so
-            // resolving it here saves up to one frame of latency on async ops like
-            // SetMetadata / UnpublishTrack / stream Read/Write/Close.
+            // One-shot completions registered with dispatchToMainThread:false also bypass the
+            // main thread. The pending callback's onComplete only mutates volatile
+            // YieldInstruction fields, so resolving it here saves up to one frame of latency
+            // on async ops like SetMetadata / UnpublishTrack / stream Read/Write/Close.
             var requestAsyncId = ExtractRequestAsyncId(response);
-            if (requestAsyncId.HasValue && Instance.TryDispatchRawSafe(requestAsyncId.Value, response))
+            if (requestAsyncId.HasValue && Instance.TrySkipDispatch(requestAsyncId.Value, response))
             {
                 return;
             }
@@ -431,18 +433,20 @@ namespace LiveKit.Internal
             return false;
         }
 
-        // FFI-thread fast path for one-shot completions whose onComplete only mutates
-        // volatile YieldInstruction state (no Unity APIs, no user-event invocations).
-        // Same race model as TryDispatchPendingCallback: the side that wins TryRemove
-        // is the only side that may invoke completion. If the entry isn't raw-safe we
-        // return false and let the caller fall through to the main-thread post.
-        internal bool TryDispatchRawSafe(ulong requestAsyncId, FfiEvent ffiEvent)
+        // Inline-completion fast path for one-shot callbacks whose onComplete only
+        // mutates volatile YieldInstruction state (no Unity APIs, no user-event
+        // invocations). Returning true means the caller has been fully handled here
+        // — no further dispatch needed. Returning false means the caller should fall
+        // through to its normal main-thread post path. Same race model as
+        // TryDispatchPendingCallback: the side that wins TryRemove is the only side
+        // that may invoke the completion.
+        internal bool TrySkipDispatch(ulong requestAsyncId, FfiEvent ffiEvent)
         {
             if (!pendingCallbacks.TryGetValue(requestAsyncId, out var pending))
             {
                 return false;
             }
-            if (!pending.RawSafe)
+            if (pending.DispatchToMainThread)
             {
                 return false;
             }
@@ -484,7 +488,7 @@ namespace LiveKit.Internal
 
         private abstract class PendingCallbackBase
         {
-            public abstract bool RawSafe { get; }
+            public abstract bool DispatchToMainThread { get; }
             public abstract bool TryComplete(FfiEvent ffiEvent);
             public abstract void Cancel();
         }
@@ -494,21 +498,21 @@ namespace LiveKit.Internal
             private readonly Func<FfiEvent, TCallback?> selector;
             private readonly Action<TCallback> onComplete;
             private readonly Action? onCancel;
-            private readonly bool rawSafe;
+            private readonly bool dispatchToMainThread;
 
-            public override bool RawSafe => rawSafe;
+            public override bool DispatchToMainThread => dispatchToMainThread;
 
             public PendingCallback(
                 Func<FfiEvent, TCallback?> selector,
                 Action<TCallback> onComplete,
                 Action? onCancel,
-                bool rawSafe
+                bool dispatchToMainThread
             )
             {
                 this.selector = selector;
                 this.onComplete = onComplete;
                 this.onCancel = onCancel;
-                this.rawSafe = rawSafe;
+                this.dispatchToMainThread = dispatchToMainThread;
             }
 
             public override bool TryComplete(FfiEvent ffiEvent)

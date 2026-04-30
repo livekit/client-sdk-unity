@@ -7,12 +7,12 @@ using NUnit.Framework;
 
 namespace LiveKit.EditModeTests
 {
-    public class RawSafeDispatchTests
+    public class SkipDispatchTests
     {
         // Captures Post calls so a test can verify FFIClient sent work to the
-        // main-thread sync context for non-raw entries, and (optionally) drain
-        // the queued lambda synchronously to verify the completion would have
-        // run on the main thread.
+        // main-thread sync context for entries registered with
+        // dispatchToMainThread:true, and (optionally) drain the queued lambda
+        // synchronously to verify the completion would have run on the main thread.
         private sealed class RecordingSyncContext : SynchronizationContext
         {
             public readonly List<(SendOrPostCallback callback, object state)> Posts = new();
@@ -35,7 +35,7 @@ namespace LiveKit.EditModeTests
         private static ulong NextAsyncId() => (ulong)Interlocked.Increment(ref _asyncIdSeed);
 
         [Test]
-        public void RawSafeTrueCallback_RunsOnDispatchingBackgroundThread()
+        public void InlineCallback_RunsOnDispatchingBackgroundThread()
         {
             var asyncId = NextAsyncId();
             var testThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -50,7 +50,7 @@ namespace LiveKit.EditModeTests
                     completionThreadId = Thread.CurrentThread.ManagedThreadId;
                     done.Set();
                 },
-                rawSafe: true);
+                dispatchToMainThread: false);
 
             int dispatchThreadId = -1;
             // Use an explicit Thread (not Task.Run) so we know the dispatcher is
@@ -64,22 +64,22 @@ namespace LiveKit.EditModeTests
                 {
                     UnpublishTrack = new UnpublishTrackCallback { AsyncId = asyncId }
                 };
-                FfiClient.Instance.TryDispatchRawSafe(asyncId, ev);
+                FfiClient.Instance.TrySkipDispatch(asyncId, ev);
             });
             dispatcher.Start();
             Assert.IsTrue(dispatcher.Join(TimeSpan.FromSeconds(2)),
                 "Dispatcher thread did not finish within 2s.");
 
             Assert.IsTrue(done.Wait(TimeSpan.FromSeconds(1)),
-                "Completion did not run within 1s — TryDispatchRawSafe may have failed silently.");
+                "Completion did not run within 1s — TrySkipDispatch may have failed silently.");
             Assert.AreEqual(dispatchThreadId, completionThreadId,
-                "rawSafe completion did not run on the dispatching thread — the FFI-thread fast path is not being taken.");
+                "Inline completion did not run on the dispatching thread — the FFI-thread fast path is not being taken.");
             Assert.AreNotEqual(testThreadId, completionThreadId,
-                "rawSafe completion ran on the test main thread — it was marshalled rather than dispatched raw.");
+                "Inline completion ran on the test main thread — it was marshalled rather than completed inline.");
         }
 
         [Test]
-        public void RawSafeFalseCallback_TryDispatchRawSafe_ReturnsFalseAndDoesNotComplete()
+        public void MainThreadCallback_TrySkipDispatch_ReturnsFalseAndDoesNotComplete()
         {
             var asyncId = NextAsyncId();
             var completionRan = false;
@@ -88,7 +88,7 @@ namespace LiveKit.EditModeTests
                 asyncId,
                 static e => e.UnpublishTrack,
                 cb => { completionRan = true; },
-                rawSafe: false);
+                dispatchToMainThread: true);
 
             try
             {
@@ -96,12 +96,12 @@ namespace LiveKit.EditModeTests
                 {
                     UnpublishTrack = new UnpublishTrackCallback { AsyncId = asyncId }
                 };
-                var dispatched = FfiClient.Instance.TryDispatchRawSafe(asyncId, ev);
+                var skipped = FfiClient.Instance.TrySkipDispatch(asyncId, ev);
 
-                Assert.IsFalse(dispatched,
-                    "TryDispatchRawSafe should return false for entries registered with rawSafe: false.");
+                Assert.IsFalse(skipped,
+                    "TrySkipDispatch should return false for entries registered with dispatchToMainThread:true.");
                 Assert.IsFalse(completionRan,
-                    "Completion ran via TryDispatchRawSafe even though rawSafe was false.");
+                    "Completion ran via TrySkipDispatch even though the entry requires main-thread dispatch.");
             }
             finally
             {
@@ -111,11 +111,11 @@ namespace LiveKit.EditModeTests
         }
 
         // Integration test: drives the same code path FFICallback uses, so this
-        // fails if a future refactor removes the rawSafe short-circuit from
-        // RouteFfiEvent. Calling RouteFfiEvent from a fresh Thread simulates
+        // fails if a future refactor removes the TrySkipDispatch short-circuit
+        // from RouteFfiEvent. Calling RouteFfiEvent from a fresh Thread simulates
         // Rust calling FFICallback from its own worker thread.
         [Test]
-        public void RouteFfiEvent_RawSafeTrue_CompletesOnDispatchingThread()
+        public void RouteFfiEvent_InlineCallback_CompletesOnDispatchingThread()
         {
             var asyncId = NextAsyncId();
             var testThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -130,7 +130,7 @@ namespace LiveKit.EditModeTests
                     completionThreadId = Thread.CurrentThread.ManagedThreadId;
                     done.Set();
                 },
-                rawSafe: true);
+                dispatchToMainThread: false);
 
             int dispatchThreadId = -1;
             var dispatcher = new Thread(() =>
@@ -147,19 +147,19 @@ namespace LiveKit.EditModeTests
                 "Dispatcher thread did not finish within 2s.");
 
             Assert.IsTrue(done.Wait(TimeSpan.FromSeconds(1)),
-                "Completion did not run — RouteFfiEvent may be missing the TryDispatchRawSafe call for rawSafe entries.");
+                "Completion did not run — RouteFfiEvent may be missing the TrySkipDispatch call for inline entries.");
             Assert.AreEqual(dispatchThreadId, completionThreadId,
-                "rawSafe completion did not run on the dispatching thread — RouteFfiEvent marshalled it instead.");
+                "Inline completion did not run on the dispatching thread — RouteFfiEvent marshalled it instead.");
             Assert.AreNotEqual(testThreadId, completionThreadId,
-                "rawSafe completion ran on the test main thread.");
+                "Inline completion ran on the test main thread.");
         }
 
-        // Integration test: non-raw entries must reach the main-thread
-        // SynchronizationContext via Post. We swap _context for a recording
-        // SC so we can observe the post (and drain it to verify the queued
-        // lambda actually invokes the completion).
+        // Integration test: entries registered with dispatchToMainThread:true must
+        // reach the main-thread SynchronizationContext via Post. We swap _context
+        // for a recording SC so we can observe the post (and drain it to verify
+        // the queued lambda actually invokes the completion).
         [Test]
-        public void RouteFfiEvent_RawSafeFalse_PostsToSynchronizationContext_AndDrainsCompletion()
+        public void RouteFfiEvent_MainThreadCallback_PostsToSynchronizationContext_AndDrainsCompletion()
         {
             var asyncId = NextAsyncId();
             int completionThreadId = -1;
@@ -173,7 +173,7 @@ namespace LiveKit.EditModeTests
                     completionThreadId = Thread.CurrentThread.ManagedThreadId;
                     completionRan.Set();
                 },
-                rawSafe: false);
+                dispatchToMainThread: true);
 
             var recording = new RecordingSyncContext();
             var originalContext = FfiClient.Instance._context;
@@ -196,9 +196,9 @@ namespace LiveKit.EditModeTests
                     "Dispatcher thread did not finish within 2s.");
 
                 Assert.IsFalse(completionRan.IsSet,
-                    "Non-raw completion ran synchronously on the dispatcher thread — it should have been posted, not executed.");
+                    "Main-thread completion ran synchronously on the dispatcher thread — it should have been posted, not executed.");
                 Assert.AreEqual(1, recording.Posts.Count,
-                    "RouteFfiEvent should have posted exactly one work item to the sync context for a non-raw pending entry.");
+                    "RouteFfiEvent should have posted exactly one work item to the sync context for a main-thread pending entry.");
 
                 // Drain the queued lambda on this (test) thread, simulating Unity's
                 // main-thread queue drain. The completion must now run, and on this thread.
@@ -210,7 +210,7 @@ namespace LiveKit.EditModeTests
                 Assert.AreEqual(drainerThreadId, completionThreadId,
                     "Drained completion should run on the thread that drains the sync context.");
                 Assert.AreNotEqual(dispatchThreadId, completionThreadId,
-                    "Completion ran on the dispatcher's thread despite rawSafe being false.");
+                    "Completion ran on the dispatcher's thread despite dispatchToMainThread:true.");
             }
             finally
             {
@@ -223,9 +223,10 @@ namespace LiveKit.EditModeTests
         public void TryDispatchPendingCallback_RunsCompletionSynchronouslyOnCallerThread()
         {
             // Sanity check: TryDispatchPendingCallback itself is synchronous on the
-            // caller's thread regardless of rawSafe. What makes the rawSafe path
-            // "raw" is that FFICallback (the FFI thread) is the caller, vs. the
-            // SynchronizationContext-posted lambda (the main thread) for non-raw.
+            // caller's thread regardless of dispatchToMainThread. What makes the
+            // inline path "skip dispatch" is that FFICallback (the FFI thread) is
+            // the caller, vs. the SynchronizationContext-posted lambda (the main
+            // thread) for entries that require main-thread dispatch.
             var asyncId = NextAsyncId();
             int completionThreadId = -1;
             var done = new ManualResetEventSlim(false);
@@ -238,7 +239,7 @@ namespace LiveKit.EditModeTests
                     completionThreadId = Thread.CurrentThread.ManagedThreadId;
                     done.Set();
                 },
-                rawSafe: false);
+                dispatchToMainThread: true);
 
             int dispatchThreadId = -1;
             var dispatcher = new Thread(() =>

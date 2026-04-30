@@ -6,10 +6,10 @@ namespace LiveKit
     public class YieldInstruction : CustomYieldInstruction
     {
         // Backing fields are volatile because completion may run on the FFI callback
-        // thread (raw-safe pending callbacks bypass the main-thread post). The release
-        // semantics of a volatile write ensure any state mutated by the completion
-        // (Error, ResultValue, etc.) is visible to the main thread before it observes
-        // IsDone == true.
+        // thread (pending callbacks registered with dispatchToMainThread:false bypass
+        // the main-thread post). The release semantics of a volatile write ensure any
+        // state mutated by the completion (Error, ResultValue, etc.) is visible to the
+        // main thread before it observes IsDone == true.
         private volatile bool _isDone;
         private volatile bool _isError;
 
