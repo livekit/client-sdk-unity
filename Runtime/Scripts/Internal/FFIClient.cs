@@ -381,15 +381,9 @@ namespace LiveKit.Internal
                 case FfiEvent.MessageOneofCase.VideoStreamEvent:
                     Instance.VideoStreamEventReceived?.Invoke(ffiEvent.VideoStreamEvent!);
                     break;
-                case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                    Instance.AudioStreamEventReceived?.Invoke(ffiEvent.AudioStreamEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
-                    Instance.ByteStreamReaderEventReceived?.Invoke(ffiEvent.ByteStreamReaderEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
-                    Instance.TextStreamReaderEventReceived?.Invoke(ffiEvent.TextStreamReaderEvent!);
-                    break;
+                // AudioStreamEvent, ByteStreamReaderEvent, and TextStreamReaderEvent are
+                // dispatched directly on the FFI callback thread by RouteFfiEvent and
+                // never reach this switch — see the fast-path early-returns there.
                 case FfiEvent.MessageOneofCase.DataTrackStreamEvent:
                     Instance.DataTrackStreamEventReceived?.Invoke(ffiEvent.DataTrackStreamEvent!);
                     break;
