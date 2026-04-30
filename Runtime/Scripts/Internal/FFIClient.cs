@@ -391,7 +391,7 @@ namespace LiveKit.Internal
             }
         }
 
-        private bool TryDispatchPendingCallback(ulong requestAsyncId, FfiEvent ffiEvent)
+        internal bool TryDispatchPendingCallback(ulong requestAsyncId, FfiEvent ffiEvent)
         {
             // Remove-first dispatch is the key race-proofing step.
             //
@@ -424,7 +424,7 @@ namespace LiveKit.Internal
         // Same race model as TryDispatchPendingCallback: the side that wins TryRemove
         // is the only side that may invoke completion. If the entry isn't raw-safe we
         // return false and let the caller fall through to the main-thread post.
-        private bool TryDispatchRawSafe(ulong requestAsyncId, FfiEvent ffiEvent)
+        internal bool TryDispatchRawSafe(ulong requestAsyncId, FfiEvent ffiEvent)
         {
             if (!pendingCallbacks.TryGetValue(requestAsyncId, out var pending))
             {
