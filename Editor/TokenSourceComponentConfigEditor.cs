@@ -2,8 +2,8 @@ using UnityEditor;
 using UnityEngine;
 using LiveKit;
 
-[CustomEditor(typeof(TokenSourceConfig))]
-public class TokenSourceConfigEditor : Editor
+[CustomEditor(typeof(TokenSourceComponentConfig))]
+public class TokenSourceComponentConfigEditor : Editor
 {
     public override void OnInspectorGUI()
     {

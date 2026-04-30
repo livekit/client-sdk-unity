@@ -4,53 +4,105 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace LiveKit
 {
-    public class TokenSource : MonoBehaviour
+    /// <summary>
+    /// Marker interface for any source of LiveKit <see cref="ConnectionDetails"/>.
+    /// Implementations are either <see cref="ITokenSourceFixed"/> or <see cref="ITokenSourceConfigurable"/>.
+    /// </summary>
+    public interface ITokenSource
     {
-        [SerializeField] private TokenSourceConfig _config;
+    }
 
-        private static readonly string SandboxUrl = "https://cloud-api.livekit.io/api/v2/sandbox/connection-details";
-        private static readonly HttpClient HttpClient = new HttpClient();
+    /// <summary>
+    /// A token source whose connection details are fully determined at construction time and cannot be
+    /// influenced by per-call options (e.g. literal credentials or a user-supplied callback).
+    /// </summary>
+    public interface ITokenSourceFixed : ITokenSource
+    {
+        public Task<ConnectionDetails> FetchConnectionDetails();
+    }
 
-        public async Task<ConnectionDetails> FetchConnectionDetails()
+    /// <summary>
+    /// A token source that accepts per-call <see cref="TokenSourceFetchOptions"/> to parameterize the
+    /// request (e.g. an HTTP endpoint that needs room/participant info per fetch).
+    /// </summary>
+    public interface ITokenSourceConfigurable : ITokenSource
+    {
+        public Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options);
+    }
+
+    /// <summary>
+    /// Returns a fixed server URL and participant token. Suitable when credentials are pregenerated
+    /// (e.g. via the LiveKit CLI or LiveKit Cloud project page).
+    /// </summary>
+    public class TokenSourceLiteral : ITokenSourceFixed
+    {
+        private string _serverUrl;
+        private string _participantToken;
+
+        public TokenSourceLiteral(string serverUrl, string participantToken)
         {
-            if (_config == null)
-                throw new InvalidOperationException("Token source configuration was not provided");
-            if (!_config.IsValid)
-                throw new InvalidOperationException("Token source configuration is invalid");
-
-            switch (_config.TokenSourceType)
-            {
-                case TokenSourceType.Sandbox:
-                    return await FetchFromTokenSource(SandboxUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = _config.SandboxId } });
-
-                case TokenSourceType.Endpoint:
-                    return await FetchFromTokenSource(_config.EndpointUrl, _config.EndpointHeaders);
-
-                case TokenSourceType.Literal:
-                    return new ConnectionDetails
-                    {
-                        ServerUrl = _config.ServerUrl,
-                        ParticipantToken = _config.Token
-                    };
-
-                default:
-                    throw new InvalidOperationException("Unknown token source type");
-            }
+            _serverUrl = serverUrl;
+            _participantToken = participantToken;
         }
 
-        private async Task<ConnectionDetails> FetchFromTokenSource(string url, IEnumerable<StringPair> headers)
+        public Task<ConnectionDetails> FetchConnectionDetails()
         {
-            var requestBody = BuildRequest(_config);
+            var result = new ConnectionDetails { ServerUrl = _serverUrl, ParticipantToken = _participantToken };
+            return Task.FromResult(result);
+        }
+    }
+
+    /// <summary>
+    /// Delegates connection-detail retrieval to a user-supplied async function. Use this when your
+    /// app already has its own token-fetching code (custom auth flow, cached tokens, etc.).
+    /// </summary>
+    public class TokenSourceCustom : ITokenSourceFixed
+    {
+        public delegate Task<ConnectionDetails> CustomTokenFunction();
+
+        private CustomTokenFunction _customTokenFunction;
+
+        public TokenSourceCustom(CustomTokenFunction customTokenFunction)
+        {
+            _customTokenFunction = customTokenFunction;
+        }
+
+        public Task<ConnectionDetails> FetchConnectionDetails()
+        {
+            return _customTokenFunction();
+        }
+    }
+
+    /// <summary>
+    /// Posts a JSON request to a token-server endpoint and returns the parsed <see cref="ConnectionDetails"/>.
+    /// The body is built from per-call <see cref="TokenSourceFetchOptions"/> (room name, participant info,
+    /// agent dispatch, etc.). Use for production token servers — see
+    /// https://docs.livekit.io/frontends/build/authentication/endpoint/.
+    /// </summary>
+    public class TokenSourceEndpoint : ITokenSourceConfigurable
+    {
+        private string _endpointUrl;
+        IEnumerable<StringPair> _headers;
+        private static readonly HttpClient HttpClient = new HttpClient();
+
+        public TokenSourceEndpoint(string endpointUrl, IEnumerable<StringPair> headers)
+        {
+            _endpointUrl = endpointUrl;
+            _headers = headers;
+        }
+
+        public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
+        {
+            var requestBody = BuildRequest(options);
             var jsonBody = JsonConvert.SerializeObject(requestBody);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
-            if (headers != null)
+            var request = new HttpRequestMessage(HttpMethod.Post, _endpointUrl);
+            if (_headers != null)
             {
-                foreach (var header in headers)
+                foreach (var header in _headers)
                 {
                     if (!string.IsNullOrEmpty(header.key))
                         request.Headers.TryAddWithoutValidation(header.key, header.value);
@@ -69,26 +121,26 @@ namespace LiveKit
             return JsonConvert.DeserializeObject<ConnectionDetails>(jsonContent);
         }
 
-        private static TokenSourceRequest BuildRequest(TokenSourceConfig config)
+        private static TokenSourceRequest BuildRequest(TokenSourceFetchOptions options)
         {
             var request = new TokenSourceRequest
             {
-                RoomName = NullIfEmpty(config.RoomName),
-                ParticipantName = NullIfEmpty(config.ParticipantName),
-                ParticipantIdentity = NullIfEmpty(config.ParticipantIdentity),
-                ParticipantMetadata = NullIfEmpty(config.ParticipantMetadata),
+                RoomName = NullIfEmpty(options.RoomName),
+                ParticipantName = NullIfEmpty(options.ParticipantName),
+                ParticipantIdentity = NullIfEmpty(options.ParticipantIdentity),
+                ParticipantMetadata = NullIfEmpty(options.ParticipantMetadata),
             };
 
-            if (config.ParticipantAttributes != null && config.ParticipantAttributes.Count > 0)
+            if (options.ParticipantAttributes != null && options.ParticipantAttributes.Count > 0)
             {
-                request.ParticipantAttributes = config.ParticipantAttributes
-                    .Where(a => !string.IsNullOrEmpty(a.key))
-                    .ToDictionary(a => a.key, a => a.value);
+                request.ParticipantAttributes = options.ParticipantAttributes
+                    .Where(a => !string.IsNullOrEmpty(a.Key))
+                    .ToDictionary(a => a.Key, a => a.Value);
                 if (request.ParticipantAttributes.Count == 0)
                     request.ParticipantAttributes = null;
             }
 
-            if (!string.IsNullOrEmpty(config.AgentName) || !string.IsNullOrEmpty(config.AgentMetadata))
+            if (!string.IsNullOrEmpty(options.AgentName) || !string.IsNullOrEmpty(options.AgentMetadata))
             {
                 request.RoomConfig = new RoomConfig
                 {
@@ -96,8 +148,8 @@ namespace LiveKit
                     {
                         new AgentDispatch
                         {
-                            AgentName = NullIfEmpty(config.AgentName),
-                            Metadata = NullIfEmpty(config.AgentMetadata)
+                            AgentName = NullIfEmpty(options.AgentName),
+                            Metadata = NullIfEmpty(options.AgentMetadata)
                         }
                     }
                 };
@@ -110,49 +162,13 @@ namespace LiveKit
             string.IsNullOrEmpty(value) ? null : value;
     }
 
-    class TokenSourceRequest
+    /// <summary>
+    /// Convenience <see cref="TokenSourceEndpoint"/> preconfigured for LiveKit Cloud sandbox token servers.
+    /// Intended for development and testing only — see
+    /// https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/.
+    /// </summary>
+    public class TokenSourceSandbox : TokenSourceEndpoint
     {
-        [JsonProperty("room_name", NullValueHandling = NullValueHandling.Ignore)]
-        public string RoomName;
-
-        [JsonProperty("participant_name", NullValueHandling = NullValueHandling.Ignore)]
-        public string ParticipantName;
-
-        [JsonProperty("participant_identity", NullValueHandling = NullValueHandling.Ignore)]
-        public string ParticipantIdentity;
-
-        [JsonProperty("participant_metadata", NullValueHandling = NullValueHandling.Ignore)]
-        public string ParticipantMetadata;
-
-        [JsonProperty("participant_attributes", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> ParticipantAttributes;
-
-        [JsonProperty("room_config", NullValueHandling = NullValueHandling.Ignore)]
-        public RoomConfig RoomConfig;
-    }
-
-    class RoomConfig
-    {
-        [JsonProperty("agents", NullValueHandling = NullValueHandling.Ignore)]
-        public List<AgentDispatch> Agents;
-    }
-
-    class AgentDispatch
-    {
-        [JsonProperty("agent_name", NullValueHandling = NullValueHandling.Ignore)]
-        public string AgentName;
-
-        [JsonProperty("metadata", NullValueHandling = NullValueHandling.Ignore)]
-        public string Metadata;
-    }
-
-    [Serializable]
-    public struct ConnectionDetails
-    {
-        [JsonProperty("server_url")]
-        public string ServerUrl;
-
-        [JsonProperty("participant_token")]
-        public string ParticipantToken;
+        public TokenSourceSandbox(string sandboxId) : base("https://cloud-api.livekit.io/api/v2/sandbox/connection-details", new[] { new StringPair { key = "X-Sandbox-ID", value = sandboxId } }) {}
     }
 }

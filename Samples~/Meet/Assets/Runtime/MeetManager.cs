@@ -15,7 +15,7 @@ using UnityEngine.Android;
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
 /// </summary>
-[RequireComponent(typeof(TokenSource))]
+[RequireComponent(typeof(TokenSourceComponent))]
 public class MeetManager : MonoBehaviour
 {
     private const string LocalVideoTrackName = "my-video-track";
@@ -37,7 +37,7 @@ public class MeetManager : MonoBehaviour
     [SerializeField] private GridLayoutGroup videoTrackParent;
     [SerializeField] private int frameRate = 30;
 
-    private TokenSource _tokenSource;
+    private TokenSourceComponent _tokenSourceComponent;
     private Room _room;
     private WebCamTexture _webCamTexture;
     private Transform _audioTrackParent;
@@ -61,7 +61,7 @@ public class MeetManager : MonoBehaviour
 
     private void Start()
     {
-        _tokenSource = GetComponent<TokenSource>();
+        _tokenSourceComponent = GetComponent<TokenSourceComponent>();
         startCallButton.onClick.AddListener(OnStartCall);
         endCallButton.onClick.AddListener(OnEndCall);
         cameraButton.onClick.AddListener(OnToggleCamera);
@@ -157,7 +157,7 @@ public class MeetManager : MonoBehaviour
     {
         if (_room != null) yield break;
 
-        var connectionDetailsTask = _tokenSource.FetchConnectionDetails();
+        var connectionDetailsTask = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions());
         yield return new WaitUntil(() => connectionDetailsTask.IsCompleted);
 
         if (connectionDetailsTask.IsFaulted)
