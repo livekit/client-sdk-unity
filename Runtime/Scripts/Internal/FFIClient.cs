@@ -283,6 +283,15 @@ namespace LiveKit.Internal
 
             var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
+            RouteFfiEvent(response);
+        }
+
+        // Routing logic split out from FFICallback so tests can drive it from a
+        // chosen thread without going through the P/Invoke entry point. Running
+        // production traffic still always lands here via FFICallback above.
+        internal static void RouteFfiEvent(FfiEvent response)
+        {
+            if (_isDisposed) return;
 
             // Audio stream events are handled directly on the FFI callback thread
             // to bypass the main thread, since the audio thread consumes the data
