@@ -112,7 +112,7 @@ namespace LiveKit
 
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
     {
-        RtcAudioSource _source;
+        IRtcSource _source;
 
         IRtcSource ILocalTrack.source { get => _source; }
 
@@ -120,7 +120,25 @@ namespace LiveKit
             _source = source;
         }
 
+        internal LocalAudioTrack(OwnedTrack track, Room room, PlatformAudioSource source) : base(track, room, room?.LocalParticipant) {
+            _source = source;
+        }
+
         public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source, Room room)
+        {
+            using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
+            var createTrack = request.request;
+            createTrack.Name = name;
+            createTrack.SourceHandle = (ulong)source.Handle.DangerousGetHandle();
+
+            using var resp = request.Send();
+            FfiResponse res = resp;
+            var trackInfo = res.CreateAudioTrack.Track;
+            var track = new LocalAudioTrack(trackInfo, room, source);
+            return track;
+        }
+
+        public static LocalAudioTrack CreateAudioTrack(string name, PlatformAudioSource source, Room room)
         {
             using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
             var createTrack = request.request;
