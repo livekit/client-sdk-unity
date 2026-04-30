@@ -301,6 +301,18 @@ namespace LiveKit.Internal
                 return;
             }
 
+            // Log batches are forwarded directly. UnityEngine.Debug.unityLogger is
+            // documented thread-safe; Unity's logger queues to its console drain
+            // internally. Skipping the main-thread post means logs reach the
+            // console without a one-frame delay — useful during error storms,
+            // panics, or LK_VERBOSE noise where the post queue could otherwise
+            // back up.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.Logs)
+            {
+                Utils.HandleLogBatch(response.Logs);
+                return;
+            }
+
             // Byte stream reader events feed an internal incremental-read buffer that
             // already serializes mutations under its own lock. Skipping the main-thread
             // post lets chunks land in the buffer immediately rather than waiting for
@@ -359,9 +371,6 @@ namespace LiveKit.Internal
 
             switch (ffiEvent.MessageCase)
             {
-                case FfiEvent.MessageOneofCase.Logs:
-                    Utils.HandleLogBatch(ffiEvent.Logs);
-                    break;
                 case FfiEvent.MessageOneofCase.PublishData:
                     break;
                 case FfiEvent.MessageOneofCase.RoomEvent:
@@ -381,8 +390,8 @@ namespace LiveKit.Internal
                 case FfiEvent.MessageOneofCase.VideoStreamEvent:
                     Instance.VideoStreamEventReceived?.Invoke(ffiEvent.VideoStreamEvent!);
                     break;
-                // AudioStreamEvent, ByteStreamReaderEvent, and TextStreamReaderEvent are
-                // dispatched directly on the FFI callback thread by RouteFfiEvent and
+                // Logs, AudioStreamEvent, ByteStreamReaderEvent, and TextStreamReaderEvent
+                // are dispatched directly on the FFI callback thread by RouteFfiEvent and
                 // never reach this switch — see the fast-path early-returns there.
                 case FfiEvent.MessageOneofCase.DataTrackStreamEvent:
                     Instance.DataTrackStreamEventReceived?.Invoke(ffiEvent.DataTrackStreamEvent!);
