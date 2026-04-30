@@ -212,7 +212,7 @@ public class MeetManager : MonoBehaviour
     private void AddRemoteVideoTrack(RemoteVideoTrack videoTrack)
     {
         var sid = videoTrack.Sid;
-        var imageObject = CreateVideoDisplay(sid, invert: true);
+        var imageObject = CreateVideoDisplay(sid);
 
         var image = imageObject.GetComponent<RawImage>();
         var stream = new VideoStream(videoTrack);
@@ -455,11 +455,9 @@ public class MeetManager : MonoBehaviour
         button.GetComponentInChildren<MaterialIcon>().iconUnicode = unicode;
     }
 
-    private GameObject CreateVideoDisplay(string name, bool invert = false)
+    private GameObject CreateVideoDisplay(string name)
     {
         var obj = new GameObject(name);
-        var rect = obj.AddComponent<RectTransform>();
-        if (invert) rect.rotation = Quaternion.Euler(0, 0, 180);
         obj.AddComponent<RawImage>();
         return obj;
     }

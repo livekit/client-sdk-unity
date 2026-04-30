@@ -14,6 +14,8 @@ namespace LiveKit
 		private Texture2D _planeU;
 		private Texture2D _planeV;
 
+		private const string SHADER_NAME = "Hidden/LiveKit/YUV2RGB";
+
 		// Ensure Output exists and matches the given size; returns true if created or resized.
 		public bool EnsureOutput(int width, int height)
 		{
@@ -79,7 +81,7 @@ namespace LiveKit
 		{
 			if (_yuvToRgbMaterial == null)
 			{
-				var shader = Shader.Find("Hidden/LiveKit/YUV2RGB");
+				var shader = Shader.Find(SHADER_NAME);
 				if (shader != null)
 					_yuvToRgbMaterial = new Material(shader);
 			}
@@ -134,8 +136,8 @@ namespace LiveKit
 				tempTex.LoadRawTextureData((IntPtr)rgba.Info.DataPtr, (int)rgba.GetMemorySize());
 				tempTex.Apply();
 				
-				// Also mirror horizontally by flipping the UV scale on the X axis and offsetting.
-				Graphics.Blit(tempTex, Output, new Vector2(-1f, 1f), new Vector2(1f, 0f));
+				// Mirror vertically to match the GPU shader path's UV remap.
+				Graphics.Blit(tempTex, Output, new Vector2(1f, -1f), new Vector2(0f, 1f));
 			}
 			finally
 			{
