@@ -133,9 +133,9 @@ namespace LiveKit.Proto {
             "Rl9NRURJVU0QARIVChFTT1hSX1JPTExPRkZfTk9ORRACEhgKFFNPWFJfSElH",
             "SF9QUkVDX0NMT0NLEAMSGQoVU09YUl9ET1VCTEVfUFJFQ0lTSU9OEAQSCwoH",
             "U09YUl9WUhAFKkEKD0F1ZGlvU3RyZWFtVHlwZRIXChNBVURJT19TVFJFQU1f",
-            "TkFUSVZFEAASFQoRQVVESU9fU1RSRUFNX0hUTUwQASoqCg9BdWRpb1NvdXJj",
-            "ZVR5cGUSFwoTQVVESU9fU09VUkNFX05BVElWRRAAQhCqAg1MaXZlS2l0LlBy",
-            "b3Rv"));
+            "TkFUSVZFEAASFQoRQVVESU9fU1RSRUFNX0hUTUwQASpFCg9BdWRpb1NvdXJj",
+            "ZVR5cGUSFwoTQVVESU9fU09VUkNFX05BVElWRRAAEhkKFUFVRElPX1NPVVJD",
+            "RV9QTEFURk9STRABQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.SoxResamplerDataType), typeof(global::LiveKit.Proto.SoxQualityRecipe), typeof(global::LiveKit.Proto.SoxFlagBits), typeof(global::LiveKit.Proto.AudioStreamType), typeof(global::LiveKit.Proto.AudioSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -240,7 +240,15 @@ namespace LiveKit.Proto {
   }
 
   public enum AudioSourceType {
+    /// <summary>
+    /// Push-based audio source - manually capture frames via CaptureAudioFrameRequest
+    /// </summary>
     [pbr::OriginalName("AUDIO_SOURCE_NATIVE")] AudioSourceNative = 0,
+    /// <summary>
+    /// Platform ADM-based audio source - captures from microphone automatically
+    /// Requires PlatformAudio to be created first to enable ADM recording
+    /// </summary>
+    [pbr::OriginalName("AUDIO_SOURCE_PLATFORM")] AudioSourcePlatform = 1,
   }
 
   #endregion
