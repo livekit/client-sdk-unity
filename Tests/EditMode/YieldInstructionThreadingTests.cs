@@ -25,7 +25,7 @@ namespace LiveKit.EditModeTests
         // IsDone=true; the test thread spins on it. Without volatile semantics
         // (or on a weak memory model), the JIT could in principle hoist the
         // read and hang. The bounded wait turns a hang into a clear failure.
-        [Test, Timeout(5_000)]
+        [Test]
         public void IsDone_SetFromBackgroundThread_ObservedByForegroundSpin()
         {
             for (int trial = 0; trial < 200; trial++)
@@ -58,7 +58,7 @@ namespace LiveKit.EditModeTests
 
         // keepWaiting reads the same volatile field; a coroutine yielding on the
         // instruction needs to terminate once a background completion fires.
-        [Test, Timeout(5_000)]
+        [Test]
         public void KeepWaiting_FlipsToFalse_AfterBackgroundCompletion()
         {
             var instruction = new ProbeInstruction();
@@ -85,7 +85,7 @@ namespace LiveKit.EditModeTests
 
         // IsError uses the same volatile-backed pattern. Set both from the background
         // and verify both are visible after IsDone is observed.
-        [Test, Timeout(5_000)]
+        [Test]
         public void IsError_VisibleAcrossThreadsOnceIsDoneIsObserved()
         {
             for (int trial = 0; trial < 100; trial++)

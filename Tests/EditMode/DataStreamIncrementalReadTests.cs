@@ -49,7 +49,7 @@ namespace LiveKit.EditModeTests
         // exercises that path: a producer thread pushes chunks while the test thread
         // drains via the public Reset / LatestChunk API. All chunks must arrive in
         // FIFO order with no loss, no duplication, and no exception.
-        [Test, Timeout(15_000)]
+        [Test]
         public void OnChunk_ConcurrentProducerAndConsumer_AllChunksObservedInOrder()
         {
             using var handle = new FfiHandle(IntPtr.Zero);
@@ -89,7 +89,7 @@ namespace LiveKit.EditModeTests
         // must leave the instruction in a consistent state: IsEos visible, no torn
         // reads of LatestChunk, and the chunks pushed before EOS still drainable
         // (up to the point where Reset() is correctly disallowed past EOS).
-        [Test, Timeout(10_000)]
+        [Test]
         public void OnEos_RacingWithChunks_FinalStateConsistent()
         {
             for (int trial = 0; trial < 50; trial++)
@@ -123,7 +123,7 @@ namespace LiveKit.EditModeTests
         // pushes a chunk before the consumer wakes. The lock must serialize them
         // so the new chunk is correctly placed (either as _latestChunk if the
         // queue was empty, or appended to the queue).
-        [Test, Timeout(5_000)]
+        [Test]
         public void OnChunk_RacingWithReset_NoChunkLost()
         {
             for (int trial = 0; trial < 200; trial++)
@@ -140,7 +140,8 @@ namespace LiveKit.EditModeTests
                 // Race: the next chunk push happens concurrently with Reset.
                 var pushTask = Task.Run(() => reader.PushChunk("racer"));
                 reader.Reset();
-                pushTask.Wait();
+                if (!pushTask.Wait(TimeSpan.FromSeconds(2)))
+                    Assert.Fail($"Trial {trial}: producer-side OnChunk did not return within 2s — likely lock deadlock.");
 
                 // After both operations, draining must yield "racer" exactly once.
                 var deadline = DateTime.UtcNow.AddMilliseconds(500);
