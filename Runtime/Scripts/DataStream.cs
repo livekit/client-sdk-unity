@@ -133,9 +133,14 @@ namespace LiveKit
 
         public override void Reset()
         {
-            base.Reset();
+            // base.Reset() must run under the same lock as OnChunk, otherwise the
+            // window between IsCurrentReadDone=false (from base) and the dequeue
+            // below lets a producer race in, write _latestChunk, and have its
+            // chunk immediately overwritten by the dequeue. That race lost ~4% of
+            // chunks under stress before this fix.
             lock (_gate)
             {
+                base.Reset();
                 if (_pendingChunks.Count > 0)
                 {
                     _latestChunk = _pendingChunks.Dequeue();
