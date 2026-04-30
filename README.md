@@ -223,7 +223,7 @@ Use the samples of the package to see how to use the SDK.
 
 You need a token to join a LiveKit room as a participant. Read more about tokens here: https://docs.livekit.io/frontends/reference/tokens-grants/
 
-To help getting started with tokens, use `TokenSourceHelper.cs` with a `TokenSourceConfig` ScriptableObject (see https://docs.livekit.io/frontends/build/authentication/#tokensource). Create a config asset via **Right Click > Create > LiveKit > Token Source Config** and select one of three token source types:
+To help getting started with tokens, use `TokenSourceComponent.cs` with a `TokenSourceComponentConfig` ScriptableObject (see https://docs.livekit.io/frontends/build/authentication/#tokensource). Create a config asset via **Right Click > Create > LiveKit > TokenSourceComponentConfig** and select one of three token source types:
 
 #### 1. Literal
 Use this to pass a pregenerated server URL and token. Generate tokens via the [LiveKit CLI](https://docs.livekit.io/frontends/build/authentication/custom/#manual-token-creation) or from your [LiveKit Cloud](https://cloud.livekit.io/) project's API key page.
@@ -236,10 +236,10 @@ For production. Point to your own token endpoint URL and add any required authen
 
 #### Usage
 
-Add a `TokenSourceHelper` component to a GameObject, assign your `TokenSourceConfig` asset, then fetch connection details before connecting:
+Add a `TokenSourceComponent` to a GameObject, assign your `TokenSourceComponentConfig` asset, then fetch connection details before connecting:
 
 ```cs
-var connectionDetailsTask = _tokenSourceHelper.FetchConnectionDetails();
+var connectionDetailsTask = _tokenSourceComponent.FetchConnectionDetails();
 yield return new WaitUntil(() => connectionDetailsTask.IsCompleted);
 
 if (connectionDetailsTask.IsFaulted)
@@ -256,7 +256,7 @@ var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new Roo
 Per-call overrides (e.g. dynamic room or participant names) can be passed via `TokenSourceFetchOptions`; any field set there wins over the asset, and unset fields fall back to the config:
 
 ```cs
-var task = _tokenSourceHelper.FetchConnectionDetails(new TokenSourceFetchOptions
+var task = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions
 {
     RoomName = "lobby-" + System.Guid.NewGuid(),
     ParticipantName = playerName,

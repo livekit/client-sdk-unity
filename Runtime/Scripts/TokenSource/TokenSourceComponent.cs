@@ -1,26 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
 
 namespace LiveKit
 {
     /// <summary>
     /// MonoBehaviour wrapper that builds an <see cref="ITokenSource"/> from an inspector-assigned
-    /// <see cref="TokenSourceConfig"/> ScriptableObject. To skip the asset entirely, instantiate
+    /// <see cref="TokenSourceComponentConfig"/> ScriptableObject. To skip the asset entirely, instantiate
     /// <see cref="TokenSourceLiteral"/>, <see cref="TokenSourceSandbox"/>, <see cref="TokenSourceEndpoint"/>,
     /// or <see cref="TokenSourceCustom"/> directly at runtime.
     /// </summary>
-    public class TokenSourceHelper : MonoBehaviour
+    public class TokenSourceComponent : MonoBehaviour
     {
-        [SerializeField] private TokenSourceConfig _config;
+        [SerializeField] private TokenSourceComponentConfig _config;
 
         /// <summary>
         /// Fetches connection details using only the values on the asset-backed
-        /// <see cref="TokenSourceConfig"/>. Equivalent to <c>FetchConnectionDetails(null)</c>.
+        /// <see cref="TokenSourceComponentConfig"/>. Equivalent to <c>FetchConnectionDetails(null)</c>.
         /// </summary>
         public Task<ConnectionDetails> FetchConnectionDetails() => FetchConnectionDetails(null);
 
@@ -54,20 +52,20 @@ namespace LiveKit
 
         /// <summary>
         /// Fetches connection details, merging per-call <paramref name="options"/> over the asset-backed
-        /// <see cref="TokenSourceConfig"/>. For each field, a value provided on <paramref name="options"/>
+        /// <see cref="TokenSourceComponentConfig"/>. For each field, a value provided on <paramref name="options"/>
         /// overrides the config value (empty strings are treated as unset and fall through to the config).
         /// Ignored for fixed token sources (<see cref="TokenSourceLiteral"/>, <see cref="TokenSourceCustom"/>).
         /// </summary>
-        public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)   
+        public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions? options)   
         {
             switch (_tokenSource)
             {
-                case ITokenSourceConfigurable configurable:
-                    return await configurable.FetchConnectionDetails(Coalesce(_config, options));
+                case ITokenSourceConfigurable configurableSource:
+                    return await configurableSource.FetchConnectionDetails(Coalesce(_config, options));
         
                 case ITokenSourceFixed fixedSource:
                     if (options != null)
-                        Debug.Log("Token source helper has fixed config, fetch options are ignored.");
+                        Debug.LogWarning("TokenSourceComponent uses a fixed config, so fetch options are ignored.");
                     return await fixedSource.FetchConnectionDetails();
 
                 default:
@@ -75,7 +73,7 @@ namespace LiveKit
             }                                                                                          
         }       
 
-        private static TokenSourceFetchOptions Coalesce(TokenSourceConfig config, TokenSourceFetchOptions options)
+        private static TokenSourceFetchOptions Coalesce(TokenSourceComponentConfig config, TokenSourceFetchOptions? options)
         {
             Dictionary<string, string> participantAttributes = null;
             if (options?.ParticipantAttributes != null)

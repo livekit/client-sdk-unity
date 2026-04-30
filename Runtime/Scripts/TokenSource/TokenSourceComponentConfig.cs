@@ -18,8 +18,8 @@ namespace LiveKit
         public string value;
     }
 
-    [CreateAssetMenu(fileName = "TokenSourceConfig", menuName = "LiveKit/TokenSourceConfig")]
-    public class TokenSourceConfig : ScriptableObject
+    [CreateAssetMenu(fileName = "TokenSourceComponentConfig", menuName = "LiveKit/TokenSourceComponentConfig")]
+    public class TokenSourceComponentConfig : ScriptableObject
     {
         [SerializeField] private TokenSourceType _tokenSourceType;
 
