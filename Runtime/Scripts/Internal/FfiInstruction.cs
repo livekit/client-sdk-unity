@@ -64,7 +64,8 @@ namespace LiveKit
                     Error = new StreamError("Canceled");
                     IsError = true;
                     IsDone = true;
-                });
+                },
+                rawSafe: true);
         }
     }
 
@@ -117,7 +118,8 @@ namespace LiveKit
                     Error = new StreamError("Canceled");
                     IsError = true;
                     IsDone = true;
-                });
+                },
+                rawSafe: true);
         }
     }
 }
