@@ -186,7 +186,8 @@ namespace LiveKit.Internal
             ulong requestAsyncId,
             Func<FfiEvent, TCallback?> selector,
             Action<TCallback> onComplete,
-            Action? onCancel = null
+            Action? onCancel = null,
+            bool dispatchToMainThread = true
         ) where TCallback : class
         {
             // Request registration must happen before the request is sent. That ordering is what
@@ -198,7 +199,13 @@ namespace LiveKit.Internal
             //
             // Duplicate IDs are treated as a hard error because they would allow two unrelated
             // requests to compete for the same completion slot.
-            var pending = new PendingCallback<TCallback>(selector, onComplete, onCancel);
+            //
+            // dispatchToMainThread defaults to true: completion runs on Unity's main thread via
+            // SynchronizationContext.Post, which is safe for any onComplete that touches Unity
+            // APIs or fires user events. Pass false when the onComplete only mutates volatile
+            // YieldInstruction state — RouteFfiEvent will then run it inline on the FFI callback
+            // thread instead of paying a frame of latency for the post.
+            var pending = new PendingCallback<TCallback>(selector, onComplete, onCancel, dispatchToMainThread);
             if (!pendingCallbacks.TryAdd(requestAsyncId, pending))
             {
                 throw new InvalidOperationException($"Duplicate pending callback for request_async_id={requestAsyncId}");
@@ -278,12 +285,62 @@ namespace LiveKit.Internal
 
             var respData = new Span<byte>(data.ToPointer()!, (int)size.ToUInt64());
             var response = FfiEvent.Parser!.ParseFrom(respData);
+            RouteFfiEvent(response);
+        }
+
+        // Routing logic split out from FFICallback so tests can drive it from a
+        // chosen thread without going through the P/Invoke entry point. Running
+        // production traffic still always lands here via FFICallback above.
+        internal static void RouteFfiEvent(FfiEvent response)
+        {
+            if (_isDisposed) return;
 
             // Audio stream events are handled directly on the FFI callback thread
             // to bypass the main thread, since the audio thread consumes the data
             if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
             {
                 Instance.AudioStreamEventReceived?.Invoke(response.AudioStreamEvent!);
+                return;
+            }
+
+            // Log batches are forwarded directly. UnityEngine.Debug.unityLogger is
+            // documented thread-safe; Unity's logger queues to its console drain
+            // internally. Skipping the main-thread post means logs reach the
+            // console without a one-frame delay — useful during error storms,
+            // panics, or LK_VERBOSE noise where the post queue could otherwise
+            // back up.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.Logs)
+            {
+                Utils.HandleLogBatch(response.Logs);
+                return;
+            }
+
+            // Byte stream reader events feed an internal incremental-read buffer that
+            // already serializes mutations under its own lock. Skipping the main-thread
+            // post lets chunks land in the buffer immediately rather than waiting for
+            // the next frame drain.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.ByteStreamReaderEvent)
+            {
+                Instance.ByteStreamReaderEventReceived?.Invoke(response.ByteStreamReaderEvent!);
+                return;
+            }
+
+            // Same treatment for text stream readers — they share
+            // ReadIncrementalInstructionBase<TContent> with the byte path, so the
+            // lock added there already protects all state mutations.
+            if (response.MessageCase == FfiEvent.MessageOneofCase.TextStreamReaderEvent)
+            {
+                Instance.TextStreamReaderEventReceived?.Invoke(response.TextStreamReaderEvent!);
+                return;
+            }
+
+            // One-shot completions registered with dispatchToMainThread:false also bypass the
+            // main thread. The pending callback's onComplete only mutates volatile
+            // YieldInstruction fields, so resolving it here saves up to one frame of latency
+            // on async ops like SetMetadata / UnpublishTrack / stream Read/Write/Close.
+            var requestAsyncId = ExtractRequestAsyncId(response);
+            if (requestAsyncId.HasValue && Instance.TrySkipDispatch(requestAsyncId.Value, response))
+            {
                 return;
             }
 
@@ -316,9 +373,6 @@ namespace LiveKit.Internal
 
             switch (ffiEvent.MessageCase)
             {
-                case FfiEvent.MessageOneofCase.Logs:
-                    Utils.HandleLogBatch(ffiEvent.Logs);
-                    break;
                 case FfiEvent.MessageOneofCase.PublishData:
                     break;
                 case FfiEvent.MessageOneofCase.RoomEvent:
@@ -338,15 +392,6 @@ namespace LiveKit.Internal
                 case FfiEvent.MessageOneofCase.VideoStreamEvent:
                     Instance.VideoStreamEventReceived?.Invoke(ffiEvent.VideoStreamEvent!);
                     break;
-                case FfiEvent.MessageOneofCase.AudioStreamEvent:
-                    Instance.AudioStreamEventReceived?.Invoke(ffiEvent.AudioStreamEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.ByteStreamReaderEvent:
-                    Instance.ByteStreamReaderEventReceived?.Invoke(ffiEvent.ByteStreamReaderEvent!);
-                    break;
-                case FfiEvent.MessageOneofCase.TextStreamReaderEvent:
-                    Instance.TextStreamReaderEventReceived?.Invoke(ffiEvent.TextStreamReaderEvent!);
-                    break;
                 case FfiEvent.MessageOneofCase.DataTrackStreamEvent:
                     Instance.DataTrackStreamEventReceived?.Invoke(ffiEvent.DataTrackStreamEvent!);
                     break;
@@ -357,7 +402,7 @@ namespace LiveKit.Internal
             }
         }
 
-        private bool TryDispatchPendingCallback(ulong requestAsyncId, FfiEvent ffiEvent)
+        internal bool TryDispatchPendingCallback(ulong requestAsyncId, FfiEvent ffiEvent)
         {
             // Remove-first dispatch is the key race-proofing step.
             //
@@ -383,6 +428,26 @@ namespace LiveKit.Internal
             }
 
             return false;
+        }
+
+        // Inline-completion fast path for one-shot callbacks whose onComplete only
+        // mutates volatile YieldInstruction state (no Unity APIs, no user-event
+        // invocations). Returning true means the caller has been fully handled here
+        // — no further dispatch needed. Returning false means the caller should fall
+        // through to its normal main-thread post path. Same race model as
+        // TryDispatchPendingCallback: the side that wins TryRemove is the only side
+        // that may invoke the completion.
+        internal bool TrySkipDispatch(ulong requestAsyncId, FfiEvent ffiEvent)
+        {
+            if (!pendingCallbacks.TryGetValue(requestAsyncId, out var pending))
+            {
+                return false;
+            }
+            if (pending.DispatchToMainThread)
+            {
+                return false;
+            }
+            return TryDispatchPendingCallback(requestAsyncId, ffiEvent);
         }
 
         private static ulong? ExtractRequestAsyncId(FfiEvent ffiEvent)
@@ -420,6 +485,7 @@ namespace LiveKit.Internal
 
         private abstract class PendingCallbackBase
         {
+            public abstract bool DispatchToMainThread { get; }
             public abstract bool TryComplete(FfiEvent ffiEvent);
             public abstract void Cancel();
         }
@@ -429,16 +495,21 @@ namespace LiveKit.Internal
             private readonly Func<FfiEvent, TCallback?> selector;
             private readonly Action<TCallback> onComplete;
             private readonly Action? onCancel;
+            private readonly bool dispatchToMainThread;
+
+            public override bool DispatchToMainThread => dispatchToMainThread;
 
             public PendingCallback(
                 Func<FfiEvent, TCallback?> selector,
                 Action<TCallback> onComplete,
-                Action? onCancel
+                Action? onCancel,
+                bool dispatchToMainThread
             )
             {
                 this.selector = selector;
                 this.onComplete = onComplete;
                 this.onCancel = onCancel;
+                this.dispatchToMainThread = dispatchToMainThread;
             }
 
             public override bool TryComplete(FfiEvent ffiEvent)
