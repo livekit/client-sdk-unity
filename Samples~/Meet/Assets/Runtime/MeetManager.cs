@@ -355,12 +355,6 @@ public class MeetManager : MonoBehaviour
             }
             _audioObjects.Remove(sid);
         }
-
-        if (_audioStreams.TryGetValue(sid, out var stream))
-        {
-            stream.Dispose();
-            _audioStreams.Remove(sid);
-        }
     }
 
     private void OnDataReceived(byte[] data, Participant participant, DataPacketKind kind, string topic)
