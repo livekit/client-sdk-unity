@@ -122,6 +122,8 @@ namespace LiveKit.EditModeTests
 
             StringAssert.Contains("FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;", source);
             StringAssert.Contains("_probe.AudioRead -= OnAudioRead;", source);
+            StringAssert.Contains("_frameQueue.CompleteAdding();", source);
+            StringAssert.Contains("_resampleThread.Join();", source);
             StringAssert.Contains("_buffer?.Dispose();", source);
             StringAssert.Contains("_resampler?.Dispose();", source);
             StringAssert.Contains("Handle.Dispose();", source);
@@ -132,9 +134,11 @@ namespace LiveKit.EditModeTests
         {
             var source = ReadSource(AudioStreamPaths);
 
-            // Both the inbound native frame and the remixed output frame should be scoped so their
-            // handles are released after each callback rather than accumulating over time.
-            StringAssert.Contains("using var frame = new AudioFrame(e.FrameReceived.Frame);", source);
+            // The inbound frame is enqueued on the FFI thread and disposed by the worker
+            // (in finally) after RemixAndResample. The remixed output frame is still scoped
+            // with using so handles do not accumulate.
+            StringAssert.Contains("var frame = new AudioFrame(e.FrameReceived.Frame);", source);
+            StringAssert.Contains("frame.Dispose();", source);
             StringAssert.Contains("using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);", source);
         }
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Threading;
 using UnityEngine;
 using LiveKit.Internal;
 using LiveKit.Proto;
@@ -40,6 +42,12 @@ namespace LiveKit
         private const int CrossfadeFrames = 128;  // ~2.7ms @ 48kHz
         private int _skipCooldown = 0;
 
+        // Resample work runs on a dedicated background thread instead of the FFI callback
+        // thread, which is OS-audio-scheduled and would otherwise compete with Unity audio.
+        private readonly BlockingCollection<AudioFrame> _frameQueue =
+            new BlockingCollection<AudioFrame>(new ConcurrentQueue<AudioFrame>(), boundedCapacity: 50);
+        private readonly Thread _resampleThread;
+
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
         /// given <see cref="AudioSource"/> in the scene.
@@ -73,6 +81,13 @@ namespace LiveKit
 
             // Subscribe to application pause events to handle background/foreground transitions
             MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
+
+            _resampleThread = new Thread(ResampleLoop)
+            {
+                IsBackground = true,
+                Name = "LiveKit AudioStream Resample",
+            };
+            _resampleThread.Start();
         }
 
         // Called on Unity audio thread
@@ -235,7 +250,8 @@ namespace LiveKit
             }
         }
 
-        // Called on FFI callback thread       
+        // Called on FFI callback thread. Hands the frame off to the worker so the
+        // OS-audio-scheduled FFI thread doesn't pay for resample DSP.
         private void OnAudioStreamEvent(AudioStreamEvent e)
         {
             if (_disposed)
@@ -247,23 +263,57 @@ namespace LiveKit
             if (e.MessageCase != AudioStreamEvent.MessageOneofCase.FrameReceived)
                 return;
 
-            using var frame = new AudioFrame(e.FrameReceived.Frame);
-
-            lock (_lock)
+            var frame = new AudioFrame(e.FrameReceived.Frame);
+            try
             {
-                if (_numChannels == 0)
+                if (!_frameQueue.IsAddingCompleted && _frameQueue.TryAdd(frame, millisecondsTimeout: 0))
                     return;
+            }
+            catch (InvalidOperationException)
+            {
+                // Adding was completed between the IsAddingCompleted check and TryAdd.
+            }
 
-                unsafe
+            // Queue full or shutting down — drop the frame.
+            Utils.Debug("AudioStream resample queue full; dropping frame");
+            frame.Dispose();
+        }
+
+        // Background worker thread. Drains _frameQueue and runs RemixAndResample off the
+        // FFI callback thread so DSP work doesn't compete with Unity audio rendering.
+        private void ResampleLoop()
+        {
+            try
+            {
+                foreach (var frame in _frameQueue.GetConsumingEnumerable())
                 {
-                    using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    if (uFrame != null)
+                    try
                     {
-                        var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                        _buffer?.Write(data);
-                    }
+                        lock (_lock)
+                        {
+                            if (_disposed || _numChannels == 0)
+                                continue;
 
+                            unsafe
+                            {
+                                using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
+                                if (uFrame != null)
+                                {
+                                    var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
+                                    _buffer?.Write(data);
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        frame.Dispose();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Utils.Error($"AudioStream ResampleLoop exited unexpectedly: {ex}");
             }
         }
 
@@ -285,6 +335,13 @@ namespace LiveKit
             // touching partially disposed state.
             FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
             MonoBehaviourContext.OnApplicationPauseEvent -= OnApplicationPause;
+
+            // Stop the worker before tearing down state it touches under _lock. Joining is only
+            // safe on the explicit-dispose path; from a finalizer we just signal and let the
+            // background thread exit on its own.
+            _frameQueue.CompleteAdding();
+            if (disposing && _resampleThread != null && _resampleThread.IsAlive)
+                _resampleThread.Join();
 
             lock (_lock)
             {
@@ -309,6 +366,8 @@ namespace LiveKit
                 _resampler = null;
                 Handle.Dispose();
             }
+
+            _frameQueue.Dispose();
 
             _disposed = true;
         }
