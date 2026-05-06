@@ -18,13 +18,16 @@ public class ResizeTextureController
 
     private CropMode _cropMode;  // How to fit src → target
 
+    private int _rotationDegrees = -1;
+    private bool _mirror;
+
     public enum CropMode
     {
         FillCrop,   // Scale to fill, crop the excess (e.g. 16:9 → 1:1 crops sides)
         Letterbox,  // Scale to fit,  add black bars
     }
 
-    public ResizeTextureController(Texture sourceTexture, float targetWidth, float targetHeight, CropMode cropMode = CropMode.Letterbox)
+    public ResizeTextureController(Texture sourceTexture, float targetWidth, float targetHeight, CropMode cropMode = CropMode.Letterbox, int rotationDegrees = 0, bool mirror = false)
     {
         var shader = Shader.Find(SHADER_NAME);
         _resizeMaterial = new Material(shader);
@@ -35,10 +38,30 @@ public class ResizeTextureController
 
         _targetTexture = new RenderTexture((int)_targetWidth, (int)_targetHeight, 0, RenderTextureFormat.ARGB32);
 
-        float srcAspect = (float)_sourceTexture.width / _sourceTexture.height;
+        SetRotation(rotationDegrees, mirror);
+    }
+
+    /// <summary>
+    /// Update the display rotation and mirror state. Cheap when nothing changed.
+    /// </summary>
+    public void SetRotation(int rotationDegrees, bool mirror)
+    {
+        int normalized = ((rotationDegrees % 360) + 360) % 360;
+        if (normalized == _rotationDegrees && mirror == _mirror)
+            return;
+
+        _rotationDegrees = normalized;
+        _mirror = mirror;
+
+        bool swap = normalized == 90 || normalized == 270;
+        float effSrcW = swap ? _sourceTexture.height : _sourceTexture.width;
+        float effSrcH = swap ? _sourceTexture.width : _sourceTexture.height;
+
+        float srcAspect = effSrcW / effSrcH;
         float targetAspect = (float)_targetTexture.width / _targetTexture.height;
-        Matrix4x4 m = BuildCropMatrix(srcAspect, targetAspect, _cropMode);
-        _resizeMaterial.SetMatrix("_ResizeMatrix", m);
+        Matrix4x4 crop = BuildCropMatrix(srcAspect, targetAspect, _cropMode);
+        Matrix4x4 rot = BuildRotationMirrorMatrix(normalized, mirror);
+        _resizeMaterial.SetMatrix("_ResizeMatrix", rot * crop);
     }
 
     public RenderTexture GetTargetTexture()
@@ -129,6 +152,37 @@ public class ResizeTextureController
         m.m11 = scaleY;
         m.m03 = offsetX;
         m.m13 = offsetY;
+        return m;
+    }
+
+    /// <summary>
+    /// UV-space matrix that maps post-rotation UV back to actual source UV,
+    /// achieving a CW display rotation of `degrees` (0/90/180/270). When
+    /// `flipSourceV` is true, additionally flips V in source space (used to
+    /// undo WebCamTexture.videoVerticallyMirrored).
+    /// </summary>
+    public static Matrix4x4 BuildRotationMirrorMatrix(int degrees, bool flipSourceV)
+    {
+        // u_src = a*u + b*v + c
+        // v_src = e*u + f*v + d
+        float a, b, c, d, e, f;
+        switch (((degrees % 360) + 360) % 360)
+        {
+            case 90:  a = 0;  b = -1; c = 1; e = 1;  f = 0;  d = 0; break;
+            case 180: a = -1; b = 0;  c = 1; e = 0;  f = -1; d = 1; break;
+            case 270: a = 0;  b = 1;  c = 0; e = -1; f = 0;  d = 1; break;
+            default:  a = 1;  b = 0;  c = 0; e = 0;  f = 1;  d = 0; break;
+        }
+        if (flipSourceV)
+        {
+            // Apply V flip in source space: v_src -> 1 - v_src
+            d = 1 - d;
+            e = -e;
+            f = -f;
+        }
+        var m = Matrix4x4.identity;
+        m.m00 = a; m.m01 = b; m.m03 = c;
+        m.m10 = e; m.m11 = f; m.m13 = d;
         return m;
     }
 }

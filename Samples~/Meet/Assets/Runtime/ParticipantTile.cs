@@ -24,15 +24,21 @@ public class ParticipantTile : MonoBehaviour
         if (!_showingLive) Image.texture = tex;
     }
 
-    public void BindLiveSource(Texture source)
+    public void BindLiveSource(Texture source, int rotationDegrees = 0, bool mirror = false)
     {
         _controller?.Dispose();
         var rect = ((RectTransform)transform).rect;
         _controller = new ResizeTextureController(
             source, rect.width, rect.height,
-            ResizeTextureController.CropMode.FillCrop);
+            ResizeTextureController.CropMode.FillCrop,
+            rotationDegrees, mirror);
         _showingLive = true;
         Image.texture = _controller.GetTargetTexture();
+    }
+
+    public void SetLiveRotation(int rotationDegrees, bool mirror)
+    {
+        _controller?.SetRotation(rotationDegrees, mirror);
     }
 
     public void ShowLive()
