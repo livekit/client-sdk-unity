@@ -899,11 +899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db9b9042ff694d7f813bbd65d1e01c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraButton: {fileID: 545116324}
-  microphoneButton: {fileID: 719911560}
-  startCallButton: {fileID: 2130404894}
-  endCallButton: {fileID: 1989343732}
-  publishDataButton: {fileID: 55547283}
+  buttonBar: {fileID: 1653471452}
   videoTrackParent: {fileID: 2128321498}
   participantTilePrefab: {fileID: 4315784896331113596, guid: bec493bbc3d574c07b5bbf8dd2be26b3, type: 3}
   frameRate: 30
@@ -1010,8 +1006,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1653471450}
   - component: {fileID: 1653471451}
+  - component: {fileID: 1653471452}
   m_Layer: 5
-  m_Name: Controller
+  m_Name: ButtonBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,6 +1063,23 @@ MonoBehaviour:
   m_Spacing: {x: 100, y: 50}
   m_Constraint: 0
   m_ConstraintCount: 6
+--- !u!114 &1653471452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653471449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c70fd49fc4ad74dc7b02313d4d2e0fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraButton: {fileID: 545116324}
+  microphoneButton: {fileID: 719911560}
+  startCallButton: {fileID: 2130404894}
+  endCallButton: {fileID: 1989343732}
+  publishDataButton: {fileID: 55547283}
 --- !u!1 &1759245556
 GameObject:
   m_ObjectHideFlags: 0

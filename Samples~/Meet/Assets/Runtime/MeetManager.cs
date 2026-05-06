@@ -4,13 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using LiveKit;
 using LiveKit.Proto;
-using Google.MaterialDesign.Icons;
 using RoomOptions = LiveKit.RoomOptions;
-using Application = UnityEngine.Application;
-
-#if PLATFORM_ANDROID
-using UnityEngine.Android;
-#endif
 
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
@@ -21,17 +15,8 @@ public class MeetManager : MonoBehaviour
     private const string LocalVideoTrackName = "my-video-track";
     private const string LocalAudioTrackName = "my-audio-track";
 
-    private const string MicOnIcon = "e029";
-    private const string MicOffIcon = "e02b";
-    private const string CamOnIcon = "e04b";
-    private const string CamOffIcon = "e04c";
-
-    [Header("UI Buttons")]
-    [SerializeField] private Button cameraButton;
-    [SerializeField] private Button microphoneButton;
-    [SerializeField] private Button startCallButton;
-    [SerializeField] private Button endCallButton;
-    [SerializeField] private Button publishDataButton;
+    [Header("UI")]
+    [SerializeField] private MeetButtonBar buttonBar;
 
     [Header("Video Layout")]
     [SerializeField] private GridLayoutGroup videoTrackParent;
@@ -43,9 +28,9 @@ public class MeetManager : MonoBehaviour
 
     private TokenSourceComponent _tokenSourceComponent;
     private Room _room;
+    private string _localId;
     private WebCamTexture _webCamTexture;
     private Transform _audioTrackParent;
-    private List<Button> _inCallButtons;
 
     private readonly Dictionary<string, ParticipantTile> _participantTiles = new();
     private readonly Dictionary<string, ParticipantTile> _extraVideoTiles = new();
@@ -55,8 +40,8 @@ public class MeetManager : MonoBehaviour
 
     private readonly Dictionary<string, AudioStream> _audioStreams = new();
 
-    private RtcVideoSource _rtcVideoSource;
-    private RtcAudioSource _rtcAudioSource;
+    private RtcVideoSource _localRtcVideoSource;
+    private RtcAudioSource _localRtcAudioSource;
     private LocalVideoTrack _localVideoTrack;
     private LocalAudioTrack _localAudioTrack;
     private bool _cameraActive;
@@ -67,13 +52,14 @@ public class MeetManager : MonoBehaviour
     private void Start()
     {
         _tokenSourceComponent = GetComponent<TokenSourceComponent>();
-        startCallButton.onClick.AddListener(OnStartCall);
-        endCallButton.onClick.AddListener(OnEndCall);
-        cameraButton.onClick.AddListener(OnToggleCamera);
-        microphoneButton.onClick.AddListener(OnToggleMicrophone);
-        publishDataButton.onClick.AddListener(OnPublishData);
 
-        _inCallButtons = new List<Button> { cameraButton, microphoneButton, endCallButton, publishDataButton };
+        buttonBar.StartCallClicked += OnStartCall;
+        buttonBar.EndCallClicked += OnEndCall;
+        buttonBar.ToggleCameraClicked += OnToggleCamera;
+        buttonBar.ToggleMicrophoneClicked += OnToggleMicrophone;
+        buttonBar.PublishDataClicked += OnPublishData;
+        buttonBar.SetConnected(false);
+
         _audioTrackParent = new GameObject("AudioTrackParent").transform;
         _placeholderTexture = Resources.Load<Texture>(PlaceholderTextureResourceName);
     }
@@ -97,20 +83,21 @@ public class MeetManager : MonoBehaviour
 
     private void OnStartCall()
     {
-        RequestCameraPermissionIfNeeded();
-
         if (_webCamTexture == null)
-            StartCoroutine(OpenCamera());
+            StartCoroutine(CameraDeviceProvider.Open(frameRate, t => _webCamTexture = t));
 
         StartCoroutine(ConnectToRoom());
     }
 
     private void OnEndCall()
     {
+        if (_room == null) return;
+
         _room.Disconnect();
         CleanUpAllTracks();
         _room = null;
-        SetUiConnected(false);
+        _localId = null;
+        buttonBar.SetConnected(false);
     }
 
     private void OnToggleCamera()
@@ -118,12 +105,12 @@ public class MeetManager : MonoBehaviour
         if (!_cameraActive)
         {
             StartCoroutine(PublishLocalCamera());
-            SetButtonIcon(cameraButton, CamOnIcon);
+            buttonBar.SetCameraOn(true);
         }
         else
         {
             UnpublishLocalCamera();
-            SetButtonIcon(cameraButton, CamOffIcon);
+            buttonBar.SetCameraOn(false);
         }
     }
 
@@ -132,12 +119,12 @@ public class MeetManager : MonoBehaviour
         if (!_microphoneActive)
         {
             StartCoroutine(PublishLocalMicrophone());
-            SetButtonIcon(microphoneButton, MicOnIcon);
+            buttonBar.SetMicrophoneOn(true);
         }
         else
         {
             UnpublishLocalMicrophone();
-            SetButtonIcon(microphoneButton, MicOffIcon);
+            buttonBar.SetMicrophoneOn(false);
         }
     }
 
@@ -188,9 +175,10 @@ public class MeetManager : MonoBehaviour
         }
 
         Debug.Log($"Connected to {_room.Name}");
-        SetUiConnected(true);
+        _localId = _room.LocalParticipant.Identity;
+        buttonBar.SetConnected(true);
 
-        EnsureParticipantTile(_room.LocalParticipant.Identity);
+        EnsureParticipantTile(_localId);
         foreach (var remote in _room.RemoteParticipants.Values)
             EnsureParticipantTile(remote.Identity);
     }
@@ -394,9 +382,8 @@ public class MeetManager : MonoBehaviour
     {
         if (_cameraActive) yield break;
 
-        var localId = _room.LocalParticipant.Identity;
-        EnsureParticipantTile(localId);
-        var tile = _participantTiles[localId];
+        EnsureParticipantTile(_localId);
+        var tile = _participantTiles[_localId];
 
         var source = new WebCameraSource(_webCamTexture);
         _localVideoTrack = LocalVideoTrack.CreateVideoTrack(LocalVideoTrackName, source, _room);
@@ -417,17 +404,18 @@ public class MeetManager : MonoBehaviour
         source.TextureReceived += tex => tile.BindLiveSource(tex);
 
         _cameraActive = true;
-        _rtcVideoSource = source;
+        _localRtcVideoSource = source;
         source.Start();
         StartCoroutine(source.Update());
     }
 
     private void UnpublishLocalCamera()
     {
-        DisposeSource(ref _rtcVideoSource);
+        DisposeSource(ref _localRtcVideoSource);
 
         _room.LocalParticipant.UnpublishTrack(_localVideoTrack, false);
-        if (_participantTiles.TryGetValue(_room.LocalParticipant.Identity, out var tile))
+        _localVideoTrack = null;
+        if (_participantTiles.TryGetValue(_localId, out var tile))
             tile.ClearLive();
         _cameraActive = false;
     }
@@ -438,15 +426,15 @@ public class MeetManager : MonoBehaviour
 
     private IEnumerator PublishLocalMicrophone()
     {
-        Microphone.Start(null, true, 10, 44100);
-
         if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
+
+        Microphone.Start(null, true, 10, 44100);
 
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");
         audioObject.transform.SetParent(_audioTrackParent);
 
         var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject);
-        
+
         _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, rtcSource, _room);
 
         var options = new TrackPublishOptions
@@ -462,16 +450,16 @@ public class MeetManager : MonoBehaviour
 
         _microphoneActive = true;
         _audioObjects[LocalAudioTrackName] = audioObject;
-        _rtcAudioSource = rtcSource;
+        _localRtcAudioSource = rtcSource;
         rtcSource.Start();
 
-        if (_participantTiles.TryGetValue(_room.LocalParticipant.Identity, out var tile))
+        if (_participantTiles.TryGetValue(_localId, out var tile))
             tile.SetMicMuted(false);
     }
 
     private void UnpublishLocalMicrophone()
     {
-        DisposeSource(ref _rtcAudioSource);
+        DisposeSource(ref _localRtcAudioSource);
 
         if (_audioObjects.TryGetValue(LocalAudioTrackName, out var obj))
         {
@@ -481,95 +469,15 @@ public class MeetManager : MonoBehaviour
         }
 
         _room.LocalParticipant.UnpublishTrack(_localAudioTrack, false);
-        if (_participantTiles.TryGetValue(_room.LocalParticipant.Identity, out var tile))
+        _localAudioTrack = null;
+        if (_participantTiles.TryGetValue(_localId, out var tile))
             tile.SetMicMuted(true);
         _microphoneActive = false;
     }
 
     #endregion
 
-    #region Camera Setup
-
-    private IEnumerator OpenCamera()
-    {
-        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
-
-        if (!Application.HasUserAuthorization(UserAuthorization.WebCam))
-        {
-            Debug.LogError("Camera permission not obtained");
-            yield break;
-        }
-
-        _webCamTexture?.Stop();
-
-        yield return WaitForCameraDevices();
-
-        if (WebCamTexture.devices.Length == 0)
-        {
-            Debug.LogError("No camera device available");
-            yield break;
-        }
-
-        var device = PickPreferredCamera(WebCamTexture.devices);
-        var (width, height) = GetCameraResolution();
-
-        _webCamTexture = new WebCamTexture(device.name, width, height, frameRate)
-        {
-            wrapMode = TextureWrapMode.Repeat
-        };
-        _webCamTexture.Play();
-    }
-
-    private static IEnumerator WaitForCameraDevices()
-    {
-        for (int i = 0; i < 300 && WebCamTexture.devices.Length == 0; i++)
-            yield return new WaitForEndOfFrame();
-    }
-
-    private static WebCamDevice PickPreferredCamera(WebCamDevice[] devices)
-    {
-        foreach (var d in devices)
-            if (d.isFrontFacing) return d;
-        return devices[0];
-    }
-
-    private static (int width, int height) GetCameraResolution()
-    {
-        return Screen.height > Screen.width
-            ? (Screen.height, Screen.width)
-            : (Screen.width, Screen.height);
-    }
-
-    private static void RequestCameraPermissionIfNeeded()
-    {
-#if PLATFORM_ANDROID
-        if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
-            Permission.RequestUserPermission(Permission.Camera);
-#endif
-    }
-
-    #endregion
-
     #region Helpers
-
-    private void SetUiConnected(bool connected)
-    {
-        foreach (var button in _inCallButtons)
-            button.interactable = connected;
-
-        startCallButton.interactable = !connected;
-
-        if (!connected)
-        {
-            SetButtonIcon(microphoneButton, MicOffIcon);
-            SetButtonIcon(cameraButton, CamOffIcon);
-        }
-    }
-
-    private static void SetButtonIcon(Button button, string unicode)
-    {
-        button.GetComponentInChildren<MaterialIcon>().iconUnicode = unicode;
-    }
 
     private void EnsureParticipantTile(string identity)
     {
@@ -627,8 +535,8 @@ public class MeetManager : MonoBehaviour
 
     private void CleanUpAllTracks()
     {
-        DisposeSource(ref _rtcAudioSource);
-        DisposeSource(ref _rtcVideoSource);
+        DisposeSource(ref _localRtcAudioSource);
+        DisposeSource(ref _localRtcVideoSource);
 
         foreach (var obj in _audioObjects.Values)
         {
