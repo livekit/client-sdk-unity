@@ -43,7 +43,9 @@ public class MeetManager : MonoBehaviour
     private Transform _audioTrackParent;
     private List<Button> _inCallButtons;
 
-    private readonly Dictionary<string, GameObject> _videoDisplayObjects = new();
+    private readonly Dictionary<string, GameObject> _participantTiles = new();
+    private readonly Dictionary<string, GameObject> _extraVideoTiles = new();
+    private readonly Dictionary<string, string> _extraVideoOwners = new();
     private readonly Dictionary<string, ResizeTextureController> _resizeTextureControllers = new();
     private readonly Dictionary<string, GameObject> _audioObjects = new();
     private readonly Dictionary<string, VideoStream> _videoStreams = new();
@@ -171,6 +173,10 @@ public class MeetManager : MonoBehaviour
         _room = new Room();
         _room.TrackSubscribed += OnTrackSubscribed;
         _room.TrackUnsubscribed += OnTrackUnsubscribed;
+        _room.TrackMuted += OnTrackMuted;
+        _room.TrackUnmuted += OnTrackUnmuted;
+        _room.ParticipantConnected += OnParticipantConnected;
+        _room.ParticipantDisconnected += OnParticipantDisconnected;
         _room.DataReceived += OnDataReceived;
 
         var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
@@ -185,6 +191,10 @@ public class MeetManager : MonoBehaviour
 
         Debug.Log($"Connected to {_room.Name}");
         SetUiConnected(true);
+
+        EnsureParticipantTile(_room.LocalParticipant.Identity);
+        foreach (var remote in _room.RemoteParticipants.Values)
+            EnsureParticipantTile(remote.Identity);
     }
 
     #endregion
@@ -195,8 +205,12 @@ public class MeetManager : MonoBehaviour
     {
         switch (track)
         {
-            case RemoteVideoTrack video: AddRemoteVideoTrack(video); break;
-            case RemoteAudioTrack audio: AddRemoteAudioTrack(audio); break;
+            case RemoteVideoTrack video when publication.Source == TrackSource.SourceCamera:
+                BindRemoteCameraToTile(video, participant.Identity); break;
+            case RemoteVideoTrack video:
+                AddExtraVideoTile(video, participant.Identity); break;
+            case RemoteAudioTrack audio:
+                AddRemoteAudioTrack(audio); break;
         }
     }
 
@@ -204,26 +218,80 @@ public class MeetManager : MonoBehaviour
     {
         switch (track)
         {
-            case RemoteVideoTrack video: RemoveRemoteVideoTrack(video.Sid); break;
-            case RemoteAudioTrack audio: RemoveRemoteAudioTrack(audio.Sid); break;
+            case RemoteVideoTrack video when publication.Source == TrackSource.SourceCamera:
+                UnbindRemoteCameraFromTile(video.Sid, participant.Identity); break;
+            case RemoteVideoTrack video:
+                RemoveExtraVideoTile(video.Sid); break;
+            case RemoteAudioTrack audio:
+                RemoveRemoteAudioTrack(audio.Sid); break;
         }
     }
 
-    private void AddRemoteVideoTrack(RemoteVideoTrack videoTrack)
+    private void BindRemoteCameraToTile(RemoteVideoTrack video, string identity)
     {
-        var sid = videoTrack.Sid;
-        var imageObject = CreateVideoDisplay(sid);
+        EnsureParticipantTile(identity);
+        var image = _participantTiles[identity].GetComponent<RawImage>();
+        var sid = video.Sid;
 
-        var image = imageObject.GetComponent<RawImage>();
-        var stream = new VideoStream(videoTrack);
-        stream.TextureReceived += tex => ApplyTextureToDisplayImage(sid, tex, image);
-
-        _videoDisplayObjects[sid] = imageObject;
-        imageObject.transform.SetParent(videoTrackParent.transform, false);
-
+        var stream = new VideoStream(video);
+        stream.TextureReceived += tex => ApplyTextureToTile(sid, tex, image);
+        _videoStreams[sid] = stream;
         stream.Start();
         StartCoroutine(stream.Update());
+    }
+
+    private void UnbindRemoteCameraFromTile(string sid, string identity)
+    {
+        if (_videoStreams.TryGetValue(sid, out var stream))
+        {
+            stream.Stop();
+            stream.Dispose();
+            _videoStreams.Remove(sid);
+        }
+        if (_resizeTextureControllers.TryGetValue(sid, out var controller))
+        {
+            controller.Dispose();
+            _resizeTextureControllers.Remove(sid);
+        }
+        SetTileGray(identity);
+    }
+
+    private void AddExtraVideoTile(RemoteVideoTrack video, string identity)
+    {
+        var sid = video.Sid;
+        var imageObject = CreateVideoDisplay(sid);
+        imageObject.transform.SetParent(videoTrackParent.transform, false);
+        var image = imageObject.GetComponent<RawImage>();
+
+        var stream = new VideoStream(video);
+        stream.TextureReceived += tex => ApplyTextureToTile(sid, tex, image);
+
+        _extraVideoTiles[sid] = imageObject;
+        _extraVideoOwners[sid] = identity;
         _videoStreams.Add(sid, stream);
+        stream.Start();
+        StartCoroutine(stream.Update());
+    }
+
+    private void RemoveExtraVideoTile(string sid)
+    {
+        if (_extraVideoTiles.TryGetValue(sid, out var obj))
+        {
+            Destroy(obj);
+            _extraVideoTiles.Remove(sid);
+        }
+        if (_videoStreams.TryGetValue(sid, out var stream))
+        {
+            stream.Stop();
+            stream.Dispose();
+            _videoStreams.Remove(sid);
+        }
+        if (_resizeTextureControllers.TryGetValue(sid, out var controller))
+        {
+            controller.Dispose();
+            _resizeTextureControllers.Remove(sid);
+        }
+        _extraVideoOwners.Remove(sid);
     }
 
     private void AddRemoteAudioTrack(RemoteAudioTrack audioTrack)
@@ -237,28 +305,6 @@ public class MeetManager : MonoBehaviour
         _audioStreams.Add(sid, audiostream);
 
         _audioObjects[sid] = audioObject;
-    }
-
-    private void RemoveRemoteVideoTrack(string sid)
-    {
-        if (_videoDisplayObjects.TryGetValue(sid, out var obj))
-        {
-            Destroy(obj);
-            _videoDisplayObjects.Remove(sid);
-        }
-
-        if (_videoStreams.TryGetValue(sid, out var stream))
-        {
-            stream.Stop();
-            stream.Dispose();
-            _videoStreams.Remove(sid);
-        }
-
-        if (_resizeTextureControllers.TryGetValue(sid, out var controller))
-        {
-            controller.Dispose();
-            _resizeTextureControllers.Remove(sid);
-        }
     }
 
     private void RemoveRemoteAudioTrack(string sid)
@@ -283,21 +329,52 @@ public class MeetManager : MonoBehaviour
         Debug.Log($"DataReceived from {participant.Identity}: {message}");
     }
 
+    private void OnParticipantConnected(Participant participant)
+        => EnsureParticipantTile(participant.Identity);
+
+    private void OnParticipantDisconnected(Participant participant)
+    {
+        var owned = new List<string>();
+        foreach (var kv in _extraVideoOwners)
+            if (kv.Value == participant.Identity) owned.Add(kv.Key);
+        foreach (var sid in owned) RemoveExtraVideoTile(sid);
+
+        DestroyParticipantTile(participant.Identity);
+    }
+
+    private void OnTrackMuted(TrackPublication publication, Participant participant)
+    {
+        if (publication.Kind != TrackKind.KindVideo) return;
+
+        if (publication.Source == TrackSource.SourceCamera)
+            SetTileGray(participant.Identity);
+        else if (_extraVideoTiles.TryGetValue(publication.Sid, out var obj))
+            obj.SetActive(false);
+    }
+
+    private void OnTrackUnmuted(TrackPublication publication, Participant participant)
+    {
+        if (publication.Kind != TrackKind.KindVideo) return;
+
+        if (publication.Source == TrackSource.SourceCamera)
+            SetTileLive(participant.Identity, publication.Sid);
+        else if (_extraVideoTiles.TryGetValue(publication.Sid, out var obj))
+            obj.SetActive(true);
+    }
+
     #endregion
 
     #region Local Camera
 
     private IEnumerator PublishLocalCamera()
     {
-        if (_videoDisplayObjects.ContainsKey(LocalVideoTrackName)) yield break;
+        if (_cameraActive) yield break;
+
+        var localId = _room.LocalParticipant.Identity;
+        EnsureParticipantTile(localId);
+        var displayImage = _participantTiles[localId].GetComponent<RawImage>();
 
         var source = new WebCameraSource(_webCamTexture);
-        var videoDisplayObject = CreateVideoDisplay("My Camera: " + _webCamTexture.deviceName);
-        var displayImage = videoDisplayObject.GetComponent<RawImage>();
-
-        source.TextureReceived += tex => ApplyTextureToDisplayImage(LocalVideoTrackName, tex, displayImage);
-        videoDisplayObject.transform.SetParent(videoTrackParent.transform, false);
-
         _localVideoTrack = LocalVideoTrack.CreateVideoTrack(LocalVideoTrackName, source, _room);
 
         var options = new TrackPublishOptions
@@ -313,8 +390,10 @@ public class MeetManager : MonoBehaviour
 
         if (publish.IsError) yield break;
 
+        var sid = _localVideoTrack.Sid;
+        source.TextureReceived += tex => ApplyTextureToTile(sid, tex, displayImage);
+
         _cameraActive = true;
-        _videoDisplayObjects[LocalVideoTrackName] = videoDisplayObject;
         _rtcVideoSource = source;
         source.Start();
         StartCoroutine(source.Update());
@@ -323,8 +402,16 @@ public class MeetManager : MonoBehaviour
     private void UnpublishLocalCamera()
     {
         DisposeSource(ref _rtcVideoSource);
-        RemoveRemoteVideoTrack(LocalVideoTrackName);
+
+        var sid = _localVideoTrack?.Sid;
+        if (sid != null && _resizeTextureControllers.TryGetValue(sid, out var c))
+        {
+            c.Dispose();
+            _resizeTextureControllers.Remove(sid);
+        }
+
         _room.LocalParticipant.UnpublishTrack(_localVideoTrack, false);
+        SetTileGray(_room.LocalParticipant.Identity);
         _cameraActive = false;
     }
 
@@ -462,18 +549,66 @@ public class MeetManager : MonoBehaviour
         return obj;
     }
 
-    private void ApplyTextureToDisplayImage(string trackId, Texture tex, RawImage image)
+    private void EnsureParticipantTile(string identity)
     {
-        var controller = new ResizeTextureController(tex, videoTrackParent.cellSize.x, videoTrackParent.cellSize.y);
-        image.texture = controller.GetTargetTexture();
+        if (_participantTiles.ContainsKey(identity)) return;
 
-        if (_resizeTextureControllers.TryGetValue(trackId, out var old))
+        var obj = CreateVideoDisplay($"Tile: {identity}");
+        obj.transform.SetParent(videoTrackParent.transform, false);
+        var image = obj.GetComponent<RawImage>();
+        image.texture = Texture2D.whiteTexture;
+        image.color = Color.gray;
+        _participantTiles[identity] = obj;
+    }
+
+    private void DestroyParticipantTile(string identity)
+    {
+        if (_participantTiles.TryGetValue(identity, out var obj))
+        {
+            Destroy(obj);
+            _participantTiles.Remove(identity);
+        }
+    }
+
+    private void SetTileGray(string identity)
+    {
+        if (!_participantTiles.TryGetValue(identity, out var obj)) return;
+        var image = obj.GetComponent<RawImage>();
+        if (image == null) return;
+        image.texture = Texture2D.whiteTexture;
+        image.color = Color.gray;
+    }
+
+    private void SetTileLive(string identity, string sid)
+    {
+        if (!_participantTiles.TryGetValue(identity, out var obj)) return;
+        if (!_resizeTextureControllers.TryGetValue(sid, out var controller)) return;
+        var image = obj.GetComponent<RawImage>();
+        if (image == null) return;
+        image.texture = controller.GetTargetTexture();
+        image.color = Color.white;
+    }
+
+    private void ApplyTextureToTile(string sid, Texture tex, RawImage image)
+    {
+        var controller = new ResizeTextureController
+        (
+            tex, 
+            videoTrackParent.cellSize.x, 
+            videoTrackParent.cellSize.y, 
+            cropMode: ResizeTextureController.CropMode.FillCrop
+        );
+        
+        image.texture = controller.GetTargetTexture();
+        image.color = Color.white;
+
+        if (_resizeTextureControllers.TryGetValue(sid, out var old))
         {
             old.Dispose();
-            _resizeTextureControllers.Remove(trackId);
+            _resizeTextureControllers.Remove(sid);
         }
 
-        _resizeTextureControllers[trackId] = controller;
+        _resizeTextureControllers[sid] = controller;
     }
 
     private static void DisposeSource<T>(ref T source) where T : class, System.IDisposable
@@ -502,24 +637,33 @@ public class MeetManager : MonoBehaviour
         }
         _audioStreams.Clear();
 
-        foreach (var obj in _videoDisplayObjects.Values)
-        {
-            var img = obj.GetComponent<RawImage>();
-            if (img != null) { img.texture = null; Destroy(img); }
-            Destroy(obj);
-        }
-        _videoDisplayObjects.Clear();
-
-        foreach (var controller in _resizeTextureControllers.Values)
-            controller.Dispose();
-        _resizeTextureControllers.Clear();
-
         foreach (var stream in _videoStreams.Values)
         {
             stream.Stop();
             stream.Dispose();
         }
         _videoStreams.Clear();
+
+        foreach (var controller in _resizeTextureControllers.Values)
+            controller.Dispose();
+        _resizeTextureControllers.Clear();
+
+        foreach (var obj in _participantTiles.Values)
+        {
+            var img = obj.GetComponent<RawImage>();
+            if (img != null) { img.texture = null; Destroy(img); }
+            Destroy(obj);
+        }
+        _participantTiles.Clear();
+
+        foreach (var obj in _extraVideoTiles.Values)
+        {
+            var img = obj.GetComponent<RawImage>();
+            if (img != null) { img.texture = null; Destroy(img); }
+            Destroy(obj);
+        }
+        _extraVideoTiles.Clear();
+        _extraVideoOwners.Clear();
 
         _cameraActive = false;
         _microphoneActive = false;
