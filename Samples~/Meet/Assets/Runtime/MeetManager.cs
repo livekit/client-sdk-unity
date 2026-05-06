@@ -35,8 +35,10 @@ public class MeetManager : MonoBehaviour
 
     [Header("Video Layout")]
     [SerializeField] private GridLayoutGroup videoTrackParent;
-    [SerializeField] private Texture placeholderTexture;
     [SerializeField] private int frameRate = 30;
+
+    private const string PlaceholderTextureResourceName = "PlaceholderTileSquare";
+    private Texture _placeholderTexture;
 
     private TokenSourceComponent _tokenSourceComponent;
     private Room _room;
@@ -73,6 +75,7 @@ public class MeetManager : MonoBehaviour
 
         _inCallButtons = new List<Button> { cameraButton, microphoneButton, endCallButton, publishDataButton };
         _audioTrackParent = new GameObject("AudioTrackParent").transform;
+        _placeholderTexture = Resources.Load<Texture>(PlaceholderTextureResourceName);
     }
 
     private void Update()
@@ -557,7 +560,7 @@ public class MeetManager : MonoBehaviour
         var obj = CreateVideoDisplay($"Tile: {identity}");
         obj.transform.SetParent(videoTrackParent.transform, false);
         var image = obj.GetComponent<RawImage>();
-        image.texture = placeholderTexture;
+        image.texture = _placeholderTexture;
         _participantTiles[identity] = obj;
     }
 
@@ -575,7 +578,7 @@ public class MeetManager : MonoBehaviour
         if (!_participantTiles.TryGetValue(identity, out var obj)) return;
         var image = obj.GetComponent<RawImage>();
         if (image == null) return;
-        image.texture = placeholderTexture;
+        image.texture = _placeholderTexture;
     }
 
     private void SetTileLive(string identity, string sid)
