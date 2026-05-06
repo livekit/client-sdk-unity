@@ -219,6 +219,54 @@ namespace LiveKit
         }
 
         /// <summary>
+        /// Starts recording from the microphone.
+        ///
+        /// Recording is started automatically when PlatformAudio is created.
+        /// Use this to resume recording after calling StopRecording.
+        /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the operation failed.
+        /// </exception>
+        public void StartRecording()
+        {
+            using var request = FFIBridge.Instance.NewRequest<StartRecordingRequest>();
+            request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
+
+            using var response = request.Send();
+            FfiResponse res = response;
+
+            if (res.StartRecording.HasError && !string.IsNullOrEmpty(res.StartRecording.Error))
+                throw new InvalidOperationException($"Failed to start recording: {res.StartRecording.Error}");
+
+            Utils.Debug("PlatformAudio: started recording");
+        }
+
+        /// <summary>
+        /// Stops recording from the microphone.
+        ///
+        /// Use this to temporarily stop recording without disposing PlatformAudio.
+        /// This turns off the system's recording privacy indicator (e.g., on macOS/iOS).
+        /// Call StartRecording to resume recording.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the operation failed.
+        /// </exception>
+        public void StopRecording()
+        {
+            using var request = FFIBridge.Instance.NewRequest<StopRecordingRequest>();
+            request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
+
+            using var response = request.Send();
+            FfiResponse res = response;
+
+            if (res.StopRecording.HasError && !string.IsNullOrEmpty(res.StopRecording.Error))
+                throw new InvalidOperationException($"Failed to stop recording: {res.StopRecording.Error}");
+
+            Utils.Debug("PlatformAudio: stopped recording");
+        }
+
+        /// <summary>
         /// Releases the PlatformAudio resources.
         ///
         /// When disposed, the platform ADM may be disabled if this was the last
