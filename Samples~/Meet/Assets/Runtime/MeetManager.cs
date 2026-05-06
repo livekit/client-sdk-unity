@@ -510,7 +510,7 @@ public class MeetManager : MonoBehaviour
             yield break;
         }
 
-        var device = WebCamTexture.devices[0];
+        var device = PickPreferredCamera(WebCamTexture.devices);
         var (width, height) = GetCameraResolution();
 
         _webCamTexture = new WebCamTexture(device.name, width, height, frameRate)
@@ -524,6 +524,13 @@ public class MeetManager : MonoBehaviour
     {
         for (int i = 0; i < 300 && WebCamTexture.devices.Length == 0; i++)
             yield return new WaitForEndOfFrame();
+    }
+
+    private static WebCamDevice PickPreferredCamera(WebCamDevice[] devices)
+    {
+        foreach (var d in devices)
+            if (d.isFrontFacing) return d;
+        return devices[0];
     }
 
     private static (int width, int height) GetCameraResolution()
