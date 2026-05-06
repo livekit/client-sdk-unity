@@ -33,7 +33,7 @@ public class MeetManager : MonoBehaviour
     private Transform _audioTrackParent;
 
     private readonly Dictionary<string, ParticipantTile> _participantTiles = new();
-    private readonly Dictionary<string, ParticipantTile> _extraVideoTiles = new();
+    private readonly Dictionary<string, ParticipantTile> _extraVideoTiles = new(); // e.g. for screen share
     private readonly Dictionary<string, string> _extraVideoOwners = new();
     private readonly Dictionary<string, GameObject> _audioObjects = new();
     private readonly Dictionary<string, VideoStream> _videoStreams = new();
@@ -83,9 +83,6 @@ public class MeetManager : MonoBehaviour
 
     private void OnStartCall()
     {
-        if (_webCamTexture == null)
-            StartCoroutine(CameraDeviceProvider.Open(frameRate, t => _webCamTexture = t));
-
         StartCoroutine(ConnectToRoom());
     }
 
@@ -381,6 +378,11 @@ public class MeetManager : MonoBehaviour
     private IEnumerator PublishLocalCamera()
     {
         if (_cameraActive) yield break;
+
+        if (_webCamTexture == null)
+            yield return CameraDeviceProvider.Open(frameRate, t => _webCamTexture = t);
+
+        if (_webCamTexture == null) yield break;
 
         EnsureParticipantTile(_localId);
         var tile = _participantTiles[_localId];
