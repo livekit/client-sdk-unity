@@ -435,6 +435,17 @@ public class MeetManager : MonoBehaviour
     {
         Debug.Log("Publishing microphone using PlatformAudio (ADM)");
 
+        // Start recording (in case it was stopped by a previous mute)
+        // This turns on the privacy indicator
+        try
+        {
+            _platformAudio?.StartRecording();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Failed to start recording (may already be started): {e.Message}");
+        }
+
         // Create audio processing options from Inspector settings
         var audioOptions = new AudioProcessingOptions
         {
@@ -508,6 +519,16 @@ public class MeetManager : MonoBehaviour
         if (usePlatformAudio && _platformAudioSource != null)
         {
             // PlatformAudio mode cleanup
+            // Stop recording to turn off privacy indicator (e.g., on macOS/iOS)
+            try
+            {
+                _platformAudio?.StopRecording();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Failed to stop recording: {e.Message}");
+            }
+
             _platformAudioSource.Dispose();
             _platformAudioSource = null;
             _audioObjects.Remove(LocalAudioTrackName);
