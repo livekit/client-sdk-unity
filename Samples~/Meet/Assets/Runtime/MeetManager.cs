@@ -100,15 +100,9 @@ public class MeetManager : MonoBehaviour
     private void OnToggleCamera()
     {
         if (!_cameraActive)
-        {
             StartCoroutine(PublishLocalCamera());
-            buttonBar.SetCameraOn(true);
-        }
         else
-        {
             UnpublishLocalCamera();
-            buttonBar.SetCameraOn(false);
-        }
     }
 
     private void OnToggleMicrophone()
@@ -409,6 +403,8 @@ public class MeetManager : MonoBehaviour
         _localRtcVideoSource = source;
         source.Start();
         StartCoroutine(source.Update());
+
+        buttonBar.SetCameraOn(true);
     }
 
     private void UnpublishLocalCamera()
@@ -420,6 +416,8 @@ public class MeetManager : MonoBehaviour
         if (_participantTiles.TryGetValue(_localId, out var tile))
             tile.ClearLive();
         _cameraActive = false;
+
+        buttonBar.SetCameraOn(false);
     }
 
     #endregion
