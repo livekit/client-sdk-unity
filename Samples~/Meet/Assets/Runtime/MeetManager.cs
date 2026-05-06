@@ -208,7 +208,11 @@ public class MeetManager : MonoBehaviour
             case RemoteVideoTrack video:
                 AddExtraVideoTile(video, participant.Identity); break;
             case RemoteAudioTrack audio:
-                AddRemoteAudioTrack(audio); break;
+                AddRemoteAudioTrack(audio);
+                if (publication.Source == TrackSource.SourceMicrophone
+                    && _participantTiles.TryGetValue(participant.Identity, out var tile))
+                    tile.SetMicMuted(publication.Muted);
+                break;
         }
     }
 
@@ -221,7 +225,11 @@ public class MeetManager : MonoBehaviour
             case RemoteVideoTrack video:
                 RemoveExtraVideoTile(video.Sid); break;
             case RemoteAudioTrack audio:
-                RemoveRemoteAudioTrack(audio.Sid); break;
+                RemoveRemoteAudioTrack(audio.Sid);
+                if (publication.Source == TrackSource.SourceMicrophone
+                    && _participantTiles.TryGetValue(participant.Identity, out var tile))
+                    tile.SetMicMuted(true);
+                break;
         }
     }
 
@@ -334,6 +342,14 @@ public class MeetManager : MonoBehaviour
 
     private void OnTrackMuted(TrackPublication publication, Participant participant)
     {
+        if (publication.Kind == TrackKind.KindAudio
+            && publication.Source == TrackSource.SourceMicrophone)
+        {
+            if (_participantTiles.TryGetValue(participant.Identity, out var tile))
+                tile.SetMicMuted(true);
+            return;
+        }
+
         if (publication.Kind != TrackKind.KindVideo) return;
 
         if (publication.Source == TrackSource.SourceCamera)
@@ -349,6 +365,14 @@ public class MeetManager : MonoBehaviour
 
     private void OnTrackUnmuted(TrackPublication publication, Participant participant)
     {
+        if (publication.Kind == TrackKind.KindAudio
+            && publication.Source == TrackSource.SourceMicrophone)
+        {
+            if (_participantTiles.TryGetValue(participant.Identity, out var tile))
+                tile.SetMicMuted(false);
+            return;
+        }
+
         if (publication.Kind != TrackKind.KindVideo) return;
 
         if (publication.Source == TrackSource.SourceCamera)
@@ -440,6 +464,9 @@ public class MeetManager : MonoBehaviour
         _audioObjects[LocalAudioTrackName] = audioObject;
         _rtcAudioSource = rtcSource;
         rtcSource.Start();
+
+        if (_participantTiles.TryGetValue(_room.LocalParticipant.Identity, out var tile))
+            tile.SetMicMuted(false);
     }
 
     private void UnpublishLocalMicrophone()
@@ -454,6 +481,8 @@ public class MeetManager : MonoBehaviour
         }
 
         _room.LocalParticipant.UnpublishTrack(_localAudioTrack, false);
+        if (_participantTiles.TryGetValue(_room.LocalParticipant.Identity, out var tile))
+            tile.SetMicMuted(true);
         _microphoneActive = false;
     }
 

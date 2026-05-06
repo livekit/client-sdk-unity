@@ -1,3 +1,4 @@
+using Google.MaterialDesign.Icons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,10 +7,16 @@ public class ParticipantTile : MonoBehaviour
 {
     public RawImage Image;
     public TMP_Text Label;
+    public MaterialIcon MicIcon;
 
     private ResizeTextureController _controller;
     private Texture _placeholder;
     private bool _showingLive;
+
+    private void Awake()
+    {
+        SetMicMuted(true);
+    }
 
     public void SetPlaceholder(Texture tex)
     {
@@ -47,6 +54,12 @@ public class ParticipantTile : MonoBehaviour
         _controller = null;
         _showingLive = false;
         Image.texture = _placeholder;
+    }
+
+    public void SetMicMuted(bool muted)
+    {
+        if (MicIcon == null) return;
+        MicIcon.gameObject.SetActive(muted);
     }
 
     private void Update() => _controller?.Resize();
