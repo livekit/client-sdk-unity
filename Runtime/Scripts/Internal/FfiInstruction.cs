@@ -28,7 +28,8 @@ namespace LiveKit
                 {
                     IsError = true;
                     IsDone = true;
-                });
+                },
+                dispatchToMainThread: false);
         }
     }
 
@@ -63,7 +64,8 @@ namespace LiveKit
                     Error = new StreamError("Canceled");
                     IsError = true;
                     IsDone = true;
-                });
+                },
+                dispatchToMainThread: false);
         }
     }
 
@@ -116,7 +118,8 @@ namespace LiveKit
                     Error = new StreamError("Canceled");
                     IsError = true;
                     IsDone = true;
-                });
+                },
+                dispatchToMainThread: false);
         }
     }
 }

@@ -80,6 +80,11 @@ namespace LiveKit
         private readonly Queue<TContent> _pendingChunks = new();
         private TContent _latestChunk;
 
+        // Chunk events arrive on the FFI thread; Reset() and the LatestChunk getter
+        // run on the main-thread coroutine. _gate serializes mutations of the queue,
+        // _latestChunk, IsCurrentReadDone, IsEos, and Error across both sides.
+        private readonly object _gate = new();
+
         /// <summary>
         /// Error that occurred on the last read, if any.
         /// </summary>
@@ -94,8 +99,11 @@ namespace LiveKit
         {
             get
             {
-                if (Error != null) throw Error;
-                return _latestChunk;
+                lock (_gate)
+                {
+                    if (Error != null) throw Error;
+                    return _latestChunk;
+                }
             }
         }
 
@@ -108,34 +116,48 @@ namespace LiveKit
 
         protected void OnChunk(TContent content)
         {
-            if (IsCurrentReadDone)
+            lock (_gate)
             {
-                // Consumer hasn't yielded since the last chunk; buffer until Reset().
-                _pendingChunks.Enqueue(content);
-            }
-            else
-            {
-                _latestChunk = content;
-                IsCurrentReadDone = true;
+                if (IsCurrentReadDone)
+                {
+                    // Consumer hasn't yielded since the last chunk; buffer until Reset().
+                    _pendingChunks.Enqueue(content);
+                }
+                else
+                {
+                    _latestChunk = content;
+                    IsCurrentReadDone = true;
+                }
             }
         }
 
         public override void Reset()
         {
-            base.Reset();
-            if (_pendingChunks.Count > 0)
+            // base.Reset() must run under the same lock as OnChunk, otherwise the
+            // window between IsCurrentReadDone=false (from base) and the dequeue
+            // below lets a producer race in, write _latestChunk, and have its
+            // chunk immediately overwritten by the dequeue. That race lost ~4% of
+            // chunks under stress before this fix.
+            lock (_gate)
             {
-                _latestChunk = _pendingChunks.Dequeue();
-                IsCurrentReadDone = true;
+                base.Reset();
+                if (_pendingChunks.Count > 0)
+                {
+                    _latestChunk = _pendingChunks.Dequeue();
+                    IsCurrentReadDone = true;
+                }
             }
         }
 
         protected void OnEos(Proto.StreamError protoError)
         {
-            IsEos = true;
-            if (protoError != null)
+            lock (_gate)
             {
-                Error = new StreamError(protoError);
+                IsEos = true;
+                if (protoError != null)
+                {
+                    Error = new StreamError(protoError);
+                }
             }
         }
     }
