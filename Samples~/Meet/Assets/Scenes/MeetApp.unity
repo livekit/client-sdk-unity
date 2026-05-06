@@ -905,7 +905,7 @@ MonoBehaviour:
   endCallButton: {fileID: 1989343732}
   publishDataButton: {fileID: 55547283}
   videoTrackParent: {fileID: 2128321498}
-  placeholderTexture: {fileID: 2800000, guid: 31e89df898e8a43b3a8bbf70767c42e4, type: 3}
+  participantTilePrefab: {fileID: 4315784896331113596, guid: bec493bbc3d574c07b5bbf8dd2be26b3, type: 3}
   frameRate: 30
 --- !u!114 &1478206705
 MonoBehaviour:
