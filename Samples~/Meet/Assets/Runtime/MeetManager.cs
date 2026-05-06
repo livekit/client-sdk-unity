@@ -580,6 +580,32 @@ public class MeetManager : MonoBehaviour
         if (tile.Label != null) tile.Label.text = identity;
         tile.SetPlaceholder(_placeholderTexture);
         _participantTiles[identity] = tile;
+
+        SyncMicState(identity);
+    }
+
+    private void SyncMicState(string identity)
+    {
+        if (!_participantTiles.TryGetValue(identity, out var tile)) return;
+        if (_room == null) return;
+
+        Participant participant = null;
+        if (_room.LocalParticipant != null && _room.LocalParticipant.Identity == identity)
+            participant = _room.LocalParticipant;
+        else if (_room.RemoteParticipants.TryGetValue(identity, out var rp))
+            participant = rp;
+        if (participant == null) return;
+
+        bool muted = true;
+        foreach (var pub in participant.Tracks.Values)
+        {
+            if (pub.Kind == TrackKind.KindAudio && pub.Source == TrackSource.SourceMicrophone)
+            {
+                muted = pub.Muted;
+                break;
+            }
+        }
+        tile.SetMicMuted(muted);
     }
 
     private void DestroyParticipantTile(string identity)
