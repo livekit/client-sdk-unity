@@ -15,7 +15,7 @@ namespace LiveKit.PlayModeTests
         /// The Rust drop implementation for outgoing data streams requires a Tokio
         /// runtime, which doesn't exist on the GC finalizer thread right now. That
         /// is why it is a [Known Issue]
-        [UnityTest, Category("E2E"), Ignore("Known issue: CLT-2773")]
+        [UnityTest, Category("E2E")]
         public IEnumerator StreamWriter_LeakedHandle_DoesNotCrashOnGC()
         {
             LogAssert.ignoreFailingMessages = true;

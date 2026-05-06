@@ -54,8 +54,8 @@ Shader "Hidden/LiveKit/YUV2RGB"
 
             half4 frag(v2f i) : SV_Target
             {
-                // Flip horizontally to match Unity's texture orientation with incoming YUV data
-                half2 uv = half2(1.0h - i.uv.x, i.uv.y);
+                // Flip vertically to match Unity's texture orientation with incoming YUV data
+                half2 uv = half2(i.uv.x, 1.0h - i.uv.y);
 
                 half y = tex2D(_TexY, uv).r;
                 half u = tex2D(_TexU, uv).r;
