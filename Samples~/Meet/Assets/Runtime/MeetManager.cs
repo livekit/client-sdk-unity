@@ -35,6 +35,7 @@ public class MeetManager : MonoBehaviour
 
     [Header("Video Layout")]
     [SerializeField] private GridLayoutGroup videoTrackParent;
+    [SerializeField] private Texture placeholderTexture;
     [SerializeField] private int frameRate = 30;
 
     private TokenSourceComponent _tokenSourceComponent;
@@ -556,8 +557,7 @@ public class MeetManager : MonoBehaviour
         var obj = CreateVideoDisplay($"Tile: {identity}");
         obj.transform.SetParent(videoTrackParent.transform, false);
         var image = obj.GetComponent<RawImage>();
-        image.texture = Texture2D.whiteTexture;
-        image.color = Color.gray;
+        image.texture = placeholderTexture;
         _participantTiles[identity] = obj;
     }
 
@@ -575,8 +575,7 @@ public class MeetManager : MonoBehaviour
         if (!_participantTiles.TryGetValue(identity, out var obj)) return;
         var image = obj.GetComponent<RawImage>();
         if (image == null) return;
-        image.texture = Texture2D.whiteTexture;
-        image.color = Color.gray;
+        image.texture = placeholderTexture;
     }
 
     private void SetTileLive(string identity, string sid)
@@ -586,7 +585,6 @@ public class MeetManager : MonoBehaviour
         var image = obj.GetComponent<RawImage>();
         if (image == null) return;
         image.texture = controller.GetTargetTexture();
-        image.color = Color.white;
     }
 
     private void ApplyTextureToTile(string sid, Texture tex, RawImage image)
@@ -600,7 +598,6 @@ public class MeetManager : MonoBehaviour
         );
         
         image.texture = controller.GetTargetTexture();
-        image.color = Color.white;
 
         if (_resizeTextureControllers.TryGetValue(sid, out var old))
         {
