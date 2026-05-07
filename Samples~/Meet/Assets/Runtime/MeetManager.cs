@@ -498,6 +498,7 @@ public class MeetManager : MonoBehaviour
         tile.gameObject.name = $"Tile: {identity}";
         if (tile.Label != null) tile.Label.text = identity;
         tile.SetPlaceholder(_placeholderTexture);
+        if (identity == _localId) tile.transform.SetSiblingIndex(0);
         _participantTiles[identity] = tile;
 
         SyncMicState(identity);
