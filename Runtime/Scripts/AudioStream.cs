@@ -15,7 +15,7 @@ namespace LiveKit
     {
         internal readonly FfiHandle Handle;
         private readonly AudioSource _audioSource;
-        private readonly AudioProbe _probe;
+        private AudioProbe _probe;
         private RingBuffer _buffer;
         private short[] _tempBuffer;
         private short[] _crossfadeScratch;
@@ -216,21 +216,32 @@ namespace LiveKit
             }
         }
 
-        // Called when the system audio output device changes (e.g. plug/unplug headphones).
-        // Unity stops all AudioSources during the reset, so we restart playback. We also clear
-        // the ring buffer since it accumulated frames during the device-change blackout that
-        // OnAudioRead never had a chance to drain.
+        // Called when the system audio output device changes (e.g. plug/unplug headphones)
+        // or AudioSettings.Reset is invoked. Unity tears down its audio engine in both cases,
+        // which stops every AudioSource and detaches the AudioProbe filter from the rebuilt
+        // audio graph. Just calling Play() on the existing source isn't always enough; we
+        // additionally recreate the AudioProbe so Unity re-registers the OnAudioFilterRead
+        // node on the new graph.
         private void OnAudioConfigurationChanged(bool deviceWasChanged)
         {
-            if (_disposed || !deviceWasChanged) return;
+            if (_disposed) return;
 
             lock (_lock)
             {
                 _buffer?.Clear();
                 _isPrimed = false;
             }
+
+            if (_probe != null)
+            {
+                _probe.AudioRead -= OnAudioRead;
+                UnityEngine.Object.Destroy(_probe);
+            }
+            _probe = _audioSource.gameObject.AddComponent<AudioProbe>();
+            _probe.AudioRead += OnAudioRead;
+
+            _audioSource.Stop();
             _audioSource.Play();
-            Utils.Debug("AudioStream restarted AudioSource after audio device change");
         }
 
         // Called when application goes to background or returns to foreground
