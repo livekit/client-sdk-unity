@@ -20,7 +20,7 @@ namespace LiveKit
         /// Fetches connection details using only the values on the asset-backed
         /// <see cref="TokenSourceComponentConfig"/>. Equivalent to <c>FetchConnectionDetails(null)</c>.
         /// </summary>
-        public Task<ConnectionDetails> FetchConnectionDetails() => FetchConnectionDetails(null);
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails() => FetchConnectionDetails(null);
 
         ITokenSource _tokenSource;
 
@@ -56,22 +56,26 @@ namespace LiveKit
         /// overrides the config value (empty strings are treated as unset and fall through to the config).
         /// Ignored for fixed token sources (<see cref="TokenSourceLiteral"/>, <see cref="TokenSourceCustom"/>).
         /// </summary>
-        public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions? options)   
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
         {
+            Task<ConnectionDetails> task;
             switch (_tokenSource)
             {
                 case ITokenSourceConfigurable configurableSource:
-                    return await configurableSource.FetchConnectionDetails(Coalesce(_config, options));
-        
+                    task = configurableSource.FetchConnectionDetails(Coalesce(_config, options));
+                    break;
+
                 case ITokenSourceFixed fixedSource:
                     if (options != null)
                         Debug.LogWarning("TokenSourceComponent uses a fixed config, so fetch options are ignored.");
-                    return await fixedSource.FetchConnectionDetails();
+                    task = fixedSource.FetchConnectionDetails();
+                    break;
 
                 default:
                     throw new InvalidOperationException("Unknown token source type");
-            }                                                                                          
-        }       
+            }
+            return new TaskYieldInstruction<ConnectionDetails>(task);
+        }
 
         private static TokenSourceFetchOptions Coalesce(TokenSourceComponentConfig config, TokenSourceFetchOptions? options)
         {

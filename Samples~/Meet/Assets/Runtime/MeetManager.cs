@@ -157,16 +157,16 @@ public class MeetManager : MonoBehaviour
     {
         if (_room != null) yield break;
 
-        var connectionDetailsTask = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions());
-        yield return new WaitUntil(() => connectionDetailsTask.IsCompleted);
+        var fetch = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions());
+        yield return fetch;
 
-        if (connectionDetailsTask.IsFaulted)
+        if (fetch.IsError)
         {
-            Debug.LogError($"Failed to fetch connection details: {connectionDetailsTask.Exception?.InnerException?.Message}");
+            Debug.LogError($"Failed to fetch connection details: {fetch.Exception?.Message}");
             yield break;
         }
 
-        var details = connectionDetailsTask.Result;
+        var details = fetch.Result;
 
         _room = new Room();
         _room.TrackSubscribed += OnTrackSubscribed;
