@@ -73,6 +73,11 @@ namespace LiveKit
 
             // Subscribe to application pause events to handle background/foreground transitions
             MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
+
+            // Unity stops every AudioSource when the system audio output device changes
+            // (e.g. headphones unplugged). Without re-playing the source, OnAudioFilterRead
+            // stops firing and the stream goes silent until the AudioStream is recreated.
+            AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged;
         }
 
         // Called on Unity audio thread
@@ -211,6 +216,23 @@ namespace LiveKit
             }
         }
 
+        // Called when the system audio output device changes (e.g. plug/unplug headphones).
+        // Unity stops all AudioSources during the reset, so we restart playback. We also clear
+        // the ring buffer since it accumulated frames during the device-change blackout that
+        // OnAudioRead never had a chance to drain.
+        private void OnAudioConfigurationChanged(bool deviceWasChanged)
+        {
+            if (_disposed || !deviceWasChanged) return;
+
+            lock (_lock)
+            {
+                _buffer?.Clear();
+                _isPrimed = false;
+            }
+            _audioSource.Play();
+            Utils.Debug("AudioStream restarted AudioSource after audio device change");
+        }
+
         // Called when application goes to background or returns to foreground
         internal void OnApplicationPause(bool pause)
         {
@@ -285,6 +307,7 @@ namespace LiveKit
             // touching partially disposed state.
             FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
             MonoBehaviourContext.OnApplicationPauseEvent -= OnApplicationPause;
+            AudioSettings.OnAudioConfigurationChanged -= OnAudioConfigurationChanged;
 
             lock (_lock)
             {
