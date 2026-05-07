@@ -46,8 +46,6 @@ public class MeetManager : MonoBehaviour
     private LocalAudioTrack _localAudioTrack;
     private bool _cameraActive;
     private bool _microphoneActive;
-    private int _lastLocalRotation = -1;
-    private bool _lastLocalVerticallyMirrored;
 
     #region Lifecycle
 
@@ -74,24 +72,11 @@ public class MeetManager : MonoBehaviour
         else _webCamTexture.Play();
     }
 
-    private ScreenOrientation _lastScreenOrientation;
-
     private void Update()
     {
         if (!_cameraActive || _webCamTexture == null || _localId == null) return;
-
-        int rot = _webCamTexture.videoRotationAngle;
-        bool vMirror = _webCamTexture.videoVerticallyMirrored;
-        var orient = Screen.orientation;
-        if (rot != _lastLocalRotation || vMirror != _lastLocalVerticallyMirrored || orient != _lastScreenOrientation)
-        {
-            Debug.Log($"[MeetManager] videoRotationAngle={rot} videoVerticallyMirrored={vMirror} Screen.orientation={orient}");
-            _lastLocalRotation = rot;
-            _lastLocalVerticallyMirrored = vMirror;
-            _lastScreenOrientation = orient;
-            if (_participantTiles.TryGetValue(_localId, out var tile))
-                tile.SetLiveRotation(rot, vMirror);
-        }
+        if (_participantTiles.TryGetValue(_localId, out var tile))
+            tile.SetLiveRotation(_webCamTexture.videoRotationAngle, _webCamTexture.videoVerticallyMirrored);
     }
 
     private void OnDestroy()
@@ -421,16 +406,8 @@ public class MeetManager : MonoBehaviour
 
         source.TextureReceived += tex =>
         {
-            if (_webCamTexture == null)
-            {
-                tile.BindLiveSource(tex);
-                return;
-            }
-            int rot = _webCamTexture.videoRotationAngle;
-            bool vMirror = _webCamTexture.videoVerticallyMirrored;
-            tile.BindLiveSource(tex, rot, vMirror);
-            _lastLocalRotation = rot;
-            _lastLocalVerticallyMirrored = vMirror;
+            if (_webCamTexture == null) { tile.BindLiveSource(tex); return; }
+            tile.BindLiveSource(tex, _webCamTexture.videoRotationAngle, _webCamTexture.videoVerticallyMirrored);
         };
 
         _cameraActive = true;
@@ -450,7 +427,6 @@ public class MeetManager : MonoBehaviour
         if (_participantTiles.TryGetValue(_localId, out var tile))
             tile.ClearLive();
         _cameraActive = false;
-        _lastLocalRotation = -1;
 
         buttonBar.SetCameraOn(false);
     }
