@@ -20,7 +20,7 @@ namespace LiveKit
         /// Fetches connection details using only the values on the asset-backed
         /// <see cref="TokenSourceComponentConfig"/>. Equivalent to <c>FetchConnectionDetails(null)</c>.
         /// </summary>
-        public FetchConnectionDetailsInstruction FetchConnectionDetails() => FetchConnectionDetails(null);
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails() => FetchConnectionDetails(null);
 
         ITokenSource _tokenSource;
 
@@ -56,7 +56,7 @@ namespace LiveKit
         /// overrides the config value (empty strings are treated as unset and fall through to the config).
         /// Ignored for fixed token sources (<see cref="TokenSourceLiteral"/>, <see cref="TokenSourceCustom"/>).
         /// </summary>
-        public FetchConnectionDetailsInstruction FetchConnectionDetails(TokenSourceFetchOptions options)
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
         {
             Task<ConnectionDetails> task;
             switch (_tokenSource)
@@ -74,7 +74,7 @@ namespace LiveKit
                 default:
                     throw new InvalidOperationException("Unknown token source type");
             }
-            return new FetchConnectionDetailsInstruction(task);
+            return new TaskYieldInstruction<ConnectionDetails>(task);
         }
 
         private static TokenSourceFetchOptions Coalesce(TokenSourceComponentConfig config, TokenSourceFetchOptions? options)
@@ -114,39 +114,5 @@ namespace LiveKit
 
         private static string Coalesce(string primary, string fallback) =>
             NullIfEmpty(primary) ?? NullIfEmpty(fallback);
-    }
-
-    /// <summary>
-    /// Coroutine yield instruction returned by <see cref="TokenSourceComponent.FetchConnectionDetails()"/>.
-    /// Yield on it from a coroutine, then read <see cref="Result"/> (on success) or <see cref="Exception"/>
-    /// (when <see cref="YieldInstruction.IsError"/> is true).
-    /// </summary>
-    public sealed class FetchConnectionDetailsInstruction : YieldInstruction
-    {
-        public ConnectionDetails Result { get; private set; }
-        public Exception Exception { get; private set; }
-
-        internal FetchConnectionDetailsInstruction(Task<ConnectionDetails> task)
-        {
-            // Continuation may run on a thread-pool thread; the volatile IsDone/IsError fields in
-            // the base class give the polling main thread acquire semantics for Result/Exception.
-            task.ContinueWith(t =>
-            {
-                if (t.IsFaulted)
-                {
-                    Exception = t.Exception?.InnerException ?? t.Exception;
-                    IsError = true;
-                }
-                else if (t.IsCanceled)
-                {
-                    IsError = true;
-                }
-                else
-                {
-                    Result = t.Result;
-                }
-                IsDone = true;
-            });
-        }
     }
 }
