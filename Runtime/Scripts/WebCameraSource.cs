@@ -28,10 +28,12 @@ namespace LiveKit
         {
             switch (CamTexture.videoRotationAngle)
             {
+                case 0: return VideoRotation._0;
                 case 90: return VideoRotation._90;
-                case 180: return VideoRotation._0;
+                case 180: return VideoRotation._180;
+                case 270: return VideoRotation._270;
             }
-            return VideoRotation._180;
+            return VideoRotation._0;
         }
 
         public WebCameraSource(WebCamTexture texture, VideoBufferType bufferType = VideoBufferType.Rgba) : base(VideoStreamSource.Texture, bufferType)
@@ -81,8 +83,13 @@ namespace LiveKit
             }
 
             CamTexture.GetPixels32(_readBuffer);
-            MemoryMarshal.Cast<Color32, byte>(_readBuffer)
-                .CopyTo(_captureBuffer.AsSpan());
+            // GetPixels32 returns rows bottom-up; WebRTC expects top-down. Flip while copying.
+            var src = MemoryMarshal.Cast<Color32, byte>(_readBuffer);
+            var dst = _captureBuffer.AsSpan();
+            int rowBytes = width * GetStrideForBuffer(_bufferType);
+            for (int y = 0; y < height; y++)
+                src.Slice(y * rowBytes, rowBytes)
+                   .CopyTo(dst.Slice((height - 1 - y) * rowBytes, rowBytes));
 
             _requestPending = true;
 
