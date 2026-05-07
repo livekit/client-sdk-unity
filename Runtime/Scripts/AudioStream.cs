@@ -15,11 +15,15 @@ namespace LiveKit
     {
         // FFI native stream is created lazily on the first OnAudioRead so we can pass
         // Unity's actual delivered (channels, sampleRate) — not a system-speaker-mode
-        // guess. _handle is null until CreateFfiStream completes on the main thread.
+        // guess. _handle is null until CreateOrRecreateFfiStream completes on the main
+        // thread. The same path runs again whenever Unity's delivered format changes
+        // mid-stream (e.g. after a system audio device switch).
         private FfiHandle _handle;
         internal FfiHandle Handle => _handle;
         private readonly ulong _trackHandleId;
-        private bool _ffiCreatePosted;
+        private uint _ffiNumChannels;
+        private uint _ffiSampleRate;
+        private bool _pendingFfiRequest;
 
         private readonly AudioSource _audioSource;
         private AudioProbe _probe;
@@ -81,11 +85,12 @@ namespace LiveKit
             // AudioStreamEventReceived only after the stream exists (CreateFfiStream).
         }
 
-        // Called on the main thread (posted from OnAudioRead via FfiClient._context) once
-        // we know Unity's actual playback (channels, sampleRate). Builds the native stream
-        // request so Rust delivers frames already at the right format — no resample on this
-        // side, no FFI reconfigure dance later.
-        private void CreateFfiStream(uint observedChannels, uint observedSampleRate)
+        // Called on the main thread (posted from OnAudioRead via FfiClient._context) when
+        // either there is no FFI stream yet or Unity's delivered (channels, sampleRate) no
+        // longer matches what we asked Rust for. Builds a fresh native stream and swaps it
+        // in atomically. The old handle is disposed AFTER the swap so any in-flight frames
+        // from the old stream fail the handle-id filter in OnAudioStreamEvent.
+        private void CreateOrRecreateFfiStream(uint observedChannels, uint observedSampleRate)
         {
             lock (_lock) { if (_disposed) return; }
 
@@ -105,16 +110,30 @@ namespace LiveKit
             }
             catch (Exception ex)
             {
-                Utils.Error($"AudioStream FFI create failed: {ex}");
+                Utils.Error($"AudioStream FFI (re)create failed: {ex}");
+                lock (_lock) { _pendingFfiRequest = false; }
                 return;
             }
 
+            FfiHandle oldHandle;
+            bool firstCreate;
             lock (_lock)
             {
                 if (_disposed) { newHandle.Dispose(); return; }
+                oldHandle = _handle;
+                firstCreate = oldHandle == null;
                 _handle = newHandle;
-                FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
+                _ffiNumChannels = observedChannels;
+                _ffiSampleRate = observedSampleRate;
+                _buffer?.Clear();
+                _isPrimed = false;
+                _skipCooldown = 0;
+                _pendingFfiRequest = false;
+
+                if (firstCreate)
+                    FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
             }
+            oldHandle?.Dispose();
         }
 
         // Called on Unity audio thread
@@ -128,17 +147,18 @@ namespace LiveKit
 
             lock (_lock)
             {
-                // First OnAudioRead: post a one-shot CreateFfiStream to the main thread
-                // with Unity's actual (channels, sampleRate). Until the FFI stream exists
-                // we output silence — the priming window absorbs this gap.
-                if (_handle == null)
+                // Single gate covering first-create and runtime format changes (e.g. after a
+                // system audio device switch). When the FFI stream is missing or what we asked
+                // Rust for no longer matches what Unity is delivering, post a (re)create to the
+                // main thread and output silence until it lands. The priming window absorbs this.
+                if (_handle == null || channels != _ffiNumChannels || sampleRate != _ffiSampleRate)
                 {
-                    if (!_ffiCreatePosted)
+                    if (!_pendingFfiRequest)
                     {
-                        _ffiCreatePosted = true;
+                        _pendingFfiRequest = true;
                         uint observedCh = (uint)channels;
                         uint observedSr = (uint)sampleRate;
-                        FfiClient.Instance._context?.Post(_ => CreateFfiStream(observedCh, observedSr), null);
+                        FfiClient.Instance._context?.Post(_ => CreateOrRecreateFfiStream(observedCh, observedSr), null);
                     }
                     Array.Clear(data, 0, data.Length);
                     return;
@@ -337,7 +357,12 @@ namespace LiveKit
 
             lock (_lock)
             {
-                if (_buffer == null)
+                // _pendingFfiRequest gates writes during a (re)create: between the moment
+                // OnAudioRead detects a format mismatch and the swap landing, Rust is still
+                // emitting frames at the OLD format. Drop them to avoid corrupting the buffer.
+                // The handle-id filter above is the second line of defense for stragglers
+                // arriving from the old stream after the swap.
+                if (_buffer == null || _pendingFfiRequest)
                     return;
 
                 unsafe
