@@ -244,6 +244,11 @@ public class MeetManager : MonoBehaviour
             tile.ClearLive();
     }
 
+    /// <summary>
+    /// If participants have other video sources than their camera (e.g. share their screen).
+    /// </summary>
+    /// <param name="video">The video track</param>
+    /// <param name="identity">The participants identity</param>
     private void AddExtraVideoTile(RemoteVideoTrack video, string identity)
     {
         var sid = video.Sid;
