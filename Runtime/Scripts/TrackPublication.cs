@@ -40,6 +40,11 @@ namespace LiveKit
             _info.Muted = muted;
             Track?.UpdateMuted(muted);
         }
+
+        internal virtual void DisposeHandles()
+        {
+            Track?.DisposeHandles();
+        }
     }
 
     public sealed class RemoteTrackPublication : TrackPublication
@@ -52,6 +57,12 @@ namespace LiveKit
         internal RemoteTrackPublication(TrackPublicationInfo info, FfiHandle handle) : base(info)
         {
             Handle = handle;
+        }
+
+        internal override void DisposeHandles()
+        {
+            base.DisposeHandles();
+            Handle?.Dispose();
         }
 
         public void SetSubscribed(bool subscribed)

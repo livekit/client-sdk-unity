@@ -106,9 +106,10 @@ namespace LiveKit
         }
     }
 
-    public class Room
+    public class Room : IDisposable
     {
         internal FfiHandle RoomHandle = null;
+        private bool _disposed = false;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
 
@@ -183,7 +184,7 @@ namespace LiveKit
 
         public void Disconnect()
         {
-            if (this.RoomHandle == null)
+            if (_disposed || RoomHandle == null)
                 return;
             var (response, _) = FFIBridge.Instance.SendDisconnectRequest(this);
             using (response)
@@ -191,6 +192,38 @@ namespace LiveKit
                 Utils.Debug($"Disconnect.... {RoomHandle}");
                 Utils.Debug($"Disconnect response.... {response}");
             }
+            // Release the Rust-side room synchronously. Without this the FfiRoom
+            // (peer connection, signaling client, libwebrtc state) lingers in the
+            // FFI handle table until the SafeHandle finalizer runs.
+            Cleanup();
+        }
+
+        public void Dispose()
+        {
+            Disconnect();
+            GC.SuppressFinalize(this);
+        }
+
+        private void Cleanup()
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+
+            FfiClient.Instance.RoomEventReceived -= OnEventReceived;
+            FfiClient.Instance.RpcMethodInvocationReceived -= OnRpcMethodInvocationReceived;
+            FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
+
+            // Participant + track + publication FFI handles are independent entries in the
+            // Rust handle table — dropping the room handle alone does not cascade to them, so
+            // they would otherwise linger until C# GC finalizes each SafeHandle.
+            LocalParticipant?.DisposeHandles();
+            foreach (var p in _participants.Values)
+                p.DisposeHandles();
+            _participants.Clear();
+
+            RoomHandle?.Dispose();
+            RoomHandle = null;
         }
 
         /// <summary>
@@ -266,6 +299,10 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
+            // After Cleanup() the handle is null but late events may still flow
+            // through the FfiClient before the unsubscribe fully takes effect.
+            if (RoomHandle == null)
+                return;
             if (e.RoomHandle != (ulong)RoomHandle.DangerousGetHandle())
                 return;
 
@@ -564,8 +601,7 @@ namespace LiveKit
 
         private void OnDisconnect()
         {
-            FfiClient.Instance.RoomEventReceived -= OnEventReceived;
-            FfiClient.Instance.RpcMethodInvocationReceived -= OnRpcMethodInvocationReceived;
+            Cleanup();
         }
 
         internal RemoteParticipant CreateRemoteParticipantWithTracks(ConnectCallback.Types.ParticipantWithTracks item)

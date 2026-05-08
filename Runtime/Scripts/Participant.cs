@@ -55,6 +55,14 @@ namespace LiveKit
         {
             TrackUnpublished?.Invoke(publication);
         }
+
+        internal void DisposeHandles()
+        {
+            foreach (var pub in _tracks.Values)
+                pub.DisposeHandles();
+            _tracks.Clear();
+            Handle?.Dispose();
+        }
     }
 
     public sealed class LocalParticipant : Participant

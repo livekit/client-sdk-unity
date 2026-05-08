@@ -90,6 +90,7 @@ public class MeetManager : MonoBehaviour
         }
         CleanUpAllTracks();
         _webCamTexture?.Stop();
+        _room?.Disconnect();
     }
 
     #endregion
