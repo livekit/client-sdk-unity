@@ -13,9 +13,24 @@ namespace LiveKit.Rooms.Streaming.Audio
 {
     public class LivekitAudioSource : MonoBehaviour
     {
-        private static readonly ProfilerMarker markerEqualPaowerDSP = new ("LiveKit.Spatial.ILD.EqualPower");
-        private const float HALF_PI = math.PI * 0.5f;
-        
+        public enum IldProfile : byte
+        {
+            Subtle   = 0,
+            Moderate = 1,
+            Strong   = 2,
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float AsAlpha(IldProfile profile) =>
+            profile switch
+            {
+                IldProfile.Subtle => 1.2f, // α=1.2, ≈ −8 dB at 90° — average across voice band
+                IldProfile.Moderate => 1.5f, // α=1.5, ≈ −10 dB at 90° — slightly emphasized
+                _ => 2.0f, // α=2.0, ≈ −13 dB at 90° — high-freq end of natural ILD
+            };
+
+        private static readonly ProfilerMarker markerSpatialPanningDSP = new ("LiveKit.Spatial.ILD.Exponential");
+
         private static ulong counter;
 
         private int sampleRate;
@@ -23,13 +38,24 @@ namespace LiveKit.Rooms.Streaming.Audio
 
         private volatile float azimuth;
         private volatile float elevation;
-        private float prevGainL = 0.707f;
-        private float prevGainR = 0.707f;
+        private float prevGainL = 1.0f;
+        private float prevGainR = 1.0f;
 
         [Header("SPATIALIZATION")]
+        [Tooltip("Enable L/R panning based on azimuth/elevation set via SetSpatialAngles.")]
         [SerializeField] private volatile bool spatialize;
+        
+        [Header("IDL")]
+        [Tooltip("Interaural Level Difference (ILD) strength. 0 = no panning, 1 = full silence on far ear at 90°.")]
         [SerializeField, Range(0f, 1f)] private volatile float ildStrength = 0.75f;
-        [SerializeField] private volatile bool smoothPanning;
+        [Tooltip("ILD attenuation curve at 90°: Subtle ≈ −8 dB (natural voice avg), Moderate ≈ −10 dB, Strong ≈ −13 dB (high-freq end).")]
+        [SerializeField] private IldProfile ildProfile = IldProfile.Strong;
+        
+        [Header("CLICK PREVENTION")]
+        [Tooltip("Gain ramp duration in milliseconds at buffer start to prevent clicks on rapid azimuth changes. 0 = no ramp (cheapest, may click).")]
+        [SerializeField, Range(0f, 30f)] private volatile float panningRampMs = 5f;
+        [Tooltip("Min per-buffer gain change that activates the ramp. ~0.05 is an audible click; default 0.01 is a conservative threshold (5x safety margin). Lower = safer but more lerp work.")]
+        [SerializeField, Range(0f, 0.1f)] private volatile float gainDeltaThreshold = 0.01f;
         
         private WavWriter? wavWriter;
         private PCMSample[] wavBuffer = Array.Empty<PCMSample>();
@@ -53,11 +79,10 @@ namespace LiveKit.Rooms.Streaming.Audio
             this.elevation = elevation;
         }
 
-        public void SetSpatialSettings(bool spatialize, float ildStrength, bool smoothPanning)
+        public void SetSpatialSettings(bool spatialize, float ildStrength)
         {
             this.spatialize = spatialize;
             this.ildStrength = ildStrength;
-            this.smoothPanning = smoothPanning;
         }
 
         public void Construct(Weak<AudioStream> audioStream)
@@ -190,31 +215,40 @@ namespace LiveKit.Rooms.Streaming.Audio
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ApplySpatialPanning(float[] data, int channels)
         {
-            using var _ = markerEqualPaowerDSP.Auto();
+            using var _ = markerSpatialPanningDSP.Auto();
 
             int samplesPerChannel = data.Length / channels;
 
+            float alpha = AsAlpha(ildProfile);
+
+
             float pan = math.sin(azimuth) * math.cos(elevation) * ildStrength;
-            float p = (pan + 1f) * 0.5f;
-            float gainL = math.cos(p * HALF_PI);
-            float gainR = math.sin(p * HALF_PI);
+            float gainL = math.exp(-alpha * math.max(0f, pan));
+            float gainR = math.exp(-alpha * math.max(0f, -pan));
 
-            if (smoothPanning)
+            float gainDelta = math.max(math.abs(gainL - prevGainL), math.abs(gainR - prevGainR));
+            bool rampNeeded = panningRampMs > 0f && gainDelta > gainDeltaThreshold;
+            int rampLen = rampNeeded
+                ? math.min((int)(panningRampMs * sampleRate * 0.001f), samplesPerChannel)
+                : 0;
+
+            // click smoothing for fast moves if rampNeeded
             {
-                float invLen = 1f / samplesPerChannel;
+                float invRamp = 1f / rampLen;
 
-                for (int i = 0; i < samplesPerChannel; i++)
+                for (int i = 0; i < rampLen; i++)
                 {
-                    float t = i * invLen;
+                    float t = i * invRamp;
                     int offset = i * channels;
                     float mono = data[offset];
                     data[offset]     = mono * math.lerp(prevGainL, gainL, t);
                     data[offset + 1] = mono * math.lerp(prevGainR, gainR, t);
                 }
             }
-            else
+
+            // basic panning
             {
-                for (int i = 0; i < samplesPerChannel; i++)
+                for (int i = rampLen; i < samplesPerChannel; i++)
                 {
                     int offset = i * channels;
                     float mono = data[offset];
@@ -222,7 +256,7 @@ namespace LiveKit.Rooms.Streaming.Audio
                     data[offset + 1] = mono * gainR;
                 }
             }
-            
+
             prevGainL = gainL;
             prevGainR = gainR;
         }
