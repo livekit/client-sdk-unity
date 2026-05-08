@@ -211,6 +211,7 @@ namespace LiveKit
                 Debug.Log("Disposing capture buffer");
                 _captureBuffer.Dispose();
             }
+            Handle?.Dispose();
             _disposed = true;
         }
 

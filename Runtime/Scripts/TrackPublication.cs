@@ -96,8 +96,17 @@ namespace LiveKit
     {
         public new ILocalTrack Track => base.Track as ILocalTrack;
 
-        internal LocalTrackPublication(TrackPublicationInfo info) : base(info)
+        private FfiHandle Handle;
+
+        internal LocalTrackPublication(TrackPublicationInfo info, FfiHandle handle) : base(info)
         {
+            Handle = handle;
+        }
+
+        internal override void DisposeHandles()
+        {
+            base.DisposeHandles();
+            Handle?.Dispose();
         }
     }
 }

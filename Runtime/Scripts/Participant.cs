@@ -624,7 +624,7 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            var publication = new LocalTrackPublication(e.Publication.Info);
+            var publication = new LocalTrackPublication(e.Publication.Info, FfiHandle.FromOwnedHandle(e.Publication.Handle));
             publication.UpdateTrack(_localTrack as Track);
             _localTrack.UpdateSid(publication.Sid);
             _internalTracks.Add(e.Publication.Info.Sid, publication);
