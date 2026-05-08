@@ -125,41 +125,43 @@ namespace LiveKit.Proto {
             "byJcChxMb2FkQXVkaW9GaWx0ZXJQbHVnaW5SZXF1ZXN0EhMKC3BsdWdpbl9w",
             "YXRoGAEgAigJEhQKDGRlcGVuZGVuY2llcxgCIAMoCRIRCgltb2R1bGVfaWQY",
             "AyACKAkiLgodTG9hZEF1ZGlvRmlsdGVyUGx1Z2luUmVzcG9uc2USDQoFZXJy",
-            "b3IYASABKAkiLgoPQXVkaW9EZXZpY2VJbmZvEg0KBWluZGV4GAEgAigNEgwK",
-            "BG5hbWUYAiACKAkiUQoRUGxhdGZvcm1BdWRpb0luZm8SHgoWcmVjb3JkaW5n",
-            "X2RldmljZV9jb3VudBgBIAIoBRIcChRwbGF5b3V0X2RldmljZV9jb3VudBgC",
-            "IAIoBSJzChJPd25lZFBsYXRmb3JtQXVkaW8SLQoGaGFuZGxlGAEgAigLMh0u",
-            "bGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZRIuCgRpbmZvGAIgAigLMiAu",
-            "bGl2ZWtpdC5wcm90by5QbGF0Zm9ybUF1ZGlvSW5mbyIZChdOZXdQbGF0Zm9y",
-            "bUF1ZGlvUmVxdWVzdCJzChhOZXdQbGF0Zm9ybUF1ZGlvUmVzcG9uc2USOwoO",
-            "cGxhdGZvcm1fYXVkaW8YASABKAsyIS5saXZla2l0LnByb3RvLk93bmVkUGxh",
-            "dGZvcm1BdWRpb0gAEg8KBWVycm9yGAIgASgJSABCCQoHbWVzc2FnZSI3ChZH",
-            "ZXRBdWRpb0RldmljZXNSZXF1ZXN0Eh0KFXBsYXRmb3JtX2F1ZGlvX2hhbmRs",
-            "ZRgBIAIoBCKcAQoXR2V0QXVkaW9EZXZpY2VzUmVzcG9uc2USNwoPcGxheW91",
-            "dF9kZXZpY2VzGAEgAygLMh4ubGl2ZWtpdC5wcm90by5BdWRpb0RldmljZUlu",
-            "Zm8SOQoRcmVjb3JkaW5nX2RldmljZXMYAiADKAsyHi5saXZla2l0LnByb3Rv",
-            "LkF1ZGlvRGV2aWNlSW5mbxINCgVlcnJvchgDIAEoCSJJChlTZXRSZWNvcmRp",
-            "bmdEZXZpY2VSZXF1ZXN0Eh0KFXBsYXRmb3JtX2F1ZGlvX2hhbmRsZRgBIAIo",
-            "BBINCgVpbmRleBgCIAIoDSIrChpTZXRSZWNvcmRpbmdEZXZpY2VSZXNwb25z",
-            "ZRINCgVlcnJvchgBIAEoCSJHChdTZXRQbGF5b3V0RGV2aWNlUmVxdWVzdBId",
-            "ChVwbGF0Zm9ybV9hdWRpb19oYW5kbGUYASACKAQSDQoFaW5kZXgYAiACKA0i",
-            "KQoYU2V0UGxheW91dERldmljZVJlc3BvbnNlEg0KBWVycm9yGAEgASgJIjYK",
-            "FVN0YXJ0UmVjb3JkaW5nUmVxdWVzdBIdChVwbGF0Zm9ybV9hdWRpb19oYW5k",
-            "bGUYASACKAQiJwoWU3RhcnRSZWNvcmRpbmdSZXNwb25zZRINCgVlcnJvchgB",
-            "IAEoCSI1ChRTdG9wUmVjb3JkaW5nUmVxdWVzdBIdChVwbGF0Zm9ybV9hdWRp",
-            "b19oYW5kbGUYASACKAQiJgoVU3RvcFJlY29yZGluZ1Jlc3BvbnNlEg0KBWVy",
-            "cm9yGAEgASgJKkoKFFNveFJlc2FtcGxlckRhdGFUeXBlEhgKFFNPWFJfREFU",
-            "QVRZUEVfSU5UMTZJEAASGAoUU09YUl9EQVRBVFlQRV9JTlQxNlMQASqLAQoQ",
-            "U294UXVhbGl0eVJlY2lwZRIWChJTT1hSX1FVQUxJVFlfUVVJQ0sQABIUChBT",
-            "T1hSX1FVQUxJVFlfTE9XEAESFwoTU09YUl9RVUFMSVRZX01FRElVTRACEhUK",
-            "EVNPWFJfUVVBTElUWV9ISUdIEAMSGQoVU09YUl9RVUFMSVRZX1ZFUllISUdI",
-            "EAQqlwEKC1NveEZsYWdCaXRzEhYKElNPWFJfUk9MTE9GRl9TTUFMTBAAEhcK",
-            "E1NPWFJfUk9MTE9GRl9NRURJVU0QARIVChFTT1hSX1JPTExPRkZfTk9ORRAC",
-            "EhgKFFNPWFJfSElHSF9QUkVDX0NMT0NLEAMSGQoVU09YUl9ET1VCTEVfUFJF",
-            "Q0lTSU9OEAQSCwoHU09YUl9WUhAFKkEKD0F1ZGlvU3RyZWFtVHlwZRIXChNB",
-            "VURJT19TVFJFQU1fTkFUSVZFEAASFQoRQVVESU9fU1RSRUFNX0hUTUwQASpF",
-            "Cg9BdWRpb1NvdXJjZVR5cGUSFwoTQVVESU9fU09VUkNFX05BVElWRRAAEhkK",
-            "FUFVRElPX1NPVVJDRV9QTEFURk9STRABQhCqAg1MaXZlS2l0LlByb3Rv"));
+            "b3IYASABKAkiPAoPQXVkaW9EZXZpY2VJbmZvEg0KBWluZGV4GAEgAigNEgwK",
+            "BG5hbWUYAiACKAkSDAoEZ3VpZBgDIAEoCSJRChFQbGF0Zm9ybUF1ZGlvSW5m",
+            "bxIeChZyZWNvcmRpbmdfZGV2aWNlX2NvdW50GAEgAigFEhwKFHBsYXlvdXRf",
+            "ZGV2aWNlX2NvdW50GAIgAigFInMKEk93bmVkUGxhdGZvcm1BdWRpbxItCgZo",
+            "YW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEi4K",
+            "BGluZm8YAiACKAsyIC5saXZla2l0LnByb3RvLlBsYXRmb3JtQXVkaW9JbmZv",
+            "IhkKF05ld1BsYXRmb3JtQXVkaW9SZXF1ZXN0InMKGE5ld1BsYXRmb3JtQXVk",
+            "aW9SZXNwb25zZRI7Cg5wbGF0Zm9ybV9hdWRpbxgBIAEoCzIhLmxpdmVraXQu",
+            "cHJvdG8uT3duZWRQbGF0Zm9ybUF1ZGlvSAASDwoFZXJyb3IYAiABKAlIAEIJ",
+            "CgdtZXNzYWdlIjcKFkdldEF1ZGlvRGV2aWNlc1JlcXVlc3QSHQoVcGxhdGZv",
+            "cm1fYXVkaW9faGFuZGxlGAEgAigEIpwBChdHZXRBdWRpb0RldmljZXNSZXNw",
+            "b25zZRI3Cg9wbGF5b3V0X2RldmljZXMYASADKAsyHi5saXZla2l0LnByb3Rv",
+            "LkF1ZGlvRGV2aWNlSW5mbxI5ChFyZWNvcmRpbmdfZGV2aWNlcxgCIAMoCzIe",
+            "LmxpdmVraXQucHJvdG8uQXVkaW9EZXZpY2VJbmZvEg0KBWVycm9yGAMgASgJ",
+            "ImUKGVNldFJlY29yZGluZ0RldmljZVJlcXVlc3QSHQoVcGxhdGZvcm1fYXVk",
+            "aW9faGFuZGxlGAEgAigEEg8KBWluZGV4GAIgASgNSAASDgoEZ3VpZBgDIAEo",
+            "CUgAQggKBmRldmljZSIrChpTZXRSZWNvcmRpbmdEZXZpY2VSZXNwb25zZRIN",
+            "CgVlcnJvchgBIAEoCSJjChdTZXRQbGF5b3V0RGV2aWNlUmVxdWVzdBIdChVw",
+            "bGF0Zm9ybV9hdWRpb19oYW5kbGUYASACKAQSDwoFaW5kZXgYAiABKA1IABIO",
+            "CgRndWlkGAMgASgJSABCCAoGZGV2aWNlIikKGFNldFBsYXlvdXREZXZpY2VS",
+            "ZXNwb25zZRINCgVlcnJvchgBIAEoCSI2ChVTdGFydFJlY29yZGluZ1JlcXVl",
+            "c3QSHQoVcGxhdGZvcm1fYXVkaW9faGFuZGxlGAEgAigEIicKFlN0YXJ0UmVj",
+            "b3JkaW5nUmVzcG9uc2USDQoFZXJyb3IYASABKAkiNQoUU3RvcFJlY29yZGlu",
+            "Z1JlcXVlc3QSHQoVcGxhdGZvcm1fYXVkaW9faGFuZGxlGAEgAigEIiYKFVN0",
+            "b3BSZWNvcmRpbmdSZXNwb25zZRINCgVlcnJvchgBIAEoCSpKChRTb3hSZXNh",
+            "bXBsZXJEYXRhVHlwZRIYChRTT1hSX0RBVEFUWVBFX0lOVDE2SRAAEhgKFFNP",
+            "WFJfREFUQVRZUEVfSU5UMTZTEAEqiwEKEFNveFF1YWxpdHlSZWNpcGUSFgoS",
+            "U09YUl9RVUFMSVRZX1FVSUNLEAASFAoQU09YUl9RVUFMSVRZX0xPVxABEhcK",
+            "E1NPWFJfUVVBTElUWV9NRURJVU0QAhIVChFTT1hSX1FVQUxJVFlfSElHSBAD",
+            "EhkKFVNPWFJfUVVBTElUWV9WRVJZSElHSBAEKpcBCgtTb3hGbGFnQml0cxIW",
+            "ChJTT1hSX1JPTExPRkZfU01BTEwQABIXChNTT1hSX1JPTExPRkZfTUVESVVN",
+            "EAESFQoRU09YUl9ST0xMT0ZGX05PTkUQAhIYChRTT1hSX0hJR0hfUFJFQ19D",
+            "TE9DSxADEhkKFVNPWFJfRE9VQkxFX1BSRUNJU0lPThAEEgsKB1NPWFJfVlIQ",
+            "BSpBCg9BdWRpb1N0cmVhbVR5cGUSFwoTQVVESU9fU1RSRUFNX05BVElWRRAA",
+            "EhUKEUFVRElPX1NUUkVBTV9IVE1MEAEqRQoPQXVkaW9Tb3VyY2VUeXBlEhcK",
+            "E0FVRElPX1NPVVJDRV9OQVRJVkUQABIZChVBVURJT19TT1VSQ0VfUExBVEZP",
+            "Uk0QAUIQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.SoxResamplerDataType), typeof(global::LiveKit.Proto.SoxQualityRecipe), typeof(global::LiveKit.Proto.SoxFlagBits), typeof(global::LiveKit.Proto.AudioStreamType), typeof(global::LiveKit.Proto.AudioSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -209,16 +211,16 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedSoxResampler), global::LiveKit.Proto.OwnedSoxResampler.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LoadAudioFilterPluginRequest), global::LiveKit.Proto.LoadAudioFilterPluginRequest.Parser, new[]{ "PluginPath", "Dependencies", "ModuleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LoadAudioFilterPluginResponse), global::LiveKit.Proto.LoadAudioFilterPluginResponse.Parser, new[]{ "Error" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioDeviceInfo), global::LiveKit.Proto.AudioDeviceInfo.Parser, new[]{ "Index", "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioDeviceInfo), global::LiveKit.Proto.AudioDeviceInfo.Parser, new[]{ "Index", "Name", "Guid" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PlatformAudioInfo), global::LiveKit.Proto.PlatformAudioInfo.Parser, new[]{ "RecordingDeviceCount", "PlayoutDeviceCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedPlatformAudio), global::LiveKit.Proto.OwnedPlatformAudio.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewPlatformAudioRequest), global::LiveKit.Proto.NewPlatformAudioRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewPlatformAudioResponse), global::LiveKit.Proto.NewPlatformAudioResponse.Parser, new[]{ "PlatformAudio", "Error" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetAudioDevicesRequest), global::LiveKit.Proto.GetAudioDevicesRequest.Parser, new[]{ "PlatformAudioHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetAudioDevicesResponse), global::LiveKit.Proto.GetAudioDevicesResponse.Parser, new[]{ "PlayoutDevices", "RecordingDevices", "Error" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetRecordingDeviceRequest), global::LiveKit.Proto.SetRecordingDeviceRequest.Parser, new[]{ "PlatformAudioHandle", "Index" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetRecordingDeviceRequest), global::LiveKit.Proto.SetRecordingDeviceRequest.Parser, new[]{ "PlatformAudioHandle", "Index", "Guid" }, new[]{ "Device" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetRecordingDeviceResponse), global::LiveKit.Proto.SetRecordingDeviceResponse.Parser, new[]{ "Error" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetPlayoutDeviceRequest), global::LiveKit.Proto.SetPlayoutDeviceRequest.Parser, new[]{ "PlatformAudioHandle", "Index" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetPlayoutDeviceRequest), global::LiveKit.Proto.SetPlayoutDeviceRequest.Parser, new[]{ "PlatformAudioHandle", "Index", "Guid" }, new[]{ "Device" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SetPlayoutDeviceResponse), global::LiveKit.Proto.SetPlayoutDeviceResponse.Parser, new[]{ "Error" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.StartRecordingRequest), global::LiveKit.Proto.StartRecordingRequest.Parser, new[]{ "PlatformAudioHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.StartRecordingResponse), global::LiveKit.Proto.StartRecordingResponse.Parser, new[]{ "Error" }, null, null, null, null),
@@ -13338,6 +13340,7 @@ namespace LiveKit.Proto {
       _hasBits0 = other._hasBits0;
       index_ = other.index_;
       name_ = other.name_;
+      guid_ = other.guid_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -13353,7 +13356,7 @@ namespace LiveKit.Proto {
 
     private uint index_;
     /// <summary>
-    /// Device index (0-based).
+    /// Device index (0-based). Note: indices can change when devices are added/removed.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -13406,6 +13409,40 @@ namespace LiveKit.Proto {
       name_ = null;
     }
 
+    /// <summary>Field number for the "guid" field.</summary>
+    public const int GuidFieldNumber = 3;
+    private readonly static string GuidDefaultValue = "";
+
+    private string guid_;
+    /// <summary>
+    /// Platform-specific unique device identifier (GUID).
+    /// This is stable across device additions/removals and should be preferred
+    /// over index for device selection. Format varies by platform:
+    /// - Windows: Device interface path
+    /// - macOS: AudioObjectID as string
+    /// - Linux: ALSA/PulseAudio device identifier
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Guid {
+      get { return guid_ ?? GuidDefaultValue; }
+      set {
+        guid_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "guid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasGuid {
+      get { return guid_ != null; }
+    }
+    /// <summary>Clears the value of the "guid" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearGuid() {
+      guid_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -13423,6 +13460,7 @@ namespace LiveKit.Proto {
       }
       if (Index != other.Index) return false;
       if (Name != other.Name) return false;
+      if (Guid != other.Guid) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -13432,6 +13470,7 @@ namespace LiveKit.Proto {
       int hash = 1;
       if (HasIndex) hash ^= Index.GetHashCode();
       if (HasName) hash ^= Name.GetHashCode();
+      if (HasGuid) hash ^= Guid.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -13458,6 +13497,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
+      if (HasGuid) {
+        output.WriteRawTag(26);
+        output.WriteString(Guid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -13476,6 +13519,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(18);
         output.WriteString(Name);
       }
+      if (HasGuid) {
+        output.WriteRawTag(26);
+        output.WriteString(Guid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -13491,6 +13538,9 @@ namespace LiveKit.Proto {
       }
       if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (HasGuid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Guid);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -13509,6 +13559,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasName) {
         Name = other.Name;
+      }
+      if (other.HasGuid) {
+        Guid = other.Guid;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -13537,6 +13590,10 @@ namespace LiveKit.Proto {
             Name = input.ReadString();
             break;
           }
+          case 26: {
+            Guid = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -13562,6 +13619,10 @@ namespace LiveKit.Proto {
           }
           case 18: {
             Name = input.ReadString();
+            break;
+          }
+          case 26: {
+            Guid = input.ReadString();
             break;
           }
         }
@@ -15074,7 +15135,7 @@ namespace LiveKit.Proto {
   /// Set the recording device (microphone).
   ///
   /// Call this before creating audio tracks to select which microphone to use.
-  /// Device indices are 0-based and must be less than the recording device count.
+  /// Prefer using GUID over index for robust device selection across hot-plug events.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SetRecordingDeviceRequest : pb::IMessage<SetRecordingDeviceRequest>
@@ -15114,7 +15175,15 @@ namespace LiveKit.Proto {
     public SetRecordingDeviceRequest(SetRecordingDeviceRequest other) : this() {
       _hasBits0 = other._hasBits0;
       platformAudioHandle_ = other.platformAudioHandle_;
-      index_ = other.index_;
+      switch (other.DeviceCase) {
+        case DeviceOneofCase.Index:
+          Index = other.Index;
+          break;
+        case DeviceOneofCase.Guid:
+          Guid = other.Guid;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -15156,32 +15225,81 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "index" field.</summary>
     public const int IndexFieldNumber = 2;
-    private readonly static uint IndexDefaultValue = 0;
-
-    private uint index_;
     /// <summary>
-    /// Device index from GetAudioDevicesResponse.recording_devices.
+    /// Device index (0-based). Note: indices can change when devices are added/removed.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Index {
-      get { if ((_hasBits0 & 2) != 0) { return index_; } else { return IndexDefaultValue; } }
+      get { return HasIndex ? (uint) device_ : 0; }
       set {
-        _hasBits0 |= 2;
-        index_ = value;
+        device_ = value;
+        deviceCase_ = DeviceOneofCase.Index;
       }
     }
     /// <summary>Gets whether the "index" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasIndex {
-      get { return (_hasBits0 & 2) != 0; }
+      get { return deviceCase_ == DeviceOneofCase.Index; }
     }
-    /// <summary>Clears the value of the "index" field</summary>
+    /// <summary> Clears the value of the oneof if it's currently set to "index" </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearIndex() {
-      _hasBits0 &= ~2;
+      if (HasIndex) {
+        ClearDevice();
+      }
+    }
+
+    /// <summary>Field number for the "guid" field.</summary>
+    public const int GuidFieldNumber = 3;
+    /// <summary>
+    /// Device GUID from AudioDeviceInfo.guid (preferred - stable across device changes).
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Guid {
+      get { return HasGuid ? (string) device_ : ""; }
+      set {
+        device_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        deviceCase_ = DeviceOneofCase.Guid;
+      }
+    }
+    /// <summary>Gets whether the "guid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasGuid {
+      get { return deviceCase_ == DeviceOneofCase.Guid; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "guid" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearGuid() {
+      if (HasGuid) {
+        ClearDevice();
+      }
+    }
+
+    private object device_;
+    /// <summary>Enum of possible cases for the "device" oneof.</summary>
+    public enum DeviceOneofCase {
+      None = 0,
+      Index = 2,
+      Guid = 3,
+    }
+    private DeviceOneofCase deviceCase_ = DeviceOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DeviceOneofCase DeviceCase {
+      get { return deviceCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDevice() {
+      deviceCase_ = DeviceOneofCase.None;
+      device_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -15201,6 +15319,8 @@ namespace LiveKit.Proto {
       }
       if (PlatformAudioHandle != other.PlatformAudioHandle) return false;
       if (Index != other.Index) return false;
+      if (Guid != other.Guid) return false;
+      if (DeviceCase != other.DeviceCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -15210,6 +15330,8 @@ namespace LiveKit.Proto {
       int hash = 1;
       if (HasPlatformAudioHandle) hash ^= PlatformAudioHandle.GetHashCode();
       if (HasIndex) hash ^= Index.GetHashCode();
+      if (HasGuid) hash ^= Guid.GetHashCode();
+      hash ^= (int) deviceCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -15236,6 +15358,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteUInt32(Index);
       }
+      if (HasGuid) {
+        output.WriteRawTag(26);
+        output.WriteString(Guid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -15254,6 +15380,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteUInt32(Index);
       }
+      if (HasGuid) {
+        output.WriteRawTag(26);
+        output.WriteString(Guid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -15270,6 +15400,9 @@ namespace LiveKit.Proto {
       if (HasIndex) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Index);
       }
+      if (HasGuid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Guid);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -15285,9 +15418,15 @@ namespace LiveKit.Proto {
       if (other.HasPlatformAudioHandle) {
         PlatformAudioHandle = other.PlatformAudioHandle;
       }
-      if (other.HasIndex) {
-        Index = other.Index;
+      switch (other.DeviceCase) {
+        case DeviceOneofCase.Index:
+          Index = other.Index;
+          break;
+        case DeviceOneofCase.Guid:
+          Guid = other.Guid;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -15315,6 +15454,10 @@ namespace LiveKit.Proto {
             Index = input.ReadUInt32();
             break;
           }
+          case 26: {
+            Guid = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -15340,6 +15483,10 @@ namespace LiveKit.Proto {
           }
           case 16: {
             Index = input.ReadUInt32();
+            break;
+          }
+          case 26: {
+            Guid = input.ReadString();
             break;
           }
         }
@@ -15402,6 +15549,7 @@ namespace LiveKit.Proto {
     /// <summary>
     /// Error message if the operation failed:
     /// - "Invalid device index" if index >= recording device count
+    /// - "Device not found" if GUID doesn't match any device
     /// - Other platform-specific errors
     /// Empty/absent on success.
     /// </summary>
@@ -15571,7 +15719,7 @@ namespace LiveKit.Proto {
   /// Set the playout device (speaker/headphones).
   ///
   /// Call this before connecting to select which speaker to use for audio output.
-  /// Device indices are 0-based and must be less than the playout device count.
+  /// Prefer using GUID over index for robust device selection across hot-plug events.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SetPlayoutDeviceRequest : pb::IMessage<SetPlayoutDeviceRequest>
@@ -15611,7 +15759,15 @@ namespace LiveKit.Proto {
     public SetPlayoutDeviceRequest(SetPlayoutDeviceRequest other) : this() {
       _hasBits0 = other._hasBits0;
       platformAudioHandle_ = other.platformAudioHandle_;
-      index_ = other.index_;
+      switch (other.DeviceCase) {
+        case DeviceOneofCase.Index:
+          Index = other.Index;
+          break;
+        case DeviceOneofCase.Guid:
+          Guid = other.Guid;
+          break;
+      }
+
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -15653,32 +15809,81 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "index" field.</summary>
     public const int IndexFieldNumber = 2;
-    private readonly static uint IndexDefaultValue = 0;
-
-    private uint index_;
     /// <summary>
-    /// Device index from GetAudioDevicesResponse.playout_devices.
+    /// Device index (0-based). Note: indices can change when devices are added/removed.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint Index {
-      get { if ((_hasBits0 & 2) != 0) { return index_; } else { return IndexDefaultValue; } }
+      get { return HasIndex ? (uint) device_ : 0; }
       set {
-        _hasBits0 |= 2;
-        index_ = value;
+        device_ = value;
+        deviceCase_ = DeviceOneofCase.Index;
       }
     }
     /// <summary>Gets whether the "index" field is set</summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool HasIndex {
-      get { return (_hasBits0 & 2) != 0; }
+      get { return deviceCase_ == DeviceOneofCase.Index; }
     }
-    /// <summary>Clears the value of the "index" field</summary>
+    /// <summary> Clears the value of the oneof if it's currently set to "index" </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public void ClearIndex() {
-      _hasBits0 &= ~2;
+      if (HasIndex) {
+        ClearDevice();
+      }
+    }
+
+    /// <summary>Field number for the "guid" field.</summary>
+    public const int GuidFieldNumber = 3;
+    /// <summary>
+    /// Device GUID from AudioDeviceInfo.guid (preferred - stable across device changes).
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Guid {
+      get { return HasGuid ? (string) device_ : ""; }
+      set {
+        device_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        deviceCase_ = DeviceOneofCase.Guid;
+      }
+    }
+    /// <summary>Gets whether the "guid" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasGuid {
+      get { return deviceCase_ == DeviceOneofCase.Guid; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "guid" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearGuid() {
+      if (HasGuid) {
+        ClearDevice();
+      }
+    }
+
+    private object device_;
+    /// <summary>Enum of possible cases for the "device" oneof.</summary>
+    public enum DeviceOneofCase {
+      None = 0,
+      Index = 2,
+      Guid = 3,
+    }
+    private DeviceOneofCase deviceCase_ = DeviceOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DeviceOneofCase DeviceCase {
+      get { return deviceCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDevice() {
+      deviceCase_ = DeviceOneofCase.None;
+      device_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -15698,6 +15903,8 @@ namespace LiveKit.Proto {
       }
       if (PlatformAudioHandle != other.PlatformAudioHandle) return false;
       if (Index != other.Index) return false;
+      if (Guid != other.Guid) return false;
+      if (DeviceCase != other.DeviceCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -15707,6 +15914,8 @@ namespace LiveKit.Proto {
       int hash = 1;
       if (HasPlatformAudioHandle) hash ^= PlatformAudioHandle.GetHashCode();
       if (HasIndex) hash ^= Index.GetHashCode();
+      if (HasGuid) hash ^= Guid.GetHashCode();
+      hash ^= (int) deviceCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -15733,6 +15942,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteUInt32(Index);
       }
+      if (HasGuid) {
+        output.WriteRawTag(26);
+        output.WriteString(Guid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -15751,6 +15964,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteUInt32(Index);
       }
+      if (HasGuid) {
+        output.WriteRawTag(26);
+        output.WriteString(Guid);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -15767,6 +15984,9 @@ namespace LiveKit.Proto {
       if (HasIndex) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Index);
       }
+      if (HasGuid) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Guid);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -15782,9 +16002,15 @@ namespace LiveKit.Proto {
       if (other.HasPlatformAudioHandle) {
         PlatformAudioHandle = other.PlatformAudioHandle;
       }
-      if (other.HasIndex) {
-        Index = other.Index;
+      switch (other.DeviceCase) {
+        case DeviceOneofCase.Index:
+          Index = other.Index;
+          break;
+        case DeviceOneofCase.Guid:
+          Guid = other.Guid;
+          break;
       }
+
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -15812,6 +16038,10 @@ namespace LiveKit.Proto {
             Index = input.ReadUInt32();
             break;
           }
+          case 26: {
+            Guid = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -15837,6 +16067,10 @@ namespace LiveKit.Proto {
           }
           case 16: {
             Index = input.ReadUInt32();
+            break;
+          }
+          case 26: {
+            Guid = input.ReadString();
             break;
           }
         }
@@ -15899,6 +16133,7 @@ namespace LiveKit.Proto {
     /// <summary>
     /// Error message if the operation failed:
     /// - "Invalid device index" if index >= playout device count
+    /// - "Device not found" if GUID doesn't match any device
     /// - Other platform-specific errors
     /// Empty/absent on success.
     /// </summary>
