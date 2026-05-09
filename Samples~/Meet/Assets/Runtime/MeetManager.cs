@@ -21,7 +21,7 @@ using UnityEngine.Android;
 /// - Unity Audio: Uses Unity's Microphone API and AudioStream for manual audio handling.
 ///   No AEC support but gives more control over audio processing.
 /// </summary>
-[RequireComponent(typeof(TokenSource))]
+[RequireComponent(typeof(TokenSourceComponent))]
 public class MeetManager : MonoBehaviour
 {
     private const string LocalVideoTrackName = "my-video-track";
@@ -282,7 +282,7 @@ public class MeetManager : MonoBehaviour
     private void AddRemoteVideoTrack(RemoteVideoTrack videoTrack)
     {
         var sid = videoTrack.Sid;
-        var imageObject = CreateVideoDisplay(sid, invert: true);
+        var imageObject = CreateVideoDisplay(sid);
 
         var image = imageObject.GetComponent<RawImage>();
         var stream = new VideoStream(videoTrack);
@@ -293,7 +293,7 @@ public class MeetManager : MonoBehaviour
 
         stream.Start();
         StartCoroutine(stream.Update());
-        _videoStreams[sid] = stream;
+        _videoStreams.Add(sid, stream);
     }
 
     private void AddRemoteAudioTrack(RemoteAudioTrack audioTrack)
@@ -377,6 +377,11 @@ public class MeetManager : MonoBehaviour
         var source = new WebCameraSource(_webCamTexture);
         var videoDisplayObject = CreateVideoDisplay("My Camera: " + _webCamTexture.deviceName);
         var displayImage = videoDisplayObject.GetComponent<RawImage>();
+        var rectTransform = videoDisplayObject.GetComponent<RectTransform>();
+
+        // Apply rotation to correct for camera orientation on mobile devices
+        // videoRotationAngle indicates the clockwise rotation of the captured video
+        rectTransform.localRotation = Quaternion.Euler(0, 0, -_webCamTexture.videoRotationAngle);
 
         source.TextureReceived += tex => ApplyTextureToDisplayImage(LocalVideoTrackName, tex, displayImage);
         videoDisplayObject.transform.SetParent(videoTrackParent.transform, false);
@@ -630,11 +635,10 @@ public class MeetManager : MonoBehaviour
         button.GetComponentInChildren<MaterialIcon>().iconUnicode = unicode;
     }
 
-    private GameObject CreateVideoDisplay(string name, bool invert = false)
+    private static GameObject CreateVideoDisplay(string name)
     {
         var obj = new GameObject(name);
-        var rect = obj.AddComponent<RectTransform>();
-        if (invert) rect.rotation = Quaternion.Euler(0, 0, 180);
+        obj.AddComponent<RectTransform>();
         obj.AddComponent<RawImage>();
         return obj;
     }
