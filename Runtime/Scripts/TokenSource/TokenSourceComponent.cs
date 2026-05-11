@@ -24,7 +24,7 @@ namespace LiveKit
 
         ITokenSource _tokenSource;
 
-        public void Start()
+        public void Awake()
         {
             if (_config == null)
                 throw new InvalidOperationException("Token source configuration was not provided");
