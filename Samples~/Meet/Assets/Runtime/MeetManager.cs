@@ -81,6 +81,14 @@ public class MeetManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Without this, scene change / app quit while connected leaves all tracks,
+        // streams, and their backing GPU/native resources allocated.
+        if (_room != null)
+        {
+            _room.Disconnect();
+            _room = null;
+        }
+        CleanUpAllTracks();
         _webCamTexture?.Stop();
     }
 

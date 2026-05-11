@@ -47,6 +47,17 @@ namespace LiveKit
             Dispose(false);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (_tempTexture != null)
+            {
+                _tempTexture.Release();
+                UnityEngine.Object.Destroy(_tempTexture);
+                _tempTexture = null;
+            }
+            base.Dispose(disposing);
+        }
+
         private Color32[] _readBuffer;
 
         // Read the texture data into a native array asynchronously
@@ -64,7 +75,16 @@ namespace LiveKit
                 _previewTexture.width != width ||
                 _previewTexture.height != height)
             {
-                // Required when using Allocator.Persistent
+                // Free previously allocated GPU/native resources before reallocating;
+                // otherwise the old textures and NativeArray leak on every resolution change.
+                if (_previewTexture != null)
+                    UnityEngine.Object.Destroy(_previewTexture);
+                if (_tempTexture != null)
+                {
+                    _tempTexture.Release();
+                    UnityEngine.Object.Destroy(_tempTexture);
+                    _tempTexture = null;
+                }
                 if (_captureBuffer.IsCreated)
                     _captureBuffer.Dispose();
 
