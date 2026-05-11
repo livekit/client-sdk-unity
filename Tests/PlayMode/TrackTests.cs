@@ -52,7 +52,7 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest, Category("E2E")]
-        public IEnumerator SetMute_TrueFalse_TogglesSourceMuteState()
+        public IEnumerator LocalAudioTrack_SetMute_TrueFalse_TogglesSourceMuteState()
         {
             using var context = new TestRoomContext();
             yield return context.ConnectAll();
@@ -219,6 +219,110 @@ namespace LiveKit.PlayModeTests
             yield return unsubscribedExp.Wait();
             Assert.IsNull(unsubscribedExp.Error);
             Assert.AreSame(receivedPublication, unsubscribedPublication);
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator RemoteTrackPublication_PublisherMutesMic_UpdatesFlagAndTriggersEvent()
+        {
+            var (publisher, subscriber) = TwoPeers();
+            using var context = new TestRoomContext(new[] { publisher, subscriber });
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            var publisherRoom = context.Rooms[0];
+            var subscriberRoom = context.Rooms[1];
+
+            using var source = new SineWaveAudioSource();
+            var localTrack = LocalAudioTrack.CreateAudioTrack(AudioTrackName, source, publisherRoom);
+
+            var subscribedExp = new Expectation(timeoutSeconds: 10f);
+            subscriberRoom.TrackSubscribed += (_, _, _) => subscribedExp.Fulfill();
+
+            var mutedExp = new Expectation(timeoutSeconds: 5f);
+            TrackPublication mutedPublication = null;
+            Participant mutedParticipant = null;
+            subscriberRoom.TrackMuted += (publication, participant) =>
+            {
+                mutedPublication = publication;
+                mutedParticipant = participant;
+                mutedExp.Fulfill();
+            };
+
+            var unpublishedFired = false;
+            subscriberRoom.TrackUnpublished += (_, _) => unpublishedFired = true;
+
+            var pub = publisherRoom.LocalParticipant.PublishTrack(localTrack, AudioOptions());
+            yield return pub;
+            Assert.IsFalse(pub.IsError);
+
+            source.Start();
+            yield return subscribedExp.Wait();
+            Assert.IsNull(subscribedExp.Error);
+
+            ((ILocalTrack)localTrack).SetMute(true);
+
+            yield return mutedExp.Wait();
+            Assert.IsNull(mutedExp.Error, "expected TrackMuted to fire on remote mute");
+            Assert.IsNotNull(mutedPublication);
+            Assert.AreEqual(publisher.Identity, mutedParticipant.Identity);
+            Assert.IsTrue(mutedPublication.Muted, "publication.Muted should be true after remote mute");
+            Assert.IsFalse(unpublishedFired, "TrackUnpublished must not fire on remote mute");
+            Assert.IsTrue(
+                subscriberRoom.RemoteParticipants[publisher.Identity].Tracks.ContainsKey(mutedPublication.Sid),
+                "publication should still be tracked after remote mute");
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator RemoteTrackPublication_PublisherDisablesCamera_UpdatesFlagAndTriggersEvent()
+        {
+            var (publisher, subscriber) = TwoPeers();
+            using var context = new TestRoomContext(new[] { publisher, subscriber });
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            var publisherRoom = context.Rooms[0];
+            var subscriberRoom = context.Rooms[1];
+
+            var videoSource = new StubVideoSource();
+            var localTrack = LocalVideoTrack.CreateVideoTrack(VideoTrackName, videoSource, publisherRoom);
+
+            // StubVideoSource never pushes frames, so TrackSubscribed may not fire on the
+            // subscriber. The RemoteTrackPublication still propagates via TrackPublished.
+            var publishedExp = new Expectation(timeoutSeconds: 10f);
+            subscriberRoom.TrackPublished += (_, _) => publishedExp.Fulfill();
+
+            var mutedExp = new Expectation(timeoutSeconds: 5f);
+            TrackPublication mutedPublication = null;
+            Participant mutedParticipant = null;
+            subscriberRoom.TrackMuted += (publication, participant) =>
+            {
+                mutedPublication = publication;
+                mutedParticipant = participant;
+                mutedExp.Fulfill();
+            };
+
+            var unpublishedFired = false;
+            subscriberRoom.TrackUnpublished += (_, _) => unpublishedFired = true;
+
+            var pub = publisherRoom.LocalParticipant.PublishTrack(localTrack, VideoOptions());
+            yield return pub;
+            Assert.IsFalse(pub.IsError);
+
+            yield return publishedExp.Wait();
+            Assert.IsNull(publishedExp.Error);
+
+            ((ILocalTrack)localTrack).SetMute(true);
+
+            yield return mutedExp.Wait();
+            Assert.IsNull(mutedExp.Error, "expected TrackMuted to fire on remote camera disable");
+            Assert.IsNotNull(mutedPublication);
+            Assert.AreEqual(publisher.Identity, mutedParticipant.Identity);
+            Assert.AreEqual(TrackKind.KindVideo, mutedPublication.Kind);
+            Assert.IsTrue(mutedPublication.Muted, "publication.Muted should be true after remote camera disable");
+            Assert.IsFalse(unpublishedFired, "TrackUnpublished must not fire on remote camera disable");
+            Assert.IsTrue(
+                subscriberRoom.RemoteParticipants[publisher.Identity].Tracks.ContainsKey(mutedPublication.Sid),
+                "publication should still be tracked after remote camera disable");
         }
 
         [UnityTest, Category("E2E")]

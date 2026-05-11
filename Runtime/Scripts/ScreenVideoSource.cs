@@ -45,6 +45,17 @@ namespace LiveKit
             ClearRenderTexture();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && _renderTexture != null)
+            {
+                _renderTexture.Release();
+                UnityEngine.Object.Destroy(_renderTexture);
+                _renderTexture = null;
+            }
+            base.Dispose(disposing);
+        }
+
         private void ClearRenderTexture()
         {
             if (_renderTexture)
@@ -65,6 +76,18 @@ namespace LiveKit
             {
                 if (_renderTexture == null || _renderTexture.width != GetWidth() || _renderTexture.height != GetHeight())
                 {
+                    // Free previously allocated GPU/native resources before reallocating;
+                    // otherwise the old textures and NativeArray leak on every resolution change.
+                    if (_renderTexture != null)
+                    {
+                        _renderTexture.Release();
+                        UnityEngine.Object.Destroy(_renderTexture);
+                    }
+                    if (_previewTexture != null)
+                        UnityEngine.Object.Destroy(_previewTexture);
+                    if (_captureBuffer.IsCreated)
+                        _captureBuffer.Dispose();
+
                     var targetFormat = Utils.GetSupportedGraphicsFormat(SystemInfo.graphicsDeviceType);
                     var compatibleFormat = SystemInfo.GetCompatibleFormat(targetFormat, FormatUsage.ReadPixels);
                     _textureFormat = GraphicsFormatUtility.GetTextureFormat(compatibleFormat);
