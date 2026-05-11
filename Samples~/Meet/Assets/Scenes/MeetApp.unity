@@ -903,6 +903,11 @@ MonoBehaviour:
   videoTrackParent: {fileID: 2128321498}
   participantTilePrefab: {fileID: 4315784896331113596, guid: bec493bbc3d574c07b5bbf8dd2be26b3, type: 3}
   frameRate: 30
+  usePlatformAudio: 1
+  echoCancellation: 1
+  noiseSuppression: 1
+  autoGainControl: 1
+  preferHardwareProcessing: 1
 --- !u!114 &1478206705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,7 +920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a498c208deeab40c39b4ba609d7d222c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _config: {fileID: 11400000, guid: 1a1b8efb5101449b280f574f853b7459, type: 2}
+  _config: {fileID: 11400000, guid: df703bb767abf4ec7b2e3caeacea4f9f, type: 2}
 --- !u!1 &1651282853
 GameObject:
   m_ObjectHideFlags: 0
