@@ -93,7 +93,7 @@ namespace LiveKit
                 _bufferType = GetVideoBufferType(_textureFormat);
 
                 _readBuffer = new Color32[width * height];
-                _previewTexture = new Texture2D(width, height, TextureFormat.BGRA32, false);
+                _previewTexture = new RenderTexture(GetWidth(), GetHeight(), 0, compatibleFormat);
                 _captureBuffer = new NativeArray<byte>(width * height * GetStrideForBuffer(_bufferType), Allocator.Persistent);
 
                 if (CamTexture.graphicsFormat != _previewTexture.graphicsFormat)
@@ -132,4 +132,3 @@ namespace LiveKit
         }
     }
 }
-
