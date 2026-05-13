@@ -90,6 +90,7 @@ public class MeetManager : MonoBehaviour
         }
         CleanUpAllTracks();
         _webCamTexture?.Stop();
+        AndroidBackgroundService.Stop();
     }
 
     #endregion
@@ -110,6 +111,7 @@ public class MeetManager : MonoBehaviour
         _room = null;
         _localId = null;
         buttonBar.SetConnected(false);
+        AndroidBackgroundService.Stop();
     }
 
     private void OnToggleCamera()
@@ -183,6 +185,7 @@ public class MeetManager : MonoBehaviour
         Debug.Log($"Connected to {_room.Name}");
         _localId = _room.LocalParticipant.Identity;
         buttonBar.SetConnected(true);
+        AndroidBackgroundService.Start();
 
         EnsureParticipantTile(_localId);
         foreach (var remote in _room.RemoteParticipants.Values)
