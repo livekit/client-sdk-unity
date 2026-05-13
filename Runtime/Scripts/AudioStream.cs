@@ -13,7 +13,18 @@ namespace LiveKit
     /// </summary>
     public sealed class AudioStream : IDisposable
     {
-        internal readonly FfiHandle Handle;
+        // FFI native stream is created lazily on the first OnAudioRead so we can pass
+        // Unity's actual delivered (channels, sampleRate) — not a system-speaker-mode
+        // guess. _handle is null until CreateOrRecreateFfiStream completes on the main
+        // thread. The same path runs again whenever Unity's delivered format changes
+        // mid-stream (e.g. after a system audio device switch).
+        private FfiHandle _handle;
+        internal FfiHandle Handle => _handle;
+        private readonly ulong _trackHandleId;
+        private uint _ffiNumChannels;
+        private uint _ffiSampleRate;
+        private bool _pendingFfiRequest;
+
         private readonly AudioSource _audioSource;
         private AudioProbe _probe;
         private RingBuffer _buffer;
@@ -21,7 +32,6 @@ namespace LiveKit
         private short[] _crossfadeScratch;
         private uint _numChannels;
         private uint _sampleRate;
-        private AudioResampler _resampler = new AudioResampler();
         private readonly object _lock = new object();
         private bool _disposed = false;
 
@@ -56,15 +66,7 @@ namespace LiveKit
             if (!audioTrack.Participant.TryGetTarget(out var participant))
                 throw new InvalidOperationException("audiotrack's participant is invalid");
 
-            using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
-            var newAudioStream = request.request;
-            newAudioStream.TrackHandle = (ulong)(audioTrack as ITrack).TrackHandle.DangerousGetHandle();
-            newAudioStream.Type = AudioStreamType.AudioStreamNative;
-
-            using var response = request.Send();
-            FfiResponse res = response;
-            Handle = FfiHandle.FromOwnedHandle(res.NewAudioStream.Stream.Handle);
-            FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
+            _trackHandleId = (ulong)(audioTrack as ITrack).TrackHandle.DangerousGetHandle();
 
             _audioSource = source;
             _probe = _audioSource.gameObject.AddComponent<AudioProbe>();
@@ -78,6 +80,60 @@ namespace LiveKit
             // (e.g. headphones unplugged). Without re-playing the source, OnAudioFilterRead
             // stops firing and the stream goes silent until the AudioStream is recreated.
             AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged;
+
+            // FFI stream creation is deferred to the first OnAudioRead. We subscribe to
+            // AudioStreamEventReceived only after the stream exists (CreateFfiStream).
+        }
+
+        // Called on the main thread (posted from OnAudioRead via FfiClient._context) when
+        // either there is no FFI stream yet or Unity's delivered (channels, sampleRate) no
+        // longer matches what we asked Rust for. Builds a fresh native stream and swaps it
+        // in atomically. The old handle is disposed AFTER the swap so any in-flight frames
+        // from the old stream fail the handle-id filter in OnAudioStreamEvent.
+        private void CreateOrRecreateFfiStream(uint observedChannels, uint observedSampleRate)
+        {
+            lock (_lock) { if (_disposed) return; }
+
+            FfiHandle newHandle;
+            try
+            {
+                using var request = FFIBridge.Instance.NewRequest<NewAudioStreamRequest>();
+                var req = request.request;
+                req.TrackHandle = _trackHandleId;
+                req.Type = AudioStreamType.AudioStreamNative;
+                req.SampleRate = observedSampleRate;
+                req.NumChannels = observedChannels;
+
+                using var response = request.Send();
+                FfiResponse res = response;
+                newHandle = FfiHandle.FromOwnedHandle(res.NewAudioStream.Stream.Handle);
+            }
+            catch (Exception ex)
+            {
+                Utils.Error($"AudioStream FFI (re)create failed: {ex}");
+                lock (_lock) { _pendingFfiRequest = false; }
+                return;
+            }
+
+            FfiHandle oldHandle;
+            bool firstCreate;
+            lock (_lock)
+            {
+                if (_disposed) { newHandle.Dispose(); return; }
+                oldHandle = _handle;
+                firstCreate = oldHandle == null;
+                _handle = newHandle;
+                _ffiNumChannels = observedChannels;
+                _ffiSampleRate = observedSampleRate;
+                _buffer?.Clear();
+                _isPrimed = false;
+                _skipCooldown = 0;
+                _pendingFfiRequest = false;
+
+                if (firstCreate)
+                    FfiClient.Instance.AudioStreamEventReceived += OnAudioStreamEvent;
+            }
+            oldHandle?.Dispose();
         }
 
         // Called on Unity audio thread
@@ -91,6 +147,23 @@ namespace LiveKit
 
             lock (_lock)
             {
+                // Single gate covering first-create and runtime format changes (e.g. after a
+                // system audio device switch). When the FFI stream is missing or what we asked
+                // Rust for no longer matches what Unity is delivering, post a (re)create to the
+                // main thread and output silence until it lands. The priming window absorbs this.
+                if (_handle == null || channels != _ffiNumChannels || sampleRate != _ffiSampleRate)
+                {
+                    if (!_pendingFfiRequest)
+                    {
+                        _pendingFfiRequest = true;
+                        uint observedCh = (uint)channels;
+                        uint observedSr = (uint)sampleRate;
+                        FfiClient.Instance._context?.Post(_ => CreateOrRecreateFfiStream(observedCh, observedSr), null);
+                    }
+                    Array.Clear(data, 0, data.Length);
+                    return;
+                }
+
                 // Initialize or reinitialize buffer if audio format changed
                 if (_buffer == null || channels != _numChannels || sampleRate != _sampleRate || data.Length != _tempBuffer.Length)
                 {
@@ -284,18 +357,18 @@ namespace LiveKit
 
             lock (_lock)
             {
-                if (_numChannels == 0)
+                // _pendingFfiRequest gates writes during a (re)create: between the moment
+                // OnAudioRead detects a format mismatch and the swap landing, Rust is still
+                // emitting frames at the OLD format. Drop them to avoid corrupting the buffer.
+                // The handle-id filter above is the second line of defense for stragglers
+                // arriving from the old stream after the swap.
+                if (_buffer == null || _pendingFfiRequest)
                     return;
 
                 unsafe
                 {
-                    using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);
-                    if (uFrame != null)
-                    {
-                        var data = new Span<byte>(uFrame.Data.ToPointer(), uFrame.Length);
-                        _buffer?.Write(data);
-                    }
-
+                    var data = new ReadOnlySpan<byte>(frame.Data.ToPointer(), frame.Length);
+                    _buffer.Write(data);
                 }
             }
         }
@@ -315,8 +388,11 @@ namespace LiveKit
 
             // Remove long-lived delegate references first so this instance can become collectible
             // as soon as user code drops it. This also prevents late native callbacks from
-            // touching partially disposed state.
-            FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
+            // touching partially disposed state. AudioStreamEventReceived was only subscribed
+            // after CreateFfiStream succeeded; -= against an unsubscribed handler is a no-op,
+            // but the explicit guard documents the lifecycle.
+            if (_handle != null)
+                FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;
             MonoBehaviourContext.OnApplicationPauseEvent -= OnApplicationPause;
             AudioSettings.OnAudioConfigurationChanged -= OnAudioConfigurationChanged;
 
@@ -339,9 +415,8 @@ namespace LiveKit
                 _buffer = null;
                 _tempBuffer = null;
                 _crossfadeScratch = null;
-                _resampler?.Dispose();
-                _resampler = null;
-                Handle.Dispose();
+                _handle?.Dispose();
+                _handle = null;
             }
 
             _disposed = true;
