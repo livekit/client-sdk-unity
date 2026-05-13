@@ -47,6 +47,12 @@ public class MeetManager : MonoBehaviour
     private bool _cameraActive;
     private bool _microphoneActive;
 
+    // State snapshot taken when the app is backgrounded, so we can restore
+    // the call on resume. See OnApplicationPause.
+    private bool _wasConnectedBeforePause;
+    private bool _wasCameraActiveBeforePause;
+    private bool _wasMicrophoneActiveBeforePause;
+
     #region Lifecycle
 
     private void Start()
@@ -64,12 +70,53 @@ public class MeetManager : MonoBehaviour
         _placeholderTexture = Resources.Load<Texture>(PlaceholderTextureResourceName);
     }
 
+    // On mobile, the OS suspends our process shortly after the screen locks or the app is
+    // backgrounded. While suspended, the Rust SDK's reconnect loop (10 attempts × 5s) burns
+    // through retries it can't actually run, and ends up firing Disconnected with no path to
+    // recover. To get predictable behavior we disconnect cleanly on pause and rebuild the
+    // connection on resume.
     private void OnApplicationPause(bool pause)
     {
-        if (_webCamTexture == null) return;
+        if (pause) HandlePause();
+        else HandleResume();
+    }
 
-        if (pause) _webCamTexture.Pause();
-        else _webCamTexture.Play();
+    private void HandlePause()
+    {
+        _webCamTexture?.Pause();
+
+        if (_room == null) return;
+
+        Debug.Log("App backgrounded; disconnecting from room");
+        _wasConnectedBeforePause = true;
+        _wasCameraActiveBeforePause = _cameraActive;
+        _wasMicrophoneActiveBeforePause = _microphoneActive;
+
+        _room.Disconnect();
+        CleanUpAllTracks();
+        _room = null;
+        _localId = null;
+        buttonBar.SetConnected(false);
+    }
+
+    private void HandleResume()
+    {
+        _webCamTexture?.Play();
+
+        if (!_wasConnectedBeforePause) return;
+        _wasConnectedBeforePause = false;
+
+        Debug.Log("App resumed; reconnecting to room");
+        StartCoroutine(ReconnectAfterResume(_wasCameraActiveBeforePause, _wasMicrophoneActiveBeforePause));
+    }
+
+    private IEnumerator ReconnectAfterResume(bool restoreCamera, bool restoreMic)
+    {
+        yield return ConnectToRoom();
+        if (_room == null) yield break;
+
+        if (restoreCamera) yield return PublishLocalCamera();
+        if (restoreMic) yield return PublishLocalMicrophone();
     }
 
     private void Update()
