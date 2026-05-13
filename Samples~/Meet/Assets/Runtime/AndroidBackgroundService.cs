@@ -1,10 +1,11 @@
+#if UNITY_ANDROID && !UNITY_EDITOR
 using UnityEngine;
 
 /// <summary>
 /// Starts/stops an Android foreground service so the OS keeps the process out of Doze
 /// while the user is in a LiveKit call. Without it, the screen lock pauses the network
 /// long enough for the SDK to exhaust its 10 reconnect attempts and disconnect.
-/// No-op on all non-Android platforms.
+/// Call sites must guard with `#if UNITY_ANDROID && !UNITY_EDITOR`.
 /// </summary>
 public static class AndroidBackgroundService
 {
@@ -12,19 +13,14 @@ public static class AndroidBackgroundService
 
     public static void Start()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
         WithActivity((cls, activity) => cls.CallStatic("start", activity));
-#endif
     }
 
     public static void Stop()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
         WithActivity((cls, activity) => cls.CallStatic("stop", activity));
-#endif
     }
 
-#if UNITY_ANDROID && !UNITY_EDITOR
     private static void WithActivity(System.Action<AndroidJavaClass, AndroidJavaObject> body)
     {
         try
@@ -39,5 +35,5 @@ public static class AndroidBackgroundService
             Debug.LogWarning($"AndroidBackgroundService: {e.Message}");
         }
     }
-#endif
 }
+#endif
