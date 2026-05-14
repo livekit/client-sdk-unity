@@ -188,7 +188,7 @@ namespace LiveKit
         /// Call this before creating audio tracks to select which microphone to use.
         /// Device indices are 0-based and must be less than RecordingDeviceCount.
         ///
-        /// Note: Prefer SetRecordingDeviceByGuid for robust device selection across hot-plug events.
+        /// Note: Prefer SetRecordingDevice(string deviceId) for robust device selection across hot-plug events.
         /// </summary>
         /// <param name="index">Device index from GetDevices().Recording</param>
         /// <exception cref="InvalidOperationException">
@@ -196,9 +196,34 @@ namespace LiveKit
         /// </exception>
         public void SetRecordingDevice(uint index)
         {
+            // Look up the device GUID by index
+            var (recording, _) = GetDevices();
+            if (index >= recording.Count)
+                throw new InvalidOperationException($"Recording device index {index} out of range (max: {recording.Count - 1})");
+
+            var deviceId = recording[(int)index].Guid;
+            if (string.IsNullOrEmpty(deviceId))
+                throw new InvalidOperationException($"Recording device at index {index} has no GUID");
+
+            SetRecordingDevice(deviceId);
+            Utils.Debug($"PlatformAudio: set recording device to index {index} (GUID: {deviceId})");
+        }
+
+        /// <summary>
+        /// Sets the recording device (microphone) by device ID (GUID).
+        ///
+        /// This is the preferred method for device selection as device IDs are stable
+        /// across device hot-plug events, unlike indices which can change.
+        /// </summary>
+        /// <param name="deviceId">Device ID/GUID from GetDevices().Recording[i].Guid</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the device is not found or the operation failed.
+        /// </exception>
+        public void SetRecordingDevice(string deviceId)
+        {
             using var request = FFIBridge.Instance.NewRequest<SetRecordingDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
-            request.request.Index = index;
+            request.request.DeviceId = deviceId;
 
             using var response = request.Send();
             FfiResponse res = response;
@@ -206,33 +231,18 @@ namespace LiveKit
             if (res.SetRecordingDevice.HasError && !string.IsNullOrEmpty(res.SetRecordingDevice.Error))
                 throw new InvalidOperationException($"Failed to set recording device: {res.SetRecordingDevice.Error}");
 
-            Utils.Debug($"PlatformAudio: set recording device to index {index}");
+            Utils.Debug($"PlatformAudio: set recording device to {deviceId}");
         }
 
         /// <summary>
         /// Sets the recording device (microphone) by GUID.
-        ///
-        /// This is the preferred method for device selection as GUIDs are stable
-        /// across device hot-plug events, unlike indices which can change.
         /// </summary>
         /// <param name="guid">Device GUID from GetDevices().Recording[i].Guid</param>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the device is not found or the operation failed.
         /// </exception>
-        public void SetRecordingDeviceByGuid(string guid)
-        {
-            using var request = FFIBridge.Instance.NewRequest<SetRecordingDeviceRequest>();
-            request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
-            request.request.Guid = guid;
-
-            using var response = request.Send();
-            FfiResponse res = response;
-
-            if (res.SetRecordingDevice.HasError && !string.IsNullOrEmpty(res.SetRecordingDevice.Error))
-                throw new InvalidOperationException($"Failed to set recording device by GUID: {res.SetRecordingDevice.Error}");
-
-            Utils.Debug($"PlatformAudio: set recording device to GUID {guid}");
-        }
+        [Obsolete("Use SetRecordingDevice(string deviceId) instead")]
+        public void SetRecordingDeviceByGuid(string guid) => SetRecordingDevice(guid);
 
         /// <summary>
         /// Sets the playout device (speaker/headphones) by index.
@@ -240,7 +250,7 @@ namespace LiveKit
         /// Call this before connecting to select which speaker to use for remote audio.
         /// Device indices are 0-based and must be less than PlayoutDeviceCount.
         ///
-        /// Note: Prefer SetPlayoutDeviceByGuid for robust device selection across hot-plug events.
+        /// Note: Prefer SetPlayoutDevice(string deviceId) for robust device selection across hot-plug events.
         /// </summary>
         /// <param name="index">Device index from GetDevices().Playout</param>
         /// <exception cref="InvalidOperationException">
@@ -248,9 +258,34 @@ namespace LiveKit
         /// </exception>
         public void SetPlayoutDevice(uint index)
         {
+            // Look up the device GUID by index
+            var (_, playout) = GetDevices();
+            if (index >= playout.Count)
+                throw new InvalidOperationException($"Playout device index {index} out of range (max: {playout.Count - 1})");
+
+            var deviceId = playout[(int)index].Guid;
+            if (string.IsNullOrEmpty(deviceId))
+                throw new InvalidOperationException($"Playout device at index {index} has no GUID");
+
+            SetPlayoutDevice(deviceId);
+            Utils.Debug($"PlatformAudio: set playout device to index {index} (GUID: {deviceId})");
+        }
+
+        /// <summary>
+        /// Sets the playout device (speaker/headphones) by device ID (GUID).
+        ///
+        /// This is the preferred method for device selection as device IDs are stable
+        /// across device hot-plug events, unlike indices which can change.
+        /// </summary>
+        /// <param name="deviceId">Device ID/GUID from GetDevices().Playout[i].Guid</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the device is not found or the operation failed.
+        /// </exception>
+        public void SetPlayoutDevice(string deviceId)
+        {
             using var request = FFIBridge.Instance.NewRequest<SetPlayoutDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
-            request.request.Index = index;
+            request.request.DeviceId = deviceId;
 
             using var response = request.Send();
             FfiResponse res = response;
@@ -258,33 +293,18 @@ namespace LiveKit
             if (res.SetPlayoutDevice.HasError && !string.IsNullOrEmpty(res.SetPlayoutDevice.Error))
                 throw new InvalidOperationException($"Failed to set playout device: {res.SetPlayoutDevice.Error}");
 
-            Utils.Debug($"PlatformAudio: set playout device to index {index}");
+            Utils.Debug($"PlatformAudio: set playout device to {deviceId}");
         }
 
         /// <summary>
         /// Sets the playout device (speaker/headphones) by GUID.
-        ///
-        /// This is the preferred method for device selection as GUIDs are stable
-        /// across device hot-plug events, unlike indices which can change.
         /// </summary>
         /// <param name="guid">Device GUID from GetDevices().Playout[i].Guid</param>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the device is not found or the operation failed.
         /// </exception>
-        public void SetPlayoutDeviceByGuid(string guid)
-        {
-            using var request = FFIBridge.Instance.NewRequest<SetPlayoutDeviceRequest>();
-            request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
-            request.request.Guid = guid;
-
-            using var response = request.Send();
-            FfiResponse res = response;
-
-            if (res.SetPlayoutDevice.HasError && !string.IsNullOrEmpty(res.SetPlayoutDevice.Error))
-                throw new InvalidOperationException($"Failed to set playout device by GUID: {res.SetPlayoutDevice.Error}");
-
-            Utils.Debug($"PlatformAudio: set playout device to GUID {guid}");
-        }
+        [Obsolete("Use SetPlayoutDevice(string deviceId) instead")]
+        public void SetPlayoutDeviceByGuid(string guid) => SetPlayoutDevice(guid);
 
         /// <summary>
         /// Starts recording from the microphone.
