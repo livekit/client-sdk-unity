@@ -122,6 +122,7 @@ namespace LiveKit.EditModeTests
 
             StringAssert.Contains("FfiClient.Instance.AudioStreamEventReceived -= OnAudioStreamEvent;", source);
             StringAssert.Contains("_probe.AudioRead -= OnAudioRead;", source);
+            StringAssert.Contains("AudioSettings.OnAudioConfigurationChanged -= OnAudioConfigurationChanged;", source);
             StringAssert.Contains("_buffer?.Dispose();", source);
             StringAssert.Contains("_resampler?.Dispose();", source);
             StringAssert.Contains("Handle.Dispose();", source);
