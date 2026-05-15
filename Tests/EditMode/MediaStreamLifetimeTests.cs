@@ -124,8 +124,7 @@ namespace LiveKit.EditModeTests
             StringAssert.Contains("_probe.AudioRead -= OnAudioRead;", source);
             StringAssert.Contains("AudioSettings.OnAudioConfigurationChanged -= OnAudioConfigurationChanged;", source);
             StringAssert.Contains("_buffer?.Dispose();", source);
-            StringAssert.Contains("_resampler?.Dispose();", source);
-            StringAssert.Contains("Handle.Dispose();", source);
+            StringAssert.Contains("_handle?.Dispose();", source);
         }
 
         [Test]
@@ -133,10 +132,10 @@ namespace LiveKit.EditModeTests
         {
             var source = ReadSource(AudioStreamPaths);
 
-            // Both the inbound native frame and the remixed output frame should be scoped so their
-            // handles are released after each callback rather than accumulating over time.
+            // Native frames carry an FFI handle that must be released after each callback so they
+            // do not accumulate. With the Rust side delivering frames already at Unity's rate, we
+            // no longer wrap a resampled output frame.
             StringAssert.Contains("using var frame = new AudioFrame(e.FrameReceived.Frame);", source);
-            StringAssert.Contains("using var uFrame = _resampler.RemixAndResample(frame, _numChannels, _sampleRate);", source);
         }
 
         [Test]
