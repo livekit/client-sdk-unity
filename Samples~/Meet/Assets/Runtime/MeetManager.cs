@@ -8,6 +8,12 @@ using RoomOptions = LiveKit.RoomOptions;
 
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
+///
+/// Supports two audio modes:
+/// - PlatformAudio (default): Uses WebRTC's ADM for microphone capture and automatic
+///   speaker playout. Provides echo cancellation (AEC), AGC, and noise suppression.
+/// - Unity Audio: Uses Unity's Microphone API and AudioStream for manual audio handling.
+///   No AEC support but gives more control over audio processing.
 /// </summary>
 [RequireComponent(typeof(TokenSourceComponent))]
 public class MeetManager : MonoBehaviour
@@ -22,6 +28,21 @@ public class MeetManager : MonoBehaviour
     [SerializeField] private GridLayoutGroup videoTrackParent;
     [SerializeField] private ParticipantTile participantTilePrefab;
     [SerializeField] private int frameRate = 30;
+
+    [Header("Audio Mode")]
+    [Tooltip("Use PlatformAudio (WebRTC ADM) for microphone capture and automatic speaker playout. " +
+             "Provides AEC, AGC, and NS. Disable to use Unity's Microphone API instead.")]
+    [SerializeField] private bool usePlatformAudio = true;
+
+    [Header("Audio Processing (PlatformAudio only)")]
+    [Tooltip("Enable echo cancellation to remove echo from speaker playback.")]
+    [SerializeField] private bool echoCancellation = true;
+    [Tooltip("Enable noise suppression to remove background noise.")]
+    [SerializeField] private bool noiseSuppression = true;
+    [Tooltip("Enable auto gain control to normalize audio levels.")]
+    [SerializeField] private bool autoGainControl = true;
+    [Tooltip("Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics.")]
+    [SerializeField] private bool preferHardwareProcessing = true;
 
     private const string PlaceholderTextureResourceName = "PlaceholderTileSquare";
     private Texture _placeholderTexture;
@@ -42,10 +63,13 @@ public class MeetManager : MonoBehaviour
 
     private RtcVideoSource _localRtcVideoSource;
     private RtcAudioSource _localRtcAudioSource;
+    private PlatformAudioSource _platformAudioSource;
     private LocalVideoTrack _localVideoTrack;
     private LocalAudioTrack _localAudioTrack;
     private bool _cameraActive;
     private bool _microphoneActive;
+
+    private PlatformAudio _platformAudio;
 
     #region Lifecycle
 
@@ -62,6 +86,41 @@ public class MeetManager : MonoBehaviour
 
         _audioTrackParent = new GameObject("AudioTrackParent").transform;
         _placeholderTexture = Resources.Load<Texture>(PlaceholderTextureResourceName);
+
+        if (usePlatformAudio)
+            InitializePlatformAudio();
+    }
+
+    private void InitializePlatformAudio()
+    {
+        try
+        {
+            _platformAudio = new PlatformAudio();
+            Debug.Log($"PlatformAudio initialized: {_platformAudio.RecordingDeviceCount} mics, " +
+                      $"{_platformAudio.PlayoutDeviceCount} speakers");
+
+            var (recording, playout) = _platformAudio.GetDevices();
+            Debug.Log("Recording devices:");
+            foreach (var device in recording)
+                Debug.Log($"  [{device.Index}] {device.Name}");
+
+            Debug.Log("Playout devices:");
+            foreach (var device in playout)
+                Debug.Log($"  [{device.Index}] {device.Name}");
+
+            if (_platformAudio.RecordingDeviceCount > 0)
+                _platformAudio.SetRecordingDevice(0);
+            if (_platformAudio.PlayoutDeviceCount > 0)
+                _platformAudio.SetPlayoutDevice(0);
+
+            Debug.Log($"PlatformAudio ready. AEC={echoCancellation}, NS={noiseSuppression}, AGC={autoGainControl}, HW={preferHardwareProcessing}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to initialize PlatformAudio, falling back to Unity audio: {e.Message}");
+            usePlatformAudio = false;
+            _platformAudio = null;
+        }
     }
 
     private void OnApplicationPause(bool pause)
@@ -90,6 +149,8 @@ public class MeetManager : MonoBehaviour
         }
         CleanUpAllTracks();
         _webCamTexture?.Stop();
+        _platformAudioSource?.Dispose();
+        _platformAudio?.Dispose();
     }
 
     #endregion
@@ -180,7 +241,7 @@ public class MeetManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log($"Connected to {_room.Name}");
+        Debug.Log($"Connected to {_room.Name} (PlatformAudio: {usePlatformAudio})");
         _localId = _room.LocalParticipant.Identity;
         buttonBar.SetConnected(true);
 
@@ -294,6 +355,15 @@ public class MeetManager : MonoBehaviour
     private void AddRemoteAudioTrack(RemoteAudioTrack audioTrack)
     {
         var sid = audioTrack.Sid;
+
+        if (usePlatformAudio && _platformAudio != null)
+        {
+            // PlatformAudio mode: ADM handles speaker playback automatically.
+            // No AudioStream / GameObject needed.
+            Debug.Log($"Remote audio track {sid} will play via PlatformAudio (automatic)");
+            return;
+        }
+
         var audioObject = new GameObject($"AudioTrack: {sid}");
         audioObject.transform.SetParent(_audioTrackParent);
 
@@ -308,8 +378,8 @@ public class MeetManager : MonoBehaviour
     {
         if (_audioObjects.TryGetValue(sid, out var obj))
         {
-            obj.GetComponent<AudioSource>()?.Stop();
-            Destroy(obj);
+            if (obj != null) obj.GetComponent<AudioSource>()?.Stop();
+            if (obj != null) Destroy(obj);
             _audioObjects.Remove(sid);
         }
 
@@ -450,7 +520,68 @@ public class MeetManager : MonoBehaviour
 
     private IEnumerator PublishLocalMicrophone()
     {
-        if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
+        if (_microphoneActive) yield break;
+
+        if (usePlatformAudio && _platformAudio != null)
+            yield return PublishLocalMicrophonePlatform();
+        else
+            yield return PublishLocalMicrophoneUnity();
+
+        if (_microphoneActive && _participantTiles.TryGetValue(_localId, out var tile))
+            tile.SetMicMuted(false);
+    }
+
+    private IEnumerator PublishLocalMicrophonePlatform()
+    {
+        Debug.Log("Publishing microphone using PlatformAudio (ADM)");
+
+        // Start recording (in case it was stopped by a previous mute).
+        // This turns on the privacy indicator on macOS/iOS.
+        try
+        {
+            _platformAudio?.StartRecording();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"Failed to start recording (may already be started): {e.Message}");
+        }
+
+        var audioOptions = new AudioProcessingOptions
+        {
+            EchoCancellation = echoCancellation,
+            NoiseSuppression = noiseSuppression,
+            AutoGainControl = autoGainControl,
+            PreferHardware = preferHardwareProcessing
+        };
+
+        _platformAudioSource = new PlatformAudioSource(_platformAudio, audioOptions);
+        _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, _platformAudioSource, _room);
+
+        var options = new TrackPublishOptions
+        {
+            AudioEncoding = new AudioEncoding { MaxBitrate = 64000 },
+            Source = TrackSource.SourceMicrophone
+        };
+
+        var publish = _room.LocalParticipant.PublishTrack(_localAudioTrack, options);
+        yield return publish;
+
+        if (publish.IsError)
+        {
+            Debug.LogError("Failed to publish microphone track");
+            _platformAudioSource?.Dispose();
+            _platformAudioSource = null;
+            _localAudioTrack = null;
+            yield break;
+        }
+
+        _microphoneActive = true;
+        Debug.Log("Microphone published via PlatformAudio (AEC enabled)");
+    }
+
+    private IEnumerator PublishLocalMicrophoneUnity()
+    {
+        Debug.Log("Publishing microphone using Unity Microphone API");
 
         Microphone.Start(null, true, 10, 44100);
 
@@ -470,26 +601,50 @@ public class MeetManager : MonoBehaviour
         var publish = _room.LocalParticipant.PublishTrack(_localAudioTrack, options);
         yield return publish;
 
-        if (publish.IsError) yield break;
+        if (publish.IsError)
+        {
+            Destroy(audioObject);
+            _localAudioTrack = null;
+            yield break;
+        }
 
         _microphoneActive = true;
         _audioObjects[LocalAudioTrackName] = audioObject;
         _localRtcAudioSource = rtcSource;
         rtcSource.Start();
 
-        if (_participantTiles.TryGetValue(_localId, out var tile))
-            tile.SetMicMuted(false);
+        Debug.Log("Microphone published via Unity Microphone API (no AEC)");
     }
 
     private void UnpublishLocalMicrophone()
     {
-        DisposeSource(ref _localRtcAudioSource);
-
-        if (_audioObjects.TryGetValue(LocalAudioTrackName, out var obj))
+        if (usePlatformAudio && _platformAudioSource != null)
         {
-            obj.GetComponent<AudioSource>()?.Stop();
-            Destroy(obj);
-            _audioObjects.Remove(LocalAudioTrackName);
+            try
+            {
+                _platformAudio?.StopRecording();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Failed to stop recording: {e.Message}");
+            }
+
+            _platformAudioSource.Dispose();
+            _platformAudioSource = null;
+        }
+        else
+        {
+            DisposeSource(ref _localRtcAudioSource);
+
+            if (_audioObjects.TryGetValue(LocalAudioTrackName, out var obj))
+            {
+                if (obj != null)
+                {
+                    obj.GetComponent<AudioSource>()?.Stop();
+                    Destroy(obj);
+                }
+                _audioObjects.Remove(LocalAudioTrackName);
+            }
         }
 
         _room.LocalParticipant.UnpublishTrack(_localAudioTrack, false);
@@ -563,8 +718,12 @@ public class MeetManager : MonoBehaviour
         DisposeSource(ref _localRtcAudioSource);
         DisposeSource(ref _localRtcVideoSource);
 
+        _platformAudioSource?.Dispose();
+        _platformAudioSource = null;
+
         foreach (var obj in _audioObjects.Values)
         {
+            if (obj == null) continue;
             obj.GetComponent<AudioSource>()?.Stop();
             Destroy(obj);
         }
