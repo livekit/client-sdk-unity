@@ -18,12 +18,12 @@ namespace LiveKit.Internal
         [Conditional(LK_DEBUG)]
         public static void Debug(object msg)
         {
-            UnityEngine.Debug.unityLogger.Log(LogType.Log, $"{PREFIX}: {msg}");
+            UnityEngine.Debug.unityLogger.Log(LogType.Log, $"{PREFIX}: {DateTime.UtcNow:HH:mm:ss.fff} : {msg}");
         }
 
         public static void Error(object msg)
         {
-            UnityEngine.Debug.unityLogger.Log(LogType.Error, $"{PREFIX}: {msg}");
+            UnityEngine.Debug.unityLogger.Log(LogType.Error, $"{PREFIX}: {DateTime.UtcNow:HH:mm:ss.fff} : {msg}");
         }
 
         public static GraphicsFormat GetSupportedGraphicsFormat(GraphicsDeviceType type)
