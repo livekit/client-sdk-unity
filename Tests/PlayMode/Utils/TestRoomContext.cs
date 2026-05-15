@@ -57,19 +57,24 @@ namespace LiveKit.PlayModeTests.Utils
         {
             for (int i = 0; i < _connectionOptions.Count; i++)
             {
-                ConnectionOptions options = _connectionOptions[i];
-                var room = Rooms[i];
-                var token = CreateToken(options);
-                var roomOptions = new RoomOptions();
-                var connect = room.Connect(options.ServerUrl ?? _serverUrl, token, roomOptions);
-                yield return connect;
+                yield return ConnectRoom(i);
+                if (ConnectionError != null) yield break;
+            }
+        }
 
-                if (connect.IsError)
-                {
-                    // TODO: Expose error details once available through API
-                    ConnectionError = $"Participant '{options.Identity}' failed to connect to test room";
-                    yield break;
-                }
+        public IEnumerator ConnectRoom(int index)
+        {
+            ConnectionOptions options = _connectionOptions[index];
+            var room = Rooms[index];
+            var token = CreateToken(options);
+            var roomOptions = new RoomOptions();
+            var connect = room.Connect(options.ServerUrl ?? _serverUrl, token, roomOptions);
+            yield return connect;
+
+            if (connect.IsError)
+            {
+                // TODO: Expose error details once available through API
+                ConnectionError = $"Participant '{options.Identity}' failed to connect to test room";
             }
         }
 

@@ -553,6 +553,16 @@ namespace LiveKit
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
             FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
 
+            // Signal Rust that listeners are installed and it can start forwarding room events.
+            // Without this the FFI side parks for 1s after ConnectCallback and then drops the room
+            // with ConnectionTimeout. Must run after the FfiClient.RoomEventReceived subscription
+            // above so no event can race ahead of OnEventReceived.
+            using (var readyRequest = FFIBridge.Instance.NewRequest<ReadyForRoomEventRequest>())
+            {
+                readyRequest.request.RoomHandle = (ulong)RoomHandle.DangerousGetHandle();
+                using var readyResponse = readyRequest.Send();
+            }
+
             Connected?.Invoke(this);
         }
 
