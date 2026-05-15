@@ -86,6 +86,9 @@ namespace LiveKit.Internal.FFIClients
                 case DisconnectRequest disconnectRequest:
                     ffiRequest.Disconnect = disconnectRequest;
                     break;
+                case ReadyForRoomEventRequest readyForRoomEventRequest:
+                    ffiRequest.ReadyForRoomEvent = readyForRoomEventRequest;
+                    break;
                 case PublishTrackRequest publishTrackRequest:
                     ffiRequest.PublishTrack = publishTrackRequest;
                     break;

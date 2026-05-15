@@ -390,8 +390,8 @@ namespace LiveKit
                     break;
                 case DataTrackStreamEvent.DetailOneofCase.Eos:
                     SubscribeDataTrackError error = null;
-                    if (callback.Eos.HasError)
-                        error = new SubscribeDataTrackError(callback.Eos.Error);
+                    if (callback.Eos.Error != null)
+                        error = new SubscribeDataTrackError(callback.Eos.Error.Message);
                     IsEos = true;
                     _currentInstruction?.SetEos(error);
                     Cleanup();
