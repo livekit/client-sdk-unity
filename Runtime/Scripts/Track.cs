@@ -108,6 +108,11 @@ namespace LiveKit
         {
             _info.Muted = muted;
         }
+
+        internal void DisposeHandles()
+        {
+            Handle?.Dispose();
+        }
     }
 
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
