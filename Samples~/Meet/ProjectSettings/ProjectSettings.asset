@@ -161,9 +161,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.UnityTestRunner.UnityTestRunner
-    Standalone: com.DefaultCompany.2DProject
-    iPhone: io.livekit.unity.samples
+    Android: com.LiveKit.Meet
+    Standalone: com.LiveKit.Meet
+    iPhone: com.LiveKit.Meet
   buildNumber:
     Standalone: 0
     VisionOS: 0
