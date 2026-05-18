@@ -76,43 +76,44 @@ namespace LiveKit.Proto {
             "by5EYXRhVHJhY2tTdHJlYW1GcmFtZVJlY2VpdmVkSAASMAoDZW9zGAMgASgL",
             "MiEubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTdHJlYW1FT1NIAEIICgZkZXRh",
             "aWwiTAocRGF0YVRyYWNrU3RyZWFtRnJhbWVSZWNlaXZlZBIsCgVmcmFtZRgB",
-            "IAIoCzIdLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrRnJhbWUiIwoSRGF0YVRy",
-            "YWNrU3RyZWFtRU9TEg0KBWVycm9yGAEgASgJKocDChJEYXRhVHJhY2tFcnJv",
-            "ckNvZGUSIQodREFUQV9UUkFDS19FUlJPUl9DT0RFX1VOS05PV04QABIoCiRE",
-            "QVRBX1RSQUNLX0VSUk9SX0NPREVfSU5WQUxJRF9IQU5ETEUQARIuCipEQVRB",
-            "X1RSQUNLX0VSUk9SX0NPREVfRFVQTElDQVRFX1RSQUNLX05BTUUQAhIrCidE",
-            "QVRBX1RSQUNLX0VSUk9SX0NPREVfVFJBQ0tfVU5QVUJMSVNIRUQQAxIlCiFE",
-            "QVRBX1RSQUNLX0VSUk9SX0NPREVfQlVGRkVSX0ZVTEwQBBItCilEQVRBX1RS",
-            "QUNLX0VSUk9SX0NPREVfU1VCU0NSSVBUSU9OX0NMT1NFRBAFEiMKH0RBVEFf",
-            "VFJBQ0tfRVJST1JfQ09ERV9DQU5DRUxMRUQQBhIoCiREQVRBX1RSQUNLX0VS",
-            "Uk9SX0NPREVfUFJPVE9DT0xfRVJST1IQBxIiCh5EQVRBX1RSQUNLX0VSUk9S",
-            "X0NPREVfSU5URVJOQUwQCCrzAwoZUHVibGlzaERhdGFUcmFja0Vycm9yQ29k",
-            "ZRIpCiVQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9VTktOT1dOEAAS",
-            "MAosUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfSU5WQUxJRF9IQU5E",
-            "TEUQARIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9EVVBMSUNB",
-            "VEVfTkFNRRACEikKJVBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX1RJ",
-            "TUVPVVQQAxIuCipQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9ESVND",
-            "T05ORUNURUQQBBItCilQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9O",
-            "T1RfQUxMT1dFRBAFEi4KKlBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RF",
-            "X0lOVkFMSURfTkFNRRAGEi8KK1BVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9D",
-            "T0RFX0xJTUlUX1JFQUNIRUQQBxIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJS",
-            "T1JfQ09ERV9QUk9UT0NPTF9FUlJPUhAIEioKJlBVQkxJU0hfREFUQV9UUkFD",
-            "S19FUlJPUl9DT0RFX0lOVEVSTkFMEAkqrwIKHkxvY2FsRGF0YVRyYWNrVHJ5",
-            "UHVzaEVycm9yQ29kZRIwCixMT0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VS",
-            "Uk9SX0NPREVfVU5LTk9XThAAEjcKM0xPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BV",
-            "U0hfRVJST1JfQ09ERV9JTlZBTElEX0hBTkRMRRABEjoKNkxPQ0FMX0RBVEFf",
-            "VFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9UUkFDS19VTlBVQkxJU0hFRBAC",
-            "EjMKL0xPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9RVUVV",
-            "RV9GVUxMEAMSMQotTE9DQUxfREFUQV9UUkFDS19UUllfUFVTSF9FUlJPUl9D",
-            "T0RFX0lOVEVSTkFMEAQq8AIKG1N1YnNjcmliZURhdGFUcmFja0Vycm9yQ29k",
-            "ZRIrCidTVUJTQ1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX1VOS05PV04Q",
-            "ABIyCi5TVUJTQ1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX0lOVkFMSURf",
-            "SEFORExFEAESLworU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9V",
-            "TlBVQkxJU0hFRBACEisKJ1NVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NP",
-            "REVfVElNRU9VVBADEjAKLFNVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NP",
-            "REVfRElTQ09OTkVDVEVEEAQSMgouU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJS",
-            "T1JfQ09ERV9QUk9UT0NPTF9FUlJPUhAFEiwKKFNVQlNDUklCRV9EQVRBX1RS",
-            "QUNLX0VSUk9SX0NPREVfSU5URVJOQUwQBkIQqgINTGl2ZUtpdC5Qcm90bw=="));
+            "IAIoCzIdLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrRnJhbWUiSwoSRGF0YVRy",
+            "YWNrU3RyZWFtRU9TEjUKBWVycm9yGAEgASgLMiYubGl2ZWtpdC5wcm90by5T",
+            "dWJzY3JpYmVEYXRhVHJhY2tFcnJvciqHAwoSRGF0YVRyYWNrRXJyb3JDb2Rl",
+            "EiEKHURBVEFfVFJBQ0tfRVJST1JfQ09ERV9VTktOT1dOEAASKAokREFUQV9U",
+            "UkFDS19FUlJPUl9DT0RFX0lOVkFMSURfSEFORExFEAESLgoqREFUQV9UUkFD",
+            "S19FUlJPUl9DT0RFX0RVUExJQ0FURV9UUkFDS19OQU1FEAISKwonREFUQV9U",
+            "UkFDS19FUlJPUl9DT0RFX1RSQUNLX1VOUFVCTElTSEVEEAMSJQohREFUQV9U",
+            "UkFDS19FUlJPUl9DT0RFX0JVRkZFUl9GVUxMEAQSLQopREFUQV9UUkFDS19F",
+            "UlJPUl9DT0RFX1NVQlNDUklQVElPTl9DTE9TRUQQBRIjCh9EQVRBX1RSQUNL",
+            "X0VSUk9SX0NPREVfQ0FOQ0VMTEVEEAYSKAokREFUQV9UUkFDS19FUlJPUl9D",
+            "T0RFX1BST1RPQ09MX0VSUk9SEAcSIgoeREFUQV9UUkFDS19FUlJPUl9DT0RF",
+            "X0lOVEVSTkFMEAgq8wMKGVB1Ymxpc2hEYXRhVHJhY2tFcnJvckNvZGUSKQol",
+            "UFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfVU5LTk9XThAAEjAKLFBV",
+            "QkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX0lOVkFMSURfSEFORExFEAES",
+            "MAosUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfRFVQTElDQVRFX05B",
+            "TUUQAhIpCiVQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9USU1FT1VU",
+            "EAMSLgoqUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfRElTQ09OTkVD",
+            "VEVEEAQSLQopUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfTk9UX0FM",
+            "TE9XRUQQBRIuCipQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlZB",
+            "TElEX05BTUUQBhIvCitQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9M",
+            "SU1JVF9SRUFDSEVEEAcSMAosUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NP",
+            "REVfUFJPVE9DT0xfRVJST1IQCBIqCiZQVUJMSVNIX0RBVEFfVFJBQ0tfRVJS",
+            "T1JfQ09ERV9JTlRFUk5BTBAJKq8CCh5Mb2NhbERhdGFUcmFja1RyeVB1c2hF",
+            "cnJvckNvZGUSMAosTE9DQUxfREFUQV9UUkFDS19UUllfUFVTSF9FUlJPUl9D",
+            "T0RFX1VOS05PV04QABI3CjNMT0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VS",
+            "Uk9SX0NPREVfSU5WQUxJRF9IQU5ETEUQARI6CjZMT0NBTF9EQVRBX1RSQUNL",
+            "X1RSWV9QVVNIX0VSUk9SX0NPREVfVFJBQ0tfVU5QVUJMSVNIRUQQAhIzCi9M",
+            "T0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VSUk9SX0NPREVfUVVFVUVfRlVM",
+            "TBADEjEKLUxPQ0FMX0RBVEFfVFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9J",
+            "TlRFUk5BTBAEKvACChtTdWJzY3JpYmVEYXRhVHJhY2tFcnJvckNvZGUSKwon",
+            "U1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9VTktOT1dOEAASMgou",
+            "U1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlZBTElEX0hBTkRM",
+            "RRABEi8KK1NVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NPREVfVU5QVUJM",
+            "SVNIRUQQAhIrCidTVUJTQ1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX1RJ",
+            "TUVPVVQQAxIwCixTVUJTQ1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX0RJ",
+            "U0NPTk5FQ1RFRBAEEjIKLlNVQlNDUklCRV9EQVRBX1RSQUNLX0VSUk9SX0NP",
+            "REVfUFJPVE9DT0xfRVJST1IQBRIsCihTVUJTQ1JJQkVfREFUQV9UUkFDS19F",
+            "UlJPUl9DT0RFX0lOVEVSTkFMEAZCEKoCDUxpdmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.DataTrackErrorCode), typeof(global::LiveKit.Proto.PublishDataTrackErrorCode), typeof(global::LiveKit.Proto.LocalDataTrackTryPushErrorCode), typeof(global::LiveKit.Proto.SubscribeDataTrackErrorCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -7120,7 +7121,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DataTrackStreamEOS(DataTrackStreamEOS other) : this() {
-      error_ = other.error_;
+      error_ = other.error_ != null ? other.error_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -7132,32 +7133,18 @@ namespace LiveKit.Proto {
 
     /// <summary>Field number for the "error" field.</summary>
     public const int ErrorFieldNumber = 1;
-    private readonly static string ErrorDefaultValue = "";
-
-    private string error_;
+    private global::LiveKit.Proto.SubscribeDataTrackError error_;
     /// <summary>
-    /// If the track could not be subscribed to, a message describing the error.
-    /// Absent if the stream ended normally.
+    /// Present if stream ended before any frames were emitted due to subscription establishment failing.
+    /// Absent if the stream ended normally (i.e., due to the track being unpublished).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Error {
-      get { return error_ ?? ErrorDefaultValue; }
+    public global::LiveKit.Proto.SubscribeDataTrackError Error {
+      get { return error_; }
       set {
-        error_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        error_ = value;
       }
-    }
-    /// <summary>Gets whether the "error" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasError {
-      get { return error_ != null; }
-    }
-    /// <summary>Clears the value of the "error" field</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearError() {
-      error_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -7175,7 +7162,7 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Error != other.Error) return false;
+      if (!object.Equals(Error, other.Error)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -7183,7 +7170,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasError) hash ^= Error.GetHashCode();
+      if (error_ != null) hash ^= Error.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -7202,9 +7189,9 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasError) {
+      if (error_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(Error);
+        output.WriteMessage(Error);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -7216,9 +7203,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasError) {
+      if (error_ != null) {
         output.WriteRawTag(10);
-        output.WriteString(Error);
+        output.WriteMessage(Error);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -7230,8 +7217,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasError) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
+      if (error_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Error);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7245,8 +7232,11 @@ namespace LiveKit.Proto {
       if (other == null) {
         return;
       }
-      if (other.HasError) {
-        Error = other.Error;
+      if (other.error_ != null) {
+        if (error_ == null) {
+          Error = new global::LiveKit.Proto.SubscribeDataTrackError();
+        }
+        Error.MergeFrom(other.Error);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -7268,7 +7258,10 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Error = input.ReadString();
+            if (error_ == null) {
+              Error = new global::LiveKit.Proto.SubscribeDataTrackError();
+            }
+            input.ReadMessage(Error);
             break;
           }
         }
@@ -7291,7 +7284,10 @@ namespace LiveKit.Proto {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Error = input.ReadString();
+            if (error_ == null) {
+              Error = new global::LiveKit.Proto.SubscribeDataTrackError();
+            }
+            input.ReadMessage(Error);
             break;
           }
         }
