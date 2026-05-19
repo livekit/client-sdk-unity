@@ -1001,4 +1001,21 @@ namespace LiveKit
 
         public PublishDataTrackError Error { get; private set; }
     }
+
+    /// Helpers for setting <see cref="TrackPublishOptions"/> fields whose underlying type
+    /// lives in Google.Protobuf (e.g. RepeatedField&lt;T&gt;). Unity's default Assembly-CSharp
+    /// does not auto-reference Google.Protobuf, so callers without an asmdef cannot use a
+    /// collection initializer or call <c>.Add</c> on the repeated field directly. These
+    /// helpers keep Google.Protobuf types out of the caller's signature.
+    public static class TrackPublishOptionsExtensions
+    {
+        public static TrackPublishOptions WithPacketTrailerFeatures(
+            this TrackPublishOptions options,
+            params PacketTrailerFeature[] features)
+        {
+            foreach (var feature in features)
+                options.PacketTrailerFeatures.Add(feature);
+            return options;
+        }
+    }
 }
