@@ -294,6 +294,7 @@ namespace LiveKit
                 }
                 _pendingFrameData.Clear();
             }
+            Handle?.Dispose();
             _disposed = true;
             Utils.Debug($"{DebugTag} disposed");
         }

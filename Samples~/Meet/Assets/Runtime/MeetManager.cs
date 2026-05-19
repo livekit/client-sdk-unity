@@ -151,6 +151,7 @@ public class MeetManager : MonoBehaviour
         _webCamTexture?.Stop();
         _platformAudioSource?.Dispose();
         _platformAudio?.Dispose();
+        _room?.Disconnect();
     }
 
     #endregion
@@ -744,6 +745,7 @@ public class MeetManager : MonoBehaviour
 
         foreach (var tile in _participantTiles.Values)
         {
+            if (tile == null) continue;
             if (tile.Image != null) tile.Image.texture = null;
             Destroy(tile.gameObject);
         }
@@ -751,6 +753,7 @@ public class MeetManager : MonoBehaviour
 
         foreach (var tile in _extraVideoTiles.Values)
         {
+            if (tile == null) continue;
             if (tile.Image != null) tile.Image.texture = null;
             Destroy(tile.gameObject);
         }

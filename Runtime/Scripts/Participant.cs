@@ -55,6 +55,14 @@ namespace LiveKit
         {
             TrackUnpublished?.Invoke(publication);
         }
+
+        internal void DisposeHandles()
+        {
+            foreach (var pub in _tracks.Values)
+                pub.DisposeHandles();
+            _tracks.Clear();
+            Handle?.Dispose();
+        }
     }
 
     public sealed class LocalParticipant : Participant
@@ -616,7 +624,7 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            var publication = new LocalTrackPublication(e.Publication.Info);
+            var publication = new LocalTrackPublication(e.Publication.Info, FfiHandle.FromOwnedHandle(e.Publication.Handle));
             publication.UpdateTrack(_localTrack as Track);
             _localTrack.UpdateSid(publication.Sid);
             _internalTracks.Add(e.Publication.Info.Sid, publication);

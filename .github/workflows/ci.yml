@@ -27,11 +27,26 @@ jobs:
           lfs: false
           submodules: recursive
           fetch-depth: 0
+      # Decide whether to rebuild the Linux FFI lib.
+      # Label overrides (PRs only) take priority over submodule diff:
+      #   - `release`         → skip rebuild (test against the committed prebuilt .so)
+      #   - `rust-dependency` → force rebuild (escape hatch / explicit opt-in)
+      # If neither label is set, fall back to diffing client-sdk-rust~ against the base ref.
       - name: Check for Rust submodule changes
         id: check
+        env:
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
         run: |
           BASE_REF="${{ github.event.pull_request.base.ref || 'main' }}"
-          if git diff --name-only "origin/$BASE_REF"...HEAD | grep -q "^client-sdk-rust~" ; then
+          HAS_RELEASE_LABEL=$(echo "$PR_LABELS" | jq -r '(. // []) | any(. == "release")')
+          HAS_REBUILD_LABEL=$(echo "$PR_LABELS" | jq -r '(. // []) | any(. == "rust-dependency")')
+          if [ "$HAS_RELEASE_LABEL" = "true" ]; then
+            echo "'release' label set — skipping rebuild (testing against committed prebuilt lib)"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          elif [ "$HAS_REBUILD_LABEL" = "true" ]; then
+            echo "'rust-dependency' label set — forcing rebuild"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          elif git diff --name-only "origin/$BASE_REF"...HEAD | grep -q "^client-sdk-rust~" ; then
             echo "Rust submodule has changes — will rebuild"
             echo "changed=true" >> $GITHUB_OUTPUT
           else
