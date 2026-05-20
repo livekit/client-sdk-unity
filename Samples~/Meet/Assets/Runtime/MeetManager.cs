@@ -536,14 +536,11 @@ public class MeetManager : MonoBehaviour
         Debug.Log("Publishing microphone using PlatformAudio (ADM)");
 
         // Start recording (in case it was stopped by a previous mute).
-        // This turns on the privacy indicator on macOS/iOS.
-        try
+        // This turns on the privacy indicator on macOS/iOS. On Android this also
+        // awaits the RECORD_AUDIO runtime permission dialog if not yet granted.
+        if (_platformAudio != null)
         {
-            _platformAudio?.StartRecording();
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"Failed to start recording (may already be started): {e.Message}");
+            yield return _platformAudio.StartRecording();
         }
 
         var audioOptions = new AudioProcessingOptions

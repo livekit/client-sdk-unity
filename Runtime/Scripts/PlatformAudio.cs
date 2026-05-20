@@ -1,9 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
+
+#if PLATFORM_ANDROID
+using UnityEngine.Android;
+#endif
 
 namespace LiveKit
 {
@@ -319,8 +324,32 @@ namespace LiveKit
         /// <exception cref="InvalidOperationException">
         /// Thrown if the operation failed.
         /// </exception>
-        public void StartRecording()
+        public IEnumerator StartRecording()
         {
+#if PLATFORM_ANDROID
+            if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+            {
+                // Fire the system permission dialog and yield until the user resolves it.
+                // PermissionCallbacks delivers the result asynchronously from the Android OS;
+                // we poll the captured flag from this coroutine until one of the callbacks
+                // sets it. Without this gate, the WebRTC Android ADM would crash the process
+                // when AudioRecord fails to open due to the missing permission.
+                bool? granted = null;
+                var callbacks = new PermissionCallbacks();
+                callbacks.PermissionGranted += _ => granted = true;
+                callbacks.PermissionDenied += _ => granted = false;
+                callbacks.PermissionDeniedAndDontAskAgain += _ => granted = false;
+                Permission.RequestUserPermission(Permission.Microphone, callbacks);
+
+                while (granted == null)
+                    yield return null;
+
+                if (granted == false)
+                    throw new InvalidOperationException(
+                        "Microphone permission denied by user; cannot start recording.");
+            }
+#endif
+
             using var request = FFIBridge.Instance.NewRequest<StartRecordingRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
 
@@ -331,6 +360,11 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to start recording: {res.StartRecording.Error}");
 
             Utils.Debug("PlatformAudio: started recording");
+
+            // Ensures this method is always a valid iterator even when the PLATFORM_ANDROID
+            // branch is compiled out (no `yield return` would otherwise be reachable on
+            // non-Android builds, which is a compile error for IEnumerator-returning methods).
+            yield break;
         }
 
         /// <summary>
