@@ -34,7 +34,7 @@ namespace LiveKit.PlayModeTests
             const uint expectedFrameId = 42u;
             const ulong expectedUserTs = 0x1122334455667788UL;
 
-            var source = new MetadataTestVideoSource();
+            var source = new TestVideoSource(pushFrames: true);
             source.MetadataProvider = () => new FrameMetadata
             {
                 FrameId = expectedFrameId,

@@ -4,15 +4,22 @@ using Unity.Collections;
 namespace LiveKit.PlayModeTests.Utils
 {
     /// <summary>
-    /// Test-only <see cref="RtcVideoSource"/> that pushes a continuous stream of
-    /// zero-filled RGBA frames at the resolution given to the constructor. Used
-    /// by tests that need actual media flow (e.g. validating per-frame metadata
-    /// round-trips through the FFI / RTP path).
+    /// Test-only <see cref="RtcVideoSource"/> registered with FFI at a fixed
+    /// resolution. Two modes via <paramref name="pushFrames"/>:
+    /// <list type="bullet">
+    /// <item><c>false</c> (default): never pushes frames. Use when the test only
+    /// needs the publication to propagate via signaling (e.g.
+    /// <see cref="RemoteTrackPublication"/> APIs that operate on metadata).</item>
+    /// <item><c>true</c>: pushes a continuous stream of zero-filled RGBA frames.
+    /// Use when the test needs actual media flow (e.g. validating per-frame
+    /// metadata round-trips through the FFI / RTP path).</item>
+    /// </list>
     /// </summary>
-    public sealed class MetadataTestVideoSource : RtcVideoSource
+    public sealed class TestVideoSource : RtcVideoSource
     {
         private readonly int _width;
         private readonly int _height;
+        private readonly bool _pushFrames;
 
         public override int GetWidth() => _width;
         public override int GetHeight() => _height;
@@ -21,6 +28,8 @@ namespace LiveKit.PlayModeTests.Utils
 
         protected override bool ReadBuffer()
         {
+            if (!_pushFrames) return false;
+
             if (!_captureBuffer.IsCreated)
             {
                 _captureBuffer = new NativeArray<byte>(
@@ -32,11 +41,12 @@ namespace LiveKit.PlayModeTests.Utils
             return false;
         }
 
-        public MetadataTestVideoSource(int width = 16, int height = 16)
+        public TestVideoSource(bool pushFrames = false, int width = 16, int height = 16)
             : base(VideoStreamSource.Texture, VideoBufferType.Rgba)
         {
             _width = width;
             _height = height;
+            _pushFrames = pushFrames;
             Init();
         }
     }
