@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +46,6 @@ public class MeetManager : MonoBehaviour
     private LocalAudioTrack _localAudioTrack;
     private bool _cameraActive;
     private bool _microphoneActive;
-    private uint _nextOutgoingFrameId;
 
     #region Lifecycle
 
@@ -238,7 +236,6 @@ public class MeetManager : MonoBehaviour
 
         var stream = new VideoStream(video);
         stream.TextureReceived += tex => tile.BindLiveSource(tex);
-        stream.FrameReceived += MakeFrameMetadataLogger(identity);
         _videoStreams[sid] = stream;
         stream.Start();
         StartCoroutine(stream.Update());
@@ -271,40 +268,12 @@ public class MeetManager : MonoBehaviour
 
         var stream = new VideoStream(video);
         stream.TextureReceived += tex => tile.BindLiveSource(tex);
-        stream.FrameReceived += MakeFrameMetadataLogger($"{identity} (screen)");
 
         _extraVideoTiles[sid] = tile;
         _extraVideoOwners[sid] = identity;
         _videoStreams.Add(sid, stream);
         stream.Start();
         StartCoroutine(stream.Update());
-    }
-
-    /// Returns a per-stream <see cref="VideoStream.FrameReceiveDelegate"/> that logs the trailer
-    /// metadata (frame_id, user_timestamp) at most once per second per stream. The throttle
-    /// clock uses Environment.TickCount because FrameReceived may fire off the main thread.
-    private static VideoStream.FrameReceiveDelegate MakeFrameMetadataLogger(string label)
-    {
-        var nextLogTick = 0;
-        return frame =>
-        {
-            var now = Environment.TickCount;
-            if (now - nextLogTick < 0) return;
-            nextLogTick = now + 1000;
-            if (frame.Metadata == null)
-            {
-                Debug.Log($"[Meet RX {label}] no trailer");
-                return;
-            }
-            Debug.Log($"[Meet RX {label}] frame_id={frame.Metadata.FrameId} user_ts={frame.Metadata.UserTimestamp}");
-        };
-    }
-
-    private static ulong UnixTimeUs()
-    {
-        var now = DateTimeOffset.UtcNow;
-        return (ulong)(now.ToUnixTimeMilliseconds() * 1000
-                       + (now.Ticks % TimeSpan.TicksPerMillisecond) / 10);
     }
 
     private void RemoveExtraVideoTile(string sid)
@@ -434,11 +403,6 @@ public class MeetManager : MonoBehaviour
         var tile = _participantTiles[_localId];
 
         var source = new WebCameraSource(_webCamTexture);
-        source.MetadataProvider = () => new FrameMetadata
-        {
-            UserTimestamp = UnixTimeUs(),
-            FrameId = unchecked(_nextOutgoingFrameId++),
-        };
         _localVideoTrack = LocalVideoTrack.CreateVideoTrack(LocalVideoTrackName, source, _room);
 
         var options = new TrackPublishOptions
@@ -446,10 +410,8 @@ public class MeetManager : MonoBehaviour
             VideoCodec = VideoCodec.H265,
             VideoEncoding = new VideoEncoding { MaxBitrate = 512000, MaxFramerate = frameRate },
             Simulcast = false,
-            Source = TrackSource.SourceCamera,
-        }.WithPacketTrailerFeatures(
-            PacketTrailerFeature.PtfUserTimestamp,
-            PacketTrailerFeature.PtfFrameId);
+            Source = TrackSource.SourceCamera
+        };
 
         var publish = _room.LocalParticipant.PublishTrack(_localVideoTrack, options);
         yield return publish;
