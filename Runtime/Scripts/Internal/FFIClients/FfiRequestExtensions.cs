@@ -162,6 +162,12 @@ namespace LiveKit.Internal.FFIClients
                 case SetPlayoutDeviceRequest setPlayoutDeviceRequest:
                     ffiRequest.SetPlayoutDevice = setPlayoutDeviceRequest;
                     break;
+                case StartRecordingRequest startRecordingRequest:
+                    ffiRequest.StartRecording = startRecordingRequest;
+                    break;
+                case StopRecordingRequest stopRecordingRequest:
+                    ffiRequest.StopRecording = stopRecordingRequest;
+                    break;
                 case LocalTrackMuteRequest localTrackMuteRequest:
                     ffiRequest.LocalTrackMute = localTrackMuteRequest;
                     break;

@@ -202,6 +202,7 @@ namespace LiveKit
                 throw new InvalidOperationException($"Recording device index {index} out of range (max: {recording.Count - 1})");
 
             var deviceId = recording[(int)index].Guid;
+
             // Note: On Android, devices don't have GUIDs - they're identified by index only.
             // Android also only reports a single "default" microphone because the system
             // automatically selects the best input source based on the audio mode.
@@ -222,6 +223,15 @@ namespace LiveKit
         /// </exception>
         public void SetRecordingDevice(string deviceId)
         {
+#if UNITY_IOS && !UNITY_EDITOR
+            // iOS exposes only one logical WebRTC recording device, and AudioDeviceIOS::RecordingDeviceName
+            // returns -1, so set_recording_device_by_guid in native code can never match and always
+            // returns "Device not found". Mic input routing on iOS is governed by AVAudioSession
+            // (configured via IOSAudioSessionHelper.LiveKit_ConfigureAudioSessionForVoIP), not by
+            // WebRTC device selection, so skipping the FFI call here is the correct behavior.
+            Utils.Debug($"PlatformAudio: skipping SetRecordingDevice on iOS (deviceId '{deviceId}'); input is governed by AVAudioSession");
+            return;
+#else
             using var request = FFIBridge.Instance.NewRequest<SetRecordingDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -233,17 +243,8 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to set recording device: {res.SetRecordingDevice.Error}");
 
             Utils.Debug($"PlatformAudio: set recording device to {deviceId}");
+#endif
         }
-
-        /// <summary>
-        /// Sets the recording device (microphone) by GUID.
-        /// </summary>
-        /// <param name="guid">Device GUID from GetDevices().Recording[i].Guid</param>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown if the device is not found or the operation failed.
-        /// </exception>
-        [Obsolete("Use SetRecordingDevice(string deviceId) instead")]
-        public void SetRecordingDeviceByGuid(string guid) => SetRecordingDevice(guid);
 
         /// <summary>
         /// Sets the playout device (speaker/headphones) by index.
@@ -265,6 +266,7 @@ namespace LiveKit
                 throw new InvalidOperationException($"Playout device index {index} out of range (max: {playout.Count - 1})");
 
             var deviceId = playout[(int)index].Guid;
+
             // Note: On Android, devices don't have GUIDs - they're identified by index only.
             // Android also only reports a single "default" device because audio routing
             // (speaker vs earpiece vs Bluetooth) is handled by the system via AudioManager,
@@ -286,6 +288,13 @@ namespace LiveKit
         /// </exception>
         public void SetPlayoutDevice(string deviceId)
         {
+#if UNITY_IOS && !UNITY_EDITOR
+            // Same iOS limitation as SetRecordingDevice: AudioDeviceIOS::PlayoutDeviceName returns -1,
+            // so set_playout_device_by_guid never matches. Speaker vs earpiece vs Bluetooth routing on
+            // iOS is governed by AVAudioSession, not by WebRTC device selection.
+            Utils.Debug($"PlatformAudio: skipping SetPlayoutDevice on iOS (deviceId '{deviceId}'); output is governed by AVAudioSession");
+            return;
+#else
             using var request = FFIBridge.Instance.NewRequest<SetPlayoutDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -297,17 +306,8 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to set playout device: {res.SetPlayoutDevice.Error}");
 
             Utils.Debug($"PlatformAudio: set playout device to {deviceId}");
+#endif
         }
-
-        /// <summary>
-        /// Sets the playout device (speaker/headphones) by GUID.
-        /// </summary>
-        /// <param name="guid">Device GUID from GetDevices().Playout[i].Guid</param>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown if the device is not found or the operation failed.
-        /// </exception>
-        [Obsolete("Use SetPlayoutDevice(string deviceId) instead")]
-        public void SetPlayoutDeviceByGuid(string guid) => SetPlayoutDevice(guid);
 
         /// <summary>
         /// Starts recording from the microphone.
