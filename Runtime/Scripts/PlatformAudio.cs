@@ -202,11 +202,12 @@ namespace LiveKit
                 throw new InvalidOperationException($"Recording device index {index} out of range (max: {recording.Count - 1})");
 
             var deviceId = recording[(int)index].Guid;
-            if (string.IsNullOrEmpty(deviceId))
-                throw new InvalidOperationException($"Recording device at index {index} has no GUID");
-
-            SetRecordingDevice(deviceId);
-            Utils.Debug($"PlatformAudio: set recording device to index {index} (GUID: {deviceId})");
+            // Note: On Android, devices don't have GUIDs - they're identified by index only.
+            // Android also only reports a single "default" microphone because the system
+            // automatically selects the best input source based on the audio mode.
+            // If GUID is empty, we pass an empty string which triggers index-0 fallback in native code.
+            SetRecordingDevice(deviceId ?? "");
+            Utils.Debug($"PlatformAudio: set recording device to index {index} (GUID: {(string.IsNullOrEmpty(deviceId) ? "<empty>" : deviceId)})");
         }
 
         /// <summary>
@@ -264,11 +265,13 @@ namespace LiveKit
                 throw new InvalidOperationException($"Playout device index {index} out of range (max: {playout.Count - 1})");
 
             var deviceId = playout[(int)index].Guid;
-            if (string.IsNullOrEmpty(deviceId))
-                throw new InvalidOperationException($"Playout device at index {index} has no GUID");
-
-            SetPlayoutDevice(deviceId);
-            Utils.Debug($"PlatformAudio: set playout device to index {index} (GUID: {deviceId})");
+            // Note: On Android, devices don't have GUIDs - they're identified by index only.
+            // Android also only reports a single "default" device because audio routing
+            // (speaker vs earpiece vs Bluetooth) is handled by the system via AudioManager,
+            // not through WebRTC device selection. Use Android's AudioManager API to switch outputs.
+            // If GUID is empty, we pass an empty string which triggers index-0 fallback in native code.
+            SetPlayoutDevice(deviceId ?? "");
+            Utils.Debug($"PlatformAudio: set playout device to index {index} (GUID: {(string.IsNullOrEmpty(deviceId) ? "<empty>" : deviceId)})");
         }
 
         /// <summary>
