@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
@@ -24,6 +26,34 @@ namespace LiveKit.PlayModeTests
             LogAssert.ignoreFailingMessages = false;
 
             Assert.IsNotNull(context.ConnectionError, "Expected connection to fail");
+        }
+
+        // Parity check for the awaitable surface added in Stage 1 of the UniTask migration:
+        // awaiting a ConnectInstruction must observe the same IsError signal that
+        // yield return does. The outer driver stays IEnumerator because Unity's PlayMode
+        // runner does not accept [Test] async Task — the await itself is what we're
+        // validating, wrapped in a Task that the coroutine polls.
+        [UnityTest, Category("E2E")]
+        public IEnumerator Connect_FailsWithInvalidUrl_Awaitable()
+        {
+            LogAssert.ignoreFailingMessages = true;
+
+            using var room = new Room();
+            var connect = room.Connect("invalid-url", "token", new RoomOptions());
+            var awaitTask = AwaitInstruction(connect);
+
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            LogAssert.ignoreFailingMessages = false;
+
+            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
+            Assert.IsTrue(connect.IsDone, "Awaiter should not resume before IsDone");
+            Assert.IsTrue(connect.IsError, "Expected connection to fail");
+        }
+
+        private static async Task AwaitInstruction(YieldInstruction instruction)
+        {
+            await instruction;
         }
 
         [UnityTest, Category("E2E")]
