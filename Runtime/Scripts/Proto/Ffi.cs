@@ -27,7 +27,7 @@ namespace LiveKit.Proto {
             "CglmZmkucHJvdG8SDWxpdmVraXQucHJvdG8aCmUyZWUucHJvdG8aC3RyYWNr",
             "LnByb3RvGhd0cmFja19wdWJsaWNhdGlvbi5wcm90bxoKcm9vbS5wcm90bxoR",
             "dmlkZW9fZnJhbWUucHJvdG8aEWF1ZGlvX2ZyYW1lLnByb3RvGglycGMucHJv",
-            "dG8aEWRhdGFfc3RyZWFtLnByb3RvGhBkYXRhX3RyYWNrLnByb3RvIv8tCgpG",
+            "dG8aEWRhdGFfc3RyZWFtLnByb3RvGhBkYXRhX3RyYWNrLnByb3RvIrMvCgpG",
             "ZmlSZXF1ZXN0EjAKB2Rpc3Bvc2UYAiABKAsyHS5saXZla2l0LnByb3RvLkRp",
             "c3Bvc2VSZXF1ZXN0SAASMAoHY29ubmVjdBgDIAEoCzIdLmxpdmVraXQucHJv",
             "dG8uQ29ubmVjdFJlcXVlc3RIABI2CgpkaXNjb25uZWN0GAQgASgLMiAubGl2",
@@ -147,18 +147,22 @@ namespace LiveKit.Proto {
             "ZXN0SAASWgoecmVtb3RlX2RhdGFfdHJhY2tfaXNfcHVibGlzaGVkGEogASgL",
             "MjAubGl2ZWtpdC5wcm90by5SZW1vdGVEYXRhVHJhY2tJc1B1Ymxpc2hlZFJl",
             "cXVlc3RIABJLChZkYXRhX3RyYWNrX3N0cmVhbV9yZWFkGEsgASgLMikubGl2",
-            "ZWtpdC5wcm90by5EYXRhVHJhY2tTdHJlYW1SZWFkUmVxdWVzdEgAEkMKEXNp",
-            "bXVsYXRlX3NjZW5hcmlvGEwgASgLMiYubGl2ZWtpdC5wcm90by5TaW11bGF0",
-            "ZVNjZW5hcmlvUmVxdWVzdEgAEkQKEm5ld19wbGF0Zm9ybV9hdWRpbxhNIAEo",
-            "CzImLmxpdmVraXQucHJvdG8uTmV3UGxhdGZvcm1BdWRpb1JlcXVlc3RIABJC",
-            "ChFnZXRfYXVkaW9fZGV2aWNlcxhOIAEoCzIlLmxpdmVraXQucHJvdG8uR2V0",
-            "QXVkaW9EZXZpY2VzUmVxdWVzdEgAEkgKFHNldF9yZWNvcmRpbmdfZGV2aWNl",
-            "GE8gASgLMigubGl2ZWtpdC5wcm90by5TZXRSZWNvcmRpbmdEZXZpY2VSZXF1",
-            "ZXN0SAASRAoSc2V0X3BsYXlvdXRfZGV2aWNlGFAgASgLMiYubGl2ZWtpdC5w",
-            "cm90by5TZXRQbGF5b3V0RGV2aWNlUmVxdWVzdEgAEj8KD3N0YXJ0X3JlY29y",
-            "ZGluZxhRIAEoCzIkLmxpdmVraXQucHJvdG8uU3RhcnRSZWNvcmRpbmdSZXF1",
-            "ZXN0SAASPQoOc3RvcF9yZWNvcmRpbmcYUiABKAsyIy5saXZla2l0LnByb3Rv",
-            "LlN0b3BSZWNvcmRpbmdSZXF1ZXN0SABCCQoHbWVzc2FnZSKMLgoLRmZpUmVz",
+            "ZWtpdC5wcm90by5EYXRhVHJhY2tTdHJlYW1SZWFkUmVxdWVzdEgAEmkKJnJl",
+            "bW90ZV9kYXRhX3RyYWNrX3NldF9waXBlbGluZV9vcHRpb25zGFQgASgLMjcu",
+            "bGl2ZWtpdC5wcm90by5SZW1vdGVEYXRhVHJhY2tTZXRQaXBlbGluZU9wdGlv",
+            "bnNSZXF1ZXN0SAASQwoRc2ltdWxhdGVfc2NlbmFyaW8YTCABKAsyJi5saXZl",
+            "a2l0LnByb3RvLlNpbXVsYXRlU2NlbmFyaW9SZXF1ZXN0SAASRAoSbmV3X3Bs",
+            "YXRmb3JtX2F1ZGlvGE0gASgLMiYubGl2ZWtpdC5wcm90by5OZXdQbGF0Zm9y",
+            "bUF1ZGlvUmVxdWVzdEgAEkIKEWdldF9hdWRpb19kZXZpY2VzGE4gASgLMiUu",
+            "bGl2ZWtpdC5wcm90by5HZXRBdWRpb0RldmljZXNSZXF1ZXN0SAASSAoUc2V0",
+            "X3JlY29yZGluZ19kZXZpY2UYTyABKAsyKC5saXZla2l0LnByb3RvLlNldFJl",
+            "Y29yZGluZ0RldmljZVJlcXVlc3RIABJEChJzZXRfcGxheW91dF9kZXZpY2UY",
+            "UCABKAsyJi5saXZla2l0LnByb3RvLlNldFBsYXlvdXREZXZpY2VSZXF1ZXN0",
+            "SAASPwoPc3RhcnRfcmVjb3JkaW5nGFEgASgLMiQubGl2ZWtpdC5wcm90by5T",
+            "dGFydFJlY29yZGluZ1JlcXVlc3RIABI9Cg5zdG9wX3JlY29yZGluZxhSIAEo",
+            "CzIjLmxpdmVraXQucHJvdG8uU3RvcFJlY29yZGluZ1JlcXVlc3RIABJHChRy",
+            "ZWFkeV9mb3Jfcm9vbV9ldmVudBhTIAEoCzInLmxpdmVraXQucHJvdG8uUmVh",
+            "ZHlGb3JSb29tRXZlbnRSZXF1ZXN0SABCCQoHbWVzc2FnZSLCLwoLRmZpUmVz",
             "cG9uc2USMQoHZGlzcG9zZRgCIAEoCzIeLmxpdmVraXQucHJvdG8uRGlzcG9z",
             "ZVJlc3BvbnNlSAASMQoHY29ubmVjdBgDIAEoCzIeLmxpdmVraXQucHJvdG8u",
             "Q29ubmVjdFJlc3BvbnNlSAASNwoKZGlzY29ubmVjdBgEIAEoCzIhLmxpdmVr",
@@ -278,98 +282,102 @@ namespace LiveKit.Proto {
             "c2VIABJbCh5yZW1vdGVfZGF0YV90cmFja19pc19wdWJsaXNoZWQYSSABKAsy",
             "MS5saXZla2l0LnByb3RvLlJlbW90ZURhdGFUcmFja0lzUHVibGlzaGVkUmVz",
             "cG9uc2VIABJMChZkYXRhX3RyYWNrX3N0cmVhbV9yZWFkGEogASgLMioubGl2",
-            "ZWtpdC5wcm90by5EYXRhVHJhY2tTdHJlYW1SZWFkUmVzcG9uc2VIABJEChFz",
-            "aW11bGF0ZV9zY2VuYXJpbxhLIAEoCzInLmxpdmVraXQucHJvdG8uU2ltdWxh",
-            "dGVTY2VuYXJpb1Jlc3BvbnNlSAASRQoSbmV3X3BsYXRmb3JtX2F1ZGlvGEwg",
-            "ASgLMicubGl2ZWtpdC5wcm90by5OZXdQbGF0Zm9ybUF1ZGlvUmVzcG9uc2VI",
-            "ABJDChFnZXRfYXVkaW9fZGV2aWNlcxhNIAEoCzImLmxpdmVraXQucHJvdG8u",
-            "R2V0QXVkaW9EZXZpY2VzUmVzcG9uc2VIABJJChRzZXRfcmVjb3JkaW5nX2Rl",
-            "dmljZRhOIAEoCzIpLmxpdmVraXQucHJvdG8uU2V0UmVjb3JkaW5nRGV2aWNl",
-            "UmVzcG9uc2VIABJFChJzZXRfcGxheW91dF9kZXZpY2UYTyABKAsyJy5saXZl",
-            "a2l0LnByb3RvLlNldFBsYXlvdXREZXZpY2VSZXNwb25zZUgAEkAKD3N0YXJ0",
-            "X3JlY29yZGluZxhQIAEoCzIlLmxpdmVraXQucHJvdG8uU3RhcnRSZWNvcmRp",
-            "bmdSZXNwb25zZUgAEj4KDnN0b3BfcmVjb3JkaW5nGFEgASgLMiQubGl2ZWtp",
-            "dC5wcm90by5TdG9wUmVjb3JkaW5nUmVzcG9uc2VIAEIJCgdtZXNzYWdlItoW",
-            "CghGZmlFdmVudBIuCgpyb29tX2V2ZW50GAEgASgLMhgubGl2ZWtpdC5wcm90",
-            "by5Sb29tRXZlbnRIABIwCgt0cmFja19ldmVudBgCIAEoCzIZLmxpdmVraXQu",
-            "cHJvdG8uVHJhY2tFdmVudEgAEj0KEnZpZGVvX3N0cmVhbV9ldmVudBgDIAEo",
-            "CzIfLmxpdmVraXQucHJvdG8uVmlkZW9TdHJlYW1FdmVudEgAEj0KEmF1ZGlv",
-            "X3N0cmVhbV9ldmVudBgEIAEoCzIfLmxpdmVraXQucHJvdG8uQXVkaW9TdHJl",
-            "YW1FdmVudEgAEjEKB2Nvbm5lY3QYBSABKAsyHi5saXZla2l0LnByb3RvLkNv",
-            "bm5lY3RDYWxsYmFja0gAEjcKCmRpc2Nvbm5lY3QYByABKAsyIS5saXZla2l0",
-            "LnByb3RvLkRpc2Nvbm5lY3RDYWxsYmFja0gAEjEKB2Rpc3Bvc2UYCCABKAsy",
-            "Hi5saXZla2l0LnByb3RvLkRpc3Bvc2VDYWxsYmFja0gAEjwKDXB1Ymxpc2hf",
-            "dHJhY2sYCSABKAsyIy5saXZla2l0LnByb3RvLlB1Ymxpc2hUcmFja0NhbGxi",
-            "YWNrSAASQAoPdW5wdWJsaXNoX3RyYWNrGAogASgLMiUubGl2ZWtpdC5wcm90",
-            "by5VbnB1Ymxpc2hUcmFja0NhbGxiYWNrSAASOgoMcHVibGlzaF9kYXRhGAsg",
-            "ASgLMiIubGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YUNhbGxiYWNrSAASTAoV",
-            "cHVibGlzaF90cmFuc2NyaXB0aW9uGAwgASgLMisubGl2ZWtpdC5wcm90by5Q",
-            "dWJsaXNoVHJhbnNjcmlwdGlvbkNhbGxiYWNrSAASRwoTY2FwdHVyZV9hdWRp",
-            "b19mcmFtZRgNIAEoCzIoLmxpdmVraXQucHJvdG8uQ2FwdHVyZUF1ZGlvRnJh",
-            "bWVDYWxsYmFja0gAEkUKEnNldF9sb2NhbF9tZXRhZGF0YRgOIAEoCzInLmxp",
-            "dmVraXQucHJvdG8uU2V0TG9jYWxNZXRhZGF0YUNhbGxiYWNrSAASPQoOc2V0",
-            "X2xvY2FsX25hbWUYDyABKAsyIy5saXZla2l0LnByb3RvLlNldExvY2FsTmFt",
-            "ZUNhbGxiYWNrSAASSQoUc2V0X2xvY2FsX2F0dHJpYnV0ZXMYECABKAsyKS5s",
-            "aXZla2l0LnByb3RvLlNldExvY2FsQXR0cmlidXRlc0NhbGxiYWNrSAASNAoJ",
-            "Z2V0X3N0YXRzGBEgASgLMh8ubGl2ZWtpdC5wcm90by5HZXRTdGF0c0NhbGxi",
-            "YWNrSAASJwoEbG9ncxgSIAEoCzIXLmxpdmVraXQucHJvdG8uTG9nQmF0Y2hI",
-            "ABJDChFnZXRfc2Vzc2lvbl9zdGF0cxgTIAEoCzImLmxpdmVraXQucHJvdG8u",
-            "R2V0U2Vzc2lvblN0YXRzQ2FsbGJhY2tIABIlCgVwYW5pYxgUIAEoCzIULmxp",
-            "dmVraXQucHJvdG8uUGFuaWNIABJBChBwdWJsaXNoX3NpcF9kdG1mGBUgASgL",
-            "MiUubGl2ZWtpdC5wcm90by5QdWJsaXNoU2lwRHRtZkNhbGxiYWNrSAASPgoM",
-            "Y2hhdF9tZXNzYWdlGBYgASgLMiYubGl2ZWtpdC5wcm90by5TZW5kQ2hhdE1l",
-            "c3NhZ2VDYWxsYmFja0gAEjgKC3BlcmZvcm1fcnBjGBcgASgLMiEubGl2ZWtp",
-            "dC5wcm90by5QZXJmb3JtUnBjQ2FsbGJhY2tIABJIChVycGNfbWV0aG9kX2lu",
-            "dm9jYXRpb24YGCABKAsyJy5saXZla2l0LnByb3RvLlJwY01ldGhvZEludm9j",
-            "YXRpb25FdmVudEgAEkUKEnNlbmRfc3RyZWFtX2hlYWRlchgZIAEoCzInLmxp",
-            "dmVraXQucHJvdG8uU2VuZFN0cmVhbUhlYWRlckNhbGxiYWNrSAASQwoRc2Vu",
-            "ZF9zdHJlYW1fY2h1bmsYGiABKAsyJi5saXZla2l0LnByb3RvLlNlbmRTdHJl",
-            "YW1DaHVua0NhbGxiYWNrSAASRwoTc2VuZF9zdHJlYW1fdHJhaWxlchgbIAEo",
-            "CzIoLmxpdmVraXQucHJvdG8uU2VuZFN0cmVhbVRyYWlsZXJDYWxsYmFja0gA",
-            "EkgKGGJ5dGVfc3RyZWFtX3JlYWRlcl9ldmVudBgcIAEoCzIkLmxpdmVraXQu",
-            "cHJvdG8uQnl0ZVN0cmVhbVJlYWRlckV2ZW50SAASVQobYnl0ZV9zdHJlYW1f",
-            "cmVhZGVyX3JlYWRfYWxsGB0gASgLMi4ubGl2ZWtpdC5wcm90by5CeXRlU3Ry",
-            "ZWFtUmVhZGVyUmVhZEFsbENhbGxiYWNrSAASXgogYnl0ZV9zdHJlYW1fcmVh",
-            "ZGVyX3dyaXRlX3RvX2ZpbGUYHiABKAsyMi5saXZla2l0LnByb3RvLkJ5dGVT",
-            "dHJlYW1SZWFkZXJXcml0ZVRvRmlsZUNhbGxiYWNrSAASQQoQYnl0ZV9zdHJl",
-            "YW1fb3BlbhgfIAEoCzIlLmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbU9wZW5D",
-            "YWxsYmFja0gAElAKGGJ5dGVfc3RyZWFtX3dyaXRlcl93cml0ZRggIAEoCzIs",
-            "LmxpdmVraXQucHJvdG8uQnl0ZVN0cmVhbVdyaXRlcldyaXRlQ2FsbGJhY2tI",
-            "ABJQChhieXRlX3N0cmVhbV93cml0ZXJfY2xvc2UYISABKAsyLC5saXZla2l0",
-            "LnByb3RvLkJ5dGVTdHJlYW1Xcml0ZXJDbG9zZUNhbGxiYWNrSAASOgoJc2Vu",
-            "ZF9maWxlGCIgASgLMiUubGl2ZWtpdC5wcm90by5TdHJlYW1TZW5kRmlsZUNh",
-            "bGxiYWNrSAASSAoYdGV4dF9zdHJlYW1fcmVhZGVyX2V2ZW50GCMgASgLMiQu",
-            "bGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtUmVhZGVyRXZlbnRIABJVCht0ZXh0",
-            "X3N0cmVhbV9yZWFkZXJfcmVhZF9hbGwYJCABKAsyLi5saXZla2l0LnByb3Rv",
-            "LlRleHRTdHJlYW1SZWFkZXJSZWFkQWxsQ2FsbGJhY2tIABJBChB0ZXh0X3N0",
-            "cmVhbV9vcGVuGCUgASgLMiUubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtT3Bl",
-            "bkNhbGxiYWNrSAASUAoYdGV4dF9zdHJlYW1fd3JpdGVyX3dyaXRlGCYgASgL",
-            "MiwubGl2ZWtpdC5wcm90by5UZXh0U3RyZWFtV3JpdGVyV3JpdGVDYWxsYmFj",
-            "a0gAElAKGHRleHRfc3RyZWFtX3dyaXRlcl9jbG9zZRgnIAEoCzIsLmxpdmVr",
-            "aXQucHJvdG8uVGV4dFN0cmVhbVdyaXRlckNsb3NlQ2FsbGJhY2tIABI6Cglz",
-            "ZW5kX3RleHQYKCABKAsyJS5saXZla2l0LnByb3RvLlN0cmVhbVNlbmRUZXh0",
-            "Q2FsbGJhY2tIABI8CgpzZW5kX2J5dGVzGCkgASgLMiYubGl2ZWtpdC5wcm90",
-            "by5TdHJlYW1TZW5kQnl0ZXNDYWxsYmFja0gAEkUKEnB1Ymxpc2hfZGF0YV90",
-            "cmFjaxgqIAEoCzInLmxpdmVraXQucHJvdG8uUHVibGlzaERhdGFUcmFja0Nh",
-            "bGxiYWNrSAASRgoXZGF0YV90cmFja19zdHJlYW1fZXZlbnQYKyABKAsyIy5s",
-            "aXZla2l0LnByb3RvLkRhdGFUcmFja1N0cmVhbUV2ZW50SAASRAoRc2ltdWxh",
-            "dGVfc2NlbmFyaW8YLCABKAsyJy5saXZla2l0LnByb3RvLlNpbXVsYXRlU2Nl",
-            "bmFyaW9DYWxsYmFja0gAQgkKB21lc3NhZ2UiHwoORGlzcG9zZVJlcXVlc3QS",
-            "DQoFYXN5bmMYASACKAgiIwoPRGlzcG9zZVJlc3BvbnNlEhAKCGFzeW5jX2lk",
-            "GAEgASgEIiMKD0Rpc3Bvc2VDYWxsYmFjaxIQCghhc3luY19pZBgBIAIoBCKF",
-            "AQoJTG9nUmVjb3JkEiYKBWxldmVsGAEgAigOMhcubGl2ZWtpdC5wcm90by5M",
-            "b2dMZXZlbBIOCgZ0YXJnZXQYAiACKAkSEwoLbW9kdWxlX3BhdGgYAyABKAkS",
-            "DAoEZmlsZRgEIAEoCRIMCgRsaW5lGAUgASgNEg8KB21lc3NhZ2UYBiACKAki",
-            "NQoITG9nQmF0Y2gSKQoHcmVjb3JkcxgBIAMoCzIYLmxpdmVraXQucHJvdG8u",
-            "TG9nUmVjb3JkIhgKBVBhbmljEg8KB21lc3NhZ2UYASACKAkqUwoITG9nTGV2",
-            "ZWwSDQoJTE9HX0VSUk9SEAASDAoITE9HX1dBUk4QARIMCghMT0dfSU5GTxAC",
-            "Eg0KCUxPR19ERUJVRxADEg0KCUxPR19UUkFDRRAEQhCqAg1MaXZlS2l0LlBy",
-            "b3Rv"));
+            "ZWtpdC5wcm90by5EYXRhVHJhY2tTdHJlYW1SZWFkUmVzcG9uc2VIABJqCiZy",
+            "ZW1vdGVfZGF0YV90cmFja19zZXRfcGlwZWxpbmVfb3B0aW9ucxhUIAEoCzI4",
+            "LmxpdmVraXQucHJvdG8uUmVtb3RlRGF0YVRyYWNrU2V0UGlwZWxpbmVPcHRp",
+            "b25zUmVzcG9uc2VIABJEChFzaW11bGF0ZV9zY2VuYXJpbxhLIAEoCzInLmxp",
+            "dmVraXQucHJvdG8uU2ltdWxhdGVTY2VuYXJpb1Jlc3BvbnNlSAASRQoSbmV3",
+            "X3BsYXRmb3JtX2F1ZGlvGEwgASgLMicubGl2ZWtpdC5wcm90by5OZXdQbGF0",
+            "Zm9ybUF1ZGlvUmVzcG9uc2VIABJDChFnZXRfYXVkaW9fZGV2aWNlcxhNIAEo",
+            "CzImLmxpdmVraXQucHJvdG8uR2V0QXVkaW9EZXZpY2VzUmVzcG9uc2VIABJJ",
+            "ChRzZXRfcmVjb3JkaW5nX2RldmljZRhOIAEoCzIpLmxpdmVraXQucHJvdG8u",
+            "U2V0UmVjb3JkaW5nRGV2aWNlUmVzcG9uc2VIABJFChJzZXRfcGxheW91dF9k",
+            "ZXZpY2UYTyABKAsyJy5saXZla2l0LnByb3RvLlNldFBsYXlvdXREZXZpY2VS",
+            "ZXNwb25zZUgAEkAKD3N0YXJ0X3JlY29yZGluZxhQIAEoCzIlLmxpdmVraXQu",
+            "cHJvdG8uU3RhcnRSZWNvcmRpbmdSZXNwb25zZUgAEj4KDnN0b3BfcmVjb3Jk",
+            "aW5nGFEgASgLMiQubGl2ZWtpdC5wcm90by5TdG9wUmVjb3JkaW5nUmVzcG9u",
+            "c2VIABJIChRyZWFkeV9mb3Jfcm9vbV9ldmVudBhSIAEoCzIoLmxpdmVraXQu",
+            "cHJvdG8uUmVhZHlGb3JSb29tRXZlbnRSZXNwb25zZUgAQgkKB21lc3NhZ2Ui",
+            "2hYKCEZmaUV2ZW50Ei4KCnJvb21fZXZlbnQYASABKAsyGC5saXZla2l0LnBy",
+            "b3RvLlJvb21FdmVudEgAEjAKC3RyYWNrX2V2ZW50GAIgASgLMhkubGl2ZWtp",
+            "dC5wcm90by5UcmFja0V2ZW50SAASPQoSdmlkZW9fc3RyZWFtX2V2ZW50GAMg",
+            "ASgLMh8ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVhbUV2ZW50SAASPQoSYXVk",
+            "aW9fc3RyZWFtX2V2ZW50GAQgASgLMh8ubGl2ZWtpdC5wcm90by5BdWRpb1N0",
+            "cmVhbUV2ZW50SAASMQoHY29ubmVjdBgFIAEoCzIeLmxpdmVraXQucHJvdG8u",
+            "Q29ubmVjdENhbGxiYWNrSAASNwoKZGlzY29ubmVjdBgHIAEoCzIhLmxpdmVr",
+            "aXQucHJvdG8uRGlzY29ubmVjdENhbGxiYWNrSAASMQoHZGlzcG9zZRgIIAEo",
+            "CzIeLmxpdmVraXQucHJvdG8uRGlzcG9zZUNhbGxiYWNrSAASPAoNcHVibGlz",
+            "aF90cmFjaxgJIAEoCzIjLmxpdmVraXQucHJvdG8uUHVibGlzaFRyYWNrQ2Fs",
+            "bGJhY2tIABJACg91bnB1Ymxpc2hfdHJhY2sYCiABKAsyJS5saXZla2l0LnBy",
+            "b3RvLlVucHVibGlzaFRyYWNrQ2FsbGJhY2tIABI6CgxwdWJsaXNoX2RhdGEY",
+            "CyABKAsyIi5saXZla2l0LnByb3RvLlB1Ymxpc2hEYXRhQ2FsbGJhY2tIABJM",
+            "ChVwdWJsaXNoX3RyYW5zY3JpcHRpb24YDCABKAsyKy5saXZla2l0LnByb3Rv",
+            "LlB1Ymxpc2hUcmFuc2NyaXB0aW9uQ2FsbGJhY2tIABJHChNjYXB0dXJlX2F1",
+            "ZGlvX2ZyYW1lGA0gASgLMigubGl2ZWtpdC5wcm90by5DYXB0dXJlQXVkaW9G",
+            "cmFtZUNhbGxiYWNrSAASRQoSc2V0X2xvY2FsX21ldGFkYXRhGA4gASgLMicu",
+            "bGl2ZWtpdC5wcm90by5TZXRMb2NhbE1ldGFkYXRhQ2FsbGJhY2tIABI9Cg5z",
+            "ZXRfbG9jYWxfbmFtZRgPIAEoCzIjLmxpdmVraXQucHJvdG8uU2V0TG9jYWxO",
+            "YW1lQ2FsbGJhY2tIABJJChRzZXRfbG9jYWxfYXR0cmlidXRlcxgQIAEoCzIp",
+            "LmxpdmVraXQucHJvdG8uU2V0TG9jYWxBdHRyaWJ1dGVzQ2FsbGJhY2tIABI0",
+            "CglnZXRfc3RhdHMYESABKAsyHy5saXZla2l0LnByb3RvLkdldFN0YXRzQ2Fs",
+            "bGJhY2tIABInCgRsb2dzGBIgASgLMhcubGl2ZWtpdC5wcm90by5Mb2dCYXRj",
+            "aEgAEkMKEWdldF9zZXNzaW9uX3N0YXRzGBMgASgLMiYubGl2ZWtpdC5wcm90",
+            "by5HZXRTZXNzaW9uU3RhdHNDYWxsYmFja0gAEiUKBXBhbmljGBQgASgLMhQu",
+            "bGl2ZWtpdC5wcm90by5QYW5pY0gAEkEKEHB1Ymxpc2hfc2lwX2R0bWYYFSAB",
+            "KAsyJS5saXZla2l0LnByb3RvLlB1Ymxpc2hTaXBEdG1mQ2FsbGJhY2tIABI+",
+            "CgxjaGF0X21lc3NhZ2UYFiABKAsyJi5saXZla2l0LnByb3RvLlNlbmRDaGF0",
+            "TWVzc2FnZUNhbGxiYWNrSAASOAoLcGVyZm9ybV9ycGMYFyABKAsyIS5saXZl",
+            "a2l0LnByb3RvLlBlcmZvcm1ScGNDYWxsYmFja0gAEkgKFXJwY19tZXRob2Rf",
+            "aW52b2NhdGlvbhgYIAEoCzInLmxpdmVraXQucHJvdG8uUnBjTWV0aG9kSW52",
+            "b2NhdGlvbkV2ZW50SAASRQoSc2VuZF9zdHJlYW1faGVhZGVyGBkgASgLMicu",
+            "bGl2ZWtpdC5wcm90by5TZW5kU3RyZWFtSGVhZGVyQ2FsbGJhY2tIABJDChFz",
+            "ZW5kX3N0cmVhbV9jaHVuaxgaIAEoCzImLmxpdmVraXQucHJvdG8uU2VuZFN0",
+            "cmVhbUNodW5rQ2FsbGJhY2tIABJHChNzZW5kX3N0cmVhbV90cmFpbGVyGBsg",
+            "ASgLMigubGl2ZWtpdC5wcm90by5TZW5kU3RyZWFtVHJhaWxlckNhbGxiYWNr",
+            "SAASSAoYYnl0ZV9zdHJlYW1fcmVhZGVyX2V2ZW50GBwgASgLMiQubGl2ZWtp",
+            "dC5wcm90by5CeXRlU3RyZWFtUmVhZGVyRXZlbnRIABJVChtieXRlX3N0cmVh",
+            "bV9yZWFkZXJfcmVhZF9hbGwYHSABKAsyLi5saXZla2l0LnByb3RvLkJ5dGVT",
+            "dHJlYW1SZWFkZXJSZWFkQWxsQ2FsbGJhY2tIABJeCiBieXRlX3N0cmVhbV9y",
+            "ZWFkZXJfd3JpdGVfdG9fZmlsZRgeIAEoCzIyLmxpdmVraXQucHJvdG8uQnl0",
+            "ZVN0cmVhbVJlYWRlcldyaXRlVG9GaWxlQ2FsbGJhY2tIABJBChBieXRlX3N0",
+            "cmVhbV9vcGVuGB8gASgLMiUubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtT3Bl",
+            "bkNhbGxiYWNrSAASUAoYYnl0ZV9zdHJlYW1fd3JpdGVyX3dyaXRlGCAgASgL",
+            "MiwubGl2ZWtpdC5wcm90by5CeXRlU3RyZWFtV3JpdGVyV3JpdGVDYWxsYmFj",
+            "a0gAElAKGGJ5dGVfc3RyZWFtX3dyaXRlcl9jbG9zZRghIAEoCzIsLmxpdmVr",
+            "aXQucHJvdG8uQnl0ZVN0cmVhbVdyaXRlckNsb3NlQ2FsbGJhY2tIABI6Cglz",
+            "ZW5kX2ZpbGUYIiABKAsyJS5saXZla2l0LnByb3RvLlN0cmVhbVNlbmRGaWxl",
+            "Q2FsbGJhY2tIABJIChh0ZXh0X3N0cmVhbV9yZWFkZXJfZXZlbnQYIyABKAsy",
+            "JC5saXZla2l0LnByb3RvLlRleHRTdHJlYW1SZWFkZXJFdmVudEgAElUKG3Rl",
+            "eHRfc3RyZWFtX3JlYWRlcl9yZWFkX2FsbBgkIAEoCzIuLmxpdmVraXQucHJv",
+            "dG8uVGV4dFN0cmVhbVJlYWRlclJlYWRBbGxDYWxsYmFja0gAEkEKEHRleHRf",
+            "c3RyZWFtX29wZW4YJSABKAsyJS5saXZla2l0LnByb3RvLlRleHRTdHJlYW1P",
+            "cGVuQ2FsbGJhY2tIABJQChh0ZXh0X3N0cmVhbV93cml0ZXJfd3JpdGUYJiAB",
+            "KAsyLC5saXZla2l0LnByb3RvLlRleHRTdHJlYW1Xcml0ZXJXcml0ZUNhbGxi",
+            "YWNrSAASUAoYdGV4dF9zdHJlYW1fd3JpdGVyX2Nsb3NlGCcgASgLMiwubGl2",
+            "ZWtpdC5wcm90by5UZXh0U3RyZWFtV3JpdGVyQ2xvc2VDYWxsYmFja0gAEjoK",
+            "CXNlbmRfdGV4dBgoIAEoCzIlLmxpdmVraXQucHJvdG8uU3RyZWFtU2VuZFRl",
+            "eHRDYWxsYmFja0gAEjwKCnNlbmRfYnl0ZXMYKSABKAsyJi5saXZla2l0LnBy",
+            "b3RvLlN0cmVhbVNlbmRCeXRlc0NhbGxiYWNrSAASRQoScHVibGlzaF9kYXRh",
+            "X3RyYWNrGCogASgLMicubGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YVRyYWNr",
+            "Q2FsbGJhY2tIABJGChdkYXRhX3RyYWNrX3N0cmVhbV9ldmVudBgrIAEoCzIj",
+            "LmxpdmVraXQucHJvdG8uRGF0YVRyYWNrU3RyZWFtRXZlbnRIABJEChFzaW11",
+            "bGF0ZV9zY2VuYXJpbxgsIAEoCzInLmxpdmVraXQucHJvdG8uU2ltdWxhdGVT",
+            "Y2VuYXJpb0NhbGxiYWNrSABCCQoHbWVzc2FnZSIfCg5EaXNwb3NlUmVxdWVz",
+            "dBINCgVhc3luYxgBIAIoCCIjCg9EaXNwb3NlUmVzcG9uc2USEAoIYXN5bmNf",
+            "aWQYASABKAQiIwoPRGlzcG9zZUNhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigE",
+            "IoUBCglMb2dSZWNvcmQSJgoFbGV2ZWwYASACKA4yFy5saXZla2l0LnByb3Rv",
+            "LkxvZ0xldmVsEg4KBnRhcmdldBgCIAIoCRITCgttb2R1bGVfcGF0aBgDIAEo",
+            "CRIMCgRmaWxlGAQgASgJEgwKBGxpbmUYBSABKA0SDwoHbWVzc2FnZRgGIAIo",
+            "CSI1CghMb2dCYXRjaBIpCgdyZWNvcmRzGAEgAygLMhgubGl2ZWtpdC5wcm90",
+            "by5Mb2dSZWNvcmQiGAoFUGFuaWMSDwoHbWVzc2FnZRgBIAIoCSpTCghMb2dM",
+            "ZXZlbBINCglMT0dfRVJST1IQABIMCghMT0dfV0FSThABEgwKCExPR19JTkZP",
+            "EAISDQoJTE9HX0RFQlVHEAMSDQoJTE9HX1RSQUNFEARCEKoCDUxpdmVLaXQu",
+            "UHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, global::LiveKit.Proto.TrackPublicationReflection.Descriptor, global::LiveKit.Proto.RoomReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.AudioFrameReflection.Descriptor, global::LiveKit.Proto.RpcReflection.Descriptor, global::LiveKit.Proto.DataStreamReflection.Descriptor, global::LiveKit.Proto.DataTrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.LogLevel), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "E2Ee", "AudioStreamFromParticipant", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "EditChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose", "SendBytes", "SetRemoteTrackPublicationQuality", "PublishDataTrack", "LocalDataTrackTryPush", "LocalDataTrackUnpublish", "LocalDataTrackIsPublished", "SubscribeDataTrack", "RemoteDataTrackIsPublished", "DataTrackStreamRead", "SimulateScenario", "NewPlatformAudio", "GetAudioDevices", "SetRecordingDevice", "SetPlayoutDevice", "StartRecording", "StopRecording" }, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "AudioStreamFromParticipant", "E2Ee", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose", "SendBytes", "SetRemoteTrackPublicationQuality", "PublishDataTrack", "LocalDataTrackTryPush", "LocalDataTrackUnpublish", "LocalDataTrackIsPublished", "SubscribeDataTrack", "RemoteDataTrackIsPublished", "DataTrackStreamRead", "SimulateScenario", "NewPlatformAudio", "GetAudioDevices", "SetRecordingDevice", "SetPlayoutDevice", "StartRecording", "StopRecording" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiRequest), global::LiveKit.Proto.FfiRequest.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "E2Ee", "AudioStreamFromParticipant", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "EditChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose", "SendBytes", "SetRemoteTrackPublicationQuality", "PublishDataTrack", "LocalDataTrackTryPush", "LocalDataTrackUnpublish", "LocalDataTrackIsPublished", "SubscribeDataTrack", "RemoteDataTrackIsPublished", "DataTrackStreamRead", "RemoteDataTrackSetPipelineOptions", "SimulateScenario", "NewPlatformAudio", "GetAudioDevices", "SetRecordingDevice", "SetPlayoutDevice", "StartRecording", "StopRecording", "ReadyForRoomEvent" }, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiResponse), global::LiveKit.Proto.FfiResponse.Parser, new[]{ "Dispose", "Connect", "Disconnect", "PublishTrack", "UnpublishTrack", "PublishData", "SetSubscribed", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetSessionStats", "PublishTranscription", "PublishSipDtmf", "CreateVideoTrack", "CreateAudioTrack", "LocalTrackMute", "EnableRemoteTrack", "GetStats", "SetTrackSubscriptionPermissions", "NewVideoStream", "NewVideoSource", "CaptureVideoFrame", "VideoConvert", "VideoStreamFromParticipant", "NewAudioStream", "NewAudioSource", "CaptureAudioFrame", "ClearAudioBuffer", "NewAudioResampler", "RemixAndResample", "AudioStreamFromParticipant", "E2Ee", "NewSoxResampler", "PushSoxResampler", "FlushSoxResampler", "SendChatMessage", "PerformRpc", "RegisterRpcMethod", "UnregisterRpcMethod", "RpcMethodInvocationResponse", "EnableRemoteTrackPublication", "UpdateRemoteTrackPublicationDimension", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "SetDataChannelBufferedAmountLowThreshold", "LoadAudioFilterPlugin", "NewApm", "ApmProcessStream", "ApmProcessReverseStream", "ApmSetStreamDelay", "ByteReadIncremental", "ByteReadAll", "ByteWriteToFile", "TextReadIncremental", "TextReadAll", "SendFile", "SendText", "ByteStreamOpen", "ByteStreamWrite", "ByteStreamClose", "TextStreamOpen", "TextStreamWrite", "TextStreamClose", "SendBytes", "SetRemoteTrackPublicationQuality", "PublishDataTrack", "LocalDataTrackTryPush", "LocalDataTrackUnpublish", "LocalDataTrackIsPublished", "SubscribeDataTrack", "RemoteDataTrackIsPublished", "DataTrackStreamRead", "RemoteDataTrackSetPipelineOptions", "SimulateScenario", "NewPlatformAudio", "GetAudioDevices", "SetRecordingDevice", "SetPlayoutDevice", "StartRecording", "StopRecording", "ReadyForRoomEvent" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FfiEvent), global::LiveKit.Proto.FfiEvent.Parser, new[]{ "RoomEvent", "TrackEvent", "VideoStreamEvent", "AudioStreamEvent", "Connect", "Disconnect", "Dispose", "PublishTrack", "UnpublishTrack", "PublishData", "PublishTranscription", "CaptureAudioFrame", "SetLocalMetadata", "SetLocalName", "SetLocalAttributes", "GetStats", "Logs", "GetSessionStats", "Panic", "PublishSipDtmf", "ChatMessage", "PerformRpc", "RpcMethodInvocation", "SendStreamHeader", "SendStreamChunk", "SendStreamTrailer", "ByteStreamReaderEvent", "ByteStreamReaderReadAll", "ByteStreamReaderWriteToFile", "ByteStreamOpen", "ByteStreamWriterWrite", "ByteStreamWriterClose", "SendFile", "TextStreamReaderEvent", "TextStreamReaderReadAll", "TextStreamOpen", "TextStreamWriterWrite", "TextStreamWriterClose", "SendText", "SendBytes", "PublishDataTrack", "DataTrackStreamEvent", "SimulateScenario" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeRequest), global::LiveKit.Proto.DisposeRequest.Parser, new[]{ "Async" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DisposeResponse), global::LiveKit.Proto.DisposeResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
@@ -656,6 +664,9 @@ namespace LiveKit.Proto {
         case MessageOneofCase.DataTrackStreamRead:
           DataTrackStreamRead = other.DataTrackStreamRead.Clone();
           break;
+        case MessageOneofCase.RemoteDataTrackSetPipelineOptions:
+          RemoteDataTrackSetPipelineOptions = other.RemoteDataTrackSetPipelineOptions.Clone();
+          break;
         case MessageOneofCase.SimulateScenario:
           SimulateScenario = other.SimulateScenario.Clone();
           break;
@@ -676,6 +687,9 @@ namespace LiveKit.Proto {
           break;
         case MessageOneofCase.StopRecording:
           StopRecording = other.StopRecording.Clone();
+          break;
+        case MessageOneofCase.ReadyForRoomEvent:
+          ReadyForRoomEvent = other.ReadyForRoomEvent.Clone();
           break;
       }
 
@@ -1612,6 +1626,18 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "remote_data_track_set_pipeline_options" field.</summary>
+    public const int RemoteDataTrackSetPipelineOptionsFieldNumber = 84;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest RemoteDataTrackSetPipelineOptions {
+      get { return messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions ? (global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.RemoteDataTrackSetPipelineOptions;
+      }
+    }
+
     /// <summary>Field number for the "simulate_scenario" field.</summary>
     public const int SimulateScenarioFieldNumber = 76;
     /// <summary>
@@ -1702,6 +1728,21 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "ready_for_room_event" field.</summary>
+    public const int ReadyForRoomEventFieldNumber = 83;
+    /// <summary>
+    /// Room event ready signal
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.ReadyForRoomEventRequest ReadyForRoomEvent {
+      get { return messageCase_ == MessageOneofCase.ReadyForRoomEvent ? (global::LiveKit.Proto.ReadyForRoomEventRequest) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ReadyForRoomEvent;
+      }
+    }
+
     private object message_;
     /// <summary>Enum of possible cases for the "message" oneof.</summary>
     public enum MessageOneofCase {
@@ -1780,6 +1821,7 @@ namespace LiveKit.Proto {
       SubscribeDataTrack = 73,
       RemoteDataTrackIsPublished = 74,
       DataTrackStreamRead = 75,
+      RemoteDataTrackSetPipelineOptions = 84,
       SimulateScenario = 76,
       NewPlatformAudio = 77,
       GetAudioDevices = 78,
@@ -1787,6 +1829,7 @@ namespace LiveKit.Proto {
       SetPlayoutDevice = 80,
       StartRecording = 81,
       StopRecording = 82,
+      ReadyForRoomEvent = 83,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1891,6 +1934,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(SubscribeDataTrack, other.SubscribeDataTrack)) return false;
       if (!object.Equals(RemoteDataTrackIsPublished, other.RemoteDataTrackIsPublished)) return false;
       if (!object.Equals(DataTrackStreamRead, other.DataTrackStreamRead)) return false;
+      if (!object.Equals(RemoteDataTrackSetPipelineOptions, other.RemoteDataTrackSetPipelineOptions)) return false;
       if (!object.Equals(SimulateScenario, other.SimulateScenario)) return false;
       if (!object.Equals(NewPlatformAudio, other.NewPlatformAudio)) return false;
       if (!object.Equals(GetAudioDevices, other.GetAudioDevices)) return false;
@@ -1898,6 +1942,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(SetPlayoutDevice, other.SetPlayoutDevice)) return false;
       if (!object.Equals(StartRecording, other.StartRecording)) return false;
       if (!object.Equals(StopRecording, other.StopRecording)) return false;
+      if (!object.Equals(ReadyForRoomEvent, other.ReadyForRoomEvent)) return false;
       if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1980,6 +2025,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SubscribeDataTrack) hash ^= SubscribeDataTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.RemoteDataTrackIsPublished) hash ^= RemoteDataTrackIsPublished.GetHashCode();
       if (messageCase_ == MessageOneofCase.DataTrackStreamRead) hash ^= DataTrackStreamRead.GetHashCode();
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) hash ^= RemoteDataTrackSetPipelineOptions.GetHashCode();
       if (messageCase_ == MessageOneofCase.SimulateScenario) hash ^= SimulateScenario.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewPlatformAudio) hash ^= NewPlatformAudio.GetHashCode();
       if (messageCase_ == MessageOneofCase.GetAudioDevices) hash ^= GetAudioDevices.GetHashCode();
@@ -1987,6 +2033,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SetPlayoutDevice) hash ^= SetPlayoutDevice.GetHashCode();
       if (messageCase_ == MessageOneofCase.StartRecording) hash ^= StartRecording.GetHashCode();
       if (messageCase_ == MessageOneofCase.StopRecording) hash ^= StopRecording.GetHashCode();
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) hash ^= ReadyForRoomEvent.GetHashCode();
       hash ^= (int) messageCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2330,6 +2377,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(146, 5);
         output.WriteMessage(StopRecording);
       }
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+        output.WriteRawTag(154, 5);
+        output.WriteMessage(ReadyForRoomEvent);
+      }
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+        output.WriteRawTag(162, 5);
+        output.WriteMessage(RemoteDataTrackSetPipelineOptions);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2664,6 +2719,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(146, 5);
         output.WriteMessage(StopRecording);
       }
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+        output.WriteRawTag(154, 5);
+        output.WriteMessage(ReadyForRoomEvent);
+      }
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+        output.WriteRawTag(162, 5);
+        output.WriteMessage(RemoteDataTrackSetPipelineOptions);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2896,6 +2959,9 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.DataTrackStreamRead) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(DataTrackStreamRead);
       }
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(RemoteDataTrackSetPipelineOptions);
+      }
       if (messageCase_ == MessageOneofCase.SimulateScenario) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SimulateScenario);
       }
@@ -2916,6 +2982,9 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.StopRecording) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(StopRecording);
+      }
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ReadyForRoomEvent);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3374,6 +3443,12 @@ namespace LiveKit.Proto {
           }
           DataTrackStreamRead.MergeFrom(other.DataTrackStreamRead);
           break;
+        case MessageOneofCase.RemoteDataTrackSetPipelineOptions:
+          if (RemoteDataTrackSetPipelineOptions == null) {
+            RemoteDataTrackSetPipelineOptions = new global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest();
+          }
+          RemoteDataTrackSetPipelineOptions.MergeFrom(other.RemoteDataTrackSetPipelineOptions);
+          break;
         case MessageOneofCase.SimulateScenario:
           if (SimulateScenario == null) {
             SimulateScenario = new global::LiveKit.Proto.SimulateScenarioRequest();
@@ -3415,6 +3490,12 @@ namespace LiveKit.Proto {
             StopRecording = new global::LiveKit.Proto.StopRecordingRequest();
           }
           StopRecording.MergeFrom(other.StopRecording);
+          break;
+        case MessageOneofCase.ReadyForRoomEvent:
+          if (ReadyForRoomEvent == null) {
+            ReadyForRoomEvent = new global::LiveKit.Proto.ReadyForRoomEventRequest();
+          }
+          ReadyForRoomEvent.MergeFrom(other.ReadyForRoomEvent);
           break;
       }
 
@@ -4166,6 +4247,24 @@ namespace LiveKit.Proto {
             StopRecording = subBuilder;
             break;
           }
+          case 666: {
+            global::LiveKit.Proto.ReadyForRoomEventRequest subBuilder = new global::LiveKit.Proto.ReadyForRoomEventRequest();
+            if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+              subBuilder.MergeFrom(ReadyForRoomEvent);
+            }
+            input.ReadMessage(subBuilder);
+            ReadyForRoomEvent = subBuilder;
+            break;
+          }
+          case 674: {
+            global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest subBuilder = new global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest();
+            if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+              subBuilder.MergeFrom(RemoteDataTrackSetPipelineOptions);
+            }
+            input.ReadMessage(subBuilder);
+            RemoteDataTrackSetPipelineOptions = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -4914,6 +5013,24 @@ namespace LiveKit.Proto {
             StopRecording = subBuilder;
             break;
           }
+          case 666: {
+            global::LiveKit.Proto.ReadyForRoomEventRequest subBuilder = new global::LiveKit.Proto.ReadyForRoomEventRequest();
+            if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+              subBuilder.MergeFrom(ReadyForRoomEvent);
+            }
+            input.ReadMessage(subBuilder);
+            ReadyForRoomEvent = subBuilder;
+            break;
+          }
+          case 674: {
+            global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest subBuilder = new global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsRequest();
+            if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+              subBuilder.MergeFrom(RemoteDataTrackSetPipelineOptions);
+            }
+            input.ReadMessage(subBuilder);
+            RemoteDataTrackSetPipelineOptions = subBuilder;
+            break;
+          }
         }
       }
     }
@@ -5179,6 +5296,9 @@ namespace LiveKit.Proto {
         case MessageOneofCase.DataTrackStreamRead:
           DataTrackStreamRead = other.DataTrackStreamRead.Clone();
           break;
+        case MessageOneofCase.RemoteDataTrackSetPipelineOptions:
+          RemoteDataTrackSetPipelineOptions = other.RemoteDataTrackSetPipelineOptions.Clone();
+          break;
         case MessageOneofCase.SimulateScenario:
           SimulateScenario = other.SimulateScenario.Clone();
           break;
@@ -5199,6 +5319,9 @@ namespace LiveKit.Proto {
           break;
         case MessageOneofCase.StopRecording:
           StopRecording = other.StopRecording.Clone();
+          break;
+        case MessageOneofCase.ReadyForRoomEvent:
+          ReadyForRoomEvent = other.ReadyForRoomEvent.Clone();
           break;
       }
 
@@ -6123,6 +6246,18 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "remote_data_track_set_pipeline_options" field.</summary>
+    public const int RemoteDataTrackSetPipelineOptionsFieldNumber = 84;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse RemoteDataTrackSetPipelineOptions {
+      get { return messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions ? (global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.RemoteDataTrackSetPipelineOptions;
+      }
+    }
+
     /// <summary>Field number for the "simulate_scenario" field.</summary>
     public const int SimulateScenarioFieldNumber = 75;
     /// <summary>
@@ -6213,6 +6348,21 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "ready_for_room_event" field.</summary>
+    public const int ReadyForRoomEventFieldNumber = 82;
+    /// <summary>
+    /// Room event ready signal
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.ReadyForRoomEventResponse ReadyForRoomEvent {
+      get { return messageCase_ == MessageOneofCase.ReadyForRoomEvent ? (global::LiveKit.Proto.ReadyForRoomEventResponse) message_ : null; }
+      set {
+        message_ = value;
+        messageCase_ = value == null ? MessageOneofCase.None : MessageOneofCase.ReadyForRoomEvent;
+      }
+    }
+
     private object message_;
     /// <summary>Enum of possible cases for the "message" oneof.</summary>
     public enum MessageOneofCase {
@@ -6290,6 +6440,7 @@ namespace LiveKit.Proto {
       SubscribeDataTrack = 72,
       RemoteDataTrackIsPublished = 73,
       DataTrackStreamRead = 74,
+      RemoteDataTrackSetPipelineOptions = 84,
       SimulateScenario = 75,
       NewPlatformAudio = 76,
       GetAudioDevices = 77,
@@ -6297,6 +6448,7 @@ namespace LiveKit.Proto {
       SetPlayoutDevice = 79,
       StartRecording = 80,
       StopRecording = 81,
+      ReadyForRoomEvent = 82,
     }
     private MessageOneofCase messageCase_ = MessageOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6400,6 +6552,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(SubscribeDataTrack, other.SubscribeDataTrack)) return false;
       if (!object.Equals(RemoteDataTrackIsPublished, other.RemoteDataTrackIsPublished)) return false;
       if (!object.Equals(DataTrackStreamRead, other.DataTrackStreamRead)) return false;
+      if (!object.Equals(RemoteDataTrackSetPipelineOptions, other.RemoteDataTrackSetPipelineOptions)) return false;
       if (!object.Equals(SimulateScenario, other.SimulateScenario)) return false;
       if (!object.Equals(NewPlatformAudio, other.NewPlatformAudio)) return false;
       if (!object.Equals(GetAudioDevices, other.GetAudioDevices)) return false;
@@ -6407,6 +6560,7 @@ namespace LiveKit.Proto {
       if (!object.Equals(SetPlayoutDevice, other.SetPlayoutDevice)) return false;
       if (!object.Equals(StartRecording, other.StartRecording)) return false;
       if (!object.Equals(StopRecording, other.StopRecording)) return false;
+      if (!object.Equals(ReadyForRoomEvent, other.ReadyForRoomEvent)) return false;
       if (MessageCase != other.MessageCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -6488,6 +6642,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SubscribeDataTrack) hash ^= SubscribeDataTrack.GetHashCode();
       if (messageCase_ == MessageOneofCase.RemoteDataTrackIsPublished) hash ^= RemoteDataTrackIsPublished.GetHashCode();
       if (messageCase_ == MessageOneofCase.DataTrackStreamRead) hash ^= DataTrackStreamRead.GetHashCode();
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) hash ^= RemoteDataTrackSetPipelineOptions.GetHashCode();
       if (messageCase_ == MessageOneofCase.SimulateScenario) hash ^= SimulateScenario.GetHashCode();
       if (messageCase_ == MessageOneofCase.NewPlatformAudio) hash ^= NewPlatformAudio.GetHashCode();
       if (messageCase_ == MessageOneofCase.GetAudioDevices) hash ^= GetAudioDevices.GetHashCode();
@@ -6495,6 +6650,7 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.SetPlayoutDevice) hash ^= SetPlayoutDevice.GetHashCode();
       if (messageCase_ == MessageOneofCase.StartRecording) hash ^= StartRecording.GetHashCode();
       if (messageCase_ == MessageOneofCase.StopRecording) hash ^= StopRecording.GetHashCode();
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) hash ^= ReadyForRoomEvent.GetHashCode();
       hash ^= (int) messageCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -6834,6 +6990,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(138, 5);
         output.WriteMessage(StopRecording);
       }
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+        output.WriteRawTag(146, 5);
+        output.WriteMessage(ReadyForRoomEvent);
+      }
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+        output.WriteRawTag(162, 5);
+        output.WriteMessage(RemoteDataTrackSetPipelineOptions);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -7164,6 +7328,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(138, 5);
         output.WriteMessage(StopRecording);
       }
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+        output.WriteRawTag(146, 5);
+        output.WriteMessage(ReadyForRoomEvent);
+      }
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+        output.WriteRawTag(162, 5);
+        output.WriteMessage(RemoteDataTrackSetPipelineOptions);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -7393,6 +7565,9 @@ namespace LiveKit.Proto {
       if (messageCase_ == MessageOneofCase.DataTrackStreamRead) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(DataTrackStreamRead);
       }
+      if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(RemoteDataTrackSetPipelineOptions);
+      }
       if (messageCase_ == MessageOneofCase.SimulateScenario) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SimulateScenario);
       }
@@ -7413,6 +7588,9 @@ namespace LiveKit.Proto {
       }
       if (messageCase_ == MessageOneofCase.StopRecording) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(StopRecording);
+      }
+      if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(ReadyForRoomEvent);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -7865,6 +8043,12 @@ namespace LiveKit.Proto {
           }
           DataTrackStreamRead.MergeFrom(other.DataTrackStreamRead);
           break;
+        case MessageOneofCase.RemoteDataTrackSetPipelineOptions:
+          if (RemoteDataTrackSetPipelineOptions == null) {
+            RemoteDataTrackSetPipelineOptions = new global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse();
+          }
+          RemoteDataTrackSetPipelineOptions.MergeFrom(other.RemoteDataTrackSetPipelineOptions);
+          break;
         case MessageOneofCase.SimulateScenario:
           if (SimulateScenario == null) {
             SimulateScenario = new global::LiveKit.Proto.SimulateScenarioResponse();
@@ -7906,6 +8090,12 @@ namespace LiveKit.Proto {
             StopRecording = new global::LiveKit.Proto.StopRecordingResponse();
           }
           StopRecording.MergeFrom(other.StopRecording);
+          break;
+        case MessageOneofCase.ReadyForRoomEvent:
+          if (ReadyForRoomEvent == null) {
+            ReadyForRoomEvent = new global::LiveKit.Proto.ReadyForRoomEventResponse();
+          }
+          ReadyForRoomEvent.MergeFrom(other.ReadyForRoomEvent);
           break;
       }
 
@@ -8648,6 +8838,24 @@ namespace LiveKit.Proto {
             StopRecording = subBuilder;
             break;
           }
+          case 658: {
+            global::LiveKit.Proto.ReadyForRoomEventResponse subBuilder = new global::LiveKit.Proto.ReadyForRoomEventResponse();
+            if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+              subBuilder.MergeFrom(ReadyForRoomEvent);
+            }
+            input.ReadMessage(subBuilder);
+            ReadyForRoomEvent = subBuilder;
+            break;
+          }
+          case 674: {
+            global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse subBuilder = new global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse();
+            if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+              subBuilder.MergeFrom(RemoteDataTrackSetPipelineOptions);
+            }
+            input.ReadMessage(subBuilder);
+            RemoteDataTrackSetPipelineOptions = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -9385,6 +9593,24 @@ namespace LiveKit.Proto {
             }
             input.ReadMessage(subBuilder);
             StopRecording = subBuilder;
+            break;
+          }
+          case 658: {
+            global::LiveKit.Proto.ReadyForRoomEventResponse subBuilder = new global::LiveKit.Proto.ReadyForRoomEventResponse();
+            if (messageCase_ == MessageOneofCase.ReadyForRoomEvent) {
+              subBuilder.MergeFrom(ReadyForRoomEvent);
+            }
+            input.ReadMessage(subBuilder);
+            ReadyForRoomEvent = subBuilder;
+            break;
+          }
+          case 674: {
+            global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse subBuilder = new global::LiveKit.Proto.RemoteDataTrackSetPipelineOptionsResponse();
+            if (messageCase_ == MessageOneofCase.RemoteDataTrackSetPipelineOptions) {
+              subBuilder.MergeFrom(RemoteDataTrackSetPipelineOptions);
+            }
+            input.ReadMessage(subBuilder);
+            RemoteDataTrackSetPipelineOptions = subBuilder;
             break;
           }
         }
