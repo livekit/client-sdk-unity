@@ -12,12 +12,14 @@ namespace LiveKit
 
         public long Timestamp;
         public VideoRotation Rotation;
+        public FrameMetadata Metadata;
 
-        public VideoFrame(VideoBufferInfo info, long timeStamp, VideoRotation rotation)
+        public VideoFrame(VideoBufferInfo info, long timeStamp, VideoRotation rotation, FrameMetadata metadata = null)
         {
             _info = info;
             Timestamp = timeStamp;
             Rotation = rotation;
+            Metadata = metadata;
         }
     }
 

@@ -242,7 +242,7 @@ namespace LiveKit
             // Avoid allocating VideoFrame objects when nobody is observing them.
             if (FrameReceived != null)
             {
-                var frame = new VideoFrame(frameInfo, e.FrameReceived.TimestampUs, e.FrameReceived.Rotation);
+                var frame = new VideoFrame(frameInfo, e.FrameReceived.TimestampUs, e.FrameReceived.Rotation, e.FrameReceived.Metadata);
                 FrameReceived.Invoke(frame);
             }
         }
