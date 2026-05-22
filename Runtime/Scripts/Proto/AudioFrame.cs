@@ -44,8 +44,8 @@ namespace LiveKit.Proto {
             "dC5wcm90by5Pd25lZEF1ZGlvU3RyZWFtItoBChVOZXdBdWRpb1NvdXJjZVJl",
             "cXVlc3QSLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uQXVkaW9Tb3Vy",
             "Y2VUeXBlEjIKB29wdGlvbnMYAiABKAsyIS5saXZla2l0LnByb3RvLkF1ZGlv",
-            "U291cmNlT3B0aW9ucxITCgtzYW1wbGVfcmF0ZRgDIAIoDRIUCgxudW1fY2hh",
-            "bm5lbHMYBCACKA0SFQoNcXVldWVfc2l6ZV9tcxgFIAEoDRIdChVwbGF0Zm9y",
+            "U291cmNlT3B0aW9ucxITCgtzYW1wbGVfcmF0ZRgDIAEoDRIUCgxudW1fY2hh",
+            "bm5lbHMYBCABKA0SFQoNcXVldWVfc2l6ZV9tcxgFIAEoDRIdChVwbGF0Zm9y",
             "bV9hdWRpb19oYW5kbGUYBiABKAQiSQoWTmV3QXVkaW9Tb3VyY2VSZXNwb25z",
             "ZRIvCgZzb3VyY2UYASACKAsyHy5saXZla2l0LnByb3RvLk93bmVkQXVkaW9T",
             "b3VyY2UigAEKGENhcHR1cmVBdWRpb0ZyYW1lUmVxdWVzdBIVCg1zb3VyY2Vf",
@@ -2042,6 +2042,11 @@ namespace LiveKit.Proto {
     private readonly static uint SampleRateDefaultValue = 0;
 
     private uint sampleRate_;
+    /// <summary>
+    /// Sample rate in Hz. Optional - defaults to 48000 if not specified.
+    /// For AudioSourcePlatform: ignored, ADM uses hardware native sample rate.
+    /// For AudioSourceNative with queue_size_ms=0 (fast path): ignored, frame values used directly.
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint SampleRate {
@@ -2069,6 +2074,11 @@ namespace LiveKit.Proto {
     private readonly static uint NumChannelsDefaultValue = 0;
 
     private uint numChannels_;
+    /// <summary>
+    /// Number of audio channels. Optional - defaults to 1 (mono) if not specified.
+    /// For AudioSourcePlatform: ignored, ADM uses hardware native channels.
+    /// For AudioSourceNative with queue_size_ms=0 (fast path): ignored, frame values used directly.
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint NumChannels {
@@ -14638,6 +14648,12 @@ namespace LiveKit.Proto {
   /// Get available audio devices.
   ///
   /// Returns lists of available recording (microphone) and playout (speaker) devices.
+  ///
+  /// # Platform Notes
+  ///
+  /// - Desktop (Windows/macOS/Linux): Returns all available devices with names and GUIDs.
+  /// - Mobile (iOS/Android): Returns only one "default" device with empty name and GUID.
+  ///   Device enumeration is not meaningful on mobile - use for device count only.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class GetAudioDevicesRequest : pb::IMessage<GetAudioDevicesRequest>
@@ -15135,6 +15151,12 @@ namespace LiveKit.Proto {
   ///
   /// Call this before creating audio tracks to select which microphone to use.
   /// Use the GUID from AudioDeviceInfo for stable device selection across hot-plug events.
+  ///
+  /// # Platform Notes
+  ///
+  /// - Desktop: Works as expected - selects from enumerated devices.
+  /// - Mobile (iOS/Android): No-op. Mobile platforms handle microphone selection at the
+  ///   system level. This will succeed but has no effect. Skip calling on mobile.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SetRecordingDeviceRequest : pb::IMessage<SetRecordingDeviceRequest>
@@ -15459,10 +15481,8 @@ namespace LiveKit.Proto {
 
     private string error_;
     /// <summary>
-    /// Error message if the operation failed:
-    /// - "Device not found" if GUID doesn't match any device
-    /// - Other platform-specific errors
-    /// Empty/absent on success.
+    /// Error message if the operation failed.
+    /// Empty/absent on success (including no-op success on mobile).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -15631,6 +15651,14 @@ namespace LiveKit.Proto {
   ///
   /// Call this before connecting to select which speaker to use for audio output.
   /// Use the GUID from AudioDeviceInfo for stable device selection across hot-plug events.
+  ///
+  /// # Platform Notes
+  ///
+  /// - Desktop: Works as expected - selects from enumerated devices.
+  /// - Mobile (iOS/Android): No-op. Mobile platforms handle audio routing at the system level.
+  ///   This will succeed but has no effect. For audio routing on mobile:
+  ///   - iOS: Use AVAudioSession to control speaker/earpiece/Bluetooth routing
+  ///   - Android: Use AudioManager.setSpeakerphoneOn() to switch outputs
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SetPlayoutDeviceRequest : pb::IMessage<SetPlayoutDeviceRequest>
@@ -15955,10 +15983,8 @@ namespace LiveKit.Proto {
 
     private string error_;
     /// <summary>
-    /// Error message if the operation failed:
-    /// - "Device not found" if GUID doesn't match any device
-    /// - Other platform-specific errors
-    /// Empty/absent on success.
+    /// Error message if the operation failed.
+    /// Empty/absent on success (including no-op success on mobile).
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
