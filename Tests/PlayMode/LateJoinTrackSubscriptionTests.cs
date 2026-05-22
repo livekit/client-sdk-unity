@@ -53,7 +53,7 @@ namespace LiveKit.PlayModeTests
             // 2. Publisher publishes audio + video tracks BEFORE the consumer joins.
             var expectedTrackNames = new HashSet<string>();
             var audioSources = new List<SineWaveAudioSource>();
-            var videoSources = new List<StubVideoSource>();
+            var videoSources = new List<TestVideoSource>();
 
             for (int i = 0; i < AudioTrackCount; i++)
             {
@@ -70,7 +70,7 @@ namespace LiveKit.PlayModeTests
             for (int i = 0; i < VideoTrackCount; i++)
             {
                 var trackName = $"late-join-video-{i}";
-                var source = new StubVideoSource();
+                var source = new TestVideoSource();
                 videoSources.Add(source);
                 var localTrack = LocalVideoTrack.CreateVideoTrack(trackName, source, publisherRoom);
                 var pub = publisherRoom.LocalParticipant.PublishTrack(localTrack, VideoOptions());
