@@ -49,6 +49,10 @@ def update_submodule(ffi_version):
     print(f"\n=== Updating client-sdk-rust~ submodule to {tag} ===")
     subprocess.run(["git", "-C", "client-sdk-rust~", "fetch", "--tags", "--force"], check=True)
     subprocess.run(["git", "-C", "client-sdk-rust~", "checkout", tag], check=True)
+    subprocess.run(
+        ["git", "-C", "client-sdk-rust~", "submodule", "update", "--init", "--recursive"],
+        check=True,
+    )
     print("Done.")
 
 

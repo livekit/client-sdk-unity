@@ -149,7 +149,7 @@ namespace LiveKit.PlayModeTests
             var publisherRoom = context.Rooms[0];
             var subscriberRoom = context.Rooms[1];
 
-            var videoSource = new StubVideoSource();
+            var videoSource = new TestVideoSource();
             var localTrack = LocalVideoTrack.CreateVideoTrack(VideoTrackName, videoSource, publisherRoom);
 
             // Video track uses a stub source that never pushes frames. TrackSubscribed may not
@@ -283,10 +283,10 @@ namespace LiveKit.PlayModeTests
             var publisherRoom = context.Rooms[0];
             var subscriberRoom = context.Rooms[1];
 
-            var videoSource = new StubVideoSource();
+            var videoSource = new TestVideoSource();
             var localTrack = LocalVideoTrack.CreateVideoTrack(VideoTrackName, videoSource, publisherRoom);
 
-            // StubVideoSource never pushes frames, so TrackSubscribed may not fire on the
+            // TestVideoSource (pushFrames=false) never pushes frames, so TrackSubscribed may not fire on the
             // subscriber. The RemoteTrackPublication still propagates via TrackPublished.
             var publishedExp = new Expectation(timeoutSeconds: 10f);
             subscriberRoom.TrackPublished += (_, _) => publishedExp.Fulfill();

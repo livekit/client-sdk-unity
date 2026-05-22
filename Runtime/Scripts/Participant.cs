@@ -55,6 +55,14 @@ namespace LiveKit
         {
             TrackUnpublished?.Invoke(publication);
         }
+
+        internal void DisposeHandles()
+        {
+            foreach (var pub in _tracks.Values)
+                pub.DisposeHandles();
+            _tracks.Clear();
+            Handle?.Dispose();
+        }
     }
 
     public sealed class LocalParticipant : Participant
@@ -616,7 +624,7 @@ namespace LiveKit
 
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
-            var publication = new LocalTrackPublication(e.Publication.Info);
+            var publication = new LocalTrackPublication(e.Publication.Info, FfiHandle.FromOwnedHandle(e.Publication.Handle));
             publication.UpdateTrack(_localTrack as Track);
             _localTrack.UpdateSid(publication.Sid);
             _internalTracks.Add(e.Publication.Info.Sid, publication);
@@ -992,5 +1000,22 @@ namespace LiveKit
         }
 
         public PublishDataTrackError Error { get; private set; }
+    }
+
+    /// Helpers for setting <see cref="TrackPublishOptions"/> fields whose underlying type
+    /// lives in Google.Protobuf (e.g. RepeatedField&lt;T&gt;). Unity's default Assembly-CSharp
+    /// does not auto-reference Google.Protobuf, so callers without an asmdef cannot use a
+    /// collection initializer or call <c>.Add</c> on the repeated field directly. These
+    /// helpers keep Google.Protobuf types out of the caller's signature.
+    public static class TrackPublishOptionsExtensions
+    {
+        public static TrackPublishOptions WithPacketTrailerFeatures(
+            this TrackPublishOptions options,
+            params PacketTrailerFeature[] features)
+        {
+            foreach (var feature in features)
+                options.PacketTrailerFeatures.Add(feature);
+            return options;
+        }
     }
 }

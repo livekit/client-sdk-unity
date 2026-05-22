@@ -30,6 +30,12 @@ namespace LiveKit
         /// Called when we receive a new texture (first texture or the resolution changed)
         public event TextureReceiveDelegate TextureReceived;
 
+        public delegate FrameMetadata FrameMetadataDelegate();
+        /// Invoked once per outgoing frame. Return null (default) to send no trailer.
+        /// To actually serialize the trailer onto RTP, also enable the matching
+        /// PacketTrailerFeatures on the TrackPublishOptions used at publish time.
+        public FrameMetadataDelegate MetadataProvider { get; set; }
+
         protected Texture2D _previewTexture;
         protected NativeArray<byte> _captureBuffer;
         protected VideoStreamSource _sourceType;
@@ -175,6 +181,8 @@ namespace LiveKit
                 var now = DateTimeOffset.UtcNow;
                 capture.TimestampUs = now.ToUnixTimeMilliseconds() * 1000 + (now.Ticks % TimeSpan.TicksPerMillisecond) / 10;
                 capture.Buffer = buffer;
+                var metadata = MetadataProvider?.Invoke();
+                if (metadata != null) capture.Metadata = metadata;
                 using var response = request.Send();
                 _reading = false;
                 _requestPending = false;
@@ -211,6 +219,7 @@ namespace LiveKit
                 Debug.Log("Disposing capture buffer");
                 _captureBuffer.Dispose();
             }
+            Handle?.Dispose();
             _disposed = true;
         }
 

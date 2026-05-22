@@ -90,6 +90,7 @@ public class MeetManager : MonoBehaviour
         }
         CleanUpAllTracks();
         _webCamTexture?.Stop();
+        _room?.Disconnect();
     }
 
     #endregion
@@ -565,6 +566,7 @@ public class MeetManager : MonoBehaviour
 
         foreach (var obj in _audioObjects.Values)
         {
+            if (obj == null) continue;
             obj.GetComponent<AudioSource>()?.Stop();
             Destroy(obj);
         }
@@ -585,6 +587,7 @@ public class MeetManager : MonoBehaviour
 
         foreach (var tile in _participantTiles.Values)
         {
+            if (tile == null) continue;
             if (tile.Image != null) tile.Image.texture = null;
             Destroy(tile.gameObject);
         }
@@ -592,6 +595,7 @@ public class MeetManager : MonoBehaviour
 
         foreach (var tile in _extraVideoTiles.Values)
         {
+            if (tile == null) continue;
             if (tile.Image != null) tile.Image.texture = null;
             Destroy(tile.gameObject);
         }
