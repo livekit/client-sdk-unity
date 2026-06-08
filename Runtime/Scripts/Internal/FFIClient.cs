@@ -133,6 +133,48 @@ namespace LiveKit.Internal
             Utils.Debug("Main Context created");
         }
 
+#if UNITY_ANDROID && !UNITY_EDITOR
+        /// <summary>
+        /// Get the Android application context as a raw jobject pointer.
+        /// This is passed to the native library for WebRTC audio initialization.
+        /// </summary>
+        /// <returns>IntPtr to the application context jobject, or IntPtr.Zero on failure</returns>
+        private static IntPtr GetAndroidApplicationContext()
+        {
+            try
+            {
+                // Get the Unity activity
+                using var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                using var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+
+                if (currentActivity == null)
+                {
+                    Utils.Error("FFIServer - Failed to get Unity currentActivity");
+                    return IntPtr.Zero;
+                }
+
+                // Get the application context from the activity
+                var applicationContext = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
+
+                if (applicationContext == null)
+                {
+                    Utils.Error("FFIServer - Failed to get Android applicationContext");
+                    return IntPtr.Zero;
+                }
+
+                // Get the raw jobject pointer
+                // Note: We don't dispose the applicationContext here because we're passing
+                // the raw pointer to native code. The native code will create its own global ref.
+                return applicationContext.GetRawObject();
+            }
+            catch (System.Exception e)
+            {
+                Utils.Error($"FFIServer - Failed to get Android application context: {e.Message}");
+                return IntPtr.Zero;
+            }
+        }
+#endif
+
         private static void InitializeSdk()
         {
 #if NO_LIVEKIT_MODE
@@ -143,6 +185,34 @@ namespace LiveKit.Internal
             const bool captureLogs = true;
 #else
             const bool captureLogs = false;
+#endif
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // Initialize Android WebRTC before the main FFI initialization.
+            // This initializes the JVM and ContextUtils (required for PlatformAudio).
+            try
+            {
+                IntPtr javaVmPtr = AndroidJNI.GetJavaVM();
+                IntPtr contextPtr = GetAndroidApplicationContext();
+
+                if (javaVmPtr != IntPtr.Zero && contextPtr != IntPtr.Zero)
+                {
+                    bool contextInitialized = NativeMethods.LiveKitInitializeAndroidContext(javaVmPtr, contextPtr);
+                    if (!contextInitialized)
+                    {
+                        // JVM init still succeeded; only PlatformAudio won't work
+                        Utils.Error("FFIServer - Android context init failed; PlatformAudio will not work");
+                    }
+                }
+                else
+                {
+                    Utils.Error("FFIServer - Failed to get JavaVM or context for Android init");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utils.Error($"FFIServer - Android initialization failed: {e.Message}");
+            }
 #endif
 
             var sdkVersion = PackageVersion.Get();

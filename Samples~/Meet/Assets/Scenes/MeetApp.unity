@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -903,6 +902,11 @@ MonoBehaviour:
   videoTrackParent: {fileID: 2128321498}
   participantTilePrefab: {fileID: 4315784896331113596, guid: bec493bbc3d574c07b5bbf8dd2be26b3, type: 3}
   frameRate: 30
+  usePlatformAudio: 1
+  echoCancellation: 1
+  noiseSuppression: 1
+  autoGainControl: 1
+  preferHardwareProcessing: 1
 --- !u!114 &1478206705
 MonoBehaviour:
   m_ObjectHideFlags: 0
