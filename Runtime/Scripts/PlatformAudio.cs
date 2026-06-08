@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFIClients.Requests;
+
+#if UNITY_IOS && !UNITY_EDITOR
+using System.Runtime.InteropServices;
+#endif
 
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
@@ -75,7 +78,9 @@ namespace LiveKit
     /// foreach (var device in recording)
     ///     Debug.Log($"Mic {device.Index}: {device.Name}");
     ///
-    /// // Select devices
+    /// // Select devices (no-op on Android/iOS; routing there is governed by the OS).
+    /// // Use the uint overload for quick index-based selection, or the string overload
+    /// // with a GUID from GetDevices() to persist a stable selection across hot-plug.
     /// platformAudio.SetRecordingDevice(0);
     /// platformAudio.SetPlayoutDevice(0);
     ///
@@ -190,37 +195,30 @@ namespace LiveKit
         /// <summary>
         /// Sets the recording device (microphone) by index.
         ///
-        /// Call this before creating audio tracks to select which microphone to use.
-        /// Device indices are 0-based and must be less than RecordingDeviceCount.
-        ///
-        /// Note: Prefer SetRecordingDevice(string deviceId) for robust device selection across hot-plug events.
+        /// Convenience wrapper around <see cref="SetRecordingDevice(string)"/> that looks
+        /// up the GUID from <see cref="GetDevices"/>. Prefer the GUID overload for code
+        /// that persists a selection — indices can shift when devices are added/removed.
         /// </summary>
         /// <param name="index">Device index from GetDevices().Recording</param>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the device index is invalid or the operation failed.
+        /// Thrown if the device index is out of range or the operation failed.
         /// </exception>
         public void SetRecordingDevice(uint index)
         {
-            // Look up the device GUID by index
             var (recording, _) = GetDevices();
             if (index >= recording.Count)
                 throw new InvalidOperationException($"Recording device index {index} out of range (max: {recording.Count - 1})");
 
-            var deviceId = recording[(int)index].Guid;
-
-            // Note: On Android, devices don't have GUIDs - they're identified by index only.
-            // Android also only reports a single "default" microphone because the system
-            // automatically selects the best input source based on the audio mode.
-            // If GUID is empty, we pass an empty string which triggers index-0 fallback in native code.
-            SetRecordingDevice(deviceId ?? "");
-            Utils.Debug($"PlatformAudio: set recording device to index {index} (GUID: {(string.IsNullOrEmpty(deviceId) ? "<empty>" : deviceId)})");
+            SetRecordingDevice(recording[(int)index].Guid ?? "");
         }
 
         /// <summary>
         /// Sets the recording device (microphone) by device ID (GUID).
         ///
-        /// This is the preferred method for device selection as device IDs are stable
-        /// across device hot-plug events, unlike indices which can change.
+        /// On Android and iOS this is a no-op in the native ADM: input routing is
+        /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
+        /// the call is acknowledged but ignored. The method is still safe to call,
+        /// and the response carries no error.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Recording[i].Guid</param>
         /// <exception cref="InvalidOperationException">
@@ -228,15 +226,6 @@ namespace LiveKit
         /// </exception>
         public void SetRecordingDevice(string deviceId)
         {
-#if UNITY_IOS && !UNITY_EDITOR
-            // iOS exposes only one logical WebRTC recording device, and AudioDeviceIOS::RecordingDeviceName
-            // returns -1, so set_recording_device_by_guid in native code can never match and always
-            // returns "Device not found". Mic input routing on iOS is governed by AVAudioSession
-            // (configured via IOSAudioSessionHelper.LiveKit_ConfigureAudioSessionForVoIP), not by
-            // WebRTC device selection, so skipping the FFI call here is the correct behavior.
-            Utils.Debug($"PlatformAudio: skipping SetRecordingDevice on iOS (deviceId '{deviceId}'); input is governed by AVAudioSession");
-            return;
-#else
             using var request = FFIBridge.Instance.NewRequest<SetRecordingDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -248,44 +237,35 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to set recording device: {res.SetRecordingDevice.Error}");
 
             Utils.Debug($"PlatformAudio: set recording device to {deviceId}");
-#endif
         }
 
         /// <summary>
         /// Sets the playout device (speaker/headphones) by index.
         ///
-        /// Call this before connecting to select which speaker to use for remote audio.
-        /// Device indices are 0-based and must be less than PlayoutDeviceCount.
-        ///
-        /// Note: Prefer SetPlayoutDevice(string deviceId) for robust device selection across hot-plug events.
+        /// Convenience wrapper around <see cref="SetPlayoutDevice(string)"/> that looks
+        /// up the GUID from <see cref="GetDevices"/>. Prefer the GUID overload for code
+        /// that persists a selection — indices can shift when devices are added/removed.
         /// </summary>
         /// <param name="index">Device index from GetDevices().Playout</param>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the device index is invalid or the operation failed.
+        /// Thrown if the device index is out of range or the operation failed.
         /// </exception>
         public void SetPlayoutDevice(uint index)
         {
-            // Look up the device GUID by index
             var (_, playout) = GetDevices();
             if (index >= playout.Count)
                 throw new InvalidOperationException($"Playout device index {index} out of range (max: {playout.Count - 1})");
 
-            var deviceId = playout[(int)index].Guid;
-
-            // Note: On Android, devices don't have GUIDs - they're identified by index only.
-            // Android also only reports a single "default" device because audio routing
-            // (speaker vs earpiece vs Bluetooth) is handled by the system via AudioManager,
-            // not through WebRTC device selection. Use Android's AudioManager API to switch outputs.
-            // If GUID is empty, we pass an empty string which triggers index-0 fallback in native code.
-            SetPlayoutDevice(deviceId ?? "");
-            Utils.Debug($"PlatformAudio: set playout device to index {index} (GUID: {(string.IsNullOrEmpty(deviceId) ? "<empty>" : deviceId)})");
+            SetPlayoutDevice(playout[(int)index].Guid ?? "");
         }
 
         /// <summary>
         /// Sets the playout device (speaker/headphones) by device ID (GUID).
         ///
-        /// This is the preferred method for device selection as device IDs are stable
-        /// across device hot-plug events, unlike indices which can change.
+        /// On Android and iOS this is a no-op in the native ADM: output routing is
+        /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
+        /// the call is acknowledged but ignored. The method is still safe to call,
+        /// and the response carries no error.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Playout[i].Guid</param>
         /// <exception cref="InvalidOperationException">
@@ -293,13 +273,6 @@ namespace LiveKit
         /// </exception>
         public void SetPlayoutDevice(string deviceId)
         {
-#if UNITY_IOS && !UNITY_EDITOR
-            // Same iOS limitation as SetRecordingDevice: AudioDeviceIOS::PlayoutDeviceName returns -1,
-            // so set_playout_device_by_guid never matches. Speaker vs earpiece vs Bluetooth routing on
-            // iOS is governed by AVAudioSession, not by WebRTC device selection.
-            Utils.Debug($"PlatformAudio: skipping SetPlayoutDevice on iOS (deviceId '{deviceId}'); output is governed by AVAudioSession");
-            return;
-#else
             using var request = FFIBridge.Instance.NewRequest<SetPlayoutDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -311,7 +284,6 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to set playout device: {res.SetPlayoutDevice.Error}");
 
             Utils.Debug($"PlatformAudio: set playout device to {deviceId}");
-#endif
         }
 
         /// <summary>
