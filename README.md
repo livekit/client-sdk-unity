@@ -313,6 +313,59 @@ Debug.Log("Connected to " + room.Name);
 
   
 
+## Asynchronous programming: coroutines, async/await, and UniTask
+
+The SDK exposes three interchangeable styles for awaiting asynchronous operations. Coroutines, async/await and UniTask.
+
+**1. Coroutines (default, no dependency)** — shown throughout this README.
+
+**2. async/await (no dependency)** — every operation returns an awaitable instruction (`ConnectInstruction`, `PublishTrackInstruction`, `PerformRpcInstruction`, the stream read instructions, …), so you can `await` it directly. As with coroutines, you inspect success/failure on the instruction (`IsError`) — `await` does not throw. Continuations resume on Unity's main thread.
+
+```cs
+async void Start()
+{
+    var room = new Room();
+    var connect = room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions());
+    await connect;
+    if (!connect.IsError)
+        Debug.Log("Connected to " + room.Name);
+}
+```
+
+> Use `async void` only for top-level event handlers (e.g. button callbacks); its exceptions surface to Unity's log rather than to a caller. Prefer `async Task`/`async UniTaskVoid` elsewhere.
+
+**3. UniTask (optional)** — install [UniTask](https://github.com/Cysharp/UniTask) (`com.cysharp.unitask`). The SDK auto-detects it via the `LIVEKIT_UNITASK` scripting define and enables the `LiveKit.UniTask` assembly, which adds `CancellationToken` support, composition, and async streams.
+
+Cancellation (abandon-awaiter semantics — the underlying request is not cancelled on the wire):
+
+```cs
+await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions())
+    .AsUniTask(cancellationToken);
+```
+
+Run operations in parallel:
+
+```cs
+await UniTask.WhenAll(
+    room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions).AsUniTask(ct),
+    room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions).AsUniTask(ct));
+```
+
+Consume an incremental stream with `await foreach`. The sequence ends at end-of-stream; if the stream ends with an error it throws a `StreamError`:
+
+```cs
+try
+{
+    await foreach (var chunk in reader.ReadIncremental().AsAsyncEnumerable(ct))
+        Process(chunk);
+}
+catch (StreamError e)
+{
+    Debug.LogError(e.Message);
+}
+```
+  
+
 ### Publishing microphone
 
   
