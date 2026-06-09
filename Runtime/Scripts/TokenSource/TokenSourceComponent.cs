@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using LiveKit.Internal;
 
 namespace LiveKit
 {
@@ -67,7 +68,7 @@ namespace LiveKit
 
                 case ITokenSourceFixed fixedSource:
                     if (options != null)
-                        Debug.LogWarning("TokenSourceComponent uses a fixed config, so fetch options are ignored.");
+                        Utils.Warning("TokenSourceComponent uses a fixed config, so fetch options are ignored.");
                     task = fixedSource.FetchConnectionDetails();
                     break;
 

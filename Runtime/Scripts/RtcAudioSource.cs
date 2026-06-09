@@ -96,7 +96,7 @@ namespace LiveKit
                 DefaultMicrophoneSampleRate : DefaultSampleRate;
             _expectedSampleRate = newAudioSource.SampleRate;
 
-            UnityEngine.Debug.Log($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
+            Utils.Debug($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
 
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;

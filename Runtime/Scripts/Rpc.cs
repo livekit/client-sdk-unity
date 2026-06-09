@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using LiveKit.Internal;
 
 namespace LiveKit
 {
@@ -90,7 +90,7 @@ namespace LiveKit
 
         internal static RpcError FromProto(Proto.RpcError proto)
         {
-            Debug.Log($"RPC error received: {proto.Code} {proto.Message} {proto.Data}");
+            Utils.Debug($"RPC error received: {proto.Code} {proto.Message} {proto.Data}");
             return new RpcError(proto.Code, proto.Message, proto.Data);
         }
 
