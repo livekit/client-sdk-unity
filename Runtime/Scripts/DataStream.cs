@@ -95,7 +95,13 @@ namespace LiveKit
         /// </summary>
         public bool IsError => Error != null;
 
-        protected TContent LatestChunk
+        /// <summary>
+        /// The chunk from the most recent completed read. Throws the captured
+        /// <see cref="StreamError"/> if the last read errored. Public so the optional
+        /// UniTask async-enumerable adapter can read it generically; the typed
+        /// <c>Bytes</c>/<c>Text</c> accessors on the concrete readers delegate here.
+        /// </summary>
+        public TContent LatestChunk
         {
             get
             {
