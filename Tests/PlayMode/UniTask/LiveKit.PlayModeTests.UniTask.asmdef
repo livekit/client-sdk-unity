@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "LiveKit",
         "LiveKit.UniTask",
-        "UniTask"
+        "UniTask",
+        "UniTask.Linq"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -115,10 +115,16 @@ namespace LiveKit
             }
         }
 
-        internal bool IsCurrentReadDone
+        /// <summary>
+        /// True once a chunk is ready for the current read (before <see cref="Reset"/> is
+        /// called for the next one). Public getter mirrors the sibling
+        /// <c>DataTrack.ReadFrameInstruction.IsCurrentReadDone</c>; the setter stays internal
+        /// because only the SDK's stream readers advance this state.
+        /// </summary>
+        public bool IsCurrentReadDone
         {
             get => _isCurrentReadDone;
-            set
+            internal set
             {
                 _isCurrentReadDone = value;
                 if (value) InvokeContinuation();

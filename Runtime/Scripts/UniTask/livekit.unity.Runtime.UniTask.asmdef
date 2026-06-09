@@ -3,7 +3,8 @@
     "rootNamespace": "LiveKit.UniTaskExtensions",
     "references": [
         "LiveKit",
-        "UniTask"
+        "UniTask",
+        "UniTask.Linq"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
