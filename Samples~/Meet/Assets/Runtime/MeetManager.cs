@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using LiveKit;
@@ -97,9 +98,14 @@ public class MeetManager : MonoBehaviour
 
     #region UI Callbacks
 
+    // Action-compatible button handlers; the async work fires-and-forgets via Forget()
+    // so exceptions are surfaced through UniTask's tracker instead of swallowed by
+    // async void. Cancellation is tied to the MonoBehaviour lifetime via
+    // GetCancellationTokenOnDestroy so scene change / app quit aborts in-flight FFI awaits.
+
     private void OnStartCall()
     {
-        StartCoroutine(ConnectToRoom());
+        ConnectToRoom(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
     private void OnEndCall()
@@ -116,7 +122,7 @@ public class MeetManager : MonoBehaviour
     private void OnToggleCamera()
     {
         if (!_cameraActive)
-            StartCoroutine(PublishLocalCamera());
+            PublishLocalCamera(this.GetCancellationTokenOnDestroy()).Forget();
         else
             UnpublishLocalCamera();
     }
@@ -125,7 +131,7 @@ public class MeetManager : MonoBehaviour
     {
         if (!_microphoneActive)
         {
-            StartCoroutine(PublishLocalMicrophone());
+            PublishLocalMicrophone(this.GetCancellationTokenOnDestroy()).Forget();
             buttonBar.SetMicrophoneOn(true);
         }
         else
@@ -147,17 +153,17 @@ public class MeetManager : MonoBehaviour
 
     #region Connection
 
-    private IEnumerator ConnectToRoom()
+    private async UniTask ConnectToRoom(CancellationToken cancellationToken)
     {
-        if (_room != null) yield break;
+        if (_room != null) return;
 
         var fetch = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions());
-        yield return fetch;
+        await fetch.AsUniTask(cancellationToken);
 
         if (fetch.IsError)
         {
             Debug.LogError($"Failed to fetch connection details: {fetch.Exception?.Message}");
-            yield break;
+            return;
         }
 
         var details = fetch.Result;
@@ -172,13 +178,13 @@ public class MeetManager : MonoBehaviour
         _room.DataReceived += OnDataReceived;
 
         var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
-        yield return connect;
+        await connect.AsUniTask(cancellationToken);
 
         if (connect.IsError)
         {
             Debug.LogError("LiveKit connection failed");
             _room = null;
-            yield break;
+            return;
         }
 
         Debug.Log($"Connected to {_room.Name}");
@@ -390,14 +396,19 @@ public class MeetManager : MonoBehaviour
 
     #region Local Camera
 
-    private IEnumerator PublishLocalCamera()
+    private async UniTask PublishLocalCamera(CancellationToken cancellationToken)
     {
-        if (_cameraActive) yield break;
+        if (_cameraActive) return;
 
         if (_webCamTexture == null)
-            yield return CameraDeviceProvider.Open(frameRate, t => _webCamTexture = t);
+        {
+            // CameraDeviceProvider.Open is still a plain IEnumerator (it touches Unity's
+            // WebCamTexture lifecycle), so bridge it through UniTask's IEnumerator adapter.
+            await CameraDeviceProvider.Open(frameRate, t => _webCamTexture = t)
+                .ToUniTask(cancellationToken: cancellationToken);
+        }
 
-        if (_webCamTexture == null) yield break;
+        if (_webCamTexture == null) return;
 
         EnsureParticipantTile(_localId);
         var tile = _participantTiles[_localId];
@@ -414,9 +425,9 @@ public class MeetManager : MonoBehaviour
         };
 
         var publish = _room.LocalParticipant.PublishTrack(_localVideoTrack, options);
-        yield return publish;
+        await publish.AsUniTask(cancellationToken);
 
-        if (publish.IsError) yield break;
+        if (publish.IsError) return;
 
         source.TextureReceived += tex =>
         {
@@ -427,6 +438,7 @@ public class MeetManager : MonoBehaviour
         _cameraActive = true;
         _localRtcVideoSource = source;
         source.Start();
+        // Long-running per-frame pump — keep on the coroutine driver, not awaitable.
         StartCoroutine(source.Update());
 
         buttonBar.SetCameraOn(true);
@@ -449,9 +461,9 @@ public class MeetManager : MonoBehaviour
 
     #region Local Microphone
 
-    private IEnumerator PublishLocalMicrophone()
+    private async UniTask PublishLocalMicrophone(CancellationToken cancellationToken)
     {
-        if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
+        if (_audioObjects.ContainsKey(LocalAudioTrackName)) return;
 
         Microphone.Start(null, true, 10, 44100);
 
@@ -469,9 +481,9 @@ public class MeetManager : MonoBehaviour
         };
 
         var publish = _room.LocalParticipant.PublishTrack(_localAudioTrack, options);
-        yield return publish;
+        await publish.AsUniTask(cancellationToken);
 
-        if (publish.IsError) yield break;
+        if (publish.IsError) return;
 
         _microphoneActive = true;
         _audioObjects[LocalAudioTrackName] = audioObject;
