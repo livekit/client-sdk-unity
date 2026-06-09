@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Application = UnityEngine.Application;
 
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
@@ -11,16 +10,16 @@ public static class CameraDeviceProvider
 {
     public static IEnumerator Open(int frameRate, Action<WebCamTexture> onReady)
     {
-        RequestCameraPermissionIfNeeded();
-
-        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
-        if (!Application.HasUserAuthorization(UserAuthorization.WebCam))
+        var granted = false;
+        yield return RequestCameraPermission(g => granted = g);
+        if (!granted)
         {
             Debug.LogError("Camera permission not obtained");
             yield break;
         }
 
-        yield return WaitForCameraDevices();
+        for (int i = 0; i < 300 && WebCamTexture.devices.Length == 0; i++)
+            yield return null;
 
         if (WebCamTexture.devices.Length == 0)
         {
@@ -39,10 +38,27 @@ public static class CameraDeviceProvider
         onReady?.Invoke(texture);
     }
 
-    private static IEnumerator WaitForCameraDevices()
+    private static IEnumerator RequestCameraPermission(Action<bool> onResult)
     {
-        for (int i = 0; i < 300 && WebCamTexture.devices.Length == 0; i++)
-            yield return new WaitForEndOfFrame();
+#if PLATFORM_ANDROID
+        if (Permission.HasUserAuthorizedPermission(Permission.Camera))
+        {
+            onResult(true);
+            yield break;
+        }
+        var done = false;
+        var granted = false;
+        var callbacks = new PermissionCallbacks();
+        callbacks.PermissionGranted += _ => { granted = true; done = true; };
+        callbacks.PermissionDenied += _ => done = true;
+        callbacks.PermissionDeniedAndDontAskAgain += _ => done = true;
+        Permission.RequestUserPermission(Permission.Camera, callbacks);
+        while (!done) yield return null;
+        onResult(granted);
+#else
+        yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+        onResult(Application.HasUserAuthorization(UserAuthorization.WebCam));
+#endif
     }
 
     private static WebCamDevice PickPreferredCamera(WebCamDevice[] devices)
@@ -57,13 +73,5 @@ public static class CameraDeviceProvider
         return Screen.height > Screen.width
             ? (Screen.height, Screen.width)
             : (Screen.width, Screen.height);
-    }
-
-    private static void RequestCameraPermissionIfNeeded()
-    {
-#if PLATFORM_ANDROID
-        if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
-            Permission.RequestUserPermission(Permission.Camera);
-#endif
     }
 }
