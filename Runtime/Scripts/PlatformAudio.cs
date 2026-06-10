@@ -67,34 +67,7 @@ namespace LiveKit
     /// 2. Optionally enumerate and select devices
     /// 3. Create audio tracks using PlatformAudioSource
     /// 4. Remote audio automatically plays through speakers
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// // Create PlatformAudio (enables ADM)
-    /// var platformAudio = new PlatformAudio();
-    ///
-    /// // Enumerate devices
-    /// var (recording, playout) = platformAudio.GetDevices();
-    /// foreach (var device in recording)
-    ///     Debug.Log($"Mic {device.Index}: {device.Name}");
-    ///
-    /// // Select devices (no-op on Android/iOS; routing there is governed by the OS).
-    /// // Use the uint overload for quick index-based selection, or the string overload
-    /// // with a GUID from GetDevices() to persist a stable selection across hot-plug.
-    /// platformAudio.SetRecordingDevice(0);
-    /// platformAudio.SetPlayoutDevice(0);
-    ///
-    /// // Create audio source and track
-    /// var source = new PlatformAudioSource(platformAudio);
-    /// var track = LocalAudioTrack.CreateAudioTrack("microphone", source, room);
-    ///
-    /// // Publish track
-    /// await room.LocalParticipant.PublishTrack(track, options);
-    ///
-    /// // Dispose when done
-    /// platformAudio.Dispose();
-    /// </code>
-    /// </example>
+    
     public sealed class PlatformAudio : IDisposable
     {
         internal readonly FfiHandle Handle;
