@@ -105,18 +105,34 @@ namespace LiveKit
             return instruction;
         }
 
-        public void PublishData(byte[] data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
+        /// <summary>
+        /// Publishes arbitrary data to participants in the room.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="PublishDataInstruction"/> that completes once the packet is sent or errors.
+        /// Check <see cref="YieldInstruction.IsError"/> and read <see cref="PublishDataInstruction.Error"/>
+        /// to handle the result (e.g. payloads exceeding the negotiated maximum message size).
+        /// </returns>
+        public PublishDataInstruction PublishData(byte[] data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
-            PublishData(new Span<byte>(data), destination_identities, reliable, topic);
+            return PublishData(new Span<byte>(data), destination_identities, reliable, topic);
         }
 
-        public void PublishData(Span<byte> data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
+        /// <summary>
+        /// Publishes arbitrary data to participants in the room.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="PublishDataInstruction"/> that completes once the packet is sent or errors.
+        /// Check <see cref="YieldInstruction.IsError"/> and read <see cref="PublishDataInstruction.Error"/>
+        /// to handle the result (e.g. payloads exceeding the negotiated maximum message size).
+        /// </returns>
+        public PublishDataInstruction PublishData(Span<byte> data, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
             unsafe
             {
                 fixed (byte* pointer = data)
                 {
-                    PublishData(pointer, data.Length, destination_identities, reliable, topic);
+                    return PublishData(pointer, data.Length, destination_identities, reliable, topic);
                 }
             }
         }
@@ -333,7 +349,7 @@ namespace LiveKit
             var response = request.Send();
         }
 
-        private unsafe void PublishData(byte* data, int len, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
+        private unsafe PublishDataInstruction PublishData(byte* data, int len, IReadOnlyCollection<string> destination_identities = null, bool reliable = true, string topic = null)
         {
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
@@ -365,7 +381,12 @@ namespace LiveKit
                 publish.DataPtr = (ulong)data;
             }
             Utils.Debug("Sending message: " + topic);
-            var response = request.Send();
+
+            // Register the completion handler before sending so we never miss the
+            // callback (Rust may emit it before Send() returns).
+            var instruction = new PublishDataInstruction(request.RequestAsyncId);
+            using var response = request.Send();
+            return instruction;
         }
 
         /// <summary>
@@ -659,6 +680,52 @@ namespace LiveKit
     {
         internal UnpublishTrackInstruction(ulong asyncId)
             : base(asyncId, static e => e.UnpublishTrack, static e => e.Error) { }
+    }
+
+    /// <summary>
+    /// YieldInstruction for publishing data packets. Returned by <see cref="LocalParticipant.PublishData(byte[], IReadOnlyCollection{string}, bool, string)"/>.
+    /// </summary>
+    /// <remarks>
+    /// Read <see cref="Error"/> after checking <see cref="YieldInstruction.IsError"/>. A packet that
+    /// exceeds the negotiated maximum message size completes with <see cref="YieldInstruction.IsError"/>
+    /// true and a descriptive <see cref="Error"/> message.
+    /// </remarks>
+    public sealed class PublishDataInstruction : YieldInstruction
+    {
+        private readonly ulong _asyncId;
+
+        /// <summary>
+        /// The error message if the publish failed, otherwise null.
+        /// </summary>
+        public string Error { get; private set; }
+
+        internal PublishDataInstruction(ulong asyncId)
+        {
+            _asyncId = asyncId;
+            FfiClient.Instance.RegisterPendingCallback(
+                asyncId, static e => e.PublishData, OnPublishData, OnCanceled,
+                dispatchToMainThread: false);
+        }
+
+        internal void OnPublishData(PublishDataCallback e)
+        {
+            if (e.AsyncId != _asyncId)
+                return;
+
+            if (!string.IsNullOrEmpty(e.Error))
+            {
+                Error = e.Error;
+                IsError = true;
+            }
+            IsDone = true;
+        }
+
+        void OnCanceled()
+        {
+            Error = "Canceled";
+            IsError = true;
+            IsDone = true;
+        }
     }
 
     /// <summary>
