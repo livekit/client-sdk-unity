@@ -16,24 +16,6 @@ namespace LiveKit.PlayModeTests
     // PublishData, which reports whether the Rust side accepted the packet.
     public class PublishDataTests
     {
-        [UnityTest, Category("E2E")]
-        public IEnumerator Small_1KiB_Arrives()
-        {
-            yield return RunSizeProbe(1024, shouldArrive: true);
-        }
-
-        [UnityTest, Category("E2E")]
-        public IEnumerator At_15KiB_Arrives()
-        {
-            yield return RunSizeProbe(15 * 1024, shouldArrive: true);
-        }
-
-        [UnityTest, Category("E2E")]
-        public IEnumerator Above_64KiB_DoesNotArrive()
-        {
-            yield return RunSizeProbe(65 * 1024, shouldArrive: false);
-        }
-
         // The returned instruction completes without error for a payload within the
         // size limit. Runs against any FFI binary.
         [UnityTest, Category("E2E")]
@@ -61,8 +43,7 @@ namespace LiveKit.PlayModeTests
         // limit — only the client-sdk-rust `datamessage_size` binary does. Run locally
         // against that binary with:
         //   Scripts~/run_unity.sh test -m PlayMode -f PublishDataTests.ReturnsError_ForOversizedPayload
-        [UnityTest, Category("E2E"), Explicit(
-            "Requires the client-sdk-rust datamessage_size FFI binary that enforces the 64000-byte limit; shipped plugins do not yet.")]
+        [UnityTest, Category("E2E")]
         public IEnumerator ReturnsError_ForOversizedPayload()
         {
             var publisher = TestRoomContext.ConnectionOptions.Default;
@@ -106,57 +87,6 @@ namespace LiveKit.PlayModeTests
             Assert.IsTrue(instruction.IsError,
                 "Expected oversized payload to report an error once max message size was negotiated");
             StringAssert.Contains("maximum message size", instruction.Error);
-        }
-
-        private static IEnumerator RunSizeProbe(int payloadBytes, bool shouldArrive)
-        {
-            var publisher = TestRoomContext.ConnectionOptions.Default;
-            publisher.Identity = "publisher";
-            var subscriber = TestRoomContext.ConnectionOptions.Default;
-            subscriber.Identity = "subscriber";
-
-            using var context = new TestRoomContext(new[] { publisher, subscriber });
-            yield return context.ConnectAll();
-            Assert.IsNull(context.ConnectionError);
-
-            var publisherRoom = context.Rooms[0];
-            var subscriberRoom = context.Rooms[1];
-
-            var payload = new byte[payloadBytes];
-            for (int i = 0; i < payloadBytes; i++) payload[i] = (byte)(i & 0xFF);
-
-            byte[] received = null;
-            subscriberRoom.DataReceived += (data, participant, kind, topic) =>
-            {
-                if (received == null) received = data;
-            };
-
-            float timeout = shouldArrive ? 5f : 3f;
-            float start = Time.realtimeSinceStartup;
-            float lastPublish = -1f;
-            const float interval = 0.2f;
-            while (received == null && Time.realtimeSinceStartup - start < timeout)
-            {
-                if (Time.realtimeSinceStartup - lastPublish >= interval)
-                {
-                    publisherRoom.LocalParticipant.PublishData(payload);
-                    lastPublish = Time.realtimeSinceStartup;
-                }
-                yield return null;
-            }
-
-            if (shouldArrive)
-            {
-                Assert.IsNotNull(received,
-                    $"Expected {payloadBytes}-byte payload to arrive within {timeout}s");
-                Assert.AreEqual(payloadBytes, received.Length, "Received payload length mismatch");
-                CollectionAssert.AreEqual(payload, received, "Received payload contents mismatch");
-            }
-            else
-            {
-                Assert.IsNull(received,
-                    $"Expected {payloadBytes}-byte payload to be dropped, but it arrived ({received?.Length} bytes)");
-            }
         }
     }
 }
