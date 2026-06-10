@@ -85,6 +85,18 @@ namespace LiveKit
         public int PlayoutDeviceCount => _info.PlayoutDeviceCount;
 
         /// <summary>
+        /// Whether per-device selection is honored on this platform.
+        ///
+        /// True on desktop (Windows, macOS, Linux), where <see cref="SetRecordingDevice(string)"/>
+        /// and <see cref="SetPlayoutDevice(string)"/> select the device. False on iOS/Android,
+        /// where audio routing is controlled by the OS (AVAudioSession / AudioManager); the
+        /// selection methods are accepted but have no effect there.
+        ///
+        /// Use this to decide whether to present a device-picker UI.
+        /// </summary>
+        public bool IsDeviceSelectionSupported => _info.DeviceSelectionSupported;
+
+        /// <summary>
         /// Creates a new PlatformAudio instance, enabling the platform ADM.
         ///
         /// This must be called before creating any PlatformAudioSource or connecting

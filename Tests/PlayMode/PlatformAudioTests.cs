@@ -34,6 +34,19 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
+        public IEnumerator IsDeviceSelectionSupported_TrueOnDesktop()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            // Tests run in the editor, which reports a desktop platform, so per-device
+            // selection is supported. On iOS/Android this would be false.
+            Assert.IsTrue(platformAudio.IsDeviceSelectionSupported,
+                "device selection should be supported on desktop (editor)");
+
+            yield break;
+        }
+
+        [UnityTest]
         public IEnumerator CreateSource_WithCustomOptions()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
