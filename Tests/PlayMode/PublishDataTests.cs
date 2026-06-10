@@ -55,11 +55,6 @@ namespace LiveKit.PlayModeTests
             yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
-            // With LK_VERBOSE defined, the native layer forwards the size-limit log to
-            // Unity, which would otherwise fail the test. Ignore failing log messages
-            // for the rest of the test (same approach as RoomTests).
-            LogAssert.ignoreFailingMessages = true;
-
             // Establish the publisher data channel with an in-limit publish first. The
             // size check only engages once SCTP has negotiated the max message size
             // (which happens when the reliable data channel opens). Sending an oversized
