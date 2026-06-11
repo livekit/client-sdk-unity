@@ -134,6 +134,11 @@ namespace LiveKit
 
         /// <summary>
         /// Gets the lists of available recording and playout devices.
+        ///
+        /// On Android and iOS this typically reports a single "default" device, and
+        /// selecting a device has no effect (see <see cref="IsDeviceSelectionSupported"/>):
+        /// audio routing is governed by the OS. The list is informational there; prefer
+        /// gating any device-picker UI on <see cref="IsDeviceSelectionSupported"/>.
         /// </summary>
         /// <returns>
         /// A tuple containing:
@@ -183,6 +188,9 @@ namespace LiveKit
         /// Convenience wrapper around <see cref="SetRecordingDevice(string)"/> that looks
         /// up the GUID from <see cref="GetDevices"/>. Prefer the GUID overload for code
         /// that persists a selection — indices can shift when devices are added/removed.
+        ///
+        /// No-op on Android/iOS, same as <see cref="SetRecordingDevice(string)"/>
+        /// (see <see cref="IsDeviceSelectionSupported"/>).
         /// </summary>
         /// <param name="index">Device index from GetDevices().Recording</param>
         /// <exception cref="InvalidOperationException">
@@ -200,10 +208,10 @@ namespace LiveKit
         /// <summary>
         /// Sets the recording device (microphone) by device ID (GUID).
         ///
-        /// On Android and iOS this is a no-op in the native ADM: input routing is
-        /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
-        /// the call is acknowledged but ignored. The method is still safe to call,
-        /// and the response carries no error.
+        /// On Android and iOS this is a no-op (see <see cref="IsDeviceSelectionSupported"/>):
+        /// input routing is governed by the OS (AVAudioSession on iOS, AudioManager on
+        /// Android) and the call is acknowledged but ignored. The method is still safe to
+        /// call, and the response carries no error.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Recording[i].Guid</param>
         /// <exception cref="InvalidOperationException">
@@ -230,6 +238,9 @@ namespace LiveKit
         /// Convenience wrapper around <see cref="SetPlayoutDevice(string)"/> that looks
         /// up the GUID from <see cref="GetDevices"/>. Prefer the GUID overload for code
         /// that persists a selection — indices can shift when devices are added/removed.
+        ///
+        /// No-op on Android/iOS, same as <see cref="SetPlayoutDevice(string)"/>
+        /// (see <see cref="IsDeviceSelectionSupported"/>).
         /// </summary>
         /// <param name="index">Device index from GetDevices().Playout</param>
         /// <exception cref="InvalidOperationException">
@@ -247,10 +258,10 @@ namespace LiveKit
         /// <summary>
         /// Sets the playout device (speaker/headphones) by device ID (GUID).
         ///
-        /// On Android and iOS this is a no-op in the native ADM: output routing is
-        /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
-        /// the call is acknowledged but ignored. The method is still safe to call,
-        /// and the response carries no error.
+        /// On Android and iOS this is a no-op (see <see cref="IsDeviceSelectionSupported"/>):
+        /// output routing is governed by the OS (AVAudioSession on iOS, AudioManager on
+        /// Android) and the call is acknowledged but ignored. The method is still safe to
+        /// call, and the response carries no error.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Playout[i].Guid</param>
         /// <exception cref="InvalidOperationException">
