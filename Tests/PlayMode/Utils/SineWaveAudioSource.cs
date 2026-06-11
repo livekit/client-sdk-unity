@@ -31,7 +31,7 @@ namespace LiveKit.PlayModeTests.Utils
             int sampleRate = 48000,
             double frequencyHz = 440.0,
             float amplitude = 0.1f)
-            : base(channels, RtcAudioSourceType.AudioSourceCustom)
+            : base(channels, RtcAudioSourceType.AudioSourceCustom, (uint)sampleRate)
         {
             _channels = channels;
             _sampleRate = sampleRate;

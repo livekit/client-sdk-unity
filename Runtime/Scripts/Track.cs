@@ -85,7 +85,7 @@ namespace LiveKit
         // IsOwned is true if C# owns the handle
         public bool IsOwned => Handle != null && !Handle.IsInvalid;
 
-        public readonly FfiHandle Handle;
+        public FfiHandle Handle { get; private set; }
 
         FfiHandle ITrack.TrackHandle => Handle;
 
@@ -104,6 +104,17 @@ namespace LiveKit
             _info = info;
         }
 
+        // Replaces the underlying FFI track handle. Used when a local track is rebuilt because its
+        // audio source recreated its native handle at a new sample rate/channel count. Disposes
+        // the previous handle.
+        internal void SwapHandle(OwnedTrack track)
+        {
+            var previous = Handle;
+            Handle = FfiHandle.FromOwnedHandle(track.Handle);
+            UpdateInfo(track.Info);
+            previous?.Dispose();
+        }
+
         internal void UpdateMuted(bool muted)
         {
             _info.Muted = muted;
@@ -118,6 +129,9 @@ namespace LiveKit
     public sealed class LocalAudioTrack : Track, ILocalTrack, IAudioTrack
     {
         RtcAudioSource _source;
+        string _name;
+        LocalParticipant _participant;
+        TrackPublishOptions _publishOptions;
 
         IRtcSource ILocalTrack.source { get => _source; }
 
@@ -127,6 +141,17 @@ namespace LiveKit
 
         public static LocalAudioTrack CreateAudioTrack(string name, RtcAudioSource source, Room room)
         {
+            var track = new LocalAudioTrack(CreateFfiTrack(name, source), room, source);
+            track._name = name;
+            // The track is bound to a specific native source handle at creation time and cannot
+            // follow a new one in place. If the source recreates its native handle at runtime
+            // (e.g. on a sample-rate change), rebuild and republish the track onto the new handle.
+            source.NativeSourceChanged += track.OnNativeSourceChanged;
+            return track;
+        }
+
+        private static OwnedTrack CreateFfiTrack(string name, RtcAudioSource source)
+        {
             using var request = FFIBridge.Instance.NewRequest<CreateAudioTrackRequest>();
             var createTrack = request.request;
             createTrack.Name = name;
@@ -134,9 +159,30 @@ namespace LiveKit
 
             using var resp = request.Send();
             FfiResponse res = resp;
-            var trackInfo = res.CreateAudioTrack.Track;
-            var track = new LocalAudioTrack(trackInfo, room, source);
-            return track;
+            return res.CreateAudioTrack.Track;
+        }
+
+        // Records the publish target so the track can republish itself after a source recreation.
+        internal void RememberPublishTarget(LocalParticipant participant, TrackPublishOptions options)
+        {
+            _participant = participant;
+            _publishOptions = options;
+        }
+
+        // Runs on the main thread after the source recreated its native handle. Rebuilds the FFI
+        // track onto the new source and, if the track was already published, republishes it.
+        private void OnNativeSourceChanged()
+        {
+            var wasPublished = _participant != null && !string.IsNullOrEmpty(Sid);
+
+            // Unpublish first (reads the current Sid) before swapping to the new handle.
+            if (wasPublished)
+                _participant.UnpublishTrack(this, false);
+
+            SwapHandle(CreateFfiTrack(_name, _source));
+
+            if (wasPublished)
+                _participant.PublishTrack(this, _publishOptions);
         }
     }
 

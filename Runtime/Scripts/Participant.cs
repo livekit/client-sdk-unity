@@ -77,6 +77,11 @@ namespace LiveKit
             if (!Room.TryGetTarget(out var room))
                 throw new Exception("room is invalid");
 
+            // Remember the publish target so an audio track can transparently republish itself if
+            // its source recreates its native handle (e.g. on a sample-rate change).
+            if (localTrack is LocalAudioTrack audioTrack)
+                audioTrack.RememberPublishTarget(this, options);
+
             var track = (Track)localTrack;
 
             using var request = FFIBridge.Instance.NewRequest<PublishTrackRequest>();
