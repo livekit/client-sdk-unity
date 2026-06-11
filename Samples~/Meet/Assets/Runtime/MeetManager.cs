@@ -96,22 +96,21 @@ public class MeetManager : MonoBehaviour
         try
         {
             _platformAudio = new PlatformAudio();
-            Debug.Log($"PlatformAudio initialized: {_platformAudio.RecordingDeviceCount} mics, " +
-                      $"{_platformAudio.PlayoutDeviceCount} speakers");
-
-            var (recording, playout) = _platformAudio.GetDevices();
-            Debug.Log("Recording devices:");
-            foreach (var device in recording)
-                Debug.Log($"  [{device.Index}] {device.Name}");
-
-            Debug.Log("Playout devices:");
-            foreach (var device in playout)
-                Debug.Log($"  [{device.Index}] {device.Name}");
+            Debug.Log($"PlatformAudio initialized");
 
             // Device selection only does something on desktop. On iOS/Android the OS owns
             // audio routing, so we skip it there rather than show a picker that has no effect.
             if (_platformAudio.IsDeviceSelectionSupported)
             {
+                var (recording, playout) = _platformAudio.GetDevices();
+                Debug.Log("Recording devices:");
+                foreach (var device in recording)
+                    Debug.Log($"  [{device.Index}] {device.Name}");
+
+                Debug.Log("Playout devices:");
+                foreach (var device in playout)
+                    Debug.Log($"  [{device.Index}] {device.Name}");
+
                 if (_platformAudio.RecordingDeviceCount > 0)
                     _platformAudio.SetRecordingDevice(0);
                 if (_platformAudio.PlayoutDeviceCount > 0)
