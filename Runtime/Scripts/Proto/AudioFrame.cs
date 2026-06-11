@@ -126,41 +126,42 @@ namespace LiveKit.Proto {
             "YXRoGAEgAigJEhQKDGRlcGVuZGVuY2llcxgCIAMoCRIRCgltb2R1bGVfaWQY",
             "AyACKAkiLgodTG9hZEF1ZGlvRmlsdGVyUGx1Z2luUmVzcG9uc2USDQoFZXJy",
             "b3IYASABKAkiPAoPQXVkaW9EZXZpY2VJbmZvEg0KBWluZGV4GAEgAigNEgwK",
-            "BG5hbWUYAiACKAkSDAoEZ3VpZBgDIAEoCSJRChFQbGF0Zm9ybUF1ZGlvSW5m",
+            "BG5hbWUYAiACKAkSDAoEZ3VpZBgDIAEoCSJ1ChFQbGF0Zm9ybUF1ZGlvSW5m",
             "bxIeChZyZWNvcmRpbmdfZGV2aWNlX2NvdW50GAEgAigFEhwKFHBsYXlvdXRf",
-            "ZGV2aWNlX2NvdW50GAIgAigFInMKEk93bmVkUGxhdGZvcm1BdWRpbxItCgZo",
-            "YW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEi4K",
-            "BGluZm8YAiACKAsyIC5saXZla2l0LnByb3RvLlBsYXRmb3JtQXVkaW9JbmZv",
-            "IhkKF05ld1BsYXRmb3JtQXVkaW9SZXF1ZXN0InMKGE5ld1BsYXRmb3JtQXVk",
-            "aW9SZXNwb25zZRI7Cg5wbGF0Zm9ybV9hdWRpbxgBIAEoCzIhLmxpdmVraXQu",
-            "cHJvdG8uT3duZWRQbGF0Zm9ybUF1ZGlvSAASDwoFZXJyb3IYAiABKAlIAEIJ",
-            "CgdtZXNzYWdlIjcKFkdldEF1ZGlvRGV2aWNlc1JlcXVlc3QSHQoVcGxhdGZv",
-            "cm1fYXVkaW9faGFuZGxlGAEgAigEIpwBChdHZXRBdWRpb0RldmljZXNSZXNw",
-            "b25zZRI3Cg9wbGF5b3V0X2RldmljZXMYASADKAsyHi5saXZla2l0LnByb3Rv",
-            "LkF1ZGlvRGV2aWNlSW5mbxI5ChFyZWNvcmRpbmdfZGV2aWNlcxgCIAMoCzIe",
-            "LmxpdmVraXQucHJvdG8uQXVkaW9EZXZpY2VJbmZvEg0KBWVycm9yGAMgASgJ",
-            "Ik0KGVNldFJlY29yZGluZ0RldmljZVJlcXVlc3QSHQoVcGxhdGZvcm1fYXVk",
-            "aW9faGFuZGxlGAEgAigEEhEKCWRldmljZV9pZBgCIAIoCSIrChpTZXRSZWNv",
-            "cmRpbmdEZXZpY2VSZXNwb25zZRINCgVlcnJvchgBIAEoCSJLChdTZXRQbGF5",
-            "b3V0RGV2aWNlUmVxdWVzdBIdChVwbGF0Zm9ybV9hdWRpb19oYW5kbGUYASAC",
-            "KAQSEQoJZGV2aWNlX2lkGAIgAigJIikKGFNldFBsYXlvdXREZXZpY2VSZXNw",
-            "b25zZRINCgVlcnJvchgBIAEoCSI2ChVTdGFydFJlY29yZGluZ1JlcXVlc3QS",
-            "HQoVcGxhdGZvcm1fYXVkaW9faGFuZGxlGAEgAigEIicKFlN0YXJ0UmVjb3Jk",
-            "aW5nUmVzcG9uc2USDQoFZXJyb3IYASABKAkiNQoUU3RvcFJlY29yZGluZ1Jl",
-            "cXVlc3QSHQoVcGxhdGZvcm1fYXVkaW9faGFuZGxlGAEgAigEIiYKFVN0b3BS",
-            "ZWNvcmRpbmdSZXNwb25zZRINCgVlcnJvchgBIAEoCSpKChRTb3hSZXNhbXBs",
-            "ZXJEYXRhVHlwZRIYChRTT1hSX0RBVEFUWVBFX0lOVDE2SRAAEhgKFFNPWFJf",
-            "REFUQVRZUEVfSU5UMTZTEAEqiwEKEFNveFF1YWxpdHlSZWNpcGUSFgoSU09Y",
-            "Ul9RVUFMSVRZX1FVSUNLEAASFAoQU09YUl9RVUFMSVRZX0xPVxABEhcKE1NP",
-            "WFJfUVVBTElUWV9NRURJVU0QAhIVChFTT1hSX1FVQUxJVFlfSElHSBADEhkK",
-            "FVNPWFJfUVVBTElUWV9WRVJZSElHSBAEKpcBCgtTb3hGbGFnQml0cxIWChJT",
-            "T1hSX1JPTExPRkZfU01BTEwQABIXChNTT1hSX1JPTExPRkZfTUVESVVNEAES",
-            "FQoRU09YUl9ST0xMT0ZGX05PTkUQAhIYChRTT1hSX0hJR0hfUFJFQ19DTE9D",
-            "SxADEhkKFVNPWFJfRE9VQkxFX1BSRUNJU0lPThAEEgsKB1NPWFJfVlIQBSpB",
-            "Cg9BdWRpb1N0cmVhbVR5cGUSFwoTQVVESU9fU1RSRUFNX05BVElWRRAAEhUK",
-            "EUFVRElPX1NUUkVBTV9IVE1MEAEqRQoPQXVkaW9Tb3VyY2VUeXBlEhcKE0FV",
-            "RElPX1NPVVJDRV9OQVRJVkUQABIZChVBVURJT19TT1VSQ0VfUExBVEZPUk0Q",
-            "AUIQqgINTGl2ZUtpdC5Qcm90bw=="));
+            "ZGV2aWNlX2NvdW50GAIgAigFEiIKGmRldmljZV9zZWxlY3Rpb25fc3VwcG9y",
+            "dGVkGAMgAigIInMKEk93bmVkUGxhdGZvcm1BdWRpbxItCgZoYW5kbGUYASAC",
+            "KAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEi4KBGluZm8YAiAC",
+            "KAsyIC5saXZla2l0LnByb3RvLlBsYXRmb3JtQXVkaW9JbmZvIhkKF05ld1Bs",
+            "YXRmb3JtQXVkaW9SZXF1ZXN0InMKGE5ld1BsYXRmb3JtQXVkaW9SZXNwb25z",
+            "ZRI7Cg5wbGF0Zm9ybV9hdWRpbxgBIAEoCzIhLmxpdmVraXQucHJvdG8uT3du",
+            "ZWRQbGF0Zm9ybUF1ZGlvSAASDwoFZXJyb3IYAiABKAlIAEIJCgdtZXNzYWdl",
+            "IjcKFkdldEF1ZGlvRGV2aWNlc1JlcXVlc3QSHQoVcGxhdGZvcm1fYXVkaW9f",
+            "aGFuZGxlGAEgAigEIpwBChdHZXRBdWRpb0RldmljZXNSZXNwb25zZRI3Cg9w",
+            "bGF5b3V0X2RldmljZXMYASADKAsyHi5saXZla2l0LnByb3RvLkF1ZGlvRGV2",
+            "aWNlSW5mbxI5ChFyZWNvcmRpbmdfZGV2aWNlcxgCIAMoCzIeLmxpdmVraXQu",
+            "cHJvdG8uQXVkaW9EZXZpY2VJbmZvEg0KBWVycm9yGAMgASgJIk0KGVNldFJl",
+            "Y29yZGluZ0RldmljZVJlcXVlc3QSHQoVcGxhdGZvcm1fYXVkaW9faGFuZGxl",
+            "GAEgAigEEhEKCWRldmljZV9pZBgCIAIoCSIrChpTZXRSZWNvcmRpbmdEZXZp",
+            "Y2VSZXNwb25zZRINCgVlcnJvchgBIAEoCSJLChdTZXRQbGF5b3V0RGV2aWNl",
+            "UmVxdWVzdBIdChVwbGF0Zm9ybV9hdWRpb19oYW5kbGUYASACKAQSEQoJZGV2",
+            "aWNlX2lkGAIgAigJIikKGFNldFBsYXlvdXREZXZpY2VSZXNwb25zZRINCgVl",
+            "cnJvchgBIAEoCSI2ChVTdGFydFJlY29yZGluZ1JlcXVlc3QSHQoVcGxhdGZv",
+            "cm1fYXVkaW9faGFuZGxlGAEgAigEIicKFlN0YXJ0UmVjb3JkaW5nUmVzcG9u",
+            "c2USDQoFZXJyb3IYASABKAkiNQoUU3RvcFJlY29yZGluZ1JlcXVlc3QSHQoV",
+            "cGxhdGZvcm1fYXVkaW9faGFuZGxlGAEgAigEIiYKFVN0b3BSZWNvcmRpbmdS",
+            "ZXNwb25zZRINCgVlcnJvchgBIAEoCSpKChRTb3hSZXNhbXBsZXJEYXRhVHlw",
+            "ZRIYChRTT1hSX0RBVEFUWVBFX0lOVDE2SRAAEhgKFFNPWFJfREFUQVRZUEVf",
+            "SU5UMTZTEAEqiwEKEFNveFF1YWxpdHlSZWNpcGUSFgoSU09YUl9RVUFMSVRZ",
+            "X1FVSUNLEAASFAoQU09YUl9RVUFMSVRZX0xPVxABEhcKE1NPWFJfUVVBTElU",
+            "WV9NRURJVU0QAhIVChFTT1hSX1FVQUxJVFlfSElHSBADEhkKFVNPWFJfUVVB",
+            "TElUWV9WRVJZSElHSBAEKpcBCgtTb3hGbGFnQml0cxIWChJTT1hSX1JPTExP",
+            "RkZfU01BTEwQABIXChNTT1hSX1JPTExPRkZfTUVESVVNEAESFQoRU09YUl9S",
+            "T0xMT0ZGX05PTkUQAhIYChRTT1hSX0hJR0hfUFJFQ19DTE9DSxADEhkKFVNP",
+            "WFJfRE9VQkxFX1BSRUNJU0lPThAEEgsKB1NPWFJfVlIQBSpBCg9BdWRpb1N0",
+            "cmVhbVR5cGUSFwoTQVVESU9fU1RSRUFNX05BVElWRRAAEhUKEUFVRElPX1NU",
+            "UkVBTV9IVE1MEAEqRQoPQXVkaW9Tb3VyY2VUeXBlEhcKE0FVRElPX1NPVVJD",
+            "RV9OQVRJVkUQABIZChVBVURJT19TT1VSQ0VfUExBVEZPUk0QAUIQqgINTGl2",
+            "ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.SoxResamplerDataType), typeof(global::LiveKit.Proto.SoxQualityRecipe), typeof(global::LiveKit.Proto.SoxFlagBits), typeof(global::LiveKit.Proto.AudioStreamType), typeof(global::LiveKit.Proto.AudioSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -211,7 +212,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LoadAudioFilterPluginRequest), global::LiveKit.Proto.LoadAudioFilterPluginRequest.Parser, new[]{ "PluginPath", "Dependencies", "ModuleId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LoadAudioFilterPluginResponse), global::LiveKit.Proto.LoadAudioFilterPluginResponse.Parser, new[]{ "Error" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.AudioDeviceInfo), global::LiveKit.Proto.AudioDeviceInfo.Parser, new[]{ "Index", "Name", "Guid" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PlatformAudioInfo), global::LiveKit.Proto.PlatformAudioInfo.Parser, new[]{ "RecordingDeviceCount", "PlayoutDeviceCount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PlatformAudioInfo), global::LiveKit.Proto.PlatformAudioInfo.Parser, new[]{ "RecordingDeviceCount", "PlayoutDeviceCount", "DeviceSelectionSupported" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedPlatformAudio), global::LiveKit.Proto.OwnedPlatformAudio.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewPlatformAudioRequest), global::LiveKit.Proto.NewPlatformAudioRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewPlatformAudioResponse), global::LiveKit.Proto.NewPlatformAudioResponse.Parser, new[]{ "PlatformAudio", "Error" }, new[]{ "Message" }, null, null, null),
@@ -13683,6 +13684,7 @@ namespace LiveKit.Proto {
       _hasBits0 = other._hasBits0;
       recordingDeviceCount_ = other.recordingDeviceCount_;
       playoutDeviceCount_ = other.playoutDeviceCount_;
+      deviceSelectionSupported_ = other.deviceSelectionSupported_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -13752,6 +13754,38 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~2;
     }
 
+    /// <summary>Field number for the "device_selection_supported" field.</summary>
+    public const int DeviceSelectionSupportedFieldNumber = 3;
+    private readonly static bool DeviceSelectionSupportedDefaultValue = false;
+
+    private bool deviceSelectionSupported_;
+    /// <summary>
+    /// Whether per-device selection is honored on this platform. False on iOS/Android,
+    /// where audio routing is controlled by the OS (AVAudioSession / AudioManager) rather
+    /// than through WebRTC device selection.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool DeviceSelectionSupported {
+      get { if ((_hasBits0 & 4) != 0) { return deviceSelectionSupported_; } else { return DeviceSelectionSupportedDefaultValue; } }
+      set {
+        _hasBits0 |= 4;
+        deviceSelectionSupported_ = value;
+      }
+    }
+    /// <summary>Gets whether the "device_selection_supported" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDeviceSelectionSupported {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "device_selection_supported" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDeviceSelectionSupported() {
+      _hasBits0 &= ~4;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -13769,6 +13803,7 @@ namespace LiveKit.Proto {
       }
       if (RecordingDeviceCount != other.RecordingDeviceCount) return false;
       if (PlayoutDeviceCount != other.PlayoutDeviceCount) return false;
+      if (DeviceSelectionSupported != other.DeviceSelectionSupported) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -13778,6 +13813,7 @@ namespace LiveKit.Proto {
       int hash = 1;
       if (HasRecordingDeviceCount) hash ^= RecordingDeviceCount.GetHashCode();
       if (HasPlayoutDeviceCount) hash ^= PlayoutDeviceCount.GetHashCode();
+      if (HasDeviceSelectionSupported) hash ^= DeviceSelectionSupported.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -13804,6 +13840,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteInt32(PlayoutDeviceCount);
       }
+      if (HasDeviceSelectionSupported) {
+        output.WriteRawTag(24);
+        output.WriteBool(DeviceSelectionSupported);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -13822,6 +13862,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteInt32(PlayoutDeviceCount);
       }
+      if (HasDeviceSelectionSupported) {
+        output.WriteRawTag(24);
+        output.WriteBool(DeviceSelectionSupported);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -13837,6 +13881,9 @@ namespace LiveKit.Proto {
       }
       if (HasPlayoutDeviceCount) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(PlayoutDeviceCount);
+      }
+      if (HasDeviceSelectionSupported) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -13855,6 +13902,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasPlayoutDeviceCount) {
         PlayoutDeviceCount = other.PlayoutDeviceCount;
+      }
+      if (other.HasDeviceSelectionSupported) {
+        DeviceSelectionSupported = other.DeviceSelectionSupported;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -13883,6 +13933,10 @@ namespace LiveKit.Proto {
             PlayoutDeviceCount = input.ReadInt32();
             break;
           }
+          case 24: {
+            DeviceSelectionSupported = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -13908,6 +13962,10 @@ namespace LiveKit.Proto {
           }
           case 16: {
             PlayoutDeviceCount = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            DeviceSelectionSupported = input.ReadBool();
             break;
           }
         }
