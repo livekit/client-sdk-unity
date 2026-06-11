@@ -216,7 +216,7 @@ namespace LiveKit
                  UnityEngine.Object.Destroy(_previewTexture);
             if (_captureBuffer.IsCreated)
             {
-                Debug.Log("Disposing capture buffer");
+                Utils.Debug("Disposing capture buffer");
                 _captureBuffer.Dispose();
             }
             Handle?.Dispose();
