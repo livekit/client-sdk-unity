@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
@@ -24,6 +26,56 @@ namespace LiveKit.PlayModeTests
             LogAssert.ignoreFailingMessages = false;
 
             Assert.IsNotNull(context.ConnectionError, "Expected connection to fail");
+        }
+
+        // Deterministic coverage of the GetAwaiter surface added in Stage 1, using a
+        // synthetic instruction so the awaiter logic is exercised without the FFI. These
+        // are intentionally NOT [Category("E2E")] — they need no dev server. The real
+        // connect-fail path stays covered by Connect_FailsWithInvalidUrl above; an earlier
+        // E2E variant of these was flaky because the FFI emits its error log asynchronously,
+        // which races LogAssert in the frame after the await has already resumed.
+        private sealed class TestYieldInstruction : YieldInstruction
+        {
+            public void Complete() => IsDone = true;
+            public void CompleteWithError() { IsError = true; IsDone = true; }
+        }
+
+        // OnCompleted path: await registers a continuation while the instruction is still
+        // pending, then completion fires it and IsError is visible on resume.
+        [UnityTest]
+        public IEnumerator GetAwaiter_ResumesOnCompletion_AndSurfacesIsError()
+        {
+            var instruction = new TestYieldInstruction();
+            var awaitTask = AwaitInstruction(instruction);
+            Assert.IsFalse(awaitTask.IsCompleted, "Awaiter must not resume before IsDone");
+
+            instruction.CompleteWithError();
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
+            Assert.IsTrue(instruction.IsDone, "Awaiter resumed, so IsDone must be observable");
+            Assert.IsTrue(instruction.IsError, "IsError must be visible on resume");
+        }
+
+        // IsCompleted fast path: instruction is already done before it is awaited, so the
+        // awaiter completes without ever registering a continuation.
+        [UnityTest]
+        public IEnumerator GetAwaiter_CompletesImmediately_WhenAlreadyDone()
+        {
+            var instruction = new TestYieldInstruction();
+            instruction.Complete();
+
+            var awaitTask = AwaitInstruction(instruction);
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
+            Assert.IsTrue(instruction.IsDone);
+            Assert.IsFalse(instruction.IsError);
+        }
+
+        private static async Task AwaitInstruction(YieldInstruction instruction)
+        {
+            await instruction;
         }
 
         [UnityTest, Category("E2E")]
