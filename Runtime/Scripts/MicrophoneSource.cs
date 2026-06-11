@@ -28,7 +28,7 @@ namespace LiveKit
         /// get the list of available devices.</param>
         /// <param name="sourceObject">The GameObject to attach the AudioSource to. The object must be kept in the scene
         /// for the duration of the source's lifetime.</param>
-        public MicrophoneSource(string deviceName, GameObject sourceObject) : base(2, RtcAudioSourceType.AudioSourceMicrophone)
+        public MicrophoneSource(string deviceName, GameObject sourceObject) : base(RtcAudioSourceType.AudioSourceMicrophone)
         {
             _deviceName = deviceName;
             _sourceObject = sourceObject;

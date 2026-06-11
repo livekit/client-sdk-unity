@@ -99,23 +99,29 @@ namespace LiveKit
         private volatile bool _disposed = false;
         private int _audioReadCount = 0;
 
-        protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom, uint sampleRate = 0)
+        // Device-capture sources (microphone, AudioSource taps) don't know their format ahead of
+        // time — it is whatever Unity's audio graph delivers. They use this constructor, which
+        // reads the device's output configuration up front and then corrects itself from the first
+        // captured frame (see OnAudioRead).
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType)
+            : this(audioSourceType, 0, 0) { }
+
+        // Sources that generate a fixed, known format (e.g. test signal generators) declare it
+        // directly. Passing 0 for either value falls back to the device configuration.
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType, uint sampleRate, uint channels)
         {
             _sourceType = audioSourceType;
 
-            // Sources that know their exact format (e.g. test signal generators) pass it
-            // explicitly. Capture sources that flow through Unity's audio graph leave sampleRate
-            // at 0 so we read the device's actual output configuration instead of hardcoding it.
             uint initialRate;
             uint initialChannels;
-            if (sampleRate > 0)
+            if (sampleRate > 0 && channels > 0)
             {
                 initialRate = sampleRate;
-                initialChannels = (uint)channels;
+                initialChannels = channels;
             }
             else
             {
-                (initialRate, initialChannels) = ResolveDeviceFormat((uint)channels);
+                (initialRate, initialChannels) = ResolveDeviceFormat();
             }
 
             CreateNativeSource(initialRate, initialChannels);
@@ -147,14 +153,15 @@ namespace LiveKit
 
         // Reads Unity's actual output audio configuration. The capture path delivers buffers at
         // the DSP output rate/channel count (see AudioProbe), so this is the format the native
-        // source must match. Falls back to the platform defaults when Unity cannot report a
-        // configuration (e.g. batch mode without an audio device).
-        private (uint sampleRate, uint channels) ResolveDeviceFormat(uint channelHint)
+        // source must match. Both values are corrected from the first captured frame regardless,
+        // so this only needs to provide a reasonable starting point; it falls back to the platform
+        // defaults when Unity cannot report a configuration (e.g. batch mode without an audio device).
+        private (uint sampleRate, uint channels) ResolveDeviceFormat()
         {
             uint sampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone
                 ? DefaultMicrophoneSampleRate
                 : DefaultSampleRate;
-            uint channels = channelHint;
+            uint channels = DefaultChannels;
 
             try
             {
