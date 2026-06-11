@@ -60,10 +60,26 @@ namespace LiveKit
         private readonly RtcAudioSourceType _sourceType;
         public RtcAudioSourceType SourceType => _sourceType;
         private readonly int _debugId = Interlocked.Increment(ref nextDebugId);
-        private readonly uint _expectedSampleRate;
-        private readonly uint _expectedChannels;
 
-        internal readonly FfiHandle Handle;
+        // Format of the live native source. Written only on the main thread (constructor and
+        // recreation); read on the audio thread. The writers publish their changes through the
+        // volatile _handleReady flag (set last in CreateNativeSource).
+        private volatile uint _liveSampleRate;
+        private volatile uint _liveChannels;
+        private volatile bool _handleReady;
+
+        // Coalesces recreation requests raised from the audio thread and marshaled to the main thread.
+        private readonly object _recreateLock = new object();
+        private bool _recreateScheduled;
+        private uint _desiredSampleRate;
+        private uint _desiredChannels;
+
+        // Raised on the main thread after the native source is recreated at runtime (not on the
+        // initial creation). LocalAudioTrack subscribes to rebuild and republish its FFI track,
+        // since a track is bound to a specific native source handle at creation time.
+        internal event Action NativeSourceChanged;
+
+        internal FfiHandle Handle { get; private set; }
         protected AudioSourceInfo _info;
 
         // CaptureAudioFrame is asynchronous: the native side can continue reading from the PCM
@@ -83,20 +99,43 @@ namespace LiveKit
         private volatile bool _disposed = false;
         private int _audioReadCount = 0;
 
-        protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
+        // Device-capture sources (microphone, AudioSource taps) don't know their format ahead of
+        // time — it is whatever Unity's audio graph delivers. They use this constructor, which
+        // reads the device's output configuration up front and then corrects itself from the first
+        // captured frame (see OnAudioRead).
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType)
+            : this(audioSourceType, 0, 0) { }
+
+        // Sources that generate a fixed, known format (e.g. test signal generators) declare it
+        // directly. Passing 0 for either value falls back to the device configuration.
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType, uint sampleRate, uint channels)
         {
             _sourceType = audioSourceType;
-            _expectedChannels = (uint)channels;
 
+            uint initialRate;
+            uint initialChannels;
+            if (sampleRate > 0 && channels > 0)
+            {
+                initialRate = sampleRate;
+                initialChannels = channels;
+            }
+            else
+            {
+                (initialRate, initialChannels) = ResolveDeviceFormat();
+            }
+
+            CreateNativeSource(initialRate, initialChannels);
+            Utils.Debug($"{DebugTag} created handle={Handle.DangerousGetHandle()} rate={_liveSampleRate} channels={_liveChannels} sourceType={_sourceType}");
+        }
+
+        // Builds (or rebuilds) the underlying native audio source. Main thread only.
+        private void CreateNativeSource(uint sampleRate, uint channels)
+        {
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = (uint)channels;
-            newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
-                DefaultMicrophoneSampleRate : DefaultSampleRate;
-            _expectedSampleRate = newAudioSource.SampleRate;
-
-            Utils.Debug($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
+            newAudioSource.NumChannels = channels;
+            newAudioSource.SampleRate = sampleRate;
 
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;
@@ -106,7 +145,99 @@ namespace LiveKit
             FfiResponse res = response;
             _info = res.NewAudioSource.Source.Info;
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
-            Utils.Debug($"{DebugTag} created handle={Handle.DangerousGetHandle()} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
+
+            _liveSampleRate = sampleRate;
+            _liveChannels = channels;
+            _handleReady = true; // volatile release: publishes Handle/_info/_live* to the audio thread
+        }
+
+        // Reads Unity's actual output audio configuration. The capture path delivers buffers at
+        // the DSP output rate/channel count (see AudioProbe), so this is the format the native
+        // source must match. Both values are corrected from the first captured frame regardless,
+        // so this only needs to provide a reasonable starting point; it falls back to the platform
+        // defaults when Unity cannot report a configuration (e.g. batch mode without an audio device).
+        private (uint sampleRate, uint channels) ResolveDeviceFormat()
+        {
+            uint sampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone
+                ? DefaultMicrophoneSampleRate
+                : DefaultSampleRate;
+            uint channels = DefaultChannels;
+
+            try
+            {
+                var config = UnityEngine.AudioSettings.GetConfiguration();
+                if (config.sampleRate > 0)
+                    sampleRate = (uint)config.sampleRate;
+                var configuredChannels = SpeakerModeChannels(config.speakerMode);
+                if (configuredChannels > 0)
+                    channels = configuredChannels;
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"{DebugTag} could not read Unity audio configuration, using defaults: {e.Message}");
+            }
+
+            return (sampleRate, channels);
+        }
+
+        private static uint SpeakerModeChannels(UnityEngine.AudioSpeakerMode mode)
+        {
+            switch (mode)
+            {
+                case UnityEngine.AudioSpeakerMode.Mono: return 1;
+                case UnityEngine.AudioSpeakerMode.Stereo: return 2;
+                case UnityEngine.AudioSpeakerMode.Quad: return 4;
+                case UnityEngine.AudioSpeakerMode.Surround: return 5;
+                case UnityEngine.AudioSpeakerMode.Mode5point1: return 6;
+                case UnityEngine.AudioSpeakerMode.Mode7point1: return 8;
+                case UnityEngine.AudioSpeakerMode.Prologic: return 2;
+                default: return 0;
+            }
+        }
+
+        // Called from the audio thread when an incoming frame's format does not match the live
+        // native source. Coalesces requests and marshals the rebuild to the main thread, because
+        // creating the native source and rebuilding the track touch FFI/Unity APIs that are not
+        // safe to call from the audio thread.
+        private void RequestNativeSource(uint sampleRate, uint channels)
+        {
+            lock (_recreateLock)
+            {
+                _desiredSampleRate = sampleRate;
+                _desiredChannels = channels;
+                if (_recreateScheduled) return;
+                _recreateScheduled = true;
+            }
+
+            var context = FfiClient.Instance._context;
+            if (context != null)
+                context.Post(_ => ApplyRecreate(), null);
+            else
+                ApplyRecreate();
+        }
+
+        private void ApplyRecreate()
+        {
+            uint sampleRate;
+            uint channels;
+            lock (_recreateLock)
+            {
+                _recreateScheduled = false;
+                sampleRate = _desiredSampleRate;
+                channels = _desiredChannels;
+            }
+
+            if (_disposed) return;
+            if (_handleReady && sampleRate == _liveSampleRate && channels == _liveChannels)
+                return; // configuration already settled on the desired format
+
+            Utils.Debug($"{DebugTag} recreating native source rate {_liveSampleRate}->{sampleRate} channels {_liveChannels}->{channels} sourceType={_sourceType}");
+
+            var previous = Handle;
+            _handleReady = false; // drop audio-thread frames until the new source is live
+            CreateNativeSource(sampleRate, channels);
+            NativeSourceChanged?.Invoke(); // let the track rebuild/republish onto the new handle
+            previous?.Dispose();
         }
 
         /// <summary>
@@ -153,9 +284,15 @@ namespace LiveKit
                 return;
             }
 
-            if ((uint)sampleRate != _expectedSampleRate || (uint)channels != _expectedChannels)
+            // The native source rejects frames whose rate/channels differ from how it was
+            // configured (the Rust source does not resample). Unity's reported configuration is
+            // not always accurate and can change at runtime (e.g. when a Bluetooth headset
+            // connects), so trust the frame: if it does not match the live source, drop it and
+            // (re)create the native source to match.
+            if (!_handleReady || (uint)sampleRate != _liveSampleRate || (uint)channels != _liveChannels)
             {
-                Utils.Warning($"{DebugTag} audio frame #{frameIndex} metadata mismatch actualRate={sampleRate} actualChannels={channels} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
+                RequestNativeSource((uint)sampleRate, (uint)channels);
+                return;
             }
 
             var pendingBeforeSend = PendingFrameCount();
