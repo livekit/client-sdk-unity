@@ -453,8 +453,7 @@ public class MeetManager : MonoBehaviour
     {
         if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
 
-        Microphone.Start(null, true, 10, 44100);
-
+        // MicrophoneSource starts the device itself, so we only need the device name here.
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");
         audioObject.transform.SetParent(_audioTrackParent);
 

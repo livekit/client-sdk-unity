@@ -19,9 +19,11 @@ namespace LiveKit
         /// Creates a new basic audio source for the given <see cref="AudioSource"/> in the scene.
         /// </summary>
         /// <param name="source">The <see cref="AudioSource"/> to capture from.</param>
-        /// <param name="channels">The number of channels to capture.</param>
         /// <param name="sourceType">The type of audio source.</param>
-        public BasicAudioSource(AudioSource source, int channels = 2, RtcAudioSourceType sourceType = RtcAudioSourceType.AudioSourceCustom) : base(channels, sourceType)
+        /// <remarks>
+        /// The sample rate and channel count are taken from Unity's audio configuration.
+        /// </remarks>
+        public BasicAudioSource(AudioSource source, RtcAudioSourceType sourceType = RtcAudioSourceType.AudioSourceCustom) : base(sourceType)
         {
             _source = source;
         }
