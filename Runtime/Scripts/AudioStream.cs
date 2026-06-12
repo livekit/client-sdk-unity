@@ -50,6 +50,14 @@ namespace LiveKit
         private const int CrossfadeFrames = 128;  // ~2.7ms @ 48kHz
         private int _skipCooldown = 0;
 
+        // --- Temporary receive diagnostics (Info level, emitted ~every 2s) ---
+        // Reveals whether choppiness is a buffer-starvation problem (underruns/low fill) versus a
+        // clean stream, and what rate/channels we are actually playing/requesting.
+        private long _diagWindowStartTicks;
+        private int _diagCallbacks;
+        private int _diagUnderruns;
+        private int _diagFramesReceived;
+
         /// <summary>
         /// Creates a new audio stream from a remote audio track, attaching it to the
         /// given <see cref="AudioSource"/> in the scene.
@@ -147,6 +155,8 @@ namespace LiveKit
 
             lock (_lock)
             {
+                MaybeLogReceiveDiagnostics(channels, sampleRate);
+
                 // Single gate covering first-create and runtime format changes (e.g. after a
                 // system audio device switch). When the FFI stream is missing or what we asked
                 // Rust for no longer matches what Unity is delivering, post a (re)create to the
@@ -214,6 +224,7 @@ namespace LiveKit
                 if (valuesAvailableToRead < data.Length)
                 {
                     _isPrimed = false;
+                    _diagUnderruns++;
                     Utils.Debug($"AudioStream underrun detected, re-priming (got {valuesAvailableToRead} samples but want to read {data.Length})");
 
                     // Output silence immediately instead of playing partial/choppy samples.
@@ -370,6 +381,7 @@ namespace LiveKit
                     var data = new ReadOnlySpan<byte>(frame.Data.ToPointer(), frame.Length);
                     _buffer.Write(data);
                 }
+                _diagFramesReceived++;
             }
         }
 
@@ -425,6 +437,25 @@ namespace LiveKit
         ~AudioStream()
         {
             Dispose(false);
+        }
+
+        // Temporary diagnostic: ~every 2s logs buffer fill, underrun count, callback count and
+        // frames received so we can tell starvation (choppy) from a clean stream. Called under _lock.
+        private void MaybeLogReceiveDiagnostics(int channels, int sampleRate)
+        {
+            _diagCallbacks++;
+            var now = System.Diagnostics.Stopwatch.GetTimestamp();
+            if (_diagWindowStartTicks == 0) _diagWindowStartTicks = now;
+            var elapsed = (now - _diagWindowStartTicks) / (double)System.Diagnostics.Stopwatch.Frequency;
+            if (elapsed < 2.0) return;
+
+            float fill = _buffer != null ? _buffer.AvailableReadInPercent() : 0f;
+            Utils.Info($"AudioStream#{_trackHandleId} diag: out={sampleRate}Hz/{channels}ch ffi={_ffiSampleRate}Hz/{_ffiNumChannels}ch " +
+                       $"bufferFill={fill * 100f:F0}% callbacks={_diagCallbacks} underruns={_diagUnderruns} framesRecv={_diagFramesReceived} over={elapsed:F1}s");
+            _diagWindowStartTicks = now;
+            _diagCallbacks = 0;
+            _diagUnderruns = 0;
+            _diagFramesReceived = 0;
         }
 
         // For testing and debugging
