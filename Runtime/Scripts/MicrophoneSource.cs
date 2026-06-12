@@ -59,6 +59,28 @@ namespace LiveKit
             _started = true;
         }
 
+        // Opens the microphone at the engine's output sample rate when the device supports it, so
+        // the captured clip and the AudioSource that plays it back run at the same rate. A mismatch
+        // makes the looping clip drift against the playback read position and produces choppy audio.
+        // Falls back to DefaultMicrophoneSampleRate when the output rate is unknown, and clamps to
+        // the device's supported range when it reports one.
+        private static int ResolveMicrophoneSampleRate(string deviceName)
+        {
+            int target = AudioSettings.outputSampleRate;
+            if (target <= 0)
+                target = (int)DefaultMicrophoneSampleRate;
+
+            Microphone.GetDeviceCaps(deviceName, out int minFreq, out int maxFreq);
+            // Unity reports (0, 0) when the device imposes no specific sample-rate range.
+            if (minFreq == 0 && maxFreq == 0)
+                return target;
+
+            var result = Mathf.Clamp(target, minFreq, maxFreq);
+            Utils.Info($"ResolveMicrophoneSampleRate: {result}");
+
+            return result;
+        }
+
         private IEnumerator StartMicrophone()
         {
             // Validate that the GameObject is still valid before starting
@@ -76,13 +98,14 @@ namespace LiveKit
             }
 
             AudioClip clip = null;
+            var micFrequency = ResolveMicrophoneSampleRate(_deviceName);
             try
             {
                 clip = Microphone.Start(
                     _deviceName,
                     loop: true,
                     lengthSec: 1,
-                    frequency: (int)DefaultMicrophoneSampleRate
+                    frequency: micFrequency
                 );
             }
             catch (Exception e)
@@ -96,6 +119,8 @@ namespace LiveKit
                 Utils.Error("MicrophoneSource: Microphone.Start returned null, audio session may not be ready");
                 yield break;
             }
+
+            Utils.Info($"MicrophoneSource device='{_deviceName}' opened at {micFrequency}Hz (output={AudioSettings.outputSampleRate}Hz)");
 
             // Ensure no duplicate components exist before adding new ones.
             // This is important during app resume on iOS where components might not be
