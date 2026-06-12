@@ -18,14 +18,9 @@ namespace LiveKit
         // The microphone clip's ring buffer is read directly (no AudioSource playback, no
         // OnAudioFilterRead), so capture is decoupled from the output device's clock.
         //
-        // Microphone.GetPosition cannot be trusted as a sample position on every platform. On
-        // macOS with a Bluetooth HFP headset, FMOD writes each real 20ms packet of clip.frequency
-        // audio, then advances the position counter ~3.2x too far and zero-fills the skipped
-        // range. The buffer then holds valid fragments of N samples at a stride J (measured: 320
-        // of every 1024) and the counter rate is k = J/N times the data rate. Inspection of a raw
-        // buffer dump showed the fragments are consecutive speech that joins continuously, so the
-        // stream is reconstructed losslessly by reading only the first N = J/k samples of each
-        // stride. Healthy devices have k ~ 1 and use a plain contiguous read.
+        // Microphone.GetPosition cannot be trusted as a sample position on every platform; see
+        // MicClipReader for the fragmented-buffer model (macOS + Bluetooth HFP) and how the
+        // contiguous stream is reconstructed from it.
         //
         // The clip's data rate is clip.frequency (verified: fragments play at correct pitch), so
         // captured samples are resampled from clip.frequency to the fixed native-source rate.
@@ -42,9 +37,7 @@ namespace LiveKit
         private bool _started = false;
         private volatile bool _capturing = false;
 
-        // Streaming linear-resampler state (input = clip.frequency, output = TargetSampleRate).
-        private double _resamplePos;
-        private float _resamplePrev;
+        private StreamingResampler _resampler;
 
         /// <summary>
         /// Creates a new microphone source for the given device.
@@ -147,105 +140,53 @@ namespace LiveKit
         }
 
         // Reads new samples from the clip's ring buffer each frame and pushes them to the native
-        // source via AudioRead. Runs on the main thread; the native source's queue absorbs the
-        // per-frame pacing jitter.
+        // source via AudioRead. MicClipReader decides what to read (including reconstructing
+        // fragmented buffers); this loop is the thin Unity shell around it. Runs on the main
+        // thread; the native source's queue absorbs the per-frame pacing jitter.
         private IEnumerator CaptureLoop(AudioClip clip)
         {
             int clipFrames = clip.samples;
             int channels = clip.channels;
             int dataRate = clip.frequency > 0 ? clip.frequency : (int)DefaultMicrophoneSampleRate;
 
-            // Pre-roll: measure how fast the position counter advances (its average is steady even
-            // when individual values jump) and the size of its smallest discrete jump.
-            int prevCounter = Microphone.GetPosition(_deviceName);
-            long advance = 0;
-            long minJump = long.MaxValue;
-            var preRoll = System.Diagnostics.Stopwatch.StartNew();
-            while (preRoll.Elapsed.TotalSeconds < PreRollSeconds)
-            {
-                if (!_capturing || _disposed) yield break;
-                yield return null;
-                int c = Microphone.GetPosition(_deviceName);
-                long d = ((c - prevCounter) % clipFrames + clipFrames) % clipFrames;
-                prevCounter = c;
-                advance += d;
-                if (d > 0 && d < minJump) minJump = d;
-            }
-            if (!_capturing || _disposed) yield break;
-
-            double counterRate = advance > 0 ? advance / preRoll.Elapsed.TotalSeconds : dataRate;
-            double k = counterRate / dataRate;
-
-            // Fragmented mode: the counter advances in jumps of `stride`, but only the first
-            // `validPerStride` samples of each stride contain data; the rest is zero padding.
-            bool fragmented = k > FragmentedKThreshold && minJump != long.MaxValue && minJump > 1;
-            int stride = fragmented ? (int)minJump : 0;
-            int validPerStride = fragmented ? Math.Max(1, (int)Math.Round(stride / k)) : 0;
-
-            if (fragmented)
-                Utils.Info($"MicrophoneSource: fragmented clip detected (k={k:F2}); reading {validPerStride} of every {stride} samples at {dataRate}Hz");
-            else
-                Utils.Info($"MicrophoneSource: contiguous capture (k={k:F2}) at {dataRate}Hz");
-
-            _resamplePos = 0.0;
-            _resamplePrev = 0f;
-            long maxBacklog = (long)(counterRate * MaxBacklogSeconds);
-            int readPos = prevCounter; // counter values land on jump boundaries
-            long pending = 0;
+            var reader = new MicClipReader(clipFrames, dataRate, PreRollSeconds, FragmentedKThreshold, MaxBacklogSeconds);
+            _resampler = new StreamingResampler(dataRate, (int)TargetSampleRate);
+            var ranges = new List<MicClipReader.ReadRange>();
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            bool announced = false;
+            long reportedDrops = 0;
 
             while (_capturing && !_disposed)
             {
                 yield return null;
 
-                int c = Microphone.GetPosition(_deviceName);
-                long d = ((c - prevCounter) % clipFrames + clipFrames) % clipFrames;
-                prevCounter = c;
-                pending += d;
+                ranges.Clear();
+                reader.Update(Microphone.GetPosition(_deviceName), clock.Elapsed.TotalSeconds, ranges);
 
-                // After a long stall, drop the oldest backlog instead of pushing a burst that
-                // would overrun the native source's queue.
-                if (pending > maxBacklog)
+                if (!announced && reader.Ready)
                 {
-                    long drop = pending - maxBacklog;
-                    if (fragmented) drop -= drop % stride; // preserve stride alignment
-                    readPos = (int)((readPos + drop) % clipFrames);
-                    pending -= drop;
-                    Utils.Warning($"MicrophoneSource: dropped {drop} buffered samples after a stall");
+                    announced = true;
+                    if (reader.Fragmented)
+                        Utils.Info($"MicrophoneSource: fragmented clip detected (k={reader.K:F2}); reading {reader.ValidPerStride} of every {reader.Stride} samples at {dataRate}Hz");
+                    else
+                        Utils.Info($"MicrophoneSource: contiguous capture (k={reader.K:F2}) at {dataRate}Hz");
                 }
 
-                if (fragmented)
+                if (reader.TotalDropped > reportedDrops)
                 {
-                    while (pending >= stride)
-                    {
-                        EmitClipRange(clip, channels, dataRate, readPos, validPerStride, clipFrames);
-                        readPos = (readPos + stride) % clipFrames;
-                        pending -= stride;
-                    }
+                    Utils.Warning($"MicrophoneSource: dropped {reader.TotalDropped - reportedDrops} buffered samples after a stall");
+                    reportedDrops = reader.TotalDropped;
                 }
-                else if (pending > 0)
-                {
-                    EmitClipRange(clip, channels, dataRate, readPos, (int)pending, clipFrames);
-                    readPos = (int)((readPos + pending) % clipFrames);
-                    pending = 0;
-                }
+
+                for (int i = 0; i < ranges.Count; i++)
+                    ReadAndPush(clip, channels, ranges[i].Start, ranges[i].Count);
             }
         }
 
-        // Reads `count` frames starting at `start`, splitting at the ring wrap so each GetData
-        // read is contiguous.
-        private void EmitClipRange(AudioClip clip, int channels, int dataRate, int start, int count, int clipFrames)
-        {
-            if (count <= 0) return;
-            int first = Math.Min(count, clipFrames - start);
-            ReadAndPush(clip, channels, dataRate, start, first);
-            if (count > first)
-                ReadAndPush(clip, channels, dataRate, 0, count - first);
-        }
-
-        // Reads a contiguous range, downmixes to mono, resamples dataRate -> TargetSampleRate
-        // (streaming linear interpolation carrying state across calls, so fragment junctions stay
+        // Reads a contiguous range, downmixes to mono, resamples clip.frequency ->
+        // TargetSampleRate (the resampler carries state across calls, so fragment junctions stay
         // continuous), and fires AudioRead.
-        private void ReadAndPush(AudioClip clip, int channels, int dataRate, int start, int count)
+        private void ReadAndPush(AudioClip clip, int channels, int start, int count)
         {
             if (count <= 0) return;
 
@@ -269,26 +210,9 @@ namespace LiveKit
                 }
             }
 
-            double step = (double)dataRate / TargetSampleRate;
-            var output = new List<float>((int)(count / step) + 2);
-
-            // Index -1 maps to the carried last sample of the previous chunk so interpolation is
-            // continuous across chunk boundaries. pos stays >= -1.
-            double pos = _resamplePos;
-            while (pos < count - 1)
-            {
-                int i0 = (int)Math.Floor(pos);
-                float a = i0 < 0 ? _resamplePrev : mono[i0];
-                float b = mono[i0 + 1];
-                float frac = (float)(pos - i0);
-                output.Add(a * (1f - frac) + b * frac);
-                pos += step;
-            }
-            _resamplePrev = mono[count - 1];
-            _resamplePos = pos - count;
-
-            if (output.Count > 0)
-                AudioRead?.Invoke(output.ToArray(), 1, (int)TargetSampleRate);
+            var output = _resampler.Process(mono, count);
+            if (output.Length > 0)
+                AudioRead?.Invoke(output, 1, (int)TargetSampleRate);
         }
 
         /// <summary>
