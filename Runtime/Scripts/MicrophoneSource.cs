@@ -184,8 +184,55 @@ namespace LiveKit
             // Playback is started by the pacing servo, which first measures the clip's true fill
             // rate so the initial pitch and read position are right from the first sample.
             MonoBehaviourContext.RunCoroutine(PaceMicrophonePlayback(source, clip));
+#if UNITY_EDITOR
+            MonoBehaviourContext.RunCoroutine(DumpClipOnce(clip));
+#endif
             Utils.Debug($"MicrophoneSource device='{_deviceName}' started successfully");
         }
+
+#if UNITY_EDITOR
+        // TEMP diagnostic: snapshots the raw mic clip to a WAV so its contents can be inspected
+        // offline — is it one contiguous audio stream, or voice fragments scattered between stale
+        // regions? Speak continuously for the first ~5 seconds of capture. Editor-only.
+        private IEnumerator DumpClipOnce(AudioClip clip)
+        {
+            yield return new WaitForSeconds(4f);
+            if (_disposed || clip == null) yield break;
+            try
+            {
+                var data = new float[clip.samples * clip.channels];
+                clip.GetData(data, 0);
+                var path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "lk_mic_clip.wav");
+                WriteWav(path, data, clip.channels, clip.frequency);
+                Utils.Info($"MicrophoneSource: dumped clip snapshot to {path} ({clip.samples} frames @ {clip.frequency}Hz/{clip.channels}ch)");
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"MicrophoneSource: clip dump failed: {e.Message}");
+            }
+        }
+
+        private static void WriteWav(string path, float[] samples, int channels, int sampleRate)
+        {
+            using var fs = new System.IO.FileStream(path, System.IO.FileMode.Create);
+            using var w = new System.IO.BinaryWriter(fs);
+            int dataBytes = samples.Length * 2;
+            w.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
+            w.Write(36 + dataBytes);
+            w.Write(System.Text.Encoding.ASCII.GetBytes("WAVEfmt "));
+            w.Write(16);
+            w.Write((short)1);              // PCM
+            w.Write((short)channels);
+            w.Write(sampleRate);
+            w.Write(sampleRate * channels * 2);
+            w.Write((short)(channels * 2)); // block align
+            w.Write((short)16);             // bits per sample
+            w.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+            w.Write(dataBytes);
+            foreach (var s in samples)
+                w.Write((short)(Mathf.Clamp(s, -1f, 1f) * 32767f));
+        }
+#endif
 
         // Keeps the AudioSource's read head a fixed lag behind the (estimated) real write head
         // (see the servo comment at the top of the class). Pitch stays ~1.0 — the clip data rate
