@@ -84,19 +84,25 @@ namespace LiveKit
         private int _audioReadCount = 0;
 
         protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
+            : this(audioSourceType,
+                   audioSourceType == RtcAudioSourceType.AudioSourceMicrophone ? DefaultMicrophoneSampleRate : DefaultSampleRate,
+                   (uint)channels)
+        { }
+
+        // Creates the native source with an explicit format. Sources that know their exact
+        // capture rate/channels up front (e.g. a microphone resolved from device caps) use this so
+        // the pushed frames match the native source and never trip a rate/channel mismatch.
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType, uint sampleRate, uint channels)
         {
             _sourceType = audioSourceType;
-            _expectedChannels = (uint)channels;
+            _expectedChannels = channels;
+            _expectedSampleRate = sampleRate;
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = (uint)channels;
-            newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
-                DefaultMicrophoneSampleRate : DefaultSampleRate;
-            _expectedSampleRate = newAudioSource.SampleRate;
-
-            Utils.Debug($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
+            newAudioSource.NumChannels = channels;
+            newAudioSource.SampleRate = sampleRate;
 
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;
