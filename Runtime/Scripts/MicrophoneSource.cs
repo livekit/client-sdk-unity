@@ -32,17 +32,25 @@ namespace LiveKit
         // observed pathological device measures k=3.2; healthy devices measure ~1.0 with up to a
         // few percent of startup noise. Keep a wide margin between the two.
         private const double FragmentedKThreshold = 1.5;
-        private const float MaxBacklogSeconds = 0.2f; // drop backlog beyond this after a stall
+        private const float MaxBacklogSeconds = 0.2f;       // drop backlog beyond this after a stall
+        private const float DeviceLostTimeoutSeconds = 1f;  // no counter advance for this long = device gone
+        private const float RecoverRetrySeconds = 1f;
 
-        private readonly string _deviceName;
+        private string _deviceName;
 
         public override event Action<float[], int, int> AudioRead;
 
         private bool _disposed = false;
         private bool _started = false;
         private volatile bool _capturing = false;
+        private bool _switching = false;
+        private bool _paused = false;
+        private int _captureGeneration = 0;
 
         private StreamingResampler _resampler;
+
+        /// <summary>The microphone device currently being captured.</summary>
+        public string DeviceName => _deviceName;
 
         /// <summary>
         /// Creates a new microphone source for the given device.
@@ -100,12 +108,16 @@ namespace LiveKit
                 yield break;
             }
 
+            // Capture the device locally so a concurrent SwitchDevice can't mix two devices
+            // within one start sequence.
+            var device = _deviceName;
+
             AudioClip clip = null;
-            int requestedRate = ResolveRequestedSampleRate(_deviceName);
+            int requestedRate = ResolveRequestedSampleRate(device);
             try
             {
                 clip = Microphone.Start(
-                    _deviceName,
+                    device,
                     loop: true,
                     lengthSec: 2,
                     frequency: requestedRate
@@ -126,29 +138,104 @@ namespace LiveKit
             // Wait for microphone to actually start producing data with a timeout
             const float timeout = 2f;
             float elapsed = 0f;
-            while (Microphone.GetPosition(_deviceName) <= 0 && elapsed < timeout)
+            while (Microphone.GetPosition(device) <= 0 && elapsed < timeout)
             {
                 yield return new WaitForSeconds(0.05f);
                 elapsed += 0.05f;
             }
 
-            if (Microphone.GetPosition(_deviceName) <= 0)
+            if (Microphone.GetPosition(device) <= 0)
             {
                 Utils.Error($"MicrophoneSource: Microphone did not start producing data after {timeout}s");
                 yield break;
             }
 
-            Utils.Info($"MicrophoneSource device='{_deviceName}' clip={clip.frequency}Hz/{clip.channels}ch samples={clip.samples} requested={requestedRate}Hz target={TargetSampleRate}Hz");
+            Utils.Info($"MicrophoneSource device='{device}' clip={clip.frequency}Hz/{clip.channels}ch samples={clip.samples} requested={requestedRate}Hz target={TargetSampleRate}Hz");
 
             _capturing = true;
-            MonoBehaviourContext.RunCoroutine(CaptureLoop(clip));
+            MonoBehaviourContext.RunCoroutine(CaptureLoop(clip, device, ++_captureGeneration));
+        }
+
+        /// <summary>
+        /// Switches capture to a different microphone device while the published track keeps
+        /// working. The native source's format is fixed (48kHz mono) and captured audio is
+        /// resampled to it, so the track and its subscribers are unaffected; there is only a brief
+        /// capture gap (~0.5s) while the new device starts and its rate is measured.
+        /// </summary>
+        /// <remarks>
+        /// Internal for now: device loss is handled automatically (see RecoverRoutine); this is
+        /// the manual primitive should a public device-picker API be needed later.
+        /// </remarks>
+        /// <param name="deviceName">The device to switch to. Use <see cref="Microphone.devices"/> to
+        /// get the list of available devices.</param>
+        internal void SwitchDevice(string deviceName)
+        {
+            if (_disposed) return;
+            if (deviceName == _deviceName) return;
+            if (_switching)
+            {
+                Utils.Warning("MicrophoneSource: device switch already in progress, ignoring");
+                return;
+            }
+
+            var previous = _deviceName;
+            _deviceName = deviceName;
+
+            // Not capturing yet: the next Start() simply uses the new device.
+            if (!_started) return;
+
+            _switching = true;
+            MonoBehaviourContext.RunCoroutine(SwitchRoutine(previous));
+        }
+
+        private IEnumerator SwitchRoutine(string previousDevice)
+        {
+            _capturing = false;
+            if (Microphone.IsRecording(previousDevice))
+                Microphone.End(previousDevice);
+
+            yield return StartMicrophone();
+            _switching = false;
+            Utils.Info($"MicrophoneSource: switched capture to device '{_deviceName}'");
+        }
+
+        // Recovers capture after the active device disappeared mid-call (e.g. a Bluetooth headset
+        // disconnected). Retries until a device is available: the original device is preferred if
+        // it comes back, otherwise capture falls back to the system default microphone. The
+        // published track is unaffected throughout — the native source's fixed format never
+        // changes, there is simply a capture gap until a device is acquired.
+        private IEnumerator RecoverRoutine(string lostDevice, int generation)
+        {
+            if (Microphone.IsRecording(lostDevice))
+                Microphone.End(lostDevice);
+
+            while (_started && !_disposed && !_paused && generation == _captureGeneration)
+            {
+                var devices = Microphone.devices;
+                if (devices.Length > 0)
+                {
+                    // Prefer the original device if it reappeared; otherwise use the system default.
+                    _deviceName = Array.IndexOf(devices, lostDevice) >= 0 ? lostDevice : null;
+
+                    int generationBefore = _captureGeneration;
+                    yield return StartMicrophone();
+                    if (_captureGeneration != generationBefore)
+                    {
+                        // A new CaptureLoop is running; recovery succeeded.
+                        Utils.Info($"MicrophoneSource: recovered capture on device '{_deviceName ?? "(default)"}'");
+                        yield break;
+                    }
+                }
+                yield return new WaitForSeconds(RecoverRetrySeconds);
+            }
         }
 
         // Reads new samples from the clip's ring buffer each frame and pushes them to the native
         // source via AudioRead. MicClipReader decides what to read (including reconstructing
         // fragmented buffers); this loop is the thin Unity shell around it. Runs on the main
-        // thread; the native source's queue absorbs the per-frame pacing jitter.
-        private IEnumerator CaptureLoop(AudioClip clip)
+        // thread; the native source's queue absorbs the per-frame pacing jitter. The generation
+        // token retires this loop when a newer capture (restart or device switch) supersedes it.
+        private IEnumerator CaptureLoop(AudioClip clip, string device, int generation)
         {
             int clipFrames = clip.samples;
             int channels = clip.channels;
@@ -161,12 +248,32 @@ namespace LiveKit
             bool announced = false;
             long reportedDrops = 0;
 
-            while (_capturing && !_disposed)
+            // Device-loss detection: the position counter advances continuously while a device is
+            // alive (even in silence), so a stalled counter or IsRecording dropping to false means
+            // the device disappeared (e.g. a Bluetooth headset disconnected mid-call).
+            int lastCounter = Microphone.GetPosition(device);
+            double lastAdvance = clock.Elapsed.TotalSeconds;
+
+            while (_capturing && !_disposed && generation == _captureGeneration)
             {
                 yield return null;
 
+                int counter = Microphone.GetPosition(device);
+                double now = clock.Elapsed.TotalSeconds;
+                if (counter != lastCounter)
+                {
+                    lastCounter = counter;
+                    lastAdvance = now;
+                }
+                else if (now - lastAdvance > DeviceLostTimeoutSeconds || !Microphone.IsRecording(device))
+                {
+                    Utils.Warning($"MicrophoneSource: device '{device}' stopped delivering audio; attempting recovery");
+                    MonoBehaviourContext.RunCoroutine(RecoverRoutine(device, generation));
+                    yield break;
+                }
+
                 ranges.Clear();
-                reader.Update(Microphone.GetPosition(_deviceName), clock.Elapsed.TotalSeconds, ranges);
+                reader.Update(counter, now, ranges);
 
                 if (!announced && reader.Ready)
                 {
@@ -244,6 +351,8 @@ namespace LiveKit
 
         private void OnApplicationPause(bool pause)
         {
+            _paused = pause;
+
             if (!_started)
                 return;
 
