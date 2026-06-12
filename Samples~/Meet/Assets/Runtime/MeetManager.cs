@@ -487,7 +487,7 @@ public class MeetManager : MonoBehaviour
 
         if (_audioObjects.TryGetValue(LocalAudioTrackName, out var obj))
         {
-            obj.GetComponent<AudioSource>()?.Stop();
+            // MicrophoneSource reads the mic clip directly; no AudioSource is attached anymore.
             Destroy(obj);
             _audioObjects.Remove(LocalAudioTrackName);
         }
