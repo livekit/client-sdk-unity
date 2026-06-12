@@ -83,20 +83,33 @@ namespace LiveKit
         private volatile bool _disposed = false;
         private int _audioReadCount = 0;
 
-        protected RtcAudioSource(int channels = 2, RtcAudioSourceType audioSourceType = RtcAudioSourceType.AudioSourceCustom)
+        // Device-capture sources (microphone, AudioSource taps) don't know their format ahead of
+        // time — it is whatever Unity's audio graph delivers. They use this constructor, which
+        // configures the native source from Unity's current output configuration.
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType)
+            : this(audioSourceType, 0, 0) { }
+
+        // Sources that generate a fixed, known format (e.g. test signal generators) declare it
+        // directly. Passing 0 for either value falls back to the device configuration.
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType, uint sampleRate, uint channels)
         {
             _sourceType = audioSourceType;
-            _expectedChannels = (uint)channels;
+
+            if (sampleRate > 0 && channels > 0)
+            {
+                _expectedSampleRate = sampleRate;
+                _expectedChannels = channels;
+            }
+            else
+            {
+                (_expectedSampleRate, _expectedChannels) = ResolveDeviceFormat();
+            }
 
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
-            newAudioSource.NumChannels = (uint)channels;
-            newAudioSource.SampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone ?
-                DefaultMicrophoneSampleRate : DefaultSampleRate;
-            _expectedSampleRate = newAudioSource.SampleRate;
-
-            Utils.Debug($"NewAudioSource: {newAudioSource.NumChannels} {newAudioSource.SampleRate}");
+            newAudioSource.NumChannels = _expectedChannels;
+            newAudioSource.SampleRate = _expectedSampleRate;
 
             newAudioSource.Options = request.TempResource<AudioSourceOptions>();
             newAudioSource.Options.EchoCancellation = true;
@@ -107,6 +120,49 @@ namespace LiveKit
             _info = res.NewAudioSource.Source.Info;
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
             Utils.Debug($"{DebugTag} created handle={Handle.DangerousGetHandle()} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
+        }
+
+        // Reads Unity's actual output audio configuration. The capture path delivers buffers at the
+        // DSP output rate/channel count (see AudioProbe), so this is the format the native source
+        // must match. Falls back to the platform defaults when Unity cannot report a configuration
+        // (e.g. batch mode without an audio device).
+        private (uint sampleRate, uint channels) ResolveDeviceFormat()
+        {
+            uint sampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone
+                ? DefaultMicrophoneSampleRate
+                : DefaultSampleRate;
+            uint channels = DefaultChannels;
+
+            try
+            {
+                var config = UnityEngine.AudioSettings.GetConfiguration();
+                if (config.sampleRate > 0)
+                    sampleRate = (uint)config.sampleRate;
+                var configuredChannels = SpeakerModeChannels(config.speakerMode);
+                if (configuredChannels > 0)
+                    channels = configuredChannels;
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"{DebugTag} could not read Unity audio configuration, using defaults: {e.Message}");
+            }
+
+            return (sampleRate, channels);
+        }
+
+        private static uint SpeakerModeChannels(UnityEngine.AudioSpeakerMode mode)
+        {
+            switch (mode)
+            {
+                case UnityEngine.AudioSpeakerMode.Mono: return 1;
+                case UnityEngine.AudioSpeakerMode.Stereo: return 2;
+                case UnityEngine.AudioSpeakerMode.Quad: return 4;
+                case UnityEngine.AudioSpeakerMode.Surround: return 5;
+                case UnityEngine.AudioSpeakerMode.Mode5point1: return 6;
+                case UnityEngine.AudioSpeakerMode.Mode7point1: return 8;
+                case UnityEngine.AudioSpeakerMode.Prologic: return 2;
+                default: return 0;
+            }
         }
 
         /// <summary>
@@ -153,9 +209,16 @@ namespace LiveKit
                 return;
             }
 
+            // The native source rejects frames whose rate/channels differ from how it was
+            // configured (it does not resample). This should not happen now that sources declare
+            // or resolve their real format, but if Unity reports an inconsistent format — or the
+            // output configuration changes at runtime — we drop the frame instead of sending a
+            // mismatch the native side would error on.
             if ((uint)sampleRate != _expectedSampleRate || (uint)channels != _expectedChannels)
             {
-                Utils.Warning($"{DebugTag} audio frame #{frameIndex} metadata mismatch actualRate={sampleRate} actualChannels={channels} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
+                if (frameIndex == 1 || frameIndex % 100 == 0)
+                    Utils.Warning($"{DebugTag} dropping audio frame #{frameIndex}: format {sampleRate}/{channels} does not match source {_expectedSampleRate}/{_expectedChannels} (sourceType={_sourceType})");
+                return;
             }
 
             var pendingBeforeSend = PendingFrameCount();

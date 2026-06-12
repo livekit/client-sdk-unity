@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using LiveKit.Internal;
 
@@ -13,25 +14,57 @@ namespace LiveKit
     /// </remarks>
     sealed public class MicrophoneSource : RtcAudioSource
     {
-        private readonly GameObject _sourceObject;
+        // --- Capture design ---
+        // The microphone clip's ring buffer is read directly (no AudioSource playback, no
+        // OnAudioFilterRead), so capture is decoupled from the output device's clock.
+        //
+        // Microphone.GetPosition cannot be trusted as a sample position on every platform; see
+        // MicClipReader for the fragmented-buffer model (macOS + Bluetooth HFP) and how the
+        // contiguous stream is reconstructed from it.
+        //
+        // The clip's data rate is clip.frequency (verified: fragments play at correct pitch), so
+        // captured samples are resampled from clip.frequency to the fixed native-source rate.
+        private const uint TargetSampleRate = 48000;
+        private const float PreRollSeconds = 0.3f;
+        private const float SettleSeconds = 0.1f;     // discard the counter's startup burst before measuring
+        // Engaging fragmented mode discards (stride - valid) samples per stride, so a false
+        // positive guarantees audio loss while a false negative only risks mild artifacts. The
+        // observed pathological device measures k=3.2; healthy devices measure ~1.0 with up to a
+        // few percent of startup noise. Keep a wide margin between the two.
+        private const double FragmentedKThreshold = 1.5;
+        private const float MaxBacklogSeconds = 0.2f; // drop backlog beyond this after a stall
+
         private readonly string _deviceName;
 
         public override event Action<float[], int, int> AudioRead;
 
         private bool _disposed = false;
         private bool _started = false;
+        private volatile bool _capturing = false;
+
+        private StreamingResampler _resampler;
 
         /// <summary>
         /// Creates a new microphone source for the given device.
         /// </summary>
         /// <param name="deviceName">The name of the device to capture from. Use <see cref="Microphone.devices"/> to
         /// get the list of available devices.</param>
-        /// <param name="sourceObject">The GameObject to attach the AudioSource to. The object must be kept in the scene
-        /// for the duration of the source's lifetime.</param>
-        public MicrophoneSource(string deviceName, GameObject sourceObject) : base(2, RtcAudioSourceType.AudioSourceMicrophone)
+        /// <param name="sourceObject">Unused; retained for compatibility. The microphone clip is read
+        /// directly, so no scene GameObject/AudioSource is required.</param>
+        public MicrophoneSource(string deviceName, GameObject sourceObject)
+            : base(RtcAudioSourceType.AudioSourceMicrophone, TargetSampleRate, 1)
         {
             _deviceName = deviceName;
-            _sourceObject = sourceObject;
+        }
+
+        // The rate requested from Microphone.Start (a hint the platform may not honor), clamped to
+        // the device's reported range. The authoritative data rate is clip.frequency afterwards.
+        private static int ResolveRequestedSampleRate(string deviceName)
+        {
+            Microphone.GetDeviceCaps(deviceName, out int minFreq, out int maxFreq);
+            if (minFreq == 0 && maxFreq == 0)
+                return (int)TargetSampleRate;
+            return Mathf.Clamp((int)TargetSampleRate, minFreq, maxFreq);
         }
 
         /// <summary>
@@ -49,7 +82,6 @@ namespace LiveKit
             base.Start();
             if (_started) return;
 
-
             if (!Application.HasUserAuthorization(mode: UserAuthorization.Microphone))
                 throw new InvalidOperationException("Microphone access not authorized");
 
@@ -61,13 +93,6 @@ namespace LiveKit
 
         private IEnumerator StartMicrophone()
         {
-            // Validate that the GameObject is still valid before starting
-            if (_sourceObject == null)
-            {
-                Utils.Error("MicrophoneSource: GameObject is null, cannot start microphone");
-                yield break;
-            }
-
             // Verify microphone is still authorized (could change during background)
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
             {
@@ -76,13 +101,14 @@ namespace LiveKit
             }
 
             AudioClip clip = null;
+            int requestedRate = ResolveRequestedSampleRate(_deviceName);
             try
             {
                 clip = Microphone.Start(
                     _deviceName,
                     loop: true,
-                    lengthSec: 1,
-                    frequency: (int)DefaultMicrophoneSampleRate
+                    lengthSec: 2,
+                    frequency: requestedRate
                 );
             }
             catch (Exception e)
@@ -96,29 +122,6 @@ namespace LiveKit
                 Utils.Error("MicrophoneSource: Microphone.Start returned null, audio session may not be ready");
                 yield break;
             }
-
-            // Ensure no duplicate components exist before adding new ones.
-            // This is important during app resume on iOS where components might not be
-            // fully destroyed yet due to Unity's deferred Destroy().
-            var existingSource = _sourceObject.GetComponent<AudioSource>();
-            if (existingSource != null)
-                UnityEngine.Object.DestroyImmediate(existingSource);
-
-            var existingProbe = _sourceObject.GetComponent<AudioProbe>();
-            if (existingProbe != null)
-            {
-                existingProbe.AudioRead -= OnAudioRead;
-                UnityEngine.Object.DestroyImmediate(existingProbe);
-            }
-
-            var source = _sourceObject.AddComponent<AudioSource>();
-            source.clip = clip;
-            source.loop = true;
-
-            var probe = _sourceObject.AddComponent<AudioProbe>();
-            // Clear the audio data after it is read as to not play it through the speaker locally.
-            probe.ClearAfterInvocation();
-            probe.AudioRead += OnAudioRead;
 
             // Wait for microphone to actually start producing data with a timeout
             const float timeout = 2f;
@@ -135,8 +138,86 @@ namespace LiveKit
                 yield break;
             }
 
-            source.Play();
-            Utils.Debug($"MicrophoneSource device='{_deviceName}' started successfully");
+            Utils.Info($"MicrophoneSource device='{_deviceName}' clip={clip.frequency}Hz/{clip.channels}ch samples={clip.samples} requested={requestedRate}Hz target={TargetSampleRate}Hz");
+
+            _capturing = true;
+            MonoBehaviourContext.RunCoroutine(CaptureLoop(clip));
+        }
+
+        // Reads new samples from the clip's ring buffer each frame and pushes them to the native
+        // source via AudioRead. MicClipReader decides what to read (including reconstructing
+        // fragmented buffers); this loop is the thin Unity shell around it. Runs on the main
+        // thread; the native source's queue absorbs the per-frame pacing jitter.
+        private IEnumerator CaptureLoop(AudioClip clip)
+        {
+            int clipFrames = clip.samples;
+            int channels = clip.channels;
+            int dataRate = clip.frequency > 0 ? clip.frequency : (int)DefaultMicrophoneSampleRate;
+
+            var reader = new MicClipReader(clipFrames, dataRate, PreRollSeconds, FragmentedKThreshold, MaxBacklogSeconds, SettleSeconds);
+            _resampler = new StreamingResampler(dataRate, (int)TargetSampleRate);
+            var ranges = new List<MicClipReader.ReadRange>();
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            bool announced = false;
+            long reportedDrops = 0;
+
+            while (_capturing && !_disposed)
+            {
+                yield return null;
+
+                ranges.Clear();
+                reader.Update(Microphone.GetPosition(_deviceName), clock.Elapsed.TotalSeconds, ranges);
+
+                if (!announced && reader.Ready)
+                {
+                    announced = true;
+                    if (reader.Fragmented)
+                        Utils.Info($"MicrophoneSource: fragmented clip detected (k={reader.K:F2}); reading {reader.ValidPerStride} of every {reader.Stride} samples at {dataRate}Hz");
+                    else
+                        Utils.Info($"MicrophoneSource: contiguous capture (k={reader.K:F2}) at {dataRate}Hz");
+                }
+
+                if (reader.TotalDropped > reportedDrops)
+                {
+                    Utils.Warning($"MicrophoneSource: dropped {reader.TotalDropped - reportedDrops} buffered samples after a stall");
+                    reportedDrops = reader.TotalDropped;
+                }
+
+                for (int i = 0; i < ranges.Count; i++)
+                    ReadAndPush(clip, channels, ranges[i].Start, ranges[i].Count);
+            }
+        }
+
+        // Reads a contiguous range, downmixes to mono, resamples clip.frequency ->
+        // TargetSampleRate (the resampler carries state across calls, so fragment junctions stay
+        // continuous), and fires AudioRead.
+        private void ReadAndPush(AudioClip clip, int channels, int start, int count)
+        {
+            if (count <= 0) return;
+
+            var interleaved = new float[count * channels];
+            clip.GetData(interleaved, start);
+
+            float[] mono;
+            if (channels == 1)
+            {
+                mono = interleaved;
+            }
+            else
+            {
+                mono = new float[count];
+                for (int f = 0; f < count; f++)
+                {
+                    float sum = 0f;
+                    for (int ch = 0; ch < channels; ch++)
+                        sum += interleaved[f * channels + ch];
+                    mono[f] = sum / channels;
+                }
+            }
+
+            var output = _resampler.Process(mono, count);
+            if (output.Length > 0)
+                AudioRead?.Invoke(output, 1, (int)TargetSampleRate);
         }
 
         /// <summary>
@@ -152,31 +233,13 @@ namespace LiveKit
 
         private IEnumerator StopMicrophone()
         {
+            _capturing = false;
+
             if (Microphone.IsRecording(_deviceName))
                 Microphone.End(_deviceName);
 
-            // Check if GameObject is still valid before trying to access components
-            if (_sourceObject != null)
-            {
-                var probe = _sourceObject.GetComponent<AudioProbe>();
-                if (probe != null)
-                {
-                    probe.AudioRead -= OnAudioRead;
-                    UnityEngine.Object.Destroy(probe);
-                }
-
-                var source = _sourceObject.GetComponent<AudioSource>();
-                if (source != null)
-                    UnityEngine.Object.Destroy(source);
-            }
-
             Utils.Debug($"MicrophoneSource device='{_deviceName}' stopped");
             yield return null;
-        }
-
-        private void OnAudioRead(float[] data, int channels, int sampleRate)
-        {
-            AudioRead?.Invoke(data, channels, sampleRate);
         }
 
         private void OnApplicationPause(bool pause)

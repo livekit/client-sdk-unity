@@ -453,8 +453,7 @@ public class MeetManager : MonoBehaviour
     {
         if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
 
-        Microphone.Start(null, true, 10, 44100);
-
+        // MicrophoneSource starts the device itself, so we only need the device name here.
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");
         audioObject.transform.SetParent(_audioTrackParent);
 
@@ -488,7 +487,7 @@ public class MeetManager : MonoBehaviour
 
         if (_audioObjects.TryGetValue(LocalAudioTrackName, out var obj))
         {
-            obj.GetComponent<AudioSource>()?.Stop();
+            // MicrophoneSource reads the mic clip directly; no AudioSource is attached anymore.
             Destroy(obj);
             _audioObjects.Remove(LocalAudioTrackName);
         }
@@ -567,7 +566,10 @@ public class MeetManager : MonoBehaviour
         foreach (var obj in _audioObjects.Values)
         {
             if (obj == null) continue;
-            obj.GetComponent<AudioSource>()?.Stop();
+            // Not every audio object has an AudioSource (the local mic object no longer does), and
+            // ?. on GetComponent bypasses Unity's missing-component null semantics in the editor.
+            if (obj.TryGetComponent<AudioSource>(out var audioSource))
+                audioSource.Stop();
             Destroy(obj);
         }
         _audioObjects.Clear();
