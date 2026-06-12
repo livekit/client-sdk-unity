@@ -15,20 +15,24 @@ namespace LiveKit
     {
         // --- Playback pacing servo ---
         // The mic clip is filled by the capture device's clock while the AudioSource that plays it
-        // (feeding AudioProbe/OnAudioFilterRead) is driven by the output device's clock. Worse,
-        // some devices misreport the clip rate entirely (a Bluetooth headset on macOS labeled its
-        // clip 16kHz while filling it at ~51kHz). Either way the read head drifts against the
-        // write head until it gets lapped, which sounds like periodic chopping. The servo measures
-        // how fast the write head actually advances and continuously adjusts AudioSource.pitch so
-        // the read head consumes clip samples at the same rate, holding a fixed lag behind the
-        // writer. In the normal case the measured rate matches clip.frequency and pitch stays ~1.
-        private const float PreRollSeconds = 0.3f;       // initial fill-rate measurement window
-        private const float MinTargetLagSec = 0.08f;     // smallest safety lag (good devices)
-        private const float MaxTargetLagSec = 0.25f;     // adaptive ceiling (jittery devices)
-        private const float PitchCorrectionGain = 0.5f;  // proportional gain on relative lag error
-        private const float MaxRelativeCorrection = 0.2f;
-        private const float MinPitch = 0.25f;
-        private const float MaxPitch = 8f;
+        // (feeding AudioProbe/OnAudioFilterRead) is driven by the output device's clock. With a
+        // small, unmanaged startup lag the read head collides with the (bursty) write head and the
+        // captured audio chops.
+        //
+        // Microphone.GetPosition cannot be trusted directly: on macOS with a Bluetooth HFP headset
+        // its counter advances ~3.2x faster than data is actually written (clip labeled 16kHz,
+        // counter at ~51k/s). The clip DATA is still genuinely at clip.frequency — playing it at
+        // 1x yields correct-pitch voice, while reading at the counter's pace yields garbled
+        // repeats. So the servo keeps pitch at ~1.0 and uses the counter only after rescaling by
+        // its measured inflation factor k (counterRate / clip.frequency, ~1 on healthy devices) to
+        // estimate the real write head, holding the read head a generous lag behind it with only
+        // tiny pitch trims.
+        private const float PreRollSeconds = 0.3f;        // counter-rate measurement window
+        private const float DefaultTargetLagSec = 0.15f;  // initial read-behind-write lag
+        private const float MinTargetLagSec = 0.10f;
+        private const float MaxTargetLagSec = 0.40f;      // adaptive ceiling (jittery devices)
+        private const float TrimGain = 0.5f;              // proportional gain on relative lag error
+        private const float MaxPitchTrim = 0.03f;         // pitch stays within [0.97, 1.03]
 
         private readonly GameObject _sourceObject;
         private readonly string _deviceName;
@@ -121,7 +125,7 @@ namespace LiveKit
                 clip = Microphone.Start(
                     _deviceName,
                     loop: true,
-                    lengthSec: 1,
+                    lengthSec: 2,
                     frequency: micFrequency
                 );
             }
@@ -183,50 +187,56 @@ namespace LiveKit
             Utils.Debug($"MicrophoneSource device='{_deviceName}' started successfully");
         }
 
-        // Keeps the AudioSource's read head locked a fixed lag behind the mic's write head by
-        // adjusting pitch (see the servo comment at the top of the class). Pitch is rate control,
-        // not a delay: the only latency this adds is the target lag itself.
+        // Keeps the AudioSource's read head a fixed lag behind the (estimated) real write head
+        // (see the servo comment at the top of the class). Pitch stays ~1.0 — the clip data rate
+        // IS clip.frequency — with only tiny trims; the added latency is the held lag itself.
         private IEnumerator PaceMicrophonePlayback(AudioSource source, AudioClip clip)
         {
             int clipFrames = clip.samples;
             int declaredRate = clip.frequency;
 
-            // Pre-roll: measure the true fill rate before playback starts. GetPosition's
-            // instantaneous position can be jumpy on misbehaving devices, but its average advance
-            // has measured steady (±0.1%), so a short window gives a reliable rate.
-            int prevWrite = Microphone.GetPosition(_deviceName);
-            long writeAdvance = 0;
+            // Pre-roll: measure how fast GetPosition's counter advances. Its instantaneous value
+            // can be jumpy, but its average advance is steady (±0.1% measured), so a short window
+            // gives a reliable rate. k is the counter's inflation relative to the data rate.
+            int prevCounter = Microphone.GetPosition(_deviceName);
+            long counterUnwrapped = prevCounter; // counter ran since Microphone.Start; small so far
+            long preRollStart = counterUnwrapped;
             var preRoll = System.Diagnostics.Stopwatch.StartNew();
             while (preRoll.Elapsed.TotalSeconds < PreRollSeconds)
             {
                 if (!_started || _disposed || source == null || !Microphone.IsRecording(_deviceName)) yield break;
                 yield return null;
-                int w = Microphone.GetPosition(_deviceName);
-                writeAdvance += ((w - prevWrite) % clipFrames + clipFrames) % clipFrames;
-                prevWrite = w;
+                int c = Microphone.GetPosition(_deviceName);
+                counterUnwrapped += ((c - prevCounter) % clipFrames + clipFrames) % clipFrames;
+                prevCounter = c;
             }
             if (!_started || _disposed || source == null) yield break;
 
-            double fillRate = writeAdvance > 0 ? writeAdvance / preRoll.Elapsed.TotalSeconds : declaredRate;
-            double basePitch = fillRate / declaredRate;
-            // The lag target must stay well below the clip's real capacity (clipFrames at the
-            // true fill rate), which can be much shorter than lengthSec when the rate is misreported.
-            float capacityCapSec = (float)(0.4 * clipFrames / fillRate);
-            float targetLagSec = Mathf.Min(MinTargetLagSec, capacityCapSec);
+            double counterRate = (counterUnwrapped - preRollStart) / preRoll.Elapsed.TotalSeconds;
+            if (counterRate <= 0) counterRate = declaredRate;
+            double k = counterRate / declaredRate; // ~1 on healthy devices, ~3.2 on macOS BT-HFP
 
-            source.pitch = Mathf.Clamp((float)basePitch, MinPitch, MaxPitch);
+            // Lag target, bounded by the clip's data capacity (clipFrames samples).
+            float capacityCapSec = 0.4f * clipFrames / declaredRate;
+            float targetLagSec = Mathf.Min(DefaultTargetLagSec, capacityCapSec);
+            double target = targetLagSec * declaredRate;
+
+            // Estimated real write head in data samples: the counter rescaled by k (both started
+            // at zero when capture began).
+            double writeEst = counterUnwrapped / k;
+
+            source.pitch = 1f;
             source.Play();
-            long targetLag = (long)(targetLagSec * fillRate);
-            int startRead = (int)(((prevWrite - targetLag) % clipFrames + clipFrames) % clipFrames);
+            int startRead = (int)((((long)(writeEst - target)) % clipFrames + clipFrames) % clipFrames);
             source.timeSamples = startRead;
-
-            Utils.Info($"MicrophoneSource pacing: measured={fillRate:F0}Hz declared={declaredRate}Hz pitch={source.pitch:F2} lag={targetLagSec * 1000:F0}ms");
-
             int prevRead = startRead;
-            double lag = targetLag;          // current read-behind-write distance, in clip samples
+            double lag = target; // data samples the reader trails the estimated writer
             double smoothedLag = lag;
             double jitter = 0;
-            long rateAdvance = 0;
+
+            Utils.Info($"MicrophoneSource pacing: counter={counterRate:F0}/s k={k:F2} dataRate={declaredRate}Hz lag={targetLagSec * 1000:F0}ms");
+
+            long counterWindow = 0;
             var rateWindow = System.Diagnostics.Stopwatch.StartNew();
             var statusWindow = System.Diagnostics.Stopwatch.StartNew();
 
@@ -235,59 +245,60 @@ namespace LiveKit
                 yield return null;
                 if (source == null) yield break;
 
-                int w = Microphone.GetPosition(_deviceName);
+                int c = Microphone.GetPosition(_deviceName);
                 int r = source.timeSamples;
                 // Unwrapped per-frame advances. A hitch longer than the clip aliases these; the
                 // resync guard below recovers from the resulting inconsistency.
-                long dw = ((w - prevWrite) % clipFrames + clipFrames) % clipFrames;
+                long dc = ((c - prevCounter) % clipFrames + clipFrames) % clipFrames;
                 long dr = ((r - prevRead) % clipFrames + clipFrames) % clipFrames;
-                prevWrite = w;
+                prevCounter = c;
                 prevRead = r;
-                lag += dw - dr;
-                rateAdvance += dw;
+                counterUnwrapped += dc;
+                counterWindow += dc;
+                lag += dc / k - dr;
 
                 smoothedLag = 0.95 * smoothedLag + 0.05 * lag;
                 jitter = 0.95 * jitter + 0.05 * Math.Abs(lag - smoothedLag);
 
-                // Refine the fill rate and adapt the lag target once per second.
+                // Refine the counter rate and adapt the lag target once per second.
                 if (rateWindow.Elapsed.TotalSeconds >= 1.0)
                 {
-                    double instRate = rateAdvance / rateWindow.Elapsed.TotalSeconds;
+                    double instRate = counterWindow / rateWindow.Elapsed.TotalSeconds;
                     if (instRate > 0)
                     {
-                        fillRate = 0.7 * fillRate + 0.3 * instRate;
-                        basePitch = fillRate / declaredRate;
+                        counterRate = 0.7 * counterRate + 0.3 * instRate;
+                        k = counterRate / declaredRate;
                     }
-                    rateAdvance = 0;
+                    counterWindow = 0;
                     rateWindow.Restart();
 
                     // Hold ~4x the observed jitter as safety margin, within bounds and capacity.
-                    float jitterSec = (float)(jitter / fillRate);
-                    capacityCapSec = (float)(0.4 * clipFrames / fillRate);
+                    float jitterSec = (float)(jitter / declaredRate);
                     targetLagSec = Mathf.Min(Mathf.Clamp(jitterSec * 4f, MinTargetLagSec, MaxTargetLagSec), capacityCapSec);
+                    target = targetLagSec * declaredRate;
                 }
 
-                // Proportional pitch correction toward the target lag.
-                double target = targetLagSec * fillRate;
+                // Tiny proportional pitch trim toward the target lag. The data rate is
+                // clip.frequency, so pitch must stay pinned near 1.
                 double relErr = (smoothedLag - target) / target;
-                relErr = Math.Max(-MaxRelativeCorrection, Math.Min(MaxRelativeCorrection, relErr));
-                source.pitch = Mathf.Clamp((float)(basePitch * (1.0 + PitchCorrectionGain * relErr)), MinPitch, MaxPitch);
+                relErr = Math.Max(-1.0, Math.Min(1.0, relErr));
+                source.pitch = 1f + Mathf.Clamp((float)(TrimGain * relErr) * MaxPitchTrim, -MaxPitchTrim, MaxPitchTrim);
 
                 // Out of bounds (reader overran the writer, or fell so far behind it reads
                 // overwritten data): jump back to the target lag. Audible once, then stable.
                 if (lag < 0 || lag > clipFrames * 0.9)
                 {
-                    int resyncRead = (int)(((w - (long)target) % clipFrames + clipFrames) % clipFrames);
+                    int resyncRead = (int)((((long)(counterUnwrapped / k - target)) % clipFrames + clipFrames) % clipFrames);
                     source.timeSamples = resyncRead;
                     prevRead = resyncRead;
                     lag = target;
                     smoothedLag = target;
-                    Utils.Warning($"MicrophoneSource pacing: resync, lag reset to {targetLagSec * 1000:F0}ms (rate={fillRate:F0}Hz pitch={source.pitch:F2})");
+                    Utils.Warning($"MicrophoneSource pacing: resync, lag reset to {targetLagSec * 1000:F0}ms (k={k:F2} pitch={source.pitch:F3})");
                 }
 
                 if (statusWindow.Elapsed.TotalSeconds >= 5.0)
                 {
-                    Utils.Info($"MicrophoneSource pacing: rate={fillRate:F0}Hz pitch={source.pitch:F2} lag={smoothedLag / fillRate * 1000:F0}ms target={targetLagSec * 1000:F0}ms jitter={jitter / fillRate * 1000:F1}ms");
+                    Utils.Info($"MicrophoneSource pacing: k={k:F2} pitch={source.pitch:F3} lag={smoothedLag / declaredRate * 1000:F0}ms target={targetLagSec * 1000:F0}ms jitter={jitter / declaredRate * 1000:F1}ms");
                     statusWindow.Restart();
                 }
             }
