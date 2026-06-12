@@ -566,7 +566,10 @@ public class MeetManager : MonoBehaviour
         foreach (var obj in _audioObjects.Values)
         {
             if (obj == null) continue;
-            obj.GetComponent<AudioSource>()?.Stop();
+            // Not every audio object has an AudioSource (the local mic object no longer does), and
+            // ?. on GetComponent bypasses Unity's missing-component null semantics in the editor.
+            if (obj.TryGetComponent<AudioSource>(out var audioSource))
+                audioSource.Stop();
             Destroy(obj);
         }
         _audioObjects.Clear();

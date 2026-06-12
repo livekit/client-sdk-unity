@@ -26,7 +26,12 @@ namespace LiveKit
         // captured samples are resampled from clip.frequency to the fixed native-source rate.
         private const uint TargetSampleRate = 48000;
         private const float PreRollSeconds = 0.3f;
-        private const double FragmentedKThreshold = 1.05;
+        private const float SettleSeconds = 0.1f;     // discard the counter's startup burst before measuring
+        // Engaging fragmented mode discards (stride - valid) samples per stride, so a false
+        // positive guarantees audio loss while a false negative only risks mild artifacts. The
+        // observed pathological device measures k=3.2; healthy devices measure ~1.0 with up to a
+        // few percent of startup noise. Keep a wide margin between the two.
+        private const double FragmentedKThreshold = 1.5;
         private const float MaxBacklogSeconds = 0.2f; // drop backlog beyond this after a stall
 
         private readonly string _deviceName;
@@ -149,7 +154,7 @@ namespace LiveKit
             int channels = clip.channels;
             int dataRate = clip.frequency > 0 ? clip.frequency : (int)DefaultMicrophoneSampleRate;
 
-            var reader = new MicClipReader(clipFrames, dataRate, PreRollSeconds, FragmentedKThreshold, MaxBacklogSeconds);
+            var reader = new MicClipReader(clipFrames, dataRate, PreRollSeconds, FragmentedKThreshold, MaxBacklogSeconds, SettleSeconds);
             _resampler = new StreamingResampler(dataRate, (int)TargetSampleRate);
             var ranges = new List<MicClipReader.ReadRange>();
             var clock = System.Diagnostics.Stopwatch.StartNew();

@@ -30,10 +30,12 @@ namespace LiveKit.Internal
         private readonly double _preRollSeconds;
         private readonly double _fragmentedKThreshold;
         private readonly double _maxBacklogSeconds;
+        private readonly double _settleSeconds;
 
         private bool _hasFirstSample;
         private int _prevCounter;
-        private double _preRollStart;
+        private double _firstSampleTime;
+        private double _measureStart = double.NaN;
         private long _preRollAdvance;
         private long _minJump = long.MaxValue;
 
@@ -63,7 +65,8 @@ namespace LiveKit.Internal
         public long TotalDropped { get; private set; }
 
         public MicClipReader(int clipFrames, int dataRate,
-            double preRollSeconds = 0.3, double fragmentedKThreshold = 1.05, double maxBacklogSeconds = 0.2)
+            double preRollSeconds = 0.3, double fragmentedKThreshold = 1.5, double maxBacklogSeconds = 0.2,
+            double settleSeconds = 0.1)
         {
             if (clipFrames <= 0) throw new ArgumentOutOfRangeException(nameof(clipFrames));
             if (dataRate <= 0) throw new ArgumentOutOfRangeException(nameof(dataRate));
@@ -72,6 +75,7 @@ namespace LiveKit.Internal
             _preRollSeconds = preRollSeconds;
             _fragmentedKThreshold = fragmentedKThreshold;
             _maxBacklogSeconds = maxBacklogSeconds;
+            _settleSeconds = settleSeconds;
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace LiveKit.Internal
             {
                 _hasFirstSample = true;
                 _prevCounter = counterPosition;
-                _preRollStart = elapsedSeconds;
+                _firstSampleTime = elapsedSeconds;
                 return;
             }
 
@@ -93,9 +97,22 @@ namespace LiveKit.Internal
 
             if (!Ready)
             {
+                // Discard the settle window entirely: right after a device starts, the counter can
+                // burst ahead while driver buffers flush, which would inflate the measured rate
+                // (observed: a healthy device measuring k=1.07 right after a device transition).
+                if (elapsedSeconds - _firstSampleTime < _settleSeconds)
+                    return;
+                if (double.IsNaN(_measureStart))
+                {
+                    // Anchor the measurement window here; the delta spanning the settle boundary
+                    // is discarded with the settle period.
+                    _measureStart = elapsedSeconds;
+                    return;
+                }
+
                 _preRollAdvance += d;
                 if (d > 0 && d < _minJump) _minJump = d;
-                double window = elapsedSeconds - _preRollStart;
+                double window = elapsedSeconds - _measureStart;
                 if (window >= _preRollSeconds)
                     FinishPreRoll(window);
                 return;

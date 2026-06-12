@@ -169,6 +169,24 @@ namespace LiveKit.EditModeTests
         }
 
         [Test]
+        public void SlightlyInflatedCounter_StaysContiguous()
+        {
+            // Regression: a healthy MacBook mic measured k=1.07 right after a device transition
+            // (startup-burst noise), and the old 1.05 threshold engaged fragmented mode, silently
+            // discarding ~6% of real audio. Borderline rates must stay contiguous.
+            const int clipFrames = 96000;
+            const int rate = 48000;
+            const int perTick = 514; // ~k=1.07 at 10ms ticks
+            const double dt = 0.01;
+
+            var reader = new MicClipReader(clipFrames, rate, PreRoll);
+            RunPreRoll(reader, clipFrames, perTick, dt);
+
+            Assert.IsFalse(reader.Fragmented, "k slightly above 1 must not trigger fragmented mode");
+            Assert.AreEqual(1.07, reader.K, 0.02);
+        }
+
+        [Test]
         public void NoRangesAreEmittedDuringPreRoll()
         {
             const int clipFrames = 96000;
