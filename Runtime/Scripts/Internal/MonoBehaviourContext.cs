@@ -34,9 +34,38 @@ namespace LiveKit
         /// Runs a coroutine from a non-MonoBehaviour context, invoking the callback when the
         /// coroutine completes.
         /// </summary>
+        /// <remarks>
+        /// If the singleton has already been destroyed (e.g. during play mode exit or
+        /// application shutdown) the coroutine cannot be started on a MonoBehaviour, so it is
+        /// drained synchronously instead. This keeps cleanup side effects working without
+        /// throwing a <see cref="MissingReferenceException"/>.
+        /// </remarks>
         internal static void RunCoroutine(IEnumerator coroutine, Action onComplete = null)
         {
+            // Unity's overloaded == treats a destroyed object as null.
+            if (_instance == null)
+            {
+                DrainCoroutine(coroutine);
+                onComplete?.Invoke();
+                return;
+            }
+
             _instance.StartCoroutine(WrapCoroutine(coroutine, onComplete));
+        }
+
+        /// <summary>
+        /// Synchronously runs a coroutine to completion, ignoring time-based yield instructions
+        /// and recursing into nested enumerators. Used as a fallback when no MonoBehaviour is
+        /// available to host the coroutine.
+        /// </summary>
+        private static void DrainCoroutine(IEnumerator coroutine)
+        {
+            if (coroutine == null) return;
+            while (coroutine.MoveNext())
+            {
+                if (coroutine.Current is IEnumerator nested)
+                    DrainCoroutine(nested);
+            }
         }
 
         private static IEnumerator WrapCoroutine(IEnumerator coroutine, Action onComplete = null)
