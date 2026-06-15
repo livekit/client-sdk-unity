@@ -36,6 +36,7 @@ namespace LiveKit
         private const float DeviceLostTimeoutSeconds = 1f;  // no counter advance for this long = device gone
         private const float RecoverRetrySeconds = 1f;
         private const float DeviceRemovalTimeoutSeconds = 2f; // wait up to this for a lost device to leave the list
+        private const float RecoverSettleSeconds = 0.3f;      // let the replacement device's driver come up before starting it
 
         private string _deviceName;
 
@@ -100,7 +101,14 @@ namespace LiveKit
             _started = true;
         }
 
-        private IEnumerator StartMicrophone()
+        // quietFailure: during automatic recovery a failed start is expected (the replacement
+        // device's driver may not be startable yet) and is retried, so transient failures are
+        // logged at debug level instead of error to avoid spamming the console mid-handoff. Note:
+        // when Microphone.Start itself fails, Unity's native FMOD layer still logs its own error
+        // (e.g. "Starting microphone failed ... (80)"); that line originates inside the engine and
+        // cannot be suppressed from here — the settle delay before recovery's first attempt is what
+        // reduces how often it fires.
+        private IEnumerator StartMicrophone(bool quietFailure = false)
         {
             // Verify microphone is still authorized (could change during background)
             if (!Application.HasUserAuthorization(UserAuthorization.Microphone))
@@ -126,13 +134,13 @@ namespace LiveKit
             }
             catch (Exception e)
             {
-                Utils.Error($"MicrophoneSource: Exception starting microphone: {e.Message}");
+                LogStartIssue(quietFailure, $"MicrophoneSource: Exception starting microphone: {e.Message}");
                 yield break;
             }
 
             if (clip == null)
             {
-                Utils.Error("MicrophoneSource: Microphone.Start returned null, audio session may not be ready");
+                LogStartIssue(quietFailure, "MicrophoneSource: Microphone.Start returned null, audio session may not be ready");
                 yield break;
             }
 
@@ -147,7 +155,7 @@ namespace LiveKit
 
             if (Microphone.GetPosition(device) <= 0)
             {
-                Utils.Error($"MicrophoneSource: Microphone did not start producing data after {timeout}s");
+                LogStartIssue(quietFailure, $"MicrophoneSource: Microphone did not start producing data after {timeout}s");
                 yield break;
             }
 
@@ -155,6 +163,12 @@ namespace LiveKit
 
             _capturing = true;
             MonoBehaviourContext.RunCoroutine(CaptureLoop(clip, device, ++_captureGeneration));
+        }
+
+        private static void LogStartIssue(bool quiet, string msg)
+        {
+            if (quiet) Utils.Debug(msg);
+            else Utils.Error(msg);
         }
 
         /// <summary>
@@ -225,6 +239,12 @@ namespace LiveKit
                     yield return new WaitForSeconds(0.1f);
                     waited += 0.1f;
                 }
+
+                // The lost device has left the list, but the OS is still promoting the replacement
+                // default and FMOD has yet to make its recording driver startable. Starting now is
+                // what trips FMOD error 80; a brief settle lets the new driver come up so the first
+                // attempt usually succeeds rather than failing and retrying.
+                yield return new WaitForSeconds(RecoverSettleSeconds);
             }
 
             while (_started && !_disposed && !_paused && generation == _captureGeneration)
@@ -236,7 +256,7 @@ namespace LiveKit
                     _deviceName = Array.IndexOf(devices, lostDevice) >= 0 ? lostDevice : null;
 
                     int generationBefore = _captureGeneration;
-                    yield return StartMicrophone();
+                    yield return StartMicrophone(quietFailure: true);
                     if (_captureGeneration != generationBefore)
                     {
                         // A new CaptureLoop is running; recovery succeeded.
