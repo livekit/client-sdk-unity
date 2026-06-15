@@ -35,6 +35,7 @@ namespace LiveKit
         private const float MaxBacklogSeconds = 0.2f;       // drop backlog beyond this after a stall
         private const float DeviceLostTimeoutSeconds = 1f;  // no counter advance for this long = device gone
         private const float RecoverRetrySeconds = 1f;
+        private const float DeviceRemovalTimeoutSeconds = 2f; // wait up to this for a lost device to leave the list
 
         private string _deviceName;
 
@@ -208,6 +209,23 @@ namespace LiveKit
         {
             if (Microphone.IsRecording(lostDevice))
                 Microphone.End(lostDevice);
+
+            // Wait for the OS to finish removing the lost device before re-entering the audio
+            // subsystem. Touching Microphone (GetDeviceCaps / Start) mid-teardown makes FMOD log
+            // "Failed to get recording driver capabilities"; once the device drops out of the list
+            // the subsystem has settled. Reading the device list itself does not initialize a
+            // device, so it stays quiet. The retry loop below still covers slower replacements.
+            if (!string.IsNullOrEmpty(lostDevice))
+            {
+                float waited = 0f;
+                while (waited < DeviceRemovalTimeoutSeconds
+                       && Array.IndexOf(Microphone.devices, lostDevice) >= 0
+                       && _started && !_disposed && !_paused && generation == _captureGeneration)
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    waited += 0.1f;
+                }
+            }
 
             while (_started && !_disposed && !_paused && generation == _captureGeneration)
             {
