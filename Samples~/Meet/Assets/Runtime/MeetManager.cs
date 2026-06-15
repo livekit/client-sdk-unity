@@ -453,7 +453,7 @@ public class MeetManager : MonoBehaviour
     {
         if (_audioObjects.ContainsKey(LocalAudioTrackName)) yield break;
 
-        // Start the microphone here for early iOS permission request
+        // Start the microphone here for early iOS permission request and android getting access to Microphone.devices
         Microphone.Start(null, true, 10, 44100);
         
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");

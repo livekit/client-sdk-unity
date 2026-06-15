@@ -82,7 +82,7 @@ namespace LiveKit
                     _deviceName,
                     loop: true,
                     lengthSec: 1,
-                    frequency: (int)DefaultMicrophoneSampleRate
+                    frequency: (int)_expectedSampleRate
                 );
             }
             catch (Exception e)

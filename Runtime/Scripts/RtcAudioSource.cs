@@ -46,22 +46,11 @@ namespace LiveKit
         /// </remarks>
         public abstract event Action<float[], int, int> AudioRead;
 
-#if UNITY_IOS && !UNITY_EDITOR
-        // iOS microphone sample rate is 24k
-        public static uint DefaultMicrophoneSampleRate = 24000;
-
-        public static uint DefaultSampleRate = 48000;
-#else
-        public static uint DefaultSampleRate = 48000;
-        public static uint DefaultMicrophoneSampleRate = DefaultSampleRate;
-#endif
-        public static uint DefaultChannels = 2;
-
         private readonly RtcAudioSourceType _sourceType;
         public RtcAudioSourceType SourceType => _sourceType;
         private readonly int _debugId = Interlocked.Increment(ref nextDebugId);
-        private readonly uint _expectedSampleRate;
-        private readonly uint _expectedChannels;
+        internal readonly uint _expectedSampleRate;
+        internal readonly uint _expectedChannels;
 
         internal readonly FfiHandle Handle;
         protected AudioSourceInfo _info;
@@ -128,26 +117,12 @@ namespace LiveKit
         // (e.g. batch mode without an audio device).
         private (uint sampleRate, uint channels) ResolveDeviceFormat()
         {
-            uint sampleRate = _sourceType == RtcAudioSourceType.AudioSourceMicrophone
-                ? DefaultMicrophoneSampleRate
-                : DefaultSampleRate;
-            uint channels = DefaultChannels;
+            var config = UnityEngine.AudioSettings.GetConfiguration();
+            var sampleRate = (uint)config.sampleRate;
+            var configuredChannels = SpeakerModeChannels(config.speakerMode);
+            var channels = configuredChannels;
 
-            try
-            {
-                var config = UnityEngine.AudioSettings.GetConfiguration();
-                if (config.sampleRate > 0)
-                    sampleRate = (uint)config.sampleRate;
-                var configuredChannels = SpeakerModeChannels(config.speakerMode);
-                if (configuredChannels > 0)
-                    channels = configuredChannels;
-
-                Utils.Info($"Configured native audio source with sampleRate {sampleRate} and channels {channels}");
-            }
-            catch (Exception e)
-            {
-                Utils.Warning($"{DebugTag} could not read Unity audio configuration, using defaults: {e.Message}");
-            }
+            Utils.Info($"Configured native audio source with sampleRate {sampleRate} and channels {channels}");
 
             return (sampleRate, channels);
         }
