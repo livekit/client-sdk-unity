@@ -141,6 +141,8 @@ namespace LiveKit
                 var configuredChannels = SpeakerModeChannels(config.speakerMode);
                 if (configuredChannels > 0)
                     channels = configuredChannels;
+
+                Utils.Info($"Configured native audio source with sampleRate {sampleRate} and channels {channels}");
             }
             catch (Exception e)
             {
