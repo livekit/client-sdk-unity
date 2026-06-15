@@ -14,12 +14,20 @@ namespace LiveKit
     sealed public class MicrophoneSource : RtcAudioSource
     {
         private readonly GameObject _sourceObject;
+
+        // The device requested by the caller. Empty/null means "follow the OS default".
         private readonly string _deviceName;
+
+        // The device the microphone is actually recording from right now. This can differ from
+        // _deviceName when the preferred device is unavailable and we fall back to the OS default,
+        // so all Microphone.* calls (IsRecording/GetPosition/End) must use this name.
+        private string _activeDeviceName;
 
         public override event Action<float[], int, int> AudioRead;
 
         private bool _disposed = false;
         private bool _started = false;
+        private bool _restarting = false;
 
         /// <summary>
         /// Creates a new microphone source for the given device.
@@ -54,6 +62,10 @@ namespace LiveKit
                 throw new InvalidOperationException("Microphone access not authorized");
 
             MonoBehaviourContext.OnApplicationPauseEvent += OnApplicationPause;
+            // Restart capture when the system audio device changes (e.g. a Bluetooth headset is
+            // unplugged). Unity rebuilds its audio graph on a device change, which both detaches
+            // the AudioProbe tap and leaves Microphone.Start bound to a now-gone device.
+            AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged;
             MonoBehaviourContext.RunCoroutine(StartMicrophone());
 
             _started = true;
@@ -75,11 +87,16 @@ namespace LiveKit
                 yield break;
             }
 
+            // Resolve which device to record from. Falls back to the OS default when the
+            // preferred device is gone, so an unplugged headset transparently hands off to the
+            // built-in microphone.
+            _activeDeviceName = ResolveCaptureDevice();
+
             AudioClip clip = null;
             try
             {
                 clip = Microphone.Start(
-                    _deviceName,
+                    _activeDeviceName,
                     loop: true,
                     lengthSec: 1,
                     frequency: (int)_expectedSampleRate
@@ -123,20 +140,20 @@ namespace LiveKit
             // Wait for microphone to actually start producing data with a timeout
             const float timeout = 2f;
             float elapsed = 0f;
-            while (Microphone.GetPosition(_deviceName) <= 0 && elapsed < timeout)
+            while (Microphone.GetPosition(_activeDeviceName) <= 0 && elapsed < timeout)
             {
                 yield return new WaitForSeconds(0.05f);
                 elapsed += 0.05f;
             }
 
-            if (Microphone.GetPosition(_deviceName) <= 0)
+            if (Microphone.GetPosition(_activeDeviceName) <= 0)
             {
                 Utils.Error($"MicrophoneSource: Microphone did not start producing data after {timeout}s");
                 yield break;
             }
 
             source.Play();
-            Utils.Debug($"MicrophoneSource device='{_deviceName}' started successfully");
+            Utils.Debug($"MicrophoneSource device='{_activeDeviceName ?? "<default>"}' started successfully");
         }
 
         /// <summary>
@@ -147,13 +164,14 @@ namespace LiveKit
             base.Stop();
             MonoBehaviourContext.RunCoroutine(StopMicrophone());
             MonoBehaviourContext.OnApplicationPauseEvent -= OnApplicationPause;
+            AudioSettings.OnAudioConfigurationChanged -= OnAudioConfigurationChanged;
             _started = false;
         }
 
         private IEnumerator StopMicrophone()
         {
-            if (Microphone.IsRecording(_deviceName))
-                Microphone.End(_deviceName);
+            if (Microphone.IsRecording(_activeDeviceName))
+                Microphone.End(_activeDeviceName);
 
             // Check if GameObject is still valid before trying to access components
             if (_sourceObject != null)
@@ -170,7 +188,7 @@ namespace LiveKit
                     UnityEngine.Object.Destroy(source);
             }
 
-            Utils.Debug($"MicrophoneSource device='{_deviceName}' stopped");
+            Utils.Debug($"MicrophoneSource device='{_activeDeviceName ?? "<default>"}' stopped");
             yield return null;
         }
 
@@ -197,8 +215,57 @@ namespace LiveKit
             }
         }
 
+        // Picks the device name to pass to Microphone.Start. An empty preferred name, or a
+        // preferred device that is no longer connected, resolves to null so Unity records from
+        // the current OS default device.
+        private string ResolveCaptureDevice()
+        {
+            if (string.IsNullOrEmpty(_deviceName))
+                return null;
+
+            if (Array.IndexOf(Microphone.devices, _deviceName) >= 0)
+                return _deviceName;
+
+            Utils.Debug($"MicrophoneSource: preferred device '{_deviceName}' is no longer available, falling back to the OS default");
+            return null;
+        }
+
+        // Fires on the main thread when Unity's audio configuration changes, including when the
+        // system audio device changes (e.g. connecting/disconnecting a Bluetooth headset). Mirrors
+        // AudioStream.OnAudioConfigurationChanged on the playback side.
+        private void OnAudioConfigurationChanged(bool deviceWasChanged)
+        {
+            if (!_started)
+                return;
+
+            // The native source's rate is fixed at construction and RtcAudioSource drops frames
+            // whose rate doesn't match it. If the device change moved Unity's DSP output rate,
+            // restarting capture alone won't recover audio — warn so the silence is diagnosable.
+            // Full recovery (recreating the native source at the new rate) is handled separately.
+            var outputSampleRate = (uint)AudioSettings.outputSampleRate;
+            if (outputSampleRate != _expectedSampleRate)
+            {
+                Utils.Warning($"MicrophoneSource: audio device change moved the DSP output rate to {outputSampleRate}Hz, but the native source is fixed at {_expectedSampleRate}Hz. Captured frames will be dropped until the track is recreated at the new rate.");
+            }
+
+            // Unity rebuilds its audio graph on any configuration change — including an output
+            // route change (e.g. a Bluetooth headset disconnecting) where the input device itself
+            // doesn't change. On mobile the input is always the built-in mic regardless of the
+            // headset, so deviceWasChanged is false there even though the rebuild detaches the
+            // AudioProbe tap and stops capture. Always restart so the tap is re-registered;
+            // AudioStream does the same on the playback side and never gates on deviceWasChanged.
+            Utils.Debug("MicrophoneSource: audio configuration changed, restarting capture");
+            MonoBehaviourContext.RunCoroutine(RestartMicrophone());
+        }
+
         private IEnumerator RestartMicrophone()
         {
+            // The device-change event can fire several times around a single hardware swap;
+            // ignore re-entrant restarts so overlapping Stop/Start coroutines don't race.
+            if (_restarting)
+                yield break;
+            _restarting = true;
+
             yield return StopMicrophone();
 
             // Wait for iOS audio session to be ready before attempting to restart.
@@ -207,6 +274,8 @@ namespace LiveKit
             yield return WaitForMicrophoneReady();
 
             yield return StartMicrophone();
+
+            _restarting = false;
         }
 
         private IEnumerator WaitForMicrophoneReady()
