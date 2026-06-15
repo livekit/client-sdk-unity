@@ -122,11 +122,24 @@ namespace LiveKit
 
         /// <summary>
         /// Gets the lists of available recording and playout devices.
+        ///
+        /// Platform behavior:
+        /// - Desktop (Windows/macOS/Linux): returns the full list of microphones and
+        ///   speakers reported by the OS. Devices can be selected with
+        ///   <see cref="SetRecordingDevice(string)"/> / <see cref="SetPlayoutDevice(string)"/>.
+        /// - iOS and Android: returns a single placeholder entry at index 0 for each
+        ///   list, representing the system's currently selected default input/output.
+        ///   The OS owns audio routing on these platforms (AVAudioSession on iOS,
+        ///   AudioManager on Android), so individual devices are not enumerated and
+        ///   selecting one is a no-op (see <see cref="SetRecordingDevice(string)"/> /
+        ///   <see cref="SetPlayoutDevice(string)"/>).
         /// </summary>
         /// <returns>
         /// A tuple containing:
-        /// - Recording: List of available microphones
-        /// - Playout: List of available speakers/headphones
+        /// - Recording: List of available microphones (on iOS/Android, a single
+        ///   placeholder for the OS default input)
+        /// - Playout: List of available speakers/headphones (on iOS/Android, a single
+        ///   placeholder for the OS default output)
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// Thrown if device enumeration failed.
@@ -191,7 +204,9 @@ namespace LiveKit
         /// On Android and iOS this is a no-op in the native ADM: input routing is
         /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
         /// the call is acknowledged but ignored. The method is still safe to call,
-        /// and the response carries no error.
+        /// and the response carries no error. <see cref="GetDevices"/> only exposes a
+        /// single placeholder entry (index 0) for the OS default input on these
+        /// platforms, so there is nothing else to select.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Recording[i].Guid</param>
         /// <exception cref="InvalidOperationException">
@@ -238,7 +253,9 @@ namespace LiveKit
         /// On Android and iOS this is a no-op in the native ADM: output routing is
         /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
         /// the call is acknowledged but ignored. The method is still safe to call,
-        /// and the response carries no error.
+        /// and the response carries no error. <see cref="GetDevices"/> only exposes a
+        /// single placeholder entry (index 0) for the OS default output on these
+        /// platforms, so there is nothing else to select.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Playout[i].Guid</param>
         /// <exception cref="InvalidOperationException">
