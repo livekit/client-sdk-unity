@@ -23,8 +23,8 @@ namespace LiveKit
         // contiguous stream is reconstructed from it.
         //
         // The clip's data rate is clip.frequency (verified: fragments play at correct pitch), so
-        // captured samples are resampled from clip.frequency to the fixed native-source rate.
-        private const uint TargetSampleRate = 48000;
+        // captured samples are resampled from clip.frequency to the native source's configured rate
+        // (RtcAudioSource.ExpectedSampleRate, set from the constructor below).
         private const float PreRollSeconds = 0.3f;
         private const float SettleSeconds = 0.1f;     // discard the counter's startup burst before measuring
         // Engaging fragmented mode discards (stride - valid) samples per stride, so a false
@@ -37,6 +37,14 @@ namespace LiveKit
         private const float RecoverRetrySeconds = 1f;
         private const float DeviceRemovalTimeoutSeconds = 2f; // wait up to this for a lost device to leave the list
         private const float RecoverSettleSeconds = 0.3f;      // let the replacement device's driver come up before starting it
+        private const float PollIntervalSeconds = 0.05f;      // cadence for PollUntil readiness checks
+
+        // Cached yield instructions; WaitForSeconds is immutable, so reusing one avoids a per-yield
+        // allocation (and silences the analyzer hint).
+        private static readonly WaitForSeconds WaitPoll = new(PollIntervalSeconds);
+        private static readonly WaitForSeconds WaitDeviceRemoval = new(0.1f);
+        private static readonly WaitForSeconds WaitRecoverSettle = new(RecoverSettleSeconds);
+        private static readonly WaitForSeconds WaitRecoverRetry = new(RecoverRetrySeconds);
 
         private string _deviceName;
 
@@ -62,19 +70,19 @@ namespace LiveKit
         /// <param name="sourceObject">Unused; retained for compatibility. The microphone clip is read
         /// directly, so no scene GameObject/AudioSource is required.</param>
         public MicrophoneSource(string deviceName, GameObject sourceObject)
-            : base(RtcAudioSourceType.AudioSourceMicrophone, TargetSampleRate, 1)
+            : base(RtcAudioSourceType.AudioSourceMicrophone, DefaultSampleRate, 1)
         {
             _deviceName = deviceName;
         }
 
         // The rate requested from Microphone.Start (a hint the platform may not honor), clamped to
         // the device's reported range. The authoritative data rate is clip.frequency afterwards.
-        private static int ResolveRequestedSampleRate(string deviceName)
+        private int ResolveRequestedSampleRate(string deviceName)
         {
             Microphone.GetDeviceCaps(deviceName, out int minFreq, out int maxFreq);
             if (minFreq == 0 && maxFreq == 0)
-                return (int)TargetSampleRate;
-            return Mathf.Clamp((int)TargetSampleRate, minFreq, maxFreq);
+                return (int)ExpectedSampleRate;
+            return Mathf.Clamp((int)ExpectedSampleRate, minFreq, maxFreq);
         }
 
         /// <summary>
@@ -146,12 +154,7 @@ namespace LiveKit
 
             // Wait for microphone to actually start producing data with a timeout
             const float timeout = 2f;
-            float elapsed = 0f;
-            while (Microphone.GetPosition(device) <= 0 && elapsed < timeout)
-            {
-                yield return new WaitForSeconds(0.05f);
-                elapsed += 0.05f;
-            }
+            yield return PollUntil(() => Microphone.GetPosition(device) > 0, timeout);
 
             if (Microphone.GetPosition(device) <= 0)
             {
@@ -159,7 +162,7 @@ namespace LiveKit
                 yield break;
             }
 
-            Utils.Info($"MicrophoneSource device='{device}' clip={clip.frequency}Hz/{clip.channels}ch samples={clip.samples} requested={requestedRate}Hz target={TargetSampleRate}Hz");
+            Utils.Info($"MicrophoneSource device='{device}' clip={clip.frequency}Hz/{clip.channels}ch samples={clip.samples} requested={requestedRate}Hz target={ExpectedSampleRate}Hz");
 
             _capturing = true;
             MonoBehaviourContext.RunCoroutine(CaptureLoop(clip, device, ++_captureGeneration));
@@ -169,6 +172,18 @@ namespace LiveKit
         {
             if (quiet) Utils.Debug(msg);
             else Utils.Error(msg);
+        }
+
+        // Polls a condition every PollIntervalSeconds until it holds or the timeout elapses.
+        // Callers re-check the condition afterwards to distinguish success from timeout.
+        private IEnumerator PollUntil(Func<bool> done, float timeout)
+        {
+            float elapsed = 0f;
+            while (!done() && elapsed < timeout)
+            {
+                yield return WaitPoll;
+                elapsed += PollIntervalSeconds;
+            }
         }
 
         /// <summary>
@@ -236,7 +251,7 @@ namespace LiveKit
                        && Array.IndexOf(Microphone.devices, lostDevice) >= 0
                        && _started && !_disposed && !_paused && generation == _captureGeneration)
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    yield return WaitDeviceRemoval;
                     waited += 0.1f;
                 }
 
@@ -244,7 +259,7 @@ namespace LiveKit
                 // default and FMOD has yet to make its recording driver startable. Starting now is
                 // what trips FMOD error 80; a brief settle lets the new driver come up so the first
                 // attempt usually succeeds rather than failing and retrying.
-                yield return new WaitForSeconds(RecoverSettleSeconds);
+                yield return WaitRecoverSettle;
             }
 
             while (_started && !_disposed && !_paused && generation == _captureGeneration)
@@ -264,7 +279,7 @@ namespace LiveKit
                         yield break;
                     }
                 }
-                yield return new WaitForSeconds(RecoverRetrySeconds);
+                yield return WaitRecoverRetry;
             }
         }
 
@@ -280,7 +295,7 @@ namespace LiveKit
             int dataRate = clip.frequency > 0 ? clip.frequency : (int)DefaultMicrophoneSampleRate;
 
             var reader = new MicClipReader(clipFrames, dataRate, PreRollSeconds, FragmentedKThreshold, MaxBacklogSeconds, SettleSeconds);
-            _resampler = new StreamingResampler(dataRate, (int)TargetSampleRate);
+            _resampler = new StreamingResampler(dataRate, (int)ExpectedSampleRate);
             var ranges = new List<MicClipReader.ReadRange>();
             var clock = System.Diagnostics.Stopwatch.StartNew();
             bool announced = false;
@@ -334,7 +349,7 @@ namespace LiveKit
         }
 
         // Reads a contiguous range, downmixes to mono, resamples clip.frequency ->
-        // TargetSampleRate (the resampler carries state across calls, so fragment junctions stay
+        // ExpectedSampleRate (the resampler carries state across calls, so fragment junctions stay
         // continuous), and fires AudioRead.
         private void ReadAndPush(AudioClip clip, int channels, int start, int count)
         {
@@ -362,7 +377,7 @@ namespace LiveKit
 
             var output = _resampler.Process(mono, count);
             if (output.Length > 0)
-                AudioRead?.Invoke(output, 1, (int)TargetSampleRate);
+                AudioRead?.Invoke(output, 1, (int)ExpectedSampleRate);
         }
 
         /// <summary>
@@ -424,15 +439,10 @@ namespace LiveKit
             // Wait for microphone devices to become available again after iOS audio session interruption.
             // This is more reliable than a fixed delay because we wait for actual system readiness.
             const float timeout = 2f;
-            float elapsed = 0f;
 
             // On iOS, Microphone.devices may be empty immediately after resume while
             // AVAudioSession is recovering from interruption. Wait until devices are available.
-            while (Microphone.devices.Length == 0 && elapsed < timeout)
-            {
-                yield return new WaitForSeconds(0.05f);
-                elapsed += 0.05f;
-            }
+            yield return PollUntil(() => Microphone.devices.Length > 0, timeout);
 
             if (Microphone.devices.Length == 0)
             {

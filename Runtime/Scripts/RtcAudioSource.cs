@@ -63,6 +63,13 @@ namespace LiveKit
         private readonly uint _expectedSampleRate;
         private readonly uint _expectedChannels;
 
+        /// <summary>The sample rate the native source was configured with; the format captured
+        /// audio must match (subclasses resample to this).</summary>
+        protected uint ExpectedSampleRate => _expectedSampleRate;
+
+        /// <summary>The channel count the native source was configured with.</summary>
+        protected uint ExpectedChannels => _expectedChannels;
+
         internal readonly FfiHandle Handle;
         protected AudioSourceInfo _info;
 
