@@ -49,11 +49,21 @@ namespace LiveKit
         private readonly RtcAudioSourceType _sourceType;
         public RtcAudioSourceType SourceType => _sourceType;
         private readonly int _debugId = Interlocked.Increment(ref nextDebugId);
-        internal readonly uint _expectedSampleRate;
-        internal readonly uint _expectedChannels;
 
-        internal readonly FfiHandle Handle;
+        // The format the native source is configured for. Mutable because Reconfigure() can
+        // recreate the source at a new format when the audio device's rate/channels change.
+        internal uint _expectedSampleRate;
+        internal uint _expectedChannels;
+
+        internal FfiHandle Handle;
         protected AudioSourceInfo _info;
+
+        /// <summary>
+        /// Raised after the native audio source has been recreated at a new format (see
+        /// <see cref="Reconfigure"/>). The source's <see cref="Handle"/> changes, so any track
+        /// bound to the previous handle must be recreated against the new one.
+        /// </summary>
+        public event Action FormatChanged;
 
         // CaptureAudioFrame is asynchronous: the native side can continue reading from the PCM
         // pointer after request.Send() returns and encode it later on another queue. Because of
@@ -94,6 +104,14 @@ namespace LiveKit
                 (_expectedSampleRate, _expectedChannels) = ResolveDeviceFormat();
             }
 
+            CreateNativeSource();
+        }
+
+        // Creates the native FFI audio source for the current _expectedSampleRate/_expectedChannels
+        // and stores its handle. Called once from the constructor and again from Reconfigure() when
+        // the format changes.
+        private void CreateNativeSource()
+        {
             using var request = FFIBridge.Instance.NewRequest<NewAudioSourceRequest>();
             var newAudioSource = request.request;
             newAudioSource.Type = AudioSourceType.AudioSourceNative;
@@ -111,11 +129,41 @@ namespace LiveKit
             Utils.Debug($"{DebugTag} created handle={Handle.DangerousGetHandle()} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
         }
 
+        /// <summary>
+        /// Recreates the native audio source at a new format. The Rust FFI source does not
+        /// resample and rejects frames whose rate/channels differ from how it was created, so when
+        /// the capture device moves Unity's output format we must build a fresh source.
+        /// </summary>
+        /// <remarks>
+        /// Must be called while capture is paused (no <see cref="AudioRead"/> callbacks in flight),
+        /// because it disposes and replaces <see cref="Handle"/>. Raises <see cref="FormatChanged"/>
+        /// on success so the owner can re-bind any track to the new handle.
+        /// </remarks>
+        /// <returns>True if the source was recreated; false if the format was unchanged or invalid.</returns>
+        public bool Reconfigure(uint sampleRate, uint channels)
+        {
+            if (_disposed) return false;
+            if (sampleRate == 0 || channels == 0) return false;
+            if (sampleRate == _expectedSampleRate && channels == _expectedChannels) return false;
+
+            Utils.Debug($"{DebugTag} reconfigure {_expectedSampleRate}/{_expectedChannels} -> {sampleRate}/{channels}");
+
+            // The native source stays alive as long as a track references it, so disposing our
+            // handle here is safe even before the old track is unpublished.
+            Handle?.Dispose();
+            _expectedSampleRate = sampleRate;
+            _expectedChannels = channels;
+            CreateNativeSource();
+
+            FormatChanged?.Invoke();
+            return true;
+        }
+
         // Reads Unity's actual output audio configuration. The capture path delivers buffers at the
         // DSP output rate/channel count (see AudioProbe), so this is the format the native source
         // must match. Falls back to the platform defaults when Unity cannot report a configuration
         // (e.g. batch mode without an audio device).
-        private (uint sampleRate, uint channels) ResolveDeviceFormat()
+        protected (uint sampleRate, uint channels) ResolveDeviceFormat()
         {
             var config = UnityEngine.AudioSettings.GetConfiguration();
             var sampleRate = (uint)config.sampleRate;

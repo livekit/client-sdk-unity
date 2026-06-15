@@ -477,14 +477,53 @@ public class MeetManager : MonoBehaviour
         _microphoneActive = true;
         _audioObjects[LocalAudioTrackName] = audioObject;
         _localRtcAudioSource = rtcSource;
+        // When the capture device changes to one with a different sample rate, the source
+        // recreates its native handle; re-bind the published track to the new handle.
+        rtcSource.FormatChanged += OnLocalMicrophoneFormatChanged;
         rtcSource.Start();
 
         if (_participantTiles.TryGetValue(_localId, out var tile))
             tile.SetMicMuted(false);
     }
 
+    // Raised (on the main thread) after the local microphone source recreated its native handle
+    // at a new format. The old track is bound to the now-disposed handle, so republish.
+    private void OnLocalMicrophoneFormatChanged()
+    {
+        StartCoroutine(RepublishLocalMicrophone());
+    }
+
+    private IEnumerator RepublishLocalMicrophone()
+    {
+        if (_localRtcAudioSource == null || _room == null) yield break;
+
+        if (_localAudioTrack != null)
+        {
+            _room.LocalParticipant.UnpublishTrack(_localAudioTrack, false);
+            _localAudioTrack = null;
+        }
+
+        _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, _localRtcAudioSource, _room);
+
+        var options = new TrackPublishOptions
+        {
+            AudioEncoding = new AudioEncoding { MaxBitrate = 64000 },
+            Source = TrackSource.SourceMicrophone
+        };
+
+        var publish = _room.LocalParticipant.PublishTrack(_localAudioTrack, options);
+        yield return publish;
+
+        if (publish.IsError)
+            Debug.LogError("Failed to republish local microphone after format change");
+        else
+            Debug.Log("Republished local microphone track after audio format change");
+    }
+
     private void UnpublishLocalMicrophone()
     {
+        if (_localRtcAudioSource != null)
+            _localRtcAudioSource.FormatChanged -= OnLocalMicrophoneFormatChanged;
         DisposeSource(ref _localRtcAudioSource);
 
         if (_audioObjects.TryGetValue(LocalAudioTrackName, out var obj))
@@ -562,6 +601,8 @@ public class MeetManager : MonoBehaviour
 
     private void CleanUpAllTracks()
     {
+        if (_localRtcAudioSource != null)
+            _localRtcAudioSource.FormatChanged -= OnLocalMicrophoneFormatChanged;
         DisposeSource(ref _localRtcAudioSource);
         DisposeSource(ref _localRtcVideoSource);
 

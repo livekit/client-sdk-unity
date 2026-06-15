@@ -238,24 +238,27 @@ namespace LiveKit
             if (!_started)
                 return;
 
-            // The native source's rate is fixed at construction and RtcAudioSource drops frames
-            // whose rate doesn't match it. If the device change moved Unity's DSP output rate,
-            // restarting capture alone won't recover audio — warn so the silence is diagnosable.
-            // Full recovery (recreating the native source at the new rate) is handled separately.
-            var outputSampleRate = (uint)AudioSettings.outputSampleRate;
-            if (outputSampleRate != _expectedSampleRate)
-            {
-                Utils.Warning($"MicrophoneSource: audio device change moved the DSP output rate to {outputSampleRate}Hz, but the native source is fixed at {_expectedSampleRate}Hz. Captured frames will be dropped until the track is recreated at the new rate.");
-            }
+            // The native source rejects frames whose rate/channels don't match how it was
+            // created. If the device change moved Unity's output format, the source must be
+            // recreated at the new format (and its track re-bound) — otherwise restarting capture
+            // alone won't recover audio. RtcAudioSource.Reconfigure handles the recreation; we
+            // run it inside the restart while capture is paused.
+            var (newRate, newChannels) = ResolveDeviceFormat();
+            bool formatChanged = newRate != _expectedSampleRate || newChannels != _expectedChannels;
 
-            if (deviceWasChanged)
+            if (formatChanged)
+            {
+                Utils.Debug($"MicrophoneSource: DSP format changed to {newRate}/{newChannels}, recreating native source and restarting capture");
+                MonoBehaviourContext.RunCoroutine(RestartMicrophone(newRate, newChannels));
+            }
+            else if (deviceWasChanged)
             {
                 Utils.Debug("MicrophoneSource: audio device changed, restarting capture on the current default device");
                 MonoBehaviourContext.RunCoroutine(RestartMicrophone());
             }
         }
 
-        private IEnumerator RestartMicrophone()
+        private IEnumerator RestartMicrophone(uint reconfigureRate = 0, uint reconfigureChannels = 0)
         {
             // The device-change event can fire several times around a single hardware swap;
             // ignore re-entrant restarts so overlapping Stop/Start coroutines don't race.
@@ -264,6 +267,12 @@ namespace LiveKit
             _restarting = true;
 
             yield return StopMicrophone();
+
+            // With capture stopped (no AudioRead callbacks in flight), it's safe to recreate the
+            // native source at the new format. This raises FormatChanged so the owning track is
+            // re-bound to the new handle.
+            if (reconfigureRate > 0 && reconfigureChannels > 0)
+                Reconfigure(reconfigureRate, reconfigureChannels);
 
             // Wait for iOS audio session to be ready before attempting to restart.
             // On iOS, after app resumes from background, the audio session needs time to
