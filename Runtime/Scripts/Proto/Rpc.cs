@@ -25,33 +25,34 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CglycGMucHJvdG8SDWxpdmVraXQucHJvdG8iNwoIUnBjRXJyb3ISDAoEY29k",
-            "ZRgBIAIoDRIPCgdtZXNzYWdlGAIgAigJEgwKBGRhdGEYAyABKAkiqwEKEVBl",
+            "ZRgBIAIoDRIPCgdtZXNzYWdlGAIgAigJEgwKBGRhdGEYAyABKAkizgEKEVBl",
             "cmZvcm1ScGNSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgB",
             "IAIoBBIcChRkZXN0aW5hdGlvbl9pZGVudGl0eRgCIAIoCRIOCgZtZXRob2QY",
             "AyACKAkSDwoHcGF5bG9hZBgEIAIoCRIbChNyZXNwb25zZV90aW1lb3V0X21z",
-            "GAUgASgNEhgKEHJlcXVlc3RfYXN5bmNfaWQYBiABKAQiTAoYUmVnaXN0ZXJS",
-            "cGNNZXRob2RSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hhbmRsZRgB",
-            "IAIoBBIOCgZtZXRob2QYAiACKAkiTgoaVW5yZWdpc3RlclJwY01ldGhvZFJl",
+            "GAUgASgNEhgKEHJlcXVlc3RfYXN5bmNfaWQYBiABKAQSIQoZbWF4X3JvdW5k",
+            "X3RyaXBfbGF0ZW5jeV9tcxgHIAEoDSJMChhSZWdpc3RlclJwY01ldGhvZFJl",
             "cXVlc3QSIAoYbG9jYWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEg4KBm1l",
-            "dGhvZBgCIAIoCSKWAQoiUnBjTWV0aG9kSW52b2NhdGlvblJlc3BvbnNlUmVx",
-            "dWVzdBIgChhsb2NhbF9wYXJ0aWNpcGFudF9oYW5kbGUYASACKAQSFQoNaW52",
-            "b2NhdGlvbl9pZBgCIAIoBBIPCgdwYXlsb2FkGAMgASgJEiYKBWVycm9yGAQg",
-            "ASgLMhcubGl2ZWtpdC5wcm90by5ScGNFcnJvciImChJQZXJmb3JtUnBjUmVz",
-            "cG9uc2USEAoIYXN5bmNfaWQYASACKAQiGwoZUmVnaXN0ZXJScGNNZXRob2RS",
-            "ZXNwb25zZSIdChtVbnJlZ2lzdGVyUnBjTWV0aG9kUmVzcG9uc2UiNAojUnBj",
-            "TWV0aG9kSW52b2NhdGlvblJlc3BvbnNlUmVzcG9uc2USDQoFZXJyb3IYASAB",
-            "KAkiXwoSUGVyZm9ybVJwY0NhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigEEg8K",
-            "B3BheWxvYWQYAiABKAkSJgoFZXJyb3IYAyABKAsyFy5saXZla2l0LnByb3Rv",
-            "LlJwY0Vycm9yIr4BChhScGNNZXRob2RJbnZvY2F0aW9uRXZlbnQSIAoYbG9j",
-            "YWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEhUKDWludm9jYXRpb25faWQY",
-            "AiACKAQSDgoGbWV0aG9kGAMgAigJEhIKCnJlcXVlc3RfaWQYBCACKAkSFwoP",
-            "Y2FsbGVyX2lkZW50aXR5GAUgAigJEg8KB3BheWxvYWQYBiACKAkSGwoTcmVz",
-            "cG9uc2VfdGltZW91dF9tcxgHIAIoDUIQqgINTGl2ZUtpdC5Qcm90bw=="));
+            "dGhvZBgCIAIoCSJOChpVbnJlZ2lzdGVyUnBjTWV0aG9kUmVxdWVzdBIgChhs",
+            "b2NhbF9wYXJ0aWNpcGFudF9oYW5kbGUYASACKAQSDgoGbWV0aG9kGAIgAigJ",
+            "IpYBCiJScGNNZXRob2RJbnZvY2F0aW9uUmVzcG9uc2VSZXF1ZXN0EiAKGGxv",
+            "Y2FsX3BhcnRpY2lwYW50X2hhbmRsZRgBIAIoBBIVCg1pbnZvY2F0aW9uX2lk",
+            "GAIgAigEEg8KB3BheWxvYWQYAyABKAkSJgoFZXJyb3IYBCABKAsyFy5saXZl",
+            "a2l0LnByb3RvLlJwY0Vycm9yIiYKElBlcmZvcm1ScGNSZXNwb25zZRIQCghh",
+            "c3luY19pZBgBIAIoBCIbChlSZWdpc3RlclJwY01ldGhvZFJlc3BvbnNlIh0K",
+            "G1VucmVnaXN0ZXJScGNNZXRob2RSZXNwb25zZSI0CiNScGNNZXRob2RJbnZv",
+            "Y2F0aW9uUmVzcG9uc2VSZXNwb25zZRINCgVlcnJvchgBIAEoCSJfChJQZXJm",
+            "b3JtUnBjQ2FsbGJhY2sSEAoIYXN5bmNfaWQYASACKAQSDwoHcGF5bG9hZBgC",
+            "IAEoCRImCgVlcnJvchgDIAEoCzIXLmxpdmVraXQucHJvdG8uUnBjRXJyb3Ii",
+            "vgEKGFJwY01ldGhvZEludm9jYXRpb25FdmVudBIgChhsb2NhbF9wYXJ0aWNp",
+            "cGFudF9oYW5kbGUYASACKAQSFQoNaW52b2NhdGlvbl9pZBgCIAIoBBIOCgZt",
+            "ZXRob2QYAyACKAkSEgoKcmVxdWVzdF9pZBgEIAIoCRIXCg9jYWxsZXJfaWRl",
+            "bnRpdHkYBSACKAkSDwoHcGF5bG9hZBgGIAIoCRIbChNyZXNwb25zZV90aW1l",
+            "b3V0X21zGAcgAigNQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RpcError), global::LiveKit.Proto.RpcError.Parser, new[]{ "Code", "Message", "Data" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PerformRpcRequest), global::LiveKit.Proto.PerformRpcRequest.Parser, new[]{ "LocalParticipantHandle", "DestinationIdentity", "Method", "Payload", "ResponseTimeoutMs", "RequestAsyncId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PerformRpcRequest), global::LiveKit.Proto.PerformRpcRequest.Parser, new[]{ "LocalParticipantHandle", "DestinationIdentity", "Method", "Payload", "ResponseTimeoutMs", "RequestAsyncId", "MaxRoundTripLatencyMs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RegisterRpcMethodRequest), global::LiveKit.Proto.RegisterRpcMethodRequest.Parser, new[]{ "LocalParticipantHandle", "Method" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.UnregisterRpcMethodRequest), global::LiveKit.Proto.UnregisterRpcMethodRequest.Parser, new[]{ "LocalParticipantHandle", "Method" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.RpcMethodInvocationResponseRequest), global::LiveKit.Proto.RpcMethodInvocationResponseRequest.Parser, new[]{ "LocalParticipantHandle", "InvocationId", "Payload", "Error" }, null, null, null, null),
@@ -430,6 +431,7 @@ namespace LiveKit.Proto {
       payload_ = other.payload_;
       responseTimeoutMs_ = other.responseTimeoutMs_;
       requestAsyncId_ = other.requestAsyncId_;
+      maxRoundTripLatencyMs_ = other.maxRoundTripLatencyMs_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -598,6 +600,33 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~4;
     }
 
+    /// <summary>Field number for the "max_round_trip_latency_ms" field.</summary>
+    public const int MaxRoundTripLatencyMsFieldNumber = 7;
+    private readonly static uint MaxRoundTripLatencyMsDefaultValue = 0;
+
+    private uint maxRoundTripLatencyMs_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint MaxRoundTripLatencyMs {
+      get { if ((_hasBits0 & 8) != 0) { return maxRoundTripLatencyMs_; } else { return MaxRoundTripLatencyMsDefaultValue; } }
+      set {
+        _hasBits0 |= 8;
+        maxRoundTripLatencyMs_ = value;
+      }
+    }
+    /// <summary>Gets whether the "max_round_trip_latency_ms" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasMaxRoundTripLatencyMs {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "max_round_trip_latency_ms" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearMaxRoundTripLatencyMs() {
+      _hasBits0 &= ~8;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -619,6 +648,7 @@ namespace LiveKit.Proto {
       if (Payload != other.Payload) return false;
       if (ResponseTimeoutMs != other.ResponseTimeoutMs) return false;
       if (RequestAsyncId != other.RequestAsyncId) return false;
+      if (MaxRoundTripLatencyMs != other.MaxRoundTripLatencyMs) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -632,6 +662,7 @@ namespace LiveKit.Proto {
       if (HasPayload) hash ^= Payload.GetHashCode();
       if (HasResponseTimeoutMs) hash ^= ResponseTimeoutMs.GetHashCode();
       if (HasRequestAsyncId) hash ^= RequestAsyncId.GetHashCode();
+      if (HasMaxRoundTripLatencyMs) hash ^= MaxRoundTripLatencyMs.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -674,6 +705,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(48);
         output.WriteUInt64(RequestAsyncId);
       }
+      if (HasMaxRoundTripLatencyMs) {
+        output.WriteRawTag(56);
+        output.WriteUInt32(MaxRoundTripLatencyMs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -708,6 +743,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(48);
         output.WriteUInt64(RequestAsyncId);
       }
+      if (HasMaxRoundTripLatencyMs) {
+        output.WriteRawTag(56);
+        output.WriteUInt32(MaxRoundTripLatencyMs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -735,6 +774,9 @@ namespace LiveKit.Proto {
       }
       if (HasRequestAsyncId) {
         size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestAsyncId);
+      }
+      if (HasMaxRoundTripLatencyMs) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(MaxRoundTripLatencyMs);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -765,6 +807,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasRequestAsyncId) {
         RequestAsyncId = other.RequestAsyncId;
+      }
+      if (other.HasMaxRoundTripLatencyMs) {
+        MaxRoundTripLatencyMs = other.MaxRoundTripLatencyMs;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -809,6 +854,10 @@ namespace LiveKit.Proto {
             RequestAsyncId = input.ReadUInt64();
             break;
           }
+          case 56: {
+            MaxRoundTripLatencyMs = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -850,6 +899,10 @@ namespace LiveKit.Proto {
           }
           case 48: {
             RequestAsyncId = input.ReadUInt64();
+            break;
+          }
+          case 56: {
+            MaxRoundTripLatencyMs = input.ReadUInt32();
             break;
           }
         }

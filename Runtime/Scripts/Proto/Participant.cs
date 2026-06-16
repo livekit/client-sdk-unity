@@ -25,7 +25,7 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChFwYXJ0aWNpcGFudC5wcm90bxINbGl2ZWtpdC5wcm90bxoMaGFuZGxlLnBy",
-            "b3RvGgt0cmFjay5wcm90byLqAwoPUGFydGljaXBhbnRJbmZvEgsKA3NpZBgB",
+            "b3RvGgt0cmFjay5wcm90byKDBAoPUGFydGljaXBhbnRJbmZvEgsKA3NpZBgB",
             "IAIoCRIMCgRuYW1lGAIgAigJEhAKCGlkZW50aXR5GAMgAigJEi4KBXN0YXRl",
             "GAQgAigOMh8ubGl2ZWtpdC5wcm90by5QYXJ0aWNpcGFudFN0YXRlEhAKCG1l",
             "dGFkYXRhGAUgAigJEkIKCmF0dHJpYnV0ZXMYBiADKAsyLi5saXZla2l0LnBy",
@@ -35,42 +35,43 @@ namespace LiveKit.Proto {
             "UmVhc29uEhEKCWpvaW5lZF9hdBgJIAIoAxI6CgxraW5kX2RldGFpbHMYCiAD",
             "KA4yJC5saXZla2l0LnByb3RvLlBhcnRpY2lwYW50S2luZERldGFpbBI4Cgpw",
             "ZXJtaXNzaW9uGAsgASgLMiQubGl2ZWtpdC5wcm90by5QYXJ0aWNpcGFudFBl",
-            "cm1pc3Npb24aMQoPQXR0cmlidXRlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2",
-            "YWx1ZRgCIAEoCToCOAEibwoQT3duZWRQYXJ0aWNpcGFudBItCgZoYW5kbGUY",
-            "ASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8Y",
-            "AiACKAsyHi5saXZla2l0LnByb3RvLlBhcnRpY2lwYW50SW5mbyKEAgoVUGFy",
-            "dGljaXBhbnRQZXJtaXNzaW9uEhUKDWNhbl9zdWJzY3JpYmUYASACKAgSEwoL",
-            "Y2FuX3B1Ymxpc2gYAiACKAgSGAoQY2FuX3B1Ymxpc2hfZGF0YRgDIAIoCBI3",
-            "ChNjYW5fcHVibGlzaF9zb3VyY2VzGAkgAygOMhoubGl2ZWtpdC5wcm90by5U",
-            "cmFja1NvdXJjZRIOCgZoaWRkZW4YByACKAgSGwoTY2FuX3VwZGF0ZV9tZXRh",
-            "ZGF0YRgKIAIoCBIdChVjYW5fc3Vic2NyaWJlX21ldHJpY3MYDCACKAgSIAoY",
-            "Y2FuX21hbmFnZV9hZ2VudF9zZXNzaW9uGA0gAigIKpEBChBQYXJ0aWNpcGFu",
-            "dFN0YXRlEh0KGVBBUlRJQ0lQQU5UX1NUQVRFX0pPSU5JTkcQABIcChhQQVJU",
-            "SUNJUEFOVF9TVEFURV9KT0lORUQQARIcChhQQVJUSUNJUEFOVF9TVEFURV9B",
-            "Q1RJVkUQAhIiCh5QQVJUSUNJUEFOVF9TVEFURV9ESVNDT05ORUNURUQQAyre",
-            "AQoPUGFydGljaXBhbnRLaW5kEh0KGVBBUlRJQ0lQQU5UX0tJTkRfU1RBTkRB",
-            "UkQQABIcChhQQVJUSUNJUEFOVF9LSU5EX0lOR1JFU1MQARIbChdQQVJUSUNJ",
-            "UEFOVF9LSU5EX0VHUkVTUxACEhgKFFBBUlRJQ0lQQU5UX0tJTkRfU0lQEAMS",
-            "GgoWUEFSVElDSVBBTlRfS0lORF9BR0VOVBAEEh4KGlBBUlRJQ0lQQU5UX0tJ",
-            "TkRfQ09OTkVDVE9SEAUSGwoXUEFSVElDSVBBTlRfS0lORF9CUklER0UQBiru",
-            "AQoVUGFydGljaXBhbnRLaW5kRGV0YWlsEicKI1BBUlRJQ0lQQU5UX0tJTkRf",
-            "REVUQUlMX0NMT1VEX0FHRU5UEAASJQohUEFSVElDSVBBTlRfS0lORF9ERVRB",
-            "SUxfRk9SV0FSREVEEAESLgoqUEFSVElDSVBBTlRfS0lORF9ERVRBSUxfQ09O",
-            "TkVDVE9SX1dIQVRTQVBQEAISLAooUEFSVElDSVBBTlRfS0lORF9ERVRBSUxf",
-            "Q09OTkVDVE9SX1RXSUxJTxADEicKI1BBUlRJQ0lQQU5UX0tJTkRfREVUQUlM",
-            "X0JSSURHRV9SVFNQEAQq6AIKEERpc2Nvbm5lY3RSZWFzb24SEgoOVU5LTk9X",
-            "Tl9SRUFTT04QABIUChBDTElFTlRfSU5JVElBVEVEEAESFgoSRFVQTElDQVRF",
-            "X0lERU5USVRZEAISEwoPU0VSVkVSX1NIVVRET1dOEAMSFwoTUEFSVElDSVBB",
-            "TlRfUkVNT1ZFRBAEEhAKDFJPT01fREVMRVRFRBAFEhIKDlNUQVRFX01JU01B",
-            "VENIEAYSEAoMSk9JTl9GQUlMVVJFEAcSDQoJTUlHUkFUSU9OEAgSEAoMU0lH",
-            "TkFMX0NMT1NFEAkSDwoLUk9PTV9DTE9TRUQQChIUChBVU0VSX1VOQVZBSUxB",
-            "QkxFEAsSEQoNVVNFUl9SRUpFQ1RFRBAMEhUKEVNJUF9UUlVOS19GQUlMVVJF",
-            "EA0SFgoSQ09OTkVDVElPTl9USU1FT1VUEA4SEQoNTUVESUFfRkFJTFVSRRAP",
-            "Eg8KC0FHRU5UX0VSUk9SEBBCEKoCDUxpdmVLaXQuUHJvdG8="));
+            "cm1pc3Npb24SFwoPY2xpZW50X3Byb3RvY29sGAwgAigFGjEKD0F0dHJpYnV0",
+            "ZXNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIm8KEE93",
+            "bmVkUGFydGljaXBhbnQSLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90",
+            "by5GZmlPd25lZEhhbmRsZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90",
+            "by5QYXJ0aWNpcGFudEluZm8ihAIKFVBhcnRpY2lwYW50UGVybWlzc2lvbhIV",
+            "Cg1jYW5fc3Vic2NyaWJlGAEgAigIEhMKC2Nhbl9wdWJsaXNoGAIgAigIEhgK",
+            "EGNhbl9wdWJsaXNoX2RhdGEYAyACKAgSNwoTY2FuX3B1Ymxpc2hfc291cmNl",
+            "cxgJIAMoDjIaLmxpdmVraXQucHJvdG8uVHJhY2tTb3VyY2USDgoGaGlkZGVu",
+            "GAcgAigIEhsKE2Nhbl91cGRhdGVfbWV0YWRhdGEYCiACKAgSHQoVY2FuX3N1",
+            "YnNjcmliZV9tZXRyaWNzGAwgAigIEiAKGGNhbl9tYW5hZ2VfYWdlbnRfc2Vz",
+            "c2lvbhgNIAIoCCqRAQoQUGFydGljaXBhbnRTdGF0ZRIdChlQQVJUSUNJUEFO",
+            "VF9TVEFURV9KT0lOSU5HEAASHAoYUEFSVElDSVBBTlRfU1RBVEVfSk9JTkVE",
+            "EAESHAoYUEFSVElDSVBBTlRfU1RBVEVfQUNUSVZFEAISIgoeUEFSVElDSVBB",
+            "TlRfU1RBVEVfRElTQ09OTkVDVEVEEAMq3gEKD1BhcnRpY2lwYW50S2luZBId",
+            "ChlQQVJUSUNJUEFOVF9LSU5EX1NUQU5EQVJEEAASHAoYUEFSVElDSVBBTlRf",
+            "S0lORF9JTkdSRVNTEAESGwoXUEFSVElDSVBBTlRfS0lORF9FR1JFU1MQAhIY",
+            "ChRQQVJUSUNJUEFOVF9LSU5EX1NJUBADEhoKFlBBUlRJQ0lQQU5UX0tJTkRf",
+            "QUdFTlQQBBIeChpQQVJUSUNJUEFOVF9LSU5EX0NPTk5FQ1RPUhAFEhsKF1BB",
+            "UlRJQ0lQQU5UX0tJTkRfQlJJREdFEAYq7gEKFVBhcnRpY2lwYW50S2luZERl",
+            "dGFpbBInCiNQQVJUSUNJUEFOVF9LSU5EX0RFVEFJTF9DTE9VRF9BR0VOVBAA",
+            "EiUKIVBBUlRJQ0lQQU5UX0tJTkRfREVUQUlMX0ZPUldBUkRFRBABEi4KKlBB",
+            "UlRJQ0lQQU5UX0tJTkRfREVUQUlMX0NPTk5FQ1RPUl9XSEFUU0FQUBACEiwK",
+            "KFBBUlRJQ0lQQU5UX0tJTkRfREVUQUlMX0NPTk5FQ1RPUl9UV0lMSU8QAxIn",
+            "CiNQQVJUSUNJUEFOVF9LSU5EX0RFVEFJTF9CUklER0VfUlRTUBAEKugCChBE",
+            "aXNjb25uZWN0UmVhc29uEhIKDlVOS05PV05fUkVBU09OEAASFAoQQ0xJRU5U",
+            "X0lOSVRJQVRFRBABEhYKEkRVUExJQ0FURV9JREVOVElUWRACEhMKD1NFUlZF",
+            "Ul9TSFVURE9XThADEhcKE1BBUlRJQ0lQQU5UX1JFTU9WRUQQBBIQCgxST09N",
+            "X0RFTEVURUQQBRISCg5TVEFURV9NSVNNQVRDSBAGEhAKDEpPSU5fRkFJTFVS",
+            "RRAHEg0KCU1JR1JBVElPThAIEhAKDFNJR05BTF9DTE9TRRAJEg8KC1JPT01f",
+            "Q0xPU0VEEAoSFAoQVVNFUl9VTkFWQUlMQUJMRRALEhEKDVVTRVJfUkVKRUNU",
+            "RUQQDBIVChFTSVBfVFJVTktfRkFJTFVSRRANEhYKEkNPTk5FQ1RJT05fVElN",
+            "RU9VVBAOEhEKDU1FRElBX0ZBSUxVUkUQDxIPCgtBR0VOVF9FUlJPUhAQQhCq",
+            "Ag1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.ParticipantState), typeof(global::LiveKit.Proto.ParticipantKind), typeof(global::LiveKit.Proto.ParticipantKindDetail), typeof(global::LiveKit.Proto.DisconnectReason), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "State", "Metadata", "Attributes", "Kind", "DisconnectReason", "JoinedAt", "KindDetails", "Permission" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantInfo), global::LiveKit.Proto.ParticipantInfo.Parser, new[]{ "Sid", "Name", "Identity", "State", "Metadata", "Attributes", "Kind", "DisconnectReason", "JoinedAt", "KindDetails", "Permission", "ClientProtocol" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedParticipant), global::LiveKit.Proto.OwnedParticipant.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ParticipantPermission), global::LiveKit.Proto.ParticipantPermission.Parser, new[]{ "CanSubscribe", "CanPublish", "CanPublishData", "CanPublishSources", "Hidden", "CanUpdateMetadata", "CanSubscribeMetrics", "CanManageAgentSession" }, null, null, null, null)
           }));
@@ -214,6 +215,7 @@ namespace LiveKit.Proto {
       joinedAt_ = other.joinedAt_;
       kindDetails_ = other.kindDetails_.Clone();
       permission_ = other.permission_ != null ? other.permission_.Clone() : null;
+      clientProtocol_ = other.clientProtocol_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -472,6 +474,33 @@ namespace LiveKit.Proto {
       }
     }
 
+    /// <summary>Field number for the "client_protocol" field.</summary>
+    public const int ClientProtocolFieldNumber = 12;
+    private readonly static int ClientProtocolDefaultValue = 0;
+
+    private int clientProtocol_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ClientProtocol {
+      get { if ((_hasBits0 & 16) != 0) { return clientProtocol_; } else { return ClientProtocolDefaultValue; } }
+      set {
+        _hasBits0 |= 16;
+        clientProtocol_ = value;
+      }
+    }
+    /// <summary>Gets whether the "client_protocol" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasClientProtocol {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "client_protocol" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearClientProtocol() {
+      _hasBits0 &= ~16;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -498,6 +527,7 @@ namespace LiveKit.Proto {
       if (JoinedAt != other.JoinedAt) return false;
       if(!kindDetails_.Equals(other.kindDetails_)) return false;
       if (!object.Equals(Permission, other.Permission)) return false;
+      if (ClientProtocol != other.ClientProtocol) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -516,6 +546,7 @@ namespace LiveKit.Proto {
       if (HasJoinedAt) hash ^= JoinedAt.GetHashCode();
       hash ^= kindDetails_.GetHashCode();
       if (permission_ != null) hash ^= Permission.GetHashCode();
+      if (HasClientProtocol) hash ^= ClientProtocol.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -572,6 +603,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(90);
         output.WriteMessage(Permission);
       }
+      if (HasClientProtocol) {
+        output.WriteRawTag(96);
+        output.WriteInt32(ClientProtocol);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -620,6 +655,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(90);
         output.WriteMessage(Permission);
       }
+      if (HasClientProtocol) {
+        output.WriteRawTag(96);
+        output.WriteInt32(ClientProtocol);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -658,6 +697,9 @@ namespace LiveKit.Proto {
       size += kindDetails_.CalculateSize(_repeated_kindDetails_codec);
       if (permission_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Permission);
+      }
+      if (HasClientProtocol) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ClientProtocol);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -702,6 +744,9 @@ namespace LiveKit.Proto {
           Permission = new global::LiveKit.Proto.ParticipantPermission();
         }
         Permission.MergeFrom(other.Permission);
+      }
+      if (other.HasClientProtocol) {
+        ClientProtocol = other.ClientProtocol;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -770,6 +815,10 @@ namespace LiveKit.Proto {
             input.ReadMessage(Permission);
             break;
           }
+          case 96: {
+            ClientProtocol = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -835,6 +884,10 @@ namespace LiveKit.Proto {
               Permission = new global::LiveKit.Proto.ParticipantPermission();
             }
             input.ReadMessage(Permission);
+            break;
+          }
+          case 96: {
+            ClientProtocol = input.ReadInt32();
             break;
           }
         }
