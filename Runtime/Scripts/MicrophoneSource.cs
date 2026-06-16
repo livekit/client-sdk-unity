@@ -29,6 +29,11 @@ namespace LiveKit
         private bool _started = false;
         private bool _restarting = false;
 
+        // Diagnostics: counts AudioProbe buffers delivered, so a read-only health monitor can tell
+        // whether capture has stalled (e.g. after a Bluetooth route change) without restarting.
+        private volatile int _audioReadFrames = 0;
+        private bool _monitoring = false;
+
         /// <summary>
         /// Creates a new microphone source for the given device.
         /// </summary>
@@ -69,6 +74,14 @@ namespace LiveKit
             MonoBehaviourContext.RunCoroutine(StartMicrophone());
 
             _started = true;
+
+            // DIAGNOSTIC (read-only): periodically log capture health so logcat shows whether
+            // buffers keep flowing and whether the config-changed event fires on a device change.
+            if (!_monitoring)
+            {
+                _monitoring = true;
+                MonoBehaviourContext.RunCoroutine(MonitorCaptureHealth());
+            }
         }
 
         private IEnumerator StartMicrophone()
@@ -153,7 +166,7 @@ namespace LiveKit
             }
 
             source.Play();
-            Utils.Debug($"MicrophoneSource device='{_activeDeviceName ?? "<default>"}' started successfully");
+            Utils.Info($"MicrophoneSource device='{_activeDeviceName ?? "<default>"}' started successfully");
         }
 
         /// <summary>
@@ -188,12 +201,13 @@ namespace LiveKit
                     UnityEngine.Object.Destroy(source);
             }
 
-            Utils.Debug($"MicrophoneSource device='{_activeDeviceName ?? "<default>"}' stopped");
+            Utils.Info($"MicrophoneSource device='{_activeDeviceName ?? "<default>"}' stopped");
             yield return null;
         }
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
+            _audioReadFrames++;
             AudioRead?.Invoke(data, channels, sampleRate);
         }
 
@@ -235,6 +249,10 @@ namespace LiveKit
         // AudioStream.OnAudioConfigurationChanged on the playback side.
         private void OnAudioConfigurationChanged(bool deviceWasChanged)
         {
+            // DIAGNOSTIC: confirms whether this event fires at all on a device change (the open
+            // question on Android, where a Bluetooth route change may not change the DSP config).
+            Utils.Info($"MicrophoneSource: OnAudioConfigurationChanged deviceWasChanged={deviceWasChanged} outputSampleRate={AudioSettings.outputSampleRate} started={_started}");
+
             if (!_started)
                 return;
 
@@ -263,8 +281,12 @@ namespace LiveKit
             // The device-change event can fire several times around a single hardware swap;
             // ignore re-entrant restarts so overlapping Stop/Start coroutines don't race.
             if (_restarting)
+            {
+                Utils.Info("MicrophoneSource: restart requested but one is already in progress, ignoring");
                 yield break;
+            }
             _restarting = true;
+            Utils.Info("MicrophoneSource: restart begin");
 
             yield return StopMicrophone();
 
@@ -276,6 +298,42 @@ namespace LiveKit
             yield return StartMicrophone();
 
             _restarting = false;
+            Utils.Info("MicrophoneSource: restart end");
+        }
+
+        // DIAGNOSTIC (read-only — never restarts): logs capture health every couple of seconds so
+        // logcat shows whether AudioProbe buffers keep flowing after a device change and whether
+        // Microphone still reports recording/advancing. Runs for the lifetime of the source.
+        private IEnumerator MonitorCaptureHealth()
+        {
+            int lastFrames = _audioReadFrames;
+            int lastPosition = -1;
+            while (_started && !_disposed)
+            {
+                yield return new WaitForSeconds(2f);
+
+                int frames = _audioReadFrames;
+                int delta = frames - lastFrames;
+                lastFrames = frames;
+
+                bool recording = false;
+                int position = -1;
+                try
+                {
+                    recording = Microphone.IsRecording(_activeDeviceName);
+                    position = Microphone.GetPosition(_activeDeviceName);
+                }
+                catch (Exception e)
+                {
+                    Utils.Warning($"MicrophoneSource: health probe threw {e.Message}");
+                }
+
+                Utils.Info($"MicrophoneSource: health framesLast2s={delta} totalFrames={frames} isRecording={recording} position={position} prevPosition={lastPosition} device='{_activeDeviceName ?? "<default>"}' muted={Muted} restarting={_restarting}");
+                lastPosition = position;
+            }
+
+            _monitoring = false;
+            Utils.Info("MicrophoneSource: health monitor stopped");
         }
 
         private IEnumerator WaitForMicrophoneReady()
