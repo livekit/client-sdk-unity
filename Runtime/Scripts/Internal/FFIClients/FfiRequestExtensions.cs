@@ -152,6 +152,25 @@ namespace LiveKit.Internal.FFIClients
                 case RemixAndResampleRequest remixAndResampleRequest:
                     ffiRequest.RemixAndResample = remixAndResampleRequest;
                     break;
+                // PlatformAudio
+                case NewPlatformAudioRequest newPlatformAudioRequest:
+                    ffiRequest.NewPlatformAudio = newPlatformAudioRequest;
+                    break;
+                case GetAudioDevicesRequest getAudioDevicesRequest:
+                    ffiRequest.GetAudioDevices = getAudioDevicesRequest;
+                    break;
+                case SetRecordingDeviceRequest setRecordingDeviceRequest:
+                    ffiRequest.SetRecordingDevice = setRecordingDeviceRequest;
+                    break;
+                case SetPlayoutDeviceRequest setPlayoutDeviceRequest:
+                    ffiRequest.SetPlayoutDevice = setPlayoutDeviceRequest;
+                    break;
+                case StartRecordingRequest startRecordingRequest:
+                    ffiRequest.StartRecording = startRecordingRequest;
+                    break;
+                case StopRecordingRequest stopRecordingRequest:
+                    ffiRequest.StopRecording = stopRecordingRequest;
+                    break;
                 case LocalTrackMuteRequest localTrackMuteRequest:
                     ffiRequest.LocalTrackMute = localTrackMuteRequest;
                     break;
