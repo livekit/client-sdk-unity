@@ -15,6 +15,10 @@ namespace LiveKit
         public Dictionary<string, string> ParticipantAttributes { get; init; }
         public string AgentName { get; init; }
         public string AgentMetadata { get; init; }
+        /// <summary>
+        /// Optional deployment to target. Leave empty to target the production deployment.
+        /// </summary>
+        public string AgentDeployment { get; init; }
     }
 
     class TokenSourceRequest
@@ -51,6 +55,12 @@ namespace LiveKit
 
         [JsonProperty("metadata", NullValueHandling = NullValueHandling.Ignore)]
         public string Metadata;
+
+        /// <summary>
+        /// Optional deployment to target. Leave empty to target the production deployment.
+        /// </summary>
+        [JsonProperty("deployment", NullValueHandling = NullValueHandling.Ignore)]
+        public string Deployment;
     }
 
     /// <summary>
