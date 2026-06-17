@@ -42,6 +42,7 @@ namespace LiveKit
         [SerializeField] private List<StringPair> _participantAttributes;
         [SerializeField] private string _agentName;
         [SerializeField] private string _agentMetadata;
+        [SerializeField] private string _agentDeployment;
 
         public TokenSourceType TokenSourceType => _tokenSourceType;
 
@@ -64,6 +65,7 @@ namespace LiveKit
         public List<StringPair> ParticipantAttributes => _participantAttributes;
         public string AgentName => _agentName;
         public string AgentMetadata => _agentMetadata;
+        public string AgentDeployment => _agentDeployment;
 
         public bool IsValid => _tokenSourceType switch
         {

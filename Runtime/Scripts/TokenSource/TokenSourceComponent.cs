@@ -107,6 +107,7 @@ namespace LiveKit
                 ParticipantAttributes = participantAttributes,
                 AgentName = Coalesce(options?.AgentName, config.AgentName),
                 AgentMetadata = Coalesce(options?.AgentMetadata, config.AgentMetadata),
+                AgentDeployment = Coalesce(options?.AgentDeployment, config.AgentDeployment),
             };
         }
 
