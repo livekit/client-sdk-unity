@@ -530,6 +530,7 @@ namespace LiveKit.Internal
             {
                 FfiEvent.MessageOneofCase.Connect => ffiEvent.Connect?.AsyncId,
                 FfiEvent.MessageOneofCase.PublishTrack => ffiEvent.PublishTrack?.AsyncId,
+                FfiEvent.MessageOneofCase.PublishData => ffiEvent.PublishData?.AsyncId,
                 FfiEvent.MessageOneofCase.UnpublishTrack => ffiEvent.UnpublishTrack?.AsyncId,
                 FfiEvent.MessageOneofCase.SetLocalName => ffiEvent.SetLocalName?.AsyncId,
                 FfiEvent.MessageOneofCase.SetLocalMetadata => ffiEvent.SetLocalMetadata?.AsyncId,
