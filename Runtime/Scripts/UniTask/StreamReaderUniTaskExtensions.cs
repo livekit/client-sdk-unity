@@ -25,11 +25,10 @@ namespace LiveKit
         /// <see cref="System.OperationCanceledException"/> with abandon-awaiter semantics — the
         /// underlying FFI read is not cancelled on the wire.
         ///
-        /// Like the coroutine consumer, this delivers the current chunk on the iteration where
-        /// end-of-stream is also observed, then stops. Chunks buffered <em>beyond</em> the
-        /// current one when end-of-stream arrives are not drainable — a pre-existing limitation
-        /// of the reader (its <c>Reset()</c> is disallowed past end-of-stream), not specific to
-        /// this adapter.
+        /// The current chunk is delivered on the iteration where end-of-stream is also observed,
+        /// then iteration stops. Chunks buffered <em>beyond</em> the current one when
+        /// end-of-stream arrives are not drainable, because the reader disallows <c>Reset()</c>
+        /// past end-of-stream.
         /// </remarks>
         public static IUniTaskAsyncEnumerable<TChunk> AsAsyncEnumerable<TChunk>(
             this ReadIncrementalInstructionBase<TChunk> instruction,

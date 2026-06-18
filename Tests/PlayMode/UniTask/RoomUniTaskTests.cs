@@ -18,9 +18,8 @@ namespace LiveKit.PlayModeTests.UniTaskBridge
             public void CompleteWithError() { IsError = true; IsDone = true; }
         }
 
-        // AsUniTask must complete when IsDone transitions to true, with the
-        // instruction's IsError visible on resume — parity with the await path
-        // covered by the Stage 1 Connect_FailsWithInvalidUrl_Awaitable test.
+        // AsUniTask completes when IsDone transitions to true, with the instruction's IsError
+        // visible on resume — parity with awaiting the instruction directly.
         [UnityTest]
         public System.Collections.IEnumerator AsUniTask_CompletesOnIsDone() => UniTask.ToCoroutine(async () =>
         {

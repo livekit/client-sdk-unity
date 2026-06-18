@@ -29,12 +29,10 @@ namespace LiveKit.PlayModeTests
             Assert.IsNotNull(context.ConnectionError, "Expected connection to fail");
         }
 
-        // Deterministic coverage of the GetAwaiter surface added in Stage 1, using a
-        // synthetic instruction so the awaiter logic is exercised without the FFI. These
-        // are intentionally NOT [Category("E2E")] — they need no dev server. The real
-        // connect-fail path stays covered by Connect_FailsWithInvalidUrl above; an earlier
-        // E2E variant of these was flaky because the FFI emits its error log asynchronously,
-        // which races LogAssert in the frame after the await has already resumed.
+        // Deterministic coverage of the awaiter using a synthetic instruction, so the logic is
+        // exercised without the FFI (no dev server needed — hence not [Category("E2E")]). A live
+        // connect would be non-deterministic here: the FFI emits its error log asynchronously and
+        // would race LogAssert. The connect-fail path itself is covered by Connect_FailsWithInvalidUrl.
         private sealed class TestYieldInstruction : YieldInstruction
         {
             public void Complete() => IsDone = true;

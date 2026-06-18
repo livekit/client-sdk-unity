@@ -56,7 +56,7 @@ namespace LiveKit.PlayModeTests.UniTaskBridge
 
         // The current chunk is delivered even when EoS is already set at the time it is read,
         // then the sequence ends. (Chunks buffered beyond the current one when EoS arrives are
-        // not drainable — a pre-existing reader limitation, asserted here for clarity.)
+        // not drainable, because the reader disallows Reset() past EoS.)
         [UnityTest]
         public System.Collections.IEnumerator AsAsyncEnumerable_DeliversFinalChunkThenEos() => UniTask.ToCoroutine(async () =>
         {
