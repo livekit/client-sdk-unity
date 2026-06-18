@@ -92,7 +92,7 @@ namespace LiveKit
         }
     }
 
-    public readonly struct YieldInstructionAwaiter : INotifyCompletion
+    public readonly struct YieldInstructionAwaiter : ICriticalNotifyCompletion
     {
         private readonly YieldInstruction _instruction;
 
@@ -104,6 +104,11 @@ namespace LiveKit
         public bool IsCompleted => _instruction.IsDone;
 
         public void OnCompleted(Action continuation) => _instruction.RegisterContinuation(continuation);
+
+        // ICriticalNotifyCompletion lets the async state machine skip ExecutionContext capture
+        // on the hot path. We don't depend on the flowed context (AwaiterScheduler marshals to
+        // the main thread on its own), so this is safe and avoids a per-await allocation.
+        public void UnsafeOnCompleted(Action continuation) => _instruction.RegisterContinuation(continuation);
 
         // Intentionally a no-op. Parity with the coroutine path: callers inspect IsError
         // and subclass-specific result fields on the instruction itself.
@@ -201,7 +206,7 @@ namespace LiveKit
         }
     }
 
-    public readonly struct StreamYieldInstructionAwaiter : INotifyCompletion
+    public readonly struct StreamYieldInstructionAwaiter : ICriticalNotifyCompletion
     {
         private readonly StreamYieldInstruction _instruction;
 
@@ -213,6 +218,10 @@ namespace LiveKit
         public bool IsCompleted => _instruction.IsCurrentReadDone || _instruction.IsEos;
 
         public void OnCompleted(Action continuation) => _instruction.RegisterContinuation(continuation);
+
+        // See YieldInstructionAwaiter.UnsafeOnCompleted — skips ExecutionContext capture; the
+        // continuation is marshalled to the main thread by AwaiterScheduler regardless.
+        public void UnsafeOnCompleted(Action continuation) => _instruction.RegisterContinuation(continuation);
 
         public void GetResult() { }
     }
