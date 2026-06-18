@@ -18,21 +18,37 @@ namespace LiveKit.PlayModeTests.UniTaskBridge
             public void CompleteWithError() { IsError = true; IsDone = true; }
         }
 
-        // AsUniTask must complete when IsDone transitions to true, with the
-        // instruction's IsError visible on resume — parity with the await path
-        // covered by the Stage 1 Connect_FailsWithInvalidUrl_Awaitable test.
+        // AsUniTask completes (without throwing) when IsDone transitions to true on success,
+        // mirroring a direct await of the instruction.
         [UnityTest]
-        public System.Collections.IEnumerator AsUniTask_CompletesOnIsDone() => UniTask.ToCoroutine(async () =>
+        public System.Collections.IEnumerator AsUniTask_CompletesOnSuccess() => UniTask.ToCoroutine(async () =>
         {
             var instruction = new TestInstruction();
             var task = instruction.AsUniTask();
             Assert.IsFalse(instruction.IsDone, "Sanity: instruction must not be done before Complete()");
 
-            instruction.CompleteWithError();
+            instruction.Complete();
             await task;
 
             Assert.IsTrue(instruction.IsDone, "UniTask should not resume before IsDone");
-            Assert.IsTrue(instruction.IsError, "Error state must be visible on resume");
+            Assert.IsFalse(instruction.IsError);
+        });
+
+        // On failure, AsUniTask faults with the instruction's error (here the base
+        // LiveKitException) — parity with a direct await, whose GetResult throws.
+        [UnityTest]
+        public System.Collections.IEnumerator AsUniTask_ThrowsOnError() => UniTask.ToCoroutine(async () =>
+        {
+            var instruction = new TestInstruction();
+            var task = instruction.AsUniTask();
+
+            instruction.CompleteWithError();
+
+            LiveKitException caught = null;
+            try { await task; }
+            catch (LiveKitException e) { caught = e; }
+
+            Assert.IsNotNull(caught, "AsUniTask must fault when the instruction completes with an error");
         });
 
         // Cancellation has abandon-awaiter semantics: the UniTask faults with

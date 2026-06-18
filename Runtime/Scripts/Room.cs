@@ -651,6 +651,7 @@ namespace LiveKit
         private ulong _asyncId;
         private Room _room;
         private RoomOptions _roomOptions;
+        private string _error;
 
         internal ConnectInstruction(ulong asyncId, Room room, RoomOptions options)
         {
@@ -678,6 +679,10 @@ namespace LiveKit
 
                 _room.OnConnect(e);
             }
+            else
+            {
+                _error = e.Error;
+            }
 
             IsError = !success;
             IsDone = true;
@@ -685,8 +690,12 @@ namespace LiveKit
 
         void OnCanceled()
         {
+            _error = "Canceled";
             IsError = true;
             IsDone = true;
         }
+
+        internal override Exception CreateAwaitException() =>
+            new LiveKitException(string.IsNullOrEmpty(_error) ? "Failed to connect to the room." : _error);
     }
 }
