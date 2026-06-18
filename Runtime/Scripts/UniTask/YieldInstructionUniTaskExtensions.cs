@@ -36,11 +36,17 @@ namespace LiveKit
 
             if (cancellationToken.CanBeCanceled)
             {
-                registration = cancellationToken.Register(static state =>
+                // Dispose the registration on the cancel path too, so a cancelled-but-never-
+                // completed awaiter doesn't keep its registration (and this closure) alive on a
+                // long-lived CancellationTokenSource until the instruction eventually completes.
+                // Safe: the early IsCancellationRequested check above means the token isn't
+                // already cancelled, so Register won't invoke this synchronously before
+                // 'registration' is assigned; disposing from within the callback does not block.
+                registration = cancellationToken.Register(() =>
                 {
-                    var s = (UniTaskCompletionSource)state;
-                    s.TrySetCanceled();
-                }, source);
+                    source.TrySetCanceled();
+                    registration.Dispose();
+                });
             }
 
             // YieldInstruction.RegisterContinuation fires the callback exactly once and is
@@ -73,11 +79,13 @@ namespace LiveKit
 
             if (cancellationToken.CanBeCanceled)
             {
-                registration = cancellationToken.Register(static state =>
+                // See the YieldInstruction overload: dispose on cancel so the registration isn't
+                // pinned to a long-lived CancellationTokenSource when the read never completes.
+                registration = cancellationToken.Register(() =>
                 {
-                    var s = (UniTaskCompletionSource)state;
-                    s.TrySetCanceled();
-                }, source);
+                    source.TrySetCanceled();
+                    registration.Dispose();
+                });
             }
 
             instruction.GetAwaiter().OnCompleted(() =>
