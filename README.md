@@ -343,12 +343,18 @@ await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions())
     .AsUniTask(cancellationToken);
 ```
 
-Run operations in parallel:
+Run operations in parallel. `AsUniTask` does not throw on failure (matching the
+coroutine path), so keep the instructions and check `IsError` on each after the
+`await` — otherwise a failed operation passes silently:
 
 ```cs
-await UniTask.WhenAll(
-    room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions).AsUniTask(ct),
-    room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions).AsUniTask(ct));
+var publishCamera = room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions);
+var publishMicrophone = room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions);
+
+await UniTask.WhenAll(publishCamera.AsUniTask(ct), publishMicrophone.AsUniTask(ct));
+
+if (publishCamera.IsError || publishMicrophone.IsError)
+    Debug.LogError("Failed to publish one or more tracks");
 ```
 
 Consume an incremental stream with `await foreach`. The sequence ends at end-of-stream; if the stream ends with an error it throws a `StreamError`:
