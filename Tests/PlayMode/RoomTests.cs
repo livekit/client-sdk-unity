@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
@@ -73,9 +74,39 @@ namespace LiveKit.PlayModeTests
             Assert.IsFalse(instruction.IsError);
         }
 
+        // An await continuation must resume on the Unity main thread even when the instruction
+        // completes on a background thread — which is what the FFI callback thread does for
+        // operations registered dispatchToMainThread:false (SetMetadata, stream writes, …).
+        // Coroutines always resume on the main thread; the await path must match so callers can
+        // safely touch Unity APIs after the await. RED until the awaiter marshals continuations
+        // to the main SynchronizationContext.
+        [UnityTest]
+        public IEnumerator GetAwaiter_ResumesOnMainThread_WhenCompletedOffThread()
+        {
+            var mainThreadId = Thread.CurrentThread.ManagedThreadId;
+            var instruction = new TestYieldInstruction();
+
+            var awaitTask = AwaitAndGetResumeThread(instruction);
+            Assert.IsFalse(awaitTask.IsCompleted, "Awaiter must not resume before IsDone");
+
+            // Complete from a thread-pool thread, mimicking the FFI callback thread.
+            Task.Run(() => instruction.Complete());
+
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            Assert.AreEqual(mainThreadId, awaitTask.Result,
+                "await must resume on the Unity main thread, not the thread that completed the instruction");
+        }
+
         private static async Task AwaitInstruction(YieldInstruction instruction)
         {
             await instruction;
+        }
+
+        private static async Task<int> AwaitAndGetResumeThread(YieldInstruction instruction)
+        {
+            await instruction;
+            return Thread.CurrentThread.ManagedThreadId;
         }
 
         [UnityTest, Category("E2E")]

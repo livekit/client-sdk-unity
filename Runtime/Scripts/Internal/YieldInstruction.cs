@@ -1,10 +1,30 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using LiveKit.Internal;
 using UnityEngine;
 
 namespace LiveKit
 {
+    // Resumes awaiter continuations on Unity's main thread. Completion may be signalled on the
+    // FFI callback thread (operations registered dispatchToMainThread:false, and data-stream
+    // chunk events), but a custom awaiter otherwise resumes inline on the completing thread —
+    // leaving callers unable to touch Unity APIs after an await. Posting through the captured
+    // main-thread SynchronizationContext keeps the await path's threading identical to the
+    // coroutine path. When already on the main thread (e.g. Connect, which completes there) the
+    // continuation runs inline to avoid an extra frame of latency.
+    internal static class AwaiterScheduler
+    {
+        internal static void Resume(Action continuation)
+        {
+            var context = FfiClient.Instance._context;
+            if (context == null || SynchronizationContext.Current == context)
+                continuation();
+            else
+                context.Post(static state => ((Action)state)(), continuation);
+        }
+    }
+
     public class YieldInstruction : CustomYieldInstruction
     {
         // Backing fields are volatile because completion may run on the FFI callback
@@ -55,7 +75,7 @@ namespace LiveKit
             if (prev == null) return;
             if (ReferenceEquals(prev, s_completedSentinel))
             {
-                continuation();
+                AwaiterScheduler.Resume(continuation);
                 return;
             }
             throw new InvalidOperationException(
@@ -67,7 +87,7 @@ namespace LiveKit
             var prev = Interlocked.Exchange(ref _continuation, s_completedSentinel);
             if (prev != null && !ReferenceEquals(prev, s_completedSentinel))
             {
-                prev();
+                AwaiterScheduler.Resume(prev);
             }
         }
     }
@@ -164,7 +184,7 @@ namespace LiveKit
             if (prev == null) return;
             if (ReferenceEquals(prev, s_completedSentinel))
             {
-                continuation();
+                AwaiterScheduler.Resume(continuation);
                 return;
             }
             throw new InvalidOperationException(
@@ -176,7 +196,7 @@ namespace LiveKit
             var prev = Interlocked.Exchange(ref _continuation, s_completedSentinel);
             if (prev != null && !ReferenceEquals(prev, s_completedSentinel))
             {
-                prev();
+                AwaiterScheduler.Resume(prev);
             }
         }
     }
