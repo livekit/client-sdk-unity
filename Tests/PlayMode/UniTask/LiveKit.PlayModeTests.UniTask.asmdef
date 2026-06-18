@@ -1,6 +1,6 @@
 {
     "name": "PlayModeTests.UniTask",
-    "rootNamespace": "LiveKit.PlayModeTests.UniTask",
+    "rootNamespace": "LiveKit.PlayModeTests.UniTaskBridge",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",

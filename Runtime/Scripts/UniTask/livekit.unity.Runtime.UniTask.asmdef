@@ -1,6 +1,6 @@
 {
     "name": "LiveKit.UniTask",
-    "rootNamespace": "LiveKit.UniTaskExtensions",
+    "rootNamespace": "LiveKit",
     "references": [
         "LiveKit",
         "UniTask",
