@@ -319,21 +319,16 @@ The SDK exposes three interchangeable styles for awaiting asynchronous operation
 
 **1. Coroutines (default, no dependency)** — shown throughout this README.
 
-**2. async/await (no dependency)** — every operation returns an awaitable instruction (`ConnectInstruction`, `PublishTrackInstruction`, `PerformRpcInstruction`, the stream read instructions, …), so you can `await` it directly. A failed operation throws — the instruction's typed error where one exists (`StreamError`, `RpcError`) or a `LiveKitException` otherwise. (Coroutines are unchanged: `yield return` never throws, so they still inspect `IsError`.) Continuations resume on Unity's main thread.
+**2. async/await (no dependency)** — every operation returns an awaitable instruction (`ConnectInstruction`, `PublishTrackInstruction`, `PerformRpcInstruction`, the stream read instructions, …), so you can `await` it directly. As with coroutines, you inspect success/failure on the instruction (`IsError`) — `await` does not throw. Continuations resume on Unity's main thread.
 
 ```cs
 async void Start()
 {
     var room = new Room();
-    try
-    {
-        await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions());
+    var connect = room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions());
+    await connect;
+    if (!connect.IsError)
         Debug.Log("Connected to " + room.Name);
-    }
-    catch (LiveKitException e)
-    {
-        Debug.LogError("Failed to connect: " + e.Message);
-    }
 }
 ```
 
@@ -348,19 +343,18 @@ await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions())
     .AsUniTask(cancellationToken);
 ```
 
-Run operations in parallel. If either fails, `WhenAll` surfaces the exception:
+Run operations in parallel. `AsUniTask` does not throw on failure (matching the
+coroutine path), so keep the instructions and check `IsError` on each after the
+`await` — otherwise a failed operation passes silently:
 
 ```cs
-try
-{
-    await UniTask.WhenAll(
-        room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions).AsUniTask(ct),
-        room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions).AsUniTask(ct));
-}
-catch (LiveKitException e)
-{
-    Debug.LogError("Failed to publish a track: " + e.Message);
-}
+var publishCamera = room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions);
+var publishMicrophone = room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions);
+
+await UniTask.WhenAll(publishCamera.AsUniTask(ct), publishMicrophone.AsUniTask(ct));
+
+if (publishCamera.IsError || publishMicrophone.IsError)
+    Debug.LogError("Failed to publish one or more tracks");
 ```
 
 Consume an incremental stream with `await foreach`. The sequence ends at end-of-stream; if the stream ends with an error it throws a `StreamError`:

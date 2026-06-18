@@ -11,8 +11,6 @@ namespace LiveKit
     /// <typeparam name="TCallback">The protobuf callback type (e.g. SetLocalMetadataCallback).</typeparam>
     public class FfiInstruction<TCallback> : YieldInstruction where TCallback : class
     {
-        private string _error;
-
         internal FfiInstruction(
             ulong asyncId,
             Func<FfiEvent, TCallback> selector,
@@ -23,21 +21,16 @@ namespace LiveKit
                 selector,
                 e =>
                 {
-                    _error = errorExtractor(e);
-                    IsError = !string.IsNullOrEmpty(_error);
+                    IsError = !string.IsNullOrEmpty(errorExtractor(e));
                     IsDone = true;
                 },
                 () =>
                 {
-                    _error = "Canceled";
                     IsError = true;
                     IsDone = true;
                 },
                 dispatchToMainThread: false);
         }
-
-        internal override Exception CreateAwaitException() =>
-            string.IsNullOrEmpty(_error) ? base.CreateAwaitException() : new LiveKitException(_error);
     }
 
     /// <summary>
@@ -74,8 +67,6 @@ namespace LiveKit
                 },
                 dispatchToMainThread: false);
         }
-
-        internal override Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// <summary>
@@ -130,7 +121,5 @@ namespace LiveKit
                 },
                 dispatchToMainThread: false);
         }
-
-        internal override Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 }

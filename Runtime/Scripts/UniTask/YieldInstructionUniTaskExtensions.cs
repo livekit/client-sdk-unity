@@ -19,22 +19,16 @@ namespace LiveKit
         /// first.
         /// </summary>
         /// <remarks>
-        /// On failure the task faults with the instruction's error — the typed error where one
-        /// exists (e.g. <see cref="StreamError"/>, <c>RpcError</c>) or a <see cref="LiveKitException"/>
-        /// otherwise — matching a direct <c>await</c> of the instruction. Cancellation has
-        /// "abandon awaiter" semantics: the underlying FFI request keeps running and any result is
-        /// discarded; wire-level cancellation is not yet supported.
+        /// Cancellation has "abandon awaiter" semantics: the underlying FFI request keeps
+        /// running and any result is discarded. Wire-level cancellation is not yet
+        /// supported. Error inspection stays on the instruction itself — the awaiter does
+        /// not throw on <see cref="YieldInstruction.IsError"/>, matching the existing
+        /// <c>yield return</c> / <c>await</c> behavior.
         /// </remarks>
         public static UniTask AsUniTask(this YieldInstruction instruction, CancellationToken cancellationToken = default)
         {
             if (instruction == null) throw new System.ArgumentNullException(nameof(instruction));
-            if (instruction.IsDone)
-            {
-                // Already complete: surface failure the same way `await` does (GetResult throws
-                // on IsError) so AsUniTask and a direct await behave identically.
-                try { instruction.GetAwaiter().GetResult(); return UniTask.CompletedTask; }
-                catch (System.Exception ex) { return UniTask.FromException(ex); }
-            }
+            if (instruction.IsDone) return UniTask.CompletedTask;
             if (cancellationToken.IsCancellationRequested) return UniTask.FromCanceled(cancellationToken);
 
             var source = new UniTaskCompletionSource();
@@ -51,21 +45,11 @@ namespace LiveKit
 
             // YieldInstruction.RegisterContinuation fires the callback exactly once and is
             // race-safe between FFI-thread completion and main-thread registration. Either
-            // this completion or TrySetCanceled wins; the loser is a no-op. GetResult() throws
-            // the instruction's typed error on failure, which we route to TrySetException so the
-            // UniTask faults exactly like a direct await would.
+            // TrySetResult or TrySetCanceled wins; the loser is a no-op.
             instruction.GetAwaiter().OnCompleted(() =>
             {
                 registration.Dispose();
-                try
-                {
-                    instruction.GetAwaiter().GetResult();
-                    source.TrySetResult();
-                }
-                catch (System.Exception ex)
-                {
-                    source.TrySetException(ex);
-                }
+                source.TrySetResult();
             });
 
             return source.Task;

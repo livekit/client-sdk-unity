@@ -37,21 +37,12 @@ namespace LiveKit
         /// Returns an awaiter so callers can <c>await</c> this instruction directly.
         /// </summary>
         /// <remarks>
-        /// The awaiter completes when <see cref="IsDone"/> becomes true. On failure
-        /// (<see cref="IsError"/>) it throws the instruction's typed error where one exists
-        /// (e.g. <see cref="StreamError"/>, <c>RpcError</c>) or a <see cref="LiveKitException"/>
-        /// otherwise. The coroutine path (<c>yield return</c>) never throws — it inspects
-        /// <see cref="IsError"/> instead.
+        /// The awaiter completes when <see cref="IsDone"/> becomes true. As with the
+        /// coroutine path, success vs. failure is inspected on the instruction itself
+        /// (<see cref="IsError"/> and any subclass-specific result fields); <c>GetResult</c>
+        /// does not throw.
         /// </remarks>
         public YieldInstructionAwaiter GetAwaiter() => new YieldInstructionAwaiter(this);
-
-        /// <summary>
-        /// Builds the exception thrown by the awaiter when <see cref="IsError"/> is true.
-        /// Subclasses override to surface their typed error (e.g. <see cref="StreamError"/>,
-        /// <c>RpcError</c>); the default is a generic <see cref="LiveKitException"/>.
-        /// </summary>
-        internal virtual Exception CreateAwaitException() =>
-            new LiveKitException("The awaited LiveKit operation failed. Inspect IsError on the instruction for details.");
 
         internal void RegisterContinuation(Action continuation)
         {
@@ -94,15 +85,9 @@ namespace LiveKit
 
         public void OnCompleted(Action continuation) => _instruction.RegisterContinuation(continuation);
 
-        // Throws on failure so `await` matches .NET async conventions (a failed operation
-        // surfaces as an exception, not a silently-completed await). The thrown type is the
-        // instruction's typed error where one exists (e.g. StreamError, RpcError), otherwise a
-        // generic LiveKitException. Coroutine consumers never call this — they inspect IsError.
-        public void GetResult()
-        {
-            if (_instruction.IsError)
-                throw _instruction.CreateAwaitException();
-        }
+        // Intentionally a no-op. Parity with the coroutine path: callers inspect IsError
+        // and subclass-specific result fields on the instruction itself.
+        public void GetResult() { }
     }
 
     public class StreamYieldInstruction : CustomYieldInstruction

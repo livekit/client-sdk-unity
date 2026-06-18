@@ -227,8 +227,5 @@ namespace LiveKit
             IsError = true;
             IsDone = true;
         }
-
-        internal override System.Exception CreateAwaitException() =>
-            new LiveKitException(string.IsNullOrEmpty(Error) ? "Failed to get session stats." : Error);
     }
 }

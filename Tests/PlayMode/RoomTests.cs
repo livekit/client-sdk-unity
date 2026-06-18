@@ -40,26 +40,10 @@ namespace LiveKit.PlayModeTests
             public void CompleteWithError() { IsError = true; IsDone = true; }
         }
 
-        // OnCompleted path, success: await registers a continuation while the instruction is
-        // still pending, then a non-error completion resumes it without throwing.
+        // OnCompleted path: await registers a continuation while the instruction is still
+        // pending, then completion fires it and IsError is visible on resume.
         [UnityTest]
-        public IEnumerator GetAwaiter_ResumesOnCompletion_NoThrowOnSuccess()
-        {
-            var instruction = new TestYieldInstruction();
-            var awaitTask = AwaitInstruction(instruction);
-            Assert.IsFalse(awaitTask.IsCompleted, "Awaiter must not resume before IsDone");
-
-            instruction.Complete();
-            yield return new WaitUntil(() => awaitTask.IsCompleted);
-
-            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
-            Assert.IsTrue(instruction.IsDone, "Awaiter resumed, so IsDone must be observable");
-        }
-
-        // OnCompleted path, failure: a completion with IsError makes the await throw — surfaced
-        // here as a faulted task carrying a LiveKitException (the base instruction's default).
-        [UnityTest]
-        public IEnumerator GetAwaiter_ThrowsOnError()
+        public IEnumerator GetAwaiter_ResumesOnCompletion_AndSurfacesIsError()
         {
             var instruction = new TestYieldInstruction();
             var awaitTask = AwaitInstruction(instruction);
@@ -68,12 +52,13 @@ namespace LiveKit.PlayModeTests
             instruction.CompleteWithError();
             yield return new WaitUntil(() => awaitTask.IsCompleted);
 
-            Assert.IsTrue(awaitTask.IsFaulted, "await must throw when the instruction completes with an error");
-            Assert.IsInstanceOf<LiveKitException>(awaitTask.Exception?.InnerException);
+            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
+            Assert.IsTrue(instruction.IsDone, "Awaiter resumed, so IsDone must be observable");
+            Assert.IsTrue(instruction.IsError, "IsError must be visible on resume");
         }
 
-        // IsCompleted fast path: instruction is already done (no error) before it is awaited, so
-        // the awaiter completes without ever registering a continuation and without throwing.
+        // IsCompleted fast path: instruction is already done before it is awaited, so the
+        // awaiter completes without ever registering a continuation.
         [UnityTest]
         public IEnumerator GetAwaiter_CompletesImmediately_WhenAlreadyDone()
         {

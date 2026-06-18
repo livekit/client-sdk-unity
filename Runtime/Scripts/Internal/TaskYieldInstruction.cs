@@ -13,8 +13,6 @@ namespace LiveKit
         public T Result { get; private set; }
         public Exception Exception { get; private set; }
 
-        internal override Exception CreateAwaitException() => Exception ?? base.CreateAwaitException();
-
         internal TaskYieldInstruction(Task<T> task)
         {
             // Continuation may run on a thread-pool thread; the volatile IsDone/IsError fields in

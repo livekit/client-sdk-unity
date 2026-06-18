@@ -626,7 +626,6 @@ namespace LiveKit
         private ulong _asyncId;
         private Dictionary<string, TrackPublication> _internalTracks;
         private ILocalTrack _localTrack;
-        private string _error;
 
         internal PublishTrackInstruction(ulong asyncId, ILocalTrack localTrack, Dictionary<string, TrackPublication> internalTracks)
         {
@@ -644,7 +643,6 @@ namespace LiveKit
             if (e.AsyncId != _asyncId)
                 return;
 
-            _error = e.Error;
             IsError = !string.IsNullOrEmpty(e.Error);
             IsDone = true;
             var publication = new LocalTrackPublication(e.Publication.Info, FfiHandle.FromOwnedHandle(e.Publication.Handle));
@@ -655,13 +653,9 @@ namespace LiveKit
 
         void OnCanceled()
         {
-            _error = "Canceled";
             IsError = true;
             IsDone = true;
         }
-
-        internal override System.Exception CreateAwaitException() =>
-            new LiveKitException(string.IsNullOrEmpty(_error) ? "Failed to publish track." : _error);
     }
 
     public sealed class SetLocalMetadataInstruction : FfiInstruction<SetLocalMetadataCallback>
@@ -732,9 +726,6 @@ namespace LiveKit
             IsError = true;
             IsDone = true;
         }
-
-        internal override System.Exception CreateAwaitException() =>
-            new LiveKitException(string.IsNullOrEmpty(Error) ? "Failed to publish data." : Error);
     }
 
     /// <summary>
@@ -801,8 +792,6 @@ namespace LiveKit
         /// See <see cref="RpcError"/> for more information on error codes.
         /// </remarks>
         public RpcError Error { get; private set; }
-
-        internal override System.Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// <summary>
@@ -857,8 +846,6 @@ namespace LiveKit
         }
 
         public StreamError Error { get; private set; }
-
-        internal override System.Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// <summary>
@@ -913,8 +900,6 @@ namespace LiveKit
         }
 
         public StreamError Error { get; private set; }
-
-        internal override System.Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// <summary>
@@ -969,8 +954,6 @@ namespace LiveKit
         }
 
         public StreamError Error { get; private set; }
-
-        internal override System.Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// <summary>
@@ -1025,8 +1008,6 @@ namespace LiveKit
         }
 
         public StreamError Error { get; private set; }
-
-        internal override System.Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// <summary>
@@ -1086,8 +1067,6 @@ namespace LiveKit
         }
 
         public PublishDataTrackError Error { get; private set; }
-
-        internal override System.Exception CreateAwaitException() => Error ?? base.CreateAwaitException();
     }
 
     /// Helpers for setting <see cref="TrackPublishOptions"/> fields whose underlying type
