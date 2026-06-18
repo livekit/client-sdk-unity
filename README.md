@@ -370,6 +370,11 @@ catch (StreamError e)
     Debug.LogError(e.Message);
 }
 ```
+
+> Error-handling differs by API: awaiting an instruction (and `AsUniTask`) never throws on a
+> failed operation — you inspect `IsError` after the `await`. The stream enumerable is the
+> exception: `await foreach` has no post-loop point to check `IsError`, so a mid-stream failure
+> surfaces by throwing `StreamError`.
   
 
 ### Publishing microphone
