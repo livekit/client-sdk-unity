@@ -59,5 +59,6 @@ public class TokenSourceComponentConfigEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_participantAttributes"), true);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentName"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentMetadata"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_agentDeployment"));
     }
 }

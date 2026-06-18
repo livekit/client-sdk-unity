@@ -140,7 +140,7 @@ namespace LiveKit
                     request.ParticipantAttributes = null;
             }
 
-            if (!string.IsNullOrEmpty(options.AgentName) || !string.IsNullOrEmpty(options.AgentMetadata))
+            if (!string.IsNullOrEmpty(options.AgentName) || !string.IsNullOrEmpty(options.AgentMetadata) || !string.IsNullOrEmpty(options.AgentDeployment))
             {
                 request.RoomConfig = new RoomConfig
                 {
@@ -149,7 +149,8 @@ namespace LiveKit
                         new AgentDispatch
                         {
                             AgentName = NullIfEmpty(options.AgentName),
-                            Metadata = NullIfEmpty(options.AgentMetadata)
+                            Metadata = NullIfEmpty(options.AgentMetadata),
+                            Deployment = NullIfEmpty(options.AgentDeployment)
                         }
                     }
                 };
