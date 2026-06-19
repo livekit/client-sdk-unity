@@ -73,12 +73,9 @@ We plan to support all Unity platforms with this SDK. WebGL is currently support
 
   
 
-Follow this [unity tutorial](https://docs.unity3d.com/Manual/upm-ui-giturl.html),
+Before cloning the repo, make sure that git LFS is installed and setup.
 
-  
-
-clone this repo and download the ffi binaries.
-
+You can either clone the repo and import from the local Unity package files:
   
 
 ```sh
@@ -88,11 +85,6 @@ git  clone  https://github.com/livekit/client-sdk-unity.git
 cd  client-sdk-unity
 
 ```
-
-  
-
-You can use the package manager to import local `client-sdk-unity` into your Unity project.
-
   
 
 Or you can import the git url `https://github.com/livekit/client-sdk-unity.git` from the package manager. 
