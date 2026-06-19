@@ -126,6 +126,8 @@ namespace LiveKit
         public delegate void SipDtmfDelegate(Participant participant, UInt32 code, string digit);
         public delegate void ConnectionStateChangeDelegate(ConnectionState connectionState);
         public delegate void ConnectionDelegate(Room room);
+        public delegate void DisconnectDelegate(Room room, DisconnectReason reason);
+        public delegate void ParticipantDisconnectDelegate(Participant participant, DisconnectReason reason);
         public delegate void E2EeStateChangedDelegate(Participant participant, EncryptionState state);
         public delegate void DataTrackPublishedDelegate(RemoteDataTrack track);
         public delegate void DataTrackUnpublishedDelegate(string sid);
@@ -137,11 +139,13 @@ namespace LiveKit
         public LocalParticipant LocalParticipant { private set; get; }
         public ConnectionState ConnectionState { private set; get; }
         public bool IsConnected => RoomHandle != null && ConnectionState != ConnectionState.ConnDisconnected;
+        public DisconnectReason DisconnectReason { private set; get; }
         public E2EEManager E2EEManager { internal set; get; }
         public IReadOnlyDictionary<string, RemoteParticipant> RemoteParticipants => _participants;
 
         public event ParticipantDelegate ParticipantConnected;
         public event ParticipantDelegate ParticipantDisconnected;
+        public event ParticipantDisconnectDelegate ParticipantDisconnectedWithReason;
         public event LocalPublishDelegate LocalTrackPublished;
         public event LocalPublishDelegate LocalTrackUnpublished;
         public event PublishDelegate TrackPublished;
@@ -157,6 +161,7 @@ namespace LiveKit
         public event ConnectionStateChangeDelegate ConnectionStateChanged;
         public event ConnectionDelegate Connected;
         public event ConnectionDelegate Disconnected;
+        public event DisconnectDelegate DisconnectedWithReason;
         public event ConnectionDelegate Reconnecting;
         public event ConnectionDelegate Reconnected;
         public event E2EeStateChangedDelegate E2EeStateChanged;
@@ -366,6 +371,7 @@ namespace LiveKit
                         var participant = RemoteParticipants[sid];
                         _participants.Remove(sid);
                         ParticipantDisconnected?.Invoke(participant);
+                        ParticipantDisconnectedWithReason?.Invoke(participant, e.ParticipantDisconnected.DisconnectReason);
                     }
                     break;
                 case RoomEvent.MessageOneofCase.TrackPublished:
@@ -536,7 +542,9 @@ namespace LiveKit
                     ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
+                    DisconnectReason = e.Disconnected.Reason;
                     Disconnected?.Invoke(this);
+                    DisconnectedWithReason?.Invoke(this, DisconnectReason);
                     OnDisconnect();
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
