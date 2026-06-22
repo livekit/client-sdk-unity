@@ -15,9 +15,11 @@ usage() {
     echo "Usage: $0 <platform> [build_type]"
     echo ""
     echo "Platforms:"
-    echo "  macos       Build for aarch64-apple-darwin"
-    echo "  android     Build for aarch64-linux-android"
-    echo "  ios         Build for aarch64-apple-ios"
+    echo "  macos          Build for aarch64-apple-darwin"
+    echo "  android        Build for aarch64-linux-android"
+    echo "  ios            Build for aarch64-apple-ios"
+    echo "  windows        Build for x86_64-pc-windows-msvc"
+    echo "  windows-arm64  Build for aarch64-pc-windows-msvc"
     echo ""
     echo "Build types (optional, defaults to 'debug'):"
     echo "  release     Optimized release build"
@@ -97,6 +99,35 @@ case "$PLATFORM" in
 
         SRC="$BASE_TARGET/aarch64-apple-ios/$BUILD_DIR/liblivekit_ffi.a"
         DST="$BASE_DST/ffi-ios-arm64/liblivekit_ffi.a"
+        ;;
+    # WINDOWS (x86_64)
+    windows)
+        echo "Building for Windows (x86_64-pc-windows-msvc) [$BUILD_TYPE]..."
+        cargo build \
+            --manifest-path "$MANIFEST" \
+            $BUILD_FLAG \
+            -p livekit-ffi \
+            --target x86_64-pc-windows-msvc
+        BUILD_STATUS=$?
+
+        SRC="$BASE_TARGET/x86_64-pc-windows-msvc/$BUILD_DIR/livekit_ffi.dll"
+        DST="$BASE_DST/ffi-windows-x86_64/livekit_ffi.dll"
+        ;;
+    # WINDOWS (arm64)
+    windows-arm64)
+        echo "Building for Windows (aarch64-pc-windows-msvc) [$BUILD_TYPE]..."
+        # ring 0.16 is incompatible with win aarch64, so use native-tls
+        cargo build \
+            --manifest-path "$MANIFEST" \
+            $BUILD_FLAG \
+            -p livekit-ffi \
+            --target aarch64-pc-windows-msvc \
+            --no-default-features \
+            --features "native-tls"
+        BUILD_STATUS=$?
+
+        SRC="$BASE_TARGET/aarch64-pc-windows-msvc/$BUILD_DIR/livekit_ffi.dll"
+        DST="$BASE_DST/ffi-windows-arm64/livekit_ffi.dll"
         ;;
     *)
         echo -e "${RED}Error: Unknown platform '$PLATFORM'.${RESET}"
