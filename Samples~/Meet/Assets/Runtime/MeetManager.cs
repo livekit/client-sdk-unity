@@ -229,7 +229,8 @@ public class MeetManager : MonoBehaviour
         _room.TrackMuted += OnTrackMuted;
         _room.TrackUnmuted += OnTrackUnmuted;
         _room.ParticipantConnected += OnParticipantConnected;
-        _room.ParticipantDisconnected += OnParticipantDisconnected;
+        _room.ParticipantDisconnectedWithReason += OnParticipantDisconnected;
+        _room.Disconnected += OnDisconnected;
         _room.DataReceived += OnDataReceived;
 
         var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
@@ -400,8 +401,10 @@ public class MeetManager : MonoBehaviour
     private void OnParticipantConnected(Participant participant)
         => EnsureParticipantTile(participant.Identity);
 
-    private void OnParticipantDisconnected(Participant participant)
+    private void OnParticipantDisconnected(Participant participant, DisconnectReason reason)
     {
+        Debug.Log($"Participant {participant.Identity} disconnected: {reason}");
+
         var owned = new List<string>();
         foreach (var kv in _extraVideoOwners)
             if (kv.Value == participant.Identity) owned.Add(kv.Key);
@@ -409,6 +412,9 @@ public class MeetManager : MonoBehaviour
 
         DestroyParticipantTile(participant.Identity);
     }
+
+    private void OnDisconnected(Room room)
+        => Debug.Log($"Disconnected from room: {room.DisconnectReason}");
 
     private void OnTrackMuted(TrackPublication publication, Participant participant)
     {
