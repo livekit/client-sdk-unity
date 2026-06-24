@@ -1,2 +1,6 @@
 /downloads~/*
 .DS_Store
+
+# Windows FFI build tool: downloaded source + binaries staged in the tool folder
+/BuildScripts~/windows/.src/
+/BuildScripts~/windows/livekit_ffi.*
