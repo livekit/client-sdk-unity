@@ -1,5 +1,8 @@
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
@@ -24,6 +27,84 @@ namespace LiveKit.PlayModeTests
             LogAssert.ignoreFailingMessages = false;
 
             Assert.IsNotNull(context.ConnectionError, "Expected connection to fail");
+        }
+
+        // Deterministic coverage of the awaiter using a synthetic instruction, so the logic is
+        // exercised without the FFI (no dev server needed — hence not [Category("E2E")]). A live
+        // connect would be non-deterministic here: the FFI emits its error log asynchronously and
+        // would race LogAssert. The connect-fail path itself is covered by Connect_FailsWithInvalidUrl.
+        private sealed class TestYieldInstruction : YieldInstruction
+        {
+            public void Complete() => IsDone = true;
+            public void CompleteWithError() { IsError = true; IsDone = true; }
+        }
+
+        // OnCompleted path: await registers a continuation while the instruction is still
+        // pending, then completion fires it and IsError is visible on resume.
+        [UnityTest]
+        public IEnumerator GetAwaiter_ResumesOnCompletion_AndSurfacesIsError()
+        {
+            var instruction = new TestYieldInstruction();
+            var awaitTask = AwaitInstruction(instruction);
+            Assert.IsFalse(awaitTask.IsCompleted, "Awaiter must not resume before IsDone");
+
+            instruction.CompleteWithError();
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
+            Assert.IsTrue(instruction.IsDone, "Awaiter resumed, so IsDone must be observable");
+            Assert.IsTrue(instruction.IsError, "IsError must be visible on resume");
+        }
+
+        // IsCompleted fast path: instruction is already done before it is awaited, so the
+        // awaiter completes without ever registering a continuation.
+        [UnityTest]
+        public IEnumerator GetAwaiter_CompletesImmediately_WhenAlreadyDone()
+        {
+            var instruction = new TestYieldInstruction();
+            instruction.Complete();
+
+            var awaitTask = AwaitInstruction(instruction);
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            Assert.IsNull(awaitTask.Exception, awaitTask.Exception?.ToString());
+            Assert.IsTrue(instruction.IsDone);
+            Assert.IsFalse(instruction.IsError);
+        }
+
+        // An await continuation must resume on the Unity main thread even when the instruction
+        // completes on a background thread — which is what the FFI callback thread does for
+        // operations registered dispatchToMainThread:false (SetMetadata, stream writes, …).
+        // Coroutines always resume on the main thread; the await path must match so callers can
+        // safely touch Unity APIs after the await. RED until the awaiter marshals continuations
+        // to the main SynchronizationContext.
+        [UnityTest]
+        public IEnumerator GetAwaiter_ResumesOnMainThread_WhenCompletedOffThread()
+        {
+            var mainThreadId = Thread.CurrentThread.ManagedThreadId;
+            var instruction = new TestYieldInstruction();
+
+            var awaitTask = AwaitAndGetResumeThread(instruction);
+            Assert.IsFalse(awaitTask.IsCompleted, "Awaiter must not resume before IsDone");
+
+            // Complete from a thread-pool thread, mimicking the FFI callback thread.
+            Task.Run(() => instruction.Complete());
+
+            yield return new WaitUntil(() => awaitTask.IsCompleted);
+
+            Assert.AreEqual(mainThreadId, awaitTask.Result,
+                "await must resume on the Unity main thread, not the thread that completed the instruction");
+        }
+
+        private static async Task AwaitInstruction(YieldInstruction instruction)
+        {
+            await instruction;
+        }
+
+        private static async Task<int> AwaitAndGetResumeThread(YieldInstruction instruction)
+        {
+            await instruction;
+            return Thread.CurrentThread.ManagedThreadId;
         }
 
         [UnityTest, Category("E2E")]

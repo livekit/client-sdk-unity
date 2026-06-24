@@ -305,6 +305,70 @@ Debug.Log("Connected to " + room.Name);
 
   
 
+## Asynchronous programming: coroutines, async/await, and UniTask
+
+The SDK exposes three interchangeable styles for awaiting asynchronous operations. Coroutines, async/await and UniTask.
+
+**1. Coroutines (default, no dependency)** — shown throughout this README.
+
+**2. async/await (no dependency)** — every operation returns an awaitable instruction (`ConnectInstruction`, `PublishTrackInstruction`, `PerformRpcInstruction`, the stream read instructions, …), so you can `await` it directly. As with coroutines, you inspect success/failure on the instruction (`IsError`) — `await` does not throw. Continuations resume on Unity's main thread.
+
+```cs
+async void Start()
+{
+    var room = new Room();
+    var connect = room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions());
+    await connect;
+    if (!connect.IsError)
+        Debug.Log("Connected to " + room.Name);
+}
+```
+
+> Use `async void` only for top-level event handlers (e.g. button callbacks); its exceptions surface to Unity's log rather than to a caller. Prefer `async Task`/`async UniTaskVoid` elsewhere.
+
+**3. UniTask (optional)** — install [UniTask](https://github.com/Cysharp/UniTask) (`com.cysharp.unitask`). The SDK auto-detects it via the `LIVEKIT_UNITASK` scripting define and enables the `LiveKit.UniTask` assembly, which adds `CancellationToken` support, composition, and async streams.
+
+Cancellation (abandon-awaiter semantics — the underlying request is not cancelled on the wire):
+
+```cs
+await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions())
+    .AsUniTask(cancellationToken);
+```
+
+Run operations in parallel. `AsUniTask` does not throw on failure (matching the
+coroutine path), so keep the instructions and check `IsError` on each after the
+`await` — otherwise a failed operation passes silently:
+
+```cs
+var publishCamera = room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions);
+var publishMicrophone = room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions);
+
+await UniTask.WhenAll(publishCamera.AsUniTask(ct), publishMicrophone.AsUniTask(ct));
+
+if (publishCamera.IsError || publishMicrophone.IsError)
+    Debug.LogError("Failed to publish one or more tracks");
+```
+
+Consume an incremental stream with `await foreach`. The sequence ends at end-of-stream; if the stream ends with an error it throws a `StreamError`:
+
+```cs
+try
+{
+    await foreach (var chunk in reader.ReadIncremental().AsAsyncEnumerable(ct))
+        Process(chunk);
+}
+catch (StreamError e)
+{
+    Debug.LogError(e.Message);
+}
+```
+
+> Error-handling differs by API: awaiting an instruction (and `AsUniTask`) never throws on a
+> failed operation — you inspect `IsError` after the `await`. The stream enumerable is the
+> exception: `await foreach` has no post-loop point to check `IsError`, so a mid-stream failure
+> surfaces by throwing `StreamError`.
+  
+
 ### Publishing microphone
 
   

@@ -1,0 +1,26 @@
+{
+    "name": "LiveKit.UniTask",
+    "rootNamespace": "LiveKit",
+    "references": [
+        "LiveKit",
+        "UniTask",
+        "UniTask.Linq"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "LIVEKIT_UNITASK"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "2.0.0",
+            "define": "LIVEKIT_UNITASK"
+        }
+    ],
+    "noEngineReferences": false
+}

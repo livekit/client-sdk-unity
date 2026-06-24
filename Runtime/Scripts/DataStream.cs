@@ -95,7 +95,14 @@ namespace LiveKit
         /// </summary>
         public bool IsError => Error != null;
 
-        protected TContent LatestChunk
+        /// <summary>
+        /// The chunk from the most recent completed read. Throws the captured
+        /// <see cref="StreamError"/> if the last read errored. Internal so the optional
+        /// UniTask async-enumerable adapter (which has InternalsVisibleTo access) can read
+        /// it generically; the typed <c>Bytes</c>/<c>Text</c> accessors on the concrete
+        /// readers delegate here.
+        /// </summary>
+        internal TContent LatestChunk
         {
             get
             {
@@ -153,11 +160,15 @@ namespace LiveKit
         {
             lock (_gate)
             {
-                IsEos = true;
+                // Assign Error before flipping IsEos. The IsEos setter fires the awaiter
+                // continuation, which inspects IsError/Error on resume; when completion runs
+                // inline on the main thread, setting IsEos first would let the continuation
+                // observe IsError == false and silently swallow the stream error.
                 if (protoError != null)
                 {
                     Error = new StreamError(protoError);
                 }
+                IsEos = true;
             }
         }
     }
