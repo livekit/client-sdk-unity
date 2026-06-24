@@ -73,7 +73,6 @@ public class ParticipantTile : MonoBehaviour
 
     /// <summary>
     /// Highlights the tile with a colored border while the participant is speaking.
-    /// The border is built lazily on first use, so no prefab wiring is required.
     /// </summary>
     public void SetSpeaking(bool speaking)
     {
