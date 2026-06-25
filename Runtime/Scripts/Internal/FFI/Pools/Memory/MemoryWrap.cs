@@ -1,6 +1,6 @@
 using System;
 
-namespace LiveKit.Internal.FFIClients.Pools.Memory
+namespace LiveKit.Internal.FFI.Pools.Memory
 {
     public readonly struct MemoryWrap : IDisposable
     {

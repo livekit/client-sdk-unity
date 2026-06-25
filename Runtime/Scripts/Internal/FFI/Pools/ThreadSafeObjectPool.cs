@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using UnityEngine.Pool;
 
-namespace LiveKit.Internal.FFIClients.Pools.ObjectPool
+namespace LiveKit.Internal.FFI.Pools
 {
     public class ThreadSafeObjectPool<T> : IObjectPool<T> where T : class
     {

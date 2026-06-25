@@ -1,7 +1,7 @@
 using System;
-using LiveKit.Internal.FFIClients.Pools;
+using LiveKit.Internal.FFI.Pools;
 
-namespace LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients
+namespace LiveKit.Internal.FFI
 {
     public readonly struct SmartWrap<T> : IDisposable where T : class, new()
     {

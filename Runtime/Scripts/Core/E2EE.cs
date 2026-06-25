@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 using LiveKit.Proto;
 
 namespace LiveKit

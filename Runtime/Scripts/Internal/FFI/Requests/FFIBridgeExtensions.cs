@@ -1,5 +1,5 @@
 ﻿using LiveKit.Proto;
-namespace LiveKit.Internal.FFIClients.Requests
+namespace LiveKit.Internal.FFI.Requests
 {
     public static class FFIBridgeExtensions
     {

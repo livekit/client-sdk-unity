@@ -2,7 +2,7 @@ using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using System.Runtime.CompilerServices;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 
 namespace LiveKit
 {

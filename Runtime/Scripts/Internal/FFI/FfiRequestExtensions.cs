@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Reflection;
 using LiveKit.Proto;
 
-namespace LiveKit.Internal.FFIClients
+namespace LiveKit.Internal.FFI
 {
     public static class FfiRequestExtensions
     {

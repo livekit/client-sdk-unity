@@ -1,7 +1,7 @@
 using System;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 
 namespace LiveKit
 {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using System.Diagnostics;

@@ -1,4 +1,4 @@
-namespace LiveKit.Internal.FFIClients.Pools
+namespace LiveKit.Internal.FFI.Pools
 {
     public interface IMultiPool
     {

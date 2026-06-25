@@ -1,10 +1,10 @@
 using System;
 using Google.Protobuf;
-using LiveKit.client_sdk_unity.Runtime.Scripts.Internal.FFIClients;
-using LiveKit.Internal.FFIClients.Pools;
+using LiveKit.Internal.FFI;
+using LiveKit.Internal.FFI.Pools;
 using LiveKit.Proto;
 
-namespace LiveKit.Internal.FFIClients.Requests
+namespace LiveKit.Internal.FFI.Requests
 {
     public struct FfiRequestWrap<T> : IDisposable where T : class, new()
     {

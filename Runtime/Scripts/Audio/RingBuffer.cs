@@ -1,6 +1,6 @@
 using System;
 using System.Buffers;
-using LiveKit.Internal.FFIClients.Pools.Memory;
+using LiveKit.Internal.FFI.Pools.Memory;
 
 namespace LiveKit.Internal
 {

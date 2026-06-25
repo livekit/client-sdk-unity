@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 using LiveKit.Internal;
 using LiveKit.Proto;
 

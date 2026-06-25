@@ -1,7 +1,7 @@
 using System;
 using LiveKit.Proto;
 
-namespace LiveKit.Internal.FFIClients
+namespace LiveKit.Internal.FFI
 {
     /// <summary>
     /// Thread-safe interface for sending requests to the FFI layer

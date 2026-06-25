@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using LiveKit.Proto;
 using LiveKit.Internal;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 
 #if UNITY_IOS && !UNITY_EDITOR
 using System.Runtime.InteropServices;

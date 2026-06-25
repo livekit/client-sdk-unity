@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LiveKit.Internal;
 using LiveKit.Proto;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 using System.Diagnostics;
 
 namespace LiveKit

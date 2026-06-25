@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Concurrent;
-using LiveKit.Internal.FFIClients.Pools.ObjectPool;
 using UnityEngine.Pool;
 
-namespace LiveKit.Internal.FFIClients.Pools
+namespace LiveKit.Internal.FFI.Pools
 {
     public class ThreadSafeMultiPool : IMultiPool
     {

@@ -1,4 +1,4 @@
-namespace LiveKit.Internal.FFIClients.Requests
+namespace LiveKit.Internal.FFI.Requests
 {
     /// <summary>
     /// Thread-safe interface for requests to the FFI layer

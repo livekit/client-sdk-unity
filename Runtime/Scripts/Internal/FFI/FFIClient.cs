@@ -4,9 +4,9 @@ using LiveKit.Proto;
 using UnityEngine;
 using Google.Protobuf;
 using System.Threading;
-using LiveKit.Internal.FFIClients;
-using LiveKit.Internal.FFIClients.Pools;
-using LiveKit.Internal.FFIClients.Pools.Memory;
+using LiveKit.Internal.FFI;
+using LiveKit.Internal.FFI.Pools;
+using LiveKit.Internal.FFI.Pools.Memory;
 using UnityEngine.Pool;
 
 #if UNITY_EDITOR

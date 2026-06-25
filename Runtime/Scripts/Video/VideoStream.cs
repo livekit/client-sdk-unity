@@ -2,7 +2,7 @@ using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 using UnityEngine;
-using LiveKit.Internal.FFIClients.Requests;
+using LiveKit.Internal.FFI.Requests;
 using System.Collections;
 
 namespace LiveKit

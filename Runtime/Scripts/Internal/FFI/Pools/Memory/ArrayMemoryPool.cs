@@ -1,6 +1,6 @@
 using System.Buffers;
 
-namespace LiveKit.Internal.FFIClients.Pools.Memory
+namespace LiveKit.Internal.FFI.Pools.Memory
 {
     public class ArrayMemoryPool : IMemoryPool
     {

@@ -1,7 +1,7 @@
 using System;
-using LiveKit.Internal.FFIClients.Pools;
+using LiveKit.Internal.FFI.Pools;
 
-namespace LiveKit.Internal.FFIClients.Requests
+namespace LiveKit.Internal.FFI.Requests
 {
     public class FFIBridge : IFFIBridge
     {
