@@ -7,13 +7,14 @@ using System.Threading;
 using LiveKit.Internal.FFI;
 using LiveKit.Internal.FFI.Pools;
 using LiveKit.Internal.FFI.Pools.Memory;
+using FfiResponsePools = LiveKit.Internal.FFI.Pools.Pools;
 using UnityEngine.Pool;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace LiveKit.Internal
+namespace LiveKit.Internal.FFI
 {
 #if UNITY_EDITOR
     [InitializeOnLoad]
@@ -64,7 +65,7 @@ namespace LiveKit.Internal
         // Data Track
         public event DataTrackStreamEventReceivedDelegate? DataTrackStreamEventReceived;
 
-        public FfiClient() : this(Pools.NewFfiResponsePool(), new ArrayMemoryPool())
+        public FfiClient() : this(FfiResponsePools.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
 

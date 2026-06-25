@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 using FfiHandleId = System.IntPtr;
 
-namespace LiveKit.Internal
+namespace LiveKit.Internal.FFI
 {
     [SuppressUnmanagedCodeSecurity]
     internal static class NativeMethods

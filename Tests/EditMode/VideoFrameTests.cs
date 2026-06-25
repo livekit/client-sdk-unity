@@ -3,6 +3,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 using NUnit.Framework;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit.EditModeTests
 {
     public class VideoFrameTests

@@ -9,6 +9,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using System.Diagnostics;
 using System.Threading;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     /// <summary>

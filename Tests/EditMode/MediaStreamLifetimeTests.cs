@@ -3,6 +3,7 @@ using System.IO;
 using NUnit.Framework;
 using UnityEngine;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit.EditModeTests
 {
     public class MediaStreamLifetimeTests

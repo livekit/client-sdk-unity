@@ -7,6 +7,7 @@ using LiveKit.Internal;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit.PlayModeTests.UniTaskBridge
 {
     public class StreamUniTaskTests

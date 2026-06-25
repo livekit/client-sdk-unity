@@ -4,6 +4,7 @@ using LiveKit.Proto;
 using System.Runtime.CompilerServices;
 using LiveKit.Internal.FFI.Requests;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public sealed class VideoFrame

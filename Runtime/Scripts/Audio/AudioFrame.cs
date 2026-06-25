@@ -3,6 +3,7 @@ using LiveKit.Proto;
 using LiveKit.Internal;
 using Unity.Collections;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public class AudioFrame : IDisposable

@@ -3,7 +3,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 
 using LiveKit.Internal.Threading;
-namespace LiveKit
+namespace LiveKit.Internal.FFI
 {
     /// <summary>
     /// Generic yield instruction for one-shot FFI callbacks that follow the standard pattern:

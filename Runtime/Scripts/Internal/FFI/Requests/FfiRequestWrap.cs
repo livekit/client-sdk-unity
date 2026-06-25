@@ -68,7 +68,7 @@ namespace LiveKit.Internal.FFI.Requests
             }
             catch
             {
-                if (RequestAsyncId != 0 && ffiClient is LiveKit.Internal.FfiClient client)
+                if (RequestAsyncId != 0 && ffiClient is LiveKit.Internal.FFI.FfiClient client)
                 {
                     client.CancelPendingCallback(RequestAsyncId);
                 }

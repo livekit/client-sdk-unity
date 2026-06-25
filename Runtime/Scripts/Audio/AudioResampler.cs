@@ -3,6 +3,7 @@ using LiveKit.Internal.FFI.Requests;
 using LiveKit.Internal;
 using LiveKit.Proto;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public sealed class AudioResampler : IDisposable

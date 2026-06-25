@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.ConstrainedExecution;
 using LiveKit.Proto;
 
-namespace LiveKit.Internal
+namespace LiveKit.Internal.FFI
 {
     public class FfiHandle : SafeHandle
     {

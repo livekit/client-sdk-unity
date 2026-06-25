@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using LiveKit.Proto;
 
-namespace LiveKit.Internal
+namespace LiveKit.Internal.FFI
 {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 

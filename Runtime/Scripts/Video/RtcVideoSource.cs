@@ -8,6 +8,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using LiveKit.Internal.FFI.Requests;
 using System.Collections;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public abstract class RtcVideoSource : IRtcSource, IDisposable

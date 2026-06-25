@@ -5,6 +5,7 @@ using LiveKit.Internal;
 using LiveKit.Proto;
 
 using LiveKit.Internal.Threading;
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     /// <summary>

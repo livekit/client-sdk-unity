@@ -4,6 +4,7 @@ using LiveKit.Internal;
 using LiveKit.Internal.FFI.Requests;
 
 using LiveKit.Internal.Threading;
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public interface ITrack

@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using UnityEngine.Android;
 #endif
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
 #if UNITY_IOS && !UNITY_EDITOR

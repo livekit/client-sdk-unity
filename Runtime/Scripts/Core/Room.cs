@@ -7,6 +7,7 @@ using LiveKit.Internal.FFI.Requests;
 using UnityEngine;
 
 using LiveKit.Internal.Threading;
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public enum IceTransportType

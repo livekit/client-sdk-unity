@@ -5,6 +5,7 @@ using UnityEngine;
 using LiveKit.Internal.FFI.Requests;
 using System.Collections;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     public class VideoStream
