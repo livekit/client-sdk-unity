@@ -7,7 +7,6 @@ using System.Threading;
 using LiveKit.Internal.FFI;
 using LiveKit.Internal.FFI.Pools;
 using LiveKit.Internal.FFI.Pools.Memory;
-using FfiResponsePools = LiveKit.Internal.FFI.Pools.Pools;
 using UnityEngine.Pool;
 
 #if UNITY_EDITOR
@@ -65,7 +64,7 @@ namespace LiveKit.Internal.FFI
         // Data Track
         public event DataTrackStreamEventReceivedDelegate? DataTrackStreamEventReceived;
 
-        public FfiClient() : this(FfiResponsePools.NewFfiResponsePool(), new ArrayMemoryPool())
+        public FfiClient() : this(PoolFactory.NewFfiResponsePool(), new ArrayMemoryPool())
         {
         }
 

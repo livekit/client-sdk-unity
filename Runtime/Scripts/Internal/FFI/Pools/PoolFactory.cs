@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 
 namespace LiveKit.Internal.FFI.Pools
 {
-    public static class Pools
+    public static class PoolFactory
     {
         public static IObjectPool<FfiResponse> NewFfiResponsePool()
         {
