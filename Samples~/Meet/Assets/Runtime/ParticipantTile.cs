@@ -8,10 +8,13 @@ public class ParticipantTile : MonoBehaviour
     public RawImage Image;
     public TMP_Text Label;
     public MaterialIcon MicIcon;
+    public RectTransform SpeakingBorder;
 
     private ResizeTextureController _controller;
     private Texture _placeholder;
     private bool _showingLive;
+
+    private bool _speaking;
 
     private void Awake()
     {
@@ -66,6 +69,17 @@ public class ParticipantTile : MonoBehaviour
     {
         if (MicIcon == null) return;
         MicIcon.gameObject.SetActive(muted);
+    }
+
+    /// <summary>
+    /// Highlights the tile with a colored border while the participant is speaking.
+    /// </summary>
+    public void SetSpeaking(bool speaking)
+    {
+        if (_speaking == speaking) return;
+        _speaking = speaking;
+
+        SpeakingBorder.gameObject.SetActive(speaking);
     }
 
     private void Update() => _controller?.Resize();

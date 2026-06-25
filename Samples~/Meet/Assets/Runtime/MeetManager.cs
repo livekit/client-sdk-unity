@@ -58,6 +58,7 @@ public class MeetManager : MonoBehaviour
     private readonly Dictionary<string, string> _extraVideoOwners = new();
     private readonly Dictionary<string, GameObject> _audioObjects = new();
     private readonly Dictionary<string, VideoStream> _videoStreams = new();
+    private readonly HashSet<string> _speakingIdentities = new();
 
     private readonly Dictionary<string, AudioStream> _audioStreams = new();
 
@@ -232,6 +233,7 @@ public class MeetManager : MonoBehaviour
         _room.ParticipantDisconnectedWithReason += OnParticipantDisconnected;
         _room.Disconnected += OnDisconnected;
         _room.DataReceived += OnDataReceived;
+        _room.ActiveSpeakersChanged += OnActiveSpeakersChanged;
 
         var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
         yield return connect;
@@ -396,6 +398,23 @@ public class MeetManager : MonoBehaviour
     {
         var message = System.Text.Encoding.Default.GetString(data);
         Debug.Log($"DataReceived from {participant.Identity}: {message}");
+    }
+
+    private void OnActiveSpeakersChanged(List<Participant> speakers)
+    {
+        // The SDK delivers the complete set of currently-speaking participants each
+        // time, so anyone previously speaking but absent here has stopped.
+        foreach (var identity in _speakingIdentities)
+            if (_participantTiles.TryGetValue(identity, out var tile))
+                tile.SetSpeaking(false);
+
+        _speakingIdentities.Clear();
+        foreach (var participant in speakers)
+        {
+            _speakingIdentities.Add(participant.Identity);
+            if (_participantTiles.TryGetValue(participant.Identity, out var tile))
+                tile.SetSpeaking(true);
+        }
     }
 
     private void OnParticipantConnected(Participant participant)
@@ -763,6 +782,8 @@ public class MeetManager : MonoBehaviour
         }
         _extraVideoTiles.Clear();
         _extraVideoOwners.Clear();
+
+        _speakingIdentities.Clear();
 
         _cameraActive = false;
         _microphoneActive = false;
