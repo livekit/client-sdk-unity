@@ -3,6 +3,7 @@ using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFI.Requests;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     public interface ITrack

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LiveKit
+namespace LiveKit.Internal
 {
 public static class PackageVersion
 {

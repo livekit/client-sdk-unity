@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine.TestTools;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit.PlayModeTests.UniTaskBridge
 {
     public class RoomUniTaskTests

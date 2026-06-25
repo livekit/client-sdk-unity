@@ -4,6 +4,7 @@ using LiveKit.Internal.FFI.Requests;
 using LiveKit.Proto;
 using UnityEngine;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     /// <summary>

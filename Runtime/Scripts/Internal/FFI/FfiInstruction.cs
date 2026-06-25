@@ -2,6 +2,7 @@ using System;
 using LiveKit.Internal;
 using LiveKit.Proto;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     /// <summary>

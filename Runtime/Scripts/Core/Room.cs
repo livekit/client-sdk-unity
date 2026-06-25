@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using LiveKit.Internal.FFI.Requests;
 using UnityEngine;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     public enum IceTransportType
@@ -654,7 +655,7 @@ namespace LiveKit
         }
     }
 
-    public sealed class ConnectInstruction : YieldInstruction
+    public sealed class ConnectInstruction : LiveKit.Internal.Threading.YieldInstruction
     {
         private ulong _asyncId;
         private Room _room;

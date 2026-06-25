@@ -7,6 +7,7 @@ using LiveKit.Proto;
 using LiveKit.Internal.FFI.Requests;
 using System.Diagnostics;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     public delegate Task<string> RpcHandler(RpcInvocationData data);

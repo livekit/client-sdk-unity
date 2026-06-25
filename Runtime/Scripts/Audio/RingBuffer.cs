@@ -2,7 +2,7 @@ using System;
 using System.Buffers;
 using LiveKit.Internal.FFI.Pools.Memory;
 
-namespace LiveKit.Internal
+namespace LiveKit
 {
     // Basic RingBuffer implementation (used WebRtc_RingBuffer as reference)
     // The one from com.unity.collections is dealing element per element, which is not efficient when dealing with bytes

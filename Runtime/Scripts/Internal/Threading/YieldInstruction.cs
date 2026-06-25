@@ -4,7 +4,7 @@ using System.Threading;
 using LiveKit.Internal;
 using UnityEngine;
 
-namespace LiveKit
+namespace LiveKit.Internal.Threading
 {
     // Resumes awaiter continuations on Unity's main thread. Completion may be signalled on the
     // FFI callback thread (operations registered dispatchToMainThread:false, and data-stream

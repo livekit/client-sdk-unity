@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace LiveKit
+namespace LiveKit.Internal.Threading
 {
     /// <summary>
     /// Adapts a <see cref="Task{TResult}"/> to a coroutine-friendly <see cref="YieldInstruction"/>.

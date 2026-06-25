@@ -4,6 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit.EditModeTests
 {
     public class MonoBehaviourContextTests

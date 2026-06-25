@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Collections.Generic;
 
-namespace LiveKit
+namespace LiveKit.Internal.Threading
 {
 
     public class ThreadSafeQueue<T>

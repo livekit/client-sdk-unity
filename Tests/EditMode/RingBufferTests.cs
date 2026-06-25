@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using LiveKit;
 using LiveKit.Internal;
 
 namespace LiveKit.EditModeTests

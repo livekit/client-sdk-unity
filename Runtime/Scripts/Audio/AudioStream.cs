@@ -5,6 +5,7 @@ using LiveKit.Proto;
 using System.Runtime.InteropServices;
 using LiveKit.Internal.FFI.Requests;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     /// <summary>

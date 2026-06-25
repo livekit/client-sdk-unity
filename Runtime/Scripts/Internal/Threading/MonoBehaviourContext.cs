@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace LiveKit
+namespace LiveKit.Internal.Threading
 {
     /// <summary>
     /// Global singleton used for accessing specific MonoBehaviour methods from
