@@ -71,9 +71,10 @@ We plan to support all Unity platforms with this SDK. WebGL is currently support
 
 ## Installation
 
-  
 
-Before cloning the repo, make sure that git LFS is installed and setup.
+### Using Git
+
+Before cloning the repo, make sure that Git LFS is installed and setup.
 
 You can either clone the repo and import from the local Unity package files:
   
@@ -87,10 +88,13 @@ cd  client-sdk-unity
 ```
   
 
-Or you can import the git url `https://github.com/livekit/client-sdk-unity.git` from the package manager. 
+Or you can import the Git url `https://github.com/livekit/client-sdk-unity.git` from the package manager. 
 If you want to use tagged release versions, use `https://github.com/livekit/client-sdk-unity.git#vX.X.X`, for example with `#v1.3.5`.
 
-  
+### Using OpenUPM
+
+The package is also hosted in the OpenUPM package registry. Here is the guide on how to use the OpenUPM registry to import the package: https://openupm.com/packages/io.livekit.livekit-sdk/#modal-manualinstallation 
+
 
 ## Local Development
 
@@ -99,7 +103,7 @@ If you want to use tagged release versions, use `https://github.com/livekit/clie
 
   
 
-For local development, initialize the git submodule containing the Rust code for the LiveKit plugin libraries.
+For local development, initialize the Git submodule containing the Rust code for the LiveKit plugin libraries.
 
   
 
