@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using LiveKit.Proto;
 using LiveKit.PlayModeTests.Utils;
+using LiveKit.Internal.Threading;
+using YieldInstruction = LiveKit.Internal.Threading.YieldInstruction;
 namespace LiveKit.PlayModeTests
 {
     public class RoomTests

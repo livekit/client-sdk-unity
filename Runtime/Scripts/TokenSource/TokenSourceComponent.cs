@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using LiveKit.Internal;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     /// <summary>

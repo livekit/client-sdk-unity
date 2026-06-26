@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+using LiveKit.Internal.Threading;
 namespace LiveKit.EditModeTests
 {
     public class YieldInstructionThreadingTests

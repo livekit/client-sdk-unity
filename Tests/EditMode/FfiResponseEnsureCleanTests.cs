@@ -1,5 +1,5 @@
 using System;
-using LiveKit.Internal.FFIClients;
+using LiveKit.Internal.FFI;
 using LiveKit.Proto;
 using NUnit.Framework;
 

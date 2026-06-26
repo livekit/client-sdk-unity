@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using LiveKit.PlayModeTests.Utils;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit.PlayModeTests
 {
     public class FfiHandleDisposalTests

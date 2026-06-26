@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LiveKit.Internal;
 using NUnit.Framework;
 
+using LiveKit.Internal.FFI;
 namespace LiveKit.EditModeTests
 {
     public class DataStreamTests

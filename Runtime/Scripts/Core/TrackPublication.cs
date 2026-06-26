@@ -1,0 +1,113 @@
+using LiveKit.Internal;
+using LiveKit.Internal.FFI.Requests;
+using LiveKit.Proto;
+
+using LiveKit.Internal.FFI;
+namespace LiveKit
+{
+    public class TrackPublication
+    {
+        private TrackPublicationInfo _info;
+        public string Sid => _info.Sid;
+        public string Name => _info.Name;
+        public TrackKind Kind => _info.Kind;
+        public TrackSource Source => _info.Source;
+        public bool Simulcasted => _info.Simulcasted;
+        public uint Width => _info.Width;
+        public uint Height => _info.Height;
+        public string MimeType => _info.MimeType;
+        public bool Muted => _info.Muted;
+        public Proto.EncryptionType EncryptionType => _info.EncryptionType;
+
+        public Track Track { private set; get; }
+
+        protected TrackPublication(TrackPublicationInfo info)
+        {
+            UpdateInfo(info);
+        }
+
+        internal void UpdateInfo(TrackPublicationInfo info)
+        {
+            _info = info;
+        }
+
+        internal void UpdateTrack(Track track)
+        {
+            Track = track;
+        }
+
+        internal void UpdateMuted(bool muted)
+        {
+            _info.Muted = muted;
+            Track?.UpdateMuted(muted);
+        }
+
+        internal virtual void DisposeHandles()
+        {
+            Track?.DisposeHandles();
+        }
+    }
+
+    public sealed class RemoteTrackPublication : TrackPublication
+    {
+        public new IRemoteTrack Track => base.Track as IRemoteTrack;
+        public bool Subscribed = false;
+
+        private FfiHandle Handle;
+
+        internal RemoteTrackPublication(TrackPublicationInfo info, FfiHandle handle) : base(info)
+        {
+            Handle = handle;
+        }
+
+        internal override void DisposeHandles()
+        {
+            base.DisposeHandles();
+            Handle?.Dispose();
+        }
+
+        public void SetSubscribed(bool subscribed)
+        {
+            Subscribed = subscribed;
+            using var request = FFIBridge.Instance.NewRequest<SetSubscribedRequest>();
+            var setSubscribed = request.request;
+            setSubscribed.Subscribe = subscribed;
+            setSubscribed.PublicationHandle = (ulong)Handle.DangerousGetHandle();
+            using var response = request.Send();
+        }
+
+        /// <summary>
+        /// For video tracks that support simulcasting, adjust subscribed quality.
+        ///
+        /// This indicates the highest quality the client can accept. If network
+        /// bandwidth does not allow, the server will automatically reduce quality to
+        /// optimize for uninterrupted video.
+        /// </summary>
+        public void SetVideoQuality(VideoQuality quality)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SetRemoteTrackPublicationQualityRequest>();
+            var setRemoteTrackPublicationQuality = request.request;
+            setRemoteTrackPublicationQuality.TrackPublicationHandle = (ulong)Handle.DangerousGetHandle();
+            setRemoteTrackPublicationQuality.Quality = quality;
+            using var response = request.Send();
+        }
+    }
+
+    public sealed class LocalTrackPublication : TrackPublication
+    {
+        public new ILocalTrack Track => base.Track as ILocalTrack;
+
+        private FfiHandle Handle;
+
+        internal LocalTrackPublication(TrackPublicationInfo info, FfiHandle handle) : base(info)
+        {
+            Handle = handle;
+        }
+
+        internal override void DisposeHandles()
+        {
+            base.DisposeHandles();
+            Handle?.Dispose();
+        }
+    }
+}
