@@ -75,6 +75,27 @@ namespace LiveKit
     }
 
     /// <summary>
+    /// Track-level options that configure how the incoming-frame pipeline reassembles packets
+    /// for a remote data track.
+    /// </summary>
+    /// <remarks>
+    /// Applied via <see cref="RemoteDataTrack.SetPipelineOptions"/>.
+    /// </remarks>
+    public class RemoteDataTrackPipelineOptions
+    {
+        /// <summary>
+        /// Maximum number of partial frames the depacketizer will track concurrently for this
+        /// track.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to 1. Higher values give more out-of-order tolerance for high-frequency
+        /// senders at the cost of additional buffering. Zero is not a valid value; if a value
+        /// of zero is provided, it will be clamped to one. Leave unset to keep the current value.
+        /// </remarks>
+        public uint? MaxPartialFrames { get; set; }
+    }
+
+    /// <summary>
     /// A frame published on a data track, consisting of a payload and optional metadata.
     /// </summary>
     public class DataTrackFrame
@@ -322,6 +343,28 @@ namespace LiveKit
             using var response = request.Send();
             FfiResponse res = response;
             return res.RemoteDataTrackIsPublished.IsPublished;
+        }
+
+        /// <summary>
+        /// Configures options for the pipeline handling incoming packets for this track.
+        /// </summary>
+        /// <remarks>
+        /// These options apply to all current and future subscriptions of this track, and may be
+        /// set at any time. New options take effect with the next received packet.
+        /// </remarks>
+        /// <param name="options">The pipeline options to apply.</param>
+        public void SetPipelineOptions(RemoteDataTrackPipelineOptions options)
+        {
+            using var request = FFIBridge.Instance.NewRequest<RemoteDataTrackSetPipelineOptionsRequest>();
+            var pipelineReq = request.request;
+            pipelineReq.TrackHandle = (ulong)_handle.DangerousGetHandle();
+
+            var protoOptions = new Proto.RemoteDataTrackPipelineOptions();
+            if (options.MaxPartialFrames.HasValue)
+                protoOptions.MaxPartialFrames = options.MaxPartialFrames.Value;
+            pipelineReq.Options = protoOptions;
+
+            request.Send();
         }
     }
 
