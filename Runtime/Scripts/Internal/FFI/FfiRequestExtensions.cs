@@ -258,6 +258,9 @@ namespace LiveKit.Internal.FFI
                 case DataTrackStreamReadRequest dataTrackStreamReadRequest:
                     ffiRequest.DataTrackStreamRead = dataTrackStreamReadRequest;
                     break;
+                case RemoteDataTrackSetPipelineOptionsRequest remoteDataTrackSetPipelineOptionsRequest:
+                    ffiRequest.RemoteDataTrackSetPipelineOptions = remoteDataTrackSetPipelineOptionsRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }
