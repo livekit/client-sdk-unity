@@ -30,9 +30,9 @@ namespace LiveKit
     {
         /// <summary>Balance between framerate and resolution degradation.</summary>
         Balanced = 0,
-        /// <summary>Degrade framerate to maintain resolution.</summary>
+        /// <summary>Degrade resolution to maintain framerate (prioritize smooth motion).</summary>
         MaintainFramerate = 1,
-        /// <summary>Degrade resolution to maintain framerate (drop frames to keep clarity).</summary>
+        /// <summary>Degrade framerate to maintain resolution (prioritize image clarity).</summary>
         MaintainResolution = 2,
         /// <summary>
         /// Maintain both framerate and resolution. Frames may be dropped before encoding
