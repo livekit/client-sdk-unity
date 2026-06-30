@@ -23,6 +23,23 @@ namespace LiveKit
         GATHER_CONTINUALLY = 1
     }
 
+    /// <summary>
+    /// Controls how the encoder degrades quality when bandwidth is constrained.
+    /// </summary>
+    public enum DegradationPreference
+    {
+        /// <summary>Balance between framerate and resolution degradation.</summary>
+        Balanced = 0,
+        /// <summary>Degrade framerate to maintain resolution.</summary>
+        MaintainFramerate = 1,
+        /// <summary>Degrade resolution to maintain framerate (drop frames to keep clarity).</summary>
+        MaintainResolution = 2,
+        /// <summary>
+        /// Maintain both framerate and resolution. Frames may be dropped before encoding
+        /// if necessary to avoid overusing network and encoder resources.
+        /// </summary>
+        MaintainFramerateAndResolution = 4
+    }
 
     public class IceServer
     {

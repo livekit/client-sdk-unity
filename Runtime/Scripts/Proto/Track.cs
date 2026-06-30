@@ -44,8 +44,8 @@ namespace LiveKit.Proto {
             "IAIoCBIOCgZyZW1vdGUYCiACKAgSNgoPZW5jcnlwdGlvbl90eXBlGAsgAigO",
             "Mh0ubGl2ZWtpdC5wcm90by5FbmNyeXB0aW9uVHlwZRI4Cg5hdWRpb19mZWF0",
             "dXJlcxgMIAMoDjIgLmxpdmVraXQucHJvdG8uQXVkaW9UcmFja0ZlYXR1cmUS",
-            "RAoXcGFja2V0X3RyYWlsZXJfZmVhdHVyZXMYDSADKA4yIy5saXZla2l0LnBy",
-            "b3RvLlBhY2tldFRyYWlsZXJGZWF0dXJlInkKFU93bmVkVHJhY2tQdWJsaWNh",
+            "RAoXZnJhbWVfbWV0YWRhdGFfZmVhdHVyZXMYDSADKA4yIy5saXZla2l0LnBy",
+            "b3RvLkZyYW1lTWV0YWRhdGFGZWF0dXJlInkKFU93bmVkVHJhY2tQdWJsaWNh",
             "dGlvbhItCgZoYW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVk",
             "SGFuZGxlEjEKBGluZm8YAiACKAsyIy5saXZla2l0LnByb3RvLlRyYWNrUHVi",
             "bGljYXRpb25JbmZvIp8BCglUcmFja0luZm8SCwoDc2lkGAEgAigJEgwKBG5h",
@@ -76,12 +76,12 @@ namespace LiveKit.Proto {
             "T19EVFgQARIYChRURl9BVVRPX0dBSU5fQ09OVFJPTBACEhgKFFRGX0VDSE9f",
             "Q0FOQ0VMTEFUSU9OEAMSGAoUVEZfTk9JU0VfU1VQUFJFU1NJT04QBBIiCh5U",
             "Rl9FTkhBTkNFRF9OT0lTRV9DQU5DRUxMQVRJT04QBRIYChRURl9QUkVDT05O",
-            "RUNUX0JVRkZFUhAGKkAKFFBhY2tldFRyYWlsZXJGZWF0dXJlEhYKElBURl9V",
-            "U0VSX1RJTUVTVEFNUBAAEhAKDFBURl9GUkFNRV9JRBABQhCqAg1MaXZlS2l0",
-            "LlByb3Rv"));
+            "RUNUX0JVRkZFUhAGKlMKFEZyYW1lTWV0YWRhdGFGZWF0dXJlEhYKEkZNRl9V",
+            "U0VSX1RJTUVTVEFNUBAAEhAKDEZNRl9GUkFNRV9JRBABEhEKDUZNRl9VU0VS",
+            "X0RBVEEQAkIQqgINTGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.StatsReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.TrackKind), typeof(global::LiveKit.Proto.TrackSource), typeof(global::LiveKit.Proto.StreamState), typeof(global::LiveKit.Proto.AudioTrackFeature), typeof(global::LiveKit.Proto.PacketTrailerFeature), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.TrackKind), typeof(global::LiveKit.Proto.TrackSource), typeof(global::LiveKit.Proto.StreamState), typeof(global::LiveKit.Proto.AudioTrackFeature), typeof(global::LiveKit.Proto.FrameMetadataFeature), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateVideoTrackRequest), global::LiveKit.Proto.CreateVideoTrackRequest.Parser, new[]{ "Name", "SourceHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateVideoTrackResponse), global::LiveKit.Proto.CreateVideoTrackResponse.Parser, new[]{ "Track" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CreateAudioTrackRequest), global::LiveKit.Proto.CreateAudioTrackRequest.Parser, new[]{ "Name", "SourceHandle" }, null, null, null, null),
@@ -90,7 +90,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsResponse), global::LiveKit.Proto.GetStatsResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetStatsCallback), global::LiveKit.Proto.GetStatsCallback.Parser, new[]{ "AsyncId", "Error", "Stats" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackEvent), global::LiveKit.Proto.TrackEvent.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackPublicationInfo), global::LiveKit.Proto.TrackPublicationInfo.Parser, new[]{ "Sid", "Name", "Kind", "Source", "Simulcasted", "Width", "Height", "MimeType", "Muted", "Remote", "EncryptionType", "AudioFeatures", "PacketTrailerFeatures" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackPublicationInfo), global::LiveKit.Proto.TrackPublicationInfo.Parser, new[]{ "Sid", "Name", "Kind", "Source", "Simulcasted", "Width", "Height", "MimeType", "Muted", "Remote", "EncryptionType", "AudioFeatures", "FrameMetadataFeatures" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedTrackPublication), global::LiveKit.Proto.OwnedTrackPublication.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TrackInfo), global::LiveKit.Proto.TrackInfo.Parser, new[]{ "Sid", "Name", "Kind", "StreamState", "Muted", "Remote" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedTrack), global::LiveKit.Proto.OwnedTrack.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
@@ -140,9 +140,10 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("TF_PRECONNECT_BUFFER")] TfPreconnectBuffer = 6,
   }
 
-  public enum PacketTrailerFeature {
-    [pbr::OriginalName("PTF_USER_TIMESTAMP")] PtfUserTimestamp = 0,
-    [pbr::OriginalName("PTF_FRAME_ID")] PtfFrameId = 1,
+  public enum FrameMetadataFeature {
+    [pbr::OriginalName("FMF_USER_TIMESTAMP")] FmfUserTimestamp = 0,
+    [pbr::OriginalName("FMF_FRAME_ID")] FmfFrameId = 1,
+    [pbr::OriginalName("FMF_USER_DATA")] FmfUserData = 2,
   }
 
   #endregion
@@ -2084,7 +2085,7 @@ namespace LiveKit.Proto {
       remote_ = other.remote_;
       encryptionType_ = other.encryptionType_;
       audioFeatures_ = other.audioFeatures_.Clone();
-      packetTrailerFeatures_ = other.packetTrailerFeatures_.Clone();
+      frameMetadataFeatures_ = other.frameMetadataFeatures_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2399,15 +2400,15 @@ namespace LiveKit.Proto {
       get { return audioFeatures_; }
     }
 
-    /// <summary>Field number for the "packet_trailer_features" field.</summary>
-    public const int PacketTrailerFeaturesFieldNumber = 13;
-    private static readonly pb::FieldCodec<global::LiveKit.Proto.PacketTrailerFeature> _repeated_packetTrailerFeatures_codec
-        = pb::FieldCodec.ForEnum(104, x => (int) x, x => (global::LiveKit.Proto.PacketTrailerFeature) x);
-    private readonly pbc::RepeatedField<global::LiveKit.Proto.PacketTrailerFeature> packetTrailerFeatures_ = new pbc::RepeatedField<global::LiveKit.Proto.PacketTrailerFeature>();
+    /// <summary>Field number for the "frame_metadata_features" field.</summary>
+    public const int FrameMetadataFeaturesFieldNumber = 13;
+    private static readonly pb::FieldCodec<global::LiveKit.Proto.FrameMetadataFeature> _repeated_frameMetadataFeatures_codec
+        = pb::FieldCodec.ForEnum(104, x => (int) x, x => (global::LiveKit.Proto.FrameMetadataFeature) x);
+    private readonly pbc::RepeatedField<global::LiveKit.Proto.FrameMetadataFeature> frameMetadataFeatures_ = new pbc::RepeatedField<global::LiveKit.Proto.FrameMetadataFeature>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::LiveKit.Proto.PacketTrailerFeature> PacketTrailerFeatures {
-      get { return packetTrailerFeatures_; }
+    public pbc::RepeatedField<global::LiveKit.Proto.FrameMetadataFeature> FrameMetadataFeatures {
+      get { return frameMetadataFeatures_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2437,7 +2438,7 @@ namespace LiveKit.Proto {
       if (Remote != other.Remote) return false;
       if (EncryptionType != other.EncryptionType) return false;
       if(!audioFeatures_.Equals(other.audioFeatures_)) return false;
-      if(!packetTrailerFeatures_.Equals(other.packetTrailerFeatures_)) return false;
+      if(!frameMetadataFeatures_.Equals(other.frameMetadataFeatures_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2457,7 +2458,7 @@ namespace LiveKit.Proto {
       if (HasRemote) hash ^= Remote.GetHashCode();
       if (HasEncryptionType) hash ^= EncryptionType.GetHashCode();
       hash ^= audioFeatures_.GetHashCode();
-      hash ^= packetTrailerFeatures_.GetHashCode();
+      hash ^= frameMetadataFeatures_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2521,7 +2522,7 @@ namespace LiveKit.Proto {
         output.WriteEnum((int) EncryptionType);
       }
       audioFeatures_.WriteTo(output, _repeated_audioFeatures_codec);
-      packetTrailerFeatures_.WriteTo(output, _repeated_packetTrailerFeatures_codec);
+      frameMetadataFeatures_.WriteTo(output, _repeated_frameMetadataFeatures_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2577,7 +2578,7 @@ namespace LiveKit.Proto {
         output.WriteEnum((int) EncryptionType);
       }
       audioFeatures_.WriteTo(ref output, _repeated_audioFeatures_codec);
-      packetTrailerFeatures_.WriteTo(ref output, _repeated_packetTrailerFeatures_codec);
+      frameMetadataFeatures_.WriteTo(ref output, _repeated_frameMetadataFeatures_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2622,7 +2623,7 @@ namespace LiveKit.Proto {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) EncryptionType);
       }
       size += audioFeatures_.CalculateSize(_repeated_audioFeatures_codec);
-      size += packetTrailerFeatures_.CalculateSize(_repeated_packetTrailerFeatures_codec);
+      size += frameMetadataFeatures_.CalculateSize(_repeated_frameMetadataFeatures_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2669,7 +2670,7 @@ namespace LiveKit.Proto {
         EncryptionType = other.EncryptionType;
       }
       audioFeatures_.Add(other.audioFeatures_);
-      packetTrailerFeatures_.Add(other.packetTrailerFeatures_);
+      frameMetadataFeatures_.Add(other.frameMetadataFeatures_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2740,7 +2741,7 @@ namespace LiveKit.Proto {
           }
           case 106:
           case 104: {
-            packetTrailerFeatures_.AddEntriesFrom(input, _repeated_packetTrailerFeatures_codec);
+            frameMetadataFeatures_.AddEntriesFrom(input, _repeated_frameMetadataFeatures_codec);
             break;
           }
         }
@@ -2813,7 +2814,7 @@ namespace LiveKit.Proto {
           }
           case 106:
           case 104: {
-            packetTrailerFeatures_.AddEntriesFrom(ref input, _repeated_packetTrailerFeatures_codec);
+            frameMetadataFeatures_.AddEntriesFrom(ref input, _repeated_frameMetadataFeatures_codec);
             break;
           }
         }
