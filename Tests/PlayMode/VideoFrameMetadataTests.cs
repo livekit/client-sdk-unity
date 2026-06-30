@@ -57,9 +57,9 @@ namespace LiveKit.PlayModeTests
             var options = new TrackPublishOptions
             {
                 Source = TrackSource.SourceCamera,
-            }.WithPacketTrailerFeatures(
-                PacketTrailerFeature.PtfUserTimestamp,
-                PacketTrailerFeature.PtfFrameId);
+            }.WithFrameMetadataFeatures(
+                FrameMetadataFeature.FmfUserTimestamp,
+                FrameMetadataFeature.FmfFrameId);
             var pub = publisherRoom.LocalParticipant.PublishTrack(localTrack, options);
             yield return pub;
             Assert.IsFalse(pub.IsError);

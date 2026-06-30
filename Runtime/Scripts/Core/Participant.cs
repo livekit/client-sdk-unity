@@ -1078,12 +1078,12 @@ namespace LiveKit
     /// helpers keep Google.Protobuf types out of the caller's signature.
     public static class TrackPublishOptionsExtensions
     {
-        public static TrackPublishOptions WithPacketTrailerFeatures(
+        public static TrackPublishOptions WithFrameMetadataFeatures(
             this TrackPublishOptions options,
-            params PacketTrailerFeature[] features)
+            params FrameMetadataFeature[] features)
         {
             foreach (var feature in features)
-                options.PacketTrailerFeatures.Add(feature);
+                options.FrameMetadataFeatures.Add(feature);
             return options;
         }
     }

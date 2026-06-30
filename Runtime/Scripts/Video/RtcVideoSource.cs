@@ -32,9 +32,9 @@ namespace LiveKit
         public event TextureReceiveDelegate TextureReceived;
 
         public delegate FrameMetadata FrameMetadataDelegate();
-        /// Invoked once per outgoing frame. Return null (default) to send no trailer.
-        /// To actually serialize the trailer onto RTP, also enable the matching
-        /// PacketTrailerFeatures on the TrackPublishOptions used at publish time.
+        /// Invoked once per outgoing frame. Return null (default) to send no metadata.
+        /// To actually serialize the metadata onto RTP, also enable the matching
+        /// FrameMetadataFeatures on the TrackPublishOptions used at publish time.
         public FrameMetadataDelegate MetadataProvider { get; set; }
 
         protected Texture2D _previewTexture;
