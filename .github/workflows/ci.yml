@@ -76,21 +76,24 @@ jobs:
           name: ffi-linux-x86_64
           path: Runtime/Plugins/ffi-linux-x86_64/liblivekit_ffi.so
   test:
-    name: Test (${{ matrix.unityVersion }})
+    name: Test (${{ matrix.os }}, ${{ matrix.unityVersion }})
     needs: build-ffi
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         unityVersion: [6000.0.49f1, 2023.2.20f1]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           lfs: true
+      # Only the Linux FFI lib is rebuilt by the build-ffi job; macOS/Windows
+      # runners test against the committed prebuilt libs (pulled via LFS).
       - name: Download rebuilt FFI library
-        if: needs.build-ffi.outputs.rebuilt == 'true'
+        if: needs.build-ffi.outputs.rebuilt == 'true' && runner.os == 'Linux'
         uses: actions/download-artifact@v4
         with:
           name: ffi-linux-x86_64
@@ -119,21 +122,27 @@ jobs:
           projectPath: root
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Test Results (${{ matrix.unityVersion }})
+          checkName: Test Results (${{ matrix.os }}, ${{ matrix.unityVersion }})
           packageMode: true
+          # useHostNetwork only applies to the Linux Docker-based runner;
+          # it is ignored on the native macOS/Windows runners.
           useHostNetwork: true
       - name: Generate HTML Test Report
         if: always()
+        shell: bash
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
-          python3 root/Scripts~/unity_test_results_utils.py \
+          PYTHON="$(command -v python3 || command -v python)"
+          "$PYTHON" root/Scripts~/unity_test_results_utils.py \
             "$ARTIFACTS/editmode-results.xml" \
             "$ARTIFACTS/playmode-results.xml" \
             -o test-results.html
       - name: Test Summary
         if: always()
+        shell: bash
         run: |
           ARTIFACTS="${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}"
+          PYTHON="$(command -v python3 || command -v python)"
           CRASHED=""
           for MODE in editmode playmode; do
             if [ ! -f "$ARTIFACTS/${MODE}-results.xml" ]; then
@@ -147,7 +156,7 @@ jobs:
             echo "Check the **Run Tests** step logs for a native stack trace or abort signal." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
           fi
-          python3 root/Scripts~/unity_test_results_utils.py \
+          "$PYTHON" root/Scripts~/unity_test_results_utils.py \
             "$ARTIFACTS/editmode-results.xml" \
             "$ARTIFACTS/playmode-results.xml" \
             -f markdown >> $GITHUB_STEP_SUMMARY
@@ -155,7 +164,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Test results (${{ matrix.unityVersion }})
+          name: Test results (${{ matrix.os }}, ${{ matrix.unityVersion }})
           path: |
             ${{ steps.testRunner.outputs.artifactsPath || 'artifacts' }}
             test-results.html
