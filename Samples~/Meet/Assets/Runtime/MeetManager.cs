@@ -505,7 +505,8 @@ public class MeetManager : MonoBehaviour
             VideoCodec = VideoCodec.H265,
             VideoEncoding = new VideoEncoding { MaxBitrate = 512000, MaxFramerate = frameRate },
             Simulcast = false,
-            Source = TrackSource.SourceCamera
+            Source = TrackSource.SourceCamera,
+            DegradationPreference = DegradationPreference.Balanced
         };
 
         var publish = _room.LocalParticipant.PublishTrack(_localVideoTrack, options);

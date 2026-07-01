@@ -64,36 +64,37 @@ namespace LiveKit.Proto {
             "PwoNQ29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgBIAIoBBIOCgZzdHJpZGUY",
             "AiACKA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVmZmVyEi0KBmhh",
             "bmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSLAoE",
-            "aW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvIjkK",
+            "aW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvIkwK",
             "DUZyYW1lTWV0YWRhdGESFgoOdXNlcl90aW1lc3RhbXAYASABKAQSEAoIZnJh",
-            "bWVfaWQYAiABKA0iPwoPVmlkZW9TdHJlYW1JbmZvEiwKBHR5cGUYASACKA4y",
-            "Hi5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtVHlwZSJvChBPd25lZFZpZGVv",
-            "U3RyZWFtEi0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3du",
-            "ZWRIYW5kbGUSLAoEaW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9T",
-            "dHJlYW1JbmZvIp8BChBWaWRlb1N0cmVhbUV2ZW50EhUKDXN0cmVhbV9oYW5k",
-            "bGUYASACKAQSOwoOZnJhbWVfcmVjZWl2ZWQYAiABKAsyIS5saXZla2l0LnBy",
-            "b3RvLlZpZGVvRnJhbWVSZWNlaXZlZEgAEiwKA2VvcxgDIAEoCzIdLmxpdmVr",
-            "aXQucHJvdG8uVmlkZW9TdHJlYW1FT1NIAEIJCgdtZXNzYWdlIrsBChJWaWRl",
-            "b0ZyYW1lUmVjZWl2ZWQSLwoGYnVmZmVyGAEgAigLMh8ubGl2ZWtpdC5wcm90",
-            "by5Pd25lZFZpZGVvQnVmZmVyEhQKDHRpbWVzdGFtcF91cxgCIAIoAxIuCghy",
-            "b3RhdGlvbhgDIAIoDjIcLmxpdmVraXQucHJvdG8uVmlkZW9Sb3RhdGlvbhIu",
-            "CghtZXRhZGF0YRgEIAEoCzIcLmxpdmVraXQucHJvdG8uRnJhbWVNZXRhZGF0",
-            "YSIQCg5WaWRlb1N0cmVhbUVPUyI2ChVWaWRlb1NvdXJjZVJlc29sdXRpb24S",
-            "DQoFd2lkdGgYASACKA0SDgoGaGVpZ2h0GAIgAigNIj8KD1ZpZGVvU291cmNl",
-            "SW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJj",
-            "ZVR5cGUibwoQT3duZWRWaWRlb1NvdXJjZRItCgZoYW5kbGUYASACKAsyHS5s",
+            "bWVfaWQYAiABKA0SEQoJdXNlcl9kYXRhGAMgASgMIj8KD1ZpZGVvU3RyZWFt",
+            "SW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVh",
+            "bVR5cGUibwoQT3duZWRWaWRlb1N0cmVhbRItCgZoYW5kbGUYASACKAsyHS5s",
             "aXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiACKAsyHi5s",
-            "aXZla2l0LnByb3RvLlZpZGVvU291cmNlSW5mbyo7CgpWaWRlb0NvZGVjEgcK",
-            "A1ZQOBAAEggKBEgyNjQQARIHCgNBVjEQAhIHCgNWUDkQAxIICgRIMjY1EAQq",
-            "bAoNVmlkZW9Sb3RhdGlvbhIUChBWSURFT19ST1RBVElPTl8wEAASFQoRVklE",
-            "RU9fUk9UQVRJT05fOTAQARIWChJWSURFT19ST1RBVElPTl8xODAQAhIWChJW",
-            "SURFT19ST1RBVElPTl8yNzAQAyqBAQoPVmlkZW9CdWZmZXJUeXBlEggKBFJH",
-            "QkEQABIICgRBQkdSEAESCAoEQVJHQhACEggKBEJHUkEQAxIJCgVSR0IyNBAE",
-            "EggKBEk0MjAQBRIJCgVJNDIwQRAGEggKBEk0MjIQBxIICgRJNDQ0EAgSCAoE",
-            "STAxMBAJEggKBE5WMTIQCipZCg9WaWRlb1N0cmVhbVR5cGUSFwoTVklERU9f",
-            "U1RSRUFNX05BVElWRRAAEhYKElZJREVPX1NUUkVBTV9XRUJHTBABEhUKEVZJ",
-            "REVPX1NUUkVBTV9IVE1MEAIqKgoPVmlkZW9Tb3VyY2VUeXBlEhcKE1ZJREVP",
-            "X1NPVVJDRV9OQVRJVkUQAEIQqgINTGl2ZUtpdC5Qcm90bw=="));
+            "aXZla2l0LnByb3RvLlZpZGVvU3RyZWFtSW5mbyKfAQoQVmlkZW9TdHJlYW1F",
+            "dmVudBIVCg1zdHJlYW1faGFuZGxlGAEgAigEEjsKDmZyYW1lX3JlY2VpdmVk",
+            "GAIgASgLMiEubGl2ZWtpdC5wcm90by5WaWRlb0ZyYW1lUmVjZWl2ZWRIABIs",
+            "CgNlb3MYAyABKAsyHS5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtRU9TSABC",
+            "CQoHbWVzc2FnZSK7AQoSVmlkZW9GcmFtZVJlY2VpdmVkEi8KBmJ1ZmZlchgB",
+            "IAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlchIUCgx0aW1l",
+            "c3RhbXBfdXMYAiACKAMSLgoIcm90YXRpb24YAyACKA4yHC5saXZla2l0LnBy",
+            "b3RvLlZpZGVvUm90YXRpb24SLgoIbWV0YWRhdGEYBCABKAsyHC5saXZla2l0",
+            "LnByb3RvLkZyYW1lTWV0YWRhdGEiEAoOVmlkZW9TdHJlYW1FT1MiNgoVVmlk",
+            "ZW9Tb3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgC",
+            "IAIoDSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVr",
+            "aXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8KEE93bmVkVmlkZW9Tb3VyY2US",
+            "LQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRs",
+            "ZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZUlu",
+            "Zm8qOwoKVmlkZW9Db2RlYxIHCgNWUDgQABIICgRIMjY0EAESBwoDQVYxEAIS",
+            "BwoDVlA5EAMSCAoESDI2NRAEKmwKDVZpZGVvUm90YXRpb24SFAoQVklERU9f",
+            "Uk9UQVRJT05fMBAAEhUKEVZJREVPX1JPVEFUSU9OXzkwEAESFgoSVklERU9f",
+            "Uk9UQVRJT05fMTgwEAISFgoSVklERU9fUk9UQVRJT05fMjcwEAMqgQEKD1Zp",
+            "ZGVvQnVmZmVyVHlwZRIICgRSR0JBEAASCAoEQUJHUhABEggKBEFSR0IQAhII",
+            "CgRCR1JBEAMSCQoFUkdCMjQQBBIICgRJNDIwEAUSCQoFSTQyMEEQBhIICgRJ",
+            "NDIyEAcSCAoESTQ0NBAIEggKBEkwMTAQCRIICgROVjEyEAoqWQoPVmlkZW9T",
+            "dHJlYW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9OQVRJVkUQABIWChJWSURFT19T",
+            "VFJFQU1fV0VCR0wQARIVChFWSURFT19TVFJFQU1fSFRNTBACKioKD1ZpZGVv",
+            "U291cmNlVHlwZRIXChNWSURFT19TT1VSQ0VfTkFUSVZFEABCEKoCDUxpdmVL",
+            "aXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -110,7 +111,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoResolution), global::LiveKit.Proto.VideoResolution.Parser, new[]{ "Width", "Height", "FrameRate" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoBufferInfo), global::LiveKit.Proto.VideoBufferInfo.Parser, new[]{ "Type", "Width", "Height", "DataPtr", "Stride", "Components" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoBufferInfo.Types.ComponentInfo), global::LiveKit.Proto.VideoBufferInfo.Types.ComponentInfo.Parser, new[]{ "DataPtr", "Stride", "Size" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedVideoBuffer), global::LiveKit.Proto.OwnedVideoBuffer.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FrameMetadata), global::LiveKit.Proto.FrameMetadata.Parser, new[]{ "UserTimestamp", "FrameId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.FrameMetadata), global::LiveKit.Proto.FrameMetadata.Parser, new[]{ "UserTimestamp", "FrameId", "UserData" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamInfo), global::LiveKit.Proto.VideoStreamInfo.Parser, new[]{ "Type" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedVideoStream), global::LiveKit.Proto.OwnedVideoStream.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamEvent), global::LiveKit.Proto.VideoStreamEvent.Parser, new[]{ "StreamHandle", "FrameReceived", "Eos" }, new[]{ "Message" }, null, null, null),
@@ -4620,6 +4621,7 @@ namespace LiveKit.Proto {
       _hasBits0 = other._hasBits0;
       userTimestamp_ = other.userTimestamp_;
       frameId_ = other.frameId_;
+      userData_ = other.userData_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4683,6 +4685,32 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~2;
     }
 
+    /// <summary>Field number for the "user_data" field.</summary>
+    public const int UserDataFieldNumber = 3;
+    private readonly static pb::ByteString UserDataDefaultValue = pb::ByteString.Empty;
+
+    private pb::ByteString userData_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pb::ByteString UserData {
+      get { return userData_ ?? UserDataDefaultValue; }
+      set {
+        userData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "user_data" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasUserData {
+      get { return userData_ != null; }
+    }
+    /// <summary>Clears the value of the "user_data" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearUserData() {
+      userData_ = null;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -4700,6 +4728,7 @@ namespace LiveKit.Proto {
       }
       if (UserTimestamp != other.UserTimestamp) return false;
       if (FrameId != other.FrameId) return false;
+      if (UserData != other.UserData) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4709,6 +4738,7 @@ namespace LiveKit.Proto {
       int hash = 1;
       if (HasUserTimestamp) hash ^= UserTimestamp.GetHashCode();
       if (HasFrameId) hash ^= FrameId.GetHashCode();
+      if (HasUserData) hash ^= UserData.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4735,6 +4765,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteUInt32(FrameId);
       }
+      if (HasUserData) {
+        output.WriteRawTag(26);
+        output.WriteBytes(UserData);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4753,6 +4787,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(16);
         output.WriteUInt32(FrameId);
       }
+      if (HasUserData) {
+        output.WriteRawTag(26);
+        output.WriteBytes(UserData);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4768,6 +4806,9 @@ namespace LiveKit.Proto {
       }
       if (HasFrameId) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FrameId);
+      }
+      if (HasUserData) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(UserData);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4786,6 +4827,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasFrameId) {
         FrameId = other.FrameId;
+      }
+      if (other.HasUserData) {
+        UserData = other.UserData;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4814,6 +4858,10 @@ namespace LiveKit.Proto {
             FrameId = input.ReadUInt32();
             break;
           }
+          case 26: {
+            UserData = input.ReadBytes();
+            break;
+          }
         }
       }
     #endif
@@ -4839,6 +4887,10 @@ namespace LiveKit.Proto {
           }
           case 16: {
             FrameId = input.ReadUInt32();
+            break;
+          }
+          case 26: {
+            UserData = input.ReadBytes();
             break;
           }
         }
