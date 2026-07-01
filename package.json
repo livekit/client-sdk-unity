@@ -18,6 +18,11 @@
       "displayName": "Meet",
       "description": "LiveKit Meet like sample app",
       "path": "Samples~/Meet"
+    },
+    {
+      "displayName": "Agents",
+      "description": "Connect to an agent and see the transcript",
+      "path": "Samples~/Agents"
     }
   ],
   "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v1.4.0",
