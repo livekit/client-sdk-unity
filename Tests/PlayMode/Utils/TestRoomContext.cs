@@ -42,7 +42,6 @@ namespace LiveKit.PlayModeTests.Utils
             public bool CanSubscribe;
             public bool CanUpdateOwnMetadata;
             public string ServerUrl;
-            public bool Dynacast;
 
             public static ConnectionOptions Default => new ConnectionOptions
             {
@@ -51,7 +50,6 @@ namespace LiveKit.PlayModeTests.Utils
                 CanPublish = true,
                 CanPublishData = true,
                 CanSubscribe = true,
-                Dynacast = true,
             };
         }
 
@@ -69,7 +67,7 @@ namespace LiveKit.PlayModeTests.Utils
             ConnectionOptions options = _connectionOptions[index];
             var room = Rooms[index];
             var token = CreateToken(options);
-            var roomOptions = new RoomOptions { Dynacast = options.Dynacast };
+            var roomOptions = new RoomOptions();
             var connect = room.Connect(options.ServerUrl ?? _serverUrl, token, roomOptions);
             yield return connect;
 
