@@ -1,6 +1,8 @@
 {
   "name": "LiveKit.Samples.Common",
   "rootNamespace": "LiveKit.Samples.Common",
-  "references": [],
+  "references": [
+    "UnityEngine.UI"
+  ],
   "autoReferenced": true
 }
