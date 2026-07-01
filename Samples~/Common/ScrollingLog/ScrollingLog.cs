@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Runtime.Common
+namespace LiveKit.Samples.Common
 {
   // Simple scrolling window that prints to the application screen whatever is printed through
   // calls to the UnityEngine.Debug.Log method.
