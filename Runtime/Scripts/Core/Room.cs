@@ -88,7 +88,7 @@ namespace LiveKit
     {
         public bool AutoSubscribe = true;
         public bool Dynacast = false;
-        public bool AdaptiveStream = true;
+        public bool AdaptiveStream = false;
         public uint JoinRetries = 3;
         public RTCConfiguration RtcConfig = null;
         public E2EEOptions E2EE = null;
