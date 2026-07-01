@@ -1,0 +1,6 @@
+{
+  "name": "LiveKit.Samples.Common",
+  "rootNamespace": "LiveKit.Samples.Common",
+  "references": [],
+  "autoReferenced": true
+}
