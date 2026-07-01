@@ -19,7 +19,6 @@ namespace LiveKit.PlayModeTests
             // calling sender.set_parameters(), which drops the sender's encoder->packetizer
             // frame-metadata transformer. Disabling it on the publisher should let metadata
             // arrive. See rust-sdks #1003.
-            publisher.Dynacast = false;
             var subscriber = TestRoomContext.ConnectionOptions.Default;
             subscriber.Identity = "metadata-subscriber";
             return (publisher, subscriber);
