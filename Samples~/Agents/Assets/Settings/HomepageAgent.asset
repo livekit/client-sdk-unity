@@ -16,7 +16,7 @@ MonoBehaviour:
   _serverUrl: 
   _token: 
   _sandboxId: test1-x6vz7u
-  _endpointUrl: https://livekit.io/api/homepage-agent/token
+  _endpointUrl: https://livekit.com/api/homepage-agent/token
   _endpointHeaders: []
   _roomName: 
   _participantName: 
