@@ -10,6 +10,11 @@
   },
   "samples": [
     {
+      "displayName": "Common",
+      "description": "Common components used in the other samples",
+      "path": "Samples~/Common"
+    },
+    {
       "displayName": "Basic",
       "description": "Basic example of how to connect to a room",
       "path": "Samples~/Basic"
