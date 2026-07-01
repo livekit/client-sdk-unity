@@ -1,7 +1,0 @@
-{
-  "name": "io.livekit.samples.common",
-  "version": "1.0.0",
-  "displayName": "LiveKit Samples Common",
-  "description": "Shared helpers for LiveKit Unity samples.",
-  "unity": "2022.3"
-}

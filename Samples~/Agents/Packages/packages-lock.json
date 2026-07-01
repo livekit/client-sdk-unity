@@ -292,12 +292,6 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },
-    "io.livekit.samples.common": {
-      "version": "file:../../Common",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
