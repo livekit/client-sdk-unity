@@ -87,7 +87,7 @@ namespace LiveKit
     public class RoomOptions
     {
         public bool AutoSubscribe = true;
-        public bool Dynacast = true;
+        public bool Dynacast = false;
         public bool AdaptiveStream = true;
         public uint JoinRetries = 3;
         public RTCConfiguration RtcConfig = null;
