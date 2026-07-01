@@ -74,7 +74,7 @@ namespace AgentsRPG
             yield return fetch;
             if (fetch.IsError)
             {
-                Debug.LogError($"Failed to fetch connection details: {fetch.Exception?.Message}");
+                Debug.LogError($"Failed to fetch connection details: {fetch.Exception?.Message} - {fetch.Exception?.InnerException?.Message}");
                 yield break;
             }
             var details = fetch.Result;
