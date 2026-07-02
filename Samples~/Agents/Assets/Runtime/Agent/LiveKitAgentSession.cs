@@ -10,8 +10,8 @@ namespace AgentsRPG
     // up the microphone, transcription, and chat-bubble log.
     public class LiveKitAgentSession : MonoBehaviour
     {
-
-        [SerializeField] ChatLog _chatLog;
+        [SerializeField] 
+        private ChatLog _chatLog;
 
         TokenSourceComponent _tokenSourceComponent;
         Room _room;
