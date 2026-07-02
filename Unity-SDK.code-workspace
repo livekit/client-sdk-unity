@@ -1,6 +1,14 @@
 {
 	"folders": [
 		{
+			"name": "Agents",
+			"path": "Samples~/Agents"
+		},
+		{
+			"name": "Common",
+			"path": "Samples~/Common"
+		},
+		{
 			"name": "Meet",
 			"path": "Samples~/Meet"
 		},
