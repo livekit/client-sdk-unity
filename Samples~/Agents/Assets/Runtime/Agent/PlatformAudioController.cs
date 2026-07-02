@@ -48,14 +48,6 @@ namespace AgentsRPG
             Debug.Log("[PlatformAudioController] Starting platform recording.");
             yield return _platformAudio.StartRecording();
 
-            // WebRTC's ADM has now entered communication mode and owns the device. Pin the route to
-            // a hands-free output immediately — before publishing — so it doesn't fight Unity's media
-            // (music) stream for the device, which otherwise produces a continuous AAudio
-            // disconnect/reroute loop on Android. Pinning here (rather than after PublishTrack)
-            // closes the window in which the policy can grab the earpiece; the route listener
-            // registered inside re-asserts against any later drift.
-            // AndroidAudioRoute.ForceHandsFree();
-
             // AudioProcessingOptions.Default enables AEC, noise suppression, auto gain control
             // and prefers hardware processing.
             _source = new PlatformAudioSource(_platformAudio, AudioProcessingOptions.Default);
@@ -134,9 +126,6 @@ namespace AgentsRPG
 
             _platformAudio?.Dispose();
             _platformAudio = null;
-
-            // Release the communication route we pinned in Publish so normal media routing resumes.
-            // AndroidAudioRoute.Reset();
 
             _room = null;
         }
