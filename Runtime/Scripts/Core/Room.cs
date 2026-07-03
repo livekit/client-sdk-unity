@@ -220,6 +220,7 @@ namespace LiveKit
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
             FfiClient.Instance.RpcMethodInvocationReceived -= OnRpcMethodInvocationReceived;
             FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
+            FfiClient.Instance.PanicReceived -= OnPanicReceived;
 
             // Participant + track + publication FFI handles are independent entries in the
             // Rust handle table — dropping the room handle alone does not cascade to them, so
@@ -598,6 +599,7 @@ namespace LiveKit
 
             FfiClient.Instance.RoomEventReceived += OnEventReceived;
             FfiClient.Instance.DisconnectReceived += OnDisconnectReceived;
+            FfiClient.Instance.PanicReceived += OnPanicReceived;
             FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
 
             // Signal Rust that listeners are installed and it can start forwarding room events.
@@ -617,6 +619,18 @@ namespace LiveKit
         {
             FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
             Utils.Debug($"OnDisconnect.... {e}");
+        }
+
+        private void OnPanicReceived(Panic e)
+        {
+            // A panic means the FFI layer's background tasks may have died: this
+            // room could silently stop receiving events (including Disconnected
+            // itself), so the panic is surfaced through the disconnect path apps
+            // already handle.
+            DisconnectReason = DisconnectReason.UnknownReason;
+            Disconnected?.Invoke(this);
+            DisconnectedWithReason?.Invoke(this, DisconnectReason);
+            OnDisconnect();
         }
 
         private void OnDisconnect()
