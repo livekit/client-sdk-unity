@@ -122,9 +122,14 @@ namespace LiveKit
             using var request = FFIBridge.Instance.NewRequest<TextStreamReaderReadIncrementalRequest>();
             var readIncReq = request.request;
             readIncReq.ReaderHandle = (ulong)_handle.DangerousGetHandle();
-            request.Send();
 
-            return new ReadIncrementalInstruction(_handle);
+            // Subscribe before sending: chunk events are delivered directly on the FFI
+            // callback thread, and the FFI server emits already-buffered chunks as soon
+            // as it receives the request. Sending first loses any chunk emitted before
+            // the subscription exists.
+            var instruction = new ReadIncrementalInstruction(_handle);
+            request.Send();
+            return instruction;
         }
 
         /// <summary>
