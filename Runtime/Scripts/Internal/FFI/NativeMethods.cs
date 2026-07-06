@@ -10,7 +10,7 @@ namespace LiveKit.Internal.FFI
     [SuppressUnmanagedCodeSecurity]
     internal static class NativeMethods
     {
-        #if UNITY_IOS
+        #if UNITY_IOS && !UNITY_EDITOR
         const string Lib = "__Internal";
         #else
         const string Lib = "livekit_ffi";
