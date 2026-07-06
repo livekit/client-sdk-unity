@@ -27,9 +27,9 @@ namespace LiveKit.PlayModeTests
             yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
-            context.Rooms[1].LocalParticipant.RegisterRpcMethod("echo", async (data) =>
+            context.Rooms[1].LocalParticipant.RegisterRpcMethod("echo", (data) =>
             {
-                return $"echo:{data.Payload}";
+                return Task.FromResult($"echo:{data.Payload}");
             });
 
             var rpcInstruction = context.Rooms[0].LocalParticipant.PerformRpc(new PerformRpcParams
@@ -58,9 +58,9 @@ namespace LiveKit.PlayModeTests
             yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
-            context.Rooms[1].LocalParticipant.RegisterRpcMethod("throw-rpc", async (data) =>
+            context.Rooms[1].LocalParticipant.RegisterRpcMethod("throw-rpc", (data) =>
             {
-                throw new RpcError(42, "custom error", "custom data");
+                return Task.FromException<string>(new RpcError(42, "custom error", "custom data"));
             });
 
             var rpcInstruction = context.Rooms[0].LocalParticipant.PerformRpc(new PerformRpcParams
@@ -90,9 +90,9 @@ namespace LiveKit.PlayModeTests
             yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
-            context.Rooms[1].LocalParticipant.RegisterRpcMethod("throw-generic", async (data) =>
+            context.Rooms[1].LocalParticipant.RegisterRpcMethod("throw-generic", (data) =>
             {
-                throw new InvalidOperationException("something went wrong");
+                return Task.FromException<string>(new InvalidOperationException("something went wrong"));
             });
 
             var rpcInstruction = context.Rooms[0].LocalParticipant.PerformRpc(new PerformRpcParams
@@ -147,9 +147,9 @@ namespace LiveKit.PlayModeTests
             yield return context.ConnectAll();
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
 
-            context.Rooms[1].LocalParticipant.RegisterRpcMethod("unreg-test", async (data) =>
+            context.Rooms[1].LocalParticipant.RegisterRpcMethod("unreg-test", (data) =>
             {
-                return "should not reach here";
+                return Task.FromResult("should not reach here");
             });
             context.Rooms[1].LocalParticipant.UnregisterRpcMethod("unreg-test");
 

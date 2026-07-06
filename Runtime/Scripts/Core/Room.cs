@@ -102,6 +102,7 @@ namespace LiveKit
             proto.AdaptiveStream = AdaptiveStream;
             proto.JoinRetries = JoinRetries;
             proto.RtcConfig = RtcConfig?.ToProto();
+#pragma warning disable CS0612 // Type or member is obsolete
             proto.E2Ee = E2EE?.ToProto();
 
             return proto;
