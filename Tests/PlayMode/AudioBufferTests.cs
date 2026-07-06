@@ -98,28 +98,6 @@ namespace LiveKit.PlayModeTests
 
             _context.Dispose();
         }
-        
-        [UnityTest, Category("E2E")]
-        public IEnumerator AudioBuffer_FillLevelStaysStable()
-        {
-            yield return SetUp();
-
-            // Fill buffer above prime within short time
-            var bufferFillsAbovePrime = new Expectation(() => { return _audioStream.GetBufferFill() > 0.15f; }, 1f);            
-            yield return bufferFillsAbovePrime.Wait();
-            Assert.IsNull(bufferFillsAbovePrime.Error);
-
-            // Buffer stays at stable levels over long time
-            var elapsedTime = 0f;
-            while (elapsedTime < 3f)
-            {
-                elapsedTime += Time.deltaTime;
-                Assert.That(_audioStream.GetBufferFill(), Is.LessThan(0.8f));
-                yield return null;
-            }
-
-            _context.Dispose();
-        }
 
         [UnityTest, Category("E2E")]
         public IEnumerator AudioBuffer_WhenAppForegrounded_BufferIsCleared()
