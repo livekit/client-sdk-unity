@@ -50,6 +50,7 @@ namespace LiveKit.Internal.FFI
         private readonly ConcurrentDictionary<ulong, PendingCallbackBase> pendingCallbacks = new();
 
         public event DisconnectReceivedDelegate? DisconnectReceived;
+        public event PanicReceivedDelegate? PanicReceived;
         public event RoomEventReceivedDelegate? RoomEventReceived;
         public event TrackEventReceivedDelegate? TrackEventReceived;
         public event RpcMethodInvocationReceivedDelegate? RpcMethodInvocationReceived;
@@ -466,6 +467,15 @@ namespace LiveKit.Internal.FFI
                     Instance.DataTrackStreamEventReceived?.Invoke(ffiEvent.DataTrackStreamEvent!);
                     break;
                 case FfiEvent.MessageOneofCase.Panic:
+                    // The FFI layer declares its state unrecoverable after a panic:
+                    // background tasks may have died, so rooms can silently stop
+                    // receiving events and in-flight requests may never complete.
+                    // Pending callbacks are cancelled before PanicReceived so that
+                    // requests issued by user handlers reacting to the panic (e.g. a
+                    // reconnect attempt from a Disconnected handler) are not swept up.
+                    Utils.Error($"FFI panic: {ffiEvent.Panic.Message} — native SDK state is unrecoverable; cancelling pending requests and disconnecting rooms");
+                    Instance.ClearPendingCallbacks();
+                    Instance.PanicReceived?.Invoke(ffiEvent.Panic);
                     break;
                 default:
                     break;

@@ -20,6 +20,8 @@ namespace LiveKit.Internal.FFI
 
     internal delegate void DisconnectReceivedDelegate(DisconnectCallback e);
 
+    internal delegate void PanicReceivedDelegate(Panic e);
+
     internal delegate void GetSessionStatsDelegate(GetStatsCallback e);
 
     internal delegate void SetLocalMetadataReceivedDelegate(SetLocalMetadataCallback e);
