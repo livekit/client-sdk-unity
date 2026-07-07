@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using LiveKit;
 using UnityEngine;
 
@@ -63,9 +64,12 @@ namespace AgentsRPG
         }
 
         // Agent path: a single delta stream per reply. Append each chunk into one bubble as it streams.
+        // Bracketed [annotations] (e.g. stage directions) are stripped; the filter carries bracket
+        // state across chunks so an annotation split between deltas ("[lau" then "ghs]") is still removed.
         IEnumerator PumpNpc(TextStreamReader reader, string identity)
         {
             var append = _beginReply(Speaker.Npc);
+            var filter = new AnnotationFilter();
             var r = reader.ReadIncremental();
             string lastSeen = null;
             while (true)
@@ -76,12 +80,50 @@ namespace AgentsRPG
                 var chunk = r.Text;
                 if (!ReferenceEquals(chunk, lastSeen))
                 {
-                    if (!string.IsNullOrEmpty(chunk)) append(chunk);
+                    if (!string.IsNullOrEmpty(chunk))
+                    {
+                        var filtered = filter.Filter(chunk);
+                        if (!string.IsNullOrEmpty(filtered)) append(filtered);
+                    }
                     lastSeen = chunk;
                 }
 
                 if (r.IsEos) break;
                 r.Reset();
+            }
+        }
+
+        // Removes [annotations] from a stream of text chunks, along with a single space right after the
+        // closing bracket so "[sad] I don't feel good" reads as "I don't feel good". State persists
+        // between calls so an annotation (or that trailing space) spanning a chunk boundary is still
+        // dropped; annotations don't nest, and an unterminated bracket swallows the rest, fine per reply.
+        sealed class AnnotationFilter
+        {
+            bool _inside;
+            bool _skipSpace; // swallow one space immediately following a closing ']'
+
+            public string Filter(string chunk)
+            {
+                var sb = new StringBuilder(chunk.Length);
+                foreach (var c in chunk)
+                {
+                    if (_inside)
+                    {
+                        if (c == ']') { _inside = false; _skipSpace = true; }
+                        continue;
+                    }
+
+                    if (c == '[') { _inside = true; _skipSpace = false; continue; }
+
+                    if (_skipSpace)
+                    {
+                        _skipSpace = false;
+                        if (c == ' ') continue;
+                    }
+
+                    sb.Append(c);
+                }
+                return sb.ToString();
             }
         }
 
