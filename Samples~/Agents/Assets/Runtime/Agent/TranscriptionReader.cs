@@ -5,161 +5,158 @@ using System.Text;
 using LiveKit;
 using UnityEngine;
 
-namespace AgentsRPG
+// Reads LiveKit transcription text streams and feeds each chunk live into a per-reply text sink.
+// The SDK invokes OnTextStream outside of a coroutine, so a MonoBehaviour runner is needed
+// to drive the per-stream Pump coroutines. Tracks live pumps so they can be stopped on Dispose.
+//
+// The player and the agent are published in different shapes by RoomIO:
+//   - Agent (NPC): is_delta_stream=True  -> one stream per reply, each chunk is a DELTA to append.
+//   - Player:      is_delta_stream=False -> one fresh stream per update, each carrying the FULL
+//                  snapshot ("H", "He", "Hello"); the final is yet another stream re-sending the
+//                  last snapshot. That final body is just whatever the last STT event carried, which
+//                  with VAD endpointing is sometimes empty even though earlier snapshots had the words.
+// So the NPC is appended delta-by-delta, while the player is tracked as snapshots: we cache the
+// last non-empty snapshot and commit it when the turn finalizes, so an empty final can no longer
+// blank the bubble. Player turns are processed one at a time, so a single cached string suffices.
+public sealed class TranscriptionReader : IDisposable
 {
-    // Reads LiveKit transcription text streams and feeds each chunk live into a per-reply text sink.
-    // The SDK invokes OnTextStream outside of a coroutine, so a MonoBehaviour runner is needed
-    // to drive the per-stream Pump coroutines. Tracks live pumps so they can be stopped on Dispose.
-    //
-    // The player and the agent are published in different shapes by RoomIO:
-    //   - Agent (NPC): is_delta_stream=True  -> one stream per reply, each chunk is a DELTA to append.
-    //   - Player:      is_delta_stream=False -> one fresh stream per update, each carrying the FULL
-    //                  snapshot ("H", "He", "Hello"); the final is yet another stream re-sending the
-    //                  last snapshot. That final body is just whatever the last STT event carried, which
-    //                  with VAD endpointing is sometimes empty even though earlier snapshots had the words.
-    // So the NPC is appended delta-by-delta, while the player is tracked as snapshots: we cache the
-    // last non-empty snapshot and commit it when the turn finalizes, so an empty final can no longer
-    // blank the bubble. Player turns are processed one at a time, so a single cached string suffices.
-    public sealed class TranscriptionReader : IDisposable
+    const string TranscriptionTopic = "lk.transcription";
+    const string FinalAttribute = "lk.transcription_final";
+
+    readonly Room _room;
+    readonly MonoBehaviour _runner;
+    readonly Func<Speaker, Action<string>> _beginReply;
+    readonly List<Coroutine> _pumps = new();
+
+    // Last non-empty snapshot seen for the in-progress player turn, until it finalizes.
+    string _lastPlayerSnapshot;
+
+    public TranscriptionReader(Room room, MonoBehaviour runner, Func<Speaker, Action<string>> beginReply)
     {
-        const string TranscriptionTopic = "lk.transcription";
-        const string FinalAttribute = "lk.transcription_final";
+        _room = room;
+        _runner = runner;
+        _beginReply = beginReply;
+        _room.RegisterTextStreamHandler(TranscriptionTopic, OnTextStream);
+        Debug.Log($"[TranscriptionReader] Registered text stream handler on topic '{TranscriptionTopic}'.");
+    }
 
-        readonly Room _room;
-        readonly MonoBehaviour _runner;
-        readonly Func<Speaker, Action<string>> _beginReply;
-        readonly List<Coroutine> _pumps = new();
+    void OnTextStream(TextStreamReader reader, string identity)
+    {
+        var attributes = reader.Info.Attributes;
 
-        // Last non-empty snapshot seen for the in-progress player turn, until it finalizes.
-        string _lastPlayerSnapshot;
+        var isFinal = !(attributes != null &&
+                        attributes.TryGetValue(FinalAttribute, out var final) &&
+                        final == "false");
 
-        public TranscriptionReader(Room room, MonoBehaviour runner, Func<Speaker, Action<string>> beginReply)
+        var speaker = identity == _room.LocalParticipant.Identity ? Speaker.Player : Speaker.Npc;
+
+        if (speaker == Speaker.Npc)
         {
-            _room = room;
-            _runner = runner;
-            _beginReply = beginReply;
-            _room.RegisterTextStreamHandler(TranscriptionTopic, OnTextStream);
-            Debug.Log($"[TranscriptionReader] Registered text stream handler on topic '{TranscriptionTopic}'.");
+            _pumps.Add(_runner.StartCoroutine(PumpNpc(reader, identity)));
+            return;
         }
 
-        void OnTextStream(TextStreamReader reader, string identity)
+        // Player: snapshot stream. Each interim/final stream carries the full text; the final can
+        // fall back to the last non-empty snapshot we cached.
+        _pumps.Add(_runner.StartCoroutine(PumpPlayer(reader, isFinal)));
+    }
+
+    // Agent path: a single delta stream per reply. Append each chunk into one bubble as it streams.
+    // Bracketed [annotations] (e.g. stage directions) are stripped; the filter carries bracket
+    // state across chunks so an annotation split between deltas ("[lau" then "ghs]") is still removed.
+    IEnumerator PumpNpc(TextStreamReader reader, string identity)
+    {
+        var append = _beginReply(Speaker.Npc);
+        var filter = new AnnotationFilter();
+        var r = reader.ReadIncremental();
+        string lastSeen = null;
+        while (true)
         {
-            var attributes = reader.Info.Attributes;
+            yield return r;
 
-            var isFinal = !(attributes != null &&
-                            attributes.TryGetValue(FinalAttribute, out var final) &&
-                            final == "false");
-
-            var speaker = identity == _room.LocalParticipant.Identity ? Speaker.Player : Speaker.Npc;
-
-            if (speaker == Speaker.Npc)
+            // EOS ticks don't refresh Text — only forward when the reference actually changed.
+            var chunk = r.Text;
+            if (!ReferenceEquals(chunk, lastSeen))
             {
-                _pumps.Add(_runner.StartCoroutine(PumpNpc(reader, identity)));
-                return;
+                if (!string.IsNullOrEmpty(chunk))
+                {
+                    var filtered = filter.Filter(chunk);
+                    if (!string.IsNullOrEmpty(filtered)) append(filtered);
+                }
+                lastSeen = chunk;
             }
 
-            // Player: snapshot stream. Each interim/final stream carries the full text; the final can
-            // fall back to the last non-empty snapshot we cached.
-            _pumps.Add(_runner.StartCoroutine(PumpPlayer(reader, isFinal)));
+            if (r.IsEos) break;
+            r.Reset();
         }
+    }
 
-        // Agent path: a single delta stream per reply. Append each chunk into one bubble as it streams.
-        // Bracketed [annotations] (e.g. stage directions) are stripped; the filter carries bracket
-        // state across chunks so an annotation split between deltas ("[lau" then "ghs]") is still removed.
-        IEnumerator PumpNpc(TextStreamReader reader, string identity)
+    // Removes [annotations] from a stream of text chunks, along with a single space right after the
+    // closing bracket so "[sad] I don't feel good" reads as "I don't feel good". State persists
+    // between calls so an annotation (or that trailing space) spanning a chunk boundary is still
+    // dropped; annotations don't nest, and an unterminated bracket swallows the rest, fine per reply.
+    sealed class AnnotationFilter
+    {
+        bool _inside;
+        bool _skipSpace; // swallow one space immediately following a closing ']'
+
+        public string Filter(string chunk)
         {
-            var append = _beginReply(Speaker.Npc);
-            var filter = new AnnotationFilter();
-            var r = reader.ReadIncremental();
-            string lastSeen = null;
-            while (true)
+            var sb = new StringBuilder(chunk.Length);
+            foreach (var c in chunk)
             {
-                yield return r;
-
-                // EOS ticks don't refresh Text — only forward when the reference actually changed.
-                var chunk = r.Text;
-                if (!ReferenceEquals(chunk, lastSeen))
+                if (_inside)
                 {
-                    if (!string.IsNullOrEmpty(chunk))
-                    {
-                        var filtered = filter.Filter(chunk);
-                        if (!string.IsNullOrEmpty(filtered)) append(filtered);
-                    }
-                    lastSeen = chunk;
+                    if (c == ']') { _inside = false; _skipSpace = true; }
+                    continue;
                 }
 
-                if (r.IsEos) break;
-                r.Reset();
-            }
-        }
+                if (c == '[') { _inside = true; _skipSpace = false; continue; }
 
-        // Removes [annotations] from a stream of text chunks, along with a single space right after the
-        // closing bracket so "[sad] I don't feel good" reads as "I don't feel good". State persists
-        // between calls so an annotation (or that trailing space) spanning a chunk boundary is still
-        // dropped; annotations don't nest, and an unterminated bracket swallows the rest, fine per reply.
-        sealed class AnnotationFilter
-        {
-            bool _inside;
-            bool _skipSpace; // swallow one space immediately following a closing ']'
-
-            public string Filter(string chunk)
-            {
-                var sb = new StringBuilder(chunk.Length);
-                foreach (var c in chunk)
+                if (_skipSpace)
                 {
-                    if (_inside)
-                    {
-                        if (c == ']') { _inside = false; _skipSpace = true; }
-                        continue;
-                    }
-
-                    if (c == '[') { _inside = true; _skipSpace = false; continue; }
-
-                    if (_skipSpace)
-                    {
-                        _skipSpace = false;
-                        if (c == ' ') continue;
-                    }
-
-                    sb.Append(c);
+                    _skipSpace = false;
+                    if (c == ' ') continue;
                 }
-                return sb.ToString();
-            }
-        }
 
-        // Player path: each stream is a full snapshot and we only render at finalization (no live
-        // drip), so read the whole thing at once. Cache the last non-empty snapshot, because finals
-        // can be empty sometimes. 
-        IEnumerator PumpPlayer(TextStreamReader reader, bool isFinal)
+                sb.Append(c);
+            }
+            return sb.ToString();
+        }
+    }
+
+    // Player path: each stream is a full snapshot and we only render at finalization (no live
+    // drip), so read the whole thing at once. Cache the last non-empty snapshot, because finals
+    // can be empty sometimes. 
+    IEnumerator PumpPlayer(TextStreamReader reader, bool isFinal)
+    {
+        var read = reader.ReadAll();
+        yield return read;
+
+        if (!read.IsError && !string.IsNullOrEmpty(read.Text)) _lastPlayerSnapshot = read.Text;
+
+        if (!isFinal) yield break;
+
+        var text = _lastPlayerSnapshot;
+        _lastPlayerSnapshot = null;
+
+        if (string.IsNullOrEmpty(text))
         {
-            var read = reader.ReadAll();
-            yield return read;
-
-            if (!read.IsError && !string.IsNullOrEmpty(read.Text)) _lastPlayerSnapshot = read.Text;
-
-            if (!isFinal) yield break;
-
-            var text = _lastPlayerSnapshot;
-            _lastPlayerSnapshot = null;
-
-            if (string.IsNullOrEmpty(text))
-            {
-                yield break;
-            }
-
-            _beginReply(Speaker.Player)(text);
+            yield break;
         }
 
-        public void Dispose()
+        _beginReply(Speaker.Player)(text);
+    }
+
+    public void Dispose()
+    {
+        foreach (var pump in _pumps)
         {
-            foreach (var pump in _pumps)
-            {
-                if (pump != null) _runner.StopCoroutine(pump);
-            }
-            _pumps.Clear();
-            _lastPlayerSnapshot = null;
-
-            _room?.UnregisterTextStreamHandler(TranscriptionTopic);
+            if (pump != null) _runner.StopCoroutine(pump);
         }
+        _pumps.Clear();
+        _lastPlayerSnapshot = null;
+
+        _room?.UnregisterTextStreamHandler(TranscriptionTopic);
     }
 }

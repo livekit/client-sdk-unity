@@ -1,8 +1,5 @@
-namespace AgentsRPG
+public enum Speaker
 {
-    public enum Speaker
-    {
-        Player,
-        Npc,
-    }
+    Player,
+    Npc,
 }

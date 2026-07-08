@@ -1,36 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AgentsRPG
+public class DynamicRowHeight : LayoutElement
 {
-    public class DynamicRowHeight : LayoutElement
+    [SerializeField] float _extraHeightFactor = 0.2f;
+
+    public float ExtraHeightFactor
     {
-        [SerializeField] float _extraHeightFactor = 0.2f;
-
-        public float ExtraHeightFactor
+        get => _extraHeightFactor;
+        set
         {
-            get => _extraHeightFactor;
-            set
-            {
-                _extraHeightFactor = value;
-                SetForRebuild();
-            }
+            _extraHeightFactor = value;
+            SetForRebuild();
         }
+    }
 
-        public override float preferredHeight
+    public override float preferredHeight
+    {
+        get
         {
-            get
-            {
-                var group = GetComponent<HorizontalLayoutGroup>();
-                if (group == null) return base.preferredHeight;
-                return group.preferredHeight * (1f + _extraHeightFactor);
-            }
+            var group = GetComponent<HorizontalLayoutGroup>();
+            if (group == null) return base.preferredHeight;
+            return group.preferredHeight * (1f + _extraHeightFactor);
         }
+    }
 
-        void SetForRebuild()
-        {
-            if (!IsActive()) return;
-            LayoutRebuilder.MarkLayoutForRebuild(transform as RectTransform);
-        }
+    void SetForRebuild()
+    {
+        if (!IsActive()) return;
+        LayoutRebuilder.MarkLayoutForRebuild(transform as RectTransform);
     }
 }
