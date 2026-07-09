@@ -87,7 +87,7 @@ namespace LiveKit.PlayModeTests.Utils
             Rooms.Clear();
         }
 
-        private string CreateToken(ConnectionOptions options)
+        internal string CreateToken(ConnectionOptions options)
         {
             var claims = new LiveKitToken.Claims
             {
@@ -121,6 +121,8 @@ namespace LiveKit.PlayModeTests.Utils
             if (disposing) DisconnectAll();
             _disposed = true;
         }
+
+        internal static string ServerUrl => _serverUrl;
 
         private static string _serverUrl => ReadEnv("LK_TEST_URL", "ws://localhost:7880");
         private static string _apiKey => ReadEnv("LK_TEST_API_KEY", "devkey");
