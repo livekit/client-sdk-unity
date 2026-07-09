@@ -18,10 +18,12 @@ namespace LiveKit.PlayModeTests
     /// The run stops at the first failure and logs the room sid/name so the failing room
     /// can be cross-checked against server-side dispatch logs.
     ///
-    /// The remote-participant check polls <c>Room.RemoteParticipants</c> rather than the
-    /// ParticipantConnected event so an agent delivered via the connect snapshot counts
-    /// the same as one delivered via an event — the bug under investigation is the
-    /// participant being absent from both.
+    /// Detection distinguishes the two delivery mechanisms: <c>Room.RemoteParticipants</c>
+    /// is checked exactly once after Connect returns (the snapshot path); afterwards only
+    /// the ParticipantConnected event can fulfill the expectation. On timeout the failure
+    /// message includes the remote-participant count at that moment — a count above zero
+    /// means the agent reached client state but its event never fired, zero means it never
+    /// reached the client at all.
     ///
     /// Gated by environment variables so CI (which runs no agent worker) skips it:
     ///   LK_TEST_AGENT_TOKEN_ENDPOINT — full token endpoint URL, or
@@ -31,6 +33,8 @@ namespace LiveKit.PlayModeTests
     {
         const int Iterations = 100;
         const float AgentTimeoutSeconds = 10f;
+        // The token service rate-limits room creation, so idle between iterations.
+        const float IterationCooldownSeconds = 5f;
         const int TestTimeoutMs = 30 * 60 * 1000;
 
         const string SandBoxId = null;
@@ -54,6 +58,9 @@ namespace LiveKit.PlayModeTests
             {
                 for (int i = 1; i <= Iterations; i++)
                 {
+                    if (i > 1)
+                        yield return new WaitForSecondsRealtime(IterationCooldownSeconds);
+
                     var fetch = new TaskYieldInstruction<ConnectionDetails>(
                         tokenSource.FetchConnectionDetails(new TokenSourceFetchOptions
                         {
@@ -69,6 +76,7 @@ namespace LiveKit.PlayModeTests
                         Assert.Fail($"Iteration {i}/{Iterations}: token source returned incomplete connection details");
 
                     var room = new Room();
+                    Room.ParticipantDelegate? onParticipantConnected = null;
                     try
                     {
                         var connect = room.Connect(fetch.Result.ServerUrl, fetch.Result.ParticipantToken, new RoomOptions());
@@ -76,23 +84,42 @@ namespace LiveKit.PlayModeTests
                         if (connect.IsError)
                             Assert.Fail($"Iteration {i}/{Iterations}: failed to connect");
 
-                        var agentAppeared = new Expectation(
-                            () => room.RemoteParticipants.Values.Any(p => p._info.Kind == Proto.ParticipantKind.Agent),
-                            timeoutSeconds: AgentTimeoutSeconds);
-                        yield return agentAppeared.Wait();
-
-                        if (agentAppeared.Error != null)
+                        var agentAppeared = new Expectation(timeoutSeconds: AgentTimeoutSeconds);
+                        onParticipantConnected = participant =>
                         {
-                            var participants = string.Join(", ", room.RemoteParticipants.Keys);
-                            Assert.Fail(
-                                $"Iteration {i}/{Iterations}: no agent participant within {AgentTimeoutSeconds}s. " +
-                                $"Room sid={room.Sid} name={room.Name} remoteParticipants=[{participants}]");
+                            if (participant._info.Kind == Proto.ParticipantKind.Agent)
+                                agentAppeared.Fulfill();
+                        };
+                        // Subscribe before the one-shot snapshot check; with no yield in
+                        // between, an agent can't slip through the gap. After this check
+                        // only the ParticipantConnected event can fulfill the expectation.
+                        room.ParticipantConnected += onParticipantConnected;
+
+                        string delivery;
+                        if (room.RemoteParticipants.Values.Any(p => p._info.Kind == Proto.ParticipantKind.Agent))
+                        {
+                            delivery = "snapshot";
+                        }
+                        else
+                        {
+                            yield return agentAppeared.Wait();
+                            if (agentAppeared.Error != null)
+                            {
+                                var remotes = room.RemoteParticipants;
+                                Assert.Fail(
+                                    $"Iteration {i}/{Iterations}: no ParticipantConnected for an agent within {AgentTimeoutSeconds}s. " +
+                                    $"Room sid={room.Sid} name={room.Name} remoteParticipantCount={remotes.Count} " +
+                                    $"remoteParticipants=[{string.Join(", ", remotes.Keys)}]");
+                            }
+                            delivery = "event";
                         }
 
-                        Debug.Log($"[AgentDispatchStress] Iteration {i}/{Iterations} OK (room sid={room.Sid} name={room.Name})");
+                        Debug.Log($"[AgentDispatchStress] Iteration {i}/{Iterations} OK (room sid={room.Sid} name={room.Name} delivery={delivery})");
                     }
                     finally
                     {
+                        if (onParticipantConnected != null)
+                            room.ParticipantConnected -= onParticipantConnected;
                         room.Disconnect();
                     }
                 }
@@ -112,12 +139,6 @@ namespace LiveKit.PlayModeTests
                 return new TokenSourceSandbox(SandBoxId);
 
             return null;
-        }
-
-        static string? ReadEnv(string key)
-        {
-            var value = Environment.GetEnvironmentVariable(key)?.Trim();
-            return string.IsNullOrEmpty(value) ? null : value;
         }
     }
 }
