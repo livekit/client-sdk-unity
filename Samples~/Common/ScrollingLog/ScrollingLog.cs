@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Runtime.Common
+namespace LiveKit.Samples.Common
 {
   // Simple scrolling window that prints to the application screen whatever is printed through
   // calls to the UnityEngine.Debug.Log method.
@@ -28,6 +28,11 @@ namespace Runtime.Common
     private Text LogEntryPrefab = null;
 
     private readonly List<Text> _logEntries = new List<Text>();
+
+    // Messages are queued from the log callback and turned into UI on the next LateUpdate.
+    // The callback can fire mid-render (e.g. a TMP warning during a canvas rebuild), and
+    // instantiating UI graphics inside a graphic rebuild loop is not supported by Unity.
+    private readonly Queue<string> _pendingEntries = new Queue<string>();
 
     private static ScrollingLog _instance;
 
@@ -54,8 +59,21 @@ namespace Runtime.Common
       _instance = null;
     }
 
-    // Creates a new log entry using the provided string.
+    // Queues an incoming log message. Actual UI creation is deferred to LateUpdate so we
+    // never instantiate graphics while Unity is in the middle of a canvas rebuild.
     private void AddLogEntry(string str, string stackTrace, LogType type)
+    {
+      _pendingEntries.Enqueue(str);
+    }
+
+    private void LateUpdate()
+    {
+      while (_pendingEntries.Count > 0)
+        CreateLogEntry(_pendingEntries.Dequeue());
+    }
+
+    // Creates a new log entry using the provided string.
+    private void CreateLogEntry(string str)
     {
       var newLogEntry = Instantiate(LogEntryPrefab, Vector3.zero, Quaternion.identity);
       newLogEntry.text = str;
@@ -85,6 +103,7 @@ namespace Runtime.Common
         Destroy(entry.gameObject);
 
       _instance._logEntries.Clear();
+      _instance._pendingEntries.Clear();
     }
   }
 }

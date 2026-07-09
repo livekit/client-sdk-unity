@@ -19,3 +19,6 @@ Runtime/Plugins/ffi-android-armv7/libwebrtc.jar filter=lfs diff=lfs merge=lfs -t
 Runtime/Plugins/ffi-android-x86_64/libwebrtc.jar filter=lfs diff=lfs merge=lfs -text
 Runtime/Plugins/ffi-ios-arm64/liblivekit_ffi.a filter=lfs diff=lfs merge=lfs -text
 Runtime/Plugins/ffi-ios-sim-arm64/liblivekit_ffi.a filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
