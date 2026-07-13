@@ -25,18 +25,19 @@
 
 <!--BEGIN_DESCRIPTION-->
 
-Use this SDK to add realtime video, audio and data features to your Unity app. By connecting to <a  href="https://livekit.io/">LiveKit</a> Cloud or a self-hosted server, you can quickly build applications such as multi-modal AI, live streaming, or video calls with just a few lines of code.
+Use this SDK to add realtime video, audio and data features to your Unity app. By connecting to <a  href="https://livekit.io/">LiveKit</a> Cloud or a self-hosted server, you can quickly build applications such as multi-modal AI like voice AI agents for NPCs, live streaming, or video calls with just a few lines of code.
 
 <!--END_DESCRIPTION-->
 
-  
-
 [SDK Reference »](https://livekit.github.io/client-sdk-unity)
 
-  
+<img  style="width:1000px;"  alt="Screenshot of the LiveKit Unity SDK Youtube tutorial"  src="https://media.githubusercontent.com/media/livekit/client-sdk-unity/refs/heads/max/final-docs-update-for-2.0.0/.github/youtube_tutorial_screenshot.png">
+
+[Youtube Agents NPC Tutorial](https://www.youtube.com/@livekit_io)
 
 ## Platform Support
 
+We officially support Unity 2022 onwards, we test on Unity 2022.3.62 and Unity 6000.3.10.
   
 
 - [x] Windows
@@ -51,11 +52,9 @@ Use this SDK to add realtime video, audio and data features to your Unity app. B
 
 - [ ] WebGL
 
-  
 
 We plan to support all Unity platforms with this SDK. WebGL is currently supported with [client-sdk-unity-web](https://github.com/livekit/client-sdk-unity-web).
 
-  
 
 ## Installation
 
@@ -82,6 +81,13 @@ If you want to use tagged release versions, use `https://github.com/livekit/clie
 ### Using OpenUPM
 
 The package is also hosted in the OpenUPM package registry. Here is the guide on how to use the OpenUPM registry to import the package: https://openupm.com/packages/io.livekit.livekit-sdk/#modal-manualinstallation 
+
+
+## Samples
+
+The repo contains these sample projects:
+- [Meet](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Meet)
+- [Agents](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Agents)
 
 
 ## Local Development
