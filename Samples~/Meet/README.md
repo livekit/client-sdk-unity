@@ -1,5 +1,3 @@
 ## Meet sample
 
-<source  media="(prefers-color-scheme: light)"  srcset="/.github/Meet_Screenshot.png">
-
-<img  style="width:100%;"  alt="Screenshot of the Meet sample"  src="https://raw.githubusercontent.com/livekit/client-sdk-unity/main/.github/Meet_Screenshot.png">
+<img  style="width:200px;"  alt="Screenshot of the Meet sample"  src="https://media.githubusercontent.com/media/livekit/client-sdk-unity/refs/heads/max/final-docs-update-for-2.0.0/.github/Meet_Screenshot.png">
