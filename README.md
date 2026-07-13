@@ -21,19 +21,7 @@
 
 # LiveKit Unity SDK
 
-  
 
-⚠️ Warning
-
-  
-
-> This SDK is currently in Developer Preview mode and not ready for production use. There will be bugs and APIs may change during this period.
-
->
-
-> We welcome and appreciate any feedback or contributions. You can create issues here or chat live with us and other users in our community at https://community.livekit.io/.
-
-  
 
 <!--BEGIN_DESCRIPTION-->
 
