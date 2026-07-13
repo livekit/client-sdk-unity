@@ -74,6 +74,11 @@ namespace LiveKit
         internal readonly FfiHandle Handle;
         private readonly PlatformAudioInfo _info;
         private bool _disposed = false;
+#if UNITY_IOS && !UNITY_EDITOR
+        // Tracks live PlatformAudio instances so the iOS audio session is restored
+        // only when the last one is disposed (aligned with the native ADM ref-count).
+        private static int _instanceCount;
+#endif
 
         /// <summary>
         /// Number of available recording (microphone) devices.
@@ -119,6 +124,12 @@ namespace LiveKit
             _info = platformAudio.Info;
 
             Utils.Debug($"PlatformAudio created: {RecordingDeviceCount} recording devices, {PlayoutDeviceCount} playout devices");
+
+#if UNITY_IOS && !UNITY_EDITOR
+            // Count this instance only after successful construction so a failed
+            // ctor never leaves the counter stuck above zero.
+            System.Threading.Interlocked.Increment(ref _instanceCount);
+#endif
         }
 
         /// <summary>
@@ -365,6 +376,14 @@ namespace LiveKit
             if (_disposed) return;
             Handle.Dispose();
             _disposed = true;
+
+#if UNITY_IOS && !UNITY_EDITOR
+            // Restore the audio session Unity had before VoIP, but only once the
+            // last PlatformAudio is gone (the native ADM is likewise ref-counted).
+            if (System.Threading.Interlocked.Decrement(ref _instanceCount) == 0)
+                IOSAudioSessionHelper.LiveKit_RestoreDefaultAudioSession();
+#endif
+
             Utils.Debug("PlatformAudio disposed");
         }
     }
