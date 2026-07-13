@@ -1,5 +1,7 @@
 ## Meet sample
 
+Connect to a video call with other remote participants.
+
 <img  style="width:1000px;"  alt="Screenshot of the Meet sample"  src="https://media.githubusercontent.com/media/livekit/client-sdk-unity/refs/heads/max/final-docs-update-for-2.0.0/.github/meet_sample_screenshot.png">
 
 ## Getting started
