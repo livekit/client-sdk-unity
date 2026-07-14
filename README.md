@@ -207,10 +207,6 @@ If your project disables package editor scripts or uses a custom Xcode export pi
 
 ## Examples
 
-  
-
-Use the samples of the package to see how to use the SDK.
-
 ### Tokens
 
 You need a token to join a LiveKit room as a participant. Read more about tokens here: https://docs.livekit.io/frontends/reference/tokens-grants/
