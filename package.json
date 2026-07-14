@@ -1,6 +1,6 @@
 {
   "name": "io.livekit.livekit-sdk",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2022.3",
@@ -30,7 +30,7 @@
       "path": "Samples~/Agents"
     }
   ],
-  "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v1.4.0",
+  "changelogUrl": "https://github.com/livekit/client-sdk-unity/releases/tag/v2.0.0",
   "documentationUrl": "https://github.com/livekit/client-sdk-unity/blob/main/README.md",
   "type": "library",
   "dependencies": {

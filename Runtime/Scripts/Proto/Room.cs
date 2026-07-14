@@ -368,22 +368,21 @@ namespace LiveKit.Proto {
             "VVRPEAASHAoYRU5DT0RFUl9CQUNLRU5EX1NPRlRXQVJFEAESHAoYRU5DT0RF",
             "Ul9CQUNLRU5EX0hBUkRXQVJFEAISGQoVRU5DT0RFUl9CQUNLRU5EX05WRU5D",
             "EAMSGQoVRU5DT0RFUl9CQUNLRU5EX1ZBQVBJEAQSIAocRU5DT0RFUl9CQUNL",
-            "RU5EX1ZJREVPVE9PTEJPWBAFKv4BChVEZWdyYWRhdGlvblByZWZlcmVuY2US",
+            "RU5EX1ZJREVPVE9PTEJPWBAFKtkBChVEZWdyYWRhdGlvblByZWZlcmVuY2US",
             "IwofREVHUkFEQVRJT05fUFJFRkVSRU5DRV9CQUxBTkNFRBAAEi0KKURFR1JB",
             "REFUSU9OX1BSRUZFUkVOQ0VfTUFJTlRBSU5fRlJBTUVSQVRFEAESLgoqREVH",
-            "UkFEQVRJT05fUFJFRkVSRU5DRV9NQUlOVEFJTl9SRVNPTFVUSU9OEAISIwof",
-            "REVHUkFEQVRJT05fUFJFRkVSRU5DRV9ESVNBQkxFRBADEjwKOERFR1JBREFU",
-            "SU9OX1BSRUZFUkVOQ0VfTUFJTlRBSU5fRlJBTUVSQVRFX0FORF9SRVNPTFVU",
-            "SU9OEAQqUAoQSWNlVHJhbnNwb3J0VHlwZRITCg9UUkFOU1BPUlRfUkVMQVkQ",
-            "ABIUChBUUkFOU1BPUlRfTk9IT1NUEAESEQoNVFJBTlNQT1JUX0FMTBACKkMK",
-            "GENvbnRpbnVhbEdhdGhlcmluZ1BvbGljeRIPCgtHQVRIRVJfT05DRRAAEhYK",
-            "EkdBVEhFUl9DT05USU5VQUxMWRABKmAKEUNvbm5lY3Rpb25RdWFsaXR5EhAK",
-            "DFFVQUxJVFlfUE9PUhAAEhAKDFFVQUxJVFlfR09PRBABEhUKEVFVQUxJVFlf",
-            "RVhDRUxMRU5UEAISEAoMUVVBTElUWV9MT1NUEAMqUwoPQ29ubmVjdGlvblN0",
-            "YXRlEhUKEUNPTk5fRElTQ09OTkVDVEVEEAASEgoOQ09OTl9DT05ORUNURUQQ",
-            "ARIVChFDT05OX1JFQ09OTkVDVElORxACKjMKDkRhdGFQYWNrZXRLaW5kEg4K",
-            "CktJTkRfTE9TU1kQABIRCg1LSU5EX1JFTElBQkxFEAFCEKoCDUxpdmVLaXQu",
-            "UHJvdG8="));
+            "UkFEQVRJT05fUFJFRkVSRU5DRV9NQUlOVEFJTl9SRVNPTFVUSU9OEAISPAo4",
+            "REVHUkFEQVRJT05fUFJFRkVSRU5DRV9NQUlOVEFJTl9GUkFNRVJBVEVfQU5E",
+            "X1JFU09MVVRJT04QBCpQChBJY2VUcmFuc3BvcnRUeXBlEhMKD1RSQU5TUE9S",
+            "VF9SRUxBWRAAEhQKEFRSQU5TUE9SVF9OT0hPU1QQARIRCg1UUkFOU1BPUlRf",
+            "QUxMEAIqQwoYQ29udGludWFsR2F0aGVyaW5nUG9saWN5Eg8KC0dBVEhFUl9P",
+            "TkNFEAASFgoSR0FUSEVSX0NPTlRJTlVBTExZEAEqYAoRQ29ubmVjdGlvblF1",
+            "YWxpdHkSEAoMUVVBTElUWV9QT09SEAASEAoMUVVBTElUWV9HT09EEAESFQoR",
+            "UVVBTElUWV9FWENFTExFTlQQAhIQCgxRVUFMSVRZX0xPU1QQAypTCg9Db25u",
+            "ZWN0aW9uU3RhdGUSFQoRQ09OTl9ESVNDT05ORUNURUQQABISCg5DT05OX0NP",
+            "Tk5FQ1RFRBABEhUKEUNPTk5fUkVDT05ORUNUSU5HEAIqMwoORGF0YVBhY2tl",
+            "dEtpbmQSDgoKS0lORF9MT1NTWRAAEhEKDUtJTkRfUkVMSUFCTEUQAUIQqgIN",
+            "TGl2ZUtpdC5Qcm90bw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.E2EeReflection.Descriptor, global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.ParticipantReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, global::LiveKit.Proto.StatsReflection.Descriptor, global::LiveKit.Proto.DataStreamReflection.Descriptor, global::LiveKit.Proto.DataTrackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.SimulateScenarioKind), typeof(global::LiveKit.Proto.VideoEncoderBackend), typeof(global::LiveKit.Proto.DegradationPreference), typeof(global::LiveKit.Proto.IceTransportType), typeof(global::LiveKit.Proto.ContinualGatheringPolicy), typeof(global::LiveKit.Proto.ConnectionQuality), typeof(global::LiveKit.Proto.ConnectionState), typeof(global::LiveKit.Proto.DataPacketKind), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -568,11 +567,6 @@ namespace LiveKit.Proto {
     /// Degrade resolution to maintain framerate (drop frames to keep clarity).
     /// </summary>
     [pbr::OriginalName("DEGRADATION_PREFERENCE_MAINTAIN_RESOLUTION")] MaintainResolution = 2,
-    /// <summary>
-    /// Deprecated: Use MAINTAIN_FRAMERATE_AND_RESOLUTION instead.
-    /// Maintained for backwards compatibility, maps to MAINTAIN_FRAMERATE_AND_RESOLUTION.
-    /// </summary>
-    [pbr::OriginalName("DEGRADATION_PREFERENCE_DISABLED")] Disabled = 3,
     /// <summary>
     /// Maintain both framerate and resolution. Frames may be dropped before encoding
     /// if necessary to avoid overusing network and encoder resources.
