@@ -11,6 +11,14 @@ YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 RESET='\033[0m'
 
+# Prefer rustup-managed toolchains over any other rust in PATH (e.g. a Homebrew
+# rust in /opt/homebrew/bin). The wrong rustc ignores rust-toolchain.toml and
+# ships only its host target, so cross builds fail with "can't find crate for std".
+CARGO_BIN="${CARGO_HOME:-$HOME/.cargo}/bin"
+if [ -x "$CARGO_BIN/rustup" ]; then
+    export PATH="$CARGO_BIN:$PATH"
+fi
+
 usage() {
     echo "Usage: $0 <platform> [build_type]"
     echo ""
@@ -52,12 +60,15 @@ case "$PLATFORM" in
     # MACOS
     macos)
         echo "Building for macOS (aarch64-apple-darwin) [$BUILD_TYPE]..."
+        pushd "$ROOT/client-sdk-rust~" > /dev/null
+        rustup target add aarch64-apple-darwin
         cargo build \
             --manifest-path "$MANIFEST" \
             $BUILD_FLAG \
             -p livekit-ffi \
             --target aarch64-apple-darwin
         BUILD_STATUS=$?
+        popd > /dev/null
 
         SRC="$BASE_TARGET/aarch64-apple-darwin/$BUILD_DIR/liblivekit_ffi.dylib"
         DST="$BASE_DST/ffi-macos-arm64/liblivekit_ffi.dylib"
@@ -66,6 +77,7 @@ case "$PLATFORM" in
     android)
         echo "Building for Android (aarch64-linux-android) [$BUILD_TYPE]..."
         pushd "$ROOT/client-sdk-rust~" > /dev/null
+        rustup target add aarch64-linux-android
         cargo ndk \
             --target aarch64-linux-android \
             build \
@@ -86,6 +98,7 @@ case "$PLATFORM" in
     ios)
         echo "Building for iOS (aarch64-apple-ios) [$BUILD_TYPE]..."
         pushd "$ROOT/client-sdk-rust~/livekit-ffi" > /dev/null
+        rustup target add aarch64-apple-ios
         cargo rustc \
             --crate-type staticlib \
             $BUILD_FLAG \
