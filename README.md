@@ -1,27 +1,15 @@
 
 <!--BEGIN_BANNER_IMAGE-->
 
-  
-
 <picture>
-
 <source  media="(prefers-color-scheme: dark)"  srcset="/.github/banner_dark.png">
-
 <source  media="(prefers-color-scheme: light)"  srcset="/.github/banner_light.png">
-
 <img  style="width:100%;"  alt="The LiveKit icon, the name of the repository and some sample code in the background."  src="https://raw.githubusercontent.com/livekit/client-sdk-unity/main/.github/banner_light.png">
-
 </picture>
-
   
-
 <!--END_BANNER_IMAGE-->
 
-  
-
 # LiveKit Unity SDK
-
-
 
 <!--BEGIN_DESCRIPTION-->
 
@@ -40,34 +28,23 @@ Use this SDK to add realtime video, audio and data features to your Unity app. B
 ## Platform Support
 
 We officially support Unity 2022 onwards, we test on Unity 2022.3.62 and Unity 6000.3.10.
-  
 
 - [x] Windows
-
 - [x] MacOS
-
 - [x] Linux
-
 - [x] iOS
-
 - [x] Android
-
 - [ ] WebGL
-
 
 We plan to support all Unity platforms with this SDK. WebGL is currently supported with [client-sdk-unity-web](https://github.com/livekit/client-sdk-unity-web).
 
-
 ## Installation
-
 
 ### Using Git
 
 Before cloning the repo, make sure that Git LFS is installed and setup.
-
 You can either clone the repo and import from the local Unity package files:
   
-
 ```sh
 
 git  clone  https://github.com/livekit/client-sdk-unity.git
@@ -76,7 +53,6 @@ cd  client-sdk-unity
 
 ```
   
-
 Or you can import the Git url `https://github.com/livekit/client-sdk-unity.git` from the package manager. 
 If you want to use tagged release versions, use `https://github.com/livekit/client-sdk-unity.git#vX.X.X`, for example with `#v1.3.5`.
 
@@ -84,126 +60,71 @@ If you want to use tagged release versions, use `https://github.com/livekit/clie
 
 The package is also hosted in the OpenUPM package registry. Here is the guide on how to use the OpenUPM registry to import the package: https://openupm.com/packages/io.livekit.livekit-sdk/#modal-manualinstallation 
 
-
 ## Samples
 
 The repo contains these sample projects:
 - [Meet](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Meet)
 - [Agents](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Agents)
 
-
 ## Local Development
-
 
 ### Building LiveKit plugins locally
 
-  
-
 For local development, initialize the Git submodule containing the Rust code for the LiveKit plugin libraries.
 
-  
-
 There is a [helper script](https://github.com/livekit/client-sdk-unity/blob/main/Scripts~/build_ffi_locally.sh) to build the libraries locally and exchange the downloaded libraries with the local build artifacts in the correct `Runtime/Plugins` folder.
-
-  
 
 Currently, the build script supports the following arguments:
 
 - macos
-
 - android
-
 - ios
-
-  
 
 In the following options:
 
 - debug (default)
-
 - release
-
-  
 
 So a build command is for example:
 
-`./Scripts~/build_ffi_locally.sh macos release`
-
-  
+`./Scripts~/build_ffi_locally.sh macos release` 
 
 ### VSCode setup
 
-  
-
 Look at the Unity-SDK.code-workspace setup for VSCode. This will use the Meet Sample as the Unity project and the Unity SDK package as two roots in a multi-root workspace and the Meet.sln as the `dotnet.defaultSolution`, enabling Rust and C# IDE support.
-
-  
 
 ### Debugging
 
-  
-
 For C# debugging, there is a simple attach launch option called `C# Unity`, for example in the `Meet/.vscode/launch.json`.
-
-  
 
 For Rust / C++ debugging on MacOS, you need to install the [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb) extension. The debug attach is defined in `.vscode/launch.json`.
 
-  
-
 1. Build the livekit-ffi lib locally in debug mode with `./Scripts~/build_ffi_locally.sh macos debug`
-
 2. Start the Unity Editor
-
 3. Attach to the Unity Editor process (either auto or manual process picker)
-
 4. Start the Scene in Editor
-
-  
 
 ### iOS
 
-  
-
 Add dependent frameworks to your Unity project
-
-  
 
 select `Unity-iPhone` -> `TARGETS` -> `UnityFramework` -> `General` -> `Frameworks and Libraries` -> `+`
 
-  
-
 add the following frameworks:
-
-  
 
 `OpenGLES.framework`  `MetalKit.framework`  `GLKit.framework`  `MetalKit.framework`  `VideoToolBox.framework`  `Network.framework`
 
-  
-
 add other linker flags to `UnityFramework`:
 
-  
-
 `-ObjC`
-
   
-
-Since `libiPhone-lib.a` has built-in old versions of `celt` and `libvpx` (This will cause the opus and vp8/vp9 codecs to not be called correctly and cause a crash.), you need to ensure that `liblivekit_ffi.a` is linked before `libiPhone-lib.a`.
-
-  
+Since `libiPhone-lib.a` has built-in old versions of `celt` and `libvpx` (This will cause the opus and vp8/vp9 codecs to not be called correctly and cause a crash.), you need to ensure that `liblivekit_ffi.a` is linked before `libiPhone-lib.a`. 
 
 The package now applies an iOS post-build fix that rewrites the exported Xcode project so `libiPhone-lib.a` is moved after `liblivekit_ffi.a` in `UnityFramework -> Frameworks and Libraries`.
-
   
-
 It also strips the old CELT object cluster from the exported `Libraries/libiPhone-lib.a` so Xcode cannot resolve those codec symbols from Unity's archive.
 
-  
-
 If your project disables package editor scripts or uses a custom Xcode export pipeline that overwrites `project.pbxproj` after LiveKit runs, you may still need to adjust the order manually by removing and re-adding `libiPhone-lib.a`.
-
-  
 
 ## Examples
 
@@ -260,110 +181,22 @@ ITokenSourceFixed source = new TokenSourceLiteral("wss://your.livekit.host", "<j
 // or: new TokenSourceCustom(async () => await MyAuthFlow());
 ```
 
- 
-  
 
-### Connect to a room
+### Connecting to a room
 
   
-
 ```cs
-
-using  LiveKit;
-
-  
-
-IEnumerator  Start()
-
+private IEnumerator ConnectToRoom()
 {
+    var serverUrl = "< your server url >";
+    var token = "< your token >";
 
-var  room = new  Room();
-
-room.TrackSubscribed += TrackSubscribed;
-
-  
-
-var  connect = room.Connect("ws://localhost:7880", "<join-token>");
-
-yield  return  connect;
-
-if (!connect.IsError)
-
-{
-
-Debug.Log("Connected to " + room.Name);
-
-}
-
-}
-
-```
-
-  
-
-## Asynchronous programming: coroutines, async/await, and UniTask
-
-The SDK exposes three interchangeable styles for awaiting asynchronous operations. Coroutines, async/await and UniTask.
-
-**1. Coroutines (default, no dependency)** — shown throughout this README.
-
-**2. async/await (no dependency)** — every operation returns an awaitable instruction (`ConnectInstruction`, `PublishTrackInstruction`, `PerformRpcInstruction`, the stream read instructions, …), so you can `await` it directly. As with coroutines, you inspect success/failure on the instruction (`IsError`) — `await` does not throw. Continuations resume on Unity's main thread.
-
-```cs
-async void Start()
-{
     var room = new Room();
-    var connect = room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions());
-    await connect;
-    if (!connect.IsError)
-        Debug.Log("Connected to " + room.Name);
+    var connect = room.Connect(serverUrl, token, new RoomOptions());
+
+    yield return connect;
 }
 ```
-
-> Use `async void` only for top-level event handlers (e.g. button callbacks); its exceptions surface to Unity's log rather than to a caller. Prefer `async Task`/`async UniTaskVoid` elsewhere.
-
-**3. UniTask (optional)** — install [UniTask](https://github.com/Cysharp/UniTask) (`com.cysharp.unitask`). The SDK auto-detects it via the `LIVEKIT_UNITASK` scripting define and enables the `LiveKit.UniTask` assembly, which adds `CancellationToken` support, composition, and async streams.
-
-Cancellation (abandon-awaiter semantics — the underlying request is not cancelled on the wire):
-
-```cs
-await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions())
-    .AsUniTask(cancellationToken);
-```
-
-Run operations in parallel. `AsUniTask` does not throw on failure (matching the
-coroutine path), so keep the instructions and check `IsError` on each after the
-`await` — otherwise a failed operation passes silently:
-
-```cs
-var publishCamera = room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions);
-var publishMicrophone = room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions);
-
-await UniTask.WhenAll(publishCamera.AsUniTask(ct), publishMicrophone.AsUniTask(ct));
-
-if (publishCamera.IsError || publishMicrophone.IsError)
-    Debug.LogError("Failed to publish one or more tracks");
-```
-
-Consume an incremental stream with `await foreach`. The sequence ends at end-of-stream; if the stream ends with an error it throws a `StreamError`:
-
-```cs
-try
-{
-    await foreach (var chunk in reader.ReadIncremental().AsAsyncEnumerable(ct))
-        Process(chunk);
-}
-catch (StreamError e)
-{
-    Debug.LogError(e.Message);
-}
-```
-
-> Error-handling differs by API: awaiting an instruction (and `AsUniTask`) never throws on a
-> failed operation — you inspect `IsError` after the `await`. The stream enumerable is the
-> exception: `await foreach` has no post-loop point to check `IsError`, so a mid-stream failure
-> surfaces by throwing `StreamError`.
-  
 
 ### Publishing microphone
 
@@ -1029,7 +862,70 @@ StartCoroutine(HandleByteStream(reader, identity))
 
 ```
 
+## Asynchronous programming: coroutines, async/await, and UniTask
+
+The SDK exposes three interchangeable styles for awaiting asynchronous operations. Coroutines, async/await and UniTask.
+
+**1. Coroutines (default, no dependency)** — shown throughout this README.
+
+**2. async/await (no dependency)** — every operation returns an awaitable instruction (`ConnectInstruction`, `PublishTrackInstruction`, `PerformRpcInstruction`, the stream read instructions, …), so you can `await` it directly. As with coroutines, you inspect success/failure on the instruction (`IsError`) — `await` does not throw. Continuations resume on Unity's main thread.
+
+```cs
+async void Start()
+{
+    var room = new Room();
+    var connect = room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions());
+    await connect;
+    if (!connect.IsError)
+        Debug.Log("Connected to " + room.Name);
+}
+```
+
+> Use `async void` only for top-level event handlers (e.g. button callbacks); its exceptions surface to Unity's log rather than to a caller. Prefer `async Task`/`async UniTaskVoid` elsewhere.
+
+**3. UniTask (optional)** — install [UniTask](https://github.com/Cysharp/UniTask) (`com.cysharp.unitask`). The SDK auto-detects it via the `LIVEKIT_UNITASK` scripting define and enables the `LiveKit.UniTask` assembly, which adds `CancellationToken` support, composition, and async streams.
+
+Cancellation (abandon-awaiter semantics — the underlying request is not cancelled on the wire):
+
+```cs
+await room.Connect("ws://localhost:7880", "<join-token>", new RoomOptions())
+    .AsUniTask(cancellationToken);
+```
+
+Run operations in parallel. `AsUniTask` does not throw on failure (matching the
+coroutine path), so keep the instructions and check `IsError` on each after the
+`await` — otherwise a failed operation passes silently:
+
+```cs
+var publishCamera = room.LocalParticipant.PublishTrack(cameraTrack, cameraOptions);
+var publishMicrophone = room.LocalParticipant.PublishTrack(microphoneTrack, microphoneOptions);
+
+await UniTask.WhenAll(publishCamera.AsUniTask(ct), publishMicrophone.AsUniTask(ct));
+
+if (publishCamera.IsError || publishMicrophone.IsError)
+    Debug.LogError("Failed to publish one or more tracks");
+```
+
+Consume an incremental stream with `await foreach`. The sequence ends at end-of-stream; if the stream ends with an error it throws a `StreamError`:
+
+```cs
+try
+{
+    await foreach (var chunk in reader.ReadIncremental().AsAsyncEnumerable(ct))
+        Process(chunk);
+}
+catch (StreamError e)
+{
+    Debug.LogError(e.Message);
+}
+```
+
+> Error-handling differs by API: awaiting an instruction (and `AsUniTask`) never throws on a
+> failed operation — you inspect `IsError` after the `await`. The stream enumerable is the
+> exception: `await foreach` has no post-loop point to check `IsError`, so a mid-stream failure
+> surfaces by throwing `StreamError`.
   
+
 
 ## Verbose Logging
 
