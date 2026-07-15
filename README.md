@@ -237,86 +237,50 @@ Debug.Log("Track published!");
 
 }
 
-  
-
 rtcSource.Start();
-
 ```
 
 ### Publishing a texture (e.g Unity Camera)
 
 ```cs
+IEnumerator PublishCamera(Room room)
+{        
+    // Option 1: publish a WebCamera
+    // var source = new TextureVideoSource(webCamTexture);
 
-// publish a WebCamera
+    // Option 2: publish a screen share
+    // var source = new ScreenVideoSource();
 
-//var source = new TextureVideoSource(webCamTexture);
+    // Option 3: publishing a Unity Camera
+    var source = new CameraVideoSource(Camera.main);
+    
+    var track = LocalVideoTrack.CreateVideoTrack("my-video-track", source, room);
+    
+    var videoCoding = new VideoEncoding
+    {
+        MaxBitrate = 512000,
+        MaxFramerate = frameRate
+    };
 
-  
+    var options = new TrackPublishOptions
+    {
+        VideoCodec = VideoCodec.Vp8,
+        VideoEncoding = videoCoding,
+        Simulcast = true,
+        Source = TrackSource.SourceCamera
+    };
 
-// Publish the entire screen
+    var publish = room.LocalParticipant.PublishTrack(track, options);
+    yield return publish;
 
-//var source = new ScreenVideoSource();
+    if (!publish.IsError)
+    {
+        Debug.Log("Track published!");
+    }
 
-  
-
-// Publishing a Unity Camera
-
-//Camera.main.enabled = true;
-
-//var source = new CameraVideoSource(Camera.main);
-
-  
-
-var  rt = new  UnityEngine.RenderTexture(1920, 1080, 24, RenderTextureFormat.ARGB32);
-
-rt.Create();
-
-Camera.main.targetTexture = rt;
-
-var  source = new  TextureVideoSource(rt);
-
-var  track = LocalVideoTrack.CreateVideoTrack("my-video-track", source, room);
-
-  
-
-var  options = new  TrackPublishOptions();
-
-options.VideoCodec = VideoCodec.Vp8;
-
-var  videoCoding = new  VideoEncoding();
-
-videoCoding.MaxBitrate = 512000;
-
-videoCoding.MaxFramerate = frameRate;
-
-options.VideoEncoding = videoCoding;
-
-options.Simulcast = true;
-
-options.Source = TrackSource.SourceCamera;
-
-  
-
-var  publish = room.LocalParticipant.PublishTrack(track, options);
-
-yield  return  publish;
-
-  
-
-if (!publish.IsError)
-
-{
-
-Debug.Log("Track published!");
-
+    source.Start();
+    StartCoroutine(source.Update());
 }
-
-  
-
-source.Start();
-
-StartCoroutine(source.Update());
-
 ```
 
 ### Receiving tracks
@@ -393,18 +357,13 @@ var  stream = new  AudioStream(audioTrack, source);
   
 Perform your own predefined method calls from one participant to another.
 
-  
-
 This feature is especially powerful when used with [Agents](https://docs.livekit.io/agents), for instance to forward LLM function calls to your client application.
-
-  
 
 The following is a brief overview but [more detail is available in the documentation](https://docs.livekit.io/home/client/data/rpc).
 
 #### Registering an RPC method
   
 The participant who implements the method and will receive its calls must first register support. Your method handler will be an async callback that receives an `RpcInvocationData` object:
-
 
 ```cs
 void OnRoomConnected(Room room)
