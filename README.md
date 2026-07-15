@@ -147,17 +147,19 @@ For production. Point to your own token endpoint URL and add any required authen
 
 Add a `TokenSourceComponent` to a GameObject, assign your `TokenSourceComponentConfig` asset, then fetch connection details before connecting:
 
-```cs
-var connectionDetailsTask = _tokenSourceComponent.FetchConnectionDetails();
-yield return new WaitUntil(() => connectionDetailsTask.IsCompleted);
+`FetchConnectionDetails` returns a `TaskYieldInstruction<ConnectionDetails>`, so you can `yield return` it from a coroutine, `await` it, or bridge it with `.AsUniTask()`. Inspect the result on the instruction itself — `IsError` / `Exception` / `Result` — rather than on a `Task`:
 
-if (connectionDetailsTask.IsFaulted)
+```cs
+var fetch = _tokenSourceComponent.FetchConnectionDetails();
+yield return fetch;
+
+if (fetch.IsError)
 {
-    Debug.LogError($"Failed to fetch connection details: {connectionDetailsTask.Exception?.InnerException?.Message}");
+    Debug.LogError($"Failed to fetch connection details: {fetch.Exception?.Message}");
     yield break;
 }
 
-var details = connectionDetailsTask.Result;
+var details = fetch.Result;
 _room = new Room();
 var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new RoomOptions());
 ```
@@ -165,20 +167,30 @@ var connect = _room.Connect(details.ServerUrl, details.ParticipantToken, new Roo
 Per-call overrides (e.g. dynamic room or participant names) can be passed via `TokenSourceFetchOptions`; any field set there wins over the asset, and unset fields fall back to the config:
 
 ```cs
-var task = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions
+var fetch = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOptions
 {
     RoomName = "lobby-" + System.Guid.NewGuid(),
     ParticipantName = playerName,
 });
 ```
 
-To skip the ScriptableObject entirely, instantiate a token source directly:
+To skip the ScriptableObject entirely, instantiate a token source directly. Each returns the same `TaskYieldInstruction<ConnectionDetails>` from `FetchConnectionDetails`, so it can be yielded, awaited, or `.AsUniTask()`-bridged just like the component:
 
 ```cs
+// Fixed sources take no per-call options:
 ITokenSourceFixed source = new TokenSourceLiteral("wss://your.livekit.host", "<join-token>");
-// or: new TokenSourceSandbox("<sandbox-id>");
-// or: new TokenSourceEndpoint("https://your.token-server/api/token", headers);
 // or: new TokenSourceCustom(async () => await MyAuthFlow());
+
+var fetch = source.FetchConnectionDetails();
+yield return fetch;
+var details = fetch.Result;
+
+// Configurable sources accept TokenSourceFetchOptions per call:
+ITokenSourceConfigurable configurable = new TokenSourceSandbox("<sandbox-id>");
+// or: new TokenSourceEndpoint("https://your.token-server/api/token", headers);
+
+var configurableFetch = configurable.FetchConnectionDetails(new TokenSourceFetchOptions { RoomName = "lobby" });
+yield return configurableFetch;
 ```
 
 ### Connecting to a room
