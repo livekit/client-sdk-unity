@@ -184,7 +184,7 @@ ITokenSourceFixed source = new TokenSourceLiteral("wss://your.livekit.host", "<j
 ### Connecting to a room
   
 ```cs
-private IEnumerator ConnectToRoom()
+IEnumerator ConnectToRoom()
 {
     var serverUrl = "< your server url >";
     var token = "< your token >";
@@ -196,51 +196,9 @@ private IEnumerator ConnectToRoom()
 }
 ```
 
-### Publishing microphone
-  
+### Video
 
-```cs
-
-var  localSid = "my-audio-source";
-
-GameObject  audObject = new  GameObject(localSid);
-
-_audioObjects[localSid] = audObject;
-
-var  rtcSource = new  MicrophoneSource(Microphone.devices[0], _audioObjects[localSid]);
-
-var  track = LocalAudioTrack.CreateAudioTrack("my-audio-track", rtcSource, room);
-
-  
-
-var  options = new  TrackPublishOptions();
-
-options.AudioEncoding = new  AudioEncoding();
-
-options.AudioEncoding.MaxBitrate = 64000;
-
-options.Source = TrackSource.SourceMicrophone;
-
-  
-
-var  publish = room.LocalParticipant.PublishTrack(track, options);
-
-yield  return  publish;
-
-  
-
-if (!publish.IsError)
-
-{
-
-Debug.Log("Track published!");
-
-}
-
-rtcSource.Start();
-```
-
-### Publishing a texture (e.g Unity Camera)
+#### Publishing a texture (e.g Unity Camera)
 
 ```cs
 IEnumerator PublishCamera(Room room)
@@ -283,75 +241,169 @@ IEnumerator PublishCamera(Room room)
 }
 ```
 
-### Receiving tracks
+#### Receiving video
 
 ```cs
-
-IEnumerator  Start()
-
+void OnTrackSubscribed(IRemoteTrack  track, RemoteTrackPublication  publication, RemoteParticipant  participant)
 {
-
-var  room = new  Room();
-
-room.TrackSubscribed += TrackSubscribed;
-
-  
-
-var  connect = room.Connect("ws://localhost:7880", "<join-token>");
-
-yield  return  connect;
-
-  
-
-// ....
-
+    if (track is RemoteVideoTrack videoTrack)
+    {
+        var rawImage = GetComponent<RawImage>();
+        var stream = new VideoStream(videoTrack);
+        stream.TextureReceived += (tex) =>
+        {
+            rawImage.texture = tex;
+        };
+    
+        StartCoroutine(stream.Update());
+    }
 }
-
-  
-
-void  TrackSubscribed(IRemoteTrack  track, RemoteTrackPublication  publication, RemoteParticipant  participant)
-
-{
-
-if (track  is  RemoteVideoTrack  videoTrack)
-
-{
-
-var  rawImage = GetComponent<RawImage>();
-
-var  stream = new  VideoStream(videoTrack);
-
-stream.TextureReceived += (tex) =>
-
-{
-
-rawImage.texture = tex;
-
-};
-
-StartCoroutine(stream.Update());
-
-// The video data is displayed on the rawImage
-
-}
-
-else  if (track  is  RemoteAudioTrack  audioTrack)
-
-{
-
-GameObject  audObject = new  GameObject(audioTrack.Sid);
-
-var  source = audObject.AddComponent<AudioSource>();
-
-var  stream = new  AudioStream(audioTrack, source);
-
-// Audio is being played on the source ..
-
-}
-
-}
-
 ```
+
+### Audio
+
+There are two options to handle audio input and output, via "Unity Audio" or via "Platform Audio".
+
+#### Unity Audio
+
+Using Unity Audio, the Unity Microphone and AudioSource APIs are used to pipe the audio frames. Use Unity Audio if your game needs to:
+- read the audio frames, e.g. for lip syncing
+- manipulate the audio frames 
+
+On mobile platforms, the WebRTC audio is handled within the audio session owned by Unity, which reduces complexity.
+
+#### Unity Audio Input
+
+```cs
+IEnumerator PublishLocalMicrophoneUnity(Room room)
+{
+    Debug.Log("Publishing microphone using Unity Audio");
+    GameObject microphoneObject = new GameObject("my-audio-source");
+    var rtcSource = new MicrophoneSource(Microphone.devices[0], microphoneObject);
+    var track = LocalAudioTrack.CreateAudioTrack("my-audio-track", rtcSource, room);
+
+    var options = new TrackPublishOptions();
+    options.AudioEncoding = new AudioEncoding();
+    options.AudioEncoding.MaxBitrate = 64000;
+    options.Source = TrackSource.SourceMicrophone;
+
+    var publish = room.LocalParticipant.PublishTrack(track, options);
+    yield return publish;
+
+    if (!publish.IsError)
+    {
+        Debug.Log("Track published!");
+    }
+
+    rtcSource.Start();
+}
+```
+
+#### Unity Audio Output
+
+```cs
+void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, RemoteParticipant participant)
+{
+    if (track is RemoteAudioTrack audioTrack)
+    {
+        GameObject audioOutputObject = new GameObject(audioTrack.Sid);
+        var source = audioOutputObject.AddComponent<AudioSource>();
+        var stream = new AudioStream(audioTrack, source);
+    }
+}
+```
+
+#### Platform Audio
+
+With Platform Audio, the audio input and output are managed by the native ADM of WebRTC. This unlocks echo cancellation, noise suppression, auto gain control and hardware processing if available.
+
+There are some known issues with Platform Audio, that we are working on resolving:
+- On iOS, disposing of Platform Audio object stops Unity audio output
+- On iOS and Unity 6, backgrounding the app breaks Platform Audio
+- On MacOS with bluetooth headset, unmuting can break audio output
+
+#### Initialize Platform Audio
+
+Make sure to initialize Platform Audio before connecting to a call.
+
+```cs
+void InitializePlatformAudio()
+{
+    try
+    {
+        var platformAudio = new PlatformAudio();
+        Debug.Log($"PlatformAudio initialized: {platformAudio.RecordingDeviceCount} mics, " +
+                    $"{platformAudio.PlayoutDeviceCount} speakers");
+
+        var (recording, playout) = platformAudio.GetDevices();
+        Debug.Log("Recording devices:");
+        foreach (var device in recording)
+            Debug.Log($"  [{device.Index}] {device.Name}");
+
+        Debug.Log("Playout devices:");
+        foreach (var device in playout)
+            Debug.Log($"  [{device.Index}] {device.Name}");
+
+        if (platformAudio.RecordingDeviceCount > 0)
+            platformAudio.SetRecordingDevice(0);
+        if (platformAudio.PlayoutDeviceCount > 0)
+            platformAudio.SetPlayoutDevice(0);
+
+        Debug.Log($"PlatformAudio ready. AEC={echoCancellation}, NS={noiseSuppression}, AGC={autoGainControl}, HW={preferHardwareProcessing}");
+    }
+    catch (System.Exception e)
+    {
+        Debug.LogError($"Failed to initialize PlatformAudio, falling back to Unity audio: {e.Message}");
+        usePlatformAudio = false;
+        platformAudio = null;
+    }
+}
+```
+
+#### Platform Audio Input
+
+```cs
+IEnumerator PublishLocalMicrophonePlatform(PlatformAudio platformAudio, Room room)
+{
+    if (platformAudio != null)
+    {
+        yield return platformAudio.StartRecording();
+    }
+
+    var audioOptions = new AudioProcessingOptions
+    {
+        EchoCancellation = echoCancellation,
+        NoiseSuppression = noiseSuppression,
+        AutoGainControl = autoGainControl,
+        PreferHardware = preferHardwareProcessing
+    };
+
+    var platformAudioSource = new PlatformAudioSource(platformAudio, audioOptions);
+    var localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, platformAudioSource, room);
+
+    var options = new TrackPublishOptions
+    {
+        AudioEncoding = new AudioEncoding { MaxBitrate = 64000 },
+        Source = TrackSource.SourceMicrophone
+    };
+
+    var publish = room.LocalParticipant.PublishTrack(localAudioTrack, options);
+    yield return publish;
+
+    if (publish.IsError)
+    {
+        Debug.LogError("Failed to publish microphone track");
+        platformAudioSource?.Dispose();
+        yield break;
+    }
+
+    Debug.Log("Microphone published via PlatformAudio (AEC enabled)");
+}
+```
+
+#### Platform Audio Output
+
+Using Platform Audio, for audio output of subscribed remote audio tracks you don't need any Unity handling. 
 
 ### RPC
   
@@ -371,7 +423,7 @@ void OnRoomConnected(Room room)
     room.LocalParticipant.RegisterRpcMethod("greet", HandleGreeting);
 }
 
-private async Task<string> HandleGreeting(RpcInvocationData data)
+async Task<string> HandleGreeting(RpcInvocationData data)
 {
     Debug.Log($"Received greeting from {data.CallerIdentity}: {data.Payload}");
     return $"Hello, {data.CallerIdentity}!";
