@@ -518,10 +518,12 @@ IEnumerator StreamText(Room room)
     string[] textChunks = {"Lorem ", "ipsum ", "dolor ", "sit ", "amet..."};
     foreach (var textChunk in textChunks)
     {
+        Debug.Log($"Sending {textChunk}");
         var instruction = streamWriter.Writer.Write(textChunk);
         yield return instruction;
     }
-    yield return streamWriter.Close();
+    
+    yield return streamWriter.Writer.Close();
 }
 ```
 
@@ -530,11 +532,12 @@ IEnumerator StreamText(Room room)
 ```cs
 void OnRoomConnected(Room room)
 {
-    room.RegisterTextStreamHandler("Chat", (reader, identity) => {StartCoroutine(OnTextStream(reader, identity));});
+    room.RegisterTextStreamHandler("Chat", (reader, identity) => StartCoroutine(OnTextStream(reader, identity)));
 }
 
 IEnumerator OnTextStream(TextStreamReader reader, string identity)
 {
+    // Option 1: Process the stream incrementally
     var readIncremental = reader.ReadIncremental();
     while (true)
     {
@@ -544,6 +547,11 @@ IEnumerator OnTextStream(TextStreamReader reader, string identity)
             break;
         Debug.Log(readIncremental.Text);
     }
+
+    // Option 2: Get the entire text after the stream completes
+    var readAllCall = reader.ReadAll();
+    yield return readAllCall;
+    Debug.Log($"Received text: {readAllCall.Text}");
 }
 ```
 
@@ -554,159 +562,85 @@ Use byte streams to send files, images, or any other kind of data between partic
 #### Sending files
 
 ```cs
-
-IEnumerator  PerformSendFile()
-
+IEnumerator SendFile()
 {
-
-var  filePath = "path/to/file.jpg";
-
-var  sendFileCall = room.LocalParticipant.SendFile(filePath, "some-topic");
-
-yield  return  sendFileCall;
-
-  
-
-Debug.Log($"Sent file with stream ID: {sendFileCall.Info.Id}");
-
+    var filePath = "path/to/file.jpg";
+    Debug.Log($"Sending file {filePath}");
+    var sendFileCall = room.LocalParticipant.SendFile(filePath, "my-topic");
+    yield return sendFileCall;
 }
-
 ```
 
 #### Streaming bytes
 
 ```cs
-
-IEnumerator  PerformStreamBytes()
-
+IEnumerator StreamBytes()
 {
+    var streamBytesCall = room.LocalParticipant.StreamBytes("my-topic");
+    yield return streamBytesCall;
 
-var  streamBytesCall = room.LocalParticipant.StreamBytes("my-topic");
+    var writer = streamBytesCall.Writer;
+    Debug.Log($"Opened byte stream with ID: {writer.Info.Id}");
 
-yield  return  streamBytesCall;
+    var dataChunks = new[] 
+    {
+        new byte[] { 0x00, 0x01 },
+        new byte[] { 0x02, 0x03 }
+    };
 
-  
+    foreach (var chunk in dataChunks)
+    {
+        yield return writer.Write(chunk);
+    }
 
-var  writer = streamBytesCall.Writer;
-
-Debug.Log($"Opened byte stream with ID: {writer.Info.Id}");
-
-  
-
-// Example sending arbitrary binary data
-
-// For sending files, use `SendFile` instead
-
-var  dataChunks = new[] {
-
-new  byte[] { 0x00, 0x01 },
-
-new  byte[] { 0x03, 0x04 }
-
-};
-
-foreach (var  chunk  in  dataChunks)
-
-{
-
-yield  return  writer.Write(chunk);
-
+    yield return writer.Close();
 }
-
-  
-
-// The stream must be explicitly closed when done
-
-yield  return  writer.Close();
-
-  
-
-Debug.Log($"Closed byte stream with ID: {writer.Info.Id}");
-
-}
-
 ```
 
 #### Handling incoming streams
 
 ```cs
-
-IEnumerator  HandleByteStream(ByteStreamReader  reader, string  participantIdentity)
-
+IEnumerator HandleByteStream(ByteStreamReader reader, string participantIdentity)
 {
+    var info = reader.Info;
+    
+    // Option 1: Process the stream incrementally
+    var readIncremental = reader.ReadIncremental();
+    while (true)
+    {
+        readIncremental.Reset();
+        yield return readIncremental;
+        if (readIncremental.IsEos) break;
+        foreach (var dataByte in readIncremental.Bytes)
+            Debug.Log($"Received {dataByte}");
+    } 
 
-var  info = reader.Info;
+    // Option 2: Get the entire file after the stream completes
+    var readAllCall = reader.ReadAll();
+    yield return readAllCall;
+    var data = readAllCall.Bytes;
+    foreach (var dataByte in data)
+        Debug.Log($"Received {dataByte}");
 
-  
+    // Option 3: Write the stream to a local file on disk as it arrives
+    var writeToFileCall = reader.WriteToFile();
+    yield return writeToFileCall;
+    var path = writeToFileCall.FilePath;
+    Debug.Log($"Wrote to file: {path}");
 
-// Option 1: Process the stream incrementally
-
-var  readIncremental = reader.ReadIncremental();
-
-while (true)
-
-{
-
-readIncremental.Reset();
-
-yield  return  readIncremental;
-
-if (readIncremental.IsEos) break;
-
-Debug.Log($"Next chunk: {readIncremental.Bytes}");
-
+    Debug.Log($@"
+    Byte stream received from {participantIdentity}
+    Topic: {info.Topic}
+    Timestamp: {info.Timestamp}
+    ID: {info.Id}
+    Size: {info.TotalLength} (only available if the stream was sent with `SendFile`)
+    ");
 }
 
-  
-
-// Option 2: Get the entire file after the stream completes
-
-var  readAllCall = reader.ReadAll();
-
-yield  return  readAllCall;
-
-var  data = readAllCall.Bytes;
-
-  
-
-// Option 3: Write the stream to a local file on disk as it arrives
-
-var  writeToFileCall = reader.WriteToFile();
-
-yield  return  writeToFileCall;
-
-var  path = writeToFileCall.FilePath;
-
-Debug.Log($"Wrote to file: {path}");
-
-  
-
-Debug.Log($@"
-
-Byte stream received from {participantIdentity}
-
-Topic: {info.Topic}
-
-Timestamp: {info.Timestamp}
-
-ID: {info.Id}
-
-Size: {info.TotalLength} (only available if the stream was sent with `SendFile`)
-
-");
-
+void OnRoomConnected(Room room)
+{
+    room.RegisterByteStreamHandler("my-topic", (reader, identity) => StartCoroutine(HandleByteStream(reader, identity)));
 }
-
-  
-
-// Register the topic after connection to the room
-
-room.RegisterByteStreamHandler("my-topic", (reader, identity) =>
-
-StartCoroutine(HandleByteStream(reader, identity))
-
-);
-
 ```
 
 ## Asynchronous programming: coroutines, async/await, and UniTask
