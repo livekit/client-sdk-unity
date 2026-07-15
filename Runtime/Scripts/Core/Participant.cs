@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 using LiveKit.Internal.Threading;
 using LiveKit.Internal.FFI;
+using System.IO;
 namespace LiveKit
 {
     public delegate Task<string> RpcHandler(RpcInvocationData data);
@@ -451,6 +452,9 @@ namespace LiveKit
         ///
         public SendFileInstruction SendFile(string path, StreamByteOptions options)
         {
+            if (File.Exists(path) == false)
+                Utils.Error("File not found");
+
             using var request = FFIBridge.Instance.NewRequest<StreamSendFileRequest>();
             var sendFileReq = request.request;
             sendFileReq.LocalParticipantHandle = (ulong)Handle.DangerousGetHandle();
