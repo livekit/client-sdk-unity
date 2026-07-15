@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using LiveKit.Internal;
 
@@ -60,23 +59,19 @@ namespace LiveKit
         /// </summary>
         public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
         {
-            Task<ConnectionDetails> task;
             switch (_tokenSource)
             {
                 case ITokenSourceConfigurable configurableSource:
-                    task = configurableSource.FetchConnectionDetails(Coalesce(_config, options));
-                    break;
+                    return configurableSource.FetchConnectionDetails(Coalesce(_config, options));
 
                 case ITokenSourceFixed fixedSource:
                     if (options != null)
                         Utils.Warning("TokenSourceComponent uses a fixed config, so fetch options are ignored.");
-                    task = fixedSource.FetchConnectionDetails();
-                    break;
+                    return fixedSource.FetchConnectionDetails();
 
                 default:
                     throw new InvalidOperationException("Unknown token source type");
             }
-            return new TaskYieldInstruction<ConnectionDetails>(task);
         }
 
         private static TokenSourceFetchOptions Coalesce(TokenSourceComponentConfig config, TokenSourceFetchOptions? options)
