@@ -405,28 +405,18 @@ The following is a brief overview but [more detail is available in the documenta
   
 The participant who implements the method and will receive its calls must first register support. Your method handler will be an async callback that receives an `RpcInvocationData` object:
 
-  
 
 ```cs
-
-// Define your method handler
-
-async  Task<string> HandleGreeting(RpcInvocationData  data)
-
+void OnRoomConnected(Room room)
 {
-
-Debug.Log($"Received greeting from {data.CallerIdentity}: {data.Payload}");
-
-return  $"Hello, {data.CallerIdentity}!";
-
+    room.LocalParticipant.RegisterRpcMethod("greet", HandleGreeting);
 }
 
-  
-
-// Register the method after connection to the room
-
-room.LocalParticipant.RegisterRpcMethod("greet", HandleGreeting);
-
+private async Task<string> HandleGreeting(RpcInvocationData data)
+{
+    Debug.Log($"Received greeting from {data.CallerIdentity}: {data.Payload}");
+    return $"Hello, {data.CallerIdentity}!";
+}
 ```
 
 In addition to the payload, `RpcInvocationData` also contains `responseTimeout`, which informs you the maximum time available to return a response. If you are unable to respond in time, the call will result in an error on the caller's side.
@@ -436,53 +426,26 @@ In addition to the payload, `RpcInvocationData` also contains `responseTimeout`,
 The caller may initiate an RPC call using coroutines:
 
 ```cs
-
-IEnumerator  PerformRpcCoroutine()
-
+IEnumerator PerformRpcCoroutine(Room room)
 {
+    var rpcCall = room.LocalParticipant.PerformRpc(new PerformRpcParams
+    {
+        DestinationIdentity = "recipient-identity",
+        Method = "greet",
+        Payload = "Hello from RPC!"
+    });
 
-var  rpcCall = room.LocalParticipant.PerformRpc(new  PerformRpcParams
+    yield return rpcCall;
 
-{
-
-DestinationIdentity = "recipient-identity",
-
-Method = "greet",
-
-Payload = "Hello from RPC!"
-
-});
-
-  
-
-yield  return  rpcCall;
-
-  
-
-if (rpcCall.IsError)
-
-{
-
-Debug.Log($"RPC call failed: {rpcCall.Error}");
-
+    if (rpcCall.IsError)
+    {
+        Debug.Log($"RPC call failed: {rpcCall.Error}");
+    } 
+    else
+    {
+        Debug.Log($"RPC response: {rpcCall.Payload}");
+    }
 }
-
-else
-
-{
-
-Debug.Log($"RPC response: {rpcCall.Payload}");
-
-}
-
-}
-
-  
-
-// Start the coroutine from another MonoBehaviour method
-
-StartCoroutine(PerformRpcCoroutine());
-
 ```
 
 You may find it useful to adjust the `ResponseTimeout` parameter, which indicates the amount of time you will wait for a response. We recommend keeping this value as low as possible while still satisfying the constraints of your application.
@@ -600,6 +563,11 @@ IEnumerator StreamBytes()
 #### Handling incoming streams
 
 ```cs
+void OnRoomConnected(Room room)
+{
+    room.RegisterByteStreamHandler("my-topic", (reader, identity) => StartCoroutine(HandleByteStream(reader, identity)));
+}
+
 IEnumerator HandleByteStream(ByteStreamReader reader, string participantIdentity)
 {
     var info = reader.Info;
@@ -635,11 +603,6 @@ IEnumerator HandleByteStream(ByteStreamReader reader, string participantIdentity
     ID: {info.Id}
     Size: {info.TotalLength} (only available if the stream was sent with `SendFile`)
     ");
-}
-
-void OnRoomConnected(Room room)
-{
-    room.RegisterByteStreamHandler("my-topic", (reader, identity) => StartCoroutine(HandleByteStream(reader, identity)));
 }
 ```
 
