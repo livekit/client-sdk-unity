@@ -60,12 +60,6 @@ If you want to use tagged release versions, use `https://github.com/livekit/clie
 
 The package is also hosted in the OpenUPM package registry. Here is the guide on how to use the OpenUPM registry to import the package: https://openupm.com/packages/io.livekit.livekit-sdk/#modal-manualinstallation 
 
-## Samples
-
-The repo contains these sample projects:
-- [Meet](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Meet)
-- [Agents](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Agents)
-
 ## Local Development
 
 ### Building LiveKit plugins locally
@@ -128,6 +122,12 @@ If your project disables package editor scripts or uses a custom Xcode export pi
 
 ## Examples
 
+The repo contains these sample projects:
+- [Meet](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Meet)
+- [Agents](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Agents)
+
+Most of the following functionalities and code snippets can be found in the samples in a similar form to try out.
+
 ### Tokens
 
 You need a token to join a LiveKit room as a participant. Read more about tokens here: https://docs.livekit.io/frontends/reference/tokens-grants/
@@ -181,9 +181,7 @@ ITokenSourceFixed source = new TokenSourceLiteral("wss://your.livekit.host", "<j
 // or: new TokenSourceCustom(async () => await MyAuthFlow());
 ```
 
-
 ### Connecting to a room
-
   
 ```cs
 private IEnumerator ConnectToRoom()
@@ -199,7 +197,6 @@ private IEnumerator ConnectToRoom()
 ```
 
 ### Publishing microphone
-
   
 
 ```cs
@@ -246,11 +243,7 @@ rtcSource.Start();
 
 ```
 
-  
-
 ### Publishing a texture (e.g Unity Camera)
-
-  
 
 ```cs
 
@@ -326,11 +319,7 @@ StartCoroutine(source.Update());
 
 ```
 
-  
-
 ### Receiving tracks
-
-  
 
 ```cs
 
@@ -400,12 +389,8 @@ var  stream = new  AudioStream(audioTrack, source);
 
 ```
 
-  
-
 ### RPC
-
   
-
 Perform your own predefined method calls from one participant to another.
 
   
@@ -416,12 +401,8 @@ This feature is especially powerful when used with [Agents](https://docs.livekit
 
 The following is a brief overview but [more detail is available in the documentation](https://docs.livekit.io/home/client/data/rpc).
 
-  
-
 #### Registering an RPC method
-
   
-
 The participant who implements the method and will receive its calls must first register support. Your method handler will be an async callback that receives an `RpcInvocationData` object:
 
   
@@ -448,19 +429,11 @@ room.LocalParticipant.RegisterRpcMethod("greet", HandleGreeting);
 
 ```
 
-  
-
 In addition to the payload, `RpcInvocationData` also contains `responseTimeout`, which informs you the maximum time available to return a response. If you are unable to respond in time, the call will result in an error on the caller's side.
-
-  
 
 #### Performing an RPC request
 
-  
-
 The caller may initiate an RPC call using coroutines:
-
-  
 
 ```cs
 
@@ -512,191 +485,73 @@ StartCoroutine(PerformRpcCoroutine());
 
 ```
 
-  
-
 You may find it useful to adjust the `ResponseTimeout` parameter, which indicates the amount of time you will wait for a response. We recommend keeping this value as low as possible while still satisfying the constraints of your application.
-
-  
 
 #### Errors
 
-  
-
 LiveKit is a dynamic realtime environment and RPC calls can fail for various reasons.
-
-  
 
 You may throw errors of the type `RpcError` with a string `message` in an RPC method handler and they will be received on the caller's side with the message intact. Other errors will not be transmitted and will instead arrive to the caller as `1500` ("Application Error"). Other built-in errors are detailed in the [docs](https://docs.livekit.io/home/client/data/rpc/#errors).
 
-  
-
 ### Sending text
-
-  
 
 Use text streams to send any amount of text between participants.
 
-  
-
 #### Sending text all at once
 
-  
-
 ```cs
-
-IEnumerator  PerformSendText()
-
+IEnumerator SendText()
 {
-
-var  text = "Lorem ipsum dolor sit amet...";
-
-var  sendTextCall = room.LocalParticipant.SendText(text, "some-topic");
-
-yield  return  sendTextCall;
-
-  
-
-Debug.Log($"Sent text with stream ID {sendTextCall.Info.Id}");
-
+    var text = "Lorem ipsum dolor sit amet...";
+    var sendTextInstruction = room.LocalParticipant.SendText("Hello from Unity", "Chat");
+    yield return sendTextInstruction;
 }
-
 ```
-
-  
 
 #### Streaming text incrementally
 
-  
-
 ```cs
-
-IEnumerator  PerformStreamText()
-
+IEnumerator StreamText(Room room)
 {
-
-var  streamTextCall = room.LocalParticipant.StreamText("my-topic");
-
-yield  return  streamTextCall;
-
-  
-
-var  writer = streamTextCall.Writer;
-
-Debug.Log($"Opened text stream with ID: {writer.Info.Id}");
-
-  
-
-// In a real app, you would generate this text asynchronously / incrementally as well
-
-var  textChunks = new[] { "Lorem ", "ipsum ", "dolor ", "sit ", "amet..." };
-
-foreach (var  chunk  in  textChunks)
-
-{
-
-yield  return  writer.Write(chunk);
-
+    var streamWriter = room.LocalParticipant.StreamText("Chat");
+    yield return streamWriter;
+    string[] textChunks = {"Lorem ", "ipsum ", "dolor ", "sit ", "amet..."};
+    foreach (var textChunk in textChunks)
+    {
+        var instruction = streamWriter.Writer.Write(textChunk);
+        yield return instruction;
+    }
+    yield return streamWriter.Close();
 }
-
-  
-
-// The stream must be explicitly closed when done
-
-yield  return  writer.Close();
-
-  
-
-Debug.Log($"Closed text stream with ID: {writer.Info.Id}");
-
-}
-
 ```
-
-  
 
 #### Handling incoming streams
 
-  
-
 ```cs
-
-IEnumerator  HandleTextStream(TextStreamReader  reader, string  participantIdentity)
-
+void OnRoomConnected(Room room)
 {
-
-var  info = reader.Info;
-
-Debug.Log($@"
-
-Text stream received from {participantIdentity}
-
-Topic: {info.Topic}
-
-Timestamp: {info.Timestamp}
-
-ID: {info.Id}
-
-Size: {info.TotalLength} (only available if the stream was sent with `SendText`)
-
-");
-
-  
-
-// Option 1: Process the stream incrementally
-
-var  readIncremental = reader.ReadIncremental();
-
-while (true)
-
-{
-
-readIncremental.Reset();
-
-yield  return  readIncremental;
-
-if (readIncremental.IsEos) break;
-
-Debug.Log($"Next chunk: {readIncremental.Text}");
-
+    room.RegisterTextStreamHandler("Chat", (reader, identity) => {StartCoroutine(OnTextStream(reader, identity));});
 }
 
-  
-
-// Option 2: Get the entire text after the stream completes
-
-var  readAllCall = reader.ReadAll();
-
-yield  return  readAllCall;
-
-Debug.Log($"Received text: {readAllCall.Text}")
-
+IEnumerator OnTextStream(TextStreamReader reader, string identity)
+{
+    var readIncremental = reader.ReadIncremental();
+    while (true)
+    {
+        readIncremental.Reset();
+        yield return readIncremental;
+        if (readIncremental.IsEos)
+            break;
+        Debug.Log(readIncremental.Text);
+    }
 }
-
-  
-
-// Register the topic before connecting to the room
-
-room.RegisterTextStreamHandler("my-topic", (reader, identity) =>
-
-StartCoroutine(HandleTextStream(reader, identity))
-
-);
-
 ```
-
-  
 
 ### Sending files & bytes
 
-  
-
 Use byte streams to send files, images, or any other kind of data between participants.
 
-  
-
 #### Sending files
-
-  
 
 ```cs
 
@@ -718,11 +573,7 @@ Debug.Log($"Sent file with stream ID: {sendFileCall.Info.Id}");
 
 ```
 
-  
-
 #### Streaming bytes
-
-  
 
 ```cs
 
@@ -776,11 +627,7 @@ Debug.Log($"Closed byte stream with ID: {writer.Info.Id}");
 
 ```
 
-  
-
 #### Handling incoming streams
-
-  
 
 ```cs
 
@@ -925,23 +772,13 @@ catch (StreamError e)
 > exception: `await foreach` has no post-loop point to check `IsError`, so a mid-stream failure
 > surfaces by throwing `StreamError`.
   
-
-
 ## Verbose Logging
-
-  
 
 To enable verbose logging, define the `LK_VERBOSE` symbol:
 
-  
-
 1. Navigate to Project Settings → Player
-
 2. Select your platform tab (e.g., Mac, iOS, Android).
-
-3. Under Other Settings → Scripting Define Symbols, add `LK_VERBOSE`.
-
-  
+3. Under Other Settings → Scripting Define Symbols, add `LK_VERBOSE`. 
 
 <!--BEGIN_REPO_NAV-->
 
