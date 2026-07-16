@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using LiveKit.Internal.Threading;
 using Newtonsoft.Json;
 
 namespace LiveKit
@@ -21,7 +22,7 @@ namespace LiveKit
     /// </summary>
     public interface ITokenSourceFixed : ITokenSource
     {
-        public Task<ConnectionDetails> FetchConnectionDetails();
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails();
     }
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace LiveKit
     /// </summary>
     public interface ITokenSourceConfigurable : ITokenSource
     {
-        public Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options);
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options);
     }
 
     /// <summary>
@@ -48,10 +49,10 @@ namespace LiveKit
             _participantToken = participantToken;
         }
 
-        public Task<ConnectionDetails> FetchConnectionDetails()
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails()
         {
             var result = new ConnectionDetails { ServerUrl = _serverUrl, ParticipantToken = _participantToken };
-            return Task.FromResult(result);
+            return new TaskYieldInstruction<ConnectionDetails>(Task.FromResult(result));
         }
     }
 
@@ -70,9 +71,22 @@ namespace LiveKit
             _customTokenFunction = customTokenFunction;
         }
 
-        public Task<ConnectionDetails> FetchConnectionDetails()
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails()
         {
-            return _customTokenFunction();
+            // Route a synchronous throw (or a null return) from the user's function through the
+            // instruction's IsError/Exception, so callers never have to guard the call itself.
+            Task<ConnectionDetails> task;
+            try
+            {
+                task = _customTokenFunction()
+                    ?? Task.FromException<ConnectionDetails>(
+                        new InvalidOperationException("Custom token function returned a null task"));
+            }
+            catch (Exception e)
+            {
+                task = Task.FromException<ConnectionDetails>(e);
+            }
+            return new TaskYieldInstruction<ConnectionDetails>(task);
         }
     }
 
@@ -94,7 +108,14 @@ namespace LiveKit
             _headers = headers;
         }
 
-        public async Task<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
+        {
+            // Async methods can't return the (non-awaitable) instruction directly, so the actual
+            // request lives in the helper below; the returned task carries any synchronous throw.
+            return new TaskYieldInstruction<ConnectionDetails>(FetchConnectionDetailsAsync(options));
+        }
+
+        private async Task<ConnectionDetails> FetchConnectionDetailsAsync(TokenSourceFetchOptions options)
         {
             var requestBody = BuildRequest(options);
             var jsonBody = JsonConvert.SerializeObject(requestBody);
