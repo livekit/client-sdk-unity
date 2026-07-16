@@ -554,6 +554,11 @@ IEnumerator SendFile()
     Debug.Log($"Sending file {filePath}");
     var sendFileCall = room.LocalParticipant.SendFile(filePath, "my-topic");
     yield return sendFileCall;
+
+    if (sendFileCall.IsError)
+    {
+        Debug.LogError("File not found");
+    }
 }
 ```
 
