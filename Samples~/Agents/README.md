@@ -6,7 +6,7 @@ Connect to a voice AI agent.
 
 <img  style="width:1000px;"  alt="Screenshot of the LiveKit Unity SDK Youtube tutorial"  src="https://media.githubusercontent.com/media/livekit/client-sdk-unity/refs/heads/max/final-docs-update-for-2.0.0/.github/youtube_tutorial_screenshot.png">
 
-[Youtube Agents NPC Tutorial](https://www.youtube.com/@livekit_io)
+[Youtube Agents NPC Tutorial](https://www.youtube.com/watch?v=cLreGfOKzN8)
 
 ## Getting started
 
