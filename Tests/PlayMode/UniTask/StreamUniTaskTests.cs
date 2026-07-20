@@ -55,9 +55,8 @@ namespace LiveKit.PlayModeTests.UniTaskBridge
             }
         });
 
-        // The current chunk is delivered even when EoS is already set at the time it is read,
-        // then the sequence ends. (Chunks buffered beyond the current one when EoS arrives are
-        // not drainable, because the reader disallows Reset() past EoS.)
+        // The final chunk is delivered even when EoS is already set at the time it is read,
+        // then the sequence ends.
         [UnityTest]
         public System.Collections.IEnumerator AsAsyncEnumerable_DeliversFinalChunkThenEos() => UniTask.ToCoroutine(async () =>
         {
@@ -72,6 +71,27 @@ namespace LiveKit.PlayModeTests.UniTaskBridge
                 observed.Add(chunk);
 
             CollectionAssert.AreEqual(new[] { "only" }, observed);
+        });
+
+        // Every chunk buffered before EoS is drained, even when all of them plus EoS arrive
+        // before the consumer reads anything (the already-buffered burst case). EoS is an
+        // ordered item at the tail of the chunk queue, so it can never short-circuit the data.
+        [UnityTest]
+        public System.Collections.IEnumerator AsAsyncEnumerable_DrainsAllBufferedChunks_WhenEosArrivesFirst() => UniTask.ToCoroutine(async () =>
+        {
+            using var handle = new FfiHandle(IntPtr.Zero);
+            var reader = new TestIncrementalReader(handle);
+
+            reader.PushChunk("A");
+            reader.PushChunk("B");
+            reader.PushChunk("C");
+            reader.PushEos();
+
+            var observed = new List<string>();
+            await foreach (var chunk in reader.AsAsyncEnumerable())
+                observed.Add(chunk);
+
+            CollectionAssert.AreEqual(new[] { "A", "B", "C" }, observed);
         });
 
         // A chunk delivered before the stream errors is observed; the subsequent error EoS
