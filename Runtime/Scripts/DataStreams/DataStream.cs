@@ -85,6 +85,8 @@ namespace LiveKit
 
         // A chunk or the terminal end-of-stream marker. Chunks and the marker share one
         // FIFO so the consumer can never observe end-of-stream while chunks remain buffered.
+        // The head of the queue is the item the consumer is currently positioned on; Reset()
+        // dequeues it to advance to the next.
         private readonly struct Item
         {
             public readonly TContent Chunk;
@@ -102,14 +104,11 @@ namespace LiveKit
             public static Item ForTerminal(StreamError error) => new Item(default, true, error);
         }
 
-        // Items buffered beyond the one the consumer is currently positioned on.
         private readonly Queue<Item> _queue = new();
-        private Item _current;
-        private bool _hasCurrent;
 
         // Chunk/EOS events arrive on the FFI thread; Reset() and the LatestChunk getter run on
-        // the main-thread coroutine. _gate serializes mutations of the queue, the current item,
-        // IsCurrentReadDone, IsEos, and Error across both sides.
+        // the main-thread coroutine. _gate serializes mutations of the queue, IsCurrentReadDone,
+        // IsEos, and Error across both sides.
         private readonly object _gate = new();
 
         /// <summary>
@@ -137,8 +136,7 @@ namespace LiveKit
                 lock (_gate)
                 {
                     if (Error != null) throw Error;
-                    if (!_hasCurrent) return default;
-                    return _current.Chunk;
+                    return _queue.Count > 0 ? _queue.Peek().Chunk : default;
                 }
             }
         }
@@ -150,75 +148,51 @@ namespace LiveKit
 
         protected bool MatchesHandle(ulong eventHandle) => eventHandle == _handleValue;
 
-        protected void OnChunk(TContent content)
+        protected void OnChunk(TContent content) => Enqueue(Item.ForChunk(content));
+
+        protected void OnEos(Proto.StreamError protoError) =>
+            Enqueue(Item.ForTerminal(protoError != null ? new StreamError(protoError) : null));
+
+        private void Enqueue(Item item)
         {
             lock (_gate)
             {
-                if (_hasCurrent)
-                {
-                    // Consumer hasn't advanced onto the current item yet; buffer in order.
-                    _queue.Enqueue(Item.ForChunk(content));
-                }
-                else
-                {
-                    Advance(Item.ForChunk(content));
-                }
+                // When the queue was empty this item becomes the head, so publish it now;
+                // otherwise it stays buffered in order behind the current head.
+                bool wasEmpty = _queue.Count == 0;
+                _queue.Enqueue(item);
+                if (wasEmpty) SettleHead();
             }
         }
 
         public override void Reset()
         {
-            // base.Reset() must run under the same lock as OnChunk/OnEos, otherwise the
-            // window between IsCurrentReadDone=false (from base) and the dequeue below lets
-            // a producer race in, position the current item, and have it immediately
-            // overwritten by the dequeue. base.Reset() also throws when the consumer tries to
-            // advance past the terminal marker (IsEos), which is the intended guard.
+            // base.Reset() must run under the same lock as OnChunk/OnEos so a producer can't
+            // race between the flag clear and the dequeue below. It also throws when the
+            // consumer tries to advance past the terminal marker (IsEos), the intended guard.
             lock (_gate)
             {
                 base.Reset();
-                if (_queue.Count > 0)
-                {
-                    Advance(_queue.Dequeue());
-                }
-                else
-                {
-                    // Nothing buffered: park until the next chunk or the terminal marker
-                    // arrives. keepWaiting stays true until then.
-                    _hasCurrent = false;
-                }
+                if (_queue.Count > 0) _queue.Dequeue(); // drop the item just consumed
+                SettleHead();
             }
         }
 
-        protected void OnEos(Proto.StreamError protoError)
-        {
-            lock (_gate)
-            {
-                var error = protoError != null ? new StreamError(protoError) : null;
-                if (_hasCurrent)
-                {
-                    // Ordered after every buffered chunk; the consumer drains them first.
-                    _queue.Enqueue(Item.ForTerminal(error));
-                }
-                else
-                {
-                    Advance(Item.ForTerminal(error));
-                }
-            }
-        }
-
-        // Positions the consumer on the given item and flips the matching completion flag.
+        // Reflects the queue head in the base completion flags: a chunk becomes readable
+        // (IsCurrentReadDone), the terminal marker ends the stream (IsEos). An empty queue
+        // parks the consumer (keepWaiting stays true) until the next item arrives.
         // Caller must hold _gate.
-        private void Advance(Item item)
+        private void SettleHead()
         {
-            _current = item;
-            _hasCurrent = true;
-            if (item.IsTerminal)
+            if (_queue.Count == 0) return;
+            var head = _queue.Peek();
+            if (head.IsTerminal)
             {
                 // Assign Error before flipping IsEos. The IsEos setter fires the awaiter
                 // continuation, which inspects IsError/Error on resume; setting IsEos first
                 // would let the continuation observe IsError == false and silently swallow
                 // the stream error.
-                if (item.Error != null) Error = item.Error;
+                if (head.Error != null) Error = head.Error;
                 IsEos = true;
             }
             else
