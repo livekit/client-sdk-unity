@@ -73,7 +73,7 @@ namespace LiveKit
     /// <summary>
     /// Shared state and helpers for incremental stream reader yield instructions.
     /// Models the incoming stream as a single ordered queue whose items are either a
-    /// chunk or a terminal end-of-stream marker (carrying an optional <see cref="StreamError"/>).
+    /// chunk or a the end-of-stream marker (carrying an optional <see cref="StreamError"/>).
     /// The consumer advances through the queue one item at a time via <see cref="Reset"/>;
     /// end-of-stream is only observed once every buffered chunk has been drained, mirroring
     /// the JS and Python SDKs. Subclasses own the typed event subscription and convert raw
@@ -83,25 +83,25 @@ namespace LiveKit
     {
         private readonly ulong _handleValue;
 
-        // A chunk or the terminal end-of-stream marker. Chunks and the marker share one
+        // A chunk or the end-of-stream marker. Chunks and the marker share one
         // FIFO so the consumer can never observe end-of-stream while chunks remain buffered.
         // The head of the queue is the item the consumer is currently positioned on; Reset()
         // dequeues it to advance to the next.
         private readonly struct Item
         {
             public readonly TContent Chunk;
-            public readonly bool IsTerminal;
+            public readonly bool IsEos;
             public readonly StreamError Error;
 
-            private Item(TContent chunk, bool isTerminal, StreamError error)
+            private Item(TContent chunk, bool isEos, StreamError error)
             {
                 Chunk = chunk;
-                IsTerminal = isTerminal;
+                IsEos = isEos;
                 Error = error;
             }
 
             public static Item ForChunk(TContent chunk) => new Item(chunk, false, null);
-            public static Item ForTerminal(StreamError error) => new Item(default, true, error);
+            public static Item ForEos(StreamError error) => new Item(default, true, error);
         }
 
         private readonly Queue<Item> _queue = new();
@@ -151,7 +151,7 @@ namespace LiveKit
         protected void OnChunk(TContent content) => Enqueue(Item.ForChunk(content));
 
         protected void OnEos(Proto.StreamError protoError) =>
-            Enqueue(Item.ForTerminal(protoError != null ? new StreamError(protoError) : null));
+            Enqueue(Item.ForEos(protoError != null ? new StreamError(protoError) : null));
 
         private void Enqueue(Item item)
         {
@@ -169,7 +169,7 @@ namespace LiveKit
         {
             // base.Reset() must run under the same lock as OnChunk/OnEos so a producer can't
             // race between the flag clear and the dequeue below. It also throws when the
-            // consumer tries to advance past the terminal marker (IsEos), the intended guard.
+            // consumer tries to advance past the Eos marker (IsEos), the intended guard.
             lock (_gate)
             {
                 base.Reset();
@@ -179,14 +179,14 @@ namespace LiveKit
         }
 
         // Reflects the queue head in the base completion flags: a chunk becomes readable
-        // (IsCurrentReadDone), the terminal marker ends the stream (IsEos). An empty queue
+        // (IsCurrentReadDone), the Eos marker (IsEos) ends the stream. An empty queue
         // parks the consumer (keepWaiting stays true) until the next item arrives.
         // Caller must hold _gate.
         private void SettleHead()
         {
             if (_queue.Count == 0) return;
             var head = _queue.Peek();
-            if (head.IsTerminal)
+            if (head.IsEos)
             {
                 // Assign Error before flipping IsEos. The IsEos setter fires the awaiter
                 // continuation, which inspects IsError/Error on resume; setting IsEos first
