@@ -145,8 +145,9 @@ namespace LiveKit
         /// YieldInstruction for <see cref="ReadIncremental"/>.
         /// </summary>
         /// <remarks>
-        /// Usage: while <see cref="IsEos"/> is false (i.e. the stream has not ended),
-        /// call <see cref="Reset"/>, yield the instruction, and then access <see cref="Bytes"/>.
+        /// Usage: loop yielding the instruction; when it resumes, break if <see cref="IsEos"/>
+        /// is true (the stream has ended and every chunk has been drained), otherwise read
+        /// <see cref="Bytes"/> and call <see cref="Reset"/> to advance to the next chunk.
         /// </remarks>
         public sealed class ReadIncrementalInstruction : ReadIncrementalInstructionBase<byte[]>
         {

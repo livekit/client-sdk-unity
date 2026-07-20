@@ -86,12 +86,11 @@ namespace LiveKit.EditModeTests
                 Assert.AreEqual(i.ToString(), observed[i], $"Chunk reordering at index {i}.");
         }
 
-        // OnEos races with OnChunk on the FFI thread. After both complete, the lock
-        // must leave the instruction in a consistent state: IsEos visible, no torn
-        // reads of LatestChunk, and the chunks pushed before EOS still drainable
-        // (up to the point where Reset() is correctly disallowed past EOS).
+        // OnEos races with OnChunk on the FFI thread. EOS is an ordered item behind the
+        // chunks, so after both complete the consumer must be able to drain every chunk in
+        // FIFO order before observing end-of-stream — never seeing EOS while data remains.
         [Test]
-        public void OnEos_RacingWithChunks_FinalStateConsistent()
+        public void OnEos_RacingWithChunks_AllChunksDrainThenEos()
         {
             for (int trial = 0; trial < 50; trial++)
             {
@@ -109,20 +108,128 @@ namespace LiveKit.EditModeTests
                 start.Set();
                 producer.Wait(TimeSpan.FromSeconds(5));
 
-                Assert.IsTrue(reader.IsEos, $"Trial {trial}: EOS not observed after producer finished.");
-                // Reading LatestChunk after EOS must never throw an unexpected exception
-                // — the only allowed throw is the StreamError on protocol error, which
-                // we don't simulate here. Specifically: no NullReferenceException, no
-                // collection-modified exception, no torn-read.
+                var observed = new List<string>(100);
+                var deadline = DateTime.UtcNow.AddSeconds(5);
+                while (true)
+                {
+                    while (reader.keepWaiting)
+                    {
+                        if (DateTime.UtcNow > deadline)
+                            Assert.Fail($"Trial {trial}: drain stalled at {observed.Count}/100 — chunk lost or deadlock.");
+                        Thread.Yield();
+                    }
+                    if (reader.IsEos) break;
+                    observed.Add(reader.Value);
+                    reader.Reset();
+                }
+
+                Assert.AreEqual(100, observed.Count,
+                    $"Trial {trial}: EOS observed before all chunks were drained.");
+                for (int i = 0; i < 100; i++)
+                    Assert.AreEqual(i.ToString(), observed[i], $"Trial {trial}: chunk reordering at index {i}.");
+
+                // A clean end-of-stream leaves no chunk to read: LatestChunk returns the
+                // default value and never throws (a torn read would surface here).
                 Assert.DoesNotThrow(() => { var _ = reader.Value; },
                     $"Trial {trial}: reading LatestChunk after EOS race threw unexpectedly.");
+                Assert.IsNull(reader.Value, $"Trial {trial}: expected null chunk at end-of-stream.");
             }
+        }
+
+        // The whole stream — every chunk AND end-of-stream — arrives before the consumer
+        // reads anything (the common small-stream / already-buffered case). Every chunk must
+        // still be delivered before EOS is observed. This is the core regression the
+        // single-queue / EOS-as-terminal-item fix addresses: previously IsEos short-circuited
+        // the buffered chunks and the whole stream was dropped.
+        [Test]
+        public void Burst_AllChunksThenEosBeforeConsumer_AllDrainedThenEos()
+        {
+            using var handle = new FfiHandle(IntPtr.Zero);
+            var reader = new TestIncrementalReader(handle);
+
+            reader.PushChunk("A");
+            reader.PushChunk("B");
+            reader.PushChunk("C");
+            reader.PushEos();
+
+            CollectionAssert.AreEqual(new[] { "A", "B", "C" }, Drain(reader));
+            Assert.IsTrue(reader.IsEos);
+        }
+
+        // A single chunk followed immediately by end-of-stream — the previous implementation
+        // dropped the chunk because IsEos short-circuited the read on the first iteration.
+        [Test]
+        public void Burst_SingleChunkThenEos_ChunkDelivered()
+        {
+            using var handle = new FfiHandle(IntPtr.Zero);
+            var reader = new TestIncrementalReader(handle);
+
+            reader.PushChunk("only");
+            reader.PushEos();
+
+            CollectionAssert.AreEqual(new[] { "only" }, Drain(reader));
+            Assert.IsTrue(reader.IsEos);
+        }
+
+        // An empty stream (end-of-stream with no chunks) drains to zero chunks and reports EOS.
+        [Test]
+        public void Burst_EosWithNoChunks_ReportsEosWithNoChunks()
+        {
+            using var handle = new FfiHandle(IntPtr.Zero);
+            var reader = new TestIncrementalReader(handle);
+
+            reader.PushEos();
+
+            CollectionAssert.IsEmpty(Drain(reader));
+            Assert.IsTrue(reader.IsEos);
+        }
+
+        // Chunks that precede an error close are still delivered in order; the error then
+        // surfaces via IsError/Error once the consumer reaches the terminal marker.
+        [Test]
+        public void Burst_ChunksThenErrorEos_ChunksDrainedThenErrorSurfaces()
+        {
+            using var handle = new FfiHandle(IntPtr.Zero);
+            var reader = new TestIncrementalReader(handle);
+
+            reader.PushChunk("A");
+            reader.PushChunk("B");
+            reader.PushEos(new LiveKit.Proto.StreamError { Description = "boom" });
+
+            // Read-first drain; break on EOS before reading (an error terminal has no chunk,
+            // and reading it would rethrow the StreamError).
+            var observed = new List<string>();
+            while (!reader.keepWaiting)
+            {
+                if (reader.IsEos) break;
+                observed.Add(reader.Value);
+                reader.Reset();
+            }
+
+            CollectionAssert.AreEqual(new[] { "A", "B" }, observed);
+            Assert.IsTrue(reader.IsEos);
+            Assert.IsTrue(reader.IsError);
+            Assert.AreEqual("boom", reader.Error.Message);
+        }
+
+        // Canonical read-first drain used by the tests above: spin until the reader is
+        // positioned on a chunk or the terminal marker, break on EOS, else read and advance.
+        private static List<string> Drain(TestIncrementalReader reader)
+        {
+            var observed = new List<string>();
+            while (!reader.keepWaiting)
+            {
+                if (reader.IsEos) break;
+                observed.Add(reader.Value);
+                reader.Reset();
+            }
+            return observed;
         }
 
         // OnChunk-after-Reset is the most common interleaving in production: the
         // consumer's coroutine just yielded and called Reset, and an FFI thread
         // pushes a chunk before the consumer wakes. The lock must serialize them
-        // so the new chunk is correctly placed (either as _latestChunk if the
+        // so the new chunk is correctly placed (either as the current item if the
         // queue was empty, or appended to the queue).
         [Test]
         public void OnChunk_RacingWithReset_NoChunkLost()

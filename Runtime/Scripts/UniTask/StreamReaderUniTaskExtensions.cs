@@ -18,17 +18,13 @@ namespace LiveKit
         /// <see cref="TextStreamReader.ReadIncrementalInstruction"/> (<c>string</c>).
         /// </summary>
         /// <remarks>
-        /// Iteration ends when the stream reaches end-of-stream. If the stream ends with an
-        /// error, the enumerable throws that <see cref="StreamError"/> (idiomatic for
-        /// <c>await foreach</c>; this is the one place the UniTask surface throws rather than
-        /// exposing <c>IsError</c>). Cancellation (via the token or the enumerator) surfaces as
-        /// <see cref="System.OperationCanceledException"/> with abandon-awaiter semantics — the
-        /// underlying FFI read is not cancelled on the wire.
-        ///
-        /// The current chunk is delivered on the iteration where end-of-stream is also observed,
-        /// then iteration stops. Chunks buffered <em>beyond</em> the current one when
-        /// end-of-stream arrives are not drainable, because the reader disallows <c>Reset()</c>
-        /// past end-of-stream.
+        /// Iteration ends when the stream reaches end-of-stream. Every buffered chunk is
+        /// drained before iteration stops, since end-of-stream is an ordered item at the tail
+        /// of the chunk queue. If the stream ends with an error, the enumerable throws that
+        /// <see cref="StreamError"/> (idiomatic for <c>await foreach</c>; this is the one place
+        /// the UniTask surface throws rather than exposing <c>IsError</c>). Cancellation (via
+        /// the token or the enumerator) surfaces as <see cref="System.OperationCanceledException"/>
+        /// with abandon-awaiter semantics — the underlying FFI read is not cancelled on the wire.
         /// </remarks>
         public static IUniTaskAsyncEnumerable<TChunk> AsAsyncEnumerable<TChunk>(
             this ReadIncrementalInstructionBase<TChunk> instruction,
@@ -44,30 +40,20 @@ namespace LiveKit
 
                 while (true)
                 {
-                    // Completes when a chunk is ready (IsCurrentReadDone) or the stream ends (IsEos).
+                    // Completes when a chunk is ready (IsCurrentReadDone) or the consumer has
+                    // advanced onto the terminal marker (IsEos) — the two are mutually exclusive.
                     await instruction.AsUniTask(ct);
 
                     if (instruction.IsCurrentReadDone)
                     {
                         var chunk = instruction.LatestChunk;
                         await writer.YieldAsync(chunk);
-
-                        // Re-check IsEos AFTER yielding: end-of-stream may have arrived while
-                        // the consumer was suspended. Reset() throws once IsEos is set, so this
-                        // re-check (not a value captured before the yield) is what keeps the
-                        // loop safe — mirroring the coroutine consumer's "if (IsEos) break;
-                        // else Reset()" ordering.
-                        if (instruction.IsEos)
-                        {
-                            if (instruction.IsError) throw instruction.Error;
-                            return;
-                        }
-
-                        instruction.Reset();
+                        instruction.Reset(); // advance to the next chunk or the terminal marker
                         continue;
                     }
 
-                    // Not IsCurrentReadDone => end-of-stream with nothing left to read.
+                    // Positioned on the terminal marker: the queue is fully drained. Surface an
+                    // error close by throwing, otherwise end iteration cleanly.
                     if (instruction.IsError) throw instruction.Error;
                     return;
                 }
