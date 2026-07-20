@@ -527,11 +527,11 @@ IEnumerator OnTextStream(TextStreamReader reader, string identity)
     var readIncremental = reader.ReadIncremental();
     while (true)
     {
-        readIncremental.Reset();
         yield return readIncremental;
         if (readIncremental.IsEos)
             break;
         Debug.Log(readIncremental.Text);
+        readIncremental.Reset();
     }
 
     // Option 2: Get the entire text after the stream completes
@@ -604,12 +604,12 @@ IEnumerator HandleByteStream(ByteStreamReader reader, string participantIdentity
     var readIncremental = reader.ReadIncremental();
     while (true)
     {
-        readIncremental.Reset();
         yield return readIncremental;
         if (readIncremental.IsEos) break;
         foreach (var dataByte in readIncremental.Bytes)
             Debug.Log($"Received {dataByte}");
-    } 
+        readIncremental.Reset();
+    }
 
     // Option 2: Get the entire file after the stream completes
     var readAllCall = reader.ReadAll();
