@@ -72,19 +72,44 @@ namespace LiveKit
 
     /// <summary>
     /// Shared state and helpers for incremental stream reader yield instructions.
-    /// Holds the latest chunk, end-of-stream flag, and error; subclasses own the
-    /// typed event subscription and convert raw event payloads via <see cref="OnChunk"/>
-    /// and <see cref="OnEos"/>.
+    /// Models the incoming stream as a single ordered queue whose items are either a
+    /// chunk or a terminal end-of-stream marker (carrying an optional <see cref="StreamError"/>).
+    /// The consumer advances through the queue one item at a time via <see cref="Reset"/>;
+    /// end-of-stream is only observed once every buffered chunk has been drained, mirroring
+    /// the JS and Python SDKs. Subclasses own the typed event subscription and convert raw
+    /// event payloads via <see cref="OnChunk"/> and <see cref="OnEos"/>.
     /// </summary>
     public abstract class ReadIncrementalInstructionBase<TContent> : StreamYieldInstruction
     {
         private readonly ulong _handleValue;
-        private readonly Queue<TContent> _pendingChunks = new();
-        private TContent _latestChunk;
 
-        // Chunk events arrive on the FFI thread; Reset() and the LatestChunk getter
-        // run on the main-thread coroutine. _gate serializes mutations of the queue,
-        // _latestChunk, IsCurrentReadDone, IsEos, and Error across both sides.
+        // A chunk or the terminal end-of-stream marker. Chunks and the marker share one
+        // FIFO so the consumer can never observe end-of-stream while chunks remain buffered.
+        private readonly struct Item
+        {
+            public readonly TContent Chunk;
+            public readonly bool IsTerminal;
+            public readonly StreamError Error;
+
+            private Item(TContent chunk, bool isTerminal, StreamError error)
+            {
+                Chunk = chunk;
+                IsTerminal = isTerminal;
+                Error = error;
+            }
+
+            public static Item ForChunk(TContent chunk) => new Item(chunk, false, null);
+            public static Item ForTerminal(StreamError error) => new Item(default, true, error);
+        }
+
+        // Items buffered beyond the one the consumer is currently positioned on.
+        private readonly Queue<Item> _queue = new();
+        private Item _current;
+        private bool _hasCurrent;
+
+        // Chunk/EOS events arrive on the FFI thread; Reset() and the LatestChunk getter run on
+        // the main-thread coroutine. _gate serializes mutations of the queue, the current item,
+        // IsCurrentReadDone, IsEos, and Error across both sides.
         private readonly object _gate = new();
 
         /// <summary>
@@ -99,10 +124,11 @@ namespace LiveKit
 
         /// <summary>
         /// The chunk from the most recent completed read. Throws the captured
-        /// <see cref="StreamError"/> if the last read errored. Internal so the optional
-        /// UniTask async-enumerable adapter (which has InternalsVisibleTo access) can read
-        /// it generically; the typed <c>Bytes</c>/<c>Text</c> accessors on the concrete
-        /// readers delegate here.
+        /// <see cref="StreamError"/> if the stream ended with an error. Returns the default
+        /// value once positioned on a normal end-of-stream marker (there is no chunk to read).
+        /// Internal so the optional UniTask async-enumerable adapter (which has
+        /// InternalsVisibleTo access) can read it generically; the typed <c>Bytes</c>/<c>Text</c>
+        /// accessors on the concrete readers delegate here.
         /// </summary>
         internal TContent LatestChunk
         {
@@ -111,7 +137,8 @@ namespace LiveKit
                 lock (_gate)
                 {
                     if (Error != null) throw Error;
-                    return _latestChunk;
+                    if (!_hasCurrent) return default;
+                    return _current.Chunk;
                 }
             }
         }
@@ -127,33 +154,37 @@ namespace LiveKit
         {
             lock (_gate)
             {
-                if (IsCurrentReadDone)
+                if (_hasCurrent)
                 {
-                    // Consumer hasn't yielded since the last chunk; buffer until Reset().
-                    _pendingChunks.Enqueue(content);
+                    // Consumer hasn't advanced onto the current item yet; buffer in order.
+                    _queue.Enqueue(Item.ForChunk(content));
                 }
                 else
                 {
-                    _latestChunk = content;
-                    IsCurrentReadDone = true;
+                    Advance(Item.ForChunk(content));
                 }
             }
         }
 
         public override void Reset()
         {
-            // base.Reset() must run under the same lock as OnChunk, otherwise the
-            // window between IsCurrentReadDone=false (from base) and the dequeue
-            // below lets a producer race in, write _latestChunk, and have its
-            // chunk immediately overwritten by the dequeue. That race lost ~4% of
-            // chunks under stress before this fix.
+            // base.Reset() must run under the same lock as OnChunk/OnEos, otherwise the
+            // window between IsCurrentReadDone=false (from base) and the dequeue below lets
+            // a producer race in, position the current item, and have it immediately
+            // overwritten by the dequeue. base.Reset() also throws when the consumer tries to
+            // advance past the terminal marker (IsEos), which is the intended guard.
             lock (_gate)
             {
                 base.Reset();
-                if (_pendingChunks.Count > 0)
+                if (_queue.Count > 0)
                 {
-                    _latestChunk = _pendingChunks.Dequeue();
-                    IsCurrentReadDone = true;
+                    Advance(_queue.Dequeue());
+                }
+                else
+                {
+                    // Nothing buffered: park until the next chunk or the terminal marker
+                    // arrives. keepWaiting stays true until then.
+                    _hasCurrent = false;
                 }
             }
         }
@@ -162,15 +193,37 @@ namespace LiveKit
         {
             lock (_gate)
             {
-                // Assign Error before flipping IsEos. The IsEos setter fires the awaiter
-                // continuation, which inspects IsError/Error on resume; when completion runs
-                // inline on the main thread, setting IsEos first would let the continuation
-                // observe IsError == false and silently swallow the stream error.
-                if (protoError != null)
+                var error = protoError != null ? new StreamError(protoError) : null;
+                if (_hasCurrent)
                 {
-                    Error = new StreamError(protoError);
+                    // Ordered after every buffered chunk; the consumer drains them first.
+                    _queue.Enqueue(Item.ForTerminal(error));
                 }
+                else
+                {
+                    Advance(Item.ForTerminal(error));
+                }
+            }
+        }
+
+        // Positions the consumer on the given item and flips the matching completion flag.
+        // Caller must hold _gate.
+        private void Advance(Item item)
+        {
+            _current = item;
+            _hasCurrent = true;
+            if (item.IsTerminal)
+            {
+                // Assign Error before flipping IsEos. The IsEos setter fires the awaiter
+                // continuation, which inspects IsError/Error on resume; setting IsEos first
+                // would let the continuation observe IsError == false and silently swallow
+                // the stream error.
+                if (item.Error != null) Error = item.Error;
                 IsEos = true;
+            }
+            else
+            {
+                IsCurrentReadDone = true;
             }
         }
     }

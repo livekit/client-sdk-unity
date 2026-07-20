@@ -69,24 +69,18 @@ public sealed class TranscriptionReader : IDisposable
         var append = _beginReply(Speaker.Npc);
         var filter = new AnnotationFilter();
         var r = reader.ReadIncremental();
-        string lastSeen = null;
         while (true)
         {
             yield return r;
+            if (r.IsEos) break;
 
-            // EOS ticks don't refresh Text — only forward when the reference actually changed.
             var chunk = r.Text;
-            if (!ReferenceEquals(chunk, lastSeen))
+            if (!string.IsNullOrEmpty(chunk))
             {
-                if (!string.IsNullOrEmpty(chunk))
-                {
-                    var filtered = filter.Filter(chunk);
-                    if (!string.IsNullOrEmpty(filtered)) append(filtered);
-                }
-                lastSeen = chunk;
+                var filtered = filter.Filter(chunk);
+                if (!string.IsNullOrEmpty(filtered)) append(filtered);
             }
 
-            if (r.IsEos) break;
             r.Reset();
         }
     }
