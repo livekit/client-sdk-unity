@@ -13,7 +13,7 @@ public static class IosLinkOrderDiagnostics
 {
     private const string Prefix = "LiveKit";
     private const string Libilivekit = "liblivekit_ffi.a in Frameworks";
-    // Unity exports the engine as Libraries/libiPhone-lib.a up to 6000.3 and as a static
+    // Unity exports the engine as Libraries/libiPhone-lib.a up to 6000.4 and as a static
     // Frameworks/UnityRuntime.framework from 6000.5; both bundle the old CELT objects.
     private static readonly string[] EngineLibraryEntries =
     {
