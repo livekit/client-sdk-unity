@@ -23,9 +23,13 @@ public class BuildPostProcessor
         string guid = proj.TargetGuidByName("Unity-iPhone");
 #endif
         proj.AddBuildProperty(guid, "OTHER_LDFLAGS", "-ObjC");
+        // Unity 6000.5+ no longer exports Libraries/libiPhone-lib.a.
         string fileGuid = proj.FindFileGuidByProjectPath("Libraries/libiPhone-lib.a");
-        proj.RemoveFileFromBuild(guid, fileGuid);
-        proj.AddFileToBuild(guid, fileGuid);
+        if (fileGuid != null)
+        {
+            proj.RemoveFileFromBuild(guid, fileGuid);
+            proj.AddFileToBuild(guid, fileGuid);
+        }
 
         ApplyAutomaticSigning(proj);
 
