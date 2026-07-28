@@ -261,6 +261,9 @@ namespace LiveKit.Internal.FFI
                 case RemoteDataTrackSetPipelineOptionsRequest remoteDataTrackSetPipelineOptionsRequest:
                     ffiRequest.RemoteDataTrackSetPipelineOptions = remoteDataTrackSetPipelineOptionsRequest;
                     break;
+                case NewTokenSourceRequest newTokenSourceRequest:
+                    ffiRequest.NewTokenSource = newTokenSourceRequest;
+                    break;
                 default:
                     throw new Exception($"Unknown request type: {request?.GetType().FullName ?? "null"}");
             }
