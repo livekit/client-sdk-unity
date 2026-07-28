@@ -25,112 +25,154 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChBkYXRhX3RyYWNrLnByb3RvEg1saXZla2l0LnByb3RvGgxoYW5kbGUucHJv",
-            "dG8iPQoNRGF0YVRyYWNrSW5mbxIMCgRuYW1lGAEgAigJEgsKA3NpZBgCIAIo",
-            "CRIRCgl1c2VzX2UyZWUYAyACKAgiOQoORGF0YVRyYWNrRnJhbWUSDwoHcGF5",
-            "bG9hZBgBIAIoDBIWCg51c2VyX3RpbWVzdGFtcBgCIAEoBCJSCg5EYXRhVHJh",
-            "Y2tFcnJvchIvCgRjb2RlGAEgAigOMiEubGl2ZWtpdC5wcm90by5EYXRhVHJh",
-            "Y2tFcnJvckNvZGUSDwoHbWVzc2FnZRgCIAIoCSJgChVQdWJsaXNoRGF0YVRy",
-            "YWNrRXJyb3ISNgoEY29kZRgBIAIoDjIoLmxpdmVraXQucHJvdG8uUHVibGlz",
-            "aERhdGFUcmFja0Vycm9yQ29kZRIPCgdtZXNzYWdlGAIgAigJImoKGkxvY2Fs",
-            "RGF0YVRyYWNrVHJ5UHVzaEVycm9yEjsKBGNvZGUYASACKA4yLS5saXZla2l0",
-            "LnByb3RvLkxvY2FsRGF0YVRyYWNrVHJ5UHVzaEVycm9yQ29kZRIPCgdtZXNz",
-            "YWdlGAIgAigJImQKF1N1YnNjcmliZURhdGFUcmFja0Vycm9yEjgKBGNvZGUY",
-            "ASACKA4yKi5saXZla2l0LnByb3RvLlN1YnNjcmliZURhdGFUcmFja0Vycm9y",
-            "Q29kZRIPCgdtZXNzYWdlGAIgAigJIiAKEERhdGFUcmFja09wdGlvbnMSDAoE",
-            "bmFtZRgBIAIoCSKHAQoXUHVibGlzaERhdGFUcmFja1JlcXVlc3QSIAoYbG9j",
-            "YWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEjAKB29wdGlvbnMYAiACKAsy",
-            "Hy5saXZla2l0LnByb3RvLkRhdGFUcmFja09wdGlvbnMSGAoQcmVxdWVzdF9h",
-            "c3luY19pZBgDIAEoBCIsChhQdWJsaXNoRGF0YVRyYWNrUmVzcG9uc2USEAoI",
-            "YXN5bmNfaWQYASACKAQiogEKGFB1Ymxpc2hEYXRhVHJhY2tDYWxsYmFjaxIQ",
-            "Cghhc3luY19pZBgBIAIoBBIzCgV0cmFjaxgCIAEoCzIiLmxpdmVraXQucHJv",
-            "dG8uT3duZWRMb2NhbERhdGFUcmFja0gAEjUKBWVycm9yGAMgASgLMiQubGl2",
-            "ZWtpdC5wcm90by5QdWJsaXNoRGF0YVRyYWNrRXJyb3JIAEIICgZyZXN1bHQi",
-            "cAoTT3duZWRMb2NhbERhdGFUcmFjaxItCgZoYW5kbGUYASACKAsyHS5saXZl",
-            "a2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEioKBGluZm8YAiACKAsyHC5saXZl",
-            "a2l0LnByb3RvLkRhdGFUcmFja0luZm8iYgocTG9jYWxEYXRhVHJhY2tUcnlQ",
-            "dXNoUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQSLAoFZnJhbWUYAiAC",
-            "KAsyHS5saXZla2l0LnByb3RvLkRhdGFUcmFja0ZyYW1lIlkKHUxvY2FsRGF0",
-            "YVRyYWNrVHJ5UHVzaFJlc3BvbnNlEjgKBWVycm9yGAIgASgLMikubGl2ZWtp",
-            "dC5wcm90by5Mb2NhbERhdGFUcmFja1RyeVB1c2hFcnJvciI4CiBMb2NhbERh",
-            "dGFUcmFja0lzUHVibGlzaGVkUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASAC",
-            "KAQiOQohTG9jYWxEYXRhVHJhY2tJc1B1Ymxpc2hlZFJlc3BvbnNlEhQKDGlz",
-            "X3B1Ymxpc2hlZBgBIAIoCCI2Ch5Mb2NhbERhdGFUcmFja1VucHVibGlzaFJl",
-            "cXVlc3QSFAoMdHJhY2tfaGFuZGxlGAEgAigEIiEKH0xvY2FsRGF0YVRyYWNr",
-            "VW5wdWJsaXNoUmVzcG9uc2UijQEKFE93bmVkUmVtb3RlRGF0YVRyYWNrEi0K",
-            "BmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUS",
-            "KgoEaW5mbxgCIAIoCzIcLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrSW5mbxIa",
-            "ChJwdWJsaXNoZXJfaWRlbnRpdHkYAyACKAkiRQoUT3duZWREYXRhVHJhY2tT",
-            "dHJlYW0SLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25l",
-            "ZEhhbmRsZSIwChlEYXRhVHJhY2tTdWJzY3JpYmVPcHRpb25zEhMKC2J1ZmZl",
-            "cl9zaXplGAEgASgNIjkKIVJlbW90ZURhdGFUcmFja0lzUHVibGlzaGVkUmVx",
-            "dWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQiOgoiUmVtb3RlRGF0YVRyYWNr",
-            "SXNQdWJsaXNoZWRSZXNwb25zZRIUCgxpc19wdWJsaXNoZWQYASACKAgiPAoe",
-            "UmVtb3RlRGF0YVRyYWNrUGlwZWxpbmVPcHRpb25zEhoKEm1heF9wYXJ0aWFs",
-            "X2ZyYW1lcxgBIAEoDSKAAQooUmVtb3RlRGF0YVRyYWNrU2V0UGlwZWxpbmVP",
-            "cHRpb25zUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQSPgoHb3B0aW9u",
-            "cxgCIAIoCzItLmxpdmVraXQucHJvdG8uUmVtb3RlRGF0YVRyYWNrUGlwZWxp",
-            "bmVPcHRpb25zIisKKVJlbW90ZURhdGFUcmFja1NldFBpcGVsaW5lT3B0aW9u",
-            "c1Jlc3BvbnNlImwKGVN1YnNjcmliZURhdGFUcmFja1JlcXVlc3QSFAoMdHJh",
-            "Y2tfaGFuZGxlGAEgAigEEjkKB29wdGlvbnMYAiACKAsyKC5saXZla2l0LnBy",
-            "b3RvLkRhdGFUcmFja1N1YnNjcmliZU9wdGlvbnMiUQoaU3Vic2NyaWJlRGF0",
-            "YVRyYWNrUmVzcG9uc2USMwoGc3RyZWFtGAEgAigLMiMubGl2ZWtpdC5wcm90",
-            "by5Pd25lZERhdGFUcmFja1N0cmVhbSIzChpEYXRhVHJhY2tTdHJlYW1SZWFk",
-            "UmVxdWVzdBIVCg1zdHJlYW1faGFuZGxlGAEgAigEIlMKG0RhdGFUcmFja1N0",
-            "cmVhbVJlYWRSZXNwb25zZRI0Cgllb3NfZXZlbnQYASABKAsyIS5saXZla2l0",
-            "LnByb3RvLkRhdGFUcmFja1N0cmVhbUVPUyKwAQoURGF0YVRyYWNrU3RyZWFt",
-            "RXZlbnQSFQoNc3RyZWFtX2hhbmRsZRgBIAIoBBJFCg5mcmFtZV9yZWNlaXZl",
-            "ZBgCIAEoCzIrLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrU3RyZWFtRnJhbWVS",
-            "ZWNlaXZlZEgAEjAKA2VvcxgDIAEoCzIhLmxpdmVraXQucHJvdG8uRGF0YVRy",
-            "YWNrU3RyZWFtRU9TSABCCAoGZGV0YWlsIkwKHERhdGFUcmFja1N0cmVhbUZy",
-            "YW1lUmVjZWl2ZWQSLAoFZnJhbWUYASACKAsyHS5saXZla2l0LnByb3RvLkRh",
-            "dGFUcmFja0ZyYW1lIksKEkRhdGFUcmFja1N0cmVhbUVPUxI1CgVlcnJvchgB",
-            "IAEoCzImLmxpdmVraXQucHJvdG8uU3Vic2NyaWJlRGF0YVRyYWNrRXJyb3Iq",
-            "hwMKEkRhdGFUcmFja0Vycm9yQ29kZRIhCh1EQVRBX1RSQUNLX0VSUk9SX0NP",
-            "REVfVU5LTk9XThAAEigKJERBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlZBTElE",
-            "X0hBTkRMRRABEi4KKkRBVEFfVFJBQ0tfRVJST1JfQ09ERV9EVVBMSUNBVEVf",
-            "VFJBQ0tfTkFNRRACEisKJ0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9UUkFDS19V",
-            "TlBVQkxJU0hFRBADEiUKIURBVEFfVFJBQ0tfRVJST1JfQ09ERV9CVUZGRVJf",
-            "RlVMTBAEEi0KKURBVEFfVFJBQ0tfRVJST1JfQ09ERV9TVUJTQ1JJUFRJT05f",
-            "Q0xPU0VEEAUSIwofREFUQV9UUkFDS19FUlJPUl9DT0RFX0NBTkNFTExFRBAG",
-            "EigKJERBVEFfVFJBQ0tfRVJST1JfQ09ERV9QUk9UT0NPTF9FUlJPUhAHEiIK",
-            "HkRBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlRFUk5BTBAIKvMDChlQdWJsaXNo",
-            "RGF0YVRyYWNrRXJyb3JDb2RlEikKJVBVQkxJU0hfREFUQV9UUkFDS19FUlJP",
-            "Ul9DT0RFX1VOS05PV04QABIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1Jf",
-            "Q09ERV9JTlZBTElEX0hBTkRMRRABEjAKLFBVQkxJU0hfREFUQV9UUkFDS19F",
-            "UlJPUl9DT0RFX0RVUExJQ0FURV9OQU1FEAISKQolUFVCTElTSF9EQVRBX1RS",
-            "QUNLX0VSUk9SX0NPREVfVElNRU9VVBADEi4KKlBVQkxJU0hfREFUQV9UUkFD",
-            "S19FUlJPUl9DT0RFX0RJU0NPTk5FQ1RFRBAEEi0KKVBVQkxJU0hfREFUQV9U",
-            "UkFDS19FUlJPUl9DT0RFX05PVF9BTExPV0VEEAUSLgoqUFVCTElTSF9EQVRB",
-            "X1RSQUNLX0VSUk9SX0NPREVfSU5WQUxJRF9OQU1FEAYSLworUFVCTElTSF9E",
-            "QVRBX1RSQUNLX0VSUk9SX0NPREVfTElNSVRfUkVBQ0hFRBAHEjAKLFBVQkxJ",
-            "U0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX1BST1RPQ09MX0VSUk9SEAgSKgom",
-            "UFVCTElTSF9EQVRBX1RSQUNLX0VSUk9SX0NPREVfSU5URVJOQUwQCSqvAgoe",
-            "TG9jYWxEYXRhVHJhY2tUcnlQdXNoRXJyb3JDb2RlEjAKLExPQ0FMX0RBVEFf",
-            "VFJBQ0tfVFJZX1BVU0hfRVJST1JfQ09ERV9VTktOT1dOEAASNwozTE9DQUxf",
-            "REFUQV9UUkFDS19UUllfUFVTSF9FUlJPUl9DT0RFX0lOVkFMSURfSEFORExF",
-            "EAESOgo2TE9DQUxfREFUQV9UUkFDS19UUllfUFVTSF9FUlJPUl9DT0RFX1RS",
-            "QUNLX1VOUFVCTElTSEVEEAISMwovTE9DQUxfREFUQV9UUkFDS19UUllfUFVT",
-            "SF9FUlJPUl9DT0RFX1FVRVVFX0ZVTEwQAxIxCi1MT0NBTF9EQVRBX1RSQUNL",
-            "X1RSWV9QVVNIX0VSUk9SX0NPREVfSU5URVJOQUwQBCrwAgobU3Vic2NyaWJl",
-            "RGF0YVRyYWNrRXJyb3JDb2RlEisKJ1NVQlNDUklCRV9EQVRBX1RSQUNLX0VS",
-            "Uk9SX0NPREVfVU5LTk9XThAAEjIKLlNVQlNDUklCRV9EQVRBX1RSQUNLX0VS",
-            "Uk9SX0NPREVfSU5WQUxJRF9IQU5ETEUQARIvCitTVUJTQ1JJQkVfREFUQV9U",
-            "UkFDS19FUlJPUl9DT0RFX1VOUFVCTElTSEVEEAISKwonU1VCU0NSSUJFX0RB",
-            "VEFfVFJBQ0tfRVJST1JfQ09ERV9USU1FT1VUEAMSMAosU1VCU0NSSUJFX0RB",
-            "VEFfVFJBQ0tfRVJST1JfQ09ERV9ESVNDT05ORUNURUQQBBIyCi5TVUJTQ1JJ",
-            "QkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX1BST1RPQ09MX0VSUk9SEAUSLAoo",
-            "U1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlRFUk5BTBAGQhCq",
-            "Ag1MaXZlS2l0LlByb3Rv"));
+            "dG8irgEKDURhdGFUcmFja0luZm8SDAoEbmFtZRgBIAIoCRILCgNzaWQYAiAC",
+            "KAkSEQoJdXNlc19lMmVlGAMgAigIEjAKBnNjaGVtYRgEIAEoCzIgLmxpdmVr",
+            "aXQucHJvdG8uRGF0YVRyYWNrU2NoZW1hSWQSPQoOZnJhbWVfZW5jb2RpbmcY",
+            "BSABKAsyJS5saXZla2l0LnByb3RvLkRhdGFUcmFja0ZyYW1lRW5jb2Rpbmci",
+            "OQoORGF0YVRyYWNrRnJhbWUSDwoHcGF5bG9hZBgBIAIoDBIWCg51c2VyX3Rp",
+            "bWVzdGFtcBgCIAEoBCJSCg5EYXRhVHJhY2tFcnJvchIvCgRjb2RlGAEgAigO",
+            "MiEubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tFcnJvckNvZGUSDwoHbWVzc2Fn",
+            "ZRgCIAIoCSJgChVQdWJsaXNoRGF0YVRyYWNrRXJyb3ISNgoEY29kZRgBIAIo",
+            "DjIoLmxpdmVraXQucHJvdG8uUHVibGlzaERhdGFUcmFja0Vycm9yQ29kZRIP",
+            "CgdtZXNzYWdlGAIgAigJImoKGkxvY2FsRGF0YVRyYWNrVHJ5UHVzaEVycm9y",
+            "EjsKBGNvZGUYASACKA4yLS5saXZla2l0LnByb3RvLkxvY2FsRGF0YVRyYWNr",
+            "VHJ5UHVzaEVycm9yQ29kZRIPCgdtZXNzYWdlGAIgAigJImQKF1N1YnNjcmli",
+            "ZURhdGFUcmFja0Vycm9yEjgKBGNvZGUYASACKA4yKi5saXZla2l0LnByb3Rv",
+            "LlN1YnNjcmliZURhdGFUcmFja0Vycm9yQ29kZRIPCgdtZXNzYWdlGAIgAigJ",
+            "IpEBChBEYXRhVHJhY2tPcHRpb25zEgwKBG5hbWUYASACKAkSMAoGc2NoZW1h",
+            "GAIgASgLMiAubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTY2hlbWFJZBI9Cg5m",
+            "cmFtZV9lbmNvZGluZxgDIAEoCzIlLmxpdmVraXQucHJvdG8uRGF0YVRyYWNr",
+            "RnJhbWVFbmNvZGluZyKHAQoXUHVibGlzaERhdGFUcmFja1JlcXVlc3QSIAoY",
+            "bG9jYWxfcGFydGljaXBhbnRfaGFuZGxlGAEgAigEEjAKB29wdGlvbnMYAiAC",
+            "KAsyHy5saXZla2l0LnByb3RvLkRhdGFUcmFja09wdGlvbnMSGAoQcmVxdWVz",
+            "dF9hc3luY19pZBgDIAEoBCIsChhQdWJsaXNoRGF0YVRyYWNrUmVzcG9uc2US",
+            "EAoIYXN5bmNfaWQYASACKAQiogEKGFB1Ymxpc2hEYXRhVHJhY2tDYWxsYmFj",
+            "axIQCghhc3luY19pZBgBIAIoBBIzCgV0cmFjaxgCIAEoCzIiLmxpdmVraXQu",
+            "cHJvdG8uT3duZWRMb2NhbERhdGFUcmFja0gAEjUKBWVycm9yGAMgASgLMiQu",
+            "bGl2ZWtpdC5wcm90by5QdWJsaXNoRGF0YVRyYWNrRXJyb3JIAEIICgZyZXN1",
+            "bHQicAoTT3duZWRMb2NhbERhdGFUcmFjaxItCgZoYW5kbGUYASACKAsyHS5s",
+            "aXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEioKBGluZm8YAiACKAsyHC5s",
+            "aXZla2l0LnByb3RvLkRhdGFUcmFja0luZm8iYgocTG9jYWxEYXRhVHJhY2tU",
+            "cnlQdXNoUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQSLAoFZnJhbWUY",
+            "AiACKAsyHS5saXZla2l0LnByb3RvLkRhdGFUcmFja0ZyYW1lIlkKHUxvY2Fs",
+            "RGF0YVRyYWNrVHJ5UHVzaFJlc3BvbnNlEjgKBWVycm9yGAIgASgLMikubGl2",
+            "ZWtpdC5wcm90by5Mb2NhbERhdGFUcmFja1RyeVB1c2hFcnJvciI4CiBMb2Nh",
+            "bERhdGFUcmFja0lzUHVibGlzaGVkUmVxdWVzdBIUCgx0cmFja19oYW5kbGUY",
+            "ASACKAQiOQohTG9jYWxEYXRhVHJhY2tJc1B1Ymxpc2hlZFJlc3BvbnNlEhQK",
+            "DGlzX3B1Ymxpc2hlZBgBIAIoCCI2Ch5Mb2NhbERhdGFUcmFja1VucHVibGlz",
+            "aFJlcXVlc3QSFAoMdHJhY2tfaGFuZGxlGAEgAigEIiEKH0xvY2FsRGF0YVRy",
+            "YWNrVW5wdWJsaXNoUmVzcG9uc2UijQEKFE93bmVkUmVtb3RlRGF0YVRyYWNr",
+            "Ei0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5k",
+            "bGUSKgoEaW5mbxgCIAIoCzIcLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrSW5m",
+            "bxIaChJwdWJsaXNoZXJfaWRlbnRpdHkYAyACKAkiRQoUT3duZWREYXRhVHJh",
+            "Y2tTdHJlYW0SLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlP",
+            "d25lZEhhbmRsZSIwChlEYXRhVHJhY2tTdWJzY3JpYmVPcHRpb25zEhMKC2J1",
+            "ZmZlcl9zaXplGAEgASgNIjkKIVJlbW90ZURhdGFUcmFja0lzUHVibGlzaGVk",
+            "UmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQiOgoiUmVtb3RlRGF0YVRy",
+            "YWNrSXNQdWJsaXNoZWRSZXNwb25zZRIUCgxpc19wdWJsaXNoZWQYASACKAgi",
+            "PAoeUmVtb3RlRGF0YVRyYWNrUGlwZWxpbmVPcHRpb25zEhoKEm1heF9wYXJ0",
+            "aWFsX2ZyYW1lcxgBIAEoDSKAAQooUmVtb3RlRGF0YVRyYWNrU2V0UGlwZWxp",
+            "bmVPcHRpb25zUmVxdWVzdBIUCgx0cmFja19oYW5kbGUYASACKAQSPgoHb3B0",
+            "aW9ucxgCIAIoCzItLmxpdmVraXQucHJvdG8uUmVtb3RlRGF0YVRyYWNrUGlw",
+            "ZWxpbmVPcHRpb25zIisKKVJlbW90ZURhdGFUcmFja1NldFBpcGVsaW5lT3B0",
+            "aW9uc1Jlc3BvbnNlImwKGVN1YnNjcmliZURhdGFUcmFja1JlcXVlc3QSFAoM",
+            "dHJhY2tfaGFuZGxlGAEgAigEEjkKB29wdGlvbnMYAiACKAsyKC5saXZla2l0",
+            "LnByb3RvLkRhdGFUcmFja1N1YnNjcmliZU9wdGlvbnMiUQoaU3Vic2NyaWJl",
+            "RGF0YVRyYWNrUmVzcG9uc2USMwoGc3RyZWFtGAEgAigLMiMubGl2ZWtpdC5w",
+            "cm90by5Pd25lZERhdGFUcmFja1N0cmVhbSIzChpEYXRhVHJhY2tTdHJlYW1S",
+            "ZWFkUmVxdWVzdBIVCg1zdHJlYW1faGFuZGxlGAEgAigEIlMKG0RhdGFUcmFj",
+            "a1N0cmVhbVJlYWRSZXNwb25zZRI0Cgllb3NfZXZlbnQYASABKAsyIS5saXZl",
+            "a2l0LnByb3RvLkRhdGFUcmFja1N0cmVhbUVPUyKwAQoURGF0YVRyYWNrU3Ry",
+            "ZWFtRXZlbnQSFQoNc3RyZWFtX2hhbmRsZRgBIAIoBBJFCg5mcmFtZV9yZWNl",
+            "aXZlZBgCIAEoCzIrLmxpdmVraXQucHJvdG8uRGF0YVRyYWNrU3RyZWFtRnJh",
+            "bWVSZWNlaXZlZEgAEjAKA2VvcxgDIAEoCzIhLmxpdmVraXQucHJvdG8uRGF0",
+            "YVRyYWNrU3RyZWFtRU9TSABCCAoGZGV0YWlsIkwKHERhdGFUcmFja1N0cmVh",
+            "bUZyYW1lUmVjZWl2ZWQSLAoFZnJhbWUYASACKAsyHS5saXZla2l0LnByb3Rv",
+            "LkRhdGFUcmFja0ZyYW1lIksKEkRhdGFUcmFja1N0cmVhbUVPUxI1CgVlcnJv",
+            "chgBIAEoCzImLmxpdmVraXQucHJvdG8uU3Vic2NyaWJlRGF0YVRyYWNrRXJy",
+            "b3Ii+AMKF0RhdGFUcmFja1NjaGVtYUVuY29kaW5nElQKCndlbGxfa25vd24Y",
+            "ASABKA4yPi5saXZla2l0LnByb3RvLkRhdGFUcmFja1NjaGVtYUVuY29kaW5n",
+            "LldlbGxLbm93blNjaGVtYUVuY29kaW5nSAASEAoGY3VzdG9tGAIgASgJSAAi",
+            "6AIKF1dlbGxLbm93blNjaGVtYUVuY29kaW5nEioKJldFTExfS05PV05fU0NI",
+            "RU1BX0VOQ09ESU5HX1VOU1BFQ0lGSUVEEAASJwojV0VMTF9LTk9XTl9TQ0hF",
+            "TUFfRU5DT0RJTkdfUFJPVE9CVUYQARIpCiVXRUxMX0tOT1dOX1NDSEVNQV9F",
+            "TkNPRElOR19GTEFUQlVGRkVSEAISJwojV0VMTF9LTk9XTl9TQ0hFTUFfRU5D",
+            "T0RJTkdfUk9TMV9NU0cQAxInCiNXRUxMX0tOT1dOX1NDSEVNQV9FTkNPRElO",
+            "R19ST1MyX01TRxAEEicKI1dFTExfS05PV05fU0NIRU1BX0VOQ09ESU5HX1JP",
+            "UzJfSURMEAUSJgoiV0VMTF9LTk9XTl9TQ0hFTUFfRU5DT0RJTkdfT01HX0lE",
+            "TBAGEioKJldFTExfS05PV05fU0NIRU1BX0VOQ09ESU5HX0pTT05fU0NIRU1B",
+            "EAdCCgoIZW5jb2Rpbmci2AMKFkRhdGFUcmFja0ZyYW1lRW5jb2RpbmcSUgoK",
+            "d2VsbF9rbm93bhgBIAEoDjI8LmxpdmVraXQucHJvdG8uRGF0YVRyYWNrRnJh",
+            "bWVFbmNvZGluZy5XZWxsS25vd25GcmFtZUVuY29kaW5nSAASEAoGY3VzdG9t",
+            "GAIgASgJSAAiywIKFldlbGxLbm93bkZyYW1lRW5jb2RpbmcSKQolV0VMTF9L",
+            "Tk9XTl9GUkFNRV9FTkNPRElOR19VTlNQRUNJRklFRBAAEiIKHldFTExfS05P",
+            "V05fRlJBTUVfRU5DT0RJTkdfUk9TMRABEiEKHVdFTExfS05PV05fRlJBTUVf",
+            "RU5DT0RJTkdfQ0RSEAISJgoiV0VMTF9LTk9XTl9GUkFNRV9FTkNPRElOR19Q",
+            "Uk9UT0JVRhADEigKJFdFTExfS05PV05fRlJBTUVfRU5DT0RJTkdfRkxBVEJV",
+            "RkZFUhAEEiIKHldFTExfS05PV05fRlJBTUVfRU5DT0RJTkdfQ0JPUhAFEiUK",
+            "IVdFTExfS05PV05fRlJBTUVfRU5DT0RJTkdfTVNHUEFDSxAGEiIKHldFTExf",
+            "S05PV05fRlJBTUVfRU5DT0RJTkdfSlNPThAHQgoKCGVuY29kaW5nIlsKEURh",
+            "dGFUcmFja1NjaGVtYUlkEgwKBG5hbWUYASACKAkSOAoIZW5jb2RpbmcYAiAB",
+            "KAsyJi5saXZla2l0LnByb3RvLkRhdGFUcmFja1NjaGVtYUVuY29kaW5nIpoB",
+            "ChNEZWZpbmVTY2hlbWFSZXF1ZXN0EiAKGGxvY2FsX3BhcnRpY2lwYW50X2hh",
+            "bmRsZRgBIAIoBBIzCglzY2hlbWFfaWQYAiACKAsyIC5saXZla2l0LnByb3Rv",
+            "LkRhdGFUcmFja1NjaGVtYUlkEhIKCmRlZmluaXRpb24YAyACKAkSGAoQcmVx",
+            "dWVzdF9hc3luY19pZBgEIAEoBCIoChREZWZpbmVTY2hlbWFSZXNwb25zZRIQ",
+            "Cghhc3luY19pZBgBIAIoBCI3ChREZWZpbmVTY2hlbWFDYWxsYmFjaxIQCghh",
+            "c3luY19pZBgBIAIoBBINCgVlcnJvchgCIAEoCSKhAQoQR2V0U2NoZW1hUmVx",
+            "dWVzdBIgChhsb2NhbF9wYXJ0aWNpcGFudF9oYW5kbGUYASACKAQSMwoJc2No",
+            "ZW1hX2lkGAIgAigLMiAubGl2ZWtpdC5wcm90by5EYXRhVHJhY2tTY2hlbWFJ",
+            "ZBIcChRwYXJ0aWNpcGFudF9pZGVudGl0eRgDIAIoCRIYChByZXF1ZXN0X2Fz",
+            "eW5jX2lkGAQgASgEIiUKEUdldFNjaGVtYVJlc3BvbnNlEhAKCGFzeW5jX2lk",
+            "GAEgAigEIkgKEUdldFNjaGVtYUNhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigE",
+            "EhIKCmRlZmluaXRpb24YAiABKAkSDQoFZXJyb3IYAyABKAkqhwMKEkRhdGFU",
+            "cmFja0Vycm9yQ29kZRIhCh1EQVRBX1RSQUNLX0VSUk9SX0NPREVfVU5LTk9X",
+            "ThAAEigKJERBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlZBTElEX0hBTkRMRRAB",
+            "Ei4KKkRBVEFfVFJBQ0tfRVJST1JfQ09ERV9EVVBMSUNBVEVfVFJBQ0tfTkFN",
+            "RRACEisKJ0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9UUkFDS19VTlBVQkxJU0hF",
+            "RBADEiUKIURBVEFfVFJBQ0tfRVJST1JfQ09ERV9CVUZGRVJfRlVMTBAEEi0K",
+            "KURBVEFfVFJBQ0tfRVJST1JfQ09ERV9TVUJTQ1JJUFRJT05fQ0xPU0VEEAUS",
+            "IwofREFUQV9UUkFDS19FUlJPUl9DT0RFX0NBTkNFTExFRBAGEigKJERBVEFf",
+            "VFJBQ0tfRVJST1JfQ09ERV9QUk9UT0NPTF9FUlJPUhAHEiIKHkRBVEFfVFJB",
+            "Q0tfRVJST1JfQ09ERV9JTlRFUk5BTBAIKqUEChlQdWJsaXNoRGF0YVRyYWNr",
+            "RXJyb3JDb2RlEikKJVBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RFX1VO",
+            "S05PV04QABIwCixQVUJMSVNIX0RBVEFfVFJBQ0tfRVJST1JfQ09ERV9JTlZB",
+            "TElEX0hBTkRMRRABEjAKLFBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9DT0RF",
+            "X0RVUExJQ0FURV9OQU1FEAISKQolUFVCTElTSF9EQVRBX1RSQUNLX0VSUk9S",
+            "X0NPREVfVElNRU9VVBADEi4KKlBVQkxJU0hfREFUQV9UUkFDS19FUlJPUl9D",
+            "T0RFX0RJU0NPTk5FQ1RFRBAEEi0KKVBVQkxJU0hfREFUQV9UUkFDS19FUlJP",
+            "Ul9DT0RFX05PVF9BTExPV0VEEAUSLgoqUFVCTElTSF9EQVRBX1RSQUNLX0VS",
+            "Uk9SX0NPREVfSU5WQUxJRF9OQU1FEAYSLworUFVCTElTSF9EQVRBX1RSQUNL",
+            "X0VSUk9SX0NPREVfTElNSVRfUkVBQ0hFRBAHEjAKLFBVQkxJU0hfREFUQV9U",
+            "UkFDS19FUlJPUl9DT0RFX1BST1RPQ09MX0VSUk9SEAgSKgomUFVCTElTSF9E",
+            "QVRBX1RSQUNLX0VSUk9SX0NPREVfSU5URVJOQUwQCRIwCixQVUJMSVNIX0RB",
+            "VEFfVFJBQ0tfRVJST1JfQ09ERV9JTlZBTElEX1NDSEVNQRAKKq8CCh5Mb2Nh",
+            "bERhdGFUcmFja1RyeVB1c2hFcnJvckNvZGUSMAosTE9DQUxfREFUQV9UUkFD",
+            "S19UUllfUFVTSF9FUlJPUl9DT0RFX1VOS05PV04QABI3CjNMT0NBTF9EQVRB",
+            "X1RSQUNLX1RSWV9QVVNIX0VSUk9SX0NPREVfSU5WQUxJRF9IQU5ETEUQARI6",
+            "CjZMT0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VSUk9SX0NPREVfVFJBQ0tf",
+            "VU5QVUJMSVNIRUQQAhIzCi9MT0NBTF9EQVRBX1RSQUNLX1RSWV9QVVNIX0VS",
+            "Uk9SX0NPREVfUVVFVUVfRlVMTBADEjEKLUxPQ0FMX0RBVEFfVFJBQ0tfVFJZ",
+            "X1BVU0hfRVJST1JfQ09ERV9JTlRFUk5BTBAEKvACChtTdWJzY3JpYmVEYXRh",
+            "VHJhY2tFcnJvckNvZGUSKwonU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1Jf",
+            "Q09ERV9VTktOT1dOEAASMgouU1VCU0NSSUJFX0RBVEFfVFJBQ0tfRVJST1Jf",
+            "Q09ERV9JTlZBTElEX0hBTkRMRRABEi8KK1NVQlNDUklCRV9EQVRBX1RSQUNL",
+            "X0VSUk9SX0NPREVfVU5QVUJMSVNIRUQQAhIrCidTVUJTQ1JJQkVfREFUQV9U",
+            "UkFDS19FUlJPUl9DT0RFX1RJTUVPVVQQAxIwCixTVUJTQ1JJQkVfREFUQV9U",
+            "UkFDS19FUlJPUl9DT0RFX0RJU0NPTk5FQ1RFRBAEEjIKLlNVQlNDUklCRV9E",
+            "QVRBX1RSQUNLX0VSUk9SX0NPREVfUFJPVE9DT0xfRVJST1IQBRIsCihTVUJT",
+            "Q1JJQkVfREFUQV9UUkFDS19FUlJPUl9DT0RFX0lOVEVSTkFMEAZCEKoCDUxp",
+            "dmVLaXQuUHJvdG8="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.DataTrackErrorCode), typeof(global::LiveKit.Proto.PublishDataTrackErrorCode), typeof(global::LiveKit.Proto.LocalDataTrackTryPushErrorCode), typeof(global::LiveKit.Proto.SubscribeDataTrackErrorCode), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackInfo), global::LiveKit.Proto.DataTrackInfo.Parser, new[]{ "Name", "Sid", "UsesE2Ee" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackInfo), global::LiveKit.Proto.DataTrackInfo.Parser, new[]{ "Name", "Sid", "UsesE2Ee", "Schema", "FrameEncoding" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackFrame), global::LiveKit.Proto.DataTrackFrame.Parser, new[]{ "Payload", "UserTimestamp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackError), global::LiveKit.Proto.DataTrackError.Parser, new[]{ "Code", "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PublishDataTrackError), global::LiveKit.Proto.PublishDataTrackError.Parser, new[]{ "Code", "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.LocalDataTrackTryPushError), global::LiveKit.Proto.LocalDataTrackTryPushError.Parser, new[]{ "Code", "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.SubscribeDataTrackError), global::LiveKit.Proto.SubscribeDataTrackError.Parser, new[]{ "Code", "Message" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackOptions), global::LiveKit.Proto.DataTrackOptions.Parser, new[]{ "Name" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackOptions), global::LiveKit.Proto.DataTrackOptions.Parser, new[]{ "Name", "Schema", "FrameEncoding" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PublishDataTrackRequest), global::LiveKit.Proto.PublishDataTrackRequest.Parser, new[]{ "LocalParticipantHandle", "Options", "RequestAsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PublishDataTrackResponse), global::LiveKit.Proto.PublishDataTrackResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PublishDataTrackCallback), global::LiveKit.Proto.PublishDataTrackCallback.Parser, new[]{ "AsyncId", "Track", "Error" }, new[]{ "Result" }, null, null, null),
@@ -155,7 +197,16 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamReadResponse), global::LiveKit.Proto.DataTrackStreamReadResponse.Parser, new[]{ "EosEvent" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamEvent), global::LiveKit.Proto.DataTrackStreamEvent.Parser, new[]{ "StreamHandle", "FrameReceived", "Eos" }, new[]{ "Detail" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamFrameReceived), global::LiveKit.Proto.DataTrackStreamFrameReceived.Parser, new[]{ "Frame" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamEOS), global::LiveKit.Proto.DataTrackStreamEOS.Parser, new[]{ "Error" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackStreamEOS), global::LiveKit.Proto.DataTrackStreamEOS.Parser, new[]{ "Error" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSchemaEncoding), global::LiveKit.Proto.DataTrackSchemaEncoding.Parser, new[]{ "WellKnown", "Custom" }, new[]{ "Encoding" }, new[]{ typeof(global::LiveKit.Proto.DataTrackSchemaEncoding.Types.WellKnownSchemaEncoding) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackFrameEncoding), global::LiveKit.Proto.DataTrackFrameEncoding.Parser, new[]{ "WellKnown", "Custom" }, new[]{ "Encoding" }, new[]{ typeof(global::LiveKit.Proto.DataTrackFrameEncoding.Types.WellKnownFrameEncoding) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DataTrackSchemaId), global::LiveKit.Proto.DataTrackSchemaId.Parser, new[]{ "Name", "Encoding" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DefineSchemaRequest), global::LiveKit.Proto.DefineSchemaRequest.Parser, new[]{ "LocalParticipantHandle", "SchemaId", "Definition", "RequestAsyncId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DefineSchemaResponse), global::LiveKit.Proto.DefineSchemaResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.DefineSchemaCallback), global::LiveKit.Proto.DefineSchemaCallback.Parser, new[]{ "AsyncId", "Error" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetSchemaRequest), global::LiveKit.Proto.GetSchemaRequest.Parser, new[]{ "LocalParticipantHandle", "SchemaId", "ParticipantIdentity", "RequestAsyncId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetSchemaResponse), global::LiveKit.Proto.GetSchemaResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GetSchemaCallback), global::LiveKit.Proto.GetSchemaCallback.Parser, new[]{ "AsyncId", "Definition", "Error" }, null, null, null, null)
           }));
     }
     #endregion
@@ -185,6 +236,7 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("PUBLISH_DATA_TRACK_ERROR_CODE_LIMIT_REACHED")] LimitReached = 7,
     [pbr::OriginalName("PUBLISH_DATA_TRACK_ERROR_CODE_PROTOCOL_ERROR")] ProtocolError = 8,
     [pbr::OriginalName("PUBLISH_DATA_TRACK_ERROR_CODE_INTERNAL")] Internal = 9,
+    [pbr::OriginalName("PUBLISH_DATA_TRACK_ERROR_CODE_INVALID_SCHEMA")] InvalidSchema = 10,
   }
 
   public enum LocalDataTrackTryPushErrorCode {
@@ -251,6 +303,8 @@ namespace LiveKit.Proto {
       name_ = other.name_;
       sid_ = other.sid_;
       usesE2Ee_ = other.usesE2Ee_;
+      schema_ = other.schema_ != null ? other.schema_.Clone() : null;
+      frameEncoding_ = other.frameEncoding_ != null ? other.frameEncoding_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -348,6 +402,36 @@ namespace LiveKit.Proto {
       _hasBits0 &= ~1;
     }
 
+    /// <summary>Field number for the "schema" field.</summary>
+    public const int SchemaFieldNumber = 4;
+    private global::LiveKit.Proto.DataTrackSchemaId schema_;
+    /// <summary>
+    /// Schema associated with frames sent on the track, if any.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackSchemaId Schema {
+      get { return schema_; }
+      set {
+        schema_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "frame_encoding" field.</summary>
+    public const int FrameEncodingFieldNumber = 5;
+    private global::LiveKit.Proto.DataTrackFrameEncoding frameEncoding_;
+    /// <summary>
+    /// Encoding of frames sent on the track, if specified.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackFrameEncoding FrameEncoding {
+      get { return frameEncoding_; }
+      set {
+        frameEncoding_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -366,6 +450,8 @@ namespace LiveKit.Proto {
       if (Name != other.Name) return false;
       if (Sid != other.Sid) return false;
       if (UsesE2Ee != other.UsesE2Ee) return false;
+      if (!object.Equals(Schema, other.Schema)) return false;
+      if (!object.Equals(FrameEncoding, other.FrameEncoding)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -376,6 +462,8 @@ namespace LiveKit.Proto {
       if (HasName) hash ^= Name.GetHashCode();
       if (HasSid) hash ^= Sid.GetHashCode();
       if (HasUsesE2Ee) hash ^= UsesE2Ee.GetHashCode();
+      if (schema_ != null) hash ^= Schema.GetHashCode();
+      if (frameEncoding_ != null) hash ^= FrameEncoding.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -406,6 +494,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteBool(UsesE2Ee);
       }
+      if (schema_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Schema);
+      }
+      if (frameEncoding_ != null) {
+        output.WriteRawTag(42);
+        output.WriteMessage(FrameEncoding);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -428,6 +524,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(24);
         output.WriteBool(UsesE2Ee);
       }
+      if (schema_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Schema);
+      }
+      if (frameEncoding_ != null) {
+        output.WriteRawTag(42);
+        output.WriteMessage(FrameEncoding);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -446,6 +550,12 @@ namespace LiveKit.Proto {
       }
       if (HasUsesE2Ee) {
         size += 1 + 1;
+      }
+      if (schema_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Schema);
+      }
+      if (frameEncoding_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(FrameEncoding);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -467,6 +577,18 @@ namespace LiveKit.Proto {
       }
       if (other.HasUsesE2Ee) {
         UsesE2Ee = other.UsesE2Ee;
+      }
+      if (other.schema_ != null) {
+        if (schema_ == null) {
+          Schema = new global::LiveKit.Proto.DataTrackSchemaId();
+        }
+        Schema.MergeFrom(other.Schema);
+      }
+      if (other.frameEncoding_ != null) {
+        if (frameEncoding_ == null) {
+          FrameEncoding = new global::LiveKit.Proto.DataTrackFrameEncoding();
+        }
+        FrameEncoding.MergeFrom(other.FrameEncoding);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -499,6 +621,20 @@ namespace LiveKit.Proto {
             UsesE2Ee = input.ReadBool();
             break;
           }
+          case 34: {
+            if (schema_ == null) {
+              Schema = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(Schema);
+            break;
+          }
+          case 42: {
+            if (frameEncoding_ == null) {
+              FrameEncoding = new global::LiveKit.Proto.DataTrackFrameEncoding();
+            }
+            input.ReadMessage(FrameEncoding);
+            break;
+          }
         }
       }
     #endif
@@ -528,6 +664,20 @@ namespace LiveKit.Proto {
           }
           case 24: {
             UsesE2Ee = input.ReadBool();
+            break;
+          }
+          case 34: {
+            if (schema_ == null) {
+              Schema = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(Schema);
+            break;
+          }
+          case 42: {
+            if (frameEncoding_ == null) {
+              FrameEncoding = new global::LiveKit.Proto.DataTrackFrameEncoding();
+            }
+            input.ReadMessage(FrameEncoding);
             break;
           }
         }
@@ -1909,6 +2059,8 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DataTrackOptions(DataTrackOptions other) : this() {
       name_ = other.name_;
+      schema_ = other.schema_ != null ? other.schema_.Clone() : null;
+      frameEncoding_ = other.frameEncoding_ != null ? other.frameEncoding_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1949,6 +2101,36 @@ namespace LiveKit.Proto {
       name_ = null;
     }
 
+    /// <summary>Field number for the "schema" field.</summary>
+    public const int SchemaFieldNumber = 2;
+    private global::LiveKit.Proto.DataTrackSchemaId schema_;
+    /// <summary>
+    /// Schema describing frames sent on the track.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackSchemaId Schema {
+      get { return schema_; }
+      set {
+        schema_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "frame_encoding" field.</summary>
+    public const int FrameEncodingFieldNumber = 3;
+    private global::LiveKit.Proto.DataTrackFrameEncoding frameEncoding_;
+    /// <summary>
+    /// Encoding of frames sent on the track.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackFrameEncoding FrameEncoding {
+      get { return frameEncoding_; }
+      set {
+        frameEncoding_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1965,6 +2147,8 @@ namespace LiveKit.Proto {
         return true;
       }
       if (Name != other.Name) return false;
+      if (!object.Equals(Schema, other.Schema)) return false;
+      if (!object.Equals(FrameEncoding, other.FrameEncoding)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1973,6 +2157,8 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (HasName) hash ^= Name.GetHashCode();
+      if (schema_ != null) hash ^= Schema.GetHashCode();
+      if (frameEncoding_ != null) hash ^= FrameEncoding.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1995,6 +2181,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
+      if (schema_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Schema);
+      }
+      if (frameEncoding_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(FrameEncoding);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2009,6 +2203,14 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
+      if (schema_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Schema);
+      }
+      if (frameEncoding_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(FrameEncoding);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2021,6 +2223,12 @@ namespace LiveKit.Proto {
       int size = 0;
       if (HasName) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (schema_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Schema);
+      }
+      if (frameEncoding_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(FrameEncoding);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2036,6 +2244,18 @@ namespace LiveKit.Proto {
       }
       if (other.HasName) {
         Name = other.Name;
+      }
+      if (other.schema_ != null) {
+        if (schema_ == null) {
+          Schema = new global::LiveKit.Proto.DataTrackSchemaId();
+        }
+        Schema.MergeFrom(other.Schema);
+      }
+      if (other.frameEncoding_ != null) {
+        if (frameEncoding_ == null) {
+          FrameEncoding = new global::LiveKit.Proto.DataTrackFrameEncoding();
+        }
+        FrameEncoding.MergeFrom(other.FrameEncoding);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2060,6 +2280,20 @@ namespace LiveKit.Proto {
             Name = input.ReadString();
             break;
           }
+          case 18: {
+            if (schema_ == null) {
+              Schema = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(Schema);
+            break;
+          }
+          case 26: {
+            if (frameEncoding_ == null) {
+              FrameEncoding = new global::LiveKit.Proto.DataTrackFrameEncoding();
+            }
+            input.ReadMessage(FrameEncoding);
+            break;
+          }
         }
       }
     #endif
@@ -2081,6 +2315,20 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (schema_ == null) {
+              Schema = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(Schema);
+            break;
+          }
+          case 26: {
+            if (frameEncoding_ == null) {
+              FrameEncoding = new global::LiveKit.Proto.DataTrackFrameEncoding();
+            }
+            input.ReadMessage(FrameEncoding);
             break;
           }
         }
@@ -7992,6 +8240,2686 @@ namespace LiveKit.Proto {
               Error = new global::LiveKit.Proto.SubscribeDataTrackError();
             }
             input.ReadMessage(Error);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Encoding used to interpret a data track schema definition.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DataTrackSchemaEncoding : pb::IMessage<DataTrackSchemaEncoding>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DataTrackSchemaEncoding> _parser = new pb::MessageParser<DataTrackSchemaEncoding>(() => new DataTrackSchemaEncoding());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DataTrackSchemaEncoding> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[32]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSchemaEncoding() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSchemaEncoding(DataTrackSchemaEncoding other) : this() {
+      switch (other.EncodingCase) {
+        case EncodingOneofCase.WellKnown:
+          WellKnown = other.WellKnown;
+          break;
+        case EncodingOneofCase.Custom:
+          Custom = other.Custom;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSchemaEncoding Clone() {
+      return new DataTrackSchemaEncoding(this);
+    }
+
+    /// <summary>Field number for the "well_known" field.</summary>
+    public const int WellKnownFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackSchemaEncoding.Types.WellKnownSchemaEncoding WellKnown {
+      get { return HasWellKnown ? (global::LiveKit.Proto.DataTrackSchemaEncoding.Types.WellKnownSchemaEncoding) encoding_ : global::LiveKit.Proto.DataTrackSchemaEncoding.Types.WellKnownSchemaEncoding.Unspecified; }
+      set {
+        encoding_ = value;
+        encodingCase_ = EncodingOneofCase.WellKnown;
+      }
+    }
+    /// <summary>Gets whether the "well_known" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWellKnown {
+      get { return encodingCase_ == EncodingOneofCase.WellKnown; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "well_known" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWellKnown() {
+      if (HasWellKnown) {
+        ClearEncoding();
+      }
+    }
+
+    /// <summary>Field number for the "custom" field.</summary>
+    public const int CustomFieldNumber = 2;
+    /// <summary>
+    /// Identifier of a custom encoding not covered by the well-known cases.
+    /// This must be non-empty and no longer than 25 characters.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Custom {
+      get { return HasCustom ? (string) encoding_ : ""; }
+      set {
+        encoding_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        encodingCase_ = EncodingOneofCase.Custom;
+      }
+    }
+    /// <summary>Gets whether the "custom" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCustom {
+      get { return encodingCase_ == EncodingOneofCase.Custom; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "custom" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCustom() {
+      if (HasCustom) {
+        ClearEncoding();
+      }
+    }
+
+    private object encoding_;
+    /// <summary>Enum of possible cases for the "encoding" oneof.</summary>
+    public enum EncodingOneofCase {
+      None = 0,
+      WellKnown = 1,
+      Custom = 2,
+    }
+    private EncodingOneofCase encodingCase_ = EncodingOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodingOneofCase EncodingCase {
+      get { return encodingCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEncoding() {
+      encodingCase_ = EncodingOneofCase.None;
+      encoding_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DataTrackSchemaEncoding);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DataTrackSchemaEncoding other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (WellKnown != other.WellKnown) return false;
+      if (Custom != other.Custom) return false;
+      if (EncodingCase != other.EncodingCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasWellKnown) hash ^= WellKnown.GetHashCode();
+      if (HasCustom) hash ^= Custom.GetHashCode();
+      hash ^= (int) encodingCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasWellKnown) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) WellKnown);
+      }
+      if (HasCustom) {
+        output.WriteRawTag(18);
+        output.WriteString(Custom);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasWellKnown) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) WellKnown);
+      }
+      if (HasCustom) {
+        output.WriteRawTag(18);
+        output.WriteString(Custom);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasWellKnown) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) WellKnown);
+      }
+      if (HasCustom) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Custom);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DataTrackSchemaEncoding other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.EncodingCase) {
+        case EncodingOneofCase.WellKnown:
+          WellKnown = other.WellKnown;
+          break;
+        case EncodingOneofCase.Custom:
+          Custom = other.Custom;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            encoding_ = input.ReadEnum();
+            encodingCase_ = EncodingOneofCase.WellKnown;
+            break;
+          }
+          case 18: {
+            Custom = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            encoding_ = input.ReadEnum();
+            encodingCase_ = EncodingOneofCase.WellKnown;
+            break;
+          }
+          case 18: {
+            Custom = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the DataTrackSchemaEncoding message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      /// <summary>
+      /// Well-known encoding for a schema definition.
+      /// </summary>
+      public enum WellKnownSchemaEncoding {
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_UNSPECIFIED")] Unspecified = 0,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_PROTOBUF")] Protobuf = 1,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_FLATBUFFER")] Flatbuffer = 2,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_ROS1_MSG")] Ros1Msg = 3,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_ROS2_MSG")] Ros2Msg = 4,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_ROS2_IDL")] Ros2Idl = 5,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_OMG_IDL")] OmgIdl = 6,
+        [pbr::OriginalName("WELL_KNOWN_SCHEMA_ENCODING_JSON_SCHEMA")] JsonSchema = 7,
+      }
+
+    }
+    #endregion
+
+  }
+
+  /// <summary>
+  /// Encoding used for frames sent on a data track.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DataTrackFrameEncoding : pb::IMessage<DataTrackFrameEncoding>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DataTrackFrameEncoding> _parser = new pb::MessageParser<DataTrackFrameEncoding>(() => new DataTrackFrameEncoding());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DataTrackFrameEncoding> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[33]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackFrameEncoding() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackFrameEncoding(DataTrackFrameEncoding other) : this() {
+      switch (other.EncodingCase) {
+        case EncodingOneofCase.WellKnown:
+          WellKnown = other.WellKnown;
+          break;
+        case EncodingOneofCase.Custom:
+          Custom = other.Custom;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackFrameEncoding Clone() {
+      return new DataTrackFrameEncoding(this);
+    }
+
+    /// <summary>Field number for the "well_known" field.</summary>
+    public const int WellKnownFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackFrameEncoding.Types.WellKnownFrameEncoding WellKnown {
+      get { return HasWellKnown ? (global::LiveKit.Proto.DataTrackFrameEncoding.Types.WellKnownFrameEncoding) encoding_ : global::LiveKit.Proto.DataTrackFrameEncoding.Types.WellKnownFrameEncoding.Unspecified; }
+      set {
+        encoding_ = value;
+        encodingCase_ = EncodingOneofCase.WellKnown;
+      }
+    }
+    /// <summary>Gets whether the "well_known" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWellKnown {
+      get { return encodingCase_ == EncodingOneofCase.WellKnown; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "well_known" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWellKnown() {
+      if (HasWellKnown) {
+        ClearEncoding();
+      }
+    }
+
+    /// <summary>Field number for the "custom" field.</summary>
+    public const int CustomFieldNumber = 2;
+    /// <summary>
+    /// Identifier of a custom encoding not covered by the well-known cases.
+    /// This must be non-empty and no longer than 25 characters.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Custom {
+      get { return HasCustom ? (string) encoding_ : ""; }
+      set {
+        encoding_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        encodingCase_ = EncodingOneofCase.Custom;
+      }
+    }
+    /// <summary>Gets whether the "custom" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCustom {
+      get { return encodingCase_ == EncodingOneofCase.Custom; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "custom" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCustom() {
+      if (HasCustom) {
+        ClearEncoding();
+      }
+    }
+
+    private object encoding_;
+    /// <summary>Enum of possible cases for the "encoding" oneof.</summary>
+    public enum EncodingOneofCase {
+      None = 0,
+      WellKnown = 1,
+      Custom = 2,
+    }
+    private EncodingOneofCase encodingCase_ = EncodingOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodingOneofCase EncodingCase {
+      get { return encodingCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearEncoding() {
+      encodingCase_ = EncodingOneofCase.None;
+      encoding_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DataTrackFrameEncoding);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DataTrackFrameEncoding other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (WellKnown != other.WellKnown) return false;
+      if (Custom != other.Custom) return false;
+      if (EncodingCase != other.EncodingCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasWellKnown) hash ^= WellKnown.GetHashCode();
+      if (HasCustom) hash ^= Custom.GetHashCode();
+      hash ^= (int) encodingCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasWellKnown) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) WellKnown);
+      }
+      if (HasCustom) {
+        output.WriteRawTag(18);
+        output.WriteString(Custom);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasWellKnown) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) WellKnown);
+      }
+      if (HasCustom) {
+        output.WriteRawTag(18);
+        output.WriteString(Custom);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasWellKnown) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) WellKnown);
+      }
+      if (HasCustom) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Custom);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DataTrackFrameEncoding other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.EncodingCase) {
+        case EncodingOneofCase.WellKnown:
+          WellKnown = other.WellKnown;
+          break;
+        case EncodingOneofCase.Custom:
+          Custom = other.Custom;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            encoding_ = input.ReadEnum();
+            encodingCase_ = EncodingOneofCase.WellKnown;
+            break;
+          }
+          case 18: {
+            Custom = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            encoding_ = input.ReadEnum();
+            encodingCase_ = EncodingOneofCase.WellKnown;
+            break;
+          }
+          case 18: {
+            Custom = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the DataTrackFrameEncoding message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      /// <summary>
+      /// Well-known encoding for frame payloads.
+      /// </summary>
+      public enum WellKnownFrameEncoding {
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_UNSPECIFIED")] Unspecified = 0,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_ROS1")] Ros1 = 1,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_CDR")] Cdr = 2,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_PROTOBUF")] Protobuf = 3,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_FLATBUFFER")] Flatbuffer = 4,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_CBOR")] Cbor = 5,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_MSGPACK")] Msgpack = 6,
+        [pbr::OriginalName("WELL_KNOWN_FRAME_ENCODING_JSON")] Json = 7,
+      }
+
+    }
+    #endregion
+
+  }
+
+  /// <summary>
+  /// Uniquely identifies a data track schema.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DataTrackSchemaId : pb::IMessage<DataTrackSchemaId>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DataTrackSchemaId> _parser = new pb::MessageParser<DataTrackSchemaId>(() => new DataTrackSchemaId());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DataTrackSchemaId> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[34]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSchemaId() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSchemaId(DataTrackSchemaId other) : this() {
+      name_ = other.name_;
+      encoding_ = other.encoding_ != null ? other.encoding_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DataTrackSchemaId Clone() {
+      return new DataTrackSchemaId(this);
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 1;
+    private readonly static string NameDefaultValue = "";
+
+    private string name_;
+    /// <summary>
+    /// Name component of the schema identifier.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Name {
+      get { return name_ ?? NameDefaultValue; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "name" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasName {
+      get { return name_ != null; }
+    }
+    /// <summary>Clears the value of the "name" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearName() {
+      name_ = null;
+    }
+
+    /// <summary>Field number for the "encoding" field.</summary>
+    public const int EncodingFieldNumber = 2;
+    private global::LiveKit.Proto.DataTrackSchemaEncoding encoding_;
+    /// <summary>
+    /// Encoding of the schema definition.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackSchemaEncoding Encoding {
+      get { return encoding_; }
+      set {
+        encoding_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DataTrackSchemaId);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DataTrackSchemaId other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Name != other.Name) return false;
+      if (!object.Equals(Encoding, other.Encoding)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasName) hash ^= Name.GetHashCode();
+      if (encoding_ != null) hash ^= Encoding.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasName) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (encoding_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Encoding);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasName) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (encoding_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Encoding);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasName) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (encoding_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Encoding);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DataTrackSchemaId other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasName) {
+        Name = other.Name;
+      }
+      if (other.encoding_ != null) {
+        if (encoding_ == null) {
+          Encoding = new global::LiveKit.Proto.DataTrackSchemaEncoding();
+        }
+        Encoding.MergeFrom(other.Encoding);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (encoding_ == null) {
+              Encoding = new global::LiveKit.Proto.DataTrackSchemaEncoding();
+            }
+            input.ReadMessage(Encoding);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (encoding_ == null) {
+              Encoding = new global::LiveKit.Proto.DataTrackSchemaEncoding();
+            }
+            input.ReadMessage(Encoding);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Define (store) a schema definition for the local participant.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DefineSchemaRequest : pb::IMessage<DefineSchemaRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DefineSchemaRequest> _parser = new pb::MessageParser<DefineSchemaRequest>(() => new DefineSchemaRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DefineSchemaRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[35]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaRequest(DefineSchemaRequest other) : this() {
+      _hasBits0 = other._hasBits0;
+      localParticipantHandle_ = other.localParticipantHandle_;
+      schemaId_ = other.schemaId_ != null ? other.schemaId_.Clone() : null;
+      definition_ = other.definition_;
+      requestAsyncId_ = other.requestAsyncId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaRequest Clone() {
+      return new DefineSchemaRequest(this);
+    }
+
+    /// <summary>Field number for the "local_participant_handle" field.</summary>
+    public const int LocalParticipantHandleFieldNumber = 1;
+    private readonly static ulong LocalParticipantHandleDefaultValue = 0UL;
+
+    private ulong localParticipantHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong LocalParticipantHandle {
+      get { if ((_hasBits0 & 1) != 0) { return localParticipantHandle_; } else { return LocalParticipantHandleDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        localParticipantHandle_ = value;
+      }
+    }
+    /// <summary>Gets whether the "local_participant_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLocalParticipantHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "local_participant_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLocalParticipantHandle() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "schema_id" field.</summary>
+    public const int SchemaIdFieldNumber = 2;
+    private global::LiveKit.Proto.DataTrackSchemaId schemaId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackSchemaId SchemaId {
+      get { return schemaId_; }
+      set {
+        schemaId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "definition" field.</summary>
+    public const int DefinitionFieldNumber = 3;
+    private readonly static string DefinitionDefaultValue = "";
+
+    private string definition_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Definition {
+      get { return definition_ ?? DefinitionDefaultValue; }
+      set {
+        definition_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "definition" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDefinition {
+      get { return definition_ != null; }
+    }
+    /// <summary>Clears the value of the "definition" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDefinition() {
+      definition_ = null;
+    }
+
+    /// <summary>Field number for the "request_async_id" field.</summary>
+    public const int RequestAsyncIdFieldNumber = 4;
+    private readonly static ulong RequestAsyncIdDefaultValue = 0UL;
+
+    private ulong requestAsyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong RequestAsyncId {
+      get { if ((_hasBits0 & 2) != 0) { return requestAsyncId_; } else { return RequestAsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        requestAsyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "request_async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRequestAsyncId {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "request_async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRequestAsyncId() {
+      _hasBits0 &= ~2;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DefineSchemaRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DefineSchemaRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (LocalParticipantHandle != other.LocalParticipantHandle) return false;
+      if (!object.Equals(SchemaId, other.SchemaId)) return false;
+      if (Definition != other.Definition) return false;
+      if (RequestAsyncId != other.RequestAsyncId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasLocalParticipantHandle) hash ^= LocalParticipantHandle.GetHashCode();
+      if (schemaId_ != null) hash ^= SchemaId.GetHashCode();
+      if (HasDefinition) hash ^= Definition.GetHashCode();
+      if (HasRequestAsyncId) hash ^= RequestAsyncId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasLocalParticipantHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(LocalParticipantHandle);
+      }
+      if (schemaId_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(SchemaId);
+      }
+      if (HasDefinition) {
+        output.WriteRawTag(26);
+        output.WriteString(Definition);
+      }
+      if (HasRequestAsyncId) {
+        output.WriteRawTag(32);
+        output.WriteUInt64(RequestAsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasLocalParticipantHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(LocalParticipantHandle);
+      }
+      if (schemaId_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(SchemaId);
+      }
+      if (HasDefinition) {
+        output.WriteRawTag(26);
+        output.WriteString(Definition);
+      }
+      if (HasRequestAsyncId) {
+        output.WriteRawTag(32);
+        output.WriteUInt64(RequestAsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasLocalParticipantHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(LocalParticipantHandle);
+      }
+      if (schemaId_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SchemaId);
+      }
+      if (HasDefinition) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Definition);
+      }
+      if (HasRequestAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestAsyncId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DefineSchemaRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasLocalParticipantHandle) {
+        LocalParticipantHandle = other.LocalParticipantHandle;
+      }
+      if (other.schemaId_ != null) {
+        if (schemaId_ == null) {
+          SchemaId = new global::LiveKit.Proto.DataTrackSchemaId();
+        }
+        SchemaId.MergeFrom(other.SchemaId);
+      }
+      if (other.HasDefinition) {
+        Definition = other.Definition;
+      }
+      if (other.HasRequestAsyncId) {
+        RequestAsyncId = other.RequestAsyncId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            LocalParticipantHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (schemaId_ == null) {
+              SchemaId = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(SchemaId);
+            break;
+          }
+          case 26: {
+            Definition = input.ReadString();
+            break;
+          }
+          case 32: {
+            RequestAsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            LocalParticipantHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (schemaId_ == null) {
+              SchemaId = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(SchemaId);
+            break;
+          }
+          case 26: {
+            Definition = input.ReadString();
+            break;
+          }
+          case 32: {
+            RequestAsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DefineSchemaResponse : pb::IMessage<DefineSchemaResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DefineSchemaResponse> _parser = new pb::MessageParser<DefineSchemaResponse>(() => new DefineSchemaResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DefineSchemaResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[36]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaResponse(DefineSchemaResponse other) : this() {
+      _hasBits0 = other._hasBits0;
+      asyncId_ = other.asyncId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaResponse Clone() {
+      return new DefineSchemaResponse(this);
+    }
+
+    /// <summary>Field number for the "async_id" field.</summary>
+    public const int AsyncIdFieldNumber = 1;
+    private readonly static ulong AsyncIdDefaultValue = 0UL;
+
+    private ulong asyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong AsyncId {
+      get { if ((_hasBits0 & 1) != 0) { return asyncId_; } else { return AsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        asyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAsyncId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAsyncId() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DefineSchemaResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DefineSchemaResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (AsyncId != other.AsyncId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasAsyncId) hash ^= AsyncId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DefineSchemaResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasAsyncId) {
+        AsyncId = other.AsyncId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class DefineSchemaCallback : pb::IMessage<DefineSchemaCallback>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DefineSchemaCallback> _parser = new pb::MessageParser<DefineSchemaCallback>(() => new DefineSchemaCallback());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DefineSchemaCallback> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[37]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaCallback() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaCallback(DefineSchemaCallback other) : this() {
+      _hasBits0 = other._hasBits0;
+      asyncId_ = other.asyncId_;
+      error_ = other.error_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DefineSchemaCallback Clone() {
+      return new DefineSchemaCallback(this);
+    }
+
+    /// <summary>Field number for the "async_id" field.</summary>
+    public const int AsyncIdFieldNumber = 1;
+    private readonly static ulong AsyncIdDefaultValue = 0UL;
+
+    private ulong asyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong AsyncId {
+      get { if ((_hasBits0 & 1) != 0) { return asyncId_; } else { return AsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        asyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAsyncId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAsyncId() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "error" field.</summary>
+    public const int ErrorFieldNumber = 2;
+    private readonly static string ErrorDefaultValue = "";
+
+    private string error_;
+    /// <summary>
+    /// Present if the schema could not be defined.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Error {
+      get { return error_ ?? ErrorDefaultValue; }
+      set {
+        error_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "error" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasError {
+      get { return error_ != null; }
+    }
+    /// <summary>Clears the value of the "error" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearError() {
+      error_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DefineSchemaCallback);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DefineSchemaCallback other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (AsyncId != other.AsyncId) return false;
+      if (Error != other.Error) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasAsyncId) hash ^= AsyncId.GetHashCode();
+      if (HasError) hash ^= Error.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (HasError) {
+        output.WriteRawTag(18);
+        output.WriteString(Error);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (HasError) {
+        output.WriteRawTag(18);
+        output.WriteString(Error);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
+      }
+      if (HasError) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DefineSchemaCallback other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasAsyncId) {
+        AsyncId = other.AsyncId;
+      }
+      if (other.HasError) {
+        Error = other.Error;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Error = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Error = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Retrieve a schema definition previously stored by a participant.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GetSchemaRequest : pb::IMessage<GetSchemaRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetSchemaRequest> _parser = new pb::MessageParser<GetSchemaRequest>(() => new GetSchemaRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetSchemaRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[38]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaRequest(GetSchemaRequest other) : this() {
+      _hasBits0 = other._hasBits0;
+      localParticipantHandle_ = other.localParticipantHandle_;
+      schemaId_ = other.schemaId_ != null ? other.schemaId_.Clone() : null;
+      participantIdentity_ = other.participantIdentity_;
+      requestAsyncId_ = other.requestAsyncId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaRequest Clone() {
+      return new GetSchemaRequest(this);
+    }
+
+    /// <summary>Field number for the "local_participant_handle" field.</summary>
+    public const int LocalParticipantHandleFieldNumber = 1;
+    private readonly static ulong LocalParticipantHandleDefaultValue = 0UL;
+
+    private ulong localParticipantHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong LocalParticipantHandle {
+      get { if ((_hasBits0 & 1) != 0) { return localParticipantHandle_; } else { return LocalParticipantHandleDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        localParticipantHandle_ = value;
+      }
+    }
+    /// <summary>Gets whether the "local_participant_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasLocalParticipantHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "local_participant_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearLocalParticipantHandle() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "schema_id" field.</summary>
+    public const int SchemaIdFieldNumber = 2;
+    private global::LiveKit.Proto.DataTrackSchemaId schemaId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.DataTrackSchemaId SchemaId {
+      get { return schemaId_; }
+      set {
+        schemaId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "participant_identity" field.</summary>
+    public const int ParticipantIdentityFieldNumber = 3;
+    private readonly static string ParticipantIdentityDefaultValue = "";
+
+    private string participantIdentity_;
+    /// <summary>
+    /// Identity of the participant who owns the schema.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ParticipantIdentity {
+      get { return participantIdentity_ ?? ParticipantIdentityDefaultValue; }
+      set {
+        participantIdentity_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "participant_identity" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasParticipantIdentity {
+      get { return participantIdentity_ != null; }
+    }
+    /// <summary>Clears the value of the "participant_identity" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearParticipantIdentity() {
+      participantIdentity_ = null;
+    }
+
+    /// <summary>Field number for the "request_async_id" field.</summary>
+    public const int RequestAsyncIdFieldNumber = 4;
+    private readonly static ulong RequestAsyncIdDefaultValue = 0UL;
+
+    private ulong requestAsyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong RequestAsyncId {
+      get { if ((_hasBits0 & 2) != 0) { return requestAsyncId_; } else { return RequestAsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        requestAsyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "request_async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasRequestAsyncId {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "request_async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearRequestAsyncId() {
+      _hasBits0 &= ~2;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetSchemaRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetSchemaRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (LocalParticipantHandle != other.LocalParticipantHandle) return false;
+      if (!object.Equals(SchemaId, other.SchemaId)) return false;
+      if (ParticipantIdentity != other.ParticipantIdentity) return false;
+      if (RequestAsyncId != other.RequestAsyncId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasLocalParticipantHandle) hash ^= LocalParticipantHandle.GetHashCode();
+      if (schemaId_ != null) hash ^= SchemaId.GetHashCode();
+      if (HasParticipantIdentity) hash ^= ParticipantIdentity.GetHashCode();
+      if (HasRequestAsyncId) hash ^= RequestAsyncId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasLocalParticipantHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(LocalParticipantHandle);
+      }
+      if (schemaId_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(SchemaId);
+      }
+      if (HasParticipantIdentity) {
+        output.WriteRawTag(26);
+        output.WriteString(ParticipantIdentity);
+      }
+      if (HasRequestAsyncId) {
+        output.WriteRawTag(32);
+        output.WriteUInt64(RequestAsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasLocalParticipantHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(LocalParticipantHandle);
+      }
+      if (schemaId_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(SchemaId);
+      }
+      if (HasParticipantIdentity) {
+        output.WriteRawTag(26);
+        output.WriteString(ParticipantIdentity);
+      }
+      if (HasRequestAsyncId) {
+        output.WriteRawTag(32);
+        output.WriteUInt64(RequestAsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasLocalParticipantHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(LocalParticipantHandle);
+      }
+      if (schemaId_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SchemaId);
+      }
+      if (HasParticipantIdentity) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ParticipantIdentity);
+      }
+      if (HasRequestAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(RequestAsyncId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetSchemaRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasLocalParticipantHandle) {
+        LocalParticipantHandle = other.LocalParticipantHandle;
+      }
+      if (other.schemaId_ != null) {
+        if (schemaId_ == null) {
+          SchemaId = new global::LiveKit.Proto.DataTrackSchemaId();
+        }
+        SchemaId.MergeFrom(other.SchemaId);
+      }
+      if (other.HasParticipantIdentity) {
+        ParticipantIdentity = other.ParticipantIdentity;
+      }
+      if (other.HasRequestAsyncId) {
+        RequestAsyncId = other.RequestAsyncId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            LocalParticipantHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (schemaId_ == null) {
+              SchemaId = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(SchemaId);
+            break;
+          }
+          case 26: {
+            ParticipantIdentity = input.ReadString();
+            break;
+          }
+          case 32: {
+            RequestAsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            LocalParticipantHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (schemaId_ == null) {
+              SchemaId = new global::LiveKit.Proto.DataTrackSchemaId();
+            }
+            input.ReadMessage(SchemaId);
+            break;
+          }
+          case 26: {
+            ParticipantIdentity = input.ReadString();
+            break;
+          }
+          case 32: {
+            RequestAsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GetSchemaResponse : pb::IMessage<GetSchemaResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetSchemaResponse> _parser = new pb::MessageParser<GetSchemaResponse>(() => new GetSchemaResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetSchemaResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[39]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaResponse(GetSchemaResponse other) : this() {
+      _hasBits0 = other._hasBits0;
+      asyncId_ = other.asyncId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaResponse Clone() {
+      return new GetSchemaResponse(this);
+    }
+
+    /// <summary>Field number for the "async_id" field.</summary>
+    public const int AsyncIdFieldNumber = 1;
+    private readonly static ulong AsyncIdDefaultValue = 0UL;
+
+    private ulong asyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong AsyncId {
+      get { if ((_hasBits0 & 1) != 0) { return asyncId_; } else { return AsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        asyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAsyncId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAsyncId() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetSchemaResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetSchemaResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (AsyncId != other.AsyncId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasAsyncId) hash ^= AsyncId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetSchemaResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasAsyncId) {
+        AsyncId = other.AsyncId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GetSchemaCallback : pb::IMessage<GetSchemaCallback>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetSchemaCallback> _parser = new pb::MessageParser<GetSchemaCallback>(() => new GetSchemaCallback());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetSchemaCallback> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.DataTrackReflection.Descriptor.MessageTypes[40]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaCallback() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaCallback(GetSchemaCallback other) : this() {
+      _hasBits0 = other._hasBits0;
+      asyncId_ = other.asyncId_;
+      definition_ = other.definition_;
+      error_ = other.error_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetSchemaCallback Clone() {
+      return new GetSchemaCallback(this);
+    }
+
+    /// <summary>Field number for the "async_id" field.</summary>
+    public const int AsyncIdFieldNumber = 1;
+    private readonly static ulong AsyncIdDefaultValue = 0UL;
+
+    private ulong asyncId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong AsyncId {
+      get { if ((_hasBits0 & 1) != 0) { return asyncId_; } else { return AsyncIdDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        asyncId_ = value;
+      }
+    }
+    /// <summary>Gets whether the "async_id" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAsyncId {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "async_id" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAsyncId() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "definition" field.</summary>
+    public const int DefinitionFieldNumber = 2;
+    private readonly static string DefinitionDefaultValue = "";
+
+    private string definition_;
+    /// <summary>
+    /// The schema definition, present on success.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Definition {
+      get { return definition_ ?? DefinitionDefaultValue; }
+      set {
+        definition_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "definition" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDefinition {
+      get { return definition_ != null; }
+    }
+    /// <summary>Clears the value of the "definition" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDefinition() {
+      definition_ = null;
+    }
+
+    /// <summary>Field number for the "error" field.</summary>
+    public const int ErrorFieldNumber = 3;
+    private readonly static string ErrorDefaultValue = "";
+
+    private string error_;
+    /// <summary>
+    /// Present if the schema could not be retrieved.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Error {
+      get { return error_ ?? ErrorDefaultValue; }
+      set {
+        error_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "error" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasError {
+      get { return error_ != null; }
+    }
+    /// <summary>Clears the value of the "error" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearError() {
+      error_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetSchemaCallback);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetSchemaCallback other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (AsyncId != other.AsyncId) return false;
+      if (Definition != other.Definition) return false;
+      if (Error != other.Error) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasAsyncId) hash ^= AsyncId.GetHashCode();
+      if (HasDefinition) hash ^= Definition.GetHashCode();
+      if (HasError) hash ^= Error.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (HasDefinition) {
+        output.WriteRawTag(18);
+        output.WriteString(Definition);
+      }
+      if (HasError) {
+        output.WriteRawTag(26);
+        output.WriteString(Error);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasAsyncId) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(AsyncId);
+      }
+      if (HasDefinition) {
+        output.WriteRawTag(18);
+        output.WriteString(Definition);
+      }
+      if (HasError) {
+        output.WriteRawTag(26);
+        output.WriteString(Error);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasAsyncId) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(AsyncId);
+      }
+      if (HasDefinition) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Definition);
+      }
+      if (HasError) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetSchemaCallback other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasAsyncId) {
+        AsyncId = other.AsyncId;
+      }
+      if (other.HasDefinition) {
+        Definition = other.Definition;
+      }
+      if (other.HasError) {
+        Error = other.Error;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Definition = input.ReadString();
+            break;
+          }
+          case 26: {
+            Error = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            AsyncId = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            Definition = input.ReadString();
+            break;
+          }
+          case 26: {
+            Error = input.ReadString();
             break;
           }
         }
