@@ -58,10 +58,10 @@ public sealed class PlatformAudioController : IDisposable
         Debug.Log("[PlatformAudioController] Starting platform recording.");
         yield return _platformAudio.StartRecording();
 
-        // Must run AFTER StartRecording: opening the mic is what flips Android into
-        // voice-communication mode and reroutes playback to the earpiece, overriding
-        // anything set earlier.
+ 
+#if UNITY_ANDROID && !UNITY_EDITOR
         ApplyAndroidCommunicationRoute(true);
+#endif 
 
         _source = new PlatformAudioSource(_platformAudio, _audioOptions);
         _track = LocalAudioTrack.CreateAudioTrack(_trackName, _source, _room);
@@ -113,8 +113,10 @@ public sealed class PlatformAudioController : IDisposable
         _source?.Dispose();
         _source = null;
 
+#if UNITY_ANDROID && !UNITY_EDITOR
         // Undo the route override so the OS default applies again outside the capture session.
         ApplyAndroidCommunicationRoute(false);
+#endif
     }
 
     // Sets up PlatformAudio with the default recording/playout devices.
@@ -179,7 +181,6 @@ public sealed class PlatformAudioController : IDisposable
                 return int.MaxValue;
         }
     }
-#endif
 
     // On Android the native ADM leaves output routing to the OS (SetPlayoutDevice is a
     // documented no-op there): once the mic opens, the audio session runs in
@@ -190,7 +191,6 @@ public sealed class PlatformAudioController : IDisposable
     // mid-conversation are picked up on the next publish.
     static void ApplyAndroidCommunicationRoute(bool enable)
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
         try
         {
             using var version = new AndroidJavaClass("android.os.Build$VERSION");
@@ -263,8 +263,8 @@ public sealed class PlatformAudioController : IDisposable
         {
             Debug.LogWarning($"[PlatformAudioController] Failed to set communication route: {e.Message}");
         }
-#endif
     }
+#endif
 
     public void Dispose()
     {
