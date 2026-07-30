@@ -12,13 +12,17 @@ Connect to a voice AI agent.
 
 ### Project setup
 
-The sample can either be imported via the package manager to get access to the assets or opened as a full Unity project. The project is set up to build and run on all supported platforms.
+The sample can either be imported via the package manager to get access to the assets or opened as a full Unity project. 
 
-### Agent dispatch
+The app is configured to connect to the LiveKit homepage agent by default, which you can also try at [livekit.com](https://www.livekit.com). To point the app at your own agent, see [Connect to your agent](#connect-to-your-agent).
 
-To talk to an agent, the app needs a token to connect to a LiveKit room and dispatch an agent. The project is already configured to automatically connect to the LiveKit homepage agent you can try at www.livekit.com.
+### Connect to your agent
 
-To connect to your own LiveKit server, edit the token source component config with your projects token source.
+To switch from the default agent to your own, you first need a LiveKit agent to speak with. For a no-code setup, use the [Agent Builder](https://docs.livekit.io/agents/start/builder/). For more customization, try our starter agent for [Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node), or [create your own from scratch](https://docs.livekit.io/agents/start/voice-ai/).
+
+Second, you need a token server. For development, the easiest option is the sandbox token server: enable it from your project's Options on the Settings page in LiveKit Cloud and copy the sandboxId.
+
+Then create a new TokenSoureComponentConfig asset for your sandbox and reference it in the scene on the `TokenSourceComponent` script instead of the `HomepageAgent.asset`:
 
 ### Common sample package
 
