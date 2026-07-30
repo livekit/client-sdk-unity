@@ -136,11 +136,12 @@ namespace LiveKit.Internal.FFI
 
 #if UNITY_ANDROID && !UNITY_EDITOR
         /// <summary>
-        /// Get the Android application context as a raw jobject pointer.
-        /// This is passed to the native library for WebRTC audio initialization.
+        /// Get the Android application context.
+        /// Passed to the native library (as a raw jobject) for WebRTC audio initialization,
+        /// and to the managed ContextUtils fallback in InitializeSdk.
         /// </summary>
-        /// <returns>IntPtr to the application context jobject, or IntPtr.Zero on failure</returns>
-        private static IntPtr GetAndroidApplicationContext()
+        /// <returns>The application context, or null on failure. Caller owns disposal.</returns>
+        private static AndroidJavaObject GetAndroidApplicationContext()
         {
             try
             {
@@ -151,7 +152,7 @@ namespace LiveKit.Internal.FFI
                 if (currentActivity == null)
                 {
                     Utils.Error("FFIServer - Failed to get Unity currentActivity");
-                    return IntPtr.Zero;
+                    return null;
                 }
 
                 // Get the application context from the activity
@@ -160,18 +161,15 @@ namespace LiveKit.Internal.FFI
                 if (applicationContext == null)
                 {
                     Utils.Error("FFIServer - Failed to get Android applicationContext");
-                    return IntPtr.Zero;
+                    return null;
                 }
 
-                // Get the raw jobject pointer
-                // Note: We don't dispose the applicationContext here because we're passing
-                // the raw pointer to native code. The native code will create its own global ref.
-                return applicationContext.GetRawObject();
+                return applicationContext;
             }
             catch (System.Exception e)
             {
                 Utils.Error($"FFIServer - Failed to get Android application context: {e.Message}");
-                return IntPtr.Zero;
+                return null;
             }
         }
 #endif
@@ -194,15 +192,26 @@ namespace LiveKit.Internal.FFI
             try
             {
                 IntPtr javaVmPtr = AndroidJNI.GetJavaVM();
-                IntPtr contextPtr = GetAndroidApplicationContext();
+                using var applicationContext = GetAndroidApplicationContext();
 
-                if (javaVmPtr != IntPtr.Zero && contextPtr != IntPtr.Zero)
+                if (javaVmPtr != IntPtr.Zero && applicationContext != null)
                 {
-                    bool contextInitialized = NativeMethods.LiveKitInitializeAndroidContext(javaVmPtr, contextPtr);
+                    // Disposing applicationContext after these calls is safe: the native side only
+                    // uses the jobject within the call, and Java's ContextUtils holds the Context
+                    // in a static field of its own.
+                    bool contextInitialized = NativeMethods.LiveKitInitializeAndroidContext(
+                        javaVmPtr, applicationContext.GetRawObject());
                     if (!contextInitialized)
                     {
-                        // JVM init still succeeded; only PlatformAudio won't work
-                        Utils.Error("FFIServer - Android context init failed; PlatformAudio will not work");
+                        // The native init looks up ContextUtils with JNIEnv::FindClass, which fails
+                        // on Unity's main thread: it is a native thread with no Java frames, so
+                        // FindClass falls back to the system class loader, which cannot see APK
+                        // classes. Initialize the shaded ContextUtils through Unity's interop
+                        // instead — it resolves classes via the application class loader. Without
+                        // this, the first audio device use NPEs and WebRTC aborts the process.
+                        using var contextUtils = new AndroidJavaClass("livekit.org.webrtc.ContextUtils");
+                        contextUtils.CallStatic("initialize", applicationContext);
+                        Utils.Info("FFIServer - ContextUtils initialized via managed fallback");
                     }
                 }
                 else
