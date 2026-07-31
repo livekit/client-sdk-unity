@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace LiveKit
 {
@@ -28,6 +29,7 @@ namespace LiveKit
         [SerializeField] private string _token;
 
         // Development fields
+        [FormerlySerializedAs("_sandboxId")]
         [SerializeField] private string _tokenServerId;
 
         // Endpoint fields
