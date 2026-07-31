@@ -185,8 +185,8 @@ namespace LiveKit
     }
 
     
-    [Obsolete("Use TokenSourceDevelop instead")]
-    public class TokenSourceSandbox : TokenSourceDevelop
+    [Obsolete("Use TokenSourceDevelopment instead")]
+    public class TokenSourceSandbox : TokenSourceDevelopment
     {
         public TokenSourceSandbox(string sandboxId) : base(sandboxId) {}
     }
@@ -196,8 +196,8 @@ namespace LiveKit
     /// Intended for development and testing only — see
     /// https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/.
     /// </summary>
-    public class TokenSourceDevelop : TokenSourceEndpoint
+    public class TokenSourceDevelopment : TokenSourceEndpoint
     {
-        public TokenSourceDevelop(string tokenServerId) : base("https://cloud-api.livekit.io/api/v2/sandbox/connection-details", new[] { new StringPair { key = "X-Sandbox-ID", value = tokenServerId } }) {}
+        public TokenSourceDevelopment(string tokenServerId) : base("https://cloud-api.livekit.io/api/v2/sandbox/connection-details", new[] { new StringPair { key = "X-Sandbox-ID", value = tokenServerId } }) {}
     }
 }

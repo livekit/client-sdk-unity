@@ -7,7 +7,7 @@ namespace LiveKit
     public enum TokenSourceType
     {
         Literal,
-        Develop,
+        Development,
         Endpoint
     }
 
@@ -27,14 +27,14 @@ namespace LiveKit
         [SerializeField] private string _serverUrl;
         [SerializeField] private string _token;
 
-        // Develop fields
+        // Development fields
         [SerializeField] private string _tokenServerId;
 
         // Endpoint fields
         [SerializeField] private string _endpointUrl;
         [SerializeField] private List<StringPair> _endpointHeaders;
 
-        // Shared connection options (Develop + Endpoint)
+        // Shared connection options (Development + Endpoint)
         [SerializeField] private string _roomName;
         [SerializeField] private string _participantName;
         [SerializeField] private string _participantIdentity;
@@ -50,7 +50,7 @@ namespace LiveKit
         public string ServerUrl => _serverUrl;
         public string Token => _token;
 
-        // Develop
+        // Development
         public string TokenServerId => _tokenServerId?.Trim('"');
 
         // Endpoint
@@ -70,7 +70,7 @@ namespace LiveKit
         public bool IsValid => _tokenSourceType switch
         {
             TokenSourceType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
-            TokenSourceType.Develop => !string.IsNullOrEmpty(TokenServerId),
+            TokenSourceType.Development => !string.IsNullOrEmpty(TokenServerId),
             TokenSourceType.Endpoint => !string.IsNullOrEmpty(EndpointUrl),
             _ => false
         };

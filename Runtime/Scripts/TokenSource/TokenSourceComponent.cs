@@ -10,7 +10,7 @@ namespace LiveKit
     /// <summary>
     /// MonoBehaviour wrapper that builds an <see cref="ITokenSource"/> from an inspector-assigned
     /// <see cref="TokenSourceComponentConfig"/> ScriptableObject. To skip the asset entirely, instantiate
-    /// <see cref="TokenSourceLiteral"/>, <see cref="TokenSourceDevelop"/>, <see cref="TokenSourceEndpoint"/>,
+    /// <see cref="TokenSourceLiteral"/>, <see cref="TokenSourceDevelopment"/>, <see cref="TokenSourceEndpoint"/>,
     /// or <see cref="TokenSourceCustom"/> directly at runtime.
     /// </summary>
     public class TokenSourceComponent : MonoBehaviour
@@ -34,8 +34,8 @@ namespace LiveKit
 
             switch (_config.TokenSourceType)
             {
-                case TokenSourceType.Develop:
-                    _tokenSource = new TokenSourceDevelop(_config.TokenServerId);
+                case TokenSourceType.Development:
+                    _tokenSource = new TokenSourceDevelopment(_config.TokenServerId);
                     break;
 
                 case TokenSourceType.Endpoint:
