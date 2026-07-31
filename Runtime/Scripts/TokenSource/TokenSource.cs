@@ -184,13 +184,20 @@ namespace LiveKit
             string.IsNullOrEmpty(value) ? null : value;
     }
 
+    
+    [Obsolete("Use TokenSourceDevelop instead")]
+    public class TokenSourceSandbox : TokenSourceDevelop
+    {
+        public TokenSourceSandbox(string sandboxId) : base(sandboxId) {}
+    }
+
     /// <summary>
-    /// Convenience <see cref="TokenSourceEndpoint"/> preconfigured for LiveKit Cloud sandbox token servers.
+    /// Convenience <see cref="TokenSourceEndpoint"/> preconfigured for LiveKit Cloud development token servers.
     /// Intended for development and testing only — see
     /// https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/.
     /// </summary>
-    public class TokenSourceSandbox : TokenSourceEndpoint
+    public class TokenSourceDevelop : TokenSourceEndpoint
     {
-        public TokenSourceSandbox(string sandboxId) : base("https://cloud-api.livekit.io/api/v2/sandbox/connection-details", new[] { new StringPair { key = "X-Sandbox-ID", value = sandboxId } }) {}
+        public TokenSourceDevelop(string tokenServerId) : base("https://cloud-api.livekit.io/api/v2/sandbox/connection-details", new[] { new StringPair { key = "X-Sandbox-ID", value = tokenServerId } }) {}
     }
 }

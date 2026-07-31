@@ -25,12 +25,12 @@ public class TokenSourceComponentConfigEditor : Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_token"));
                 break;
 
-            case TokenSourceType.Sandbox:
+            case TokenSourceType.Develop:
                 EditorGUILayout.HelpBox(
-                    "Use this for development to create tokens from a sandbox token server. " +
-                    "\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE THE SANDBOX TOKEN SERVER NEEDS NO AUTHENTICATION.",
+                    "Use this for development to create tokens from a development token server. " +
+                    "\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE THE DEVELOPMENT TOKEN SERVER NEEDS NO AUTHENTICATION.",
                     MessageType.Info);
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("_sandboxId"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("_tokenServerId"));
                 DrawConnectionOptions();
                 break;
 
