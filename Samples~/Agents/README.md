@@ -22,7 +22,7 @@ To switch from the default agent to your own, you first need a LiveKit agent to 
 
 Second, you need a token server. For development, the easiest option is the development token server: enable it from your project's Options on the Settings page in LiveKit Cloud and copy the token server ID.
 
-Then create a new TokenSoureComponentConfig asset for your development token server and reference it in the scene on the `TokenSourceComponent` script instead of the `HomepageAgent.asset`:
+Then create a new TokenSourceComponentConfig asset for your development token server and reference it in the scene on the `TokenSourceComponent` script instead of the `HomepageAgent.asset`:
 
 ### Common sample package
 

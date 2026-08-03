@@ -174,20 +174,20 @@ var fetch = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOpt
 });
 ```
 
-To skip the ScriptableObject entirely, instantiate a token source directly. Each returns the same `TaskYieldInstruction<ConnectionDetails>` from `FetchConnectionDetails`, so it can be yielded, awaited, or `.AsUniTask()`-bridged just like the component:
+To skip the ScriptableObject entirely, create a token source at runtime via the `TokenSource` factory methods. Each returns the same `TaskYieldInstruction<ConnectionDetails>` from `FetchConnectionDetails`, so it can be yielded, awaited, or `.AsUniTask()`-bridged just like the component:
 
 ```cs
 // Fixed sources take no per-call options:
-ITokenSourceFixed source = new TokenSourceLiteral("wss://your.livekit.host", "<join-token>");
-// or: new TokenSourceCustom(async () => await MyAuthFlow());
+ITokenSourceFixed source = TokenSource.Literal("wss://your.livekit.host", "<join-token>");
+// or: TokenSource.Custom(async () => await MyAuthFlow());
 
 var fetch = source.FetchConnectionDetails();
 yield return fetch;
 var details = fetch.Result;
 
 // Configurable sources accept TokenSourceFetchOptions per call:
-ITokenSourceConfigurable configurable = new TokenSourceDevelopment("<token-server-id>");
-// or: new TokenSourceEndpoint("https://your.token-server/api/token", headers);
+ITokenSourceConfigurable configurable = TokenSource.DevelopmentTokenServer("<token-server-id>");
+// or: TokenSource.Endpoint("https://your.token-server/api/token", headers);
 
 var configurableFetch = configurable.FetchConnectionDetails(new TokenSourceFetchOptions { RoomName = "lobby" });
 yield return configurableFetch;
