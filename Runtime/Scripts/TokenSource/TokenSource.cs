@@ -17,6 +17,8 @@ namespace LiveKit
     {
         public delegate Task<ConnectionDetails> CustomTokenFunction();
 
+        internal const string DevelopmentTokenServerUrl = "https://cloud-api.livekit.io/api/v2/sandbox/connection-details";
+
         /// <summary>
         /// Returns a fixed server URL and participant token. Suitable when credentials are pregenerated
         /// (e.g. via the LiveKit CLI or LiveKit Cloud project page).
@@ -60,7 +62,7 @@ namespace LiveKit
         public static ITokenSourceConfigurable DevelopmentTokenServer(string tokenServerId)
         {
             return new EndpointSource(
-                "https://cloud-api.livekit.io/api/v2/sandbox/connection-details",
+                DevelopmentTokenServerUrl,
                 new[] { new StringPair { key = "X-Sandbox-ID", value = tokenServerId } });
         }
 
@@ -223,5 +225,57 @@ namespace LiveKit
     public interface ITokenSourceConfigurable : ITokenSource
     {
         public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options);
+    }
+
+    [Obsolete("Use TokenSource.Literal(...) instead")]
+    public class TokenSourceLiteral : ITokenSourceFixed
+    {
+        private readonly ITokenSourceFixed _inner;
+
+        public TokenSourceLiteral(string serverUrl, string participantToken)
+        {
+            _inner = TokenSource.Literal(serverUrl, participantToken);
+        }
+
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails() => _inner.FetchConnectionDetails();
+    }
+
+    [Obsolete("Use TokenSource.Custom(...) instead")]
+    public class TokenSourceCustom : ITokenSourceFixed
+    {
+        // v2.0.0 declared the delegate nested here; keep it so explicit
+        // TokenSourceCustom.CustomTokenFunction references still compile.
+        public delegate Task<ConnectionDetails> CustomTokenFunction();
+
+        private readonly ITokenSourceFixed _inner;
+
+        public TokenSourceCustom(CustomTokenFunction customTokenFunction)
+        {
+            // Lambda (not .Invoke) so a null delegate surfaces at fetch time via
+            // IsError/Exception, matching v2.0.0 behavior, not as a ctor throw.
+            _inner = TokenSource.Custom(() => customTokenFunction());
+        }
+
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails() => _inner.FetchConnectionDetails();
+    }
+
+    [Obsolete("Use TokenSource.Endpoint(...) instead")]
+    public class TokenSourceEndpoint : ITokenSourceConfigurable
+    {
+        private readonly ITokenSourceConfigurable _inner;
+
+        public TokenSourceEndpoint(string endpointUrl, IEnumerable<StringPair> headers)
+        {
+            _inner = TokenSource.Endpoint(endpointUrl, headers);
+        }
+
+        public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options) => _inner.FetchConnectionDetails(options);
+    }
+
+    [Obsolete("Use TokenSource.DevelopmentTokenServer(...) instead")]
+    public class TokenSourceSandbox : TokenSourceEndpoint
+    {
+        public TokenSourceSandbox(string sandboxId)
+            : base(TokenSource.DevelopmentTokenServerUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = sandboxId } }) {}
     }
 }
