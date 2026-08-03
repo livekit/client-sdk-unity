@@ -8,7 +8,7 @@ namespace LiveKit
     public enum TokenSourceType
     {
         Literal,
-        Development,
+        DevelopmentTokenServer,
         Endpoint
     }
 
@@ -72,7 +72,7 @@ namespace LiveKit
         public bool IsValid => _tokenSourceType switch
         {
             TokenSourceType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
-            TokenSourceType.Development => !string.IsNullOrEmpty(TokenServerId),
+            TokenSourceType.DevelopmentTokenServer => !string.IsNullOrEmpty(TokenServerId),
             TokenSourceType.Endpoint => !string.IsNullOrEmpty(EndpointUrl),
             _ => false
         };
