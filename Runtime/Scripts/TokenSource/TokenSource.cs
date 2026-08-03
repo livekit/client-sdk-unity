@@ -25,7 +25,7 @@ namespace LiveKit
         /// </summary>
         public static ITokenSourceFixed Literal(string serverUrl, string participantToken)
         {
-            return new LiteralSource(serverUrl, participantToken);
+            return new TokenSourceLiteral(serverUrl, participantToken);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace LiveKit
         /// </summary>
         public static ITokenSourceConfigurable Endpoint(string endpointUrl, IEnumerable<StringPair> headers)
         {
-            return new EndpointSource(endpointUrl, headers);
+            return new TokenSourceEndpoint(endpointUrl, headers);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace LiveKit
         /// </summary>
         public static ITokenSourceFixed Custom(CustomTokenFunction customTokenFunction)
         {
-            return new CustomSource(customTokenFunction);
+            return new TokenSourceCustom(customTokenFunction);
         }
 
         [Obsolete("Use TokenSource.DevelopmentTokenServer instead")]
@@ -61,17 +61,17 @@ namespace LiveKit
         /// </summary>
         public static ITokenSourceConfigurable DevelopmentTokenServer(string tokenServerId)
         {
-            return new EndpointSource(
+            return new TokenSourceEndpoint(
                 DevelopmentTokenServerUrl,
                 new[] { new StringPair { key = "X-Sandbox-ID", value = tokenServerId } });
         }
 
-        private sealed class LiteralSource : ITokenSourceFixed
+        private sealed class TokenSourceLiteral : ITokenSourceFixed
         {
             private string _serverUrl;
             private string _participantToken;
 
-            public LiteralSource(string serverUrl, string participantToken)
+            public TokenSourceLiteral(string serverUrl, string participantToken)
             {
                 _serverUrl = serverUrl;
                 _participantToken = participantToken;
@@ -84,11 +84,11 @@ namespace LiveKit
             }
         }
 
-        private sealed class CustomSource : ITokenSourceFixed
+        private sealed class TokenSourceCustom : ITokenSourceFixed
         {
             private CustomTokenFunction _customTokenFunction;
 
-            public CustomSource(CustomTokenFunction customTokenFunction)
+            public TokenSourceCustom(CustomTokenFunction customTokenFunction)
             {
                 _customTokenFunction = customTokenFunction;
             }
@@ -112,13 +112,13 @@ namespace LiveKit
             }
         }
 
-        private sealed class EndpointSource : ITokenSourceConfigurable
+        private sealed class TokenSourceEndpoint : ITokenSourceConfigurable
         {
             private string _endpointUrl;
             IEnumerable<StringPair> _headers;
             private static readonly HttpClient HttpClient = new HttpClient();
 
-            public EndpointSource(string endpointUrl, IEnumerable<StringPair> headers)
+            public TokenSourceEndpoint(string endpointUrl, IEnumerable<StringPair> headers)
             {
                 _endpointUrl = endpointUrl;
                 _headers = headers;
