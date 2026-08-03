@@ -25,7 +25,7 @@ public class TokenSourceComponentConfigEditor : Editor
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("_token"));
                 break;
 
-            case TokenSourceType.Development:
+            case TokenSourceType.DevelopmentTokenServer:
                 EditorGUILayout.HelpBox(
                     "Use this for development to create tokens from a development token server. " +
                     "\nWARNING: ONLY USE THIS OPTION FOR LOCAL DEVELOPMENT, SINCE THE DEVELOPMENT TOKEN SERVER NEEDS NO AUTHENTICATION.",
