@@ -137,11 +137,11 @@ To help getting started with tokens, use `TokenSourceComponent.cs` with a `Token
 #### 1. Literal
 Use this to pass a pregenerated server URL and token. Generate tokens via the [LiveKit CLI](https://docs.livekit.io/frontends/build/authentication/custom/#manual-token-creation) or from your [LiveKit Cloud](https://cloud.livekit.io/) project's API key page.
 
-#### 2. Sandbox
-For development and testing. Follow the [sandbox token server guide](https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/) to enable your project's sandbox and get the sandbox ID. Optional connection fields (room name, participant name, agent name, etc.) can be configured in the inspector — leave blank for server defaults.
+#### 2. Development Token Server
+For development and testing. Follow the [development token server guide](https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/) to enable your project's development token server and get the token server ID. Optional connection fields (room name, participant name, agent name, etc.) can be configured in the inspector — leave blank for server defaults.
 
 #### 3. Endpoint
-For production. Point to your own token endpoint URL and add any required authentication headers. Uses the same connection options as Sandbox. See the [endpoint token generation guide](https://docs.livekit.io/frontends/build/authentication/endpoint/).
+For production. Point to your own token endpoint URL and add any required authentication headers. Uses the same connection options as Development. See the [endpoint token generation guide](https://docs.livekit.io/frontends/build/authentication/endpoint/).
 
 #### Usage
 
@@ -174,20 +174,20 @@ var fetch = _tokenSourceComponent.FetchConnectionDetails(new TokenSourceFetchOpt
 });
 ```
 
-To skip the ScriptableObject entirely, instantiate a token source directly. Each returns the same `TaskYieldInstruction<ConnectionDetails>` from `FetchConnectionDetails`, so it can be yielded, awaited, or `.AsUniTask()`-bridged just like the component:
+To skip the ScriptableObject entirely, create a token source at runtime via the `TokenSource` factory methods. Each returns the same `TaskYieldInstruction<ConnectionDetails>` from `FetchConnectionDetails`, so it can be yielded, awaited, or `.AsUniTask()`-bridged just like the component:
 
 ```cs
 // Fixed sources take no per-call options:
-ITokenSourceFixed source = new TokenSourceLiteral("wss://your.livekit.host", "<join-token>");
-// or: new TokenSourceCustom(async () => await MyAuthFlow());
+ITokenSourceFixed source = TokenSource.Literal("wss://your.livekit.host", "<join-token>");
+// or: TokenSource.Custom(async () => await MyAuthFlow());
 
 var fetch = source.FetchConnectionDetails();
 yield return fetch;
 var details = fetch.Result;
 
 // Configurable sources accept TokenSourceFetchOptions per call:
-ITokenSourceConfigurable configurable = new TokenSourceSandbox("<sandbox-id>");
-// or: new TokenSourceEndpoint("https://your.token-server/api/token", headers);
+ITokenSourceConfigurable configurable = TokenSource.DevelopmentTokenServer("<token-server-id>");
+// or: TokenSource.Endpoint("https://your.token-server/api/token", headers);
 
 var configurableFetch = configurable.FetchConnectionDetails(new TokenSourceFetchOptions { RoomName = "lobby" });
 yield return configurableFetch;

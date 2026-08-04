@@ -9,9 +9,10 @@ namespace LiveKit
 {
     /// <summary>
     /// MonoBehaviour wrapper that builds an <see cref="ITokenSource"/> from an inspector-assigned
-    /// <see cref="TokenSourceComponentConfig"/> ScriptableObject. To skip the asset entirely, instantiate
-    /// <see cref="TokenSourceLiteral"/>, <see cref="TokenSourceSandbox"/>, <see cref="TokenSourceEndpoint"/>,
-    /// or <see cref="TokenSourceCustom"/> directly at runtime.
+    /// <see cref="TokenSourceComponentConfig"/> ScriptableObject. To skip the asset entirely, create a
+    /// source at runtime via the <see cref="TokenSource"/> factory methods (<see cref="TokenSource.Literal"/>,
+    /// <see cref="TokenSource.DevelopmentTokenServer"/>, <see cref="TokenSource.Endpoint"/>,
+    /// or <see cref="TokenSource.Custom"/>).
     /// </summary>
     public class TokenSourceComponent : MonoBehaviour
     {
@@ -34,16 +35,16 @@ namespace LiveKit
 
             switch (_config.TokenSourceType)
             {
-                case TokenSourceType.Sandbox:
-                    _tokenSource = new TokenSourceSandbox(_config.SandboxId);
+                case TokenSourceType.DevelopmentTokenServer:
+                    _tokenSource = TokenSource.DevelopmentTokenServer(_config.TokenServerId);
                     break;
 
                 case TokenSourceType.Endpoint:
-                    _tokenSource = new TokenSourceEndpoint(_config.EndpointUrl, _config.EndpointHeaders);
+                    _tokenSource = TokenSource.Endpoint(_config.EndpointUrl, _config.EndpointHeaders);
                     break;
 
                 case TokenSourceType.Literal:
-                    _tokenSource = new TokenSourceLiteral(_config.ServerUrl, _config.Token);    
+                    _tokenSource = TokenSource.Literal(_config.ServerUrl, _config.Token);    
                     break;
 
                 default:
@@ -55,7 +56,8 @@ namespace LiveKit
         /// Fetches connection details, merging per-call <paramref name="options"/> over the asset-backed
         /// <see cref="TokenSourceComponentConfig"/>. For each field, a value provided on <paramref name="options"/>
         /// overrides the config value (empty strings are treated as unset and fall through to the config).
-        /// Ignored for fixed token sources (<see cref="TokenSourceLiteral"/>, <see cref="TokenSourceCustom"/>).
+        /// Ignored for fixed token sources (<see cref="ITokenSourceFixed"/>, i.e. those created via
+        /// <see cref="TokenSource.Literal"/> or <see cref="TokenSource.Custom"/>).
         /// </summary>
         public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
         {

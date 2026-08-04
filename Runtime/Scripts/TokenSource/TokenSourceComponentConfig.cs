@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace LiveKit
 {
     public enum TokenSourceType
     {
         Literal,
-        Sandbox,
+        DevelopmentTokenServer,
         Endpoint
     }
 
@@ -27,14 +28,15 @@ namespace LiveKit
         [SerializeField] private string _serverUrl;
         [SerializeField] private string _token;
 
-        // Sandbox fields
-        [SerializeField] private string _sandboxId;
+        // Development fields
+        [FormerlySerializedAs("_sandboxId")]
+        [SerializeField] private string _tokenServerId;
 
         // Endpoint fields
         [SerializeField] private string _endpointUrl;
         [SerializeField] private List<StringPair> _endpointHeaders;
 
-        // Shared connection options (Sandbox + Endpoint)
+        // Shared connection options (Development + Endpoint)
         [SerializeField] private string _roomName;
         [SerializeField] private string _participantName;
         [SerializeField] private string _participantIdentity;
@@ -50,8 +52,8 @@ namespace LiveKit
         public string ServerUrl => _serverUrl;
         public string Token => _token;
 
-        // Sandbox
-        public string SandboxId => _sandboxId?.Trim('"');
+        // Development
+        public string TokenServerId => _tokenServerId?.Trim('"');
 
         // Endpoint
         public string EndpointUrl => _endpointUrl;
@@ -70,7 +72,7 @@ namespace LiveKit
         public bool IsValid => _tokenSourceType switch
         {
             TokenSourceType.Literal => !string.IsNullOrEmpty(ServerUrl) && ServerUrl.StartsWith("ws") && !string.IsNullOrEmpty(Token),
-            TokenSourceType.Sandbox => !string.IsNullOrEmpty(SandboxId),
+            TokenSourceType.DevelopmentTokenServer => !string.IsNullOrEmpty(TokenServerId),
             TokenSourceType.Endpoint => !string.IsNullOrEmpty(EndpointUrl),
             _ => false
         };
