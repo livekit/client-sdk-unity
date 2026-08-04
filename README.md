@@ -137,7 +137,7 @@ To help getting started with tokens, use `TokenSourceComponent.cs` with a `Token
 #### 1. Literal
 Use this to pass a pregenerated server URL and token. Generate tokens via the [LiveKit CLI](https://docs.livekit.io/frontends/build/authentication/custom/#manual-token-creation) or from your [LiveKit Cloud](https://cloud.livekit.io/) project's API key page.
 
-#### 2. Development
+#### 2. Development Token Server
 For development and testing. Follow the [development token server guide](https://docs.livekit.io/frontends/build/authentication/sandbox-token-server/) to enable your project's development token server and get the token server ID. Optional connection fields (room name, participant name, agent name, etc.) can be configured in the inspector — leave blank for server defaults.
 
 #### 3. Endpoint
