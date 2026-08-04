@@ -227,6 +227,10 @@ namespace LiveKit
         public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options);
     }
 
+    #region Old constructors
+    // For backwards compatibility the old public constructors are still here but deprecated / obsolete. 
+    // Delete when doing a new major release.
+
     [Obsolete("Use TokenSource.Literal(...) instead")]
     public class TokenSourceLiteral : ITokenSourceFixed
     {
@@ -278,4 +282,6 @@ namespace LiveKit
         public TokenSourceSandbox(string sandboxId)
             : base(TokenSource.DevelopmentTokenServerUrl, new[] { new StringPair { key = "X-Sandbox-ID", value = sandboxId } }) {}
     }
+
+    #endregion
 }
