@@ -68,8 +68,8 @@ namespace LiveKit
 
         private sealed class TokenSourceLiteral : ITokenSourceFixed
         {
-            private string _serverUrl;
-            private string _participantToken;
+            private readonly string _serverUrl;
+            private readonly string _participantToken;
 
             public TokenSourceLiteral(string serverUrl, string participantToken)
             {
@@ -86,7 +86,7 @@ namespace LiveKit
 
         private sealed class TokenSourceCustom : ITokenSourceFixed
         {
-            private CustomTokenFunction _customTokenFunction;
+            private readonly CustomTokenFunction _customTokenFunction;
 
             public TokenSourceCustom(CustomTokenFunction customTokenFunction)
             {
@@ -114,14 +114,14 @@ namespace LiveKit
 
         private sealed class TokenSourceEndpoint : ITokenSourceConfigurable
         {
-            private string _endpointUrl;
-            IEnumerable<StringPair> _headers;
+            private readonly string _endpointUrl;
+            private readonly IReadOnlyList<StringPair> _headers;
             private static readonly HttpClient HttpClient = new HttpClient();
 
             public TokenSourceEndpoint(string endpointUrl, IEnumerable<StringPair> headers)
             {
                 _endpointUrl = endpointUrl;
-                _headers = headers;
+                _headers = headers?.ToList() ?? (IReadOnlyList<StringPair>)Array.Empty<StringPair>();
             }
 
             public TaskYieldInstruction<ConnectionDetails> FetchConnectionDetails(TokenSourceFetchOptions options)
@@ -136,20 +136,17 @@ namespace LiveKit
                 var requestBody = BuildRequest(options);
                 var jsonBody = JsonConvert.SerializeObject(requestBody);
 
-                var request = new HttpRequestMessage(HttpMethod.Post, _endpointUrl);
-                if (_headers != null)
+                using var request = new HttpRequestMessage(HttpMethod.Post, _endpointUrl);
+                foreach (var header in _headers)
                 {
-                    foreach (var header in _headers)
-                    {
-                        if (!string.IsNullOrEmpty(header.key))
-                            request.Headers.TryAddWithoutValidation(header.key, header.value);
-                    }
+                    if (!string.IsNullOrEmpty(header.key))
+                        request.Headers.TryAddWithoutValidation(header.key, header.value);
                 }
                 var content = new StringContent(jsonBody, System.Text.Encoding.UTF8);
                 content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                 request.Content = content;
 
-                var response = await HttpClient.SendAsync(request);
+                using var response = await HttpClient.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                     throw new InvalidOperationException($"Token server error: {response.StatusCode}, response: {await response.Content.ReadAsStringAsync()}");
