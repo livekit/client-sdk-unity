@@ -44,6 +44,13 @@ public class MeetManager : MonoBehaviour
     [Tooltip("Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics.")]
     [SerializeField] private bool preferHardwareProcessing = true;
 
+    [Header("Audio Playback (Unity Audio mode only)")]
+    [Tooltip("Linear gain applied to remote audio played through Unity AudioSources, " +
+             "for devices with very low playout volume. 1 = unchanged. " +
+             "Can also be tweaked per track at runtime on the AudioTrack GameObjects.")]
+    [Range(1f, 10f)]
+    [SerializeField] private float remoteAudioBoost = 1f;
+
     private const string PlaceholderTextureResourceName = "PlaceholderTileSquare";
     private Texture _placeholderTexture;
 
@@ -374,6 +381,11 @@ public class MeetManager : MonoBehaviour
         var source = audioObject.AddComponent<AudioSource>();
         var audiostream = new AudioStream(audioTrack, source);
         _audioStreams.Add(sid, audiostream);
+
+        // Must be added after the AudioStream so the boost filter runs after the
+        // SDK's probe in Unity's filter chain.
+        var boost = audioObject.AddComponent<AudioBoostFilter>();
+        boost.multiplier = remoteAudioBoost;
 
         _audioObjects[sid] = audioObject;
     }
