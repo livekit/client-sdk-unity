@@ -9,8 +9,10 @@ using UnityEngine;
 // selects the default playout device through which remote tracks are played back
 // automatically. Publish/Unpublish can be cycled (e.g. a mute toggle) while the ADM stays
 // alive; Dispose tears everything down in dependency order. On Android the controller
-// also owns the output route (loudspeaker over earpiece) for its whole lifetime — see
-// ApplyAndroidCommunicationRoute.
+// also owns the voice-communication audio session (mode + output route, loudspeaker
+// over earpiece) for its whole lifetime, and the mic capture stays open across mute
+// cycles to keep that session active — see SetupAndroidCommunicationAudio and
+// Unpublish.
 public sealed class PlatformAudioController : IDisposable
 {
     readonly string _trackName;
@@ -20,9 +22,11 @@ public sealed class PlatformAudioController : IDisposable
     PlatformAudioSource _source;
     LocalAudioTrack _track;
     Room _room;
+    bool _isRecording;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
     CommunicationDeviceListener _routeListener;
+    int _savedAudioMode; // MODE_NORMAL unless something else was active at Initialize
 #endif
 
     public bool IsInitialized => _platformAudio != null;
@@ -44,9 +48,9 @@ public sealed class PlatformAudioController : IDisposable
 
 #if UNITY_ANDROID && !UNITY_EDITOR
         // Remote playout through the ADM starts at room connect regardless of whether
-        // the mic is ever published, so the route must be in place for the whole session.
-        ApplyAndroidCommunicationRoute();
-        RegisterAndroidRouteListener();
+        // the mic is ever published, so the audio session must be set up for the whole
+        // controller lifetime.
+        SetupAndroidCommunicationAudio();
 #endif
         return true;
     }
@@ -69,9 +73,14 @@ public sealed class PlatformAudioController : IDisposable
 
         // Begin capturing from the default microphone. On macOS/iOS this turns on the
         // recording privacy indicator and triggers the OS permission prompt; on Android
-        // it awaits the RECORD_AUDIO runtime permission dialog.
-        Debug.Log("[PlatformAudioController] Starting platform recording.");
-        yield return _platformAudio.StartRecording();
+        // it awaits the RECORD_AUDIO runtime permission dialog. On Android the capture
+        // keeps running across mute cycles (see Unpublish), so skip the restart.
+        if (!_isRecording)
+        {
+            Debug.Log("[PlatformAudioController] Starting platform recording.");
+            yield return _platformAudio.StartRecording();
+            _isRecording = true;
+        }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
         // Re-apply the preferred route: a device added while a pin is active does not
@@ -115,25 +124,44 @@ public sealed class PlatformAudioController : IDisposable
         }
         _track = null;
 
-        if (_platformAudio != null)
-        {
-            try
-            {
-                _platformAudio.StopRecording();
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"[PlatformAudioController] Failed to stop recording: {e.Message}");
-            }
-        }
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // Keep the capture stream open while muted. Since Android 13, AudioService only
+        // honors this app's MODE_IN_COMMUNICATION request — and with it the
+        // communication-device pin — while the app has ACTIVE voice-communication
+        // capture or playback: with the recorder stopped, the mode-owner stack reports
+        // "Active: false", the mode drops back to MODE_NORMAL, and Telecom re-asserts
+        // the earpiece route every ~6 s. The track is unpublished and its source
+        // disposed below, so no audio reaches the room, but the OS mic-in-use indicator
+        // stays on while muted — same as other conferencing apps. Recording stops in
+        // Dispose.
+#else
+        StopRecordingIfActive();
+#endif
 
         _source?.Dispose();
         _source = null;
 
-        // The Android route override is deliberately kept: the ADM continues playing
-        // remote audio while the mic is unpublished (listen-only / muted), and clearing
-        // the route here would drop that playout back onto the earpiece. Teardown
-        // happens in Dispose.
+        // The Android route override is likewise deliberately kept: the ADM continues
+        // playing remote audio while the mic is unpublished (listen-only / muted), and
+        // clearing the route here would drop that playout back onto the earpiece.
+        // Teardown happens in Dispose.
+    }
+
+    // Stops the microphone capture if it is running. On Android this only happens on
+    // Dispose — see the note in Unpublish.
+    void StopRecordingIfActive()
+    {
+        if (_platformAudio == null || !_isRecording)
+            return;
+        try
+        {
+            _platformAudio.StopRecording();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[PlatformAudioController] Failed to stop recording: {e.Message}");
+        }
+        _isRecording = false;
     }
 
     // Sets up PlatformAudio with the default recording/playout devices.
@@ -232,6 +260,52 @@ public sealed class PlatformAudioController : IDisposable
         }
     }
 
+    // Enters voice-communication audio mode, applies the preferred output route, and
+    // starts watching for route changes — all held until Dispose. Owning
+    // MODE_IN_COMMUNICATION is what makes the setCommunicationDevice pin authoritative:
+    // without it the platform periodically reasserts its own default route (observed on
+    // Pixel 8a: after a Bluetooth session ended, Telecom's CallAudioRouteController
+    // flipped playout back to the earpiece every ~6 s, endlessly fighting the re-pin).
+    // Side effects while the mode is held: hardware volume keys control the call stream,
+    // and Bluetooth audio runs over HFP/SCO (call quality) instead of A2DP — standard
+    // for call apps.
+    void SetupAndroidCommunicationAudio()
+    {
+        try
+        {
+            using var audioManager = GetAudioManager();
+            _savedAudioMode = audioManager.Call<int>("getMode");
+            audioManager.Call("setMode", 3 /* AudioManager.MODE_IN_COMMUNICATION */);
+            Debug.Log($"[PlatformAudioController] Audio mode -> MODE_IN_COMMUNICATION (was {_savedAudioMode}).");
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[PlatformAudioController] Failed to enter communication mode: {e.Message}");
+        }
+
+        ApplyAndroidCommunicationRoute();
+        RegisterAndroidRouteListener();
+    }
+
+    void TeardownAndroidCommunicationAudio()
+    {
+        // Unregister BEFORE clearing: clearCommunicationDevice fires the change event,
+        // and a still-registered listener would immediately re-pin the loudspeaker.
+        UnregisterAndroidRouteListener();
+        ClearAndroidCommunicationRoute();
+
+        try
+        {
+            using var audioManager = GetAudioManager();
+            audioManager.Call("setMode", _savedAudioMode);
+            Debug.Log($"[PlatformAudioController] Audio mode restored ({_savedAudioMode}).");
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[PlatformAudioController] Failed to restore audio mode: {e.Message}");
+        }
+    }
+
     // Re-evaluates the route whenever the OS changes the communication device — most
     // importantly when the active device disconnects and playout would otherwise fall
     // back to the earpiece. Registered for the whole session (Initialize until Dispose).
@@ -283,10 +357,8 @@ public sealed class PlatformAudioController : IDisposable
     // and on every OS communication-device change (see RegisterAndroidRouteListener),
     // and cleared in Dispose. Re-pinning is skipped when the best-ranked device is
     // already active — our own setCommunicationDevice fires the change listener, and
-    // the no-op check is what stops that feedback loop. Some OEMs reportedly ignore
-    // setCommunicationDevice unless the app also enters MODE_IN_COMMUNICATION; that mode
-    // is deliberately not set here because it suspends A2DP playback and repurposes the
-    // volume keys.
+    // the no-op check is what stops that feedback loop. The pin only holds while the
+    // app owns MODE_IN_COMMUNICATION — see SetupAndroidCommunicationAudio.
     static void ApplyAndroidCommunicationRoute()
     {
         try
@@ -383,15 +455,13 @@ public sealed class PlatformAudioController : IDisposable
     public void Dispose()
     {
         Unpublish();
+        StopRecordingIfActive();
 
         _platformAudio?.Dispose();
         _platformAudio = null;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        // Unregister BEFORE clearing: clearCommunicationDevice fires the change event,
-        // and a still-registered listener would immediately re-pin the loudspeaker.
-        UnregisterAndroidRouteListener();
-        ClearAndroidCommunicationRoute();
+        TeardownAndroidCommunicationAudio();
 #endif
 
         _room = null;
