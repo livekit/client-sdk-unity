@@ -21,6 +21,10 @@ public sealed class PlatformAudioController : IDisposable
     LocalAudioTrack _track;
     Room _room;
 
+#if UNITY_ANDROID && !UNITY_EDITOR
+    CommunicationDeviceListener _routeListener;
+#endif
+
     public bool IsInitialized => _platformAudio != null;
     public bool IsPublished { get; private set; }
 
@@ -42,6 +46,7 @@ public sealed class PlatformAudioController : IDisposable
         // Remote playout through the ADM starts at room connect regardless of whether
         // the mic is ever published, so the route must be in place for the whole session.
         ApplyAndroidCommunicationRoute();
+        RegisterAndroidRouteListener();
 #endif
         return true;
     }
@@ -69,8 +74,9 @@ public sealed class PlatformAudioController : IDisposable
         yield return _platformAudio.StartRecording();
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        // Re-apply the preferred route: the available devices may have changed since
-        // Initialize (headset plugged in or removed).
+        // Re-apply the preferred route: a device added while a pin is active does not
+        // fire the change listener on all devices, so the next unmute is the fallback
+        // pickup point for it.
         ApplyAndroidCommunicationRoute();
 #endif
 
@@ -193,14 +199,91 @@ public sealed class PlatformAudioController : IDisposable
         }
     }
 
+    static int AndroidSdkInt()
+    {
+        using var version = new AndroidJavaClass("android.os.Build$VERSION");
+        return version.GetStatic<int>("SDK_INT");
+    }
+
+    // Caller owns the returned object (wrap it in `using var`).
+    static AndroidJavaObject GetAudioManager()
+    {
+        using var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        using var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        return activity.Call<AndroidJavaObject>("getSystemService", "audio");
+    }
+
+    // C#-side implementation of the Java callback interface. AndroidJavaProxy can only
+    // implement interfaces, which is why this listens for communication-device changes
+    // rather than subclassing android.media.AudioDeviceCallback (an abstract class).
+    sealed class CommunicationDeviceListener : AndroidJavaProxy
+    {
+        public CommunicationDeviceListener()
+            : base("android.media.AudioManager$OnCommunicationDeviceChangedListener") { }
+
+        // Invoked by Android on the activity's main executor — a JVM-attached thread,
+        // but NOT the Unity main thread: keep the body restricted to JNI and Debug.Log.
+        public void onCommunicationDeviceChanged(AndroidJavaObject device)
+        {
+            int type = device != null ? device.Call<int>("getType") : -1;
+            Debug.Log($"[PlatformAudioController] Communication device changed (type={type}); re-evaluating route.");
+            device?.Dispose();
+            ApplyAndroidCommunicationRoute();
+        }
+    }
+
+    // Re-evaluates the route whenever the OS changes the communication device — most
+    // importantly when the active device disconnects and playout would otherwise fall
+    // back to the earpiece. Registered for the whole session (Initialize until Dispose).
+    void RegisterAndroidRouteListener()
+    {
+        try
+        {
+            if (AndroidSdkInt() < 31)
+                return;
+
+            using var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            using var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            using var audioManager = activity.Call<AndroidJavaObject>("getSystemService", "audio");
+            using var executor = activity.Call<AndroidJavaObject>("getMainExecutor");
+
+            _routeListener = new CommunicationDeviceListener();
+            audioManager.Call("addOnCommunicationDeviceChangedListener", executor, _routeListener);
+            Debug.Log("[PlatformAudioController] Registered communication device listener.");
+        }
+        catch (Exception e)
+        {
+            _routeListener = null;
+            Debug.LogWarning($"[PlatformAudioController] Failed to register device listener: {e.Message}");
+        }
+    }
+
+    void UnregisterAndroidRouteListener()
+    {
+        if (_routeListener == null)
+            return;
+        try
+        {
+            using var audioManager = GetAudioManager();
+            audioManager.Call("removeOnCommunicationDeviceChangedListener", _routeListener);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[PlatformAudioController] Failed to unregister device listener: {e.Message}");
+        }
+        _routeListener = null;
+    }
+
     // On Android the native ADM leaves output routing to the OS (SetPlayoutDevice is a
     // documented no-op there): remote tracks play through a voice-communication stream,
     // whose default route is the earpiece. Pick the best route per RouteRank via
     // AudioManager — setCommunicationDevice on Android 12+ (API 31), where
     // setSpeakerphoneOn is deprecated and unreliable, setSpeakerphoneOn below.
     // The route is session-scoped: applied in Initialize, re-evaluated on each Publish
-    // (devices (dis)connecting while the mic stays muted are only picked up on the next
-    // publish), and cleared in Dispose. Some OEMs reportedly ignore
+    // and on every OS communication-device change (see RegisterAndroidRouteListener),
+    // and cleared in Dispose. Re-pinning is skipped when the best-ranked device is
+    // already active — our own setCommunicationDevice fires the change listener, and
+    // the no-op check is what stops that feedback loop. Some OEMs reportedly ignore
     // setCommunicationDevice unless the app also enters MODE_IN_COMMUNICATION; that mode
     // is deliberately not set here because it suspends A2DP playback and repurposes the
     // volume keys.
@@ -208,15 +291,13 @@ public sealed class PlatformAudioController : IDisposable
     {
         try
         {
-            using var version = new AndroidJavaClass("android.os.Build$VERSION");
-            int sdkInt = version.GetStatic<int>("SDK_INT");
+            using var audioManager = GetAudioManager();
 
-            using var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            using var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            using var audioManager = activity.Call<AndroidJavaObject>("getSystemService", "audio");
-
-            if (sdkInt >= 31)
+            if (AndroidSdkInt() >= 31)
             {
+                using var current = audioManager.Call<AndroidJavaObject>("getCommunicationDevice");
+                int currentId = current != null ? current.Call<int>("getId") : -1;
+
                 using var devices = audioManager.Call<AndroidJavaObject>("getAvailableCommunicationDevices");
                 int count = devices.Call<int>("size");
                 AndroidJavaObject best = null;
@@ -239,8 +320,15 @@ public sealed class PlatformAudioController : IDisposable
 
                 if (best != null)
                 {
-                    bool ok = audioManager.Call<bool>("setCommunicationDevice", best);
-                    Debug.Log($"[PlatformAudioController] setCommunicationDevice(type={best.Call<int>("getType")}) -> {ok}");
+                    if (best.Call<int>("getId") == currentId)
+                    {
+                        Debug.Log($"[PlatformAudioController] Best route (type={best.Call<int>("getType")}) already active; skipping re-pin.");
+                    }
+                    else
+                    {
+                        bool ok = audioManager.Call<bool>("setCommunicationDevice", best);
+                        Debug.Log($"[PlatformAudioController] setCommunicationDevice(type={best.Call<int>("getType")}) -> {ok}");
+                    }
                     best.Dispose();
                 }
                 else
@@ -278,14 +366,8 @@ public sealed class PlatformAudioController : IDisposable
     {
         try
         {
-            using var version = new AndroidJavaClass("android.os.Build$VERSION");
-            int sdkInt = version.GetStatic<int>("SDK_INT");
-
-            using var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            using var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-            using var audioManager = activity.Call<AndroidJavaObject>("getSystemService", "audio");
-
-            if (sdkInt >= 31)
+            using var audioManager = GetAudioManager();
+            if (AndroidSdkInt() >= 31)
                 audioManager.Call("clearCommunicationDevice");
             else
                 audioManager.Call("setSpeakerphoneOn", false);
@@ -306,6 +388,9 @@ public sealed class PlatformAudioController : IDisposable
         _platformAudio = null;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
+        // Unregister BEFORE clearing: clearCommunicationDevice fires the change event,
+        // and a still-registered listener would immediately re-pin the loudspeaker.
+        UnregisterAndroidRouteListener();
         ClearAndroidCommunicationRoute();
 #endif
 
