@@ -111,6 +111,13 @@ public class MeetManager : MonoBehaviour
         }
 
         Debug.Log($"PlatformAudio ready. AEC={echoCancellation}, NS={noiseSuppression}, AGC={autoGainControl}, HW={preferHardwareProcessing}");
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // Poll fallback for routing changes that fire no communication-device event
+        // (e.g. a Bluetooth headset leaving the device list after its SCO link already
+        // dropped) — see PlatformAudioController.AndroidRouteWatchdog.
+        StartCoroutine(_platformAudioController.AndroidRouteWatchdog());
+#endif
     }
 
     private void OnApplicationPause(bool pause)
@@ -236,6 +243,15 @@ public class MeetManager : MonoBehaviour
         Debug.Log($"Connected to {_room.Name} (PlatformAudio: {usePlatformAudio})");
         _localId = _room.LocalParticipant.Identity;
         buttonBar.SetConnected(true);
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // Keep the mic capture running for the whole call, even while muted: without
+        // an active capture Android treats the communication-mode request as inactive
+        // and the speaker route pin is not honored after a Bluetooth episode — see
+        // PlatformAudioController.StartCapture. Publishing (unmuting) reuses the capture.
+        if (usePlatformAudio && _platformAudioController != null)
+            StartCoroutine(_platformAudioController.StartCapture());
+#endif
 
         EnsureParticipantTile(_localId);
         foreach (var remote in _room.RemoteParticipants.Values)
@@ -688,8 +704,10 @@ public class MeetManager : MonoBehaviour
         DisposeSource(ref _localRtcVideoSource);
 
         // Keep the ADM itself alive so the next call can reuse it; only the mic
-        // capture and track go away here.
+        // capture and track go away here (ConnectToRoom restarts the capture on the
+        // next call).
         _platformAudioController?.Unpublish();
+        _platformAudioController?.StopCapture();
 
         foreach (var obj in _audioObjects.Values)
         {

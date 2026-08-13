@@ -10,9 +10,10 @@ using UnityEngine;
 // automatically. Publish/Unpublish can be cycled (e.g. a mute toggle) while the ADM stays
 // alive; Dispose tears everything down in dependency order. On Android the controller
 // also owns the voice-communication audio session (mode + output route, loudspeaker
-// over earpiece) for its whole lifetime, and the mic capture stays open across mute
-// cycles to keep that session active — see SetupAndroidCommunicationAudio and
-// Unpublish.
+// over earpiece) for its whole lifetime; an active mic capture is what makes that
+// session authoritative, so start it with StartCapture when the call begins (even
+// when joining muted) — it then stays open across mute cycles until StopCapture when
+// the call ends. See StartCapture, SetupAndroidCommunicationAudio and Unpublish.
 public sealed class PlatformAudioController : IDisposable
 {
     readonly string _trackName;
@@ -71,21 +72,15 @@ public sealed class PlatformAudioController : IDisposable
         if (IsPublished)
             yield break;
 
-        // Begin capturing from the default microphone. On macOS/iOS this turns on the
-        // recording privacy indicator and triggers the OS permission prompt; on Android
-        // it awaits the RECORD_AUDIO runtime permission dialog. On Android the capture
-        // keeps running across mute cycles (see Unpublish), so skip the restart.
-        if (!_isRecording)
-        {
-            Debug.Log("[PlatformAudioController] Starting platform recording.");
-            yield return _platformAudio.StartRecording();
-            _isRecording = true;
-        }
+        // No-op when StartCapture already ran at call start (the normal case on
+        // Android) or when the capture was kept running across a mute cycle (see
+        // Unpublish).
+        yield return StartCapture();
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        // Re-apply the preferred route: a device added while a pin is active does not
-        // fire the change listener on all devices, so the next unmute is the fallback
-        // pickup point for it.
+        // Re-assert the preferred route immediately: the route watchdog would pick up
+        // any missed device change within its poll interval, but unmuting is a natural
+        // point to remove that latency.
         ApplyAndroidCommunicationRoute();
 #endif
 
@@ -111,6 +106,38 @@ public sealed class PlatformAudioController : IDisposable
         Debug.Log($"[PlatformAudioController] Microphone track '{_trackName}' published.");
     }
 
+    // Starts the microphone capture without publishing a track; Publish() reuses the
+    // running capture. On macOS/iOS this turns on the recording privacy indicator and
+    // triggers the OS permission prompt; on Android it awaits the RECORD_AUDIO runtime
+    // permission dialog. On Android call this as soon as the call starts, even when
+    // joining muted: since Android 13 the app's MODE_IN_COMMUNICATION request — and
+    // with it the communication-device pin — is only honored while the app has ACTIVE
+    // voice-communication capture or playback, and the ADM's playout stream does not
+    // register as active, only the recorder does. Without a running capture the pin is
+    // un-owned: it happens to hold in the simple fresh-session case, but after a
+    // Bluetooth connect/disconnect episode the platform reasserts the earpiece and
+    // wins against the change listener's re-pin.
+    public IEnumerator StartCapture()
+    {
+        if (_platformAudio == null)
+        {
+            Debug.LogError("[PlatformAudioController] StartCapture called before Initialize(); aborting.");
+            yield break;
+        }
+        if (_isRecording)
+            yield break;
+
+        Debug.Log("[PlatformAudioController] Starting platform recording.");
+        yield return _platformAudio.StartRecording();
+        _isRecording = true;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // The pin only became authoritative once the capture went active — re-assert
+        // the preferred route in case the platform moved it while the mode was un-owned.
+        ApplyAndroidCommunicationRoute();
+#endif
+    }
+
     // Tears down the mic capture and track but keeps the ADM alive: remote playout
     // continues and a later Publish() reuses it (e.g. a mute/unmute toggle).
     public void Unpublish()
@@ -133,9 +160,9 @@ public sealed class PlatformAudioController : IDisposable
         // the earpiece route every ~6 s. The track is unpublished and its source
         // disposed below, so no audio reaches the room, but the OS mic-in-use indicator
         // stays on while muted — same as other conferencing apps. Recording stops in
-        // Dispose.
+        // StopCapture (call end) or Dispose.
 #else
-        StopRecordingIfActive();
+        StopCapture();
 #endif
 
         _source?.Dispose();
@@ -147,9 +174,11 @@ public sealed class PlatformAudioController : IDisposable
         // Teardown happens in Dispose.
     }
 
-    // Stops the microphone capture if it is running. On Android this only happens on
-    // Dispose — see the note in Unpublish.
-    void StopRecordingIfActive()
+    // Stops the microphone capture if it is running. Only call this once the call has
+    // ended (after Unpublish): on Android, stopping the capture while still in a call
+    // hands routing authority back to the platform — see StartCapture. The next
+    // StartCapture (or Publish) restarts it.
+    public void StopCapture()
     {
         if (_platformAudio == null || !_isRecording)
             return;
@@ -348,6 +377,69 @@ public sealed class PlatformAudioController : IDisposable
         _routeListener = null;
     }
 
+    // Poll fallback for route changes that fire no communication-device event, run via
+    // StartCoroutine for the controller's whole lifetime. Device-verified gap on
+    // Pixel 8a (Android 16): when the Bluetooth headset powers off mid-call, SCO drops
+    // first and the communication device falls back to the earpiece while the headset
+    // is still in getAvailableCommunicationDevices — the listener's re-evaluation at
+    // that point still ranks the (dying) headset best. The headset leaves the device
+    // list up to ~10 s later WITHOUT another communication-device change (the device
+    // stays "earpiece"), so the listener never fires again and playout is stuck on the
+    // earpiece. Only a device-list diff catches that transition, and
+    // AudioDeviceCallback is an abstract class that AndroidJavaProxy cannot implement,
+    // hence polling. Also covers devices ADDED while a pin is active, which equally
+    // fires no event.
+    public IEnumerator AndroidRouteWatchdog()
+    {
+        var interval = new WaitForSeconds(1.5f);
+        while (IsInitialized)
+        {
+            if (AndroidRouteNeedsReapply())
+            {
+                Debug.Log("[PlatformAudioController] Route watchdog detected divergence; re-evaluating.");
+                ApplyAndroidCommunicationRoute();
+            }
+            yield return interval;
+        }
+    }
+
+    // True when a strictly better-ranked communication device is available than the
+    // one currently active — the pinned device vanished and the OS fell back to the
+    // earpiece, or a better device appeared without an event. Rank (not id) comparison
+    // on purpose: a headset can expose several same-rank entries (BLE + SCO) and which
+    // of those the OS activates is its call, not a divergence to correct. Kept
+    // separate from ApplyAndroidCommunicationRoute so the quiescent poll stays two
+    // JNI queries with no logging.
+    static bool AndroidRouteNeedsReapply()
+    {
+        try
+        {
+            if (AndroidSdkInt() < 31)
+                return false;
+
+            using var audioManager = GetAudioManager();
+            using var current = audioManager.Call<AndroidJavaObject>("getCommunicationDevice");
+            int currentRank = current != null ? RouteRank(current.Call<int>("getType")) : int.MaxValue;
+
+            using var devices = audioManager.Call<AndroidJavaObject>("getAvailableCommunicationDevices");
+            int count = devices.Call<int>("size");
+            int bestRank = int.MaxValue;
+            for (int i = 0; i < count; i++)
+            {
+                using var device = devices.Call<AndroidJavaObject>("get", i);
+                int rank = RouteRank(device.Call<int>("getType"));
+                if (rank < bestRank)
+                    bestRank = rank;
+            }
+            return bestRank < currentRank;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[PlatformAudioController] Route watchdog check failed: {e.Message}");
+            return false;
+        }
+    }
+
     // On Android the native ADM leaves output routing to the OS (SetPlayoutDevice is a
     // documented no-op there): remote tracks play through a voice-communication stream,
     // whose default route is the earpiece. Pick the best route per RouteRank via
@@ -455,7 +547,7 @@ public sealed class PlatformAudioController : IDisposable
     public void Dispose()
     {
         Unpublish();
-        StopRecordingIfActive();
+        StopCapture();
 
         _platformAudio?.Dispose();
         _platformAudio = null;
