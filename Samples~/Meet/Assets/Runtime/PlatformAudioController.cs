@@ -8,7 +8,9 @@ using UnityEngine;
 // the configured audio processing (AEC/NS/AGC) and publishes it as a LiveKit track, and
 // selects the default playout device through which remote tracks are played back
 // automatically. Publish/Unpublish can be cycled (e.g. a mute toggle) while the ADM stays
-// alive; Dispose tears everything down in dependency order.
+// alive; Dispose tears everything down in dependency order. On Android the controller
+// also owns the output route (loudspeaker over earpiece) for its whole lifetime — see
+// ApplyAndroidCommunicationRoute.
 public sealed class PlatformAudioController : IDisposable
 {
     readonly string _trackName;
@@ -33,7 +35,15 @@ public sealed class PlatformAudioController : IDisposable
     // routed to an output and stays silent. Returns false if the ADM could not be created.
     public bool Initialize()
     {
-        return InitializePlatformAudio();
+        if (!InitializePlatformAudio())
+            return false;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // Remote playout through the ADM starts at room connect regardless of whether
+        // the mic is ever published, so the route must be in place for the whole session.
+        ApplyAndroidCommunicationRoute();
+#endif
+        return true;
     }
 
     // Starts recording and publishes the mic track into the room. Initialize() must have
@@ -58,10 +68,11 @@ public sealed class PlatformAudioController : IDisposable
         Debug.Log("[PlatformAudioController] Starting platform recording.");
         yield return _platformAudio.StartRecording();
 
- 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        ApplyAndroidCommunicationRoute(true);
-#endif 
+        // Re-apply the preferred route: the available devices may have changed since
+        // Initialize (headset plugged in or removed).
+        ApplyAndroidCommunicationRoute();
+#endif
 
         _source = new PlatformAudioSource(_platformAudio, _audioOptions);
         _track = LocalAudioTrack.CreateAudioTrack(_trackName, _source, _room);
@@ -113,10 +124,10 @@ public sealed class PlatformAudioController : IDisposable
         _source?.Dispose();
         _source = null;
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-        // Undo the route override so the OS default applies again outside the capture session.
-        ApplyAndroidCommunicationRoute(false);
-#endif
+        // The Android route override is deliberately kept: the ADM continues playing
+        // remote audio while the mic is unpublished (listen-only / muted), and clearing
+        // the route here would drop that playout back onto the earpiece. Teardown
+        // happens in Dispose.
     }
 
     // Sets up PlatformAudio with the default recording/playout devices.
@@ -183,13 +194,17 @@ public sealed class PlatformAudioController : IDisposable
     }
 
     // On Android the native ADM leaves output routing to the OS (SetPlayoutDevice is a
-    // documented no-op there): once the mic opens, the audio session runs in
-    // voice-communication mode, whose default route is the earpiece. Pick the best route
-    // per RouteRank via AudioManager — setCommunicationDevice on Android 12+ (API 31),
-    // where setSpeakerphoneOn is deprecated and unreliable, setSpeakerphoneOn below.
-    // The route is chosen once per Publish() (when the mic opens); devices (dis)connecting
-    // mid-conversation are picked up on the next publish.
-    static void ApplyAndroidCommunicationRoute(bool enable)
+    // documented no-op there): remote tracks play through a voice-communication stream,
+    // whose default route is the earpiece. Pick the best route per RouteRank via
+    // AudioManager — setCommunicationDevice on Android 12+ (API 31), where
+    // setSpeakerphoneOn is deprecated and unreliable, setSpeakerphoneOn below.
+    // The route is session-scoped: applied in Initialize, re-evaluated on each Publish
+    // (devices (dis)connecting while the mic stays muted are only picked up on the next
+    // publish), and cleared in Dispose. Some OEMs reportedly ignore
+    // setCommunicationDevice unless the app also enters MODE_IN_COMMUNICATION; that mode
+    // is deliberately not set here because it suspends A2DP playback and repurposes the
+    // volume keys.
+    static void ApplyAndroidCommunicationRoute()
     {
         try
         {
@@ -202,42 +217,35 @@ public sealed class PlatformAudioController : IDisposable
 
             if (sdkInt >= 31)
             {
-                if (enable)
+                using var devices = audioManager.Call<AndroidJavaObject>("getAvailableCommunicationDevices");
+                int count = devices.Call<int>("size");
+                AndroidJavaObject best = null;
+                int bestRank = int.MaxValue;
+                for (int i = 0; i < count; i++)
                 {
-                    using var devices = audioManager.Call<AndroidJavaObject>("getAvailableCommunicationDevices");
-                    int count = devices.Call<int>("size");
-                    AndroidJavaObject best = null;
-                    int bestRank = int.MaxValue;
-                    for (int i = 0; i < count; i++)
+                    var device = devices.Call<AndroidJavaObject>("get", i);
+                    int rank = RouteRank(device.Call<int>("getType"));
+                    if (rank < bestRank)
                     {
-                        var device = devices.Call<AndroidJavaObject>("get", i);
-                        int rank = RouteRank(device.Call<int>("getType"));
-                        if (rank < bestRank)
-                        {
-                            best?.Dispose();
-                            best = device;
-                            bestRank = rank;
-                        }
-                        else
-                        {
-                            device.Dispose();
-                        }
-                    }
-
-                    if (best != null)
-                    {
-                        bool ok = audioManager.Call<bool>("setCommunicationDevice", best);
-                        Debug.Log($"[PlatformAudioController] setCommunicationDevice(type={best.Call<int>("getType")}) -> {ok}");
-                        best.Dispose();
+                        best?.Dispose();
+                        best = device;
+                        bestRank = rank;
                     }
                     else
                     {
-                        Debug.LogWarning("[PlatformAudioController] No ranked communication device available; leaving default route.");
+                        device.Dispose();
                     }
+                }
+
+                if (best != null)
+                {
+                    bool ok = audioManager.Call<bool>("setCommunicationDevice", best);
+                    Debug.Log($"[PlatformAudioController] setCommunicationDevice(type={best.Call<int>("getType")}) -> {ok}");
+                    best.Dispose();
                 }
                 else
                 {
-                    audioManager.Call("clearCommunicationDevice");
+                    Debug.LogWarning("[PlatformAudioController] No ranked communication device available; leaving default route.");
                 }
             }
             else
@@ -247,21 +255,45 @@ public sealed class PlatformAudioController : IDisposable
                 // proper legacy Bluetooth SCO management (startBluetoothSco) is out of
                 // scope for this demo. The AudioManager queries are deprecated but this
                 // branch only ever runs on old devices.
-                if (enable
-                    && (audioManager.Call<bool>("isBluetoothA2dpOn")
-                        || audioManager.Call<bool>("isBluetoothScoOn")
-                        || audioManager.Call<bool>("isWiredHeadsetOn")))
+                if (audioManager.Call<bool>("isBluetoothA2dpOn")
+                    || audioManager.Call<bool>("isBluetoothScoOn")
+                    || audioManager.Call<bool>("isWiredHeadsetOn"))
                 {
                     Debug.Log("[PlatformAudioController] External output attached; leaving OS routing.");
                     return;
                 }
-                audioManager.Call("setSpeakerphoneOn", enable);
-                Debug.Log($"[PlatformAudioController] setSpeakerphoneOn({enable})");
+                audioManager.Call("setSpeakerphoneOn", true);
+                Debug.Log("[PlatformAudioController] setSpeakerphoneOn(true)");
             }
         }
         catch (Exception e)
         {
             Debug.LogWarning($"[PlatformAudioController] Failed to set communication route: {e.Message}");
+        }
+    }
+
+    // Hands output routing back to the OS default. Only called from Dispose: the route
+    // is session-scoped on purpose (see Unpublish).
+    static void ClearAndroidCommunicationRoute()
+    {
+        try
+        {
+            using var version = new AndroidJavaClass("android.os.Build$VERSION");
+            int sdkInt = version.GetStatic<int>("SDK_INT");
+
+            using var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            using var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            using var audioManager = activity.Call<AndroidJavaObject>("getSystemService", "audio");
+
+            if (sdkInt >= 31)
+                audioManager.Call("clearCommunicationDevice");
+            else
+                audioManager.Call("setSpeakerphoneOn", false);
+            Debug.Log("[PlatformAudioController] Restored default audio route.");
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"[PlatformAudioController] Failed to clear communication route: {e.Message}");
         }
     }
 #endif
@@ -272,6 +304,10 @@ public sealed class PlatformAudioController : IDisposable
 
         _platformAudio?.Dispose();
         _platformAudio = null;
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        ClearAndroidCommunicationRoute();
+#endif
 
         _room = null;
     }
