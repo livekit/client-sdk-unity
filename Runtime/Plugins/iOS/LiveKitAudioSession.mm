@@ -64,6 +64,15 @@
 // release it exactly once regardless of how many times configure/restore run.
 static BOOL s_liveKitHoldsActivation = NO;
 
+// Snapshot of the AVAudioSession configuration as it was the first time LiveKit
+// touched the session (i.e. whatever Unity set up from its iOS Player Settings).
+// Captured lazily in LiveKit_ConfigureAudioSessionForVoIP and re-applied by
+// LiveKit_RestoreDefaultAudioSession when the last PlatformAudio is disposed.
+static BOOL s_hasCachedState = NO;
+static NSString* s_cachedCategory = nil;
+static NSString* s_cachedMode = nil;
+static AVAudioSessionCategoryOptions s_cachedCategoryOptions = 0;
+
 static const AVAudioSessionCategoryOptions kLiveKitCategoryOptions =
     AVAudioSessionCategoryOptionDefaultToSpeaker |
     AVAudioSessionCategoryOptionAllowBluetooth |
@@ -82,6 +91,23 @@ static id<LiveKitRTCAudioSession> LiveKit_RTCSession() {
 #pragma clang diagnostic pop
 }
 
+/// Captures the current audio session category/mode/options exactly once, before
+/// LiveKit reconfigures the session for VoIP. Subsequent calls are no-ops so the
+/// snapshot always reflects the pristine, pre-LiveKit (Unity-configured) state.
+static void LiveKit_CacheSessionStateIfNeeded() {
+    if (s_hasCachedState) {
+        return;
+    }
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    // copy so the strings persist for the app lifetime regardless of ARC/MRC.
+    s_cachedCategory = [session.category copy];
+    s_cachedMode = [session.mode copy];
+    s_cachedCategoryOptions = session.categoryOptions;
+    s_hasCachedState = YES;
+    NSLog(@"LiveKit: cached audio session state: category=%@, mode=%@, options=%lu",
+          s_cachedCategory, s_cachedMode, (unsigned long)s_cachedCategoryOptions);
+}
+
 extern "C" {
 
 /// Configures the iOS audio session for VoIP/WebRTC use and takes app ownership
@@ -96,6 +122,9 @@ extern "C" {
 /// no further call is required for it to work; use LiveKit_SetAudioEnabled(false)
 /// to stop the VPIO unit between calls (e.g. on hang-up).
 void LiveKit_ConfigureAudioSessionForVoIP() {
+    // Snapshot the pristine (Unity Player Settings) session before we change it.
+    LiveKit_CacheSessionStateIfNeeded();
+
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
 
     if (rtc == nil) {
@@ -172,8 +201,10 @@ void LiveKit_SetAudioEnabled(bool enabled) {
     NSLog(@"LiveKit: isAudioEnabled=%@ (activationCount=%d)", enabled ? @"YES" : @"NO", rtc.activationCount);
 }
 
-/// Restores the audio session to the default ambient category and relinquishes the
-/// app-owned activation and manual mode. Call this when PlatformAudio is disposed.
+/// Restores the audio session Unity had before LiveKit touched it (or the ambient
+/// category if LiveKit never configured it), relinquishes the app-owned activation
+/// and manual mode, and reactivates the session so Unity audio output resumes.
+/// Call this when the last PlatformAudio is disposed.
 void LiveKit_RestoreDefaultAudioSession() {
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
 
@@ -192,9 +223,27 @@ void LiveKit_RestoreDefaultAudioSession() {
 
     AVAudioSession* session = [AVAudioSession sharedInstance];
     NSError* error = nil;
-    [session setCategory:AVAudioSessionCategoryAmbient error:&error];
-    if (error) {
-        NSLog(@"LiveKit: Failed to restore default audio session: %@", error.localizedDescription);
+    if (s_hasCachedState) {
+        if (![session setCategory:s_cachedCategory
+                             mode:s_cachedMode
+                          options:s_cachedCategoryOptions
+                            error:&error] || error) {
+            NSLog(@"LiveKit: Failed to restore cached audio session (category=%@, mode=%@): %@",
+                  s_cachedCategory, s_cachedMode, error.localizedDescription);
+        }
+    } else {
+        // Configure was never called, so we have nothing to restore to; fall back
+        // to the ambient category.
+        [session setCategory:AVAudioSessionCategoryAmbient error:&error];
+        if (error) {
+            NSLog(@"LiveKit: Failed to restore default audio session: %@", error.localizedDescription);
+        }
+    }
+
+    // Hand an active session back to Unity so its audio output resumes.
+    error = nil;
+    if (![session setActive:YES error:&error] || error) {
+        NSLog(@"LiveKit: Failed to reactivate audio session: %@", error.localizedDescription);
     }
 }
 

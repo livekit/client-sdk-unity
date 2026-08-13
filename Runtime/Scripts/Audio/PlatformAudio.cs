@@ -27,7 +27,9 @@ namespace LiveKit
         internal static extern void LiveKit_ConfigureAudioSessionForVoIP();
 
         /// <summary>
-        /// Restores the iOS audio session to ambient mode.
+        /// Restores the audio session Unity had before LiveKit configured it
+        /// (or the ambient category as a fallback) and reactivates it so Unity
+        /// audio output resumes. Called when the last PlatformAudio is disposed.
         /// </summary>
         [DllImport("__Internal")]
         internal static extern void LiveKit_RestoreDefaultAudioSession();
@@ -83,6 +85,11 @@ namespace LiveKit
         internal readonly FfiHandle Handle;
         private readonly PlatformAudioInfo _info;
         private bool _disposed = false;
+#if UNITY_IOS && !UNITY_EDITOR
+        // Tracks live PlatformAudio instances so the iOS audio session is restored
+        // only when the last one is disposed (aligned with the native ADM ref-count).
+        private static int _instanceCount;
+#endif
 
         /// <summary>
         /// Number of available recording (microphone) devices.
@@ -101,7 +108,7 @@ namespace LiveKit
         /// to a room if you want automatic speaker playout for remote audio.
         ///
         /// On iOS, this automatically configures the audio session for VoIP mode
-        /// (PlayAndRecord category with VoiceChat mode) to enable hardware echo
+        /// (PlayAndRecord category with VideoChat mode) to enable hardware echo
         /// cancellation and microphone input.
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -112,7 +119,7 @@ namespace LiveKit
         {
 #if UNITY_IOS && !UNITY_EDITOR
             // Configure iOS audio session for VoIP before initializing WebRTC ADM.
-            // This sets PlayAndRecord category with VoiceChat mode for hardware AEC.
+            // This sets PlayAndRecord category with VideoChat mode for hardware AEC.
             IOSAudioSessionHelper.LiveKit_ConfigureAudioSessionForVoIP();
 #endif
 
@@ -128,6 +135,12 @@ namespace LiveKit
             _info = platformAudio.Info;
 
             Utils.Debug($"PlatformAudio created: {RecordingDeviceCount} recording devices, {PlayoutDeviceCount} playout devices");
+
+#if UNITY_IOS && !UNITY_EDITOR
+            // Count this instance only after successful construction so a failed
+            // ctor never leaves the counter stuck above zero.
+            System.Threading.Interlocked.Increment(ref _instanceCount);
+#endif
         }
 
         /// <summary>
@@ -397,11 +410,13 @@ namespace LiveKit
             Handle.Dispose();
 
 #if UNITY_IOS && !UNITY_EDITOR
-            // Relinquish the app-owned audio session: disable call audio, release
-            // our activation, leave manual mode, and restore the ambient category.
-            // Balances the LiveKit_ConfigureAudioSessionForVoIP() call made in the
-            // constructor so the session isn't left stuck in PlayAndRecord.
-            IOSAudioSessionHelper.LiveKit_RestoreDefaultAudioSession();
+            // Once the last instance is gone, relinquish the app-owned audio session:
+            // disable call audio, release our activation, leave manual mode, restore
+            // the session Unity had before LiveKit touched it, and reactivate it so
+            // Unity audio output resumes. Balances LiveKit_ConfigureAudioSessionForVoIP()
+            // in the constructor so the session isn't left stuck in PlayAndRecord.
+            if (System.Threading.Interlocked.Decrement(ref _instanceCount) == 0)
+                IOSAudioSessionHelper.LiveKit_RestoreDefaultAudioSession();
 #endif
 
             _disposed = true;
