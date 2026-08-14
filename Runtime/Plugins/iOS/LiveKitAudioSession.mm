@@ -15,6 +15,7 @@
  */
 
 #import <AVFoundation/AVFoundation.h>
+#import <UIKit/UIKit.h>
 
 // This plugin coordinates the single shared AVAudioSession with WebRTC's iOS
 // Audio Device Module (ADM). WebRTC ships an RTCAudioSession proxy that, left in
@@ -40,6 +41,13 @@
 //     pre-call audio is unaffected). Callers can toggle it via
 //     LiveKit_SetAudioEnabled -- e.g. OFF on hang-up so the unit stops between
 //     calls while our held activation keeps the session alive for Unity.
+//   * Backgrounding interrupts the session and WebRTC stops its audio unit. On
+//     foreground, RTCAudioSession's own recovery restarts the unit exactly once,
+//     with no retry -- and Unity/FMOD restarts *its* audio around the same moment,
+//     reconfiguring the shared session (observed with Unity 6). Whoever loses that
+//     race stays broken, so we observe foreground/interruption-end ourselves and,
+//     after Unity's restart has settled, re-assert our config and cycle
+//     isAudioEnabled to force a clean rebuild of the audio unit.
 //
 // RTCAudioSession lives inside the statically-linked liblivekit_ffi; we reach it
 // dynamically via NSClassFromString + a protocol-typed id so this file never
@@ -73,6 +81,16 @@ static NSString* s_cachedCategory = nil;
 static NSString* s_cachedMode = nil;
 static AVAudioSessionCategoryOptions s_cachedCategoryOptions = 0;
 
+// YES between configure and restore: gates the foreground-recovery observers so
+// they no-op once LiveKit has handed the session back to the app.
+static BOOL s_liveKitConfigured = NO;
+// The isAudioEnabled state the caller wants (updated by LiveKit_SetAudioEnabled),
+// so recovery knows whether to restart the audio unit after re-asserting config.
+static BOOL s_audioDesired = NO;
+// Coalesces recovery requests (didBecomeActive and interruption-ended both fire
+// on foreground) into one delayed pass.
+static BOOL s_recoveryPending = NO;
+
 static const AVAudioSessionCategoryOptions kLiveKitCategoryOptions =
     AVAudioSessionCategoryOptionDefaultToSpeaker |
     AVAudioSessionCategoryOptionAllowBluetooth |
@@ -89,6 +107,99 @@ static id<LiveKitRTCAudioSession> LiveKit_RTCSession() {
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     return (id<LiveKitRTCAudioSession>)[cls performSelector:@selector(sharedInstance)];
 #pragma clang diagnostic pop
+}
+
+/// Re-applies LiveKit's category/mode/options and reactivates the session, then
+/// cycles isAudioEnabled to force WebRTC to rebuild its VPIO audio unit. Runs on
+/// a delay so it lands after Unity/FMOD's own foreground audio restart (which is
+/// itself delayed and can reconfigure the shared session underneath WebRTC's
+/// one-shot, no-retry interruption recovery -- the Unity 6 focus race).
+static void LiveKit_ScheduleSessionRecovery() {
+    if (!s_liveKitConfigured || s_recoveryPending) {
+        return;
+    }
+    s_recoveryPending = YES;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)),
+                   dispatch_get_main_queue(), ^{
+        s_recoveryPending = NO;
+        if (!s_liveKitConfigured) {
+            return;  // restored/disposed while the recovery was pending
+        }
+
+        AVAudioSession* session = [AVAudioSession sharedInstance];
+        // "Who won" the focus race: what Unity/FMOD left the session as.
+        NSLog(@"LiveKit: foreground recovery; session before re-assert: category=%@ mode=%@ options=%lu",
+              session.category, session.mode, (unsigned long)session.categoryOptions);
+
+        id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
+        NSError* error = nil;
+        if (rtc != nil) {
+            [rtc lockForConfiguration];
+            if (![rtc setCategory:AVAudioSessionCategoryPlayAndRecord
+                             mode:AVAudioSessionModeVideoChat
+                          options:kLiveKitCategoryOptions
+                            error:&error] || error) {
+                NSLog(@"LiveKit: recovery failed to re-set category: %@", error.localizedDescription);
+            }
+            [rtc unlockForConfiguration];
+        } else {
+            if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
+                                 mode:AVAudioSessionModeVideoChat
+                              options:kLiveKitCategoryOptions
+                                error:&error] || error) {
+                NSLog(@"LiveKit: recovery failed to re-set category: %@", error.localizedDescription);
+            }
+        }
+
+        // Reactivate directly on AVAudioSession: the OS deactivated the hardware
+        // session during the interruption, but RTCAudioSession's activation
+        // ref-count still includes our held activation, so reactivating through
+        // the proxy would double-count it.
+        error = nil;
+        if (![session setActive:YES error:&error] || error) {
+            NSLog(@"LiveKit: recovery failed to reactivate session: %@", error.localizedDescription);
+        }
+
+        // Cycle isAudioEnabled to rebuild the VPIO unit against the re-asserted
+        // session (WebRTC's own foreground restart may have failed, or been undone
+        // by Unity's). Harmless when no call audio is active: with playout and
+        // recording uninitialized WebRTC ignores the change.
+        if (rtc != nil && s_audioDesired) {
+            rtc.isAudioEnabled = NO;
+            rtc.isAudioEnabled = YES;
+        }
+
+        NSLog(@"LiveKit: foreground recovery done (audioDesired=%d, activationCount=%d)",
+              s_audioDesired, rtc != nil ? rtc.activationCount : -1);
+    });
+}
+
+/// Registers app-lifetime observers that trigger session recovery when the app
+/// returns to the foreground or an audio interruption ends. Registered once on
+/// first configure; the handlers no-op while LiveKit is not configured.
+static void LiveKit_RegisterLifecycleObserversIfNeeded() {
+    static BOOL s_observersRegistered = NO;
+    if (s_observersRegistered) {
+        return;
+    }
+    s_observersRegistered = YES;
+
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center addObserverForName:UIApplicationDidBecomeActiveNotification
+                        object:nil
+                         queue:[NSOperationQueue mainQueue]
+                    usingBlock:^(NSNotification* note) {
+        LiveKit_ScheduleSessionRecovery();
+    }];
+    [center addObserverForName:AVAudioSessionInterruptionNotification
+                        object:nil
+                         queue:[NSOperationQueue mainQueue]
+                    usingBlock:^(NSNotification* note) {
+        NSNumber* type = note.userInfo[AVAudioSessionInterruptionTypeKey];
+        if (type.unsignedIntegerValue == AVAudioSessionInterruptionTypeEnded) {
+            LiveKit_ScheduleSessionRecovery();
+        }
+    }];
 }
 
 /// Captures the current audio session category/mode/options exactly once, before
@@ -124,6 +235,10 @@ extern "C" {
 void LiveKit_ConfigureAudioSessionForVoIP() {
     // Snapshot the pristine (Unity Player Settings) session before we change it.
     LiveKit_CacheSessionStateIfNeeded();
+
+    LiveKit_RegisterLifecycleObserversIfNeeded();
+    s_liveKitConfigured = YES;
+    s_audioDesired = YES;  // mirrors the isAudioEnabled default set below
 
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
 
@@ -193,6 +308,7 @@ void LiveKit_ConfigureAudioSessionForVoIP() {
 /// but leaves the session active (via the app's held activation), so Unity audio
 /// keeps playing.
 void LiveKit_SetAudioEnabled(bool enabled) {
+    s_audioDesired = enabled ? YES : NO;
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
     if (rtc == nil) {
         return;
@@ -206,6 +322,10 @@ void LiveKit_SetAudioEnabled(bool enabled) {
 /// and manual mode, and reactivates the session so Unity audio output resumes.
 /// Call this when the last PlatformAudio is disposed.
 void LiveKit_RestoreDefaultAudioSession() {
+    // Stand down the foreground-recovery observers before touching the session.
+    s_liveKitConfigured = NO;
+    s_audioDesired = NO;
+
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
 
     if (rtc != nil) {
