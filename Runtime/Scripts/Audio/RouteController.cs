@@ -88,7 +88,7 @@ namespace LiveKit
 
     /// <summary>
     /// Placeholder backend for platforms whose routing implementation has not landed yet
-    /// (Android, iOS). Device snapshots still work through the FFI (a single placeholder
+    /// (Android). Device snapshots still work through the FFI (a single placeholder
     /// entry for the OS default input/output); the routing verbs throw or no-op as
     /// documented on the public API.
     /// </summary>

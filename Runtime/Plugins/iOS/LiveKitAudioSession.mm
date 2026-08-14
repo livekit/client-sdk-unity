@@ -17,6 +17,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 // This plugin coordinates the single shared AVAudioSession with WebRTC's iOS
 // Audio Device Module (ADM). WebRTC ships an RTCAudioSession proxy that, left in
 // its default "automatic" mode, reconfigures the category/route and *deactivates*
@@ -30,11 +33,14 @@
 //   * We hold exactly one permanent activation (setActive:YES). Because
 //     RTCAudioSession ref-counts activation, WebRTC's per-call setActive:YES/NO
 //     only cycles the count and never actually deactivates the hardware session.
-//   * We set the category once (PlayAndRecord + VideoChat mode). VideoChat routes
-//     to the loudspeaker by default (while still honoring connected wired/Bluetooth
-//     headphones), so WebRTC re-applying its own config keeps output on the speaker
-//     instead of the earpiece. We deliberately do NOT force the speaker via
-//     overrideOutputAudioPort, which would override plugged-in headphones.
+//   * The category/mode/options are derived from a session STATE machine driven
+//     from C# (PlatformAudio knows the call's recording state) plus a
+//     speaker-vs-earpiece preference (see the table below). Every apply is also
+//     mirrored into WebRTC's RTCAudioSessionConfiguration snapshot so the ADM
+//     re-applies the same config on its own restarts.
+//   * The speaker preference is expressed via the session MODE only (VideoChat
+//     routes to the loudspeaker by default, VoiceChat to the receiver), never via
+//     overrideOutputAudioPort, so connected wired/Bluetooth devices always win.
 //   * The VPIO voice-processing unit (hardware AEC/AGC/NS) is gated by
 //     isAudioEnabled. It defaults to YES so call audio works out of the box (the
 //     unit still only initializes once a call actually has an audio track, so
@@ -46,8 +52,28 @@
 //     with no retry -- and Unity/FMOD restarts *its* audio around the same moment,
 //     reconfiguring the shared session (observed with Unity 6). Whoever loses that
 //     race stays broken, so we observe foreground/interruption-end ourselves and,
-//     after Unity's restart has settled, re-assert our config and cycle
-//     isAudioEnabled to force a clean rebuild of the audio unit.
+//     after Unity's restart has settled, re-assert the current state's config and
+//     cycle isAudioEnabled to force a clean rebuild of the audio unit.
+//   * Route changes (headset plug/unplug, Bluetooth connect, mode switches) are
+//     observed via AVAudioSessionRouteChangeNotification and forwarded to C#
+//     through a registered callback so the SDK can raise its DevicesChanged event.
+//
+// Session state table (state is set from C# via LiveKit_SetSessionState):
+//
+//   state          category       mode                     options
+//   0 idle         PlayAndRecord  Default                  BT | A2DP | MixWithOthers
+//                                                          | DefaultToSpeaker*
+//   1 playout-only PlayAndRecord  Default                  same as idle
+//   2 recording    PlayAndRecord  VideoChat (speaker) /    BT | A2DP
+//                                 VoiceChat (earpiece)
+//
+//   *DefaultToSpeaker only while the speaker is preferred. In the recording state
+//    the speaker preference is carried by the mode alone. Idle and playout-only
+//    share a config: PlayAndRecord stays because the ADM initializes its VPIO unit
+//    with input disabled for playout-only (InitPlayOrRecord(false)) but nothing
+//    guarantees VPIO under the Playback category; mode Default + MixWithOthers is
+//    the music-friendliest config the ADM demonstrably supports. The states stay
+//    distinct so the mapping can diverge without touching the C# driver.
 //
 // RTCAudioSession lives inside the statically-linked liblivekit_ffi; we reach it
 // dynamically via NSClassFromString + a protocol-typed id so this file never
@@ -67,6 +93,23 @@
             options:(AVAudioSessionCategoryOptions)options
               error:(NSError**)outError;
 @end
+
+/// Minimal subset of WebRTC's RTCAudioSessionConfiguration (the snapshot the ADM
+/// re-applies on its own restarts), messaged dynamically like RTCAudioSession.
+@protocol LiveKitRTCAudioSessionConfiguration <NSObject>
+@property(nonatomic, strong) NSString* category;
+@property(nonatomic, assign) AVAudioSessionCategoryOptions categoryOptions;
+@property(nonatomic, strong) NSString* mode;
+@end
+
+/// Session states, mirroring PlatformAudio's driver in C#. Do not renumber.
+enum {
+    kLiveKitSessionStateIdle = 0,
+    kLiveKitSessionStatePlayoutOnly = 1,
+    kLiveKitSessionStateRecording = 2,
+};
+
+typedef void (*LiveKitRouteChangeCallback)(void);
 
 // Tracks whether *we* currently hold the one app-owned activation, so we add and
 // release it exactly once regardless of how many times configure/restore run.
@@ -91,10 +134,27 @@ static BOOL s_audioDesired = NO;
 // on foreground) into one delayed pass.
 static BOOL s_recoveryPending = NO;
 
-static const AVAudioSessionCategoryOptions kLiveKitCategoryOptions =
-    AVAudioSessionCategoryOptionDefaultToSpeaker |
+// The state machine inputs (see the table above). The defaults match what a fresh
+// PlatformAudio pushes right after construction, so the config applied by
+// configure is already the one the C# driver expects.
+static int s_sessionState = kLiveKitSessionStatePlayoutOnly;
+static BOOL s_speakerPreferred = YES;
+
+// Invoked (on the main queue) whenever the audio route changes, so the C# side
+// can re-query the route and raise DevicesChanged.
+static LiveKitRouteChangeCallback s_routeChangeCallback = NULL;
+
+// AllowBluetooth was renamed AllowBluetoothHFP in the iOS 26 SDK; same guard the
+// WebRTC fork uses. The speaker preference never rides on these options.
+#if defined(__IPHONE_26_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_26_0
+static const AVAudioSessionCategoryOptions kLiveKitBluetoothOptions =
+    AVAudioSessionCategoryOptionAllowBluetoothHFP |
+    AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+#else
+static const AVAudioSessionCategoryOptions kLiveKitBluetoothOptions =
     AVAudioSessionCategoryOptionAllowBluetooth |
     AVAudioSessionCategoryOptionAllowBluetoothA2DP;
+#endif
 
 /// Returns WebRTC's shared RTCAudioSession if it's present in the linked binary,
 /// or nil if the class can't be found (in which case callers use AVAudioSession).
@@ -109,7 +169,92 @@ static id<LiveKitRTCAudioSession> LiveKit_RTCSession() {
 #pragma clang diagnostic pop
 }
 
-/// Re-applies LiveKit's category/mode/options and reactivates the session, then
+static NSString* LiveKit_DesiredMode() {
+    if (s_sessionState == kLiveKitSessionStateRecording) {
+        return s_speakerPreferred ? AVAudioSessionModeVideoChat
+                                  : AVAudioSessionModeVoiceChat;
+    }
+    return AVAudioSessionModeDefault;
+}
+
+static AVAudioSessionCategoryOptions LiveKit_DesiredOptions() {
+    AVAudioSessionCategoryOptions options = kLiveKitBluetoothOptions;
+    if (s_sessionState != kLiveKitSessionStateRecording) {
+        options |= AVAudioSessionCategoryOptionMixWithOthers;
+        // Mode Default routes PlayAndRecord to the receiver; outside a call there
+        // is no mode that both prefers the speaker and leaves music processing
+        // alone, so here -- and only here -- the preference rides on an option.
+        if (s_speakerPreferred) {
+            options |= AVAudioSessionCategoryOptionDefaultToSpeaker;
+        }
+    }
+    return options;
+}
+
+/// Mirrors our category/mode/options into WebRTC's RTCAudioSessionConfiguration
+/// snapshot so the ADM re-applies the same config whenever it (re)configures the
+/// session itself (audio unit init, interruption recovery).
+static void LiveKit_MirrorWebRTCConfiguration(NSString* mode,
+                                              AVAudioSessionCategoryOptions options) {
+    Class cls = NSClassFromString(@"RTCAudioSessionConfiguration");
+    if (!cls || ![cls respondsToSelector:@selector(webRTCConfiguration)] ||
+        ![cls respondsToSelector:@selector(setWebRTCConfiguration:)]) {
+        return;
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    id<LiveKitRTCAudioSessionConfiguration> config =
+        (id<LiveKitRTCAudioSessionConfiguration>)[cls performSelector:@selector(webRTCConfiguration)];
+    if (config == nil) {
+        return;
+    }
+    config.category = AVAudioSessionCategoryPlayAndRecord;
+    config.mode = mode;
+    config.categoryOptions = options;
+    [cls performSelector:@selector(setWebRTCConfiguration:) withObject:config];
+#pragma clang diagnostic pop
+}
+
+/// Applies the config derived from (s_sessionState, s_speakerPreferred) to the
+/// session and mirrors it into the WebRTC snapshot. Logs expected vs. actual so
+/// device tests can see who won when something else reconfigures the session.
+static void LiveKit_ApplySessionConfig(NSString* reason) {
+    NSString* mode = LiveKit_DesiredMode();
+    AVAudioSessionCategoryOptions options = LiveKit_DesiredOptions();
+
+    id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
+    NSError* error = nil;
+    if (rtc != nil) {
+        [rtc lockForConfiguration];
+        if (![rtc setCategory:AVAudioSessionCategoryPlayAndRecord
+                         mode:mode
+                      options:options
+                        error:&error] || error) {
+            NSLog(@"LiveKit: failed to apply session config (%@): %@",
+                  reason, error.localizedDescription);
+        }
+        [rtc unlockForConfiguration];
+    } else {
+        AVAudioSession* session = [AVAudioSession sharedInstance];
+        if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
+                             mode:mode
+                          options:options
+                            error:&error] || error) {
+            NSLog(@"LiveKit: failed to apply session config (%@): %@",
+                  reason, error.localizedDescription);
+        }
+    }
+
+    LiveKit_MirrorWebRTCConfiguration(mode, options);
+
+    AVAudioSession* current = [AVAudioSession sharedInstance];
+    NSLog(@"LiveKit: session config (%@): state=%d speakerPreferred=%d expected mode=%@ options=%lu"
+           " -> actual category=%@ mode=%@ options=%lu",
+          reason, s_sessionState, s_speakerPreferred, mode, (unsigned long)options,
+          current.category, current.mode, (unsigned long)current.categoryOptions);
+}
+
+/// Re-applies the current state's config and reactivates the session, then
 /// cycles isAudioEnabled to force WebRTC to rebuild its VPIO audio unit. Runs on
 /// a delay so it lands after Unity/FMOD's own foreground audio restart (which is
 /// itself delayed and can reconfigure the shared session underneath WebRTC's
@@ -131,31 +276,13 @@ static void LiveKit_ScheduleSessionRecovery() {
         NSLog(@"LiveKit: foreground recovery; session before re-assert: category=%@ mode=%@ options=%lu",
               session.category, session.mode, (unsigned long)session.categoryOptions);
 
-        id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
-        NSError* error = nil;
-        if (rtc != nil) {
-            [rtc lockForConfiguration];
-            if (![rtc setCategory:AVAudioSessionCategoryPlayAndRecord
-                             mode:AVAudioSessionModeVideoChat
-                          options:kLiveKitCategoryOptions
-                            error:&error] || error) {
-                NSLog(@"LiveKit: recovery failed to re-set category: %@", error.localizedDescription);
-            }
-            [rtc unlockForConfiguration];
-        } else {
-            if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
-                                 mode:AVAudioSessionModeVideoChat
-                              options:kLiveKitCategoryOptions
-                                error:&error] || error) {
-                NSLog(@"LiveKit: recovery failed to re-set category: %@", error.localizedDescription);
-            }
-        }
+        LiveKit_ApplySessionConfig(@"foreground recovery");
 
         // Reactivate directly on AVAudioSession: the OS deactivated the hardware
         // session during the interruption, but RTCAudioSession's activation
         // ref-count still includes our held activation, so reactivating through
         // the proxy would double-count it.
-        error = nil;
+        NSError* error = nil;
         if (![session setActive:YES error:&error] || error) {
             NSLog(@"LiveKit: recovery failed to reactivate session: %@", error.localizedDescription);
         }
@@ -164,6 +291,7 @@ static void LiveKit_ScheduleSessionRecovery() {
         // session (WebRTC's own foreground restart may have failed, or been undone
         // by Unity's). Harmless when no call audio is active: with playout and
         // recording uninitialized WebRTC ignores the change.
+        id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
         if (rtc != nil && s_audioDesired) {
             rtc.isAudioEnabled = NO;
             rtc.isAudioEnabled = YES;
@@ -174,9 +302,9 @@ static void LiveKit_ScheduleSessionRecovery() {
     });
 }
 
-/// Registers app-lifetime observers that trigger session recovery when the app
-/// returns to the foreground or an audio interruption ends. Registered once on
-/// first configure; the handlers no-op while LiveKit is not configured.
+/// Registers app-lifetime observers for foreground/interruption recovery and for
+/// route-change forwarding. Registered once on first configure; the handlers
+/// no-op while LiveKit is not configured.
 static void LiveKit_RegisterLifecycleObserversIfNeeded() {
     static BOOL s_observersRegistered = NO;
     if (s_observersRegistered) {
@@ -200,6 +328,27 @@ static void LiveKit_RegisterLifecycleObserversIfNeeded() {
             LiveKit_ScheduleSessionRecovery();
         }
     }];
+    [center addObserverForName:AVAudioSessionRouteChangeNotification
+                        object:nil
+                         queue:[NSOperationQueue mainQueue]
+                    usingBlock:^(NSNotification* note) {
+        if (!s_liveKitConfigured) {
+            return;
+        }
+        NSNumber* reason = note.userInfo[AVAudioSessionRouteChangeReasonKey];
+        NSMutableArray<NSString*>* outputs = [NSMutableArray array];
+        for (AVAudioSessionPortDescription* port in
+             [AVAudioSession sharedInstance].currentRoute.outputs) {
+            [outputs addObject:[NSString stringWithFormat:@"%@ (%@)", port.portName, port.portType]];
+        }
+        NSLog(@"LiveKit: route changed (reason=%lu) outputs=%@",
+              (unsigned long)reason.unsignedIntegerValue,
+              [outputs componentsJoinedByString:@", "]);
+        LiveKitRouteChangeCallback callback = s_routeChangeCallback;
+        if (callback != NULL) {
+            callback();
+        }
+    }];
 }
 
 /// Captures the current audio session category/mode/options exactly once, before
@@ -219,15 +368,31 @@ static void LiveKit_CacheSessionStateIfNeeded() {
           s_cachedCategory, s_cachedMode, (unsigned long)s_cachedCategoryOptions);
 }
 
+/// Maps an AVAudioSessionPort type to the C# AudioOutputKind numbering
+/// (Unknown=0, Earpiece=1, Speaker=2, WiredHeadset=3, Bluetooth=4, Usb=5,
+/// HearingAid=6). Do not renumber. AVAudioSession has no dedicated hearing-aid
+/// port type, so 6 is never produced here; AirPlay/HDMI/CarAudio and other
+/// unroutable-by-us ports map to Unknown.
+static int LiveKit_OutputKindForPortType(NSString* portType) {
+    if ([portType isEqualToString:AVAudioSessionPortBuiltInReceiver]) return 1;
+    if ([portType isEqualToString:AVAudioSessionPortBuiltInSpeaker]) return 2;
+    if ([portType isEqualToString:AVAudioSessionPortHeadphones]) return 3;
+    if ([portType isEqualToString:AVAudioSessionPortBluetoothA2DP] ||
+        [portType isEqualToString:AVAudioSessionPortBluetoothHFP] ||
+        [portType isEqualToString:AVAudioSessionPortBluetoothLE]) return 4;
+    if ([portType isEqualToString:AVAudioSessionPortUSBAudio]) return 5;
+    return 0;
+}
+
 extern "C" {
 
 /// Configures the iOS audio session for VoIP/WebRTC use and takes app ownership
 /// of the shared AVAudioSession.
 ///
-/// This sets AVAudioSessionCategoryPlayAndRecord with VideoChat mode (which routes
-/// to the loudspeaker by default and enables the VPIO Voice Processing IO unit for
-/// hardware AEC/AGC/NS), puts RTCAudioSession into manual mode, and holds a single
-/// permanent activation so WebRTC never deactivates the session on its own.
+/// This applies the config for the current session state (playout-only for a
+/// fresh PlatformAudio; see the state table at the top of this file), puts
+/// RTCAudioSession into manual mode, and holds a single permanent activation so
+/// WebRTC never deactivates the session on its own.
 ///
 /// Call this before creating PlatformAudio. Call audio is enabled by default, so
 /// no further call is required for it to work; use LiveKit_SetAudioEnabled(false)
@@ -242,52 +407,41 @@ void LiveKit_ConfigureAudioSessionForVoIP() {
 
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
 
+    // Manual mode: WebRTC won't activate/deactivate the session on its own, and
+    // won't initialize the VPIO unit until we grant permission via isAudioEnabled
+    // (set below). This is what lets us own activation and gate the unit. Set
+    // before the first apply so the ADM never races the initial configuration.
+    if (rtc != nil) {
+        rtc.useManualAudio = YES;
+    }
+
+    LiveKit_ApplySessionConfig(@"configure");
+
     if (rtc == nil) {
-        // RTCAudioSession unavailable: configure AVAudioSession directly (legacy).
+        // RTCAudioSession unavailable: activate AVAudioSession directly (legacy).
         AVAudioSession* session = [AVAudioSession sharedInstance];
         NSError* error = nil;
-        if (![session setCategory:AVAudioSessionCategoryPlayAndRecord
-                             mode:AVAudioSessionModeVideoChat
-                          options:kLiveKitCategoryOptions
-                            error:&error] || error) {
-            NSLog(@"LiveKit: Failed to configure audio session: %@", error.localizedDescription);
-            return;
-        }
         if (![session setActive:YES error:&error] || error) {
             NSLog(@"LiveKit: Failed to activate audio session: %@", error.localizedDescription);
             return;
         }
-        NSLog(@"LiveKit: Audio session configured (AVAudioSession fallback, VideoChat)");
+        NSLog(@"LiveKit: Audio session configured (AVAudioSession fallback)");
         return;
-    }
-
-    // Manual mode: WebRTC won't activate/deactivate the session on its own, and
-    // won't initialize the VPIO unit until we grant permission via isAudioEnabled
-    // (set below). This is what lets us own activation and gate the unit.
-    rtc.useManualAudio = YES;
-
-    [rtc lockForConfiguration];
-    NSError* error = nil;
-    if (![rtc setCategory:AVAudioSessionCategoryPlayAndRecord
-                     mode:AVAudioSessionModeVideoChat
-                  options:kLiveKitCategoryOptions
-                    error:&error] || error) {
-        NSLog(@"LiveKit: Failed to set audio category: %@", error.localizedDescription);
     }
 
     // Hold exactly one app-owned activation. RTCAudioSession ref-counts activation,
     // so WebRTC's balanced setActive:YES/NO during a call never drops the real
     // session below active while we hold this.
     if (!s_liveKitHoldsActivation) {
-        error = nil;
+        [rtc lockForConfiguration];
+        NSError* error = nil;
         if ([rtc setActive:YES error:&error] && !error) {
             s_liveKitHoldsActivation = YES;
         } else {
             NSLog(@"LiveKit: Failed to activate audio session: %@", error.localizedDescription);
         }
+        [rtc unlockForConfiguration];
     }
-
-    [rtc unlockForConfiguration];
 
     // Grant WebRTC permission to initialize its audio unit by default so call audio
     // works without an explicit LiveKit_SetAudioEnabled(true). The unit is only
@@ -296,7 +450,7 @@ void LiveKit_ConfigureAudioSessionForVoIP() {
     // LiveKit_SetAudioEnabled(false).
     rtc.isAudioEnabled = YES;
 
-    NSLog(@"LiveKit: Audio session configured for VoIP (PlayAndRecord + VideoChat, manual mode, activationCount=%d)",
+    NSLog(@"LiveKit: Audio session configured for VoIP (manual mode, activationCount=%d)",
           rtc.activationCount);
 }
 
@@ -317,6 +471,65 @@ void LiveKit_SetAudioEnabled(bool enabled) {
     NSLog(@"LiveKit: isAudioEnabled=%@ (activationCount=%d)", enabled ? @"YES" : @"NO", rtc.activationCount);
 }
 
+/// Sets whether the loudspeaker is preferred over the earpiece for the built-in
+/// outputs and live-applies the resulting config (see the state table). External
+/// devices (wired, Bluetooth) always take priority over both; this only decides
+/// where audio goes when no external device is connected.
+void LiveKit_SetSpeakerPreferred(bool preferred) {
+    BOOL value = preferred ? YES : NO;
+    if (s_speakerPreferred == value) {
+        return;
+    }
+    s_speakerPreferred = value;
+    if (s_liveKitConfigured) {
+        LiveKit_ApplySessionConfig(@"speaker preference");
+    }
+}
+
+/// Sets the session state (0 idle, 1 playout-only, 2 recording; see the state
+/// table) and live-applies the resulting config. Driven from C#: PlatformAudio
+/// knows whether recording is active and whether call audio is wanted.
+void LiveKit_SetSessionState(int state) {
+    if (state < kLiveKitSessionStateIdle || state > kLiveKitSessionStateRecording) {
+        NSLog(@"LiveKit: ignoring unknown session state %d", state);
+        return;
+    }
+    if (s_sessionState == state) {
+        return;
+    }
+    s_sessionState = state;
+    if (s_liveKitConfigured) {
+        LiveKit_ApplySessionConfig(@"session state");
+    }
+}
+
+/// Registers (or clears, with NULL) the callback invoked on the main queue
+/// whenever the audio route changes. The callback carries no payload; the C#
+/// side re-queries LiveKit_GetCurrentOutputRoutes.
+void LiveKit_SetRouteChangeCallback(LiveKitRouteChangeCallback callback) {
+    s_routeChangeCallback = callback;
+}
+
+/// Returns the current output route as newline-separated "kind\tname\tuid"
+/// entries (kind per LiveKit_OutputKindForPortType). The caller must release the
+/// returned buffer with LiveKit_FreeRouteString.
+char* LiveKit_GetCurrentOutputRoutes() {
+    NSMutableString* result = [NSMutableString string];
+    for (AVAudioSessionPortDescription* port in
+         [AVAudioSession sharedInstance].currentRoute.outputs) {
+        [result appendFormat:@"%d\t%@\t%@\n",
+                             LiveKit_OutputKindForPortType(port.portType),
+                             port.portName ?: @"",
+                             port.UID ?: @""];
+    }
+    return strdup(result.UTF8String);
+}
+
+/// Frees a buffer returned by LiveKit_GetCurrentOutputRoutes.
+void LiveKit_FreeRouteString(char* str) {
+    free(str);
+}
+
 /// Restores the audio session Unity had before LiveKit touched it (or the ambient
 /// category if LiveKit never configured it), relinquishes the app-owned activation
 /// and manual mode, and reactivates the session so Unity audio output resumes.
@@ -325,6 +538,10 @@ void LiveKit_RestoreDefaultAudioSession() {
     // Stand down the foreground-recovery observers before touching the session.
     s_liveKitConfigured = NO;
     s_audioDesired = NO;
+    // Reset the state machine to the defaults a fresh PlatformAudio expects, so a
+    // later reconfigure starts from the same config it will be driven to.
+    s_sessionState = kLiveKitSessionStatePlayoutOnly;
+    s_speakerPreferred = YES;
 
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
 
