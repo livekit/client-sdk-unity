@@ -218,9 +218,20 @@ static void LiveKit_MirrorWebRTCConfiguration(NSString* mode,
 /// Applies the config derived from (s_sessionState, s_speakerPreferred) to the
 /// session and mirrors it into the WebRTC snapshot. Logs expected vs. actual so
 /// device tests can see who won when something else reconfigures the session.
-static void LiveKit_ApplySessionConfig(NSString* reason) {
+///
+/// rebuildAudioUnitOnModeChange: the ADM does not rebuild its VPIO unit on a
+/// route change that keeps the hardware sample rate (HandleValidRouteChange ->
+/// HandleSampleRateChange no-ops when the audio parameters are intact), so a
+/// live mode switch leaves the unit calibrated for the previous route --
+/// device-observed as an attenuated loudspeaker after an earpiece -> speaker
+/// toggle. Passing YES cycles isAudioEnabled after a mode change to force a
+/// clean rebuild against the new route, at the cost of a brief audio gap.
+/// Callers that handle the rebuild themselves (foreground recovery) or run
+/// before the unit exists (configure) pass NO.
+static void LiveKit_ApplySessionConfig(NSString* reason, BOOL rebuildAudioUnitOnModeChange) {
     NSString* mode = LiveKit_DesiredMode();
     AVAudioSessionCategoryOptions options = LiveKit_DesiredOptions();
+    BOOL modeChanged = ![[AVAudioSession sharedInstance].mode isEqualToString:mode];
 
     id<LiveKitRTCAudioSession> rtc = LiveKit_RTCSession();
     NSError* error = nil;
@@ -252,6 +263,13 @@ static void LiveKit_ApplySessionConfig(NSString* reason) {
            " -> actual category=%@ mode=%@ options=%lu",
           reason, s_sessionState, s_speakerPreferred, mode, (unsigned long)options,
           current.category, current.mode, (unsigned long)current.categoryOptions);
+
+    if (rebuildAudioUnitOnModeChange && modeChanged && s_audioDesired && rtc != nil) {
+        rtc.isAudioEnabled = NO;
+        rtc.isAudioEnabled = YES;
+        NSLog(@"LiveKit: cycled isAudioEnabled to rebuild the audio unit after mode change (%@)",
+              reason);
+    }
 }
 
 /// Re-applies the current state's config and reactivates the session, then
@@ -276,7 +294,7 @@ static void LiveKit_ScheduleSessionRecovery() {
         NSLog(@"LiveKit: foreground recovery; session before re-assert: category=%@ mode=%@ options=%lu",
               session.category, session.mode, (unsigned long)session.categoryOptions);
 
-        LiveKit_ApplySessionConfig(@"foreground recovery");
+        LiveKit_ApplySessionConfig(@"foreground recovery", NO);
 
         // Reactivate directly on AVAudioSession: the OS deactivated the hardware
         // session during the interruption, but RTCAudioSession's activation
@@ -415,7 +433,7 @@ void LiveKit_ConfigureAudioSessionForVoIP() {
         rtc.useManualAudio = YES;
     }
 
-    LiveKit_ApplySessionConfig(@"configure");
+    LiveKit_ApplySessionConfig(@"configure", NO);
 
     if (rtc == nil) {
         // RTCAudioSession unavailable: activate AVAudioSession directly (legacy).
@@ -482,7 +500,7 @@ void LiveKit_SetSpeakerPreferred(bool preferred) {
     }
     s_speakerPreferred = value;
     if (s_liveKitConfigured) {
-        LiveKit_ApplySessionConfig(@"speaker preference");
+        LiveKit_ApplySessionConfig(@"speaker preference", YES);
     }
 }
 
@@ -499,7 +517,7 @@ void LiveKit_SetSessionState(int state) {
     }
     s_sessionState = state;
     if (s_liveKitConfigured) {
-        LiveKit_ApplySessionConfig(@"session state");
+        LiveKit_ApplySessionConfig(@"session state", YES);
     }
 }
 
