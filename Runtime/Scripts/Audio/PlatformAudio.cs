@@ -76,14 +76,16 @@ namespace LiveKit
         /// </summary>
         public string Guid;
         /// <summary>
-        /// The kind of output this device represents. <see cref="AudioOutputKind.Unknown"/>
-        /// where the platform does not report a type — currently all devices: no routing
-        /// backend classifies devices yet.
+        /// The kind of output this device represents. Classified by the Android routing
+        /// backend (Android 12/API 31 and newer); <see cref="AudioOutputKind.Unknown"/>
+        /// where the platform does not report a type or no backend classifies devices
+        /// yet (desktop, iOS, older Android).
         /// </summary>
         public AudioOutputKind Kind;
         /// <summary>
-        /// Whether this device is the active output route. Only meaningful once a platform
-        /// routing backend reports selection state — currently always false.
+        /// Whether this device is the active output route. Reported by the Android
+        /// routing backend (Android 12/API 31 and newer); always false where no backend
+        /// reports selection state yet (desktop, iOS, older Android).
         /// </summary>
         public bool IsSelected;
     }
@@ -176,7 +178,7 @@ namespace LiveKit
         private IRouteController CreateRouteController()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            return new UnsupportedRouteController(this, "Android");
+            return AndroidRouteController.Create(this, _outputPreference);
 #elif UNITY_IOS && !UNITY_EDITOR
             return new UnsupportedRouteController(this, "iOS");
 #else
@@ -191,9 +193,15 @@ namespace LiveKit
         /// - Desktop (Windows/macOS/Linux): returns the full list of microphones and
         ///   speakers reported by the OS. Devices can be selected with
         ///   <see cref="SetRecordingDevice(string)"/> / <see cref="SetPlayoutDevice(string)"/>.
-        /// - iOS and Android: returns a single placeholder entry at index 0 for each
-        ///   list, representing the system's currently selected default input/output.
-        ///   The OS owns audio routing on these platforms (AVAudioSession on iOS,
+        /// - Android 12 (API 31) and newer: the playout list contains the available
+        ///   communication devices with <see cref="AudioDevice.Kind"/> and
+        ///   <see cref="AudioDevice.IsSelected"/> set; entries can be routed to with
+        ///   <see cref="SelectOutput"/>. The recording list stays a single placeholder
+        ///   entry for the OS default input — input routing follows the selected
+        ///   communication device.
+        /// - iOS and older Android: returns a single placeholder entry at index 0 for
+        ///   each list, representing the system's currently selected default
+        ///   input/output. The OS owns audio routing there (AVAudioSession on iOS,
         ///   AudioManager on Android), so individual devices are not enumerated and
         ///   selecting one is a no-op (see <see cref="SetRecordingDevice(string)"/> /
         ///   <see cref="SetPlayoutDevice(string)"/>).
@@ -202,8 +210,8 @@ namespace LiveKit
         /// A tuple containing:
         /// - Recording: List of available microphones (on iOS/Android, a single
         ///   placeholder for the OS default input)
-        /// - Playout: List of available speakers/headphones (on iOS/Android, a single
-        ///   placeholder for the OS default output)
+        /// - Playout: List of available speakers/headphones (on iOS and pre-API-31
+        ///   Android, a single placeholder for the OS default output)
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// Thrown if device enumeration failed.
@@ -268,11 +276,14 @@ namespace LiveKit
         /// Platform notes: on iOS, external devices (Bluetooth, wired) always take priority
         /// over the built-in outputs, so the Speaker/Earpiece relative order — i.e.
         /// <see cref="IsSpeakerOutputPreferred"/> — is the only part of the ranking with an
-        /// effect. On Android the full ranking applies. On desktop, output is selected
+        /// effect. On Android the full ranking applies: the backend routes to the
+        /// highest-ranked available kind on Android 12 (API 31) and newer, and kinds
+        /// missing from the list are never auto-selected (when nothing ranked is
+        /// available the OS default route applies). On desktop, output is selected
         /// per device (<see cref="SelectOutput"/> / <see cref="SetPlayoutDevice(string)"/>)
-        /// and the ranking has no routing effect. The mobile routing backends are not
-        /// implemented yet in this version: on Android and iOS the value is currently
-        /// stored and round-trips, but has no routing effect either.
+        /// and the ranking has no routing effect. On older Android versions and on iOS
+        /// (routing backend not implemented yet in this version) the value is stored and
+        /// round-trips, but has no routing effect either.
         /// </summary>
         /// <exception cref="ArgumentNullException">Thrown if set to null.</exception>
         /// <exception cref="ArgumentException">
@@ -318,11 +329,13 @@ namespace LiveKit
         ///
         /// Platform notes: on iOS, external devices (Bluetooth, wired) always take priority
         /// over the built-in outputs, so this bool is the only part of the ranking with an
-        /// effect. On Android the full ranking applies. On desktop, output is selected
-        /// per device (<see cref="SelectOutput"/> / <see cref="SetPlayoutDevice(string)"/>)
-        /// and the ranking has no routing effect. The mobile routing backends are not
-        /// implemented yet in this version: on Android and iOS the value is currently
-        /// stored and round-trips, but has no routing effect either.
+        /// effect. On Android the full ranking applies: the backend routes to the
+        /// highest-ranked available kind on Android 12 (API 31) and newer. On desktop,
+        /// output is selected per device (<see cref="SelectOutput"/> /
+        /// <see cref="SetPlayoutDevice(string)"/>) and the ranking has no routing effect.
+        /// On older Android versions and on iOS (routing backend not implemented yet in
+        /// this version) the value is stored and round-trips, but has no routing effect
+        /// either.
         /// </summary>
         public bool IsSpeakerOutputPreferred
         {
@@ -373,16 +386,18 @@ namespace LiveKit
         /// when set, otherwise by index and name.
         ///
         /// Platform notes: on desktop this selects the device like
-        /// <see cref="SetPlayoutDevice(string)"/>. On Android and iOS the routing backends
-        /// are not implemented yet in this version and this method throws
-        /// <see cref="NotSupportedException"/>.
+        /// <see cref="SetPlayoutDevice(string)"/>. On Android 12 (API 31) and newer the
+        /// device is pinned as the communication device; the override is dropped once the
+        /// device disappears from the playout list (automatic policy resumes). On older
+        /// Android versions and on iOS (routing backend not implemented yet in this
+        /// version) this method throws <see cref="NotSupportedException"/>.
         /// </summary>
         /// <param name="device">A playout device from <see cref="GetDevices"/>.</param>
         /// <exception cref="ArgumentException">
         /// Thrown if the device does not match any current playout device.
         /// </exception>
         /// <exception cref="NotSupportedException">
-        /// Thrown on Android and iOS, where no routing backend exists yet.
+        /// Thrown on iOS (no routing backend yet) and on Android below API 31.
         /// </exception>
         public void SelectOutput(AudioDevice device)
         {
@@ -408,9 +423,10 @@ namespace LiveKit
         /// <see cref="OutputPreference"/> policy applies again.
         ///
         /// Platform notes: on desktop there is no automatic policy to fall back to yet, so
-        /// clearing keeps the currently selected device (no-op). On Android and iOS no
-        /// override can exist yet (<see cref="SelectOutput"/> throws), so this is a no-op
-        /// there as well.
+        /// clearing keeps the currently selected device (no-op). On Android 12 (API 31)
+        /// and newer the automatic policy re-routes immediately. On older Android
+        /// versions and on iOS no override can exist (<see cref="SelectOutput"/> throws),
+        /// so this is a no-op there.
         /// </summary>
         public void ClearOutputOverride()
         {
@@ -421,9 +437,12 @@ namespace LiveKit
         /// Raised when the set of available audio devices changes, with the current playout
         /// and recording device lists. Raised on the Unity main thread.
         ///
-        /// No implementation raises this event yet in this version: desktop hot-plug events
-        /// and the mobile routing backends that produce it are not implemented. Subscribing
-        /// and unsubscribing is safe at any time, including after <see cref="Dispose"/>.
+        /// Raised by the Android routing backend (Android 12/API 31 and newer) when the
+        /// available communication devices or the active route change; changes that fire
+        /// no OS event are detected by a poll with roughly 1.5 s of latency. Desktop
+        /// hot-plug events and the iOS backend are not implemented yet in this version, so
+        /// the event is never raised there. Subscribing and unsubscribing is safe at any
+        /// time, including after <see cref="Dispose"/>.
         /// </summary>
         public event Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> DevicesChanged;
 
@@ -589,6 +608,13 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to start recording: {res.StartRecording.Error}");
 
             Utils.Debug("PlatformAudio: started recording");
+
+            // Re-assert the routing policy now that capture is active. Since Android 13
+            // the app's MODE_IN_COMMUNICATION request — and with it the
+            // communication-device pin — is only honored while the app has active
+            // voice-communication capture, so the platform may have moved the route
+            // while it was un-owned. No-op on the other backends.
+            _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
 
             // Ensures this method is always a valid iterator even when the PLATFORM_ANDROID
             // branch is compiled out (no `yield return` would otherwise be reachable on
