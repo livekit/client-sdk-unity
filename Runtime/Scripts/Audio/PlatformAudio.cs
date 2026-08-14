@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using LiveKit.Proto;
 using LiveKit.Internal;
 using LiveKit.Internal.FFI.Requests;
@@ -42,8 +43,42 @@ namespace LiveKit
         /// </summary>
         [DllImport("__Internal")]
         internal static extern void LiveKit_SetAudioEnabled([MarshalAs(UnmanagedType.I1)] bool enabled);
+
+        /// <summary>
+        /// Sets the audio session state (0 idle, 1 playout-only, 2 recording) so the
+        /// plugin can apply the matching category/mode/options (see the state table in
+        /// LiveKitAudioSession.mm). Driven by PlatformAudio, which knows whether
+        /// recording is active and whether call audio is wanted.
+        /// </summary>
+        [DllImport("__Internal")]
+        internal static extern void LiveKit_SetSessionState(int state);
     }
 #endif
+
+    /// <summary>
+    /// The kind of audio output device, used for ranked routing policies on mobile
+    /// platforms (see <see cref="PlatformAudio.OutputPreference"/>).
+    ///
+    /// The numeric values mirror the planned FFI protocol enum (AudioDeviceKind) one-to-one
+    /// so a future FFI-backed implementation maps without translation. Do not renumber.
+    /// </summary>
+    public enum AudioOutputKind
+    {
+        /// <summary>The platform did not report a device type.</summary>
+        Unknown = 0,
+        /// <summary>The phone's built-in earpiece (receiver).</summary>
+        Earpiece = 1,
+        /// <summary>The built-in loudspeaker.</summary>
+        Speaker = 2,
+        /// <summary>A wired headset or headphones.</summary>
+        WiredHeadset = 3,
+        /// <summary>A Bluetooth audio device.</summary>
+        Bluetooth = 4,
+        /// <summary>A USB audio device.</summary>
+        Usb = 5,
+        /// <summary>A hearing aid.</summary>
+        HearingAid = 6,
+    }
 
     /// <summary>
     /// Information about an audio device (microphone or speaker).
@@ -60,6 +95,19 @@ namespace LiveKit
         /// over index for device selection.
         /// </summary>
         public string Guid;
+        /// <summary>
+        /// The kind of output this device represents. Reported on iOS for playout devices
+        /// (classified from the audio session's current route); <see
+        /// cref="AudioOutputKind.Unknown"/> where the platform does not report a type —
+        /// recording devices, desktop, and Android, which has no routing backend yet.
+        /// </summary>
+        public AudioOutputKind Kind;
+        /// <summary>
+        /// Whether this device is the active output route. Reported on iOS for playout
+        /// devices; false where no routing backend reports selection state — recording
+        /// devices, desktop, and Android, which has no routing backend yet.
+        /// </summary>
+        public bool IsSelected;
     }
 
     /// <summary>
@@ -84,12 +132,41 @@ namespace LiveKit
     {
         internal readonly FfiHandle Handle;
         private readonly PlatformAudioInfo _info;
+        private readonly IRouteController _routeController;
+        private readonly SynchronizationContext _syncContext;
+        private List<AudioOutputKind> _outputPreference = new List<AudioOutputKind>(DefaultOutputPreference);
         private bool _disposed = false;
 #if UNITY_IOS && !UNITY_EDITOR
         // Tracks live PlatformAudio instances so the iOS audio session is restored
         // only when the last one is disposed (aligned with the native ADM ref-count).
         private static int _instanceCount;
+
+        // Inputs of the iOS session-state machine (see the state table in
+        // LiveKitAudioSession.mm). PlatformAudio is the driver because it is the one
+        // that knows both: whether recording is active (its own StartRecording/
+        // StopRecording calls) and whether call audio is wanted (SetSessionAudioEnabled).
+        private const int IosSessionStateIdle = 0;
+        private const int IosSessionStatePlayoutOnly = 1;
+        private const int IosSessionStateRecording = 2;
+        private bool _iosRecordingActive;
+        private bool _iosSessionAudioEnabled = true;
+
+        private void UpdateIosSessionState()
+        {
+            var state = !_iosSessionAudioEnabled ? IosSessionStateIdle
+                : _iosRecordingActive ? IosSessionStateRecording
+                : IosSessionStatePlayoutOnly;
+            IOSAudioSessionHelper.LiveKit_SetSessionState(state);
+        }
 #endif
+
+        private static readonly AudioOutputKind[] DefaultOutputPreference =
+        {
+            AudioOutputKind.Bluetooth,
+            AudioOutputKind.WiredHeadset,
+            AudioOutputKind.Speaker,
+            AudioOutputKind.Earpiece,
+        };
 
         /// <summary>
         /// Number of available recording (microphone) devices.
@@ -107,9 +184,12 @@ namespace LiveKit
         /// This must be called before creating any PlatformAudioSource or connecting
         /// to a room if you want automatic speaker playout for remote audio.
         ///
-        /// On iOS, this automatically configures the audio session for VoIP mode
-        /// (PlayAndRecord category with VideoChat mode) to enable hardware echo
-        /// cancellation and microphone input.
+        /// On iOS, this automatically configures the audio session for VoIP use and
+        /// takes app ownership of it. The session's mode follows the call state: a
+        /// voice/video-chat mode (enabling hardware echo cancellation) while recording
+        /// is active, and a music-friendly default mode otherwise (see
+        /// <see cref="StartRecording"/> / <see cref="StopRecording"/> /
+        /// <see cref="SetSessionAudioEnabled"/>).
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the platform ADM could not be initialized (e.g., no audio devices,
@@ -134,12 +214,34 @@ namespace LiveKit
             Handle = FfiHandle.FromOwnedHandle(platformAudio.Handle);
             _info = platformAudio.Info;
 
+            _syncContext = SynchronizationContext.Current;
+            _routeController = CreateRouteController();
+            _routeController.DevicesChanged += OnRouteControllerDevicesChanged;
+
+#if UNITY_IOS && !UNITY_EDITOR
+            // A fresh instance starts in the playout-only state (recording has not
+            // been started); this matches the plugin's post-configure default, so the
+            // call is a no-op unless an earlier instance left another state behind.
+            UpdateIosSessionState();
+#endif
+
             Utils.Debug($"PlatformAudio created: {RecordingDeviceCount} recording devices, {PlayoutDeviceCount} playout devices");
 
 #if UNITY_IOS && !UNITY_EDITOR
             // Count this instance only after successful construction so a failed
             // ctor never leaves the counter stuck above zero.
             System.Threading.Interlocked.Increment(ref _instanceCount);
+#endif
+        }
+
+        private IRouteController CreateRouteController()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            return new UnsupportedRouteController(this, "Android");
+#elif UNITY_IOS && !UNITY_EDITOR
+            return new IosRouteController(this, _outputPreference);
+#else
+            return new DesktopRouteController(this);
 #endif
         }
 
@@ -150,24 +252,38 @@ namespace LiveKit
         /// - Desktop (Windows/macOS/Linux): returns the full list of microphones and
         ///   speakers reported by the OS. Devices can be selected with
         ///   <see cref="SetRecordingDevice(string)"/> / <see cref="SetPlayoutDevice(string)"/>.
-        /// - iOS and Android: returns a single placeholder entry at index 0 for each
-        ///   list, representing the system's currently selected default input/output.
-        ///   The OS owns audio routing on these platforms (AVAudioSession on iOS,
-        ///   AudioManager on Android), so individual devices are not enumerated and
-        ///   selecting one is a no-op (see <see cref="SetRecordingDevice(string)"/> /
+        /// - iOS: the playout list is the audio session's current output route (usually
+        ///   one device, with <see cref="AudioDevice.Kind"/> and
+        ///   <see cref="AudioDevice.IsSelected"/> set) — iOS does not enumerate every
+        ///   reachable output device. The recording list is a single placeholder entry
+        ///   for the OS default input.
+        /// - Android: returns a single placeholder entry at index 0 for each list,
+        ///   representing the system's currently selected default input/output. The OS
+        ///   owns audio routing (AudioManager), so individual devices are not enumerated
+        ///   and selecting one is a no-op (see <see cref="SetRecordingDevice(string)"/> /
         ///   <see cref="SetPlayoutDevice(string)"/>).
         /// </summary>
         /// <returns>
         /// A tuple containing:
         /// - Recording: List of available microphones (on iOS/Android, a single
         ///   placeholder for the OS default input)
-        /// - Playout: List of available speakers/headphones (on iOS/Android, a single
-        ///   placeholder for the OS default output)
+        /// - Playout: List of available speakers/headphones (on iOS, the current output
+        ///   route; on Android, a single placeholder for the OS default output)
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// Thrown if device enumeration failed.
         /// </exception>
         public (List<AudioDevice> Recording, List<AudioDevice> Playout) GetDevices()
+        {
+            return _routeController.GetDevices();
+        }
+
+        /// <summary>
+        /// Device enumeration through the FFI, shared by the route controllers.
+        /// <see cref="AudioDevice.Kind"/> and <see cref="AudioDevice.IsSelected"/> are not
+        /// reported by the FFI and stay at their defaults (Unknown / false).
+        /// </summary>
+        internal (List<AudioDevice> Recording, List<AudioDevice> Playout) GetDevicesViaFfi()
         {
             using var request = FFIBridge.Instance.NewRequest<GetAudioDevicesRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
@@ -199,6 +315,208 @@ namespace LiveKit
             }
 
             return (recording, playout);
+        }
+
+        /// <summary>
+        /// Ranked automatic output routing policy, most preferred first. When no explicit
+        /// output override is active (<see cref="SelectOutput"/>), the platform routes to
+        /// the highest-ranked kind that has a connected device.
+        ///
+        /// Default: Bluetooth > WiredHeadset > Speaker > Earpiece.
+        ///
+        /// Precedence with <see cref="IsSpeakerOutputPreferred"/>: this list is the single
+        /// source of truth; the bool is convenience sugar that only rewrites the relative
+        /// order of <see cref="AudioOutputKind.Speaker"/> and
+        /// <see cref="AudioOutputKind.Earpiece"/> inside this list, and reading the bool
+        /// reads their current relative order. There is no separate speaker-preference state.
+        ///
+        /// Platform notes: on iOS, external devices (Bluetooth, wired) always take priority
+        /// over the built-in outputs, so the Speaker/Earpiece relative order — i.e.
+        /// <see cref="IsSpeakerOutputPreferred"/> — is the only part of the ranking with an
+        /// effect; it is applied through the audio session mode and takes effect
+        /// immediately, including mid-call. On desktop, output is selected per device
+        /// (<see cref="SelectOutput"/> / <see cref="SetPlayoutDevice(string)"/>) and the
+        /// ranking has no routing effect. The Android routing backend is not implemented
+        /// yet in this version: the value is stored and round-trips, but has no routing
+        /// effect there.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Thrown if set to null.</exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if the list contains <see cref="AudioOutputKind.Unknown"/> or duplicates.
+        /// </exception>
+        public IReadOnlyList<AudioOutputKind> OutputPreference
+        {
+            get => _outputPreference.AsReadOnly();
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
+                var ranked = new List<AudioOutputKind>(value.Count);
+                foreach (var kind in value)
+                {
+                    if (kind == AudioOutputKind.Unknown)
+                        throw new ArgumentException(
+                            "OutputPreference cannot contain AudioOutputKind.Unknown", nameof(value));
+                    if (ranked.Contains(kind))
+                        throw new ArgumentException(
+                            $"OutputPreference contains {kind} more than once", nameof(value));
+                    ranked.Add(kind);
+                }
+
+                _outputPreference = ranked;
+                _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
+            }
+        }
+
+        /// <summary>
+        /// Whether the loudspeaker is preferred over the earpiece for automatic routing.
+        ///
+        /// Precedence with <see cref="OutputPreference"/>: the list is the single source of
+        /// truth; this bool is convenience sugar that only rewrites the relative order of
+        /// <see cref="AudioOutputKind.Speaker"/> and <see cref="AudioOutputKind.Earpiece"/>
+        /// inside <see cref="OutputPreference"/>, and reading it reads their current
+        /// relative order. There is no separate speaker-preference state. Reading returns
+        /// true when Speaker ranks ahead of Earpiece (or Earpiece is absent), false when
+        /// Speaker is absent. Setting reorders the pair in place at the position of
+        /// whichever currently ranks first, inserting a missing kind next to the present
+        /// one (or appending both when neither is listed) so the value round-trips.
+        ///
+        /// Platform notes: on iOS, external devices (Bluetooth, wired) always take priority
+        /// over the built-in outputs, so this bool is the only part of the ranking with an
+        /// effect. It decides where audio goes when no external device is connected, is
+        /// applied through the audio session mode (never by overriding the output port),
+        /// and takes effect immediately, including mid-call. On desktop, output is
+        /// selected per device (<see cref="SelectOutput"/> /
+        /// <see cref="SetPlayoutDevice(string)"/>) and the ranking has no routing effect.
+        /// The Android routing backend is not implemented yet in this version: the value
+        /// is stored and round-trips, but has no routing effect there.
+        /// </summary>
+        public bool IsSpeakerOutputPreferred
+        {
+            get
+            {
+                var speaker = _outputPreference.IndexOf(AudioOutputKind.Speaker);
+                var earpiece = _outputPreference.IndexOf(AudioOutputKind.Earpiece);
+                if (speaker < 0) return false;
+                return earpiece < 0 || speaker < earpiece;
+            }
+            set
+            {
+                var first = value ? AudioOutputKind.Speaker : AudioOutputKind.Earpiece;
+                var second = value ? AudioOutputKind.Earpiece : AudioOutputKind.Speaker;
+
+                var reordered = new List<AudioOutputKind>(_outputPreference.Count + 2);
+                var pairInserted = false;
+                foreach (var kind in _outputPreference)
+                {
+                    if (kind == AudioOutputKind.Speaker || kind == AudioOutputKind.Earpiece)
+                    {
+                        if (!pairInserted)
+                        {
+                            reordered.Add(first);
+                            reordered.Add(second);
+                            pairInserted = true;
+                        }
+                        continue;
+                    }
+                    reordered.Add(kind);
+                }
+                if (!pairInserted)
+                {
+                    reordered.Add(first);
+                    reordered.Add(second);
+                }
+
+                _outputPreference = reordered;
+                _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
+            }
+        }
+
+        /// <summary>
+        /// Routes audio output to the given device as a sticky override of the automatic
+        /// <see cref="OutputPreference"/> policy: the route stays on the device until
+        /// <see cref="ClearOutputOverride"/> is called. The device is matched against the
+        /// current <see cref="GetDevices"/> playout list by <see cref="AudioDevice.Guid"/>
+        /// when set, otherwise by index and name.
+        ///
+        /// Platform notes: on desktop this selects the device like
+        /// <see cref="SetPlayoutDevice(string)"/>. On iOS the OS owns output route
+        /// selection and this method throws <see cref="NotSupportedException"/> — present
+        /// the system route picker (AVRoutePickerView) instead, or use
+        /// <see cref="OutputPreference"/> / <see cref="IsSpeakerOutputPreferred"/> for the
+        /// built-in outputs. On Android the routing backend is not implemented yet in
+        /// this version and this method also throws.
+        /// </summary>
+        /// <param name="device">A playout device from <see cref="GetDevices"/>.</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if the device does not match any current playout device.
+        /// </exception>
+        /// <exception cref="NotSupportedException">
+        /// Thrown on iOS (the OS owns route selection) and on Android (no routing
+        /// backend exists yet).
+        /// </exception>
+        public void SelectOutput(AudioDevice device)
+        {
+            var (_, playout) = GetDevices();
+            foreach (var candidate in playout)
+            {
+                var matches = !string.IsNullOrEmpty(device.Guid)
+                    ? candidate.Guid == device.Guid
+                    : candidate.Index == device.Index && candidate.Name == device.Name;
+                if (!matches) continue;
+
+                _routeController.SelectOutput(candidate);
+                return;
+            }
+
+            throw new ArgumentException(
+                $"Device '{device.Name}' (index {device.Index}, guid {device.Guid ?? "none"}) " +
+                "is not a current playout device", nameof(device));
+        }
+
+        /// <summary>
+        /// Clears the sticky override set by <see cref="SelectOutput"/> so the automatic
+        /// <see cref="OutputPreference"/> policy applies again.
+        ///
+        /// Platform notes: on desktop there is no automatic policy to fall back to yet, so
+        /// clearing keeps the currently selected device (no-op). On iOS and Android no
+        /// override can exist (<see cref="SelectOutput"/> throws), so this is a no-op
+        /// there as well.
+        /// </summary>
+        public void ClearOutputOverride()
+        {
+            _routeController.ClearOutputOverride();
+        }
+
+        /// <summary>
+        /// Raised when the set of available audio devices changes, with the current playout
+        /// and recording device lists. Raised on the Unity main thread.
+        ///
+        /// On iOS this fires when the audio session's output route changes (headset
+        /// plugged/unplugged, Bluetooth connected, speaker/earpiece switches); the playout
+        /// list is the new route. Desktop hot-plug events and the Android backend are not
+        /// implemented yet in this version, so the event is never raised there. Subscribing
+        /// and unsubscribing is safe at any time, including after <see cref="Dispose"/>.
+        /// </summary>
+        public event Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> DevicesChanged;
+
+        private void OnRouteControllerDevicesChanged(
+            IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
+        {
+            if (_disposed) return;
+
+            if (_syncContext != null && _syncContext != SynchronizationContext.Current)
+            {
+                _syncContext.Post(_ =>
+                {
+                    if (!_disposed)
+                        DevicesChanged?.Invoke(playout, recording);
+                }, null);
+                return;
+            }
+
+            DevicesChanged?.Invoke(playout, recording);
         }
 
         /// <summary>
@@ -305,6 +623,9 @@ namespace LiveKit
         /// Recording is started automatically when PlatformAudio is created.
         /// Use this to resume recording after calling StopRecording.
         /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
+        /// On iOS this also switches the audio session to its recording state
+        /// (voice/video-chat mode per <see cref="IsSpeakerOutputPreferred"/>, enabling
+        /// hardware echo cancellation).
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the operation failed.
@@ -344,6 +665,11 @@ namespace LiveKit
             if (res.StartRecording.HasError && !string.IsNullOrEmpty(res.StartRecording.Error))
                 throw new InvalidOperationException($"Failed to start recording: {res.StartRecording.Error}");
 
+#if UNITY_IOS && !UNITY_EDITOR
+            _iosRecordingActive = true;
+            UpdateIosSessionState();
+#endif
+
             Utils.Debug("PlatformAudio: started recording");
 
             // Ensures this method is always a valid iterator even when the PLATFORM_ANDROID
@@ -358,6 +684,8 @@ namespace LiveKit
         /// Use this to temporarily stop recording without disposing PlatformAudio.
         /// This turns off the system's recording privacy indicator (e.g., on macOS/iOS).
         /// Call StartRecording to resume recording.
+        /// On iOS this also switches the audio session back to its playout-only state
+        /// (music-friendly default mode).
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the operation failed.
@@ -373,6 +701,11 @@ namespace LiveKit
             if (res.StopRecording.HasError && !string.IsNullOrEmpty(res.StopRecording.Error))
                 throw new InvalidOperationException($"Failed to stop recording: {res.StopRecording.Error}");
 
+#if UNITY_IOS && !UNITY_EDITOR
+            _iosRecordingActive = false;
+            UpdateIosSessionState();
+#endif
+
             Utils.Debug("PlatformAudio: stopped recording");
         }
 
@@ -383,7 +716,8 @@ namespace LiveKit
         /// of the shared AVAudioSession. It is enabled by default when PlatformAudio is
         /// created, so this only needs to be called to <c>false</c> when leaving a room
         /// (and back to <c>true</c> when rejoining). Disabling stops the microphone/
-        /// remote audio path and the hardware voice processing, but keeps the audio
+        /// remote audio path and the hardware voice processing, and drops the session
+        /// to its idle state (music-friendly default mode), but keeps the audio
         /// session active so other Unity audio (e.g. background music) is not
         /// interrupted — which is why Unity audio survives a hang-up.
         ///
@@ -394,6 +728,8 @@ namespace LiveKit
         {
 #if UNITY_IOS && !UNITY_EDITOR
             IOSAudioSessionHelper.LiveKit_SetAudioEnabled(enabled);
+            _iosSessionAudioEnabled = enabled;
+            UpdateIosSessionState();
 #endif
             Utils.Debug($"PlatformAudio: session audio enabled={enabled}");
         }
@@ -407,6 +743,8 @@ namespace LiveKit
         public void Dispose()
         {
             if (_disposed) return;
+            _routeController.DevicesChanged -= OnRouteControllerDevicesChanged;
+            _routeController.Dispose();
             Handle.Dispose();
 
 #if UNITY_IOS && !UNITY_EDITOR
