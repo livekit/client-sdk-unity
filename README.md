@@ -440,9 +440,30 @@ platformAudio.ClearOutputOverride();
 platformAudio.DevicesChanged += (playoutDevices, recordingDevices) => { /* refresh your device UI */ };
 ```
 
+##### The call audio session
+
+Routing is only asserted while a call is in progress. `SetSessionAudioEnabled` is that switch, and it starts out enabled, so an app that creates `PlatformAudio` once at startup — the usual pattern, to keep a single ADM alive across calls — should hand the session back until it is needed:
+
+```cs
+var platformAudio = new PlatformAudio();
+platformAudio.SetSessionAudioEnabled(false); // no call yet
+
+// ... a call starts:
+platformAudio.SetSessionAudioEnabled(true);
+yield return platformAudio.StartRecording();
+
+// ... the call ends:
+platformAudio.StopRecording();
+platformAudio.SetSessionAudioEnabled(false);
+```
+
+While disabled, the SDK holds no call audio session: on iOS WebRTC's voice-processing unit is off and the session sits in a music-friendly idle state, and on Android 12+ the SDK holds neither `MODE_IN_COMMUNICATION` nor the output route pin, so the platform's normal routing applies. Device enumeration and `DevicesChanged` keep working on both, so a device picker can be populated before the first call. Leaving it enabled outside a call keeps the phone in call mode for as long as the instance lives, which on Android also keeps a classic-Bluetooth headset on a call link instead of A2DP media playback.
+
+Unity's own audio engine is a separate layer that the SDK does not touch: it opens an output device when the app starts and does not follow a later output route change on its own. An app that plays its own audio (music, SFX) alongside calls has to reopen the engine with `AudioSettings.Reset(AudioSettings.GetConfiguration())` when the route moves — `DevicesChanged` is a signal for that; the Meet sample's `PlatformAudioController` shows the recovery. The SDK deliberately does not do it behind your back, because a reset stops every `AudioSource` in the scene.
+
 Per-platform behavior:
 
-- **Android 12+ (API 31)**: the full `OutputPreference` ranking applies — the SDK routes to the highest-ranked available kind and re-routes on device changes; kinds missing from the list are never auto-selected (when nothing ranked is available, the OS default route applies). `SelectOutput` pins a device from `GetDevices().Playout` as the communication device; the pin is dropped once that device disappears. `DevicesChanged` is raised on communication-device changes; changes that fire no OS event are caught by a poll with roughly 1.5 s of latency. Requires the `MODIFY_AUDIO_SETTINGS` permission in your `AndroidManifest.xml`. Note: since Android 13 the OS only honors the app's communication-mode request — and with it the route pin — while the app has an active voice-communication capture, so keep the mic capture running for the whole call, even while muted with the track unpublished (see `PlatformAudioController` in the Meet sample).
+- **Android 12+ (API 31)**: the full `OutputPreference` ranking applies — the SDK routes to the highest-ranked available kind and re-routes on device changes; kinds missing from the list are never auto-selected (when nothing ranked is available, the OS default route applies). `SelectOutput` pins a device from `GetDevices().Playout` as the communication device; the pin is dropped once that device disappears. `DevicesChanged` is raised on communication-device changes; changes that fire no OS event are caught by a poll with roughly 1.5 s of latency. Requires the `MODIFY_AUDIO_SETTINGS` permission in your `AndroidManifest.xml`. Routing is asserted only while session audio is enabled: the SDK enters `MODE_IN_COMMUNICATION` and pins the route on enable, and clears the pin and restores the mode it replaced on disable, while enumeration and `DevicesChanged` stay live either way. Note: since Android 13 the OS only honors the app's communication-mode request — and with it the route pin — while the app has an active voice-communication capture, so keep the mic capture running for the whole call, even while muted with the track unpublished (see `PlatformAudioController` in the Meet sample); an active capture without an enabled session hands routing back to the platform, so pair the two at the call boundaries.
 - **Older Android**: no routing backend — `OutputPreference` is stored and round-trips but has no routing effect, and `SelectOutput` throws `NotSupportedException`. `DevicesChanged` is never raised.
 - **iOS**: external devices (Bluetooth, wired) always take priority over the built-in outputs, so the Speaker/Earpiece relative order — `IsSpeakerOutputPreferred` — is the only part of the ranking with an effect. It decides where audio goes when no external device is connected, is applied through the audio session mode (never by overriding the output port), and takes effect immediately, including mid-call. `SelectOutput` throws `NotSupportedException` — the OS owns route selection on iOS; present the system route picker (`AVRoutePickerView`) instead. `GetDevices().Playout` is the audio session's current output route (iOS does not enumerate every reachable device), and `DevicesChanged` is raised when that route changes.
 - **Desktop (Windows/macOS/Linux)**: output is selected per device — `SelectOutput` selects the playout device like `SetPlayoutDevice`, and the `OutputPreference` ranking has no routing effect. `DevicesChanged` is never raised (no hot-plug events yet).

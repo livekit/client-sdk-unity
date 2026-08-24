@@ -14,18 +14,27 @@ namespace LiveKit
     /// <c>AudioManager.getAvailableCommunicationDevices</c> /
     /// <c>setCommunicationDevice</c> / <c>clearCommunicationDevice</c>.
     ///
-    /// The controller owns the voice-communication audio session for its whole lifetime
-    /// (construction to <see cref="Dispose"/>): it enters <c>MODE_IN_COMMUNICATION</c>
-    /// (saving and restoring the prior mode) and keeps the output route pinned to the
-    /// best device — the sticky <see cref="SelectOutput"/> override while its device is
-    /// still available, otherwise the highest-ranked available kind per the current
+    /// The controller owns the voice-communication audio session while session audio is
+    /// enabled (<see cref="SetSessionAudioEnabled"/> — i.e. while a call is in progress):
+    /// it enters <c>MODE_IN_COMMUNICATION</c> (saving and restoring the prior mode) and
+    /// keeps the output route pinned to the best device — the sticky
+    /// <see cref="SelectOutput"/> override while its device is still available, otherwise
+    /// the highest-ranked available kind per the current
     /// <see cref="PlatformAudio.OutputPreference"/>. Owning the mode is what makes the
     /// pin authoritative: without it the platform periodically reasserts its own default
     /// route (observed on Pixel 8a: Telecom flipped playout back to the earpiece every
     /// ~6 s after a Bluetooth session ended). Note that since Android 13 the mode request
     /// is only honored while the app has active voice-communication capture, so
     /// <see cref="PlatformAudio.StartRecording"/> re-asserts the policy when capture
-    /// (re)starts.
+    /// (re)starts — through <see cref="ApplyOutputPreference"/>, which like every other
+    /// re-evaluation path pins nothing while session audio is disabled.
+    ///
+    /// While session audio is disabled the session is handed back to the platform
+    /// (communication device cleared, prior mode restored) so the phone is not held in
+    /// call mode outside a call — on a classic-Bluetooth headset that is the difference
+    /// between an HFP call link and A2DP media playback. Enumeration, the change listener
+    /// and the poll thread stay alive regardless, so <see cref="GetDevices"/> and
+    /// <see cref="DevicesChanged"/> keep reporting the platform's own routing while idle.
     ///
     /// Route changes are detected two ways, both required (device-verified in the
     /// sample hotfix this backend is hardened from, PR #364):
@@ -63,7 +72,11 @@ namespace LiveKit
         private List<AudioOutputKind> _ranked;
         private int _stickyDeviceId = -1;
         private int _pinnedDeviceId = -1;
+        // Session audio starts enabled, matching the documented default of
+        // PlatformAudio.SetSessionAudioEnabled (uniform with iOS).
+        private bool _sessionAudioEnabled = true;
         private int _savedAudioMode;
+        private bool _audioModeSaved;
         private CommunicationDeviceListener _listener;
         private AndroidJavaObject _audioFocusRequest;
         private bool _audioFocusEnabled;
@@ -108,6 +121,9 @@ namespace LiveKit
             // session state is touched so a failure here has no side effects.
             _recordingSnapshot = owner.GetDevicesViaFfi().Recording;
 
+            // Session audio defaults to enabled, so a fresh instance takes the call
+            // session; apps that create PlatformAudio before their first call disable it
+            // right after construction (see PlatformAudio.SetSessionAudioEnabled).
             EnterCommunicationMode();
             RegisterListener();
             Reevaluate();
@@ -181,6 +197,31 @@ namespace LiveKit
         }
 
         /// <summary>
+        /// Takes or hands back the call audio session: enabling enters
+        /// <c>MODE_IN_COMMUNICATION</c> and lets the policy pin the route, disabling
+        /// clears the pin and restores the mode this controller replaced. The sticky
+        /// override and the ranked preference survive the transition, so a call that
+        /// re-enables the session routes exactly as it did before.
+        /// </summary>
+        public void SetSessionAudioEnabled(bool enabled)
+        {
+            lock (_gate)
+            {
+                if (_disposed || _sessionAudioEnabled == enabled)
+                    return;
+                _sessionAudioEnabled = enabled;
+                if (enabled)
+                    EnterCommunicationMode();
+                else
+                    LeaveCommunicationMode();
+            }
+
+            // Re-evaluate outside the lock (Reevaluate takes it): pin the policy's target
+            // on enable, report the platform's own route on disable.
+            Reevaluate();
+        }
+
+        /// <summary>
         /// Optional audio-focus request (AUDIOFOCUS_GAIN with voice-communication
         /// attributes) held while enabled. Off by default. Not exposed on the public
         /// API surface (PAR-019 defines it once); flip it here when embedding scenarios
@@ -230,18 +271,11 @@ namespace LiveKit
             lock (_gate)
             {
                 AbandonAudioFocus();
-            }
-
-            try
-            {
-                using var audioManager = GetAudioManager();
-                audioManager.Call("clearCommunicationDevice");
-                audioManager.Call("setMode", _savedAudioMode);
-                Utils.Debug($"AndroidRouteController: route cleared, audio mode restored ({_savedAudioMode})");
-            }
-            catch (Exception e)
-            {
-                Utils.Warning($"AndroidRouteController: failed to restore audio session: {e.Message}");
+                // Same idempotent release as a session-audio disable: clearing a pin we
+                // no longer hold is a no-op, and the mode is only restored when this
+                // controller is the one that replaced it.
+                LeaveCommunicationMode();
+                _sessionAudioEnabled = false;
             }
         }
 
@@ -255,6 +289,14 @@ namespace LiveKit
         /// and that no-op check is what stops the feedback loop. When nothing sticky or
         /// ranked is available, an existing pin is released so the OS default applies;
         /// kinds missing from the ranking are never auto-selected.
+        ///
+        /// While session audio is disabled the pass is observation-only: it enumerates,
+        /// keeps the sticky bookkeeping current and still raises
+        /// <see cref="DevicesChanged"/>, but issues no setCommunicationDevice /
+        /// clearCommunicationDevice and reports the platform's own communication device
+        /// as the selected one. Every trigger — the change listener, the poll thread and
+        /// the <see cref="PlatformAudio.StartRecording"/> re-assert — runs through here,
+        /// so none of them can resurrect a released session.
         /// </summary>
         private void Reevaluate()
         {
@@ -306,7 +348,17 @@ namespace LiveKit
                         }
 
                         int selectedId;
-                        if (targetIndex >= 0)
+                        if (!_sessionAudioEnabled)
+                        {
+                            // No call in progress: report which device the platform would
+                            // use for communication audio, and touch nothing. The target
+                            // computed above is still worth running — it keeps the sticky
+                            // override's "dropped once the device disappears" bookkeeping
+                            // alive while idle — but it is only applied once a call
+                            // re-enables the session.
+                            selectedId = currentId;
+                        }
+                        else if (targetIndex >= 0)
                         {
                             var target = devices[targetIndex];
                             if (target.Id != currentId)
@@ -397,18 +449,52 @@ namespace LiveKit
             }
         }
 
+        // Both mode methods are called under _gate. The save/restore pairs up per
+        // enable -> disable transition and is idempotent in both directions: the prior
+        // mode is only captured when we do not already hold one, and it is only restored
+        // when it was actually read from the platform — a failed read must never turn
+        // into an unconditional MODE_NORMAL, which would stomp a mode this app does not
+        // own (the rule the PAR-000 hotfix established).
         private void EnterCommunicationMode()
         {
             try
             {
                 using var audioManager = GetAudioManager();
-                _savedAudioMode = audioManager.Call<int>("getMode");
+                if (!_audioModeSaved)
+                {
+                    _savedAudioMode = audioManager.Call<int>("getMode");
+                    _audioModeSaved = true;
+                }
                 audioManager.Call("setMode", ModeInCommunication);
                 Utils.Debug($"AndroidRouteController: audio mode -> MODE_IN_COMMUNICATION (was {_savedAudioMode})");
             }
             catch (Exception e)
             {
                 Utils.Warning($"AndroidRouteController: failed to enter communication mode: {e.Message}");
+            }
+        }
+
+        private void LeaveCommunicationMode()
+        {
+            try
+            {
+                using var audioManager = GetAudioManager();
+                audioManager.Call("clearCommunicationDevice");
+                _pinnedDeviceId = -1;
+                if (_audioModeSaved)
+                {
+                    audioManager.Call("setMode", _savedAudioMode);
+                    _audioModeSaved = false;
+                    Utils.Debug($"AndroidRouteController: route cleared, audio mode restored ({_savedAudioMode})");
+                }
+                else
+                {
+                    Utils.Debug("AndroidRouteController: route cleared, no saved audio mode to restore");
+                }
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"AndroidRouteController: failed to release the audio session: {e.Message}");
             }
         }
 

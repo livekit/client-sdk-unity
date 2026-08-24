@@ -192,6 +192,13 @@ namespace LiveKit
         /// is active, and a music-friendly default mode otherwise (see
         /// <see cref="StartRecording"/> / <see cref="StopRecording"/> /
         /// <see cref="SetSessionAudioEnabled"/>).
+        ///
+        /// Session audio starts out enabled on every platform, so creating an instance
+        /// takes the platform's call audio session — on Android 12 (API 31) and newer
+        /// that means <c>MODE_IN_COMMUNICATION</c> plus the output route pin. Apps that
+        /// create PlatformAudio before their first call should call
+        /// <see cref="SetSessionAudioEnabled"/> with <c>false</c> right after
+        /// construction and enable it when a call starts.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the platform ADM could not be initialized (e.g., no audio devices,
@@ -737,18 +744,35 @@ namespace LiveKit
         }
 
         /// <summary>
-        /// Signals whether call audio should be active on the platform audio session.
+        /// Signals whether call audio should be active on the platform audio session,
+        /// i.e. whether a call is in progress. Enabled by default when PlatformAudio is
+        /// created, so it only needs to be called to <c>false</c> when leaving a room
+        /// (and back to <c>true</c> when rejoining) — but an app that creates
+        /// PlatformAudio well before its first call (e.g. at startup, to keep the ADM
+        /// alive) should disable it right after creation, so the platform's call audio
+        /// session is only held for the duration of an actual call.
         ///
         /// On iOS this gates WebRTC's VPIO audio unit while the app retains ownership
-        /// of the shared AVAudioSession. It is enabled by default when PlatformAudio is
-        /// created, so this only needs to be called to <c>false</c> when leaving a room
-        /// (and back to <c>true</c> when rejoining). Disabling stops the microphone/
-        /// remote audio path and the hardware voice processing, and drops the session
-        /// to its idle state (music-friendly default mode), but keeps the audio
-        /// session active so other Unity audio (e.g. background music) is not
-        /// interrupted — which is why Unity audio survives a hang-up.
+        /// of the shared AVAudioSession. Disabling stops the microphone/remote audio
+        /// path and the hardware voice processing, and drops the session to its idle
+        /// state (music-friendly default mode), but keeps the audio session active so
+        /// other Unity audio (e.g. background music) is not interrupted — which is why
+        /// Unity audio survives a hang-up.
         ///
-        /// On other platforms this is a no-op: the OS/ADM manages the session directly.
+        /// On Android 12 (API 31) and newer this gates the voice-communication audio
+        /// session the routing backend holds: while enabled the SDK owns
+        /// <c>MODE_IN_COMMUNICATION</c> and keeps the output route pinned per
+        /// <see cref="OutputPreference"/>; while disabled it holds neither, so the OS
+        /// returns to its normal routing (and a Bluetooth headset stays on A2DP media
+        /// instead of an HFP call link). Device enumeration and
+        /// <see cref="DevicesChanged"/> keep working while disabled. Unlike iOS,
+        /// disabling does not stop the ADM: pair it with
+        /// <see cref="StopRecording"/>/<see cref="StartRecording"/> at the call
+        /// boundaries — an active capture without the session is what lets the platform
+        /// take routing back (see <see cref="StartRecording"/>).
+        ///
+        /// On the remaining platforms this is a no-op: the OS/ADM manages the session
+        /// directly.
         /// </summary>
         /// <param name="enabled">True while a call is active, false otherwise.</param>
         public void SetSessionAudioEnabled(bool enabled)
@@ -758,6 +782,7 @@ namespace LiveKit
             _iosSessionAudioEnabled = enabled;
             UpdateIosSessionState();
 #endif
+            _routeController.SetSessionAudioEnabled(enabled);
             Utils.Debug($"PlatformAudio: session audio enabled={enabled}");
         }
 

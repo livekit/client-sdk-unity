@@ -14,15 +14,24 @@ using UnityEngine;
 //
 // Output routing is owned by the SDK: PlatformAudio routes to the best available output
 // per its ranked OutputPreference (default: Bluetooth > wired headset > speaker >
-// earpiece) and keeps the route pinned across device changes for its whole lifetime.
-// This controller only demonstrates the observability side by logging DevicesChanged.
-// On Android an active mic capture is what keeps the SDK's route authoritative (since
-// Android 13 the OS only honors an app's communication-mode request while it has active
-// voice-communication capture), so start the capture with StartCapture when the call
-// begins (even when joining muted) — it then stays open across mute cycles until
-// StopCapture when the call ends. See StartCapture and Unpublish.
+// earpiece) and keeps the route pinned across device changes while a call is in
+// progress. This controller only demonstrates the observability side by logging
+// DevicesChanged. On Android an active mic capture is what keeps the SDK's route
+// authoritative (since Android 13 the OS only honors an app's communication-mode request
+// while it has active voice-communication capture), so start the capture with
+// StartCapture when the call begins (even when joining muted) — it then stays open
+// across mute cycles until StopCapture when the call ends. See StartCapture and
+// Unpublish.
+//
+// The call audio session itself is gated by SetSessionAudioEnabled: the ADM is created
+// once at app start and kept alive, but the platform's call session is only held for the
+// duration of a call. See Initialize and SetSessionAudioEnabled.
 public sealed class PlatformAudioController : IDisposable
 {
+    // Long enough to swallow the second signal for the same route change: the SDK's
+    // Android poll can trail Unity's own notification by up to ~1.5 s.
+    const float UnityAudioResetCoalesceSeconds = 2f;
+
     readonly string _trackName;
     readonly AudioProcessingOptions _audioOptions;
 
@@ -31,6 +40,8 @@ public sealed class PlatformAudioController : IDisposable
     LocalAudioTrack _track;
     Room _room;
     bool _isRecording;
+    string _selectedOutput;
+    float _lastUnityAudioReset = float.NegativeInfinity;
 
     public bool IsInitialized => _platformAudio != null;
     public bool IsPublished { get; private set; }
@@ -54,6 +65,16 @@ public sealed class PlatformAudioController : IDisposable
         // A custom ranking would be a one-liner:
         //   _platformAudio.OutputPreference = new[] { AudioOutputKind.WiredHeadset, AudioOutputKind.Speaker };
         _platformAudio.DevicesChanged += OnDevicesChanged;
+        AudioSettings.OnAudioConfigurationChanged += OnUnityAudioConfigurationChanged;
+
+        // Session audio is enabled when PlatformAudio is created, so hand it straight
+        // back: this controller is created at app start (to keep one ADM alive for every
+        // call), while the platform's call audio session should only be held while a call
+        // is actually in progress — enabled means "in a call". Without this the phone
+        // sits in communication mode from launch to quit, which on Android keeps a
+        // Bluetooth headset on a call link (HFP) instead of A2DP media the whole time.
+        // MeetManager re-enables it on join and disables it again on leave.
+        _platformAudio.SetSessionAudioEnabled(false);
         return true;
     }
 
@@ -154,10 +175,12 @@ public sealed class PlatformAudioController : IDisposable
         _source = null;
     }
 
-    // Gates call audio on the ADM while the app keeps ownership of the audio session.
-    // On iOS this switches WebRTC's VPIO unit on/off so other Unity audio (e.g.
-    // background music) survives leaving a room; on other platforms it is a no-op.
-    // Call with true after joining a room and false when leaving it.
+    // Gates the platform's call audio session: enabled means a call is in progress.
+    // On iOS it switches WebRTC's VPIO unit on/off while the app keeps ownership of the
+    // audio session, on Android 12+ it takes and releases the communication mode plus
+    // the SDK's output route pin — both so other Unity audio (e.g. background music)
+    // keeps playing outside a call. Call with true after joining a room and false when
+    // leaving it; Initialize() already disabled it for the idle app.
     public void SetSessionAudioEnabled(bool enabled)
     {
         _platformAudio?.SetSessionAudioEnabled(enabled);
@@ -194,6 +217,8 @@ public sealed class PlatformAudioController : IDisposable
 
             var (recording, playout) = _platformAudio.GetDevices();
             Debug.Log(FormatDeviceLists(playout, recording));
+            // Baseline for the route-change recovery: only a change from here on is one.
+            _selectedOutput = SelectedOutputKey(playout);
 
             if (_platformAudio.RecordingDeviceCount > 0)
                 _platformAudio.SetRecordingDevice(0);
@@ -215,10 +240,95 @@ public sealed class PlatformAudioController : IDisposable
     // DevicesChanged (on the Unity main thread) whenever the available devices or the
     // active route change — headset plugged/unplugged, Bluetooth connected, the route
     // re-pinned after a device disappeared. An app would refresh its device picker here.
-    static void OnDevicesChanged(IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
+    // This sample also uses it to bring Unity's own audio back onto the new route (see
+    // ResetUnityAudioOutput).
+    void OnDevicesChanged(IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
     {
         Debug.Log("[PlatformAudioController] Audio devices changed.\n"
             + FormatDeviceLists(playout, recording));
+
+        // Recover Unity audio when the active route moved. When the platform names no
+        // active route (nothing IsSelected, possible outside a call), this event still
+        // means the reachable devices changed — the best available signal that the output
+        // moved, so recover rather than guess.
+        var selected = SelectedOutputKey(playout);
+        var routeMoved = selected == null || selected != _selectedOutput;
+        _selectedOutput = selected;
+        if (routeMoved)
+            ResetUnityAudioOutput("SDK route change");
+    }
+
+    // Unity's audio engine opens an output device when the app starts and keeps writing
+    // to it: when the OS moves the output route (Bluetooth connect/disconnect, wired
+    // plug/unplug), game audio does not follow it and does not recover on its own.
+    // Reopening the engine with AudioSettings.Reset is the fix, and it is deliberately
+    // the app's call rather than the SDK's — it stops every AudioSource in the scene.
+    //
+    // Two signals can drive it and this sample listens to both, because which of them
+    // the platform actually delivers is worth observing rather than assuming:
+    //   - AudioSettings.OnAudioConfigurationChanged(deviceWasChanged: true), Unity's own
+    //     notification (logged here, so a device run shows whether it fires at all), and
+    //   - PlatformAudio.DevicesChanged, the SDK's routing event — which is why the
+    //     routing API exposes the active route, not just the device list.
+    // Whichever arrives first triggers the reset; ResetUnityAudioOutput coalesces the
+    // other one.
+    void OnUnityAudioConfigurationChanged(bool deviceWasChanged)
+    {
+        Debug.Log("[PlatformAudioController] Unity audio configuration changed "
+            + $"(deviceWasChanged={deviceWasChanged}, outputSampleRate={AudioSettings.outputSampleRate}, "
+            + $"speakerMode={AudioSettings.speakerMode}).");
+
+        // Reset itself raises this callback with deviceWasChanged false, so only a real
+        // device change re-enters the recovery.
+        if (deviceWasChanged)
+            ResetUnityAudioOutput("Unity device change");
+    }
+
+    void ResetUnityAudioOutput(string reason)
+    {
+        // Both callers run on the Unity main thread (the SDK marshals DevicesChanged
+        // there), so the Unity APIs below are safe to touch.
+        var now = Time.realtimeSinceStartup;
+        if (now - _lastUnityAudioReset < UnityAudioResetCoalesceSeconds)
+        {
+            Debug.Log($"[PlatformAudioController] Unity audio already reopened {now - _lastUnityAudioReset:0.00}s "
+                + $"ago, skipping ({reason}).");
+            return;
+        }
+        _lastUnityAudioReset = now;
+
+        // Reset stops every AudioSource, so resume the ones that were playing; an app
+        // would restart its own music/SFX here instead of sweeping the scene.
+        var playing = new List<AudioSource>();
+        foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
+            if (source.isPlaying)
+                playing.Add(source);
+
+        Debug.Log($"[PlatformAudioController] Reopening Unity's audio output ({reason}), "
+            + $"resuming {playing.Count} source(s).");
+
+        if (!AudioSettings.Reset(AudioSettings.GetConfiguration()))
+        {
+            Debug.LogWarning("[PlatformAudioController] AudioSettings.Reset failed; Unity audio may stay silent.");
+            return;
+        }
+
+        foreach (var source in playing)
+        {
+            if (source == null) continue;
+            source.Stop();
+            source.Play();
+        }
+    }
+
+    // Identifies the active output route, or null when the platform reports none — which
+    // can happen outside a call, where the SDK holds no route of its own.
+    static string SelectedOutputKey(IReadOnlyList<AudioDevice> playout)
+    {
+        foreach (var device in playout)
+            if (device.IsSelected)
+                return string.IsNullOrEmpty(device.Guid) ? device.Name : device.Guid;
+        return null;
     }
 
     static string FormatDeviceLists(IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
@@ -244,6 +354,7 @@ public sealed class PlatformAudioController : IDisposable
 
         if (_platformAudio != null)
         {
+            AudioSettings.OnAudioConfigurationChanged -= OnUnityAudioConfigurationChanged;
             _platformAudio.DevicesChanged -= OnDevicesChanged;
             _platformAudio.Dispose();
             _platformAudio = null;
