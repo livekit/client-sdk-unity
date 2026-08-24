@@ -91,13 +91,6 @@ public class LiveKitAgentSession : MonoBehaviour
             yield break;
         }
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-        // Poll fallback for routing changes that fire no communication-device event
-        // (e.g. a Bluetooth headset leaving the device list after its SCO link already
-        // dropped) — see PlatformAudioController.AndroidRouteWatchdog.
-        StartCoroutine(_audio.AndroidRouteWatchdog());
-#endif
-
         _room = new Room();
 
         Debug.Log($"[LiveKitAgentSession] Connecting to '{details.ServerUrl}'...");
