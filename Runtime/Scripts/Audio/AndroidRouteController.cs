@@ -30,11 +30,11 @@ namespace LiveKit
     /// re-evaluation path pins nothing while session audio is disabled.
     ///
     /// While session audio is disabled the session is handed back to the platform
-    /// (communication device cleared, prior mode restored) so the phone is not held in
-    /// call mode outside a call — on a classic-Bluetooth headset that is the difference
-    /// between an HFP call link and A2DP media playback. Enumeration, the change listener
-    /// and the poll thread stay alive regardless, so <see cref="GetDevices"/> and
-    /// <see cref="DevicesChanged"/> keep reporting the platform's own routing while idle.
+    /// (communication device cleared, prior mode restored), so the mode request and the
+    /// route pin cover the call rather than the lifetime of the instance. Enumeration,
+    /// the change listener and the poll thread stay alive regardless, so
+    /// <see cref="GetDevices"/> and <see cref="DevicesChanged"/> keep reporting the
+    /// platform's own routing while idle.
     ///
     /// Route changes are detected two ways, both required (device-verified in the
     /// sample hotfix this backend is hardened from, PR #364):

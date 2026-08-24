@@ -70,9 +70,8 @@ public sealed class PlatformAudioController : IDisposable
         // Session audio is enabled when PlatformAudio is created, so hand it straight
         // back: this controller is created at app start (to keep one ADM alive for every
         // call), while the platform's call audio session should only be held while a call
-        // is actually in progress — enabled means "in a call". Without this the phone
-        // sits in communication mode from launch to quit, which on Android keeps a
-        // Bluetooth headset on a call link (HFP) instead of A2DP media the whole time.
+        // is actually in progress — enabled means "in a call". Without this the app keeps
+        // requesting communication mode and pinning the call route from launch to quit.
         // MeetManager re-enables it on join and disables it again on leave.
         _platformAudio.SetSessionAudioEnabled(false);
         return true;

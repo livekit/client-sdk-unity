@@ -760,11 +760,11 @@ namespace LiveKit
         /// Unity audio survives a hang-up.
         ///
         /// On Android 12 (API 31) and newer this gates the voice-communication audio
-        /// session the routing backend holds: while enabled the SDK owns
+        /// session the routing backend holds: while enabled the SDK requests
         /// <c>MODE_IN_COMMUNICATION</c> and keeps the output route pinned per
         /// <see cref="OutputPreference"/>; while disabled it holds neither, so the OS
-        /// returns to its normal routing (and a Bluetooth headset stays on A2DP media
-        /// instead of an HFP call link). Device enumeration and
+        /// applies its normal routing and the call session covers the call rather than
+        /// the lifetime of this instance. Device enumeration and
         /// <see cref="DevicesChanged"/> keep working while disabled. Unlike iOS,
         /// disabling does not stop the ADM: pair it with
         /// <see cref="StopRecording"/>/<see cref="StartRecording"/> at the call
