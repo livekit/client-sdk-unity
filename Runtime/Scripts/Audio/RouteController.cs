@@ -87,10 +87,11 @@ namespace LiveKit
     }
 
     /// <summary>
-    /// Placeholder backend for platforms whose routing implementation has not landed yet
-    /// (Android). Device snapshots still work through the FFI (a single placeholder
-    /// entry for the OS default input/output); the routing verbs throw or no-op as
-    /// documented on the public API.
+    /// Placeholder backend for platforms without a routing implementation: Android below
+    /// API 31 (which lacks the communication-device APIs the Android backend is built
+    /// on). Device snapshots still work through the FFI (a single placeholder entry for
+    /// the OS default input/output); the routing verbs throw or no-op as documented on
+    /// the public API.
     /// </summary>
     internal sealed class UnsupportedRouteController : IRouteController
     {
@@ -116,7 +117,7 @@ namespace LiveKit
         public void SelectOutput(AudioDevice device)
         {
             throw new NotSupportedException(
-                $"SelectOutput is not implemented on {_platform} yet");
+                $"SelectOutput is not supported on {_platform}");
         }
 
         public void ClearOutputOverride()
