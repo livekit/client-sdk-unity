@@ -653,6 +653,9 @@ namespace LiveKit
         ///
         /// Recording does not start on its own when PlatformAudio is created — call
         /// this to start capturing, and again to resume after <see cref="StopRecording"/>.
+        /// On Android and iOS the coroutine first awaits the OS microphone-permission
+        /// dialog when the permission has not been granted yet, and only then opens the
+        /// capture — a capture opened while the prompt is pending would record silence.
         /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
         /// On iOS this also switches the audio session to its recording state
         /// (voice/video-chat mode per <see cref="IsSpeakerOutputPreferred"/>, enabling
@@ -682,6 +685,22 @@ namespace LiveKit
                     yield return null;
 
                 if (granted == false)
+                    throw new InvalidOperationException(
+                        "Microphone permission denied by user; cannot start recording.");
+            }
+#endif
+
+#if UNITY_IOS && !UNITY_EDITOR
+            if (!UnityEngine.Application.HasUserAuthorization(UnityEngine.UserAuthorization.Microphone))
+            {
+                // Ask for the record permission BEFORE the ADM opens the input unit. The
+                // system prompt is asynchronous: a capture opened while it is still
+                // pending records silence, and nothing reopens the input after the user
+                // grants — so without this gate the first run of an app publishes a
+                // silent microphone track.
+                yield return UnityEngine.Application.RequestUserAuthorization(
+                    UnityEngine.UserAuthorization.Microphone);
+                if (!UnityEngine.Application.HasUserAuthorization(UnityEngine.UserAuthorization.Microphone))
                     throw new InvalidOperationException(
                         "Microphone permission denied by user; cannot start recording.");
             }

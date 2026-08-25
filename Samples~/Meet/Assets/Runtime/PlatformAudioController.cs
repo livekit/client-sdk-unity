@@ -121,9 +121,9 @@ public sealed class PlatformAudioController : IDisposable
     }
 
     // Starts the microphone capture without publishing a track; Publish() reuses the
-    // running capture. On macOS/iOS this turns on the recording privacy indicator and
-    // triggers the OS permission prompt; on Android it awaits the RECORD_AUDIO runtime
-    // permission dialog. On Android call this as soon as the call starts, even when
+    // running capture. On macOS this turns on the recording privacy indicator; on iOS
+    // and Android the coroutine first awaits the OS microphone-permission dialog and
+    // only then opens the capture. On Android call this as soon as the call starts, even when
     // joining muted: since Android 13 the app's communication-mode request — and with
     // it the SDK's output route pin — is only honored while the app has ACTIVE
     // voice-communication capture or playback, and the ADM's playout stream does not
