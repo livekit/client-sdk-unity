@@ -122,6 +122,14 @@ if [ $BUILD_STATUS -ne 0 ]; then
     exit 1
 fi
 
+# For iOS release, strip DWARF debug info from the static archive like CI does
+if [ "$PLATFORM" = "ios" ] && [ "$BUILD_TYPE" = "release" ]; then
+    echo ""
+    echo "Stripping DWARF debug info from $(basename "$SRC")..."
+    xcrun strip -S "$SRC"
+    xcrun ranlib "$SRC"
+fi
+
 # Copy the built lib
 echo ""
 echo "Copying to $DST..."
