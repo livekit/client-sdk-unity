@@ -71,6 +71,9 @@ namespace LiveKit
         // come through the change listener, so this only slows down recovering from a pin the
         // platform dropped silently.
         private static readonly TimeSpan PinSettleTimeout = TimeSpan.FromSeconds(6);
+        // Ceiling for the backoff applied when the platform keeps taking the pin without
+        // acting on it — a state this SDK cannot clear (see the Bluetooth note in README).
+        private static readonly TimeSpan PinSettleTimeoutMax = TimeSpan.FromSeconds(30);
 
         private readonly PlatformAudio _owner;
         private readonly object _gate = new object();
@@ -85,6 +88,7 @@ namespace LiveKit
         // and whether the platform has been seen honoring it since.
         private DateTime _pinnedAtUtc = DateTime.MinValue;
         private bool _pinApplied;
+        private TimeSpan _pinSettleTimeout = PinSettleTimeout;
         // Session audio starts enabled, matching the documented default of
         // PlatformAudio.SetSessionAudioEnabled (uniform with iOS).
         private bool _sessionAudioEnabled = true;
@@ -384,9 +388,10 @@ namespace LiveKit
                                 // route from ever arriving. Once the pin has been seen
                                 // applied, a later divergence is the platform dropping it
                                 // (what the poll exists for) and is re-pinned at once.
-                                // See PinSettleTimeout.
-                                var settling = _pinnedDeviceId == target.Id && !_pinApplied
-                                    && DateTime.UtcNow - _pinnedAtUtc < PinSettleTimeout;
+                                // See PinSettleTimeout, and _pinSettleTimeout for the backoff
+                                // applied when the platform takes the pin but never acts on it.
+                                var retry = _pinnedDeviceId == target.Id && !_pinApplied;
+                                var settling = retry && DateTime.UtcNow - _pinnedAtUtc < _pinSettleTimeout;
                                 if (settling)
                                 {
                                     selectedId = target.Id;
@@ -400,6 +405,27 @@ namespace LiveKit
                                         _pinnedDeviceId = target.Id;
                                         _pinnedAtUtc = DateTime.UtcNow;
                                         _pinApplied = false;
+                                    }
+                                    if (retry)
+                                    {
+                                        // The platform is taking the request and not acting on
+                                        // it. Back off rather than keep asking: retrying into
+                                        // an activation the platform will not start achieves
+                                        // nothing, and the cause is usually outside this SDK
+                                        // (see the Bluetooth note in the README).
+                                        Utils.Warning(
+                                            $"AndroidRouteController: the platform is not applying the route pin for " +
+                                            $"{target.Kind} after {_pinSettleTimeout.TotalSeconds:0}s. If this is a " +
+                                            "Bluetooth headset, another component in this process (Unity's audio engine " +
+                                            "does this when it initializes with a headset connected) may hold an " +
+                                            "outstanding startBluetoothSco request, which blocks the call link until it " +
+                                            "resolves. Call audio stays on the previous output until then.");
+                                        var next = TimeSpan.FromTicks(_pinSettleTimeout.Ticks * 2);
+                                        _pinSettleTimeout = next > PinSettleTimeoutMax ? PinSettleTimeoutMax : next;
+                                    }
+                                    else
+                                    {
+                                        _pinSettleTimeout = PinSettleTimeout;
                                     }
                                     selectedId = ok ? target.Id : currentId;
                                 }
