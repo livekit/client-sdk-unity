@@ -192,6 +192,13 @@ namespace LiveKit
         /// is active, and a music-friendly default mode otherwise (see
         /// <see cref="StartRecording"/> / <see cref="StopRecording"/> /
         /// <see cref="SetSessionAudioEnabled"/>).
+        ///
+        /// Session audio starts out enabled on every platform, so creating an instance
+        /// takes the platform's call audio session — on Android 12 (API 31) and newer
+        /// that means <c>MODE_IN_COMMUNICATION</c> plus the output route pin. Apps that
+        /// create PlatformAudio before their first call should call
+        /// <see cref="SetSessionAudioEnabled"/> with <c>false</c> right after
+        /// construction and enable it when a call starts.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the platform ADM could not be initialized (e.g., no audio devices,
@@ -457,7 +464,11 @@ namespace LiveKit
         /// Platform notes: on desktop this selects the device like
         /// <see cref="SetPlayoutDevice(string)"/>. On Android 12 (API 31) and newer the
         /// device is pinned as the communication device; the override is dropped once the
-        /// device disappears from the playout list (automatic policy resumes). On iOS the
+        /// device disappears from the playout list (automatic policy resumes). While
+        /// session audio is disabled (<see cref="SetSessionAudioEnabled"/>) the choice is
+        /// only recorded — no pin is issued, and <see cref="GetDevices"/> /
+        /// <see cref="DevicesChanged"/> keep reporting the platform's own route — until a
+        /// call enables the session. On iOS the
         /// OS owns output route selection and this method throws
         /// <see cref="NotSupportedException"/> — present the system route picker
         /// (AVRoutePickerView) instead, or use <see cref="OutputPreference"/> /
@@ -640,8 +651,11 @@ namespace LiveKit
         /// <summary>
         /// Starts recording from the microphone.
         ///
-        /// Recording is started automatically when PlatformAudio is created.
-        /// Use this to resume recording after calling StopRecording.
+        /// Recording does not start on its own when PlatformAudio is created — call
+        /// this to start capturing, and again to resume after <see cref="StopRecording"/>.
+        /// On Android and iOS the coroutine first awaits the OS microphone-permission
+        /// dialog when the permission has not been granted yet, and only then opens the
+        /// capture — a capture opened while the prompt is pending would record silence.
         /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
         /// On iOS this also switches the audio session to its recording state
         /// (voice/video-chat mode per <see cref="IsSpeakerOutputPreferred"/>, enabling
@@ -671,6 +685,22 @@ namespace LiveKit
                     yield return null;
 
                 if (granted == false)
+                    throw new InvalidOperationException(
+                        "Microphone permission denied by user; cannot start recording.");
+            }
+#endif
+
+#if UNITY_IOS && !UNITY_EDITOR
+            if (!UnityEngine.Application.HasUserAuthorization(UnityEngine.UserAuthorization.Microphone))
+            {
+                // Ask for the record permission BEFORE the ADM opens the input unit. The
+                // system prompt is asynchronous: a capture opened while it is still
+                // pending records silence, and nothing reopens the input after the user
+                // grants — so without this gate the first run of an app publishes a
+                // silent microphone track.
+                yield return UnityEngine.Application.RequestUserAuthorization(
+                    UnityEngine.UserAuthorization.Microphone);
+                if (!UnityEngine.Application.HasUserAuthorization(UnityEngine.UserAuthorization.Microphone))
                     throw new InvalidOperationException(
                         "Microphone permission denied by user; cannot start recording.");
             }
@@ -737,18 +767,35 @@ namespace LiveKit
         }
 
         /// <summary>
-        /// Signals whether call audio should be active on the platform audio session.
+        /// Signals whether call audio should be active on the platform audio session,
+        /// i.e. whether a call is in progress. Enabled by default when PlatformAudio is
+        /// created, so it only needs to be called to <c>false</c> when leaving a room
+        /// (and back to <c>true</c> when rejoining) — but an app that creates
+        /// PlatformAudio well before its first call (e.g. at startup, to keep the ADM
+        /// alive) should disable it right after creation, so the platform's call audio
+        /// session is only held for the duration of an actual call.
         ///
         /// On iOS this gates WebRTC's VPIO audio unit while the app retains ownership
-        /// of the shared AVAudioSession. It is enabled by default when PlatformAudio is
-        /// created, so this only needs to be called to <c>false</c> when leaving a room
-        /// (and back to <c>true</c> when rejoining). Disabling stops the microphone/
-        /// remote audio path and the hardware voice processing, and drops the session
-        /// to its idle state (music-friendly default mode), but keeps the audio
-        /// session active so other Unity audio (e.g. background music) is not
-        /// interrupted — which is why Unity audio survives a hang-up.
+        /// of the shared AVAudioSession. Disabling stops the microphone/remote audio
+        /// path and the hardware voice processing, and drops the session to its idle
+        /// state (music-friendly default mode), but keeps the audio session active so
+        /// other Unity audio (e.g. background music) is not interrupted — which is why
+        /// Unity audio survives a hang-up.
         ///
-        /// On other platforms this is a no-op: the OS/ADM manages the session directly.
+        /// On Android 12 (API 31) and newer this gates the voice-communication audio
+        /// session the routing backend holds: while enabled the SDK requests
+        /// <c>MODE_IN_COMMUNICATION</c> and keeps the output route pinned per
+        /// <see cref="OutputPreference"/>; while disabled it holds neither, so the OS
+        /// applies its normal routing and the call session covers the call rather than
+        /// the lifetime of this instance. Device enumeration and
+        /// <see cref="DevicesChanged"/> keep working while disabled. Unlike iOS,
+        /// disabling does not stop the ADM: pair it with
+        /// <see cref="StopRecording"/>/<see cref="StartRecording"/> at the call
+        /// boundaries — an active capture without the session is what lets the platform
+        /// take routing back (see <see cref="StartRecording"/>).
+        ///
+        /// On the remaining platforms this is a no-op: the OS/ADM manages the session
+        /// directly.
         /// </summary>
         /// <param name="enabled">True while a call is active, false otherwise.</param>
         public void SetSessionAudioEnabled(bool enabled)
@@ -758,6 +805,7 @@ namespace LiveKit
             _iosSessionAudioEnabled = enabled;
             UpdateIosSessionState();
 #endif
+            _routeController.SetSessionAudioEnabled(enabled);
             Utils.Debug($"PlatformAudio: session audio enabled={enabled}");
         }
 

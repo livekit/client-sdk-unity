@@ -14,18 +14,27 @@ namespace LiveKit
     /// <c>AudioManager.getAvailableCommunicationDevices</c> /
     /// <c>setCommunicationDevice</c> / <c>clearCommunicationDevice</c>.
     ///
-    /// The controller owns the voice-communication audio session for its whole lifetime
-    /// (construction to <see cref="Dispose"/>): it enters <c>MODE_IN_COMMUNICATION</c>
-    /// (saving and restoring the prior mode) and keeps the output route pinned to the
-    /// best device — the sticky <see cref="SelectOutput"/> override while its device is
-    /// still available, otherwise the highest-ranked available kind per the current
+    /// The controller owns the voice-communication audio session while session audio is
+    /// enabled (<see cref="SetSessionAudioEnabled"/> — i.e. while a call is in progress):
+    /// it enters <c>MODE_IN_COMMUNICATION</c> (saving and restoring the prior mode) and
+    /// keeps the output route pinned to the best device — the sticky
+    /// <see cref="SelectOutput"/> override while its device is still available, otherwise
+    /// the highest-ranked available kind per the current
     /// <see cref="PlatformAudio.OutputPreference"/>. Owning the mode is what makes the
     /// pin authoritative: without it the platform periodically reasserts its own default
     /// route (observed on Pixel 8a: Telecom flipped playout back to the earpiece every
     /// ~6 s after a Bluetooth session ended). Note that since Android 13 the mode request
     /// is only honored while the app has active voice-communication capture, so
     /// <see cref="PlatformAudio.StartRecording"/> re-asserts the policy when capture
-    /// (re)starts.
+    /// (re)starts — through <see cref="ApplyOutputPreference"/>, which like every other
+    /// re-evaluation path pins nothing while session audio is disabled.
+    ///
+    /// While session audio is disabled the session is handed back to the platform
+    /// (communication device cleared, prior mode restored), so the mode request and the
+    /// route pin cover the call rather than the lifetime of the instance. Enumeration,
+    /// the change listener and the poll thread stay alive regardless, so
+    /// <see cref="GetDevices"/> and <see cref="DevicesChanged"/> keep reporting the
+    /// platform's own routing while idle.
     ///
     /// Route changes are detected two ways, both required (device-verified in the
     /// sample hotfix this backend is hardened from, PR #364):
@@ -53,6 +62,18 @@ namespace LiveKit
 
         private const int MinSupportedApiLevel = 31;
         private static readonly TimeSpan PollInterval = TimeSpan.FromSeconds(1.5);
+        // How long a pin is given to take effect before it is issued again. Selecting a
+        // Bluetooth device starts an asynchronous SCO negotiation, and until it completes
+        // the platform keeps reporting the previous communication device — so without this
+        // the poll re-issues the pin into its own pending activation, which the platform
+        // refuses ("BtHelper: requestScoState: failed to connect in state 1", device-verified
+        // on a Pixel 8a / Android 16) and the route never arrives at all. Real route changes
+        // come through the change listener, so this only slows down recovering from a pin the
+        // platform dropped silently.
+        private static readonly TimeSpan PinSettleTimeout = TimeSpan.FromSeconds(6);
+        // Ceiling for the backoff applied when the platform keeps taking the pin without
+        // acting on it — a state this SDK cannot clear (see the Bluetooth note in README).
+        private static readonly TimeSpan PinSettleTimeoutMax = TimeSpan.FromSeconds(30);
 
         private readonly PlatformAudio _owner;
         private readonly object _gate = new object();
@@ -63,7 +84,23 @@ namespace LiveKit
         private List<AudioOutputKind> _ranked;
         private int _stickyDeviceId = -1;
         private int _pinnedDeviceId = -1;
+        // When the outstanding pin was last issued — Stopwatch ticks, monotonic, so a
+        // wall-clock step can neither cut the settle window short nor stretch it — to
+        // give it _pinSettleTimeout to take effect, and whether the platform has been
+        // seen honoring it since.
+        private long _pinIssuedAtTimestamp;
+        private bool _pinApplied;
+        private TimeSpan _pinSettleTimeout = PinSettleTimeout;
+        // Session audio starts enabled, matching the documented default of
+        // PlatformAudio.SetSessionAudioEnabled (uniform with iOS).
+        private bool _sessionAudioEnabled = true;
         private int _savedAudioMode;
+        private bool _audioModeSaved;
+        // Set when an enter/leave transition failed (JNI unavailable, platform error) so
+        // Reevaluate retries it: without the retry, one transient failure on disable
+        // would leave the platform in MODE_IN_COMMUNICATION with the route pinned until
+        // the next call boundary, while this controller reports the session released.
+        private bool _sessionTransitionPending;
         private CommunicationDeviceListener _listener;
         private AndroidJavaObject _audioFocusRequest;
         private bool _audioFocusEnabled;
@@ -108,6 +145,9 @@ namespace LiveKit
             // session state is touched so a failure here has no side effects.
             _recordingSnapshot = owner.GetDevicesViaFfi().Recording;
 
+            // Session audio defaults to enabled, so a fresh instance takes the call
+            // session; apps that create PlatformAudio before their first call disable it
+            // right after construction (see PlatformAudio.SetSessionAudioEnabled).
             EnterCommunicationMode();
             RegisterListener();
             Reevaluate();
@@ -181,6 +221,34 @@ namespace LiveKit
         }
 
         /// <summary>
+        /// Takes or hands back the call audio session: enabling enters
+        /// <c>MODE_IN_COMMUNICATION</c> and lets the policy pin the route, disabling
+        /// clears the pin and restores the mode this controller replaced. The ranked
+        /// preference survives the transition unconditionally. The sticky override
+        /// survives it only while its device stays available: the drop-on-disappear
+        /// bookkeeping keeps running while the session is disabled, so a device that
+        /// leaves the list between calls (a headset powered off) clears the override
+        /// for good, and the next call routes by the ranked preference.
+        /// </summary>
+        public void SetSessionAudioEnabled(bool enabled)
+        {
+            lock (_gate)
+            {
+                if (_disposed || _sessionAudioEnabled == enabled)
+                    return;
+                _sessionAudioEnabled = enabled;
+                if (enabled)
+                    EnterCommunicationMode();
+                else
+                    LeaveCommunicationMode();
+            }
+
+            // Re-evaluate outside the lock (Reevaluate takes it): pin the policy's target
+            // on enable, report the platform's own route on disable.
+            Reevaluate();
+        }
+
+        /// <summary>
         /// Optional audio-focus request (AUDIOFOCUS_GAIN with voice-communication
         /// attributes) held while enabled. Off by default. Not exposed on the public
         /// API surface (PAR-019 defines it once); flip it here when embedding scenarios
@@ -230,18 +298,11 @@ namespace LiveKit
             lock (_gate)
             {
                 AbandonAudioFocus();
-            }
-
-            try
-            {
-                using var audioManager = GetAudioManager();
-                audioManager.Call("clearCommunicationDevice");
-                audioManager.Call("setMode", _savedAudioMode);
-                Utils.Debug($"AndroidRouteController: route cleared, audio mode restored ({_savedAudioMode})");
-            }
-            catch (Exception e)
-            {
-                Utils.Warning($"AndroidRouteController: failed to restore audio session: {e.Message}");
+                // Same idempotent release as a session-audio disable: clearing a pin we
+                // no longer hold is a no-op, and the mode is only restored when this
+                // controller is the one that replaced it.
+                LeaveCommunicationMode();
+                _sessionAudioEnabled = false;
             }
         }
 
@@ -255,6 +316,14 @@ namespace LiveKit
         /// and that no-op check is what stops the feedback loop. When nothing sticky or
         /// ranked is available, an existing pin is released so the OS default applies;
         /// kinds missing from the ranking are never auto-selected.
+        ///
+        /// While session audio is disabled the pass is observation-only: it enumerates,
+        /// keeps the sticky bookkeeping current and still raises
+        /// <see cref="DevicesChanged"/>, but issues no setCommunicationDevice /
+        /// clearCommunicationDevice and reports the platform's own communication device
+        /// as the selected one. Every trigger — the change listener, the poll thread and
+        /// the <see cref="PlatformAudio.StartRecording"/> re-assert — runs through here,
+        /// so none of them can resurrect a released session.
         /// </summary>
         private void Reevaluate()
         {
@@ -263,6 +332,19 @@ namespace LiveKit
             {
                 if (_disposed)
                     return;
+                // A failed enter/leave transition is retried from here: every trigger —
+                // the poll, the change listener, the StartRecording re-assert — funnels
+                // through this pass, so a transient JNI failure cannot leave the
+                // platform holding (or missing) the call session until the next call
+                // boundary. Retries the transition for the CURRENT desired state, so a
+                // flip that happened in between is never undone.
+                if (_sessionTransitionPending)
+                {
+                    if (_sessionAudioEnabled)
+                        EnterCommunicationMode();
+                    else
+                        LeaveCommunicationMode();
+                }
                 try
                 {
                     using var audioManager = GetAudioManager();
@@ -306,16 +388,95 @@ namespace LiveKit
                         }
 
                         int selectedId;
-                        if (targetIndex >= 0)
+                        if (!_sessionAudioEnabled)
+                        {
+                            // No call in progress: report which device the platform would
+                            // use for communication audio, and touch nothing. The target
+                            // computed above is still worth running — it keeps the sticky
+                            // override's "dropped once the device disappears" bookkeeping
+                            // alive while idle — but it is only applied once a call
+                            // re-enables the session.
+                            selectedId = currentId;
+                        }
+                        else if (targetIndex >= 0)
                         {
                             var target = devices[targetIndex];
+                            if (currentId == _pinnedDeviceId)
+                                _pinApplied = true;
                             if (target.Id != currentId)
                             {
-                                var ok = audioManager.Call<bool>("setCommunicationDevice", target.Device);
-                                Utils.Debug($"AndroidRouteController: setCommunicationDevice(kind={target.Kind}) -> {ok}");
-                                if (ok)
-                                    _pinnedDeviceId = target.Id;
-                                selectedId = ok ? target.Id : currentId;
+                                // A Bluetooth pin that has not taken effect yet is left to
+                                // finish: setCommunicationDevice starts an asynchronous SCO
+                                // negotiation there, and re-issuing lands in the platform's
+                                // own pending activation and gets refused, so hammering it
+                                // keeps the route from ever arriving. Once the pin has been
+                                // seen applied, a later divergence is the platform dropping
+                                // it (what the poll exists for) and is re-pinned at once.
+                                // The other kinds apply without a negotiation, so a
+                                // divergence there is always a dropped or ignored pin and
+                                // is re-issued immediately, as before the settle window
+                                // existed. See PinSettleTimeout, and _pinSettleTimeout for
+                                // the backoff applied when the platform takes a Bluetooth
+                                // pin but never acts on it.
+                                var retry = _pinnedDeviceId == target.Id && !_pinApplied
+                                    && target.Kind == AudioOutputKind.Bluetooth;
+                                var settling = retry && ElapsedSincePinIssued() < _pinSettleTimeout;
+                                if (settling)
+                                {
+                                    // Waiting on the negotiation: report the device the
+                                    // platform still has, never the one merely requested.
+                                    // The change listener re-runs this pass the moment the
+                                    // pin lands, and the selection flip raises the
+                                    // DevicesChanged for the real arrival.
+                                    selectedId = currentId;
+                                }
+                                else
+                                {
+                                    var ok = audioManager.Call<bool>("setCommunicationDevice", target.Device);
+                                    Utils.Debug($"AndroidRouteController: setCommunicationDevice(kind={target.Kind}) -> {ok}");
+                                    // Stamped on every attempt, not only on success:
+                                    // measured from a stale issue time the settle window
+                                    // expires for good after one refused re-issue, and the
+                                    // backoff decays into a warn+re-issue every poll tick.
+                                    _pinIssuedAtTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
+                                    if (ok)
+                                    {
+                                        _pinnedDeviceId = target.Id;
+                                        _pinApplied = false;
+                                    }
+                                    if (retry)
+                                    {
+                                        // The platform is taking the request and not acting on
+                                        // it. Back off rather than keep asking: retrying into
+                                        // an activation the platform will not start achieves
+                                        // nothing, and the cause is usually outside this SDK
+                                        // (see the Bluetooth note in the README).
+                                        Utils.Warning(
+                                            $"AndroidRouteController: the platform is not applying the route pin for " +
+                                            $"{target.Kind} after {_pinSettleTimeout.TotalSeconds:0}s. If this is a " +
+                                            "Bluetooth headset, another component in this process (Unity's audio engine " +
+                                            "does this when it initializes with a headset connected) may hold an " +
+                                            "outstanding startBluetoothSco request, which blocks the call link until it " +
+                                            "resolves. Call audio stays on the previous output until then.");
+                                        var next = TimeSpan.FromTicks(_pinSettleTimeout.Ticks * 2);
+                                        _pinSettleTimeout = next > PinSettleTimeoutMax ? PinSettleTimeoutMax : next;
+                                    }
+                                    else
+                                    {
+                                        _pinSettleTimeout = PinSettleTimeout;
+                                    }
+                                    // Report the platform's answer, not the request: the
+                                    // synchronous kinds are visible in this re-read right
+                                    // away, while a pending Bluetooth pin must not be
+                                    // announced as selected before it lands — GetDevices()
+                                    // reads the same truth, and a premature "selected"
+                                    // would also swallow the arrival event, because the
+                                    // signature would never change again.
+                                    using var applied = audioManager.Call<AndroidJavaObject>("getCommunicationDevice");
+                                    selectedId = applied != null ? applied.Call<int>("getId") : -1;
+                                    if (ok && selectedId == target.Id)
+                                        _pinApplied = true;
+                                }
                             }
                             else
                             {
@@ -327,7 +488,7 @@ namespace LiveKit
                             if (_pinnedDeviceId != -1)
                             {
                                 audioManager.Call("clearCommunicationDevice");
-                                _pinnedDeviceId = -1;
+                                ResetPinTracking();
                                 Utils.Debug("AndroidRouteController: no ranked device available; cleared pin, OS default applies");
                                 using var fallback = audioManager.Call<AndroidJavaObject>("getCommunicationDevice");
                                 selectedId = fallback != null ? fallback.Call<int>("getId") : -1;
@@ -367,6 +528,22 @@ namespace LiveKit
                 DevicesChanged?.Invoke(playout, new List<AudioDevice>(_recordingSnapshot));
         }
 
+        // Called under _gate from both pin-release sites. Clears everything the
+        // settle/backoff logic keys on; anything left behind resurfaces on the next
+        // pin as a spurious settle-skip or backoff warning.
+        private void ResetPinTracking()
+        {
+            _pinnedDeviceId = -1;
+            _pinApplied = false;
+            _pinSettleTimeout = PinSettleTimeout;
+        }
+
+        private TimeSpan ElapsedSincePinIssued()
+        {
+            var elapsedTicks = System.Diagnostics.Stopwatch.GetTimestamp() - _pinIssuedAtTimestamp;
+            return TimeSpan.FromSeconds((double)elapsedTicks / System.Diagnostics.Stopwatch.Frequency);
+        }
+
         private bool SignatureChanged(List<(int Id, AudioOutputKind Kind, bool IsSelected)> signature)
         {
             if (_lastSignature == null || _lastSignature.Count != signature.Count)
@@ -397,18 +574,60 @@ namespace LiveKit
             }
         }
 
+        // Both mode methods are called under _gate. The save/restore pairs up per
+        // enable -> disable transition and is idempotent in both directions: the prior
+        // mode is only captured when we do not already hold one, and it is only restored
+        // when it was actually read from the platform — a failed read must never turn
+        // into an unconditional MODE_NORMAL, which would stomp a mode this app does not
+        // own (the rule the PAR-000 hotfix established). A failure marks the transition
+        // pending, and Reevaluate retries it (warned once, retries silent) — both
+        // methods are safe to re-run partially completed.
         private void EnterCommunicationMode()
         {
             try
             {
                 using var audioManager = GetAudioManager();
-                _savedAudioMode = audioManager.Call<int>("getMode");
+                if (!_audioModeSaved)
+                {
+                    _savedAudioMode = audioManager.Call<int>("getMode");
+                    _audioModeSaved = true;
+                }
                 audioManager.Call("setMode", ModeInCommunication);
+                _sessionTransitionPending = false;
                 Utils.Debug($"AndroidRouteController: audio mode -> MODE_IN_COMMUNICATION (was {_savedAudioMode})");
             }
             catch (Exception e)
             {
-                Utils.Warning($"AndroidRouteController: failed to enter communication mode: {e.Message}");
+                if (!_sessionTransitionPending)
+                    Utils.Warning($"AndroidRouteController: failed to enter communication mode (will retry): {e.Message}");
+                _sessionTransitionPending = true;
+            }
+        }
+
+        private void LeaveCommunicationMode()
+        {
+            try
+            {
+                using var audioManager = GetAudioManager();
+                audioManager.Call("clearCommunicationDevice");
+                ResetPinTracking();
+                if (_audioModeSaved)
+                {
+                    audioManager.Call("setMode", _savedAudioMode);
+                    _audioModeSaved = false;
+                    Utils.Debug($"AndroidRouteController: route cleared, audio mode restored ({_savedAudioMode})");
+                }
+                else
+                {
+                    Utils.Debug("AndroidRouteController: route cleared, no saved audio mode to restore");
+                }
+                _sessionTransitionPending = false;
+            }
+            catch (Exception e)
+            {
+                if (!_sessionTransitionPending)
+                    Utils.Warning($"AndroidRouteController: failed to release the audio session (will retry): {e.Message}");
+                _sessionTransitionPending = true;
             }
         }
 

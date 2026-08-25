@@ -108,6 +108,13 @@ namespace LiveKit
             // No override can exist on iOS: SelectOutput throws.
         }
 
+        public void SetSessionAudioEnabled(bool enabled)
+        {
+            // Handled by PlatformAudio itself on iOS: it drives the session state machine
+            // (which needs the recording state this backend does not know) through
+            // IOSAudioSessionHelper. Nothing route-specific to gate here.
+        }
+
         public void Dispose()
         {
             lock (StaticGate)

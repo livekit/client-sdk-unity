@@ -30,6 +30,13 @@ namespace LiveKit
         void ClearOutputOverride();
 
         /// <summary>
+        /// Signals whether a call is in progress, i.e. whether the backend may hold the
+        /// platform's voice-communication audio session. Device enumeration and
+        /// <see cref="DevicesChanged"/> must keep working while disabled.
+        /// </summary>
+        void SetSessionAudioEnabled(bool enabled);
+
+        /// <summary>
         /// Raised when the available devices change, with the current (playout, recording)
         /// lists. May be raised from any thread; <see cref="PlatformAudio"/> marshals it to
         /// the Unity main thread before re-raising publicly.
@@ -73,6 +80,11 @@ namespace LiveKit
         public void ClearOutputOverride()
         {
             // No automatic policy to fall back to on desktop; the selected device stays.
+        }
+
+        public void SetSessionAudioEnabled(bool enabled)
+        {
+            // No call session to hold on desktop: the ADM owns the devices directly.
         }
 
         public event Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> DevicesChanged
@@ -123,6 +135,11 @@ namespace LiveKit
         public void ClearOutputOverride()
         {
             // No override can exist on this platform: SelectOutput throws.
+        }
+
+        public void SetSessionAudioEnabled(bool enabled)
+        {
+            // Nothing to gate: this platform has no routing backend holding a session.
         }
 
         public event Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> DevicesChanged
