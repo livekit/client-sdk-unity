@@ -162,10 +162,19 @@ public class MeetManager : MonoBehaviour
             _platformAudioController?.SetSessionAudioEnabled(false);
 
         _room.Disconnect();
+        TeardownCall();
+    }
+
+    // Shared end-of-call teardown: stops the mic capture and the tracks
+    // (CleanUpAllTracks) and resets the call state and UI. Every part is safe to run
+    // twice — OnEndCall's own Disconnect can also raise OnDisconnected.
+    private void TeardownCall()
+    {
         CleanUpAllTracks();
         _room = null;
         _localId = null;
-        buttonBar.SetConnected(false);
+        if (buttonBar != null)
+            buttonBar.SetConnected(false);
     }
 
     private void OnToggleCamera()
@@ -445,10 +454,15 @@ public class MeetManager : MonoBehaviour
     {
         Debug.Log($"Disconnected from room: {room.DisconnectReason}");
 
-        // Covers server-initiated disconnects as well as OnEndCall; idempotent with
-        // the call already made there. Keeps the audio session active for Unity.
+        // Covers server-initiated disconnects (kick, room deleted, token expiry) as
+        // well as OnEndCall. Stopping the capture here matters: it is deliberately
+        // kept running across mute cycles, so without the teardown a server-side
+        // disconnect would leave the microphone recording — indicator on — with no
+        // call to feed. The audio session itself stays active for Unity.
         if (usePlatformAudio)
             _platformAudioController?.SetSessionAudioEnabled(false);
+
+        TeardownCall();
     }
 
     private void OnTrackMuted(TrackPublication publication, Participant participant)

@@ -64,11 +64,12 @@ public sealed class PlatformAudioController : IDisposable
         AudioSettings.OnAudioConfigurationChanged += OnUnityAudioConfigurationChanged;
 
         // Session audio is enabled when PlatformAudio is created, so hand it straight
-        // back: this controller is created at app start (to keep one ADM alive for every
-        // call), while the platform's call audio session should only be held while a call
-        // is actually in progress — enabled means "in a call". Without this the app keeps
-        // requesting communication mode and pinning the call route from launch to quit.
-        // MeetManager re-enables it on join and disables it again on leave.
+        // back: the platform's call audio session should only be held while a call is
+        // actually in progress — enabled means "in a call". Without this an app that
+        // keeps one ADM alive across calls would request communication mode and pin the
+        // call route from launch to quit. The caller must re-enable it when its call
+        // starts and disable it again when the call ends (MeetManager does so on
+        // join/leave, LiveKitAgentSession around Connect/EndSession).
         _platformAudio.SetSessionAudioEnabled(false);
         return true;
     }

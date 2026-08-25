@@ -84,9 +84,11 @@ namespace LiveKit
         private List<AudioOutputKind> _ranked;
         private int _stickyDeviceId = -1;
         private int _pinnedDeviceId = -1;
-        // When the outstanding pin was issued, to give it PinSettleTimeout to take effect,
-        // and whether the platform has been seen honoring it since.
-        private DateTime _pinnedAtUtc = DateTime.MinValue;
+        // When the outstanding pin was last issued — Stopwatch ticks, monotonic, so a
+        // wall-clock step can neither cut the settle window short nor stretch it — to
+        // give it _pinSettleTimeout to take effect, and whether the platform has been
+        // seen honoring it since.
+        private long _pinIssuedAtTimestamp;
         private bool _pinApplied;
         private TimeSpan _pinSettleTimeout = PinSettleTimeout;
         // Session audio starts enabled, matching the documented default of
@@ -391,7 +393,7 @@ namespace LiveKit
                                 // See PinSettleTimeout, and _pinSettleTimeout for the backoff
                                 // applied when the platform takes the pin but never acts on it.
                                 var retry = _pinnedDeviceId == target.Id && !_pinApplied;
-                                var settling = retry && DateTime.UtcNow - _pinnedAtUtc < _pinSettleTimeout;
+                                var settling = retry && ElapsedSincePinIssued() < _pinSettleTimeout;
                                 if (settling)
                                 {
                                     selectedId = target.Id;
@@ -400,10 +402,14 @@ namespace LiveKit
                                 {
                                     var ok = audioManager.Call<bool>("setCommunicationDevice", target.Device);
                                     Utils.Debug($"AndroidRouteController: setCommunicationDevice(kind={target.Kind}) -> {ok}");
+                                    // Stamped on every attempt, not only on success:
+                                    // measured from a stale issue time the settle window
+                                    // expires for good after one refused re-issue, and the
+                                    // backoff decays into a warn+re-issue every poll tick.
+                                    _pinIssuedAtTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                                     if (ok)
                                     {
                                         _pinnedDeviceId = target.Id;
-                                        _pinnedAtUtc = DateTime.UtcNow;
                                         _pinApplied = false;
                                     }
                                     if (retry)
@@ -440,7 +446,7 @@ namespace LiveKit
                             if (_pinnedDeviceId != -1)
                             {
                                 audioManager.Call("clearCommunicationDevice");
-                                _pinnedDeviceId = -1;
+                                ResetPinTracking();
                                 Utils.Debug("AndroidRouteController: no ranked device available; cleared pin, OS default applies");
                                 using var fallback = audioManager.Call<AndroidJavaObject>("getCommunicationDevice");
                                 selectedId = fallback != null ? fallback.Call<int>("getId") : -1;
@@ -478,6 +484,22 @@ namespace LiveKit
             // Raised outside the lock; PlatformAudio marshals to the Unity main thread.
             if (playout != null)
                 DevicesChanged?.Invoke(playout, new List<AudioDevice>(_recordingSnapshot));
+        }
+
+        // Called under _gate from both pin-release sites. Clears everything the
+        // settle/backoff logic keys on; anything left behind resurfaces on the next
+        // pin as a spurious settle-skip or backoff warning.
+        private void ResetPinTracking()
+        {
+            _pinnedDeviceId = -1;
+            _pinApplied = false;
+            _pinSettleTimeout = PinSettleTimeout;
+        }
+
+        private TimeSpan ElapsedSincePinIssued()
+        {
+            var elapsedTicks = System.Diagnostics.Stopwatch.GetTimestamp() - _pinIssuedAtTimestamp;
+            return TimeSpan.FromSeconds((double)elapsedTicks / System.Diagnostics.Stopwatch.Frequency);
         }
 
         private bool SignatureChanged(List<(int Id, AudioOutputKind Kind, bool IsSelected)> signature)
@@ -541,7 +563,7 @@ namespace LiveKit
             {
                 using var audioManager = GetAudioManager();
                 audioManager.Call("clearCommunicationDevice");
-                _pinnedDeviceId = -1;
+                ResetPinTracking();
                 if (_audioModeSaved)
                 {
                     audioManager.Call("setMode", _savedAudioMode);
