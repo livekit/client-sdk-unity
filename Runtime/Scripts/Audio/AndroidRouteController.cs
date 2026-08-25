@@ -62,6 +62,15 @@ namespace LiveKit
 
         private const int MinSupportedApiLevel = 31;
         private static readonly TimeSpan PollInterval = TimeSpan.FromSeconds(1.5);
+        // How long a pin is given to take effect before it is issued again. Selecting a
+        // Bluetooth device starts an asynchronous SCO negotiation, and until it completes
+        // the platform keeps reporting the previous communication device — so without this
+        // the poll re-issues the pin into its own pending activation, which the platform
+        // refuses ("BtHelper: requestScoState: failed to connect in state 1", device-verified
+        // on a Pixel 8a / Android 16) and the route never arrives at all. Real route changes
+        // come through the change listener, so this only slows down recovering from a pin the
+        // platform dropped silently.
+        private static readonly TimeSpan PinSettleTimeout = TimeSpan.FromSeconds(6);
 
         private readonly PlatformAudio _owner;
         private readonly object _gate = new object();
@@ -72,6 +81,10 @@ namespace LiveKit
         private List<AudioOutputKind> _ranked;
         private int _stickyDeviceId = -1;
         private int _pinnedDeviceId = -1;
+        // When the outstanding pin was issued, to give it PinSettleTimeout to take effect,
+        // and whether the platform has been seen honoring it since.
+        private DateTime _pinnedAtUtc = DateTime.MinValue;
+        private bool _pinApplied;
         // Session audio starts enabled, matching the documented default of
         // PlatformAudio.SetSessionAudioEnabled (uniform with iOS).
         private bool _sessionAudioEnabled = true;
@@ -361,13 +374,35 @@ namespace LiveKit
                         else if (targetIndex >= 0)
                         {
                             var target = devices[targetIndex];
+                            if (currentId == _pinnedDeviceId)
+                                _pinApplied = true;
                             if (target.Id != currentId)
                             {
-                                var ok = audioManager.Call<bool>("setCommunicationDevice", target.Device);
-                                Utils.Debug($"AndroidRouteController: setCommunicationDevice(kind={target.Kind}) -> {ok}");
-                                if (ok)
-                                    _pinnedDeviceId = target.Id;
-                                selectedId = ok ? target.Id : currentId;
+                                // A pin that has not taken effect yet is left to finish:
+                                // re-issuing it lands in the platform's own pending SCO
+                                // activation and gets refused, so hammering it keeps the
+                                // route from ever arriving. Once the pin has been seen
+                                // applied, a later divergence is the platform dropping it
+                                // (what the poll exists for) and is re-pinned at once.
+                                // See PinSettleTimeout.
+                                var settling = _pinnedDeviceId == target.Id && !_pinApplied
+                                    && DateTime.UtcNow - _pinnedAtUtc < PinSettleTimeout;
+                                if (settling)
+                                {
+                                    selectedId = target.Id;
+                                }
+                                else
+                                {
+                                    var ok = audioManager.Call<bool>("setCommunicationDevice", target.Device);
+                                    Utils.Debug($"AndroidRouteController: setCommunicationDevice(kind={target.Kind}) -> {ok}");
+                                    if (ok)
+                                    {
+                                        _pinnedDeviceId = target.Id;
+                                        _pinnedAtUtc = DateTime.UtcNow;
+                                        _pinApplied = false;
+                                    }
+                                    selectedId = ok ? target.Id : currentId;
+                                }
                             }
                             else
                             {
