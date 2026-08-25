@@ -28,11 +28,6 @@ using UnityEngine;
 // duration of a call. See Initialize and SetSessionAudioEnabled.
 public sealed class PlatformAudioController : IDisposable
 {
-    // Long enough to ignore the configuration-changed callback that AudioSettings.Reset
-    // raises itself (~60 ms on device), short enough that a later stage of the same device
-    // switch still gets its own recovery.
-    const float UnityAudioResetEchoSeconds = 0.5f;
-
     readonly string _trackName;
     readonly AudioProcessingOptions _audioOptions;
 
@@ -41,7 +36,6 @@ public sealed class PlatformAudioController : IDisposable
     LocalAudioTrack _track;
     Room _room;
     bool _isRecording;
-    float _lastUnityAudioReset = float.NegativeInfinity;
     // What should be audible after an output device change, remembered from before it.
     readonly Dictionary<AudioSource, float> _audibleSources = new Dictionary<AudioSource, float>();
 
@@ -278,7 +272,7 @@ public sealed class PlatformAudioController : IDisposable
         // Also refreshes the remembered set: anything still playing is the truth for the
         // next switch, and finished one-shots drop out of it.
         RememberAudibleSources();
-        RestoreUnityAudioOutput("Unity audio configuration change");
+        RestartAudibleSources();
     }
 
     // Records what this sample intends to keep audible, so a device change can put it
@@ -296,36 +290,30 @@ public sealed class PlatformAudioController : IDisposable
         }
     }
 
-    void RestoreUnityAudioOutput(string reason)
+    // Puts the remembered audio back on the reopened engine. Note what this does NOT do:
+    // it never calls AudioSettings.Reset. Unity has already reopened its output by the
+    // time it raises the callback, so a reset adds nothing — and on Android it does real
+    // harm. Device-verified on a Pixel 8a (Android 16): reinitializing the engine makes
+    // Unity claim the headset's call link through the deprecated
+    // AudioManager.startBluetoothSco(), which evicts the SDK's setCommunicationDevice pin
+    // and leaves the platform's SCO state machine unable to connect —
+    //
+    //   AS.AudioDeviceBroker: setCommunicationRouteForClient … type:bt_sco addr:
+    //       … from API: startBluetoothSco()) from u/pid:…      <- evicts our pinned device
+    //   AS.BtHelper: requestScoState: failed to connect in state 1   <- every retry after
+    //
+    // after which call audio and game audio are both stuck on the loudspeaker for the
+    // rest of the session, however often the SDK re-pins the route.
+    void RestartAudibleSources()
     {
-        // Both callers run on the Unity main thread (the SDK marshals DevicesChanged
-        // there), so the Unity APIs below are safe to touch.
-        var now = Time.realtimeSinceStartup;
-        if (now - _lastUnityAudioReset < UnityAudioResetEchoSeconds)
-        {
-            Debug.Log($"[PlatformAudioController] Unity audio already reopened {now - _lastUnityAudioReset:0.00}s "
-                + $"ago, skipping ({reason}).");
-            return;
-        }
-        _lastUnityAudioReset = now;
-
-        // A looping source that was never seen playing is adopted here rather than left
-        // silent: it can only have been stopped by the engine reinitializing.
+        // A looping source that was never seen playing is adopted rather than left silent:
+        // it can only have been stopped by the engine reinitializing.
         if (_audibleSources.Count == 0)
             foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
                 if (source.loop)
                     _audibleSources[source] = 0f;
 
-        Debug.Log($"[PlatformAudioController] Reopening Unity's audio output ({reason}), "
-            + $"restoring {_audibleSources.Count} source(s).");
-
-        if (!AudioSettings.Reset(AudioSettings.GetConfiguration()))
-        {
-            Debug.LogWarning("[PlatformAudioController] AudioSettings.Reset failed; Unity audio may stay silent.");
-            return;
-        }
-
-        var restored = 0;
+        var restarted = 0;
         // Copied because the loop drops destroyed sources from the dictionary.
         foreach (var entry in new List<KeyValuePair<AudioSource, float>>(_audibleSources))
         {
@@ -335,18 +323,18 @@ public sealed class PlatformAudioController : IDisposable
                 _audibleSources.Remove(source);
                 continue;
             }
-            source.Stop();
+            // Idempotent on purpose: a device switch raises several of these callbacks,
+            // and anything Unity left running must be left alone.
+            if (source.isPlaying) continue;
+
             if (source.clip != null)
                 source.time = Mathf.Clamp(entry.Value, 0f, Mathf.Max(0f, source.clip.length - 0.05f));
             source.Play();
-            if (source.isPlaying) restored++;
+            if (source.isPlaying) restarted++;
         }
 
-        // Reported so a device run can tell "the engine came back and the sources are
-        // running" from "the sources are running but nothing is audible" — the second
-        // would mean the reset did not reopen the output the platform actually moved to.
-        Debug.Log($"[PlatformAudioController] Unity audio output reopened, {restored}/{_audibleSources.Count} "
-            + $"source(s) playing on {AudioSettings.speakerMode} @ {AudioSettings.outputSampleRate} Hz.");
+        Debug.Log($"[PlatformAudioController] Restarted {restarted} of {_audibleSources.Count} remembered "
+            + $"source(s) on {AudioSettings.speakerMode} @ {AudioSettings.outputSampleRate} Hz.");
     }
 
     static string FormatDeviceLists(IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
