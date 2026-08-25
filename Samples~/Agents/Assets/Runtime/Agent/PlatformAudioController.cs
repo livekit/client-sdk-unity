@@ -28,9 +28,10 @@ using UnityEngine;
 // duration of a call. See Initialize and SetSessionAudioEnabled.
 public sealed class PlatformAudioController : IDisposable
 {
-    // Long enough to swallow the second signal for the same route change: the SDK's
-    // Android poll can trail Unity's own notification by up to ~1.5 s.
-    const float UnityAudioResetCoalesceSeconds = 2f;
+    // Long enough to ignore the configuration-changed callback that AudioSettings.Reset
+    // raises itself (~60 ms on device), short enough that a later stage of the same device
+    // switch still gets its own recovery.
+    const float UnityAudioResetEchoSeconds = 0.5f;
 
     readonly string _trackName;
     readonly AudioProcessingOptions _audioOptions;
@@ -40,8 +41,9 @@ public sealed class PlatformAudioController : IDisposable
     LocalAudioTrack _track;
     Room _room;
     bool _isRecording;
-    string _outputDevices;
     float _lastUnityAudioReset = float.NegativeInfinity;
+    // What should be audible after an output device change, remembered from before it.
+    readonly Dictionary<AudioSource, float> _audibleSources = new Dictionary<AudioSource, float>();
 
     public bool IsInitialized => _platformAudio != null;
     public bool IsPublished { get; private set; }
@@ -216,8 +218,6 @@ public sealed class PlatformAudioController : IDisposable
 
             var (recording, playout) = _platformAudio.GetDevices();
             Debug.Log(FormatDeviceLists(playout, recording));
-            // Baseline for the recovery: only a change from here on is a device change.
-            _outputDevices = OutputDeviceSetKey(playout);
 
             if (_platformAudio.RecordingDeviceCount > 0)
                 _platformAudio.SetRecordingDevice(0);
@@ -239,62 +239,69 @@ public sealed class PlatformAudioController : IDisposable
     // DevicesChanged (on the Unity main thread) whenever the available devices or the
     // active route change — headset plugged/unplugged, Bluetooth connected, the route
     // re-pinned after a device disappeared. An app would refresh its device picker here.
-    // This sample also uses it to bring Unity's own audio back onto the new route (see
-    // ResetUnityAudioOutput).
+    // This sample also uses it as the early warning for the Unity-audio recovery below.
     void OnDevicesChanged(IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
     {
         Debug.Log("[PlatformAudioController] Audio devices changed.\n"
             + FormatDeviceLists(playout, recording));
 
-        // Recover Unity audio when a device was added or removed — not when the route
-        // merely moved between the devices already connected. Device-verified on a
-        // Pixel 8a (Android 16): connecting or disconnecting a Bluetooth headset kills
-        // game audio, while the route changes a call brings with it (including the
-        // platform moving media from the headset's A2DP link onto its call link when the
-        // call starts) leave it playing. Resetting on those too would restart the game's
-        // audio at every join and hang-up for nothing.
-        var devices = OutputDeviceSetKey(playout);
-        if (devices == _outputDevices)
-            return;
-        _outputDevices = devices;
-        ResetUnityAudioOutput("output device added or removed");
+        // Note what is audible while the engine is still healthy, but do not touch it:
+        // this event arrives early in a device switch (device-verified on a Pixel 8a /
+        // Android 16, where a Bluetooth headset's call profile appears ~650 ms before the
+        // media profile takes over), so reopening the engine here would reopen it onto the
+        // output the platform is about to leave.
+        RememberAudibleSources();
     }
 
-    // Unity's audio engine opens an output device when the app starts and keeps writing
-    // to it: when that device goes away or a new one takes over (Bluetooth connect or
-    // disconnect, wired plug/unplug), game audio does not follow and does not recover on
-    // its own. Reopening the engine with AudioSettings.Reset is the fix, and it is
-    // deliberately the app's call rather than the SDK's — it stops every AudioSource in
-    // the scene.
+    // Unity's audio engine opens an output device when the app starts. When that device
+    // goes away or another one takes over (Bluetooth connect or disconnect, wired
+    // plug/unplug), Unity reinitializes the engine, which stops every AudioSource, and
+    // raises this callback afterwards — device-verified on a Pixel 8a (Android 16):
     //
-    // Two signals drive it, and both are needed — device-verified on a Pixel 8a
-    // (Android 16), where each one alone misses the case the other catches:
-    //   - AudioSettings.OnAudioConfigurationChanged, Unity's own notification. It fires
-    //     immediately when a Bluetooth headset disconnects, but with
-    //     deviceWasChanged=false, so the flag cannot be used to tell a device change from
-    //     any other reconfiguration — this sample reacts to the callback either way.
-    //   - PlatformAudio.DevicesChanged, the SDK's routing event, as the backstop for
-    //     platforms or transitions where Unity stays quiet. It can be the slower of the
-    //     two on Bluetooth teardown: a powered-off headset can linger in the platform's
-    //     device list for several seconds after the route has already moved.
-    // Whichever arrives first triggers the reset; ResetUnityAudioOutput coalesces the
-    // other one, along with the callback that AudioSettings.Reset raises itself (it
-    // always lands inside the coalescing window, so the recovery cannot feed itself).
+    //   AudioTrack stop(11092): called with 92104 frames delivered   <- sources stopped
+    //   [PlatformAudioController] Unity audio configuration changed  <- 25 ms later
+    //
+    // So the app has to restart its audio here, and it cannot learn what to restart from
+    // the scene at this point: everything is already stopped. What should be audible has
+    // to be remembered from before the switch (RememberAudibleSources) and put back now.
+    // Leaving that out is exactly how game audio ends up silent on the new device.
+    //
+    // deviceWasChanged is false even for a real device change on Android, so it cannot be
+    // used to filter these callbacks; the recovery reacts to all of them and relies on the
+    // echo window to ignore the callback its own reset raises.
     void OnUnityAudioConfigurationChanged(bool deviceWasChanged)
     {
         Debug.Log("[PlatformAudioController] Unity audio configuration changed "
             + $"(deviceWasChanged={deviceWasChanged}, outputSampleRate={AudioSettings.outputSampleRate}, "
             + $"speakerMode={AudioSettings.speakerMode}).");
 
-        ResetUnityAudioOutput("Unity audio configuration change");
+        // Also refreshes the remembered set: anything still playing is the truth for the
+        // next switch, and finished one-shots drop out of it.
+        RememberAudibleSources();
+        RestoreUnityAudioOutput("Unity audio configuration change");
     }
 
-    void ResetUnityAudioOutput(string reason)
+    // Records what this sample intends to keep audible, so a device change can put it
+    // back. Looping sources stay remembered while they are stopped, because that is what
+    // a reinitialized engine leaves behind; one-shots are forgotten once they finish. An
+    // app would consult its own audio state here instead of sweeping the scene.
+    void RememberAudibleSources()
+    {
+        foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
+        {
+            if (source.isPlaying)
+                _audibleSources[source] = source.time;
+            else if (!source.loop)
+                _audibleSources.Remove(source);
+        }
+    }
+
+    void RestoreUnityAudioOutput(string reason)
     {
         // Both callers run on the Unity main thread (the SDK marshals DevicesChanged
         // there), so the Unity APIs below are safe to touch.
         var now = Time.realtimeSinceStartup;
-        if (now - _lastUnityAudioReset < UnityAudioResetCoalesceSeconds)
+        if (now - _lastUnityAudioReset < UnityAudioResetEchoSeconds)
         {
             Debug.Log($"[PlatformAudioController] Unity audio already reopened {now - _lastUnityAudioReset:0.00}s "
                 + $"ago, skipping ({reason}).");
@@ -302,16 +309,15 @@ public sealed class PlatformAudioController : IDisposable
         }
         _lastUnityAudioReset = now;
 
-        // Reset stops every AudioSource, so remember what was playing and where, and
-        // pick each one up at the same position on the reopened engine; an app would
-        // restart its own music/SFX here instead of sweeping the scene.
-        var playing = new List<(AudioSource Source, float Time)>();
-        foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
-            if (source.isPlaying)
-                playing.Add((source, source.time));
+        // A looping source that was never seen playing is adopted here rather than left
+        // silent: it can only have been stopped by the engine reinitializing.
+        if (_audibleSources.Count == 0)
+            foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
+                if (source.loop)
+                    _audibleSources[source] = 0f;
 
         Debug.Log($"[PlatformAudioController] Reopening Unity's audio output ({reason}), "
-            + $"resuming {playing.Count} source(s).");
+            + $"restoring {_audibleSources.Count} source(s).");
 
         if (!AudioSettings.Reset(AudioSettings.GetConfiguration()))
         {
@@ -319,32 +325,28 @@ public sealed class PlatformAudioController : IDisposable
             return;
         }
 
-        var resumed = 0;
-        foreach (var (source, time) in playing)
+        var restored = 0;
+        // Copied because the loop drops destroyed sources from the dictionary.
+        foreach (var entry in new List<KeyValuePair<AudioSource, float>>(_audibleSources))
         {
-            if (source == null) continue;
+            var source = entry.Key;
+            if (source == null)
+            {
+                _audibleSources.Remove(source);
+                continue;
+            }
             source.Stop();
-            source.time = time;
+            if (source.clip != null)
+                source.time = Mathf.Clamp(entry.Value, 0f, Mathf.Max(0f, source.clip.length - 0.05f));
             source.Play();
-            if (source.isPlaying) resumed++;
+            if (source.isPlaying) restored++;
         }
 
         // Reported so a device run can tell "the engine came back and the sources are
         // running" from "the sources are running but nothing is audible" — the second
         // would mean the reset did not reopen the output the platform actually moved to.
-        Debug.Log($"[PlatformAudioController] Unity audio output reopened, {resumed}/{playing.Count} "
+        Debug.Log($"[PlatformAudioController] Unity audio output reopened, {restored}/{_audibleSources.Count} "
             + $"source(s) playing on {AudioSettings.speakerMode} @ {AudioSettings.outputSampleRate} Hz.");
-    }
-
-    // Identifies the set of connected output devices, ignoring which one is active and
-    // the order the platform enumerated them in.
-    static string OutputDeviceSetKey(IReadOnlyList<AudioDevice> playout)
-    {
-        var keys = new List<string>(playout.Count);
-        foreach (var device in playout)
-            keys.Add(string.IsNullOrEmpty(device.Guid) ? device.Name : device.Guid);
-        keys.Sort(StringComparer.Ordinal);
-        return string.Join("|", keys);
     }
 
     static string FormatDeviceLists(IReadOnlyList<AudioDevice> playout, IReadOnlyList<AudioDevice> recording)
