@@ -38,6 +38,9 @@ public sealed class PlatformAudioController : IDisposable
     bool _isRecording;
     // What should be audible after an output device change, remembered from before it.
     readonly Dictionary<AudioSource, float> _audibleSources = new Dictionary<AudioSource, float>();
+    // Whether a remember pass has ever swept the scene; gates the adopt-loops fallback
+    // in RestartAudibleSources to the very first switch.
+    bool _sceneSwept;
 
     public bool IsInitialized => _platformAudio != null;
     public bool IsPublished { get; private set; }
@@ -245,7 +248,7 @@ public sealed class PlatformAudioController : IDisposable
         // Android 16, where a Bluetooth headset's call profile appears ~650 ms before the
         // media profile takes over), so reopening the engine here would reopen it onto the
         // output the platform is about to leave.
-        RememberAudibleSources();
+        RememberAudibleSources(forgetStopped: true);
     }
 
     // Unity's audio engine opens an output device when the app starts. When that device
@@ -270,25 +273,34 @@ public sealed class PlatformAudioController : IDisposable
             + $"(deviceWasChanged={deviceWasChanged}, outputSampleRate={AudioSettings.outputSampleRate}, "
             + $"speakerMode={AudioSettings.speakerMode}).");
 
-        // Also refreshes the remembered set: anything still playing is the truth for the
-        // next switch, and finished one-shots drop out of it.
-        RememberAudibleSources();
+        // Restore FIRST: the engine reinit has already stopped every source, so a
+        // remember pass at this point would see nothing playing and forget the very
+        // sources — one-shots above all — that it is supposed to put back. The refresh
+        // afterwards carries the restarted positions into the next switch without
+        // evicting anything, so a Play() the engine rejected mid-teardown keeps its
+        // slot for the next callback of the same switch.
         RestartAudibleSources();
+        RememberAudibleSources(forgetStopped: false);
     }
 
     // Records what this sample intends to keep audible, so a device change can put it
-    // back. Looping sources stay remembered while they are stopped, because that is what
-    // a reinitialized engine leaves behind; one-shots are forgotten once they finish. An
-    // app would consult its own audio state here instead of sweeping the scene.
-    void RememberAudibleSources()
+    // back. With forgetStopped, a source that is not playing is dropped from the set —
+    // loops included: that pass runs while the engine is healthy (OnDevicesChanged fires
+    // before the engine reinit), so a stopped source there was stopped by the app or has
+    // finished, and a deliberate Stop() must not be undone by the next device change.
+    // Without it, the pass only refreshes positions and adopts survivors — used right
+    // after a restore, when a Play() the engine rejected must not cost a source its
+    // slot. An app would consult its own audio state here instead of sweeping the scene.
+    void RememberAudibleSources(bool forgetStopped)
     {
         foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
         {
             if (source.isPlaying)
                 _audibleSources[source] = source.time;
-            else if (!source.loop)
+            else if (forgetStopped)
                 _audibleSources.Remove(source);
         }
+        _sceneSwept = true;
     }
 
     // Puts the remembered audio back on the reopened engine. Note what this does NOT do:
@@ -307,9 +319,12 @@ public sealed class PlatformAudioController : IDisposable
     // rest of the session, however often the SDK re-pins the route.
     void RestartAudibleSources()
     {
-        // A looping source that was never seen playing is adopted rather than left silent:
-        // it can only have been stopped by the engine reinitializing.
-        if (_audibleSources.Count == 0)
+        // First-switch safety net: when no remember pass has ever swept the scene, a
+        // stopped looping source is taken to have been stopped by the engine reinit and
+        // is adopted rather than left silent. Once a sweep has run, an absent loop is
+        // one the app stopped (or never started), and adopting it would undo the app's
+        // intent.
+        if (_audibleSources.Count == 0 && !_sceneSwept)
             foreach (var source in UnityEngine.Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
                 if (source.loop)
                     _audibleSources[source] = 0f;
@@ -320,6 +335,15 @@ public sealed class PlatformAudioController : IDisposable
         {
             var source = entry.Key;
             if (source == null)
+            {
+                _audibleSources.Remove(source);
+                continue;
+            }
+            // A source the app deactivated is treated like one it stopped: forgotten,
+            // not retried. Play() on a disabled source only logs a warning on every
+            // callback, and force-playing it after a reactivation would undo the app's
+            // intent.
+            if (!source.isActiveAndEnabled)
             {
                 _audibleSources.Remove(source);
                 continue;

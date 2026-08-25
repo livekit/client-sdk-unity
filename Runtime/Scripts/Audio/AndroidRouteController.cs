@@ -387,19 +387,30 @@ namespace LiveKit
                                 _pinApplied = true;
                             if (target.Id != currentId)
                             {
-                                // A pin that has not taken effect yet is left to finish:
-                                // re-issuing it lands in the platform's own pending SCO
-                                // activation and gets refused, so hammering it keeps the
-                                // route from ever arriving. Once the pin has been seen
-                                // applied, a later divergence is the platform dropping it
-                                // (what the poll exists for) and is re-pinned at once.
-                                // See PinSettleTimeout, and _pinSettleTimeout for the backoff
-                                // applied when the platform takes the pin but never acts on it.
-                                var retry = _pinnedDeviceId == target.Id && !_pinApplied;
+                                // A Bluetooth pin that has not taken effect yet is left to
+                                // finish: setCommunicationDevice starts an asynchronous SCO
+                                // negotiation there, and re-issuing lands in the platform's
+                                // own pending activation and gets refused, so hammering it
+                                // keeps the route from ever arriving. Once the pin has been
+                                // seen applied, a later divergence is the platform dropping
+                                // it (what the poll exists for) and is re-pinned at once.
+                                // The other kinds apply without a negotiation, so a
+                                // divergence there is always a dropped or ignored pin and
+                                // is re-issued immediately, as before the settle window
+                                // existed. See PinSettleTimeout, and _pinSettleTimeout for
+                                // the backoff applied when the platform takes a Bluetooth
+                                // pin but never acts on it.
+                                var retry = _pinnedDeviceId == target.Id && !_pinApplied
+                                    && target.Kind == AudioOutputKind.Bluetooth;
                                 var settling = retry && ElapsedSincePinIssued() < _pinSettleTimeout;
                                 if (settling)
                                 {
-                                    selectedId = target.Id;
+                                    // Waiting on the negotiation: report the device the
+                                    // platform still has, never the one merely requested.
+                                    // The change listener re-runs this pass the moment the
+                                    // pin lands, and the selection flip raises the
+                                    // DevicesChanged for the real arrival.
+                                    selectedId = currentId;
                                 }
                                 else
                                 {
@@ -436,7 +447,17 @@ namespace LiveKit
                                     {
                                         _pinSettleTimeout = PinSettleTimeout;
                                     }
-                                    selectedId = ok ? target.Id : currentId;
+                                    // Report the platform's answer, not the request: the
+                                    // synchronous kinds are visible in this re-read right
+                                    // away, while a pending Bluetooth pin must not be
+                                    // announced as selected before it lands — GetDevices()
+                                    // reads the same truth, and a premature "selected"
+                                    // would also swallow the arrival event, because the
+                                    // signature would never change again.
+                                    using var applied = audioManager.Call<AndroidJavaObject>("getCommunicationDevice");
+                                    selectedId = applied != null ? applied.Call<int>("getId") : -1;
+                                    if (ok && selectedId == target.Id)
+                                        _pinApplied = true;
                                 }
                             }
                             else
