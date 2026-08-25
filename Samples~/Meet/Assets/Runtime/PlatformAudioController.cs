@@ -267,24 +267,26 @@ public sealed class PlatformAudioController : IDisposable
     // deliberately the app's call rather than the SDK's — it stops every AudioSource in
     // the scene.
     //
-    // Two signals can drive it and this sample listens to both, because which of them
-    // the platform actually delivers is worth observing rather than assuming:
-    //   - AudioSettings.OnAudioConfigurationChanged(deviceWasChanged: true), Unity's own
-    //     notification (logged here, so a device run shows whether it fires at all), and
-    //   - PlatformAudio.DevicesChanged, the SDK's routing event — which is why the
-    //     routing API exposes the active route, not just the device list.
+    // Two signals drive it, and both are needed — device-verified on a Pixel 8a
+    // (Android 16), where each one alone misses the case the other catches:
+    //   - AudioSettings.OnAudioConfigurationChanged, Unity's own notification. It fires
+    //     immediately when a Bluetooth headset disconnects, but with
+    //     deviceWasChanged=false, so the flag cannot be used to tell a device change from
+    //     any other reconfiguration — this sample reacts to the callback either way.
+    //   - PlatformAudio.DevicesChanged, the SDK's routing event, as the backstop for
+    //     platforms or transitions where Unity stays quiet. It can be the slower of the
+    //     two on Bluetooth teardown: a powered-off headset can linger in the platform's
+    //     device list for several seconds after the route has already moved.
     // Whichever arrives first triggers the reset; ResetUnityAudioOutput coalesces the
-    // other one.
+    // other one, along with the callback that AudioSettings.Reset raises itself (it
+    // always lands inside the coalescing window, so the recovery cannot feed itself).
     void OnUnityAudioConfigurationChanged(bool deviceWasChanged)
     {
         Debug.Log("[PlatformAudioController] Unity audio configuration changed "
             + $"(deviceWasChanged={deviceWasChanged}, outputSampleRate={AudioSettings.outputSampleRate}, "
             + $"speakerMode={AudioSettings.speakerMode}).");
 
-        // Reset itself raises this callback with deviceWasChanged false, so only a real
-        // device change re-enters the recovery.
-        if (deviceWasChanged)
-            ResetUnityAudioOutput("Unity device change");
+        ResetUnityAudioOutput("Unity audio configuration change");
     }
 
     void ResetUnityAudioOutput(string reason)
@@ -317,13 +319,21 @@ public sealed class PlatformAudioController : IDisposable
             return;
         }
 
+        var resumed = 0;
         foreach (var (source, time) in playing)
         {
             if (source == null) continue;
             source.Stop();
             source.time = time;
             source.Play();
+            if (source.isPlaying) resumed++;
         }
+
+        // Reported so a device run can tell "the engine came back and the sources are
+        // running" from "the sources are running but nothing is audible" — the second
+        // would mean the reset did not reopen the output the platform actually moved to.
+        Debug.Log($"[PlatformAudioController] Unity audio output reopened, {resumed}/{playing.Count} "
+            + $"source(s) playing on {AudioSettings.speakerMode} @ {AudioSettings.outputSampleRate} Hz.");
     }
 
     // Identifies the set of connected output devices, ignoring which one is active and
