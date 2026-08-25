@@ -96,6 +96,11 @@ namespace LiveKit
         private bool _sessionAudioEnabled = true;
         private int _savedAudioMode;
         private bool _audioModeSaved;
+        // Set when an enter/leave transition failed (JNI unavailable, platform error) so
+        // Reevaluate retries it: without the retry, one transient failure on disable
+        // would leave the platform in MODE_IN_COMMUNICATION with the route pinned until
+        // the next call boundary, while this controller reports the session released.
+        private bool _sessionTransitionPending;
         private CommunicationDeviceListener _listener;
         private AndroidJavaObject _audioFocusRequest;
         private bool _audioFocusEnabled;
@@ -327,6 +332,19 @@ namespace LiveKit
             {
                 if (_disposed)
                     return;
+                // A failed enter/leave transition is retried from here: every trigger —
+                // the poll, the change listener, the StartRecording re-assert — funnels
+                // through this pass, so a transient JNI failure cannot leave the
+                // platform holding (or missing) the call session until the next call
+                // boundary. Retries the transition for the CURRENT desired state, so a
+                // flip that happened in between is never undone.
+                if (_sessionTransitionPending)
+                {
+                    if (_sessionAudioEnabled)
+                        EnterCommunicationMode();
+                    else
+                        LeaveCommunicationMode();
+                }
                 try
                 {
                     using var audioManager = GetAudioManager();
@@ -561,7 +579,9 @@ namespace LiveKit
         // mode is only captured when we do not already hold one, and it is only restored
         // when it was actually read from the platform — a failed read must never turn
         // into an unconditional MODE_NORMAL, which would stomp a mode this app does not
-        // own (the rule the PAR-000 hotfix established).
+        // own (the rule the PAR-000 hotfix established). A failure marks the transition
+        // pending, and Reevaluate retries it (warned once, retries silent) — both
+        // methods are safe to re-run partially completed.
         private void EnterCommunicationMode()
         {
             try
@@ -573,11 +593,14 @@ namespace LiveKit
                     _audioModeSaved = true;
                 }
                 audioManager.Call("setMode", ModeInCommunication);
+                _sessionTransitionPending = false;
                 Utils.Debug($"AndroidRouteController: audio mode -> MODE_IN_COMMUNICATION (was {_savedAudioMode})");
             }
             catch (Exception e)
             {
-                Utils.Warning($"AndroidRouteController: failed to enter communication mode: {e.Message}");
+                if (!_sessionTransitionPending)
+                    Utils.Warning($"AndroidRouteController: failed to enter communication mode (will retry): {e.Message}");
+                _sessionTransitionPending = true;
             }
         }
 
@@ -598,10 +621,13 @@ namespace LiveKit
                 {
                     Utils.Debug("AndroidRouteController: route cleared, no saved audio mode to restore");
                 }
+                _sessionTransitionPending = false;
             }
             catch (Exception e)
             {
-                Utils.Warning($"AndroidRouteController: failed to release the audio session: {e.Message}");
+                if (!_sessionTransitionPending)
+                    Utils.Warning($"AndroidRouteController: failed to release the audio session (will retry): {e.Message}");
+                _sessionTransitionPending = true;
             }
         }
 
