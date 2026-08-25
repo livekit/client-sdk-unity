@@ -464,7 +464,11 @@ namespace LiveKit
         /// Platform notes: on desktop this selects the device like
         /// <see cref="SetPlayoutDevice(string)"/>. On Android 12 (API 31) and newer the
         /// device is pinned as the communication device; the override is dropped once the
-        /// device disappears from the playout list (automatic policy resumes). On iOS the
+        /// device disappears from the playout list (automatic policy resumes). While
+        /// session audio is disabled (<see cref="SetSessionAudioEnabled"/>) the choice is
+        /// only recorded — no pin is issued, and <see cref="GetDevices"/> /
+        /// <see cref="DevicesChanged"/> keep reporting the platform's own route — until a
+        /// call enables the session. On iOS the
         /// OS owns output route selection and this method throws
         /// <see cref="NotSupportedException"/> — present the system route picker
         /// (AVRoutePickerView) instead, or use <see cref="OutputPreference"/> /
@@ -647,8 +651,8 @@ namespace LiveKit
         /// <summary>
         /// Starts recording from the microphone.
         ///
-        /// Recording is started automatically when PlatformAudio is created.
-        /// Use this to resume recording after calling StopRecording.
+        /// Recording does not start on its own when PlatformAudio is created — call
+        /// this to start capturing, and again to resume after <see cref="StopRecording"/>.
         /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
         /// On iOS this also switches the audio session to its recording state
         /// (voice/video-chat mode per <see cref="IsSpeakerOutputPreferred"/>, enabling

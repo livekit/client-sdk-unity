@@ -218,9 +218,12 @@ namespace LiveKit
         /// <summary>
         /// Takes or hands back the call audio session: enabling enters
         /// <c>MODE_IN_COMMUNICATION</c> and lets the policy pin the route, disabling
-        /// clears the pin and restores the mode this controller replaced. The sticky
-        /// override and the ranked preference survive the transition, so a call that
-        /// re-enables the session routes exactly as it did before.
+        /// clears the pin and restores the mode this controller replaced. The ranked
+        /// preference survives the transition unconditionally. The sticky override
+        /// survives it only while its device stays available: the drop-on-disappear
+        /// bookkeeping keeps running while the session is disabled, so a device that
+        /// leaves the list between calls (a headset powered off) clears the override
+        /// for good, and the next call routes by the ranked preference.
         /// </summary>
         public void SetSessionAudioEnabled(bool enabled)
         {

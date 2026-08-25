@@ -262,8 +262,8 @@ public sealed class PlatformAudioController : IDisposable
     // Leaving that out is exactly how game audio ends up silent on the new device.
     //
     // deviceWasChanged is false even for a real device change on Android, so it cannot be
-    // used to filter these callbacks; the recovery reacts to all of them and relies on the
-    // echo window to ignore the callback its own reset raises.
+    // used to filter these callbacks; the recovery reacts to all of them and stays safe
+    // through idempotence instead (a source already playing is left alone).
     void OnUnityAudioConfigurationChanged(bool deviceWasChanged)
     {
         Debug.Log("[PlatformAudioController] Unity audio configuration changed "
