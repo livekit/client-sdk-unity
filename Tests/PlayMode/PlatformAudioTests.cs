@@ -223,6 +223,41 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
+        public IEnumerator PublicMembers_AfterDispose_ThrowObjectDisposed()
+        {
+            var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+            platformAudio.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.RecordingDeviceCount);
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.PlayoutDeviceCount);
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.GetDevices());
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.OutputPreference);
+            Assert.Throws<ObjectDisposedException>(() =>
+                platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker });
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.IsSpeakerOutputPreferred);
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.IsSpeakerOutputPreferred = true);
+            Assert.Throws<ObjectDisposedException>(() =>
+                platformAudio.SelectOutput(new AudioDevice { Index = 0, Name = "any" }));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.ClearOutputOverride());
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetRecordingDevice((uint)0));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetRecordingDevice(""));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice((uint)0));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice(""));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.StopRecording());
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetSessionAudioEnabled(true));
+
+            // StartRecording is an iterator method: the guard throws on the first MoveNext.
+            var start = platformAudio.StartRecording();
+            Assert.Throws<ObjectDisposedException>(() => start.MoveNext());
+
+            // The guards must not break dispose idempotency or event safety
+            // (DevicesChanged_SubscribeUnsubscribe_SafeAcrossDispose covers the rest).
+            Assert.DoesNotThrow(() => platformAudio.Dispose());
+
+            yield break;
+        }
+
+        [UnityTest]
         public IEnumerator StartThenStopRecording_DoesNotThrow()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
