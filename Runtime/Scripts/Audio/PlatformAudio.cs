@@ -173,12 +173,32 @@ namespace LiveKit
         /// <summary>
         /// Number of available recording (microphone) devices.
         /// </summary>
-        public int RecordingDeviceCount => _info.RecordingDeviceCount;
+        public int RecordingDeviceCount
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return _info.RecordingDeviceCount;
+            }
+        }
 
         /// <summary>
         /// Number of available playout (speaker) devices.
         /// </summary>
-        public int PlayoutDeviceCount => _info.PlayoutDeviceCount;
+        public int PlayoutDeviceCount
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return _info.PlayoutDeviceCount;
+            }
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(PlatformAudio));
+        }
 
         /// <summary>
         /// Creates a new PlatformAudio instance, enabling the platform ADM.
@@ -227,16 +247,27 @@ namespace LiveKit
             Handle = FfiHandle.FromOwnedHandle(platformAudio.Handle);
             _info = platformAudio.Info;
 
-            _syncContext = SynchronizationContext.Current;
-            _routeController = CreateRouteController();
-            _routeController.DevicesChanged += OnRouteControllerDevicesChanged;
+            try
+            {
+                _syncContext = SynchronizationContext.Current;
+                _routeController = CreateRouteController();
+                _routeController.DevicesChanged += OnRouteControllerDevicesChanged;
 
 #if UNITY_IOS && !UNITY_EDITOR
-            // A fresh instance starts in the playout-only state (recording has not
-            // been started); this matches the plugin's post-configure default, so the
-            // call is a no-op unless an earlier instance left another state behind.
-            UpdateIosSessionState();
+                // A fresh instance starts in the playout-only state (recording has not
+                // been started); this matches the plugin's post-configure default, so the
+                // call is a no-op unless an earlier instance left another state behind.
+                UpdateIosSessionState();
 #endif
+            }
+            catch
+            {
+                // Without this, a route-controller failure would leak the FFI handle
+                // until the SafeHandle finalizer eventually reclaims it.
+                _routeController?.Dispose();
+                Handle.Dispose();
+                throw;
+            }
 
             Utils.Debug($"PlatformAudio created: {RecordingDeviceCount} recording devices, {PlayoutDeviceCount} playout devices");
 
@@ -295,6 +326,7 @@ namespace LiveKit
         /// </exception>
         public (List<AudioDevice> Recording, List<AudioDevice> Playout) GetDevices()
         {
+            ThrowIfDisposed();
             return _routeController.GetDevices();
         }
 
@@ -369,9 +401,14 @@ namespace LiveKit
         /// </exception>
         public IReadOnlyList<AudioOutputKind> OutputPreference
         {
-            get => _outputPreference.AsReadOnly();
+            get
+            {
+                ThrowIfDisposed();
+                return _outputPreference.AsReadOnly();
+            }
             set
             {
+                ThrowIfDisposed();
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
 
@@ -421,6 +458,7 @@ namespace LiveKit
         {
             get
             {
+                ThrowIfDisposed();
                 var speaker = _outputPreference.IndexOf(AudioOutputKind.Speaker);
                 var earpiece = _outputPreference.IndexOf(AudioOutputKind.Earpiece);
                 if (speaker < 0) return false;
@@ -428,6 +466,7 @@ namespace LiveKit
             }
             set
             {
+                ThrowIfDisposed();
                 var first = value ? AudioOutputKind.Speaker : AudioOutputKind.Earpiece;
                 var second = value ? AudioOutputKind.Earpiece : AudioOutputKind.Speaker;
 
@@ -472,7 +511,16 @@ namespace LiveKit
         /// session audio is disabled (<see cref="SetSessionAudioEnabled"/>) the choice is
         /// only recorded — no pin is issued, and <see cref="GetDevices"/> /
         /// <see cref="DevicesChanged"/> keep reporting the platform's own route — until a
-        /// call enables the session. On iOS the
+        /// call enables the session. There is deliberately no pending flag for that
+        /// deferral: the app holds both inputs (its own SelectOutput call and its own
+        /// session-enable state), so a pre-call device picker should treat its last
+        /// selection as the pending choice and confirm application through the existing
+        /// surface — once the session is enabled and the pin lands, the device's
+        /// <see cref="AudioDevice.IsSelected"/> flips in <see cref="GetDevices"/> /
+        /// <see cref="DevicesChanged"/>. A deferred choice is dropped for good when its
+        /// device disappears before the session is enabled (the same drop-on-disappear
+        /// rule as an active pin), observable as the device leaving the playout list in
+        /// the same events. On iOS the
         /// OS owns output route selection and this method throws
         /// <see cref="NotSupportedException"/> — present the system route picker
         /// (AVRoutePickerView) instead, or use <see cref="OutputPreference"/> /
@@ -489,6 +537,7 @@ namespace LiveKit
         /// </exception>
         public void SelectOutput(AudioDevice device)
         {
+            ThrowIfDisposed();
             var (_, playout) = GetDevices();
             foreach (var candidate in playout)
             {
@@ -518,6 +567,7 @@ namespace LiveKit
         /// </summary>
         public void ClearOutputOverride()
         {
+            ThrowIfDisposed();
             _routeController.ClearOutputOverride();
         }
 
@@ -567,6 +617,7 @@ namespace LiveKit
         /// </exception>
         public void SetRecordingDevice(uint index)
         {
+            ThrowIfDisposed();
             var (recording, _) = GetDevices();
             if (index >= recording.Count)
                 throw new InvalidOperationException($"Recording device index {index} out of range (max: {recording.Count - 1})");
@@ -590,6 +641,7 @@ namespace LiveKit
         /// </exception>
         public void SetRecordingDevice(string deviceId)
         {
+            ThrowIfDisposed();
             using var request = FFIBridge.Instance.NewRequest<SetRecordingDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -616,6 +668,7 @@ namespace LiveKit
         /// </exception>
         public void SetPlayoutDevice(uint index)
         {
+            ThrowIfDisposed();
             var (_, playout) = GetDevices();
             if (index >= playout.Count)
                 throw new InvalidOperationException($"Playout device index {index} out of range (max: {playout.Count - 1})");
@@ -639,6 +692,7 @@ namespace LiveKit
         /// </exception>
         public void SetPlayoutDevice(string deviceId)
         {
+            ThrowIfDisposed();
             using var request = FFIBridge.Instance.NewRequest<SetPlayoutDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -670,6 +724,10 @@ namespace LiveKit
         /// </exception>
         public IEnumerator StartRecording()
         {
+            // Iterator method: this throws on the first MoveNext, like the other
+            // exceptions below — Unity's StartCoroutine runs that synchronously.
+            ThrowIfDisposed();
+
 #if PLATFORM_ANDROID
             if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
             {
@@ -755,6 +813,7 @@ namespace LiveKit
         /// </exception>
         public void StopRecording()
         {
+            ThrowIfDisposed();
             using var request = FFIBridge.Instance.NewRequest<StopRecordingRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
 
@@ -813,6 +872,7 @@ namespace LiveKit
         /// <param name="enabled">True while a call is active, false otherwise.</param>
         public void SetSessionAudioEnabled(bool enabled)
         {
+            ThrowIfDisposed();
 #if UNITY_IOS && !UNITY_EDITOR
             IOSAudioSessionHelper.LiveKit_SetAudioEnabled(enabled);
             _iosSessionAudioEnabled = enabled;
@@ -827,10 +887,15 @@ namespace LiveKit
         ///
         /// When disposed, the platform ADM may be disabled if this was the last
         /// PlatformAudio instance.
+        ///
+        /// Disposing is idempotent. After disposal every public member throws
+        /// <see cref="ObjectDisposedException"/>, except subscribing to /
+        /// unsubscribing from <see cref="DevicesChanged"/>, which stays safe.
         /// </summary>
         public void Dispose()
         {
             if (_disposed) return;
+            _disposed = true;
             _routeController.DevicesChanged -= OnRouteControllerDevicesChanged;
             _routeController.Dispose();
             Handle.Dispose();
@@ -845,7 +910,6 @@ namespace LiveKit
                 IOSAudioSessionHelper.LiveKit_RestoreDefaultAudioSession();
 #endif
 
-            _disposed = true;
             Utils.Debug("PlatformAudio disposed");
         }
     }
