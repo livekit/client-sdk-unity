@@ -223,6 +223,35 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
+        public IEnumerator CreateDisposeCreate_OneSession_Works()
+        {
+            // The native ADM is ref-counted across PlatformAudio instances; after a full
+            // dispose the count must have returned to zero cleanly so a later instance in
+            // the same session comes up working (an app's second call after tearing the
+            // first one down).
+            var first = PlatformAudioTestHelper.TryCreateOrIgnore();
+            first.OutputPreference = new[] { AudioOutputKind.Usb };
+            first.Dispose();
+
+            using var second = new PlatformAudio();
+            Assert.DoesNotThrow(() => second.GetDevices());
+
+            // Preference state is per instance: the first instance's mutation must not
+            // leak into the fresh one.
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Speaker,
+                    AudioOutputKind.Earpiece,
+                },
+                second.OutputPreference);
+
+            yield break;
+        }
+
+        [UnityTest]
         public IEnumerator PublicMembers_AfterDispose_ThrowObjectDisposed()
         {
             var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
