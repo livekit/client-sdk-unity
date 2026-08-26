@@ -14,8 +14,9 @@ namespace LiveKit
     /// <c>AudioManager.getAvailableCommunicationDevices</c> /
     /// <c>setCommunicationDevice</c> / <c>clearCommunicationDevice</c>.
     ///
-    /// The controller owns the voice-communication audio session while session audio is
-    /// enabled (<see cref="SetSessionAudioEnabled"/> — i.e. while a call is in progress):
+    /// The controller owns the voice-communication audio session while it holds it —
+    /// session audio enabled (<see cref="SetSessionAudioEnabled"/> — i.e. a call is in
+    /// progress) and acquired by a first trigger, see the lazy-acquisition paragraph:
     /// it enters <c>MODE_IN_COMMUNICATION</c> (saving and restoring the prior mode) and
     /// keeps the output route pinned to the best device — the sticky
     /// <see cref="SelectOutput"/> override while its device is still available, otherwise
@@ -29,12 +30,28 @@ namespace LiveKit
     /// (re)starts — through <see cref="ApplyOutputPreference"/>, which like every other
     /// re-evaluation path pins nothing while session audio is disabled.
     ///
-    /// While session audio is disabled the session is handed back to the platform
-    /// (communication device cleared, prior mode restored), so the mode request and the
-    /// route pin cover the call rather than the lifetime of the instance. Enumeration,
-    /// the change listener and the poll thread stay alive regardless, so
-    /// <see cref="GetDevices"/> and <see cref="DevicesChanged"/> keep reporting the
-    /// platform's own routing while idle.
+    /// The session is acquired lazily: construction issues no <c>setMode</c> and no pin
+    /// even though session audio starts out enabled. The first trigger that needs the
+    /// session while it is enabled acquires it — an explicit
+    /// <see cref="SetSessionAudioEnabled"/> call with <c>true</c>, an
+    /// <see cref="ApplyOutputPreference"/> (which includes the
+    /// <see cref="PlatformAudio.StartRecording"/> re-assert) or a
+    /// <see cref="SelectOutput"/>. Apps that disable session audio right after
+    /// construction therefore cause no audio-mode traffic at startup at all; the eager
+    /// constructor acquisition produced a take → pin → clear transient there, and with
+    /// a Bluetooth headset connected it started an asynchronous SCO activation only to
+    /// clear it mid-negotiation. The exposure is a receive-only app that never records,
+    /// never touches routing and never calls <see cref="SetSessionAudioEnabled"/>: it
+    /// no longer gets the mode and pin from construction, and opts back in by calling
+    /// <see cref="SetSessionAudioEnabled"/> with <c>true</c> at its call boundary.
+    ///
+    /// While the session is not held — session audio disabled, or enabled but nothing
+    /// has needed it yet — it belongs to the platform (communication device cleared,
+    /// prior mode restored on release), so the mode request and the route pin cover the
+    /// call rather than the lifetime of the instance. Enumeration, the change listener
+    /// and the poll thread stay alive regardless, so <see cref="GetDevices"/> and
+    /// <see cref="DevicesChanged"/> keep reporting the platform's own routing while
+    /// idle.
     ///
     /// Route changes are detected two ways, both required (device-verified in the
     /// sample hotfix this backend is hardened from, PR #364):
@@ -94,6 +111,11 @@ namespace LiveKit
         // Session audio starts enabled, matching the documented default of
         // PlatformAudio.SetSessionAudioEnabled (uniform with iOS).
         private bool _sessionAudioEnabled = true;
+        // Whether this controller currently holds the call session (mode entered, pin
+        // allowed). Never true while _sessionAudioEnabled is false. Acquisition is
+        // lazy: despite the enabled default, nothing is taken until the first trigger
+        // that needs the session — see AcquireSessionIfNeeded and the class doc.
+        private bool _sessionAcquired;
         private int _savedAudioMode;
         private bool _audioModeSaved;
         // Set when an enter/leave transition failed (JNI unavailable, platform error) so
@@ -145,10 +167,12 @@ namespace LiveKit
             // session state is touched so a failure here has no side effects.
             _recordingSnapshot = owner.GetDevicesViaFfi().Recording;
 
-            // Session audio defaults to enabled, so a fresh instance takes the call
-            // session; apps that create PlatformAudio before their first call disable it
-            // right after construction (see PlatformAudio.SetSessionAudioEnabled).
-            EnterCommunicationMode();
+            // Session audio defaults to enabled, but the call session is NOT taken
+            // here: acquisition waits for the first trigger that needs it (see the
+            // class doc), and the prior audio mode is saved at that acquisition, where
+            // it reflects the state actually being replaced. This initial Reevaluate is
+            // therefore observation-only — it seeds the device signature and reports
+            // the platform's own route.
             RegisterListener();
             Reevaluate();
 
@@ -190,6 +214,7 @@ namespace LiveKit
             lock (_gate)
             {
                 _ranked = new List<AudioOutputKind>(ranked);
+                AcquireSessionIfNeeded();
             }
             Reevaluate();
         }
@@ -205,6 +230,7 @@ namespace LiveKit
             lock (_gate)
             {
                 _stickyDeviceId = id;
+                AcquireSessionIfNeeded();
             }
             Reevaluate();
         }
@@ -223,29 +249,54 @@ namespace LiveKit
         /// <summary>
         /// Takes or hands back the call audio session: enabling enters
         /// <c>MODE_IN_COMMUNICATION</c> and lets the policy pin the route, disabling
-        /// clears the pin and restores the mode this controller replaced. The ranked
-        /// preference survives the transition unconditionally. The sticky override
-        /// survives it only while its device stays available: the drop-on-disappear
-        /// bookkeeping keeps running while the session is disabled, so a device that
-        /// leaves the list between calls (a headset powered off) clears the override
-        /// for good, and the next call routes by the ranked preference.
+        /// clears the pin and restores the mode this controller replaced. An explicit
+        /// enable acquires the session even when the state was already enabled — the
+        /// lazy default means "enabled but nothing has needed the session yet" is a real
+        /// state, and this call is the documented way for a receive-only app to take the
+        /// session at its call boundary. Disabling before anything acquired the session
+        /// releases nothing: there is nothing to release, and issuing a clear/restore
+        /// there would be exactly the startup transient lazy acquisition removes.
+        /// The ranked preference survives the transition unconditionally. The sticky
+        /// override survives it only while its device stays available: the
+        /// drop-on-disappear bookkeeping keeps running while the session is disabled, so
+        /// a device that leaves the list between calls (a headset powered off) clears
+        /// the override for good, and the next call routes by the ranked preference.
         /// </summary>
         public void SetSessionAudioEnabled(bool enabled)
         {
             lock (_gate)
             {
-                if (_disposed || _sessionAudioEnabled == enabled)
+                if (_disposed || (_sessionAudioEnabled == enabled && _sessionAcquired == enabled))
                     return;
                 _sessionAudioEnabled = enabled;
                 if (enabled)
-                    EnterCommunicationMode();
-                else
+                {
+                    AcquireSessionIfNeeded();
+                }
+                else if (_sessionAcquired)
+                {
+                    _sessionAcquired = false;
                     LeaveCommunicationMode();
+                }
             }
 
             // Re-evaluate outside the lock (Reevaluate takes it): pin the policy's target
             // on enable, report the platform's own route on disable.
             Reevaluate();
+        }
+
+        // Called under _gate. The first routing trigger while session audio is enabled
+        // takes the call session (lazy acquisition — see the class doc); every later
+        // call is a no-op. Routing verbs express the intent to route, which is what the
+        // session exists for, so all of them funnel through here: an explicit enable,
+        // ApplyOutputPreference (including the StartRecording re-assert) and
+        // SelectOutput.
+        private void AcquireSessionIfNeeded()
+        {
+            if (_disposed || !_sessionAudioEnabled || _sessionAcquired)
+                return;
+            _sessionAcquired = true;
+            EnterCommunicationMode();
         }
 
         /// <summary>
@@ -298,10 +349,14 @@ namespace LiveKit
             lock (_gate)
             {
                 AbandonAudioFocus();
-                // Same idempotent release as a session-audio disable: clearing a pin we
-                // no longer hold is a no-op, and the mode is only restored when this
-                // controller is the one that replaced it.
-                LeaveCommunicationMode();
+                // Same idempotent release as a session-audio disable: only a session
+                // this controller holds (or a transition still pending retry) is handed
+                // back — a never-acquired session leaves the platform untouched, so
+                // creating and disposing an instance without a call issues no audio
+                // traffic at all.
+                if (_sessionAcquired || _sessionTransitionPending)
+                    LeaveCommunicationMode();
+                _sessionAcquired = false;
                 _sessionAudioEnabled = false;
             }
         }
@@ -317,13 +372,16 @@ namespace LiveKit
         /// ranked is available, an existing pin is released so the OS default applies;
         /// kinds missing from the ranking are never auto-selected.
         ///
-        /// While session audio is disabled the pass is observation-only: it enumerates,
-        /// keeps the sticky bookkeeping current and still raises
-        /// <see cref="DevicesChanged"/>, but issues no setCommunicationDevice /
-        /// clearCommunicationDevice and reports the platform's own communication device
-        /// as the selected one. Every trigger — the change listener, the poll thread and
-        /// the <see cref="PlatformAudio.StartRecording"/> re-assert — runs through here,
-        /// so none of them can resurrect a released session.
+        /// While the session is not held — session audio disabled, or enabled but not
+        /// yet acquired — the pass is observation-only: it enumerates, keeps the sticky
+        /// bookkeeping current and still raises <see cref="DevicesChanged"/>, but issues
+        /// no setCommunicationDevice / clearCommunicationDevice and reports the
+        /// platform's own communication device as the selected one. The change listener
+        /// and the poll thread run through here without acquiring anything, so neither
+        /// can resurrect a released session nor take a lazily-deferred one; the
+        /// <see cref="PlatformAudio.StartRecording"/> re-assert acquires first (in
+        /// <see cref="ApplyOutputPreference"/>) and then runs through here like the
+        /// rest.
         /// </summary>
         private void Reevaluate()
         {
@@ -340,7 +398,7 @@ namespace LiveKit
                 // flip that happened in between is never undone.
                 if (_sessionTransitionPending)
                 {
-                    if (_sessionAudioEnabled)
+                    if (_sessionAcquired)
                         EnterCommunicationMode();
                     else
                         LeaveCommunicationMode();
@@ -388,14 +446,15 @@ namespace LiveKit
                         }
 
                         int selectedId;
-                        if (!_sessionAudioEnabled)
+                        if (!_sessionAcquired)
                         {
-                            // No call in progress: report which device the platform would
-                            // use for communication audio, and touch nothing. The target
-                            // computed above is still worth running — it keeps the sticky
-                            // override's "dropped once the device disappears" bookkeeping
-                            // alive while idle — but it is only applied once a call
-                            // re-enables the session.
+                            // No session held (no call in progress, or nothing has
+                            // needed the session yet): report which device the platform
+                            // would use for communication audio, and touch nothing. The
+                            // target computed above is still worth running — it keeps
+                            // the sticky override's "dropped once the device disappears"
+                            // bookkeeping alive while idle — but it is only applied once
+                            // the session is acquired.
                             selectedId = currentId;
                         }
                         else if (targetIndex >= 0)
@@ -575,7 +634,7 @@ namespace LiveKit
         }
 
         // Both mode methods are called under _gate. The save/restore pairs up per
-        // enable -> disable transition and is idempotent in both directions: the prior
+        // acquire -> release transition and is idempotent in both directions: the prior
         // mode is only captured when we do not already hold one, and it is only restored
         // when it was actually read from the platform — a failed read must never turn
         // into an unconditional MODE_NORMAL, which would stomp a mode this app does not

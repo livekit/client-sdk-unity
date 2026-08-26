@@ -193,12 +193,16 @@ namespace LiveKit
         /// <see cref="StartRecording"/> / <see cref="StopRecording"/> /
         /// <see cref="SetSessionAudioEnabled"/>).
         ///
-        /// Session audio starts out enabled on every platform, so creating an instance
-        /// takes the platform's call audio session — on Android 12 (API 31) and newer
-        /// that means <c>MODE_IN_COMMUNICATION</c> plus the output route pin. Apps that
-        /// create PlatformAudio before their first call should call
-        /// <see cref="SetSessionAudioEnabled"/> with <c>false</c> right after
-        /// construction and enable it when a call starts.
+        /// Session audio starts out enabled on every platform, but on Android the call
+        /// session itself is acquired lazily: construction changes no audio mode and
+        /// pins no route — the first routing action while session audio is enabled
+        /// takes the session (an explicit <see cref="SetSessionAudioEnabled"/> enable,
+        /// an output preference or selection change, or the <see cref="StartRecording"/>
+        /// re-assert). Apps that create PlatformAudio before their first call should
+        /// still call <see cref="SetSessionAudioEnabled"/> with <c>false</c> right
+        /// after construction and enable it when a call starts, so the call session
+        /// covers calls rather than the app's lifetime — on iOS that is also what keeps
+        /// the idle session in its music-friendly state.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the platform ADM could not be initialized (e.g., no audio devices,
@@ -726,7 +730,9 @@ namespace LiveKit
             // the app's MODE_IN_COMMUNICATION request — and with it the
             // communication-device pin — is only honored while the app has active
             // voice-communication capture, so the platform may have moved the route
-            // while it was un-owned. No-op on the other backends.
+            // while it was un-owned. On Android this is also where a lazily-deferred
+            // call session is first acquired (see SetSessionAudioEnabled). No-op on the
+            // other backends.
             _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
 
             // Ensures this method is always a valid iterator even when the PLATFORM_ANDROID
@@ -787,8 +793,15 @@ namespace LiveKit
         /// <c>MODE_IN_COMMUNICATION</c> and keeps the output route pinned per
         /// <see cref="OutputPreference"/>; while disabled it holds neither, so the OS
         /// applies its normal routing and the call session covers the call rather than
-        /// the lifetime of this instance. Device enumeration and
-        /// <see cref="DevicesChanged"/> keep working while disabled. Unlike iOS,
+        /// the lifetime of this instance. The session is acquired lazily: despite the
+        /// enabled default, creating the instance takes nothing — the first routing
+        /// action while enabled takes it (calling this method with <c>true</c>, even
+        /// when already enabled; changing <see cref="OutputPreference"/> /
+        /// <see cref="IsSpeakerOutputPreferred"/>; <see cref="SelectOutput"/>; or the
+        /// <see cref="StartRecording"/> re-assert). A receive-only app that never
+        /// records and never touches routing therefore keeps the platform's own routing
+        /// until it calls this method with <c>true</c> at its call boundary. Device
+        /// enumeration and <see cref="DevicesChanged"/> keep working while disabled. Unlike iOS,
         /// disabling does not stop the ADM: pair it with
         /// <see cref="StopRecording"/>/<see cref="StartRecording"/> at the call
         /// boundaries — an active capture without the session is what lets the platform
