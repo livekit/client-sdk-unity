@@ -66,13 +66,15 @@ public sealed class PlatformAudioController : IDisposable
         _platformAudio.DevicesChanged += OnDevicesChanged;
         AudioSettings.OnAudioConfigurationChanged += OnUnityAudioConfigurationChanged;
 
-        // Session audio is enabled when PlatformAudio is created, so hand it straight
-        // back: the platform's call audio session should only be held while a call is
-        // actually in progress — enabled means "in a call". Without this an app that
-        // keeps one ADM alive across calls would request communication mode and pin the
-        // call route from launch to quit. The caller must re-enable it when its call
-        // starts and disable it again when the call ends (MeetManager does so on
-        // join/leave, LiveKitAgentSession around Connect/EndSession).
+        // Session audio defaults to enabled, so declare "no call yet" right away: the
+        // platform's call audio session should only be held while a call is actually in
+        // progress — enabled means "in a call". On iOS this drops the session to its
+        // music-friendly idle state; on Android — where the session is only taken by
+        // the first action that needs it, never by construction — it keeps a later
+        // routing action from taking the call session outside a call. The caller must
+        // re-enable it when its call starts and disable it again when the call ends
+        // (MeetManager does so on join/leave, LiveKitAgentSession around
+        // Connect/EndSession).
         _platformAudio.SetSessionAudioEnabled(false);
         return true;
     }
