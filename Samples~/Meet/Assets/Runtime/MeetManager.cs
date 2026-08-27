@@ -168,6 +168,11 @@ public class MeetManager : MonoBehaviour
     {
         if (_room == null) return;
 
+        // Disable call audio while keeping the app-owned audio session active, so
+        // Unity audio (e.g. background music) survives the hang-up on iOS.
+        if (usePlatformAudio)
+            _platformAudio?.SetSessionAudioEnabled(false);
+
         _room.Disconnect();
         CleanUpAllTracks();
         _room = null;
@@ -248,6 +253,13 @@ public class MeetManager : MonoBehaviour
         Debug.Log($"Connected to {_room.Name} (PlatformAudio: {usePlatformAudio})");
         _localId = _room.LocalParticipant.Identity;
         buttonBar.SetConnected(true);
+
+        // Enable call audio now that we're in a room. On iOS this turns on WebRTC's
+        // VPIO unit while the app keeps ownership of the audio session; leaving the
+        // room disables it again (see OnEndCall / OnDisconnected) so other Unity
+        // audio keeps playing.
+        if (usePlatformAudio)
+            _platformAudio?.SetSessionAudioEnabled(true);
 
         EnsureParticipantTile(_localId);
         foreach (var remote in _room.RemoteParticipants.Values)
@@ -433,7 +445,14 @@ public class MeetManager : MonoBehaviour
     }
 
     private void OnDisconnected(Room room)
-        => Debug.Log($"Disconnected from room: {room.DisconnectReason}");
+    {
+        Debug.Log($"Disconnected from room: {room.DisconnectReason}");
+
+        // Covers server-initiated disconnects as well as OnEndCall; idempotent with
+        // the call already made there. Keeps the audio session active for Unity.
+        if (usePlatformAudio)
+            _platformAudio?.SetSessionAudioEnabled(false);
+    }
 
     private void OnTrackMuted(TrackPublication publication, Participant participant)
     {
