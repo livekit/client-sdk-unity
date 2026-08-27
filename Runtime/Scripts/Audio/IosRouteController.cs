@@ -100,7 +100,7 @@ namespace LiveKit
             throw new NotSupportedException(
                 "SelectOutput is not supported on iOS: the OS owns output route selection. " +
                 "Present the system route picker (AVRoutePickerView) instead, or use " +
-                "OutputPreference / IsSpeakerOutputPreferred for the built-in outputs.");
+                "OutputPreference for the built-in outputs.");
         }
 
         public void ClearOutputOverride()

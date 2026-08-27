@@ -376,18 +376,11 @@ namespace LiveKit
         ///
         /// Default: Bluetooth > WiredHeadset > Speaker > Earpiece.
         ///
-        /// Precedence with <see cref="IsSpeakerOutputPreferred"/>: this list is the single
-        /// source of truth; the bool is convenience sugar that only rewrites the relative
-        /// order of <see cref="AudioOutputKind.Speaker"/> and
-        /// <see cref="AudioOutputKind.Earpiece"/> inside this list, and reading the bool
-        /// reads their current relative order. There is no separate speaker-preference state.
-        ///
         /// Platform notes: on iOS, external devices (Bluetooth, wired) always take priority
-        /// over the built-in outputs, so the Speaker/Earpiece relative order — i.e.
-        /// <see cref="IsSpeakerOutputPreferred"/> — is the only part of the ranking with an
-        /// effect; it is applied through the audio session mode and takes effect
-        /// immediately, including mid-call. On Android the full ranking applies: the
-        /// backend routes to the highest-ranked available kind on Android 12 (API 31)
+        /// over the built-in outputs, so the Speaker/Earpiece relative order is the only part
+        /// of the ranking with an effect; it is applied through the audio session mode and
+        /// takes effect immediately, including mid-call. On Android the full ranking applies:
+        /// the backend routes to the highest-ranked available kind on Android 12 (API 31)
         /// and newer, and kinds missing from the list are never auto-selected (when
         /// nothing ranked is available the OS default route applies). On desktop, output
         /// is selected per device (<see cref="SelectOutput"/> /
@@ -430,74 +423,6 @@ namespace LiveKit
         }
 
         /// <summary>
-        /// Whether the loudspeaker is preferred over the earpiece for automatic routing.
-        ///
-        /// Precedence with <see cref="OutputPreference"/>: the list is the single source of
-        /// truth; this bool is convenience sugar that only rewrites the relative order of
-        /// <see cref="AudioOutputKind.Speaker"/> and <see cref="AudioOutputKind.Earpiece"/>
-        /// inside <see cref="OutputPreference"/>, and reading it reads their current
-        /// relative order. There is no separate speaker-preference state. Reading returns
-        /// true when Speaker ranks ahead of Earpiece (or Earpiece is absent), false when
-        /// Speaker is absent. Setting reorders the pair in place at the position of
-        /// whichever currently ranks first, inserting a missing kind next to the present
-        /// one (or appending both when neither is listed) so the value round-trips.
-        ///
-        /// Platform notes: on iOS, external devices (Bluetooth, wired) always take priority
-        /// over the built-in outputs, so this bool is the only part of the ranking with an
-        /// effect. It decides where audio goes when no external device is connected, is
-        /// applied through the audio session mode (never by overriding the output port),
-        /// and takes effect immediately, including mid-call. On Android the full ranking
-        /// applies: the backend routes to the highest-ranked available kind on Android 12
-        /// (API 31) and newer. On desktop, output is selected per device
-        /// (<see cref="SelectOutput"/> / <see cref="SetPlayoutDevice(string)"/>) and the
-        /// ranking has no routing effect. On older Android versions (routing backend not
-        /// implemented there) the value is stored and round-trips, but has no routing
-        /// effect either.
-        /// </summary>
-        public bool IsSpeakerOutputPreferred
-        {
-            get
-            {
-                ThrowIfDisposed();
-                var speaker = _outputPreference.IndexOf(AudioOutputKind.Speaker);
-                var earpiece = _outputPreference.IndexOf(AudioOutputKind.Earpiece);
-                if (speaker < 0) return false;
-                return earpiece < 0 || speaker < earpiece;
-            }
-            set
-            {
-                ThrowIfDisposed();
-                var first = value ? AudioOutputKind.Speaker : AudioOutputKind.Earpiece;
-                var second = value ? AudioOutputKind.Earpiece : AudioOutputKind.Speaker;
-
-                var reordered = new List<AudioOutputKind>(_outputPreference.Count + 2);
-                var pairInserted = false;
-                foreach (var kind in _outputPreference)
-                {
-                    if (kind == AudioOutputKind.Speaker || kind == AudioOutputKind.Earpiece)
-                    {
-                        if (!pairInserted)
-                        {
-                            reordered.Add(first);
-                            reordered.Add(second);
-                            pairInserted = true;
-                        }
-                        continue;
-                    }
-                    reordered.Add(kind);
-                }
-                if (!pairInserted)
-                {
-                    reordered.Add(first);
-                    reordered.Add(second);
-                }
-
-                _outputPreference = reordered;
-                _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
-            }
-        }
-
-        /// <summary>
         /// Routes audio output to the given device as a sticky override of the automatic
         /// <see cref="OutputPreference"/> policy: the route stays on the device until
         /// <see cref="ClearOutputOverride"/> is called. The device is matched against the
@@ -520,13 +445,11 @@ namespace LiveKit
         /// <see cref="DevicesChanged"/>. A deferred choice is dropped for good when its
         /// device disappears before the session is enabled (the same drop-on-disappear
         /// rule as an active pin), observable as the device leaving the playout list in
-        /// the same events. On iOS the
-        /// OS owns output route selection and this method throws
-        /// <see cref="NotSupportedException"/> — present the system route picker
-        /// (AVRoutePickerView) instead, or use <see cref="OutputPreference"/> /
-        /// <see cref="IsSpeakerOutputPreferred"/> for the built-in outputs. On older
-        /// Android versions (routing backend not implemented there) this method also
-        /// throws.
+        /// the same events. On iOS the OS owns output route selection and this method
+        /// throws <see cref="NotSupportedException"/> — present the system route picker
+        /// (AVRoutePickerView) instead, or use <see cref="OutputPreference"/> for the
+        /// built-in outputs. On older Android versions (routing backend not implemented
+        /// there) this method also throws.
         /// </summary>
         /// <param name="device">A playout device from <see cref="GetDevices"/>.</param>
         /// <exception cref="ArgumentException">
@@ -716,7 +639,7 @@ namespace LiveKit
         /// capture — a capture opened while the prompt is pending would record silence.
         /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
         /// On iOS this also switches the audio session to its recording state
-        /// (voice/video-chat mode per <see cref="IsSpeakerOutputPreferred"/>, enabling
+        /// (voice/video-chat mode per <see cref="OutputPreference"/>, enabling
         /// hardware echo cancellation).
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -855,13 +778,12 @@ namespace LiveKit
         /// the lifetime of this instance. The session is acquired lazily: despite the
         /// enabled default, creating the instance takes nothing — the first routing
         /// action while enabled takes it (calling this method with <c>true</c>, even
-        /// when already enabled; changing <see cref="OutputPreference"/> /
-        /// <see cref="IsSpeakerOutputPreferred"/>; <see cref="SelectOutput"/>; or the
-        /// <see cref="StartRecording"/> re-assert). A receive-only app that never
-        /// records and never touches routing therefore keeps the platform's own routing
-        /// until it calls this method with <c>true</c> at its call boundary. Device
-        /// enumeration and <see cref="DevicesChanged"/> keep working while disabled. Unlike iOS,
-        /// disabling does not stop the ADM: pair it with
+        /// when already enabled; changing <see cref="OutputPreference"/>;
+        /// <see cref="SelectOutput"/>; or the <see cref="StartRecording"/> re-assert). A
+        /// receive-only app that never records and never touches routing therefore keeps
+        /// the platform's own routing until it calls this method with <c>true</c> at its
+        /// call boundary. Device enumeration and <see cref="DevicesChanged"/> keep working
+        /// while disabled. Unlike iOS, disabling does not stop the ADM: pair it with
         /// <see cref="StopRecording"/>/<see cref="StartRecording"/> at the call
         /// boundaries — an active capture without the session is what lets the platform
         /// take routing back (see <see cref="StartRecording"/>).

@@ -152,47 +152,6 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
-        public IEnumerator SpeakerPreference_BoolAndListOrderAreOneState()
-        {
-            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
-
-            // Default ranking has Speaker ahead of Earpiece.
-            Assert.IsTrue(platformAudio.IsSpeakerOutputPreferred);
-
-            // Setting the bool rewrites the Speaker/Earpiece order inside the list.
-            platformAudio.IsSpeakerOutputPreferred = false;
-            CollectionAssert.AreEqual(
-                new[]
-                {
-                    AudioOutputKind.Bluetooth,
-                    AudioOutputKind.WiredHeadset,
-                    AudioOutputKind.Earpiece,
-                    AudioOutputKind.Speaker,
-                },
-                platformAudio.OutputPreference);
-            Assert.IsFalse(platformAudio.IsSpeakerOutputPreferred);
-
-            // Setting the list order flips the bool back — the list is the source of truth.
-            platformAudio.OutputPreference = new[]
-            {
-                AudioOutputKind.Speaker,
-                AudioOutputKind.Earpiece,
-                AudioOutputKind.Bluetooth,
-            };
-            Assert.IsTrue(platformAudio.IsSpeakerOutputPreferred);
-
-            // A missing kind is inserted next to the present one so the value round-trips.
-            platformAudio.OutputPreference = new[] { AudioOutputKind.Bluetooth, AudioOutputKind.Speaker };
-            platformAudio.IsSpeakerOutputPreferred = false;
-            CollectionAssert.AreEqual(
-                new[] { AudioOutputKind.Bluetooth, AudioOutputKind.Earpiece, AudioOutputKind.Speaker },
-                platformAudio.OutputPreference);
-            Assert.IsFalse(platformAudio.IsSpeakerOutputPreferred);
-
-            yield break;
-        }
-
-        [UnityTest]
         public IEnumerator SelectOutput_BogusDevice_Throws()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
@@ -263,8 +222,6 @@ namespace LiveKit.PlayModeTests
             Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.OutputPreference);
             Assert.Throws<ObjectDisposedException>(() =>
                 platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker });
-            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.IsSpeakerOutputPreferred);
-            Assert.Throws<ObjectDisposedException>(() => platformAudio.IsSpeakerOutputPreferred = true);
             Assert.Throws<ObjectDisposedException>(() =>
                 platformAudio.SelectOutput(new AudioDevice { Index = 0, Name = "any" }));
             Assert.Throws<ObjectDisposedException>(() => platformAudio.ClearOutputOverride());
