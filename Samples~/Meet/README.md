@@ -18,6 +18,8 @@ In order to connect to your LiveKit server, configure the token source component
 
 The LiveKit Unity SDK offers two audio systems. The Unity audio path uses the Unity APIs for audio input and output. Platform Audio is the alternative, where the native LiveKit plugin manages audio input and output. You can select which path to use on the MeetManager component.
 
+With Platform Audio, output routing (Bluetooth/wired headset/speaker/earpiece on mobile) is handled by the SDK's `PlatformAudio.OutputPreference` policy — the sample contains no routing code of its own and only logs the SDK's `DevicesChanged` events (see `PlatformAudioController`). The audio-routing section of the [SDK README](https://github.com/livekit/client-sdk-unity#audio-output-routing) documents the API and per-platform behavior.
+
 ### Common sample package
 
 In order to get access to common sample functions like the on device scrolling log, make sure to import the [Common](https://github.com/livekit/client-sdk-unity/tree/main/Samples~/Common) sample from the LiveKit Unity Package in the package manager.

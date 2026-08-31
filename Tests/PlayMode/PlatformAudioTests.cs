@@ -103,6 +103,147 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
+        public IEnumerator OutputPreference_DefaultsAndRoundtrips()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            // Documented default ranking.
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Speaker,
+                    AudioOutputKind.Earpiece,
+                },
+                platformAudio.OutputPreference);
+
+            // Set/get roundtrip preserves order and content.
+            var ranked = new[] { AudioOutputKind.Usb, AudioOutputKind.Speaker, AudioOutputKind.Bluetooth };
+            platformAudio.OutputPreference = ranked;
+            CollectionAssert.AreEqual(ranked, platformAudio.OutputPreference);
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator OutputPreference_RejectsInvalidLists()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            Assert.Throws<ArgumentNullException>(() => platformAudio.OutputPreference = null);
+            Assert.Throws<ArgumentException>(() =>
+                platformAudio.OutputPreference = new[] { AudioOutputKind.Unknown });
+            Assert.Throws<ArgumentException>(() =>
+                platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker, AudioOutputKind.Speaker });
+
+            // A rejected assignment leaves the stored preference untouched.
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Speaker,
+                    AudioOutputKind.Earpiece,
+                },
+                platformAudio.OutputPreference);
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator SelectOutput_BogusDevice_Throws()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            var bogus = new AudioDevice { Index = 9999, Name = "not-a-device", Guid = "no-such-guid" };
+            Assert.Throws<ArgumentException>(() => platformAudio.SelectOutput(bogus));
+
+            // Clearing is always safe, whether or not an override exists.
+            Assert.DoesNotThrow(() => platformAudio.ClearOutputOverride());
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator DevicesChanged_SubscribeUnsubscribe_SafeAcrossDispose()
+        {
+            var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> handler = (playout, recording) => { };
+            platformAudio.DevicesChanged += handler;
+            platformAudio.Dispose();
+
+            Assert.DoesNotThrow(() => platformAudio.DevicesChanged -= handler);
+            Assert.DoesNotThrow(() => platformAudio.DevicesChanged += handler);
+            Assert.DoesNotThrow(() => platformAudio.Dispose());
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator CreateDisposeCreate_OneSession_Works()
+        {
+            // The native ADM is ref-counted across PlatformAudio instances; after a full
+            // dispose the count must have returned to zero cleanly so a later instance in
+            // the same session comes up working (an app's second call after tearing the
+            // first one down).
+            var first = PlatformAudioTestHelper.TryCreateOrIgnore();
+            first.OutputPreference = new[] { AudioOutputKind.Usb };
+            first.Dispose();
+
+            using var second = new PlatformAudio();
+            Assert.DoesNotThrow(() => second.GetDevices());
+
+            // Preference state is per instance: the first instance's mutation must not
+            // leak into the fresh one.
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Speaker,
+                    AudioOutputKind.Earpiece,
+                },
+                second.OutputPreference);
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator PublicMembers_AfterDispose_ThrowObjectDisposed()
+        {
+            var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+            platformAudio.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.RecordingDeviceCount);
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.PlayoutDeviceCount);
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.GetDevices());
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.OutputPreference);
+            Assert.Throws<ObjectDisposedException>(() =>
+                platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker });
+            Assert.Throws<ObjectDisposedException>(() =>
+                platformAudio.SelectOutput(new AudioDevice { Index = 0, Name = "any" }));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.ClearOutputOverride());
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetRecordingDevice((uint)0));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetRecordingDevice(""));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice((uint)0));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice(""));
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.StopRecording());
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetSessionAudioEnabled(true));
+
+            // StartRecording is an iterator method: the guard throws on the first MoveNext.
+            var start = platformAudio.StartRecording();
+            Assert.Throws<ObjectDisposedException>(() => start.MoveNext());
+
+            // The guards must not break dispose idempotency or event safety
+            // (DevicesChanged_SubscribeUnsubscribe_SafeAcrossDispose covers the rest).
+            Assert.DoesNotThrow(() => platformAudio.Dispose());
+
+            yield break;
+        }
+
+        [UnityTest]
         public IEnumerator StartThenStopRecording_DoesNotThrow()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();

@@ -8,7 +8,9 @@ using RoomOptions = LiveKit.RoomOptions;
 // up the microphone, transcription, and chat-bubble log.
 public class LiveKitAgentSession : MonoBehaviour
 {
-    [SerializeField] 
+    const string MicTrackName = "player-mic";
+
+    [SerializeField]
     private ChatLog _chatLog;
 
     TokenSourceComponent _tokenSourceComponent;
@@ -50,6 +52,8 @@ public class LiveKitAgentSession : MonoBehaviour
         _transcription?.Dispose();
         _transcription = null;
 
+        // Hand the call audio session back before tearing the ADM down (see Connect).
+        _audio?.SetSessionAudioEnabled(false);
         _audio?.Dispose();
         _audio = null;
 
@@ -81,7 +85,7 @@ public class LiveKitAgentSession : MonoBehaviour
         // Create the WebRTC ADM before connecting. The SDK only wires automatic speaker
         // playout for remote tracks to a PlatformAudio that already exists at connect time;
         // initializing it after Connect leaves remote (agent) audio silent.
-        _audio = new PlatformAudioController();
+        _audio = new PlatformAudioController(MicTrackName, AudioProcessingOptions.Default);
         if (!_audio.Initialize())
         {
             Debug.LogError("[LiveKitAgentSession] Failed to initialize platform audio; aborting.");
@@ -98,6 +102,12 @@ public class LiveKitAgentSession : MonoBehaviour
             $"(local identity='{_room.LocalParticipant?.Identity}'");
 
         OnRoomConnected(_room);
+
+        // Session audio was handed back in Initialize(); take it now that the call is
+        // starting. On iOS this turns on WebRTC's VPIO unit (without it the agent call
+        // has no microphone and no audio at all), on Android 12+ it takes communication
+        // mode plus the SDK's route pin. EndSession hands it back.
+        _audio.SetSessionAudioEnabled(true);
 
         yield return _audio.Publish(_room);
         if (!_audio.IsPublished)
