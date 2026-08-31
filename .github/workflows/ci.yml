@@ -230,6 +230,10 @@ jobs:
            Library-${{ env.UNITY_PROJECT_PATH }}-${{ matrix.targetPlatform }}-
            Library-${{ env.UNITY_PROJECT_PATH }}-
            Library-
+     - name: Start Docker
+       run: |
+         Start-Service Docker
+       shell: powershell
      - name: Build
        uses: game-ci/unity-builder@v4
        env:
