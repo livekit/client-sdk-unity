@@ -13,7 +13,9 @@ using RoomOptions = LiveKit.RoomOptions;
 /// - PlatformAudio (default): Uses WebRTC's ADM for microphone capture and automatic
 ///   speaker playout. Provides echo cancellation (AEC), AGC, and noise suppression.
 /// - Unity Audio: Uses Unity's Microphone API and AudioStream for manual audio handling.
-///   No AEC support but gives more control over audio processing.
+///   Gives more control over audio processing. Optionally runs libwebrtc's AEC3 over the
+///   captured audio (<see cref="AecMicrophoneSource"/>), using the decoded remote audio frames
+///   as the echo reference; without it there is no echo cancellation in this mode.
 /// </summary>
 [RequireComponent(typeof(TokenSourceComponent))]
 public class MeetManager : MonoBehaviour
@@ -43,6 +45,18 @@ public class MeetManager : MonoBehaviour
     [SerializeField] private bool autoGainControl = true;
     [Tooltip("Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics.")]
     [SerializeField] private bool preferHardwareProcessing = true;
+
+    [Header("Unity Audio (PlatformAudio off)")]
+    [Tooltip("Run libwebrtc's AEC3 (the FFI AudioProcessingModule) over Unity microphone capture, " +
+             "using the decoded remote audio frames as the echo reference. Assumes a single remote " +
+             "audio stream: with several remote speakers the reference is the interleaving of all of " +
+             "them and the canceller will not converge.")]
+    [SerializeField] private bool unityEchoCancellation = true;
+    [Tooltip("Playback gain for every remote AudioSource in Unity audio mode. Kept below 1 so a device " +
+             "at full speaker volume keeps headroom: full-scale playout distorts on Android and feeds " +
+             "the echo canceller more echo than it can remove. Linear amplitude, 0.7 is -3.1 dB.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float remoteAudioGain = 0.7f;
 
     private const string PlaceholderTextureResourceName = "PlaceholderTileSquare";
     private Texture _placeholderTexture;
@@ -90,6 +104,8 @@ public class MeetManager : MonoBehaviour
 
         if (usePlatformAudio)
             InitializePlatformAudio();
+        else if (unityEchoCancellation)
+            Debug.Log($"AEC smoke test: {AudioProcessingSmokeTest.Run()}");
     }
 
     private void InitializePlatformAudio()
@@ -372,6 +388,7 @@ public class MeetManager : MonoBehaviour
         audioObject.transform.SetParent(_audioTrackParent);
 
         var source = audioObject.AddComponent<AudioSource>();
+        source.volume = remoteAudioGain;
         var audiostream = new AudioStream(audioTrack, source);
         _audioStreams.Add(sid, audiostream);
 
@@ -605,15 +622,22 @@ public class MeetManager : MonoBehaviour
 
     private IEnumerator PublishLocalMicrophoneUnity()
     {
-        Debug.Log("Publishing microphone using Unity Microphone API");
+        Debug.Log($"Publishing microphone using Unity Microphone API (AEC3: {unityEchoCancellation})");
 
         // Start the microphone here for early iOS permission request and android getting access to Microphone.devices
         Microphone.Start(null, true, 10, 44100);
-        
+
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");
         audioObject.transform.SetParent(_audioTrackParent);
 
-        var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject);
+        // AecMicrophoneSource re-implements MicrophoneSource with an APM stage in between:
+        // captured blocks go through AEC3 (reference = decoded remote frames) before they reach
+        // the track. If the APM cannot be created it publishes the raw microphone instead.
+        RtcAudioSource rtcSource;
+        if (unityEchoCancellation)
+            rtcSource = AecMicrophoneSource.Create(Microphone.devices[0], audioObject);
+        else
+            rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject);
 
         _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, rtcSource, _room);
 
@@ -628,6 +652,9 @@ public class MeetManager : MonoBehaviour
 
         if (publish.IsError)
         {
+            // Dispose before destroying the host object so the source (and, for AEC, its APM
+            // handle) is released now rather than by the finalizer.
+            rtcSource.Dispose();
             Destroy(audioObject);
             _localAudioTrack = null;
             yield break;
@@ -638,7 +665,9 @@ public class MeetManager : MonoBehaviour
         _localRtcAudioSource = rtcSource;
         rtcSource.Start();
 
-        Debug.Log("Microphone published via Unity Microphone API (no AEC)");
+        Debug.Log(rtcSource is AecMicrophoneSource { EchoCancellationActive: true }
+            ? "Microphone published via Unity Microphone API (AEC3 active)"
+            : "Microphone published via Unity Microphone API (no AEC)");
     }
 
     private void UnpublishLocalMicrophone()

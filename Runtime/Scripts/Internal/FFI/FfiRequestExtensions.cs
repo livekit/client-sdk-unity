@@ -152,6 +152,19 @@ namespace LiveKit.Internal.FFI
                 case RemixAndResampleRequest remixAndResampleRequest:
                     ffiRequest.RemixAndResample = remixAndResampleRequest;
                     break;
+                // Audio processing module
+                case NewApmRequest newApmRequest:
+                    ffiRequest.NewApm = newApmRequest;
+                    break;
+                case ApmProcessStreamRequest apmProcessStreamRequest:
+                    ffiRequest.ApmProcessStream = apmProcessStreamRequest;
+                    break;
+                case ApmProcessReverseStreamRequest apmProcessReverseStreamRequest:
+                    ffiRequest.ApmProcessReverseStream = apmProcessReverseStreamRequest;
+                    break;
+                case ApmSetStreamDelayRequest apmSetStreamDelayRequest:
+                    ffiRequest.ApmSetStreamDelay = apmSetStreamDelayRequest;
+                    break;
                 // PlatformAudio
                 case NewPlatformAudioRequest newPlatformAudioRequest:
                     ffiRequest.NewPlatformAudio = newPlatformAudioRequest;
