@@ -13,7 +13,6 @@ public class MeetManagerEditor : Editor
     private SerializedProperty noiseSuppression;
     private SerializedProperty autoGainControl;
     private SerializedProperty preferHardwareProcessing;
-    private SerializedProperty unityEchoCancellation;
     private SerializedProperty remoteAudioGain;
 
     private void OnEnable()
@@ -27,7 +26,6 @@ public class MeetManagerEditor : Editor
         noiseSuppression = serializedObject.FindProperty("noiseSuppression");
         autoGainControl = serializedObject.FindProperty("autoGainControl");
         preferHardwareProcessing = serializedObject.FindProperty("preferHardwareProcessing");
-        unityEchoCancellation = serializedObject.FindProperty("unityEchoCancellation");
         remoteAudioGain = serializedObject.FindProperty("remoteAudioGain");
     }
 
@@ -51,26 +49,24 @@ public class MeetManagerEditor : Editor
             "Provides AEC, AGC, and NS. Disable to use Unity's Microphone API instead."));
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Audio Processing (PlatformAudio only)", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Audio Processing", EditorStyles.boldLabel);
 
-        // Gray out audio processing options when PlatformAudio is disabled
         bool platformAudioEnabled = usePlatformAudio.boolValue;
 
+        EditorGUILayout.PropertyField(echoCancellation, new GUIContent("Echo Cancellation",
+            "Enable echo cancellation. PlatformAudio: WebRTC's ADM. Unity audio: libwebrtc's AEC3 over the " +
+            "Microphone capture, with the mix Unity plays as the reference."));
+        EditorGUILayout.PropertyField(noiseSuppression, new GUIContent("Noise Suppression",
+            "Enable noise suppression to remove background noise."));
+        EditorGUILayout.PropertyField(autoGainControl, new GUIContent("Auto Gain Control",
+            "Enable auto gain control to normalize audio levels."));
+
+        // Hardware processing is an ADM feature; gray it out when PlatformAudio is disabled.
         using (new EditorGUI.DisabledGroupScope(!platformAudioEnabled))
         {
-            if (!platformAudioEnabled)
-            {
-                EditorGUILayout.HelpBox("Audio processing options are only available when 'Use Platform Audio' is enabled.", MessageType.Info);
-            }
-
-            EditorGUILayout.PropertyField(echoCancellation, new GUIContent("Echo Cancellation",
-                "Enable echo cancellation to remove echo from speaker playback."));
-            EditorGUILayout.PropertyField(noiseSuppression, new GUIContent("Noise Suppression",
-                "Enable noise suppression to remove background noise."));
-            EditorGUILayout.PropertyField(autoGainControl, new GUIContent("Auto Gain Control",
-                "Enable auto gain control to normalize audio levels."));
             EditorGUILayout.PropertyField(preferHardwareProcessing, new GUIContent("Prefer Hardware Processing",
-                "Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics."));
+                "PlatformAudio only. Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have " +
+                "different quality characteristics."));
         }
 
         EditorGUILayout.Space();
@@ -79,14 +75,11 @@ public class MeetManagerEditor : Editor
         // Gray out Unity audio options when PlatformAudio is enabled
         using (new EditorGUI.DisabledGroupScope(platformAudioEnabled))
         {
-            if (platformAudioEnabled)
-            {
-                EditorGUILayout.HelpBox("Unity audio options are only used when 'Use Platform Audio' is disabled.", MessageType.Info);
-            }
+            EditorGUILayout.HelpBox(platformAudioEnabled
+                ? "Unity audio options are only used when 'Use Platform Audio' is disabled."
+                : "Echo cancellation in this mode runs libwebrtc's AEC3 in the SDK; the reference is the mix on the " +
+                  "AudioListener (a PlayoutReference component is attached automatically).", MessageType.Info);
 
-            EditorGUILayout.PropertyField(unityEchoCancellation, new GUIContent("Echo Cancellation (AEC3)",
-                "Run libwebrtc's AEC3 over Unity microphone capture, using the decoded remote audio frames as the " +
-                "echo reference. Assumes a single remote audio stream."));
             EditorGUILayout.PropertyField(remoteAudioGain, new GUIContent("Remote Audio Gain",
                 "Playback gain for every remote AudioSource. Below 1 keeps headroom so full-volume playout does not " +
                 "distort or overload the echo canceller. 0.7 is -3.1 dB."));

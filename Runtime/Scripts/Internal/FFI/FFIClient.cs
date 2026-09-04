@@ -375,10 +375,6 @@ namespace LiveKit.Internal.FFI
         {
             if (_isDisposed) return;
 
-            // Raw decoded-frame hook. Runs first, on this thread, so subscribers see the native
-            // buffers before any FfiHandle below wraps or frees them. No-op when unsubscribed.
-            FfiFrameObserver.Dispatch(response);
-
             // Audio stream events are handled directly on the FFI callback thread
             // to bypass the main thread, since the audio thread consumes the data
             if (response.MessageCase == FfiEvent.MessageOneofCase.AudioStreamEvent)
