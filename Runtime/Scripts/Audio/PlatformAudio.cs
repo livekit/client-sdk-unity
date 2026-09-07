@@ -502,9 +502,9 @@ namespace LiveKit
         /// plugged/unplugged, Bluetooth connected, speaker/earpiece switches); the playout
         /// list is the new route. On Android it is raised by the routing backend
         /// (Android 12/API 31 and newer) when the available communication devices or the
-        /// active route change, from the OS device add/remove and communication-device
-        /// callbacks; a change neither reports is detected by a poll with roughly 1.5 s
-        /// of latency. Desktop hot-plug events are not implemented yet in
+        /// active route change, driven by the OS device add/remove and
+        /// communication-device callbacks (no polling). Desktop hot-plug events are not
+        /// implemented yet in
         /// this version, so the event is never raised there. Subscribing and
         /// unsubscribing is safe at any time, including after <see cref="Dispose"/>.
         /// </summary>

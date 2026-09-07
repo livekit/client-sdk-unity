@@ -48,29 +48,34 @@ namespace LiveKit
     /// While the session is not held — session audio disabled, or enabled but nothing
     /// has needed it yet — it belongs to the platform (communication device cleared,
     /// prior mode restored on release), so the mode request and the route pin cover the
-    /// call rather than the lifetime of the instance. Enumeration, the change listener
-    /// and the poll thread stay alive regardless, so <see cref="GetDevices"/> and
+    /// call rather than the lifetime of the instance. Enumeration and both OS listeners
+    /// stay registered regardless, so <see cref="GetDevices"/> and
     /// <see cref="DevicesChanged"/> keep reporting the platform's own routing while
     /// idle.
     ///
-    /// Route changes are detected three ways:
+    /// Route changes are detected by two OS callbacks:
     /// - <c>OnCommunicationDeviceChangedListener</c> — fires when the OS changes or
     ///   clears the pin (e.g. the pinned device disconnected).
     /// - <c>AudioDeviceCallback</c>, via the <c>LiveKitAudioDeviceMonitor</c> Java plugin
     ///   in Runtime/Plugins/Android — fires when output devices are added to or removed
-    ///   from the system. That is what the communication-device listener misses: a
+    ///   from the system, which the communication-device listener does not report: a
     ///   device added while a pin is active, and the trace-verified teardown where a
     ///   powered-off Bluetooth headset stays in the available list up to ~10 s after the
     ///   route already fell back to the earpiece, then leaves the list without another
-    ///   communication-device change (both device-verified in the sample hotfix this
-    ///   backend is hardened from, PR #364, where only the poll caught them).
-    /// - A poll thread (every 1.5 s) — the timer behind the pin-settle window and the
-    ///   retry of a failed session transition, and the fallback for a list change
-    ///   neither callback reports, or for a build the Java plugin did not make it into.
+    ///   communication-device change. Device-verified on a Pixel 8a: with this callback
+    ///   the route recovers to the speaker; without it, it stays on the earpiece (the
+    ///   1.5 s poll this callback replaced used to catch it).
+    ///
+    /// There is no periodic poll. The one thing no callback delivers is time, so a
+    /// one-shot retry timer, armed only while work is outstanding, re-runs the pass
+    /// when a pin has been issued but the platform has not applied it yet (the
+    /// Bluetooth settle window and its backoff) or a session enter/leave failed and
+    /// must be retried. A pass that finds nothing pending disarms it.
     ///
     /// Threading: re-evaluation runs on whichever thread triggered it (Unity main,
-    /// the Android main executor, or the poll thread — all JVM-attached) behind one
-    /// lock. <see cref="DevicesChanged"/> may therefore be raised from any of them;
+    /// the Android main executor/looper, or a thread-pool thread the retry timer
+    /// attaches to the JVM for the pass) behind one lock. <see cref="DevicesChanged"/>
+    /// may therefore be raised from any of them;
     /// <see cref="PlatformAudio"/> marshals it to the Unity main thread.
     /// </summary>
     internal sealed class AndroidRouteController : IRouteController
@@ -83,11 +88,16 @@ namespace LiveKit
         private const int ContentTypeSpeech = 1;       // AudioAttributes.CONTENT_TYPE_SPEECH
 
         private const int MinSupportedApiLevel = 31;
-        private static readonly TimeSpan PollInterval = TimeSpan.FromSeconds(1.5);
+        // Delay before the retry timer re-runs the pass for work with no settle window of
+        // its own: a failed session enter/leave, or a non-Bluetooth pin the platform did
+        // not take. Same cadence as the poll it replaced.
+        private static readonly TimeSpan RetryInterval = TimeSpan.FromSeconds(1.5);
+        // Floor for a computed remaining settle time (Timer.Change rejects negative values).
+        private static readonly TimeSpan MinRetryDelay = TimeSpan.FromMilliseconds(1);
         // How long a pin is given to take effect before it is issued again. Selecting a
         // Bluetooth device starts an asynchronous SCO negotiation, and until it completes
         // the platform keeps reporting the previous communication device — so without this
-        // the poll re-issues the pin into its own pending activation, which the platform
+        // a re-evaluation re-issues the pin into its own pending activation, which the platform
         // refuses ("BtHelper: requestScoState: failed to connect in state 1", device-verified
         // on a Pixel 8a / Android 16) and the route never arrives at all. Real route changes
         // come through the change listener, so this only slows down recovering from a pin the
@@ -99,9 +109,11 @@ namespace LiveKit
 
         private readonly PlatformAudio _owner;
         private readonly object _gate = new object();
-        private readonly ManualResetEventSlim _stopPoll = new ManualResetEventSlim(false);
         private readonly List<AudioDevice> _recordingSnapshot;
-        private readonly Thread _pollThread;
+        // One-shot retry timer (see the class doc): armed by Reevaluate only while a pin
+        // is outstanding or a session transition failed, disarmed once nothing is pending.
+        // Fires on a thread-pool thread, which the callback attaches to the JVM.
+        private readonly System.Threading.Timer _retryTimer;
 
         private List<AudioOutputKind> _ranked;
         private int _stickyDeviceId = -1;
@@ -130,7 +142,7 @@ namespace LiveKit
         private bool _sessionTransitionPending;
         private CommunicationDeviceListener _listener;
         // The Java AudioDeviceCallback subclass and the C# proxy it forwards to; both
-        // null when the plugin could not be registered (poll-only fallback).
+        // null when the plugin could not be registered (add/remove then goes unreported).
         private AndroidJavaObject _deviceMonitor;
         private AudioDeviceMonitorListener _deviceMonitorListener;
         private AndroidJavaObject _audioFocusRequest;
@@ -182,16 +194,12 @@ namespace LiveKit
             // it reflects the state actually being replaced. This initial Reevaluate is
             // therefore observation-only — it seeds the device signature and reports
             // the platform's own route.
+            // The timer exists before anything can run a pass: a listener callback may
+            // fire as soon as it is registered, and every pass ends in ScheduleRetry.
+            _retryTimer = new System.Threading.Timer(OnRetryTimer, null, Timeout.Infinite, Timeout.Infinite);
             RegisterListener();
             RegisterDeviceMonitor();
             Reevaluate();
-
-            _pollThread = new Thread(PollLoop)
-            {
-                IsBackground = true,
-                Name = "LiveKitAndroidRoutePoll",
-            };
-            _pollThread.Start();
         }
 
         public (List<AudioDevice> Recording, List<AudioDevice> Playout) GetDevices()
@@ -345,12 +353,11 @@ namespace LiveKit
                 _disposed = true;
             }
 
-            // Stop the poll first so no re-evaluation runs concurrently with teardown.
-            _stopPoll.Set();
-            if (_pollThread.Join(TimeSpan.FromSeconds(3)))
-                _stopPoll.Dispose();
-            else
-                Utils.Warning("AndroidRouteController: poll thread did not stop in time");
+            // Cancel any pending retry. A callback already running cannot overlap the
+            // teardown below: the pass and the teardown both run under _gate, and the pass
+            // bails out on _disposed, which was set under that lock above. Nothing arms the
+            // timer after this point either (ScheduleRetry checks _disposed under _gate).
+            _retryTimer.Dispose();
 
             // Unregister BEFORE clearing the pin: clearCommunicationDevice fires the
             // change event, and a still-registered listener would immediately re-pin.
@@ -381,15 +388,17 @@ namespace LiveKit
         /// is already active: our own setCommunicationDevice fires the change listener,
         /// and that no-op check is what stops the feedback loop. When nothing sticky or
         /// ranked is available, an existing pin is released so the OS default applies;
-        /// kinds missing from the ranking are never auto-selected.
+        /// kinds missing from the ranking are never auto-selected. Ends by arming the
+        /// retry timer when the platform has not applied the target yet or a session
+        /// transition still fails, and by disarming it otherwise.
         ///
         /// While the session is not held — session audio disabled, or enabled but not
         /// yet acquired — the pass is observation-only: it enumerates, keeps the sticky
         /// bookkeeping current and still raises <see cref="DevicesChanged"/>, but issues
         /// no setCommunicationDevice / clearCommunicationDevice and reports the
-        /// platform's own communication device as the selected one. The change listener
-        /// and the poll thread run through here without acquiring anything, so neither
-        /// can resurrect a released session nor take a lazily-deferred one; the
+        /// platform's own communication device as the selected one. The OS callbacks
+        /// and the retry timer run through here without acquiring anything, so none of
+        /// them can resurrect a released session nor take a lazily-deferred one; the
         /// <see cref="PlatformAudio.StartRecording"/> re-assert acquires first (in
         /// <see cref="ApplyOutputPreference"/>) and then runs through here like the
         /// rest.
@@ -402,11 +411,12 @@ namespace LiveKit
                 if (_disposed)
                     return;
                 // A failed enter/leave transition is retried from here: every trigger —
-                // the poll, the change listener, the StartRecording re-assert — funnels
-                // through this pass, so a transient JNI failure cannot leave the
+                // the OS callbacks, the retry timer, the StartRecording re-assert —
+                // funnels through this pass, so a transient JNI failure cannot leave the
                 // platform holding (or missing) the call session until the next call
-                // boundary. Retries the transition for the CURRENT desired state, so a
-                // flip that happened in between is never undone.
+                // boundary; a transition that fails again arms the retry timer below.
+                // Retries the transition for the CURRENT desired state, so a flip that
+                // happened in between is never undone.
                 if (_sessionTransitionPending)
                 {
                     if (_sessionAcquired)
@@ -414,6 +424,9 @@ namespace LiveKit
                     else
                         LeaveCommunicationMode();
                 }
+                // Set when this pass leaves work the platform still has to finish or a
+                // retry has to redo; null disarms the timer.
+                TimeSpan? retryIn = null;
                 try
                 {
                     using var audioManager = GetAudioManager();
@@ -481,7 +494,7 @@ namespace LiveKit
                                 // own pending activation and gets refused, so hammering it
                                 // keeps the route from ever arriving. Once the pin has been
                                 // seen applied, a later divergence is the platform dropping
-                                // it (what the poll exists for) and is re-pinned at once.
+                                // it (reported by the change listener) and is re-pinned at once.
                                 // The other kinds apply without a negotiation, so a
                                 // divergence there is always a dropped or ignored pin and
                                 // is re-issued immediately, as before the settle window
@@ -507,7 +520,7 @@ namespace LiveKit
                                     // Stamped on every attempt, not only on success:
                                     // measured from a stale issue time the settle window
                                     // expires for good after one refused re-issue, and the
-                                    // backoff decays into a warn+re-issue every poll tick.
+                                    // backoff decays into a warn+re-issue every retry.
                                     _pinIssuedAtTimestamp = System.Diagnostics.Stopwatch.GetTimestamp();
                                     if (ok)
                                     {
@@ -569,6 +582,21 @@ namespace LiveKit
                             }
                         }
 
+                        if (_sessionAcquired && targetIndex >= 0 && devices[targetIndex].Id != selectedId)
+                        {
+                            // The platform is not on our target yet: a Bluetooth pin still
+                            // negotiating, or a pin it dropped, refused or never acted on.
+                            // No OS event announces "still nothing", so time has to: come
+                            // back when the settle window closes (to warn and re-issue with
+                            // backoff), or after one retry interval for the kinds that
+                            // apply synchronously. The arrival itself still comes through
+                            // the change listener; this only bounds how long silence lasts.
+                            var settlingBluetooth = _pinnedDeviceId == devices[targetIndex].Id && !_pinApplied
+                                && devices[targetIndex].Kind == AudioOutputKind.Bluetooth;
+                            var remaining = _pinSettleTimeout - ElapsedSincePinIssued();
+                            retryIn = settlingBluetooth && remaining > TimeSpan.Zero ? remaining : RetryInterval;
+                        }
+
                         var signature = new List<(int Id, AudioOutputKind Kind, bool IsSelected)>(devices.Count);
                         foreach (var d in devices)
                             signature.Add((d.Id, d.Kind, d.Id == selectedId));
@@ -590,7 +618,14 @@ namespace LiveKit
                 catch (Exception e)
                 {
                     Utils.Warning($"AndroidRouteController: route evaluation failed: {e.Message}");
+                    // The live state could not be read; fall back to the tracked state to
+                    // decide whether anything is worth coming back for.
+                    if (_sessionAcquired && _pinnedDeviceId != -1 && !_pinApplied)
+                        retryIn = RetryInterval;
                 }
+                if (_sessionTransitionPending)
+                    retryIn = RetryInterval;
+                ScheduleRetry(retryIn);
             }
 
             // Raised outside the lock; PlatformAudio marshals to the Unity main thread.
@@ -626,17 +661,41 @@ namespace LiveKit
             return false;
         }
 
-        private void PollLoop()
+        // Called under _gate at the end of every pass: arms the one-shot retry timer for
+        // the given delay, or disarms it when the pass left nothing pending. Dispose sets
+        // _disposed under the same lock before it disposes the timer, so the timer is
+        // alive whenever the check below passes.
+        private void ScheduleRetry(TimeSpan? delay)
+        {
+            if (_disposed)
+                return;
+            if (delay == null)
+            {
+                _retryTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+                return;
+            }
+            var due = delay.Value < MinRetryDelay ? MinRetryDelay : delay.Value;
+            _retryTimer.Change(due, Timeout.InfiniteTimeSpan);
+        }
+
+        // Timer callback, on a thread-pool thread: attach it to the JVM for the pass
+        // (AndroidJavaObject needs an attached thread), run the pass — which re-arms the
+        // timer itself if the work is still outstanding — and detach again.
+        private void OnRetryTimer(object _)
         {
             if (AndroidJNI.AttachCurrentThread() != 0)
             {
-                Utils.Warning("AndroidRouteController: failed to attach poll thread to the JVM; poll disabled, only OS events will re-route");
+                Utils.Warning("AndroidRouteController: failed to attach the retry timer thread to the JVM; the pending re-evaluation waits for the next OS event or routing call");
                 return;
             }
+            Utils.Debug("AndroidRouteController: retry timer fired");
             try
             {
-                while (!_stopPoll.Wait(PollInterval))
-                    Reevaluate();
+                Reevaluate();
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"AndroidRouteController: retry re-evaluation failed: {e.Message}");
             }
             finally
             {
@@ -716,7 +775,7 @@ namespace LiveKit
             catch (Exception e)
             {
                 _listener = null;
-                Utils.Warning($"AndroidRouteController: failed to register device listener, falling back to polling only: {e.Message}");
+                Utils.Warning($"AndroidRouteController: failed to register the communication-device listener; route changes the platform makes on its own will go unreported: {e.Message}");
             }
         }
 
@@ -790,8 +849,8 @@ namespace LiveKit
             }
         }
 
-        // Registers the Java AudioDeviceCallback subclass. Failure is non-fatal: the poll
-        // thread still catches list changes, only with up to one poll interval of latency.
+        // Registers the Java AudioDeviceCallback subclass. Failure is non-fatal but leaves
+        // device add/remove unreported: only communication-device changes re-route then.
         private void RegisterDeviceMonitor()
         {
             try
@@ -809,8 +868,8 @@ namespace LiveKit
                 _deviceMonitor = null;
                 _deviceMonitorListener = null;
                 Utils.Warning("AndroidRouteController: failed to register AudioDeviceCallback (is the " +
-                    "LiveKitAudioDeviceMonitor Java plugin in the build?); device add/remove falls back " +
-                    $"to the poll: {e.Message}");
+                    "LiveKitAudioDeviceMonitor Java plugin in the build?); device add/remove will go " +
+                    $"unreported and only communication-device changes re-route: {e.Message}");
             }
         }
 
@@ -901,7 +960,7 @@ namespace LiveKit
         // C#-side implementation of the Java callback interface for communication-device
         // changes (the OS changing or clearing the pin). List add/remove transitions fire
         // no communication-device event; they arrive through AudioDeviceMonitorListener
-        // below, and the poll thread covers whatever both miss.
+        // below.
         private sealed class CommunicationDeviceListener : AndroidJavaProxy
         {
             private readonly AndroidRouteController _controller;
