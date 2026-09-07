@@ -53,15 +53,20 @@ namespace LiveKit
     /// <see cref="DevicesChanged"/> keep reporting the platform's own routing while
     /// idle.
     ///
-    /// Route changes are detected two ways, both required (device-verified in the
-    /// sample hotfix this backend is hardened from, PR #364):
+    /// Route changes are detected three ways:
     /// - <c>OnCommunicationDeviceChangedListener</c> — fires when the OS changes or
     ///   clears the pin (e.g. the pinned device disconnected).
-    /// - A poll thread (every 1.5 s) — covers transitions that fire no event: a device
-    ///   added while a pin is active, and the trace-verified teardown where a powered-off
-    ///   Bluetooth headset stays in the available list up to ~10 s after the route
-    ///   already fell back to the earpiece, then leaves the list without another
-    ///   communication-device change.
+    /// - <c>AudioDeviceCallback</c>, via the <c>LiveKitAudioDeviceMonitor</c> Java plugin
+    ///   in Runtime/Plugins/Android — fires when output devices are added to or removed
+    ///   from the system. That is what the communication-device listener misses: a
+    ///   device added while a pin is active, and the trace-verified teardown where a
+    ///   powered-off Bluetooth headset stays in the available list up to ~10 s after the
+    ///   route already fell back to the earpiece, then leaves the list without another
+    ///   communication-device change (both device-verified in the sample hotfix this
+    ///   backend is hardened from, PR #364, where only the poll caught them).
+    /// - A poll thread (every 1.5 s) — the timer behind the pin-settle window and the
+    ///   retry of a failed session transition, and the fallback for a list change
+    ///   neither callback reports, or for a build the Java plugin did not make it into.
     ///
     /// Threading: re-evaluation runs on whichever thread triggered it (Unity main,
     /// the Android main executor, or the poll thread — all JVM-attached) behind one
@@ -124,6 +129,10 @@ namespace LiveKit
         // the next call boundary, while this controller reports the session released.
         private bool _sessionTransitionPending;
         private CommunicationDeviceListener _listener;
+        // The Java AudioDeviceCallback subclass and the C# proxy it forwards to; both
+        // null when the plugin could not be registered (poll-only fallback).
+        private AndroidJavaObject _deviceMonitor;
+        private AudioDeviceMonitorListener _deviceMonitorListener;
         private AndroidJavaObject _audioFocusRequest;
         private bool _audioFocusEnabled;
         private List<(int Id, AudioOutputKind Kind, bool IsSelected)> _lastSignature;
@@ -174,6 +183,7 @@ namespace LiveKit
             // therefore observation-only — it seeds the device signature and reports
             // the platform's own route.
             RegisterListener();
+            RegisterDeviceMonitor();
             Reevaluate();
 
             _pollThread = new Thread(PollLoop)
@@ -345,6 +355,7 @@ namespace LiveKit
             // Unregister BEFORE clearing the pin: clearCommunicationDevice fires the
             // change event, and a still-registered listener would immediately re-pin.
             UnregisterListener();
+            UnregisterDeviceMonitor();
 
             lock (_gate)
             {
@@ -779,6 +790,61 @@ namespace LiveKit
             }
         }
 
+        // Registers the Java AudioDeviceCallback subclass. Failure is non-fatal: the poll
+        // thread still catches list changes, only with up to one poll interval of latency.
+        private void RegisterDeviceMonitor()
+        {
+            try
+            {
+                using var audioManager = GetAudioManager();
+                _deviceMonitorListener = new AudioDeviceMonitorListener(this);
+                _deviceMonitor = new AndroidJavaObject(
+                    "io.livekit.unity.LiveKitAudioDeviceMonitor", audioManager, _deviceMonitorListener);
+                _deviceMonitor.Call("register");
+                Utils.Debug("AndroidRouteController: AudioDeviceCallback registered");
+            }
+            catch (Exception e)
+            {
+                _deviceMonitor?.Dispose();
+                _deviceMonitor = null;
+                _deviceMonitorListener = null;
+                Utils.Warning("AndroidRouteController: failed to register AudioDeviceCallback (is the " +
+                    "LiveKitAudioDeviceMonitor Java plugin in the build?); device add/remove falls back " +
+                    $"to the poll: {e.Message}");
+            }
+        }
+
+        private void UnregisterDeviceMonitor()
+        {
+            if (_deviceMonitor == null)
+                return;
+            try
+            {
+                _deviceMonitor.Call("unregister");
+                Utils.Debug("AndroidRouteController: AudioDeviceCallback unregistered");
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"AndroidRouteController: failed to unregister AudioDeviceCallback: {e.Message}");
+            }
+            _deviceMonitor.Dispose();
+            _deviceMonitor = null;
+            _deviceMonitorListener = null;
+        }
+
+        private void OnAudioDevicesChangedFromJava(int addedSinks, int removedSinks)
+        {
+            Utils.Debug($"AndroidRouteController: AudioDeviceCallback (added={addedSinks}, removed={removedSinks})");
+            try
+            {
+                Reevaluate();
+            }
+            catch (Exception e)
+            {
+                Utils.Warning($"AndroidRouteController: AudioDeviceCallback re-evaluation failed: {e.Message}");
+            }
+        }
+
         private static AudioDevice ToAudioDevice(AndroidJavaObject device, uint index, int selectedId)
         {
             var id = device.Call<int>("getId");
@@ -832,11 +898,10 @@ namespace LiveKit
             return activity.Call<AndroidJavaObject>("getSystemService", "audio");
         }
 
-        // C#-side implementation of the Java callback interface. AndroidJavaProxy can
-        // only implement interfaces, which is why this listens for communication-device
-        // changes rather than subclassing android.media.AudioDeviceCallback (an abstract
-        // class); list add/remove transitions that fire no communication-device event
-        // are covered by the poll thread instead.
+        // C#-side implementation of the Java callback interface for communication-device
+        // changes (the OS changing or clearing the pin). List add/remove transitions fire
+        // no communication-device event; they arrive through AudioDeviceMonitorListener
+        // below, and the poll thread covers whatever both miss.
         private sealed class CommunicationDeviceListener : AndroidJavaProxy
         {
             private readonly AndroidRouteController _controller;
@@ -853,6 +918,29 @@ namespace LiveKit
             {
                 device?.Dispose();
                 _controller.OnCommunicationDeviceChangedFromJava();
+            }
+        }
+
+        // C#-side implementation of LiveKitAudioDeviceMonitor.Listener, the interface the
+        // Java plugin forwards android.media.AudioDeviceCallback to. AndroidJavaProxy can
+        // only implement interfaces and AudioDeviceCallback is an abstract class, so the
+        // subclass lives in Java (Runtime/Plugins/Android/LiveKitAudioDeviceMonitor.java).
+        private sealed class AudioDeviceMonitorListener : AndroidJavaProxy
+        {
+            private readonly AndroidRouteController _controller;
+
+            public AudioDeviceMonitorListener(AndroidRouteController controller)
+                : base("io.livekit.unity.LiveKitAudioDeviceMonitor$Listener")
+            {
+                _controller = controller;
+            }
+
+            // Invoked by Android on the main looper — a JVM-attached thread, but not the
+            // Unity main thread. Registration delivers one immediate "added" callback
+            // with the current device set, which runs an observation-only pass.
+            public void onAudioDevicesChanged(int addedSinks, int removedSinks)
+            {
+                _controller.OnAudioDevicesChangedFromJava(addedSinks, removedSinks);
             }
         }
     }
