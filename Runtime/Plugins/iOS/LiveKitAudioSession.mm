@@ -386,7 +386,7 @@ static void LiveKit_CacheSessionStateIfNeeded() {
           s_cachedCategory, s_cachedMode, (unsigned long)s_cachedCategoryOptions);
 }
 
-/// Maps an AVAudioSessionPort type to the C# AudioOutputKind numbering
+/// Maps an AVAudioSessionPort type to the C# AudioDeviceKind numbering
 /// (Unknown=0, Earpiece=1, Speaker=2, WiredHeadset=3, Bluetooth=4, Usb=5,
 /// HearingAid=6). Do not renumber. AVAudioSession has no dedicated hearing-aid
 /// port type, so 6 is never produced here; AirPlay/HDMI/CarAudio and other

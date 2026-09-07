@@ -10,13 +10,13 @@ namespace LiveKit
     /// <summary>
     /// iOS routing backend over the LiveKitAudioSession.mm plugin. The OS owns output
     /// route selection on iOS, so this backend does not pick devices: it reduces
-    /// <see cref="PlatformAudio.OutputPreference"/> to the speaker-vs-earpiece relative
+    /// <see cref="PlatformAudio.PlayoutPreference"/> to the speaker-vs-earpiece relative
     /// order (applied as the audio session mode by the plugin; external devices always
     /// take priority over both built-ins), reports the session's current output route
     /// as the playout device list, and raises <see cref="DevicesChanged"/> from the
-    /// plugin's route-change observation. <see cref="SelectOutput"/> throws: apps that
-    /// want explicit device picking should present the system route picker
-    /// (AVRoutePickerView).
+    /// plugin's route-change observation. <see cref="SetPlayoutDevice"/> is ignored with
+    /// a warning: apps that want explicit device picking should present the system route
+    /// picker (AVRoutePickerView).
     ///
     /// All plugin P/Invoke for route observation stays inside this class; the session
     /// state machine itself is driven by <see cref="PlatformAudio"/> (which knows the
@@ -57,11 +57,11 @@ namespace LiveKit
 
         public event Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> DevicesChanged;
 
-        internal IosRouteController(PlatformAudio owner, IReadOnlyList<AudioOutputKind> initialPreference)
+        internal IosRouteController(PlatformAudio owner, IReadOnlyList<AudioDeviceKind> initialPreference)
         {
             _recordingSnapshot = owner.GetDevicesViaFfi().Recording;
 
-            ApplyOutputPreference(initialPreference);
+            ApplyPlayoutPreference(initialPreference);
             _lastSignature = Signature(QueryCurrentOutputs());
 
             lock (StaticGate)
@@ -80,7 +80,7 @@ namespace LiveKit
             return (new List<AudioDevice>(_recordingSnapshot), QueryCurrentOutputs());
         }
 
-        public void ApplyOutputPreference(IReadOnlyList<AudioOutputKind> ranked)
+        public void ApplyPlayoutPreference(IReadOnlyList<AudioDeviceKind> ranked)
         {
             // Reduce the ranked list per the PAR-019 precedence rule: the only part of
             // the ranking iOS can express is whether Speaker outranks Earpiece.
@@ -88,24 +88,24 @@ namespace LiveKit
             var earpiece = -1;
             for (var i = 0; i < ranked.Count; i++)
             {
-                if (ranked[i] == AudioOutputKind.Speaker) speaker = i;
-                else if (ranked[i] == AudioOutputKind.Earpiece) earpiece = i;
+                if (ranked[i] == AudioDeviceKind.Speaker) speaker = i;
+                else if (ranked[i] == AudioDeviceKind.Earpiece) earpiece = i;
             }
             var speakerPreferred = speaker >= 0 && (earpiece < 0 || speaker < earpiece);
             LiveKit_SetSpeakerPreferred(speakerPreferred);
         }
 
-        public void SelectOutput(AudioDevice device)
+        public void SetPlayoutDevice(string deviceId)
         {
-            throw new NotSupportedException(
-                "SelectOutput is not supported on iOS: the OS owns output route selection. " +
-                "Present the system route picker (AVRoutePickerView) instead, or use " +
-                "OutputPreference for the built-in outputs.");
+            Utils.Warning(
+                "PlatformAudio.SetPlayoutDevice has no effect on iOS: the OS owns output route " +
+                "selection. Present the system route picker (AVRoutePickerView) instead, or use " +
+                "PlayoutPreference for the built-in outputs.");
         }
 
-        public void ClearOutputOverride()
+        public void ClearPlayoutDeviceSelection()
         {
-            // No override can exist on iOS: SelectOutput throws.
+            // No override can exist on iOS: SetPlayoutDevice is ignored.
         }
 
         public void SetSessionAudioEnabled(bool enabled)
@@ -194,9 +194,9 @@ namespace LiveKit
                 }
 
                 var kind = int.TryParse(fields[0], out var rawKind)
-                           && Enum.IsDefined(typeof(AudioOutputKind), rawKind)
-                    ? (AudioOutputKind)rawKind
-                    : AudioOutputKind.Unknown;
+                           && Enum.IsDefined(typeof(AudioDeviceKind), rawKind)
+                    ? (AudioDeviceKind)rawKind
+                    : AudioDeviceKind.Unknown;
                 devices.Add(new AudioDevice
                 {
                     Index = (uint)devices.Count,

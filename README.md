@@ -356,8 +356,6 @@ void InitializePlatformAudio()
 
         if (platformAudio.RecordingDeviceCount > 0)
             platformAudio.SetRecordingDevice(0);
-        if (platformAudio.PlayoutDeviceCount > 0)
-            platformAudio.SetPlayoutDevice(0);
 
         Debug.Log($"PlatformAudio ready. AEC={echoCancellation}, NS={noiseSuppression}, AGC={autoGainControl}, HW={preferHardwareProcessing}");
     }
@@ -422,17 +420,17 @@ On mobile, the OS decides where call audio plays (Bluetooth headset, wired heads
 ```cs
 // Automatic policy: route to the best available output kind, most preferred first.
 // The default ranking is Bluetooth > WiredHeadset > Speaker > Earpiece.
-platformAudio.OutputPreference = new[] { AudioOutputKind.Bluetooth, AudioOutputKind.WiredHeadset, AudioOutputKind.Speaker };
+platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Bluetooth, AudioDeviceKind.WiredHeadset, AudioDeviceKind.Speaker };
 
 // Prefer the earpiece over the loudspeaker: the same list with the two swapped.
 // A speakerphone toggle is just switching between these two rankings.
-platformAudio.OutputPreference = new[] { AudioOutputKind.Bluetooth, AudioOutputKind.WiredHeadset, AudioOutputKind.Earpiece, AudioOutputKind.Speaker };
+platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Bluetooth, AudioDeviceKind.WiredHeadset, AudioDeviceKind.Earpiece, AudioDeviceKind.Speaker };
 
-// Sticky override: audio stays routed to the device until the override is cleared
-// or the device disappears (then the automatic policy resumes).
+// Sticky override on an explicit user choice: audio stays routed to the device until
+// the override is cleared or the device disappears (then the automatic policy resumes).
 var (recording, playout) = platformAudio.GetDevices();
-platformAudio.SelectOutput(playout[0]);
-platformAudio.ClearOutputOverride();
+platformAudio.SetPlayoutDevice(playout[0].Guid);
+platformAudio.ClearPlayoutDeviceSelection();
 
 // Observability: raised on the Unity main thread whenever the available devices or
 // the active route change. AudioDevice.Kind and AudioDevice.IsSelected tell you what
@@ -476,10 +474,12 @@ One consequence to design around on Android: while a call session is active on a
 
 Per-platform behavior:
 
-- **Android 12+ (API 31)**: the full `OutputPreference` ranking applies — the SDK routes to the highest-ranked available kind and re-routes on device changes; kinds missing from the list are never auto-selected (when nothing ranked is available, the OS default route applies). `SelectOutput` pins a device from `GetDevices().Playout` as the communication device; the pin is dropped once that device disappears. While session audio is disabled, `SelectOutput` only records the choice — it is applied when the session is next enabled, and until then `GetDevices`/`DevicesChanged` keep reporting the platform's own route. There is deliberately no pending flag for that deferral: a pre-call device picker should treat its own last `SelectOutput` call as the pending choice and confirm application via the `IsSelected` flip in `GetDevices`/`DevicesChanged` once the session is enabled; a deferred choice whose device disappears first is dropped for good (same rule as an active pin), observable as the device leaving the playout list. `DevicesChanged` is raised on communication-device changes and on device add/remove (via `AudioDeviceCallback`, bridged through the `LiveKitAudioDeviceMonitor` Java source plugin shipped in the package); there is no polling. Requires the `MODIFY_AUDIO_SETTINGS` permission in your `AndroidManifest.xml`. Routing is asserted only while session audio is enabled: the session is first taken by the first trigger that needs it while enabled — an explicit enable, an output preference/selection change, or capture starting; never by construction alone — the SDK then holds `MODE_IN_COMMUNICATION` with the route pinned, and clears the pin and restores the mode it replaced on disable, while enumeration and `DevicesChanged` stay live either way. Note: since Android 13 the OS only honors the app's communication-mode request — and with it the route pin — while the app has an active voice-communication capture, so keep the mic capture running for the whole call, even while muted with the track unpublished (see `PlatformAudioController` in the Meet sample); an active capture without an enabled session hands routing back to the platform, so pair the two at the call boundaries.
-- **Older Android**: no routing backend — `OutputPreference` is stored and round-trips but has no routing effect, and `SelectOutput` throws `NotSupportedException`. `DevicesChanged` is never raised.
-- **iOS**: external devices (Bluetooth, wired) always take priority over the built-in outputs, so the Speaker/Earpiece relative order is the only part of the ranking with an effect. It decides where audio goes when no external device is connected, is applied through the audio session mode (never by overriding the output port), and takes effect immediately, including mid-call. `SelectOutput` throws `NotSupportedException` — the OS owns route selection on iOS; present the system route picker (`AVRoutePickerView`) instead. `GetDevices().Playout` is the audio session's current output route (iOS does not enumerate every reachable device), and `DevicesChanged` is raised when that route changes.
-- **Desktop (Windows/macOS/Linux)**: output is selected per device — `SelectOutput` selects the playout device like `SetPlayoutDevice`, and the `OutputPreference` ranking has no routing effect. `DevicesChanged` is never raised (no hot-plug events yet).
+- **Android 12+ (API 31)**: the full `PlayoutPreference` ranking applies — the SDK routes to the highest-ranked available kind and re-routes on device changes; kinds missing from the list are never auto-selected (when nothing ranked is available, the OS default route applies). `SetPlayoutDevice` pins a device from `GetDevices().Playout` (by `Guid`) as the communication device; the pin is dropped once that device disappears. While session audio is disabled, `SetPlayoutDevice` only records the choice — it is applied when the session is next enabled, and until then `GetDevices`/`DevicesChanged` keep reporting the platform's own route. There is deliberately no pending flag for that deferral: a pre-call device picker should treat its own last `SetPlayoutDevice` call as the pending choice and confirm application via the `IsSelected` flip in `GetDevices`/`DevicesChanged` once the session is enabled; a deferred choice whose device disappears first is dropped for good (same rule as an active pin), observable as the device leaving the playout list. `DevicesChanged` is raised on communication-device changes and on device add/remove (via `AudioDeviceCallback`, bridged through the `LiveKitAudioDeviceMonitor` Java source plugin shipped in the package); there is no polling. Requires the `MODIFY_AUDIO_SETTINGS` permission in your `AndroidManifest.xml`. Routing is asserted only while session audio is enabled: the session is first taken by the first trigger that needs it while enabled — an explicit enable, an output preference/selection change, or capture starting; never by construction alone — the SDK then holds `MODE_IN_COMMUNICATION` with the route pinned, and clears the pin and restores the mode it replaced on disable, while enumeration and `DevicesChanged` stay live either way. Note: since Android 13 the OS only honors the app's communication-mode request — and with it the route pin — while the app has an active voice-communication capture, so keep the mic capture running for the whole call, even while muted with the track unpublished (see `PlatformAudioController` in the Meet sample); an active capture without an enabled session hands routing back to the platform, so pair the two at the call boundaries.
+- **Older Android**: no routing backend — `PlayoutPreference` is stored and round-trips but has no routing effect, and `SetPlayoutDevice` has no effect (a warning is logged). `DevicesChanged` is never raised.
+- **iOS**: external devices (Bluetooth, wired) always take priority over the built-in outputs, so the Speaker/Earpiece relative order is the only part of the ranking with an effect. It decides where audio goes when no external device is connected, is applied through the audio session mode (never by overriding the output port), and takes effect immediately, including mid-call. `SetPlayoutDevice` has no effect (a warning is logged) — the OS owns route selection on iOS; present the system route picker (`AVRoutePickerView`) instead. `GetDevices().Playout` is the audio session's current output route (iOS does not enumerate every reachable device), and `DevicesChanged` is raised when that route changes.
+- **Desktop (Windows/macOS/Linux)**: output is selected per device with `SetPlayoutDevice`, and the `PlayoutPreference` ranking has no routing effect. `DevicesChanged` is never raised (no hot-plug events yet).
+
+> **Upgrading from 2.0.x:** `SetPlayoutDevice` used to be a no-op on Android and iOS. On Android 12+ it now pins the device as a sticky override that shadows `PlayoutPreference` until `ClearPlayoutDeviceSelection` is called or the device disappears. Remove any "select playout device 0 at startup" call (the earlier sample did this): on Android 12+ it would pin whichever device the OS lists first for the whole session and also take the call audio session at startup. Call `SetPlayoutDevice` only on an explicit user choice and let the ranking route otherwise.
 
 ### RPC
   

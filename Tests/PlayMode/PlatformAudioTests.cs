@@ -103,7 +103,7 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
-        public IEnumerator OutputPreference_DefaultsAndRoundtrips()
+        public IEnumerator PlayoutPreference_DefaultsAndRoundtrips()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
 
@@ -111,56 +111,69 @@ namespace LiveKit.PlayModeTests
             CollectionAssert.AreEqual(
                 new[]
                 {
-                    AudioOutputKind.Bluetooth,
-                    AudioOutputKind.WiredHeadset,
-                    AudioOutputKind.Speaker,
-                    AudioOutputKind.Earpiece,
+                    AudioDeviceKind.Bluetooth,
+                    AudioDeviceKind.WiredHeadset,
+                    AudioDeviceKind.Speaker,
+                    AudioDeviceKind.Earpiece,
                 },
-                platformAudio.OutputPreference);
+                platformAudio.PlayoutPreference);
 
             // Set/get roundtrip preserves order and content.
-            var ranked = new[] { AudioOutputKind.Usb, AudioOutputKind.Speaker, AudioOutputKind.Bluetooth };
-            platformAudio.OutputPreference = ranked;
-            CollectionAssert.AreEqual(ranked, platformAudio.OutputPreference);
+            var ranked = new[] { AudioDeviceKind.Usb, AudioDeviceKind.Speaker, AudioDeviceKind.Bluetooth };
+            platformAudio.PlayoutPreference = ranked;
+            CollectionAssert.AreEqual(ranked, platformAudio.PlayoutPreference);
 
             yield break;
         }
 
         [UnityTest]
-        public IEnumerator OutputPreference_RejectsInvalidLists()
+        public IEnumerator PlayoutPreference_RejectsInvalidLists()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
 
-            Assert.Throws<ArgumentNullException>(() => platformAudio.OutputPreference = null);
+            Assert.Throws<ArgumentNullException>(() => platformAudio.PlayoutPreference = null);
             Assert.Throws<ArgumentException>(() =>
-                platformAudio.OutputPreference = new[] { AudioOutputKind.Unknown });
+                platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Unknown });
             Assert.Throws<ArgumentException>(() =>
-                platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker, AudioOutputKind.Speaker });
+                platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Speaker, AudioDeviceKind.Speaker });
 
             // A rejected assignment leaves the stored preference untouched.
             CollectionAssert.AreEqual(
                 new[]
                 {
-                    AudioOutputKind.Bluetooth,
-                    AudioOutputKind.WiredHeadset,
-                    AudioOutputKind.Speaker,
-                    AudioOutputKind.Earpiece,
+                    AudioDeviceKind.Bluetooth,
+                    AudioDeviceKind.WiredHeadset,
+                    AudioDeviceKind.Speaker,
+                    AudioDeviceKind.Earpiece,
                 },
-                platformAudio.OutputPreference);
+                platformAudio.PlayoutPreference);
 
             yield break;
         }
 
         [UnityTest]
-        public IEnumerator SelectOutput_BogusDevice_Throws()
+        public IEnumerator SetPlayoutDevice_UnknownGuid()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
 
-            var bogus = new AudioDevice { Index = 9999, Name = "not-a-device", Guid = "no-such-guid" };
-            Assert.Throws<ArgumentException>(() => platformAudio.SelectOutput(bogus));
+#if UNITY_IOS && !UNITY_EDITOR
+            // iOS ignores the call (with a warning): the OS owns route selection.
+            Assert.DoesNotThrow(() => platformAudio.SetPlayoutDevice("no-such-guid"));
+#elif UNITY_ANDROID && !UNITY_EDITOR
+            // Android 12+ validates against the communication-device list; older Android has
+            // no routing backend and ignores the call.
+            var sdkInt = new UnityEngine.AndroidJavaClass("android.os.Build$VERSION").GetStatic<int>("SDK_INT");
+            if (sdkInt >= 31)
+                Assert.Throws<InvalidOperationException>(() => platformAudio.SetPlayoutDevice("no-such-guid"));
+            else
+                Assert.DoesNotThrow(() => platformAudio.SetPlayoutDevice("no-such-guid"));
+#else
+            // Desktop: the FFI validates the id against the ADM's device list.
+            Assert.Throws<InvalidOperationException>(() => platformAudio.SetPlayoutDevice("no-such-guid"));
+#endif
 
             // Clearing is always safe, whether or not an override exists.
-            Assert.DoesNotThrow(() => platformAudio.ClearOutputOverride());
+            Assert.DoesNotThrow(() => platformAudio.ClearPlayoutDeviceSelection());
 
             yield break;
         }
@@ -189,7 +202,7 @@ namespace LiveKit.PlayModeTests
             // the same session comes up working (an app's second call after tearing the
             // first one down).
             var first = PlatformAudioTestHelper.TryCreateOrIgnore();
-            first.OutputPreference = new[] { AudioOutputKind.Usb };
+            first.PlayoutPreference = new[] { AudioDeviceKind.Usb };
             first.Dispose();
 
             using var second = new PlatformAudio();
@@ -200,12 +213,12 @@ namespace LiveKit.PlayModeTests
             CollectionAssert.AreEqual(
                 new[]
                 {
-                    AudioOutputKind.Bluetooth,
-                    AudioOutputKind.WiredHeadset,
-                    AudioOutputKind.Speaker,
-                    AudioOutputKind.Earpiece,
+                    AudioDeviceKind.Bluetooth,
+                    AudioDeviceKind.WiredHeadset,
+                    AudioDeviceKind.Speaker,
+                    AudioDeviceKind.Earpiece,
                 },
-                second.OutputPreference);
+                second.PlayoutPreference);
 
             yield break;
         }
@@ -219,12 +232,10 @@ namespace LiveKit.PlayModeTests
             Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.RecordingDeviceCount);
             Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.PlayoutDeviceCount);
             Assert.Throws<ObjectDisposedException>(() => platformAudio.GetDevices());
-            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.OutputPreference);
+            Assert.Throws<ObjectDisposedException>(() => _ = platformAudio.PlayoutPreference);
             Assert.Throws<ObjectDisposedException>(() =>
-                platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker });
-            Assert.Throws<ObjectDisposedException>(() =>
-                platformAudio.SelectOutput(new AudioDevice { Index = 0, Name = "any" }));
-            Assert.Throws<ObjectDisposedException>(() => platformAudio.ClearOutputOverride());
+                platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Speaker });
+            Assert.Throws<ObjectDisposedException>(() => platformAudio.ClearPlayoutDeviceSelection());
             Assert.Throws<ObjectDisposedException>(() => platformAudio.SetRecordingDevice((uint)0));
             Assert.Throws<ObjectDisposedException>(() => platformAudio.SetRecordingDevice(""));
             Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice((uint)0));

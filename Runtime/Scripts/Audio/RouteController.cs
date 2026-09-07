@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using LiveKit.Internal;
 
 namespace LiveKit
 {
     /// <summary>
     /// Backend seam for audio output routing. <see cref="PlatformAudio"/> registers one
     /// implementation per platform and forwards its public routing API
-    /// (<see cref="PlatformAudio.OutputPreference"/>, <see cref="PlatformAudio.SelectOutput"/>,
-    /// <see cref="PlatformAudio.ClearOutputOverride"/>, <see cref="PlatformAudio.GetDevices"/>,
+    /// (<see cref="PlatformAudio.PlayoutPreference"/>,
+    /// <see cref="PlatformAudio.SetPlayoutDevice(string)"/>,
+    /// <see cref="PlatformAudio.ClearPlayoutDeviceSelection"/>, <see cref="PlatformAudio.GetDevices"/>,
     /// <see cref="PlatformAudio.DevicesChanged"/>) through it, so the plumbing can be swapped
     /// per platform — and later wholesale for an FFI-backed implementation — without changing
     /// a public signature.
@@ -18,16 +20,20 @@ namespace LiveKit
         (List<AudioDevice> Recording, List<AudioDevice> Playout) GetDevices();
 
         /// <summary>Applies the ranked automatic output policy, most preferred first.</summary>
-        void ApplyOutputPreference(IReadOnlyList<AudioOutputKind> ranked);
+        void ApplyPlayoutPreference(IReadOnlyList<AudioDeviceKind> ranked);
 
         /// <summary>
-        /// Routes output to the given device as a sticky override of the automatic policy.
-        /// The device has already been validated against the current playout snapshot.
+        /// Routes output to the device with the given id (<see cref="AudioDevice.Guid"/>
+        /// from <see cref="GetDevices"/>) as a sticky override of the automatic policy.
+        /// Validation is the backend's job: desktop hands the id to the FFI, which checks
+        /// it against the ADM's device list, Android checks it against the live
+        /// communication-device list, and the backends without device selection ignore it
+        /// with a warning.
         /// </summary>
-        void SelectOutput(AudioDevice device);
+        void SetPlayoutDevice(string deviceId);
 
         /// <summary>Clears the sticky override so the automatic policy applies again.</summary>
-        void ClearOutputOverride();
+        void ClearPlayoutDeviceSelection();
 
         /// <summary>
         /// Signals whether a call is in progress, i.e. whether the backend may hold the
@@ -64,20 +70,19 @@ namespace LiveKit
             return _owner.GetDevicesViaFfi();
         }
 
-        public void ApplyOutputPreference(IReadOnlyList<AudioOutputKind> ranked)
+        public void ApplyPlayoutPreference(IReadOnlyList<AudioDeviceKind> ranked)
         {
             // No routing effect on desktop: output is selected per device, not by kind.
         }
 
-        public void SelectOutput(AudioDevice device)
+        public void SetPlayoutDevice(string deviceId)
         {
-            if (!string.IsNullOrEmpty(device.Guid))
-                _owner.SetPlayoutDevice(device.Guid);
-            else
-                _owner.SetPlayoutDevice(device.Index);
+            // Straight to the FFI, as before the routing backends existed; it validates the
+            // id against the ADM's device list (unknown id -> "Device not found").
+            _owner.SetPlayoutDeviceViaFfi(deviceId);
         }
 
-        public void ClearOutputOverride()
+        public void ClearPlayoutDeviceSelection()
         {
             // No automatic policy to fall back to on desktop; the selected device stays.
         }
@@ -102,8 +107,8 @@ namespace LiveKit
     /// Placeholder backend for platforms without a routing implementation: Android below
     /// API 31 (which lacks the communication-device APIs the Android backend is built
     /// on). Device snapshots still work through the FFI (a single placeholder entry for
-    /// the OS default input/output); the routing verbs throw or no-op as documented on
-    /// the public API.
+    /// the OS default input/output); the routing verbs no-op as documented on the public
+    /// API.
     /// </summary>
     internal sealed class UnsupportedRouteController : IRouteController
     {
@@ -121,20 +126,20 @@ namespace LiveKit
             return _owner.GetDevicesViaFfi();
         }
 
-        public void ApplyOutputPreference(IReadOnlyList<AudioOutputKind> ranked)
+        public void ApplyPlayoutPreference(IReadOnlyList<AudioDeviceKind> ranked)
         {
             // Stored by PlatformAudio; no routing effect until this platform's backend lands.
         }
 
-        public void SelectOutput(AudioDevice device)
+        public void SetPlayoutDevice(string deviceId)
         {
-            throw new NotSupportedException(
-                $"SelectOutput is not supported on {_platform}");
+            Utils.Warning(
+                $"PlatformAudio.SetPlayoutDevice has no effect on {_platform}: the OS owns output routing.");
         }
 
-        public void ClearOutputOverride()
+        public void ClearPlayoutDeviceSelection()
         {
-            // No override can exist on this platform: SelectOutput throws.
+            // No override can exist on this platform: SetPlayoutDevice is ignored.
         }
 
         public void SetSessionAudioEnabled(bool enabled)

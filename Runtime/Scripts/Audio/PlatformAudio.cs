@@ -56,13 +56,14 @@ namespace LiveKit
 #endif
 
     /// <summary>
-    /// The kind of audio output device, used for ranked routing policies on mobile
-    /// platforms (see <see cref="PlatformAudio.OutputPreference"/>).
+    /// The kind of audio device (<see cref="AudioDevice.Kind"/>). Reported for playout
+    /// devices on mobile platforms and used to rank the automatic routing policy there
+    /// (see <see cref="PlatformAudio.PlayoutPreference"/>).
     ///
-    /// The numeric values mirror the planned FFI protocol enum (AudioDeviceKind) one-to-one
+    /// The numeric values mirror the planned FFI protocol enum of the same name one-to-one
     /// so a future FFI-backed implementation maps without translation. Do not renumber.
     /// </summary>
-    public enum AudioOutputKind
+    public enum AudioDeviceKind
     {
         /// <summary>The platform did not report a device type.</summary>
         Unknown = 0,
@@ -96,13 +97,13 @@ namespace LiveKit
         /// </summary>
         public string Guid;
         /// <summary>
-        /// The kind of output this device represents. Classified by the routing backend
+        /// The kind of device this entry represents. Classified by the routing backend
         /// for playout devices — on iOS from the audio session's current route, on
         /// Android 12 (API 31) and newer from the communication-device list; <see
-        /// cref="AudioOutputKind.Unknown"/> where the platform does not report a type
+        /// cref="AudioDeviceKind.Unknown"/> where the platform does not report a type
         /// (recording devices, desktop, older Android).
         /// </summary>
-        public AudioOutputKind Kind;
+        public AudioDeviceKind Kind;
         /// <summary>
         /// Whether this device is the active output route. Reported by the routing
         /// backend for playout devices on iOS and on Android 12 (API 31) and newer;
@@ -136,7 +137,7 @@ namespace LiveKit
         private readonly PlatformAudioInfo _info;
         private readonly IRouteController _routeController;
         private readonly SynchronizationContext _syncContext;
-        private List<AudioOutputKind> _outputPreference = new List<AudioOutputKind>(DefaultOutputPreference);
+        private List<AudioDeviceKind> _playoutPreference = new List<AudioDeviceKind>(DefaultPlayoutPreference);
         private bool _disposed = false;
 #if UNITY_IOS && !UNITY_EDITOR
         // Tracks live PlatformAudio instances so the iOS audio session is restored
@@ -162,12 +163,12 @@ namespace LiveKit
         }
 #endif
 
-        private static readonly AudioOutputKind[] DefaultOutputPreference =
+        private static readonly AudioDeviceKind[] DefaultPlayoutPreference =
         {
-            AudioOutputKind.Bluetooth,
-            AudioOutputKind.WiredHeadset,
-            AudioOutputKind.Speaker,
-            AudioOutputKind.Earpiece,
+            AudioDeviceKind.Bluetooth,
+            AudioDeviceKind.WiredHeadset,
+            AudioDeviceKind.Speaker,
+            AudioDeviceKind.Earpiece,
         };
 
         /// <summary>
@@ -281,9 +282,9 @@ namespace LiveKit
         private IRouteController CreateRouteController()
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            return AndroidRouteController.Create(this, _outputPreference);
+            return AndroidRouteController.Create(this, _playoutPreference);
 #elif UNITY_IOS && !UNITY_EDITOR
-            return new IosRouteController(this, _outputPreference);
+            return new IosRouteController(this, _playoutPreference);
 #else
             return new DesktopRouteController(this);
 #endif
@@ -299,12 +300,13 @@ namespace LiveKit
         /// - iOS: the playout list is the audio session's current output route (usually
         ///   one device, with <see cref="AudioDevice.Kind"/> and
         ///   <see cref="AudioDevice.IsSelected"/> set) — iOS does not enumerate every
-        ///   reachable output device. The recording list is a single placeholder entry
-        ///   for the OS default input.
+        ///   reachable output device, and <see cref="SetPlayoutDevice(string)"/> has no
+        ///   effect there. The recording list is a single placeholder entry for the OS
+        ///   default input.
         /// - Android 12 (API 31) and newer: the playout list contains the available
         ///   communication devices with <see cref="AudioDevice.Kind"/> and
         ///   <see cref="AudioDevice.IsSelected"/> set; entries can be routed to with
-        ///   <see cref="SelectOutput"/>. The recording list stays a single placeholder
+        ///   <see cref="SetPlayoutDevice(string)"/>. The recording list stays a single placeholder
         ///   entry for the OS default input — input routing follows the selected
         ///   communication device.
         /// - Older Android: returns a single placeholder entry at index 0 for each list,
@@ -371,8 +373,8 @@ namespace LiveKit
 
         /// <summary>
         /// Ranked automatic output routing policy, most preferred first. When no explicit
-        /// output override is active (<see cref="SelectOutput"/>), the platform routes to
-        /// the highest-ranked kind that has a connected device.
+        /// output override is active (<see cref="SetPlayoutDevice(string)"/>), the platform
+        /// routes to the highest-ranked kind that has a connected device.
         ///
         /// Default: Bluetooth > WiredHeadset > Speaker > Earpiece.
         ///
@@ -383,21 +385,21 @@ namespace LiveKit
         /// the backend routes to the highest-ranked available kind on Android 12 (API 31)
         /// and newer, and kinds missing from the list are never auto-selected (when
         /// nothing ranked is available the OS default route applies). On desktop, output
-        /// is selected per device (<see cref="SelectOutput"/> /
-        /// <see cref="SetPlayoutDevice(string)"/>) and the ranking has no routing effect.
+        /// is selected per device (<see cref="SetPlayoutDevice(string)"/>) and the ranking
+        /// has no routing effect.
         /// On older Android versions (routing backend not implemented there) the value
         /// is stored and round-trips, but has no routing effect either.
         /// </summary>
         /// <exception cref="ArgumentNullException">Thrown if set to null.</exception>
         /// <exception cref="ArgumentException">
-        /// Thrown if the list contains <see cref="AudioOutputKind.Unknown"/> or duplicates.
+        /// Thrown if the list contains <see cref="AudioDeviceKind.Unknown"/> or duplicates.
         /// </exception>
-        public IReadOnlyList<AudioOutputKind> OutputPreference
+        public IReadOnlyList<AudioDeviceKind> PlayoutPreference
         {
             get
             {
                 ThrowIfDisposed();
-                return _outputPreference.AsReadOnly();
+                return _playoutPreference.AsReadOnly();
             }
             set
             {
@@ -405,93 +407,37 @@ namespace LiveKit
                 if (value == null)
                     throw new ArgumentNullException(nameof(value));
 
-                var ranked = new List<AudioOutputKind>(value.Count);
+                var ranked = new List<AudioDeviceKind>(value.Count);
                 foreach (var kind in value)
                 {
-                    if (kind == AudioOutputKind.Unknown)
+                    if (kind == AudioDeviceKind.Unknown)
                         throw new ArgumentException(
-                            "OutputPreference cannot contain AudioOutputKind.Unknown", nameof(value));
+                            "PlayoutPreference cannot contain AudioDeviceKind.Unknown", nameof(value));
                     if (ranked.Contains(kind))
                         throw new ArgumentException(
-                            $"OutputPreference contains {kind} more than once", nameof(value));
+                            $"PlayoutPreference contains {kind} more than once", nameof(value));
                     ranked.Add(kind);
                 }
 
-                _outputPreference = ranked;
-                _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
+                _playoutPreference = ranked;
+                _routeController.ApplyPlayoutPreference(_playoutPreference.AsReadOnly());
             }
         }
 
         /// <summary>
-        /// Routes audio output to the given device as a sticky override of the automatic
-        /// <see cref="OutputPreference"/> policy: the route stays on the device until
-        /// <see cref="ClearOutputOverride"/> is called. The device is matched against the
-        /// current <see cref="GetDevices"/> playout list by <see cref="AudioDevice.Guid"/>
-        /// when set, otherwise by index and name.
-        ///
-        /// Platform notes: on desktop this selects the device like
-        /// <see cref="SetPlayoutDevice(string)"/>. On Android 12 (API 31) and newer the
-        /// device is pinned as the communication device; the override is dropped once the
-        /// device disappears from the playout list (automatic policy resumes). While
-        /// session audio is disabled (<see cref="SetSessionAudioEnabled"/>) the choice is
-        /// only recorded — no pin is issued, and <see cref="GetDevices"/> /
-        /// <see cref="DevicesChanged"/> keep reporting the platform's own route — until a
-        /// call enables the session. There is deliberately no pending flag for that
-        /// deferral: the app holds both inputs (its own SelectOutput call and its own
-        /// session-enable state), so a pre-call device picker should treat its last
-        /// selection as the pending choice and confirm application through the existing
-        /// surface — once the session is enabled and the pin lands, the device's
-        /// <see cref="AudioDevice.IsSelected"/> flips in <see cref="GetDevices"/> /
-        /// <see cref="DevicesChanged"/>. A deferred choice is dropped for good when its
-        /// device disappears before the session is enabled (the same drop-on-disappear
-        /// rule as an active pin), observable as the device leaving the playout list in
-        /// the same events. On iOS the OS owns output route selection and this method
-        /// throws <see cref="NotSupportedException"/> — present the system route picker
-        /// (AVRoutePickerView) instead, or use <see cref="OutputPreference"/> for the
-        /// built-in outputs. On older Android versions (routing backend not implemented
-        /// there) this method also throws.
-        /// </summary>
-        /// <param name="device">A playout device from <see cref="GetDevices"/>.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown if the device does not match any current playout device.
-        /// </exception>
-        /// <exception cref="NotSupportedException">
-        /// Thrown on iOS (the OS owns route selection) and on Android below API 31.
-        /// </exception>
-        public void SelectOutput(AudioDevice device)
-        {
-            ThrowIfDisposed();
-            var (_, playout) = GetDevices();
-            foreach (var candidate in playout)
-            {
-                var matches = !string.IsNullOrEmpty(device.Guid)
-                    ? candidate.Guid == device.Guid
-                    : candidate.Index == device.Index && candidate.Name == device.Name;
-                if (!matches) continue;
-
-                _routeController.SelectOutput(candidate);
-                return;
-            }
-
-            throw new ArgumentException(
-                $"Device '{device.Name}' (index {device.Index}, guid {device.Guid ?? "none"}) " +
-                "is not a current playout device", nameof(device));
-        }
-
-        /// <summary>
-        /// Clears the sticky override set by <see cref="SelectOutput"/> so the automatic
-        /// <see cref="OutputPreference"/> policy applies again.
+        /// Clears the sticky override set by <see cref="SetPlayoutDevice(string)"/> so the
+        /// automatic <see cref="PlayoutPreference"/> policy applies again.
         ///
         /// Platform notes: on desktop there is no automatic policy to fall back to yet, so
         /// clearing keeps the currently selected device (no-op). On Android 12 (API 31)
         /// and newer the automatic policy re-routes immediately. On older Android
-        /// versions and on iOS no override can exist (<see cref="SelectOutput"/> throws),
-        /// so this is a no-op there.
+        /// versions and on iOS no override can exist (<see cref="SetPlayoutDevice(string)"/>
+        /// is ignored there), so this is a no-op too.
         /// </summary>
-        public void ClearOutputOverride()
+        public void ClearPlayoutDeviceSelection()
         {
             ThrowIfDisposed();
-            _routeController.ClearOutputOverride();
+            _routeController.ClearPlayoutDeviceSelection();
         }
 
         /// <summary>
@@ -583,8 +529,9 @@ namespace LiveKit
         /// Sets the playout device (speaker/headphones) by index.
         ///
         /// Convenience wrapper around <see cref="SetPlayoutDevice(string)"/> that looks
-        /// up the GUID from <see cref="GetDevices"/>. Prefer the GUID overload for code
-        /// that persists a selection — indices can shift when devices are added/removed.
+        /// up the GUID from <see cref="GetDevices"/>; see that overload for the
+        /// per-platform behavior. Prefer the GUID overload for code that persists a
+        /// selection — indices can shift when devices are added/removed.
         /// </summary>
         /// <param name="index">Device index from GetDevices().Playout</param>
         /// <exception cref="InvalidOperationException">
@@ -601,22 +548,53 @@ namespace LiveKit
         }
 
         /// <summary>
-        /// Sets the playout device (speaker/headphones) by device ID (GUID).
+        /// Routes audio output to the playout device with the given ID
+        /// (<see cref="AudioDevice.Guid"/> from <see cref="GetDevices"/>) as a sticky
+        /// override of the automatic <see cref="PlayoutPreference"/> policy: the route stays
+        /// on the device until <see cref="ClearPlayoutDeviceSelection"/> is called.
         ///
-        /// On Android and iOS this is a no-op in the native ADM: output routing is
-        /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
-        /// the call is acknowledged but ignored. The method is still safe to call,
-        /// and the response carries no error. <see cref="GetDevices"/> only exposes a
-        /// single placeholder entry (index 0) for the OS default output on these
-        /// platforms, so there is nothing else to select.
+        /// Platform notes:
+        /// - Desktop (Windows/macOS/Linux): selects the ADM playout device.
+        /// - Android 12 (API 31) and newer: pins the device as the communication device;
+        ///   the override is dropped once the device disappears from the playout list
+        ///   (automatic policy resumes). While session audio is disabled
+        ///   (<see cref="SetSessionAudioEnabled"/>) the choice is only recorded — no pin is
+        ///   issued, and <see cref="GetDevices"/> / <see cref="DevicesChanged"/> keep
+        ///   reporting the platform's own route — until a call enables the session. There
+        ///   is deliberately no pending flag for that deferral: the app holds both inputs
+        ///   (its own SetPlayoutDevice call and its own session-enable state), so a
+        ///   pre-call device picker should treat its last selection as the pending choice
+        ///   and confirm application through the existing surface — once the session is
+        ///   enabled and the pin lands, the device's <see cref="AudioDevice.IsSelected"/>
+        ///   flips in <see cref="GetDevices"/> / <see cref="DevicesChanged"/>. A deferred
+        ///   choice is dropped for good when its device disappears before the session is
+        ///   enabled (the same drop-on-disappear rule as an active pin), observable as the
+        ///   device leaving the playout list in the same events. Because the override
+        ///   shadows <see cref="PlayoutPreference"/> until cleared, do not call this at
+        ///   startup to "pick the default": let the ranking route, and call this only on
+        ///   an explicit user choice.
+        /// - iOS: no effect (a warning is logged) — the OS owns output route selection.
+        ///   Present the system route picker (AVRoutePickerView) instead, or use
+        ///   <see cref="PlayoutPreference"/> for the built-in outputs.
+        /// - Older Android: no effect (a warning is logged) — no routing backend there.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Playout[i].Guid</param>
         /// <exception cref="InvalidOperationException">
-        /// Thrown if the device is not found or the operation failed.
+        /// Thrown if the ID does not match a current playout device (desktop, Android 12+)
+        /// or the selection failed.
         /// </exception>
         public void SetPlayoutDevice(string deviceId)
         {
             ThrowIfDisposed();
+            _routeController.SetPlayoutDevice(deviceId);
+        }
+
+        /// <summary>
+        /// Playout device selection through the FFI (the ADM's own device list), used by
+        /// the desktop route controller.
+        /// </summary>
+        internal void SetPlayoutDeviceViaFfi(string deviceId)
+        {
             using var request = FFIBridge.Instance.NewRequest<SetPlayoutDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -640,7 +618,7 @@ namespace LiveKit
         /// capture — a capture opened while the prompt is pending would record silence.
         /// This turns on the system's recording privacy indicator (e.g., on macOS/iOS).
         /// On iOS this also switches the audio session to its recording state
-        /// (voice/video-chat mode per <see cref="OutputPreference"/>, enabling
+        /// (voice/video-chat mode per <see cref="PlayoutPreference"/>, enabling
         /// hardware echo cancellation).
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -715,7 +693,7 @@ namespace LiveKit
             // while it was un-owned. On Android this is also where a lazily-deferred
             // call session is first acquired (see SetSessionAudioEnabled). No-op on the
             // other backends.
-            _routeController.ApplyOutputPreference(_outputPreference.AsReadOnly());
+            _routeController.ApplyPlayoutPreference(_playoutPreference.AsReadOnly());
 
             // Ensures this method is always a valid iterator even when the PLATFORM_ANDROID
             // branch is compiled out (no `yield return` would otherwise be reachable on
@@ -774,13 +752,14 @@ namespace LiveKit
         /// On Android 12 (API 31) and newer this gates the voice-communication audio
         /// session the routing backend holds: while enabled the SDK requests
         /// <c>MODE_IN_COMMUNICATION</c> and keeps the output route pinned per
-        /// <see cref="OutputPreference"/>; while disabled it holds neither, so the OS
+        /// <see cref="PlayoutPreference"/>; while disabled it holds neither, so the OS
         /// applies its normal routing and the call session covers the call rather than
         /// the lifetime of this instance. The session is acquired lazily: despite the
         /// enabled default, creating the instance takes nothing — the first routing
         /// action while enabled takes it (calling this method with <c>true</c>, even
-        /// when already enabled; changing <see cref="OutputPreference"/>;
-        /// <see cref="SelectOutput"/>; or the <see cref="StartRecording"/> re-assert). A
+        /// when already enabled; changing <see cref="PlayoutPreference"/>;
+        /// <see cref="SetPlayoutDevice(string)"/>; or the <see cref="StartRecording"/>
+        /// re-assert). A
         /// receive-only app that never records and never touches routing therefore keeps
         /// the platform's own routing until it calls this method with <c>true</c> at its
         /// call boundary. Device enumeration and <see cref="DevicesChanged"/> keep working

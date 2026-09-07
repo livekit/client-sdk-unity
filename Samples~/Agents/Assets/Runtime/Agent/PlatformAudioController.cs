@@ -7,13 +7,13 @@ using LiveKit.Proto;
 using UnityEngine;
 
 // Drives the duplex platform audio (WebRTC ADM): captures the default microphone with
-// the configured audio processing (AEC/NS/AGC) and publishes it as a LiveKit track, and
-// selects the default playout device through which remote tracks are played back
-// automatically. Publish/Unpublish can be cycled (e.g. a mute toggle) while the ADM stays
-// alive; Dispose tears everything down in dependency order.
+// the configured audio processing (AEC/NS/AGC) and publishes it as a LiveKit track; remote
+// tracks play back through the SDK-routed output automatically. Publish/Unpublish can be
+// cycled (e.g. a mute toggle) while the ADM stays alive; Dispose tears everything down in
+// dependency order.
 //
 // Output routing is owned by the SDK: PlatformAudio routes to the best available output
-// per its ranked OutputPreference (default: Bluetooth > wired headset > speaker >
+// per its ranked PlayoutPreference (default: Bluetooth > wired headset > speaker >
 // earpiece) and keeps the route pinned across device changes while a call is in
 // progress. This controller only demonstrates the observability side by logging
 // DevicesChanged. On Android an active mic capture is what keeps the SDK's route
@@ -60,9 +60,9 @@ public sealed class PlatformAudioController : IDisposable
             return false;
 
         // The SDK routes output automatically from here on; the default
-        // PlatformAudio.OutputPreference ranking is already what a call app wants.
+        // PlatformAudio.PlayoutPreference ranking is already what a call app wants.
         // A custom ranking would be a one-liner:
-        //   _platformAudio.OutputPreference = new[] { AudioOutputKind.WiredHeadset, AudioOutputKind.Speaker };
+        //   _platformAudio.PlayoutPreference = new[] { AudioDeviceKind.WiredHeadset, AudioDeviceKind.Speaker };
         _platformAudio.DevicesChanged += OnDevicesChanged;
         AudioSettings.OnAudioConfigurationChanged += OnUnityAudioConfigurationChanged;
 
@@ -206,7 +206,10 @@ public sealed class PlatformAudioController : IDisposable
         _isRecording = false;
     }
 
-    // Sets up PlatformAudio with the default recording/playout devices.
+    // Sets up PlatformAudio with the default recording device. Output routing is left to
+    // the SDK's PlayoutPreference: SetPlayoutDevice is a sticky override on Android 12+
+    // that would shadow the ranking for the whole session, so it is reserved for an
+    // explicit user choice.
     bool InitializePlatformAudio()
     {
         try
@@ -221,8 +224,6 @@ public sealed class PlatformAudioController : IDisposable
 
             if (_platformAudio.RecordingDeviceCount > 0)
                 _platformAudio.SetRecordingDevice(0);
-            if (_platformAudio.PlayoutDeviceCount > 0)
-                _platformAudio.SetPlayoutDevice(0);
 
             return true;
         }

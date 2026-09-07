@@ -19,24 +19,24 @@ namespace LiveKit
     /// progress) and acquired by a first trigger, see the lazy-acquisition paragraph:
     /// it enters <c>MODE_IN_COMMUNICATION</c> (saving and restoring the prior mode) and
     /// keeps the output route pinned to the best device — the sticky
-    /// <see cref="SelectOutput"/> override while its device is still available, otherwise
+    /// <see cref="SetPlayoutDevice"/> override while its device is still available, otherwise
     /// the highest-ranked available kind per the current
-    /// <see cref="PlatformAudio.OutputPreference"/>. Owning the mode is what makes the
+    /// <see cref="PlatformAudio.PlayoutPreference"/>. Owning the mode is what makes the
     /// pin authoritative: without it the platform periodically reasserts its own default
     /// route (observed on Pixel 8a: Telecom flipped playout back to the earpiece every
     /// ~6 s after a Bluetooth session ended). Note that since Android 13 the mode request
     /// is only honored while the app has active voice-communication capture, so
     /// <see cref="PlatformAudio.StartRecording"/> re-asserts the policy when capture
-    /// (re)starts — through <see cref="ApplyOutputPreference"/>, which like every other
+    /// (re)starts — through <see cref="ApplyPlayoutPreference"/>, which like every other
     /// re-evaluation path pins nothing while session audio is disabled.
     ///
     /// The session is acquired lazily: construction issues no <c>setMode</c> and no pin
     /// even though session audio starts out enabled. The first trigger that needs the
     /// session while it is enabled acquires it — an explicit
     /// <see cref="SetSessionAudioEnabled"/> call with <c>true</c>, an
-    /// <see cref="ApplyOutputPreference"/> (which includes the
+    /// <see cref="ApplyPlayoutPreference"/> (which includes the
     /// <see cref="PlatformAudio.StartRecording"/> re-assert) or a
-    /// <see cref="SelectOutput"/>. Apps that disable session audio right after
+    /// <see cref="SetPlayoutDevice"/>. Apps that disable session audio right after
     /// construction therefore cause no audio-mode traffic at startup at all; the eager
     /// constructor acquisition produced a take → pin → clear transient there, and with
     /// a Bluetooth headset connected it started an asynchronous SCO activation only to
@@ -115,7 +115,7 @@ namespace LiveKit
         // Fires on a thread-pool thread, which the callback attaches to the JVM.
         private readonly System.Threading.Timer _retryTimer;
 
-        private List<AudioOutputKind> _ranked;
+        private List<AudioDeviceKind> _ranked;
         private int _stickyDeviceId = -1;
         private int _pinnedDeviceId = -1;
         // When the outstanding pin was last issued — Stopwatch ticks, monotonic, so a
@@ -147,7 +147,7 @@ namespace LiveKit
         private AudioDeviceMonitorListener _deviceMonitorListener;
         private AndroidJavaObject _audioFocusRequest;
         private bool _audioFocusEnabled;
-        private List<(int Id, AudioOutputKind Kind, bool IsSelected)> _lastSignature;
+        private List<(int Id, AudioDeviceKind Kind, bool IsSelected)> _lastSignature;
         private bool _disposed;
 
         public event Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> DevicesChanged;
@@ -158,7 +158,7 @@ namespace LiveKit
         /// this backend is built on. On those versions the routing verbs are documented
         /// no-ops/throws, matching the gate the sample hotfix carried.
         /// </summary>
-        internal static IRouteController Create(PlatformAudio owner, IReadOnlyList<AudioOutputKind> initialPreference)
+        internal static IRouteController Create(PlatformAudio owner, IReadOnlyList<AudioDeviceKind> initialPreference)
         {
             int sdkInt;
             try
@@ -177,10 +177,10 @@ namespace LiveKit
             return new AndroidRouteController(owner, initialPreference);
         }
 
-        private AndroidRouteController(PlatformAudio owner, IReadOnlyList<AudioOutputKind> initialPreference)
+        private AndroidRouteController(PlatformAudio owner, IReadOnlyList<AudioDeviceKind> initialPreference)
         {
             _owner = owner;
-            _ranked = new List<AudioOutputKind>(initialPreference);
+            _ranked = new List<AudioDeviceKind>(initialPreference);
 
             // The FFI exposes a single placeholder entry for the OS default input on
             // Android; input routing follows the communication device, so this list is
@@ -227,23 +227,33 @@ namespace LiveKit
             return (recording, playout);
         }
 
-        public void ApplyOutputPreference(IReadOnlyList<AudioOutputKind> ranked)
+        public void ApplyPlayoutPreference(IReadOnlyList<AudioDeviceKind> ranked)
         {
             lock (_gate)
             {
-                _ranked = new List<AudioOutputKind>(ranked);
+                _ranked = new List<AudioDeviceKind>(ranked);
                 AcquireSessionIfNeeded();
             }
             Reevaluate();
         }
 
-        public void SelectOutput(AudioDevice device)
+        public void SetPlayoutDevice(string deviceId)
         {
-            if (string.IsNullOrEmpty(device.Guid)
-                || !int.TryParse(device.Guid, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id))
-                throw new ArgumentException(
-                    $"Device '{device.Name}' does not carry an Android device id; " +
-                    "pass an entry from GetDevices().Playout", nameof(device));
+            // Validated against the live communication-device list so an unknown id fails
+            // per the public contract instead of being parked as a sticky id that
+            // Reevaluate would silently drop as "disappeared".
+            var found = false;
+            var id = -1;
+            foreach (var candidate in GetDevices().Playout)
+            {
+                if (candidate.Guid != deviceId) continue;
+                found = int.TryParse(candidate.Guid, NumberStyles.Integer, CultureInfo.InvariantCulture, out id);
+                break;
+            }
+            if (!found)
+                throw new InvalidOperationException(
+                    $"Playout device '{deviceId}' is not a current playout device; " +
+                    "pass the Guid of an entry from GetDevices().Playout");
 
             lock (_gate)
             {
@@ -253,7 +263,7 @@ namespace LiveKit
             Reevaluate();
         }
 
-        public void ClearOutputOverride()
+        public void ClearPlayoutDeviceSelection()
         {
             lock (_gate)
             {
@@ -307,8 +317,8 @@ namespace LiveKit
         // takes the call session (lazy acquisition — see the class doc); every later
         // call is a no-op. Routing verbs express the intent to route, which is what the
         // session exists for, so all of them funnel through here: an explicit enable,
-        // ApplyOutputPreference (including the StartRecording re-assert) and
-        // SelectOutput.
+        // ApplyPlayoutPreference (including the StartRecording re-assert) and
+        // SetPlayoutDevice.
         private void AcquireSessionIfNeeded()
         {
             if (_disposed || !_sessionAudioEnabled || _sessionAcquired)
@@ -400,7 +410,7 @@ namespace LiveKit
         /// and the retry timer run through here without acquiring anything, so none of
         /// them can resurrect a released session nor take a lazily-deferred one; the
         /// <see cref="PlatformAudio.StartRecording"/> re-assert acquires first (in
-        /// <see cref="ApplyOutputPreference"/>) and then runs through here like the
+        /// <see cref="ApplyPlayoutPreference"/>) and then runs through here like the
         /// rest.
         /// </summary>
         private void Reevaluate()
@@ -435,7 +445,7 @@ namespace LiveKit
 
                     using var available = audioManager.Call<AndroidJavaObject>("getAvailableCommunicationDevices");
                     var count = available.Call<int>("size");
-                    var devices = new List<(AndroidJavaObject Device, int Id, AudioOutputKind Kind)>(count);
+                    var devices = new List<(AndroidJavaObject Device, int Id, AudioDeviceKind Kind)>(count);
                     try
                     {
                         for (var i = 0; i < count; i++)
@@ -502,7 +512,7 @@ namespace LiveKit
                                 // the backoff applied when the platform takes a Bluetooth
                                 // pin but never acts on it.
                                 var retry = _pinnedDeviceId == target.Id && !_pinApplied
-                                    && target.Kind == AudioOutputKind.Bluetooth;
+                                    && target.Kind == AudioDeviceKind.Bluetooth;
                                 var settling = retry && ElapsedSincePinIssued() < _pinSettleTimeout;
                                 if (settling)
                                 {
@@ -592,12 +602,12 @@ namespace LiveKit
                             // apply synchronously. The arrival itself still comes through
                             // the change listener; this only bounds how long silence lasts.
                             var settlingBluetooth = _pinnedDeviceId == devices[targetIndex].Id && !_pinApplied
-                                && devices[targetIndex].Kind == AudioOutputKind.Bluetooth;
+                                && devices[targetIndex].Kind == AudioDeviceKind.Bluetooth;
                             var remaining = _pinSettleTimeout - ElapsedSincePinIssued();
                             retryIn = settlingBluetooth && remaining > TimeSpan.Zero ? remaining : RetryInterval;
                         }
 
-                        var signature = new List<(int Id, AudioOutputKind Kind, bool IsSelected)>(devices.Count);
+                        var signature = new List<(int Id, AudioDeviceKind Kind, bool IsSelected)>(devices.Count);
                         foreach (var d in devices)
                             signature.Add((d.Id, d.Kind, d.Id == selectedId));
 
@@ -649,7 +659,7 @@ namespace LiveKit
             return TimeSpan.FromSeconds((double)elapsedTicks / System.Diagnostics.Stopwatch.Frequency);
         }
 
-        private bool SignatureChanged(List<(int Id, AudioOutputKind Kind, bool IsSelected)> signature)
+        private bool SignatureChanged(List<(int Id, AudioDeviceKind Kind, bool IsSelected)> signature)
         {
             if (_lastSignature == null || _lastSignature.Count != signature.Count)
                 return true;
@@ -918,28 +928,28 @@ namespace LiveKit
             };
         }
 
-        // AudioDeviceInfo.TYPE_* to AudioOutputKind, mirroring the planned FFI mapping.
-        private static AudioOutputKind KindFromDeviceType(int deviceType)
+        // AudioDeviceInfo.TYPE_* to AudioDeviceKind, mirroring the planned FFI mapping.
+        private static AudioDeviceKind KindFromDeviceType(int deviceType)
         {
             switch (deviceType)
             {
                 case 1: // TYPE_BUILTIN_EARPIECE
-                    return AudioOutputKind.Earpiece;
+                    return AudioDeviceKind.Earpiece;
                 case 2: // TYPE_BUILTIN_SPEAKER
-                    return AudioOutputKind.Speaker;
+                    return AudioDeviceKind.Speaker;
                 case 3: // TYPE_WIRED_HEADSET
                 case 4: // TYPE_WIRED_HEADPHONES
-                    return AudioOutputKind.WiredHeadset;
+                    return AudioDeviceKind.WiredHeadset;
                 case 7: // TYPE_BLUETOOTH_SCO
                 case 26: // TYPE_BLE_HEADSET
                 case 27: // TYPE_BLE_SPEAKER
-                    return AudioOutputKind.Bluetooth;
+                    return AudioDeviceKind.Bluetooth;
                 case 22: // TYPE_USB_HEADSET
-                    return AudioOutputKind.Usb;
+                    return AudioDeviceKind.Usb;
                 case 23: // TYPE_HEARING_AID
-                    return AudioOutputKind.HearingAid;
+                    return AudioDeviceKind.HearingAid;
                 default:
-                    return AudioOutputKind.Unknown;
+                    return AudioDeviceKind.Unknown;
             }
         }
 
