@@ -83,6 +83,14 @@ So a build command is for example:
 
 `./Scripts~/build_ffi_locally.sh macos release` 
 
+### Generating UniFFI C# bindings
+
+macOS builds also regenerate the C# bindings for the UniFFI part of `liblivekit_ffi` into `Runtime/Scripts/UniFFI`. This requires [uniffi-bindgen-cs](https://github.com/NordSecurity/uniffi-bindgen-cs) at the version pinned in `Scripts~/build_ffi_locally.sh`, which must match the uniffi version used by `livekit-ffi`:
+
+`cargo install uniffi-bindgen-cs --git https://github.com/NordSecurity/uniffi-bindgen-cs --tag v0.11.0+v0.31.0`
+
+The generator is configured by `Scripts~/uniffi.toml` (C# namespace `LiveKit.Uniffi`, public API types), which the build script passes with `--config`. uniffi-bindgen-cs emits C# 10+ syntax, so the build script post-processes the output with `Scripts~/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler. Run that script on `Runtime/Scripts/UniFFI` yourself if you generated the bindings by hand.
+
 ### VSCode setup
 
 Look at the Unity-SDK.code-workspace setup for VSCode. This will use the Meet Sample as the Unity project and the Unity SDK package as two roots in a multi-root workspace and the Meet.sln as the `dotnet.defaultSolution`, enabling Rust and C# IDE support.

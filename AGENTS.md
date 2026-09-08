@@ -28,10 +28,13 @@ Scripts~/build_ffi_locally.sh <platform> [build_type]
 - **Android**: requires `cargo-ndk` and Android NDK
 - **iOS**: builds static lib (`liblivekit_ffi.a`)
 - After macOS builds, Unity must be restarted to load the new dylib
+- macOS builds also regenerate the UniFFI C# bindings in `Runtime/Scripts/UniFFI/` with `uniffi-bindgen-cs` (release tag pinned in the script; must match the uniffi version of `livekit-ffi`), configured by `Scripts~/uniffi.toml` (namespace `LiveKit.Uniffi`, public API types), and post-process them with `Scripts~/downgrade_uniffi_bindings.py` for C# 9. Runs from inside `client-sdk-rust~` because bindgen needs `cargo metadata`.
 
 ### Other scripts in `Scripts~/`
 - `download_libs.py` — downloads the prebuilt FFI binaries for all platforms; the release tag is pinned in `version.ini`
 - `generate_proto.sh` — regenerates `Runtime/Scripts/Proto/` from the protobuf definitions in `client-sdk-rust~/livekit-ffi/protocol` (requires `protoc`)
+- `uniffi.toml` — uniffi-bindgen-cs config passed via `--config` (C# namespace, access modifier); not auto-discovered, so keep it in sync with the build script
+- `downgrade_uniffi_bindings.py` — rewrites uniffi-bindgen-cs output for C# 9 in place (block-scoped namespace, inlined method-group locals, `Array.Empty<T>()` for `return []`, `IsExternalInit.cs` polyfill when records/`init` are present); idempotent, called by `build_ffi_locally.sh macos`
 - `build_docs.sh`, `prepare_release.py`, `unity_test_results_utils.py` — docs generation, release preparation, CI test-result parsing
 
 ### Run tests
@@ -60,6 +63,7 @@ The SDK wraps a Rust native library (`liblivekit_ffi`) via P/Invoke. The communi
 - `TokenSource/` — token generation/fetching helpers and MonoBehaviour component
 - `UniTask/` — optional UniTask integration (own asmdef: `livekit.unity.Runtime.UniTask.asmdef`)
 - `Internal/`, `Proto/` — FFI plumbing and generated protobuf code
+- `UniFFI/` — generated C# bindings for the UniFFI surface of `liblivekit_ffi` (namespace `LiveKit.Uniffi`; uniffi-bindgen-cs output, post-processed for C# 9)
 
 Key internal files:
 - `Internal/FFI/FFIClient.cs` — singleton managing request/response lifecycle with Rust via protobuf
@@ -69,6 +73,8 @@ Key internal files:
 
 ### Proto/Generated Code
 `Runtime/Scripts/Proto/` contains auto-generated C# from protobuf definitions in the Rust SDK. Do not edit these files manually; regenerate with `Scripts~/generate_proto.sh`.
+
+`Runtime/Scripts/UniFFI/` contains auto-generated C# from `uniffi-bindgen-cs`. Do not edit these files manually; regenerate with `Scripts~/build_ffi_locally.sh macos`, which also runs the C# 9 post-processing.
 
 ### Native Plugins
 10 platform/arch combinations in `Runtime/Plugins/ffi-{platform}-{arch}/`. These are large binary files tracked with Git LFS. The `.meta` files configure Unity platform targeting.

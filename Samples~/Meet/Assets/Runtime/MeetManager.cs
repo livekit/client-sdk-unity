@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using LiveKit;
 using LiveKit.Proto;
 using RoomOptions = LiveKit.RoomOptions;
+using LiveKit.Uniffi;
 
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
@@ -200,9 +201,7 @@ public class MeetManager : MonoBehaviour
     private void OnPublishData()
     {
         Debug.Log($"Published Data");
-        var bytes = System.Text.Encoding.Default.GetBytes("hello from unity!");
-        _room.LocalParticipant.PublishData(bytes);
-        _room.LocalParticipant.SendText("Hello from Unity, Max", "Chat");
+        Debug.Log(LivekitFfiMethods.BuildVersion());
     }
 
     #endregion

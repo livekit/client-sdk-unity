@@ -1,0 +1,7 @@
+# uniffi-bindgen-cs configuration for the C# bindings in Runtime/Scripts/UniFFI.
+# Passed via --config by build_ffi_locally.sh; keeps the Unity-specific choices out of
+# the Rust crate. Options: https://github.com/NordSecurity/uniffi-bindgen-cs/blob/main/docs/CONFIGURATION.md
+[bindings.csharp]
+namespace = "LiveKit.Uniffi"
+# Generated API types (methods class, records, enums, errors, objects) are internal by default.
+access_modifier = "public"

@@ -5,6 +5,12 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 MANIFEST="$ROOT/client-sdk-rust~/Cargo.toml"
 BASE_DST="$ROOT/Runtime/Plugins"
 BASE_TARGET="$ROOT/client-sdk-rust~/target"
+UNIFFI_OUT_DIR="$ROOT/Runtime/Scripts/UniFFI"
+UNIFFI_CONFIG="$SCRIPT_DIR/uniffi.toml"
+# uniffi-bindgen-cs release. The "+vX.Y.Z" suffix is the uniffi version it targets
+# and must match the uniffi version used by livekit-ffi in client-sdk-rust~.
+UNIFFI_BINDGEN_CS_REPO="https://github.com/NordSecurity/uniffi-bindgen-cs"
+UNIFFI_BINDGEN_CS_TAG="v0.11.0+v0.31.0"
 
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
@@ -30,6 +36,9 @@ usage() {
     echo "Build types (optional, defaults to 'debug'):"
     echo "  release     Optimized release build"
     echo "  debug       Debug build"
+    echo ""
+    echo "macOS builds also regenerate the UniFFI C# bindings in Runtime/Scripts/UniFFI"
+    echo "(requires uniffi-bindgen-cs) and post-process them for C# 9."
     exit 1
 }
 
@@ -130,17 +139,26 @@ if [ "$PLATFORM" = "ios" ] && [ "$BUILD_TYPE" = "release" ]; then
     xcrun ranlib "$SRC"
 fi
 
+# Copy a built artifact into the package by writing a temp file next to the
+# destination and renaming it into place, instead of overwriting in place.
+# macOS caches code-signature state per inode: overwriting a signed dylib that a
+# running Unity editor still has mapped makes every later load of that path die
+# with SIGKILL "Code Signature Invalid" until the file gets a new inode.
+install_file() {
+    local src="$1" dst="$2" tmp="$2.tmp"
+    if ! cp -f "$src" "$tmp" || ! mv -f "$tmp" "$dst"; then
+        rm -f "$tmp"
+        return 1
+    fi
+}
+
 # Copy the built lib
 echo ""
 echo "Copying to $DST..."
-cp -f "$SRC" "$DST"
+install_file "$SRC" "$DST"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Copied $(basename "$DST") successfully.${RESET}"
-    if [ "$PLATFORM" = "macos" ]; then
-        echo ""
-        echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"
-    fi
 else
     echo -e "${RED}Failed to copy $(basename "$DST"). Check that the source file exists and the destination directory is writable.${RESET}"
     exit 1
@@ -150,7 +168,7 @@ fi
 if [ "$PLATFORM" = "android" ]; then
     echo ""
     echo "Copying to $JAR_DST..."
-    cp -f "$JAR_SRC" "$JAR_DST"
+    install_file "$JAR_SRC" "$JAR_DST"
 
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}Copied $(basename "$JAR_DST") successfully.${RESET}"
@@ -158,4 +176,43 @@ if [ "$PLATFORM" = "android" ]; then
         echo -e "${RED}Failed to copy $(basename "$JAR_DST"). Check that the source file exists and the destination directory is writable.${RESET}"
         exit 1
     fi
+fi
+
+# For macOS, regenerate the UniFFI C# bindings from the freshly built dylib and
+# post-process them for C# 9 (Unity). uniffi-bindgen-cs resolves the crate config
+# via `cargo metadata`, so it has to run from inside the Rust workspace.
+if [ "$PLATFORM" = "macos" ]; then
+    echo ""
+    if ! command -v uniffi-bindgen-cs > /dev/null 2>&1; then
+        echo -e "${YELLOW}uniffi-bindgen-cs not found, skipping C# binding generation. Install it with:${RESET}"
+        echo "  cargo install uniffi-bindgen-cs --git $UNIFFI_BINDGEN_CS_REPO --tag $UNIFFI_BINDGEN_CS_TAG"
+    else
+        INSTALLED_TAG="v$(uniffi-bindgen-cs --version | awk '{print $2}')"
+        if [ "$INSTALLED_TAG" != "$UNIFFI_BINDGEN_CS_TAG" ]; then
+            echo -e "${YELLOW}WARNING: uniffi-bindgen-cs $INSTALLED_TAG is installed, expected $UNIFFI_BINDGEN_CS_TAG (must match the uniffi version of livekit-ffi).${RESET}"
+        fi
+
+        echo "Generating C# bindings into $UNIFFI_OUT_DIR..."
+        mkdir -p "$UNIFFI_OUT_DIR"
+        pushd "$ROOT/client-sdk-rust~" > /dev/null
+        uniffi-bindgen-cs --library "$SRC" --config "$UNIFFI_CONFIG" --out-dir "$UNIFFI_OUT_DIR"
+        BINDGEN_STATUS=$?
+        popd > /dev/null
+
+        if [ $BINDGEN_STATUS -ne 0 ]; then
+            echo -e "${RED}uniffi-bindgen-cs failed.${RESET}"
+            exit 1
+        fi
+
+        # uniffi-bindgen-cs exits 0 without writing anything if the lib carries no UniFFI metadata
+        if [ -z "$(find "$UNIFFI_OUT_DIR" -maxdepth 1 -name '*.cs' -newer "$SRC")" ]; then
+            echo -e "${YELLOW}WARNING: No bindings were written. $(basename "$SRC") contains no UniFFI metadata; is client-sdk-rust~ on a commit where livekit-ffi exports UniFFI?${RESET}"
+        else
+            python3 "$SCRIPT_DIR/downgrade_uniffi_bindings.py" "$UNIFFI_OUT_DIR" || exit 1
+            echo -e "${GREEN}Generated C# bindings successfully.${RESET}"
+        fi
+    fi
+
+    echo ""
+    echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"
 fi
