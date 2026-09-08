@@ -129,7 +129,7 @@ namespace LiveKit.PlayModeTests
             StringAssert.StartsWith("RM_", context.Rooms[0].Sid);
         }
 
-        [UnityTest, Category("E2E"), Ignore("Known issue")]
+        [UnityTest, Category("E2E")]
         public IEnumerator ConnectionState_IsConnected()
         {
             using var context = new TestRoomContext();
@@ -232,7 +232,7 @@ namespace LiveKit.PlayModeTests
             if (expectation.Error != null) Assert.Fail(expectation.Error);
         }
 
-        [UnityTest, Category("E2E"), Ignore("Known issue")]
+        [UnityTest, Category("E2E")]
         public IEnumerator Disconnect_TriggersEvent()
         {
             using var context = new TestRoomContext();
@@ -267,5 +267,56 @@ namespace LiveKit.PlayModeTests
             yield return expectation.Wait();
             if (expectation.Error != null) Assert.Fail(expectation.Error);
         }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator Disconnect_ReportsClientInitiated_Once()
+        {
+            using var context = new TestRoomContext();
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            var room = context.Rooms[0];
+
+            var disconnected = 0;
+            DisconnectReason? reason = null;
+            room.Disconnected += _ => disconnected++;
+            room.DisconnectedWithReason += (_, r) => reason = r;
+
+            room.Disconnect();
+
+            // Reported synchronously: no frame has to pass for a hang-up to be observable.
+            Assert.AreEqual(1, disconnected);
+            Assert.AreEqual(DisconnectReason.ClientInitiated, reason);
+            Assert.AreEqual(DisconnectReason.ClientInitiated, room.DisconnectReason);
+            Assert.AreEqual(ConnectionState.ConnDisconnected, room.ConnectionState);
+            Assert.IsFalse(room.IsConnected);
+
+            // A second Disconnect (TestRoomContext.Dispose issues one too) reports nothing.
+            room.Disconnect();
+            Assert.AreEqual(1, disconnected);
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator Disconnect_FromDisconnectedHandler_ReportsOnce()
+        {
+            using var context = new TestRoomContext();
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            var room = context.Rooms[0];
+
+            var disconnected = 0;
+            room.Disconnected += r =>
+            {
+                disconnected++;
+                // A teardown handler that hangs up "to be sure" must not re-report.
+                r.Disconnect();
+            };
+
+            // Dispose is a disconnect too.
+            room.Dispose();
+
+            Assert.AreEqual(1, disconnected);
+            Assert.IsFalse(room.IsConnected);
+        }
+
     }
 }

@@ -208,6 +208,8 @@ IEnumerator ConnectToRoom()
 }
 ```
 
+Subscribe to `room.Disconnected` (or `room.DisconnectedWithReason`) for your teardown: it is raised for server-side disconnects and, with `DisconnectReason.ClientInitiated`, for your own `room.Disconnect()` or `Dispose()` as well, so one handler covers both. `room.ConnectionStateChanged` reports the same transitions, and `room.IsConnected` is true from the moment `Connected` is raised.
+
 ### Video
 
 #### Publishing a texture (e.g Unity Camera)

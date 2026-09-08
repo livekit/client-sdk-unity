@@ -113,6 +113,11 @@ namespace LiveKit
     {
         internal FfiHandle RoomHandle = null;
         private bool _disposed = false;
+        // Set once the disconnect has been reported to the app (Disconnected /
+        // DisconnectedWithReason raised) by whichever path got there first: the remote
+        // Disconnected event, a panic, or a local Disconnect(). Keeps the report to
+        // exactly one per room, also when a handler calls Disconnect() re-entrantly.
+        private bool _disconnectReported;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
 
@@ -190,9 +195,19 @@ namespace LiveKit
             return instruction;
         }
 
+        /// <summary>
+        /// Disconnects from the room. Like the other LiveKit SDKs, a local disconnect is
+        /// reported through <see cref="ConnectionStateChanged"/>, <see cref="Disconnected"/>
+        /// and <see cref="DisconnectedWithReason"/> with
+        /// <see cref="DisconnectReason.ClientInitiated"/> — synchronously, before the
+        /// room's resources are released — so one teardown path covers hang-ups and
+        /// server-side disconnects alike. <see cref="Dispose"/> goes through here too.
+        /// Calling this from a Disconnected handler, or on a room that already reported
+        /// its disconnect, is a no-op.
+        /// </summary>
         public void Disconnect()
         {
-            if (_disposed || RoomHandle == null)
+            if (_disposed || _disconnectReported || RoomHandle == null)
                 return;
             var (response, _) = FFIBridge.Instance.SendDisconnectRequest(this);
             using (response)
@@ -200,10 +215,38 @@ namespace LiveKit
                 Utils.Debug($"Disconnect.... {RoomHandle}");
                 Utils.Debug($"Disconnect response.... {response}");
             }
+            // The Rust core reports its own close as a ClientInitiated Disconnected event,
+            // but Cleanup below unsubscribes this room from FFI events before that event
+            // could arrive, so the wrapper reports it itself — ahead of Cleanup, so
+            // handlers still find the room intact, as they do on a server-side disconnect.
+            ReportDisconnected(DisconnectReason.ClientInitiated);
             // Release the Rust-side room synchronously. Without this the FfiRoom
             // (peer connection, signaling client, libwebrtc state) lingers in the
             // FFI handle table until the SafeHandle finalizer runs.
             Cleanup();
+        }
+
+        private void ReportDisconnected(DisconnectReason reason)
+        {
+            if (_disconnectReported)
+                return;
+            _disconnectReported = true;
+            DisconnectReason = reason;
+            SetConnectionState(ConnectionState.ConnDisconnected);
+            Disconnected?.Invoke(this);
+            DisconnectedWithReason?.Invoke(this, reason);
+        }
+
+        // Records a connection-state transition and raises ConnectionStateChanged for it.
+        // A repeat of the current state is dropped, so a transition this wrapper records
+        // itself (Connected in OnConnect, Disconnected in ReportDisconnected) and the same
+        // transition arriving from the Rust core are reported once.
+        private void SetConnectionState(ConnectionState state)
+        {
+            if (ConnectionState == state)
+                return;
+            ConnectionState = state;
+            ConnectionStateChanged?.Invoke(state);
         }
 
         public void Dispose()
@@ -542,13 +585,10 @@ namespace LiveKit
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
-                    ConnectionState = e.ConnectionStateChanged.State;
-                    ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
+                    SetConnectionState(e.ConnectionStateChanged.State);
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
-                    DisconnectReason = e.Disconnected.Reason;
-                    Disconnected?.Invoke(this);
-                    DisconnectedWithReason?.Invoke(this, DisconnectReason);
+                    ReportDisconnected(e.Disconnected.Reason);
                     OnDisconnect();
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
@@ -613,6 +653,11 @@ namespace LiveKit
                 using var readyResponse = readyRequest.Send();
             }
 
+            // The Rust core recorded this transition during connect, before this room was
+            // subscribed to its events; record it here so IsConnected is true from the
+            // moment Connected is raised. The core's own copy of the event, if it still
+            // arrives, is dropped as a repeat.
+            SetConnectionState(ConnectionState.ConnConnected);
             Connected?.Invoke(this);
         }
 
@@ -628,9 +673,7 @@ namespace LiveKit
             // room could silently stop receiving events (including Disconnected
             // itself), so the panic is surfaced through the disconnect path apps
             // already handle.
-            DisconnectReason = DisconnectReason.UnknownReason;
-            Disconnected?.Invoke(this);
-            DisconnectedWithReason?.Invoke(this, DisconnectReason);
+            ReportDisconnected(DisconnectReason.UnknownReason);
             OnDisconnect();
         }
 
