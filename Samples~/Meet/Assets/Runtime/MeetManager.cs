@@ -131,16 +131,13 @@ public class MeetManager : MonoBehaviour
     private void OnDestroy()
     {
         // Without this, scene change / app quit while connected leaves all tracks,
-        // streams, and their backing GPU/native resources allocated.
-        if (_room != null)
-        {
-            _room.Disconnect();
-            _room = null;
-        }
+        // streams, and their backing GPU/native resources allocated. Disconnect reports
+        // back through OnDisconnected, which tears the call down; CleanUpAllTracks after
+        // it covers anything created without a room.
+        _room?.Disconnect();
         CleanUpAllTracks();
         _webCamTexture?.Stop();
         _platformAudioController?.Dispose();
-        _room?.Disconnect();
     }
 
     #endregion
@@ -154,27 +151,9 @@ public class MeetManager : MonoBehaviour
 
     private void OnEndCall()
     {
-        if (_room == null) return;
-
-        // Disable call audio while keeping the app-owned audio session active, so
-        // Unity audio (e.g. background music) survives the hang-up on iOS.
-        if (usePlatformAudio)
-            _platformAudioController?.SetSessionAudioEnabled(false);
-
-        _room.Disconnect();
-        TeardownCall();
-    }
-
-    // Shared end-of-call teardown: stops the mic capture and the tracks
-    // (CleanUpAllTracks) and resets the call state and UI. Every part is safe to run
-    // twice — OnEndCall's own Disconnect can also raise OnDisconnected.
-    private void TeardownCall()
-    {
-        CleanUpAllTracks();
-        _room = null;
-        _localId = null;
-        if (buttonBar != null)
-            buttonBar.SetConnected(false);
+        // The SDK reports a local disconnect through OnDisconnected (with
+        // DisconnectReason.ClientInitiated), which owns the teardown.
+        _room?.Disconnect();
     }
 
     private void OnToggleCamera()
@@ -450,19 +429,27 @@ public class MeetManager : MonoBehaviour
         DestroyParticipantTile(participant.Identity);
     }
 
+    // The one teardown path: raised for the hang-up button, a server-side disconnect
+    // (kick, room deleted, token expiry) and the scene going away (OnDestroy) alike,
+    // synchronously and with the room's handles still live.
     private void OnDisconnected(Room room)
     {
         Debug.Log($"Disconnected from room: {room.DisconnectReason}");
 
-        // Covers server-initiated disconnects (kick, room deleted, token expiry) as
-        // well as OnEndCall. Stopping the capture here matters: it is deliberately
-        // kept running across mute cycles, so without the teardown a server-side
-        // disconnect would leave the microphone recording — indicator on — with no
-        // call to feed. The audio session itself stays active for Unity.
+        // Disable call audio while keeping the app-owned audio session active, so
+        // Unity audio (e.g. background music) survives the hang-up on iOS.
         if (usePlatformAudio)
             _platformAudioController?.SetSessionAudioEnabled(false);
 
-        TeardownCall();
+        // Stopping the capture here matters: it is deliberately kept running across
+        // mute cycles, so without this teardown a server-side disconnect would leave
+        // the microphone recording — indicator on — with no call to feed.
+        CleanUpAllTracks();
+        _room = null;
+        _localId = null;
+        // Destroyed already when this runs from OnDestroy during a scene unload.
+        if (buttonBar != null)
+            buttonBar.SetConnected(false);
     }
 
     private void OnTrackMuted(TrackPublication publication, Participant participant)
