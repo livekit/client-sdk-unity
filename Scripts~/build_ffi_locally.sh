@@ -6,7 +6,7 @@ MANIFEST="$ROOT/client-sdk-rust~/Cargo.toml"
 BASE_DST="$ROOT/Runtime/Plugins"
 BASE_TARGET="$ROOT/client-sdk-rust~/target"
 UNIFFI_OUT_DIR="$ROOT/Runtime/Scripts/UniFFI"
-UNIFFI_CONFIG="$SCRIPT_DIR/uniffi.toml"
+UNIFFI_CONFIG="$SCRIPT_DIR/uniffi/uniffi.toml"
 # uniffi-bindgen-cs release. The "+vX.Y.Z" suffix is the uniffi version it targets
 # and must match the uniffi version used by livekit-ffi in client-sdk-rust~.
 UNIFFI_BINDGEN_CS_REPO="https://github.com/NordSecurity/uniffi-bindgen-cs"
@@ -208,7 +208,7 @@ if [ "$PLATFORM" = "macos" ]; then
         if [ -z "$(find "$UNIFFI_OUT_DIR" -maxdepth 1 -name '*.cs' -newer "$SRC")" ]; then
             echo -e "${YELLOW}WARNING: No bindings were written. $(basename "$SRC") contains no UniFFI metadata; is client-sdk-rust~ on a commit where livekit-ffi exports UniFFI?${RESET}"
         else
-            python3 "$SCRIPT_DIR/downgrade_uniffi_bindings.py" "$UNIFFI_OUT_DIR" || exit 1
+            python3 "$SCRIPT_DIR/uniffi/downgrade_uniffi_bindings.py" "$UNIFFI_OUT_DIR" || exit 1
             echo -e "${GREEN}Generated C# bindings successfully.${RESET}"
         fi
     fi

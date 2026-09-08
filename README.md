@@ -89,7 +89,7 @@ macOS builds also regenerate the C# bindings for the UniFFI part of `liblivekit_
 
 `cargo install uniffi-bindgen-cs --git https://github.com/NordSecurity/uniffi-bindgen-cs --tag v0.11.0+v0.31.0`
 
-The generator is configured by `Scripts~/uniffi.toml` (C# namespace `LiveKit.Uniffi`, public API types), which the build script passes with `--config`. uniffi-bindgen-cs emits C# 10+ syntax, so the build script post-processes the output with `Scripts~/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler. Run that script on `Runtime/Scripts/UniFFI` yourself if you generated the bindings by hand.
+The generator is configured by `Scripts~/uniffi/uniffi.toml` (C# namespace `LiveKit.Uniffi`, public API types), which the build script passes with `--config`. uniffi-bindgen-cs emits C# 10+ syntax, so the build script post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler. Run that script on `Runtime/Scripts/UniFFI` yourself if you generated the bindings by hand.
 
 ### VSCode setup
 
