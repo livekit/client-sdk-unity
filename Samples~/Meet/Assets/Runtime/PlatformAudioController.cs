@@ -23,9 +23,9 @@ using UnityEngine;
 // across mute cycles until StopCapture when the call ends. See StartCapture and
 // Unpublish.
 //
-// The call audio session itself is gated by SetSessionAudioEnabled: the ADM is created
-// once at app start and kept alive, but the platform's call session is only held for the
-// duration of a call. See Initialize and SetSessionAudioEnabled.
+// The ADM is created once at app start and kept alive across calls; the platform's call
+// audio session itself is held by the SDK only while a Room is connected, so nothing
+// here has to track call boundaries.
 public sealed class PlatformAudioController : IDisposable
 {
     readonly string _trackName;
@@ -65,17 +65,6 @@ public sealed class PlatformAudioController : IDisposable
         //   _platformAudio.PlayoutPreference = new[] { AudioDeviceKind.WiredHeadset, AudioDeviceKind.Speaker };
         _platformAudio.DevicesChanged += OnDevicesChanged;
         AudioSettings.OnAudioConfigurationChanged += OnUnityAudioConfigurationChanged;
-
-        // Session audio defaults to enabled, so declare "no call yet" right away: the
-        // platform's call audio session should only be held while a call is actually in
-        // progress — enabled means "in a call". On iOS this drops the session to its
-        // music-friendly idle state; on Android — where the session is only taken by
-        // the first action that needs it, never by construction — it keeps a later
-        // routing action from taking the call session outside a call. The caller must
-        // re-enable it when its call starts and disable it again when the call ends
-        // (MeetManager does so on join/leave, LiveKitAgentSession around
-        // Connect/EndSession).
-        _platformAudio.SetSessionAudioEnabled(false);
         return true;
     }
 
@@ -174,17 +163,6 @@ public sealed class PlatformAudioController : IDisposable
 
         _source?.Dispose();
         _source = null;
-    }
-
-    // Gates the platform's call audio session: enabled means a call is in progress.
-    // On iOS it switches WebRTC's VPIO unit on/off while the app keeps ownership of the
-    // audio session, on Android 12+ it takes and releases the communication mode plus
-    // the SDK's output route pin — both so other Unity audio (e.g. background music)
-    // keeps playing outside a call. Call with true after joining a room and false when
-    // leaving it; Initialize() already disabled it for the idle app.
-    public void SetSessionAudioEnabled(bool enabled)
-    {
-        _platformAudio?.SetSessionAudioEnabled(enabled);
     }
 
     // Stops the microphone capture if it is running. Only call this once the call has

@@ -230,13 +230,6 @@ public class MeetManager : MonoBehaviour
         _localId = _room.LocalParticipant.Identity;
         buttonBar.SetConnected(true);
 
-        // Enable call audio now that we're in a room. On iOS this turns on WebRTC's
-        // VPIO unit while the app keeps ownership of the audio session; leaving the
-        // room disables it again (see OnEndCall / OnDisconnected) so other Unity
-        // audio keeps playing.
-        if (usePlatformAudio)
-            _platformAudioController?.SetSessionAudioEnabled(true);
-
 #if UNITY_ANDROID && !UNITY_EDITOR
         // Keep the mic capture running for the whole call, even while muted: without
         // an active capture Android treats the communication-mode request as inactive
@@ -436,14 +429,11 @@ public class MeetManager : MonoBehaviour
     {
         Debug.Log($"Disconnected from room: {room.DisconnectReason}");
 
-        // Disable call audio while keeping the app-owned audio session active, so
-        // Unity audio (e.g. background music) survives the hang-up on iOS.
-        if (usePlatformAudio)
-            _platformAudioController?.SetSessionAudioEnabled(false);
-
         // Stopping the capture here matters: it is deliberately kept running across
         // mute cycles, so without this teardown a server-side disconnect would leave
-        // the microphone recording — indicator on — with no call to feed.
+        // the microphone recording — indicator on — with no call to feed. The SDK has
+        // already released the platform's call audio session by the time this runs;
+        // Unity's own audio keeps playing.
         CleanUpAllTracks();
         _room = null;
         _localId = null;

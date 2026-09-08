@@ -119,6 +119,14 @@ namespace LiveKit
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
 
+        // How many rooms are connected right now, across all instances. SDK components
+        // whose platform state follows "a call is in progress" — PlatformAudio's call
+        // audio session — subscribe to ConnectedRoomCountChanged instead of asking the
+        // app to signal its call boundaries. Maintained by SetConnectionState, the one
+        // place every connection-state transition goes through, on the Unity main thread.
+        internal static int ConnectedRoomCount { get; private set; }
+        internal static event Action<int> ConnectedRoomCountChanged;
+
         public delegate void MetaDelegate(string metaData);
         public delegate void ParticipantDelegate(Participant participant);
         public delegate void RemoteParticipantDelegate(RemoteParticipant participant);
@@ -291,12 +299,22 @@ namespace LiveKit
         // A repeat of the current state is dropped: the core's own ConnectionStateChanged
         // (Connected) is queued behind the connect callback and drains one event pass
         // after OnConnect recorded the transition, so this check is what keeps every
-        // connect to a single Connected report.
+        // connect to a single Connected report. The connected-room count is kept here
+        // too: a room counts while it is anything but ConnDisconnected, so a reconnect
+        // in progress still counts as a call, and the count moves before the public
+        // event so SDK components have settled by the time app handlers run.
         private void SetConnectionState(ConnectionState state)
         {
             if (ConnectionState == state)
                 return;
+            var wasConnected = ConnectionState != ConnectionState.ConnDisconnected;
             ConnectionState = state;
+            var isConnected = state != ConnectionState.ConnDisconnected;
+            if (isConnected != wasConnected)
+            {
+                ConnectedRoomCount += isConnected ? 1 : -1;
+                ConnectedRoomCountChanged?.Invoke(ConnectedRoomCount);
+            }
             ConnectionStateChanged?.Invoke(state);
         }
 

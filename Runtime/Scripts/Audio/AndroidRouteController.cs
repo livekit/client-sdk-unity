@@ -15,7 +15,8 @@ namespace LiveKit
     /// <c>setCommunicationDevice</c> / <c>clearCommunicationDevice</c>.
     ///
     /// The controller owns the voice-communication audio session while it holds it —
-    /// session audio enabled (<see cref="SetSessionAudioEnabled"/> — i.e. a call is in
+    /// session audio enabled (<see cref="SetSessionAudioEnabled"/>, which
+    /// <see cref="PlatformAudio"/> drives from Room connections — i.e. a call is in
     /// progress) and acquired by a first trigger, see the lazy-acquisition paragraph:
     /// it enters <c>MODE_IN_COMMUNICATION</c> (saving and restoring the prior mode) and
     /// keeps the output route pinned to the best device — the sticky
@@ -36,14 +37,15 @@ namespace LiveKit
     /// <see cref="SetSessionAudioEnabled"/> call with <c>true</c>, an
     /// <see cref="ApplyPlayoutPreference"/> (which includes the
     /// <see cref="PlatformAudio.StartRecording"/> re-assert) or a
-    /// <see cref="SetPlayoutDevice"/>. Apps that disable session audio right after
-    /// construction therefore cause no audio-mode traffic at startup at all; the eager
+    /// <see cref="SetPlayoutDevice"/>. <see cref="PlatformAudio"/> disables session
+    /// audio right after construction unless a Room is already connected, so creating
+    /// an instance outside a call causes no audio-mode traffic at all; the eager
     /// constructor acquisition produced a take → pin → clear transient there, and with
     /// a Bluetooth headset connected it started an asynchronous SCO activation only to
-    /// clear it mid-negotiation. The exposure is a receive-only app that never records,
-    /// never touches routing and never calls <see cref="SetSessionAudioEnabled"/>: it
-    /// no longer gets the mode and pin from construction, and opts back in by calling
-    /// <see cref="SetSessionAudioEnabled"/> with <c>true</c> at its call boundary.
+    /// clear it mid-negotiation. The explicit enable PlatformAudio issues when the
+    /// first Room connects acquires the session even when nothing else has needed it
+    /// yet, so a receive-only app that never records and never touches routing still
+    /// gets the mode and pin for its call.
     ///
     /// While the session is not held — session audio disabled, or enabled but nothing
     /// has needed it yet — it belongs to the platform (communication device cleared,
@@ -125,8 +127,8 @@ namespace LiveKit
         private long _pinIssuedAtTimestamp;
         private bool _pinApplied;
         private TimeSpan _pinSettleTimeout = PinSettleTimeout;
-        // Session audio starts enabled, matching the documented default of
-        // PlatformAudio.SetSessionAudioEnabled (uniform with iOS).
+        // Starts enabled; PlatformAudio sets the real state — whether a Room is
+        // connected — right after construction (uniform with iOS).
         private bool _sessionAudioEnabled = true;
         // Whether this controller currently holds the call session (mode entered, pin
         // allowed). Never true while _sessionAudioEnabled is false. Acquisition is
@@ -280,8 +282,9 @@ namespace LiveKit
         /// clears the pin and restores the mode this controller replaced. An explicit
         /// enable acquires the session even when the state was already enabled — the
         /// lazy default means "enabled but nothing has needed the session yet" is a real
-        /// state, and this call is the documented way for a receive-only app to take the
-        /// session at its call boundary. Disabling before anything acquired the session
+        /// state, and the enable <see cref="PlatformAudio"/> issues when the first Room
+        /// connects is what takes the session for a receive-only app that never records
+        /// or touches routing. Disabling before anything acquired the session
         /// releases nothing: there is nothing to release, and issuing a clear/restore
         /// there would be exactly the startup transient lazy acquisition removes.
         /// The ranked preference survives the transition unconditionally. The sticky

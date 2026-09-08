@@ -241,7 +241,6 @@ namespace LiveKit.PlayModeTests
             Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice((uint)0));
             Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice(""));
             Assert.Throws<ObjectDisposedException>(() => platformAudio.StopRecording());
-            Assert.Throws<ObjectDisposedException>(() => platformAudio.SetSessionAudioEnabled(true));
 
             // StartRecording is an iterator method: the guard throws on the first MoveNext.
             var start = platformAudio.StartRecording();

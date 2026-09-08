@@ -147,12 +147,12 @@ namespace LiveKit
         // Inputs of the iOS session-state machine (see the state table in
         // LiveKitAudioSession.mm). PlatformAudio is the driver because it is the one
         // that knows both: whether recording is active (its own StartRecording/
-        // StopRecording calls) and whether call audio is wanted (SetSessionAudioEnabled).
+        // StopRecording calls) and whether call audio is wanted (a Room is connected).
         private const int IosSessionStateIdle = 0;
         private const int IosSessionStatePlayoutOnly = 1;
         private const int IosSessionStateRecording = 2;
         private bool _iosRecordingActive;
-        private bool _iosSessionAudioEnabled = true;
+        private bool _iosSessionAudioEnabled;
 
         private void UpdateIosSessionState()
         {
@@ -210,20 +210,18 @@ namespace LiveKit
         /// On iOS, this automatically configures the audio session for VoIP use and
         /// takes app ownership of it. The session's mode follows the call state: a
         /// voice/video-chat mode (enabling hardware echo cancellation) while recording
-        /// is active, and a music-friendly default mode otherwise (see
-        /// <see cref="StartRecording"/> / <see cref="StopRecording"/> /
-        /// <see cref="SetSessionAudioEnabled"/>).
+        /// is active, a music-friendly default mode while a call is connected without
+        /// recording, and an idle state — WebRTC's voice-processing unit off — outside
+        /// a call (see <see cref="StartRecording"/> / <see cref="StopRecording"/>).
         ///
-        /// Session audio starts out enabled on every platform, but on Android the call
-        /// session itself is acquired lazily: construction changes no audio mode and
-        /// pins no route — the first routing action while session audio is enabled
-        /// takes the session (an explicit <see cref="SetSessionAudioEnabled"/> enable,
-        /// an output preference or selection change, or the <see cref="StartRecording"/>
-        /// re-assert). Apps that create PlatformAudio before their first call should
-        /// still call <see cref="SetSessionAudioEnabled"/> with <c>false</c> right
-        /// after construction and enable it when a call starts, so the call session
-        /// covers calls rather than the app's lifetime — on iOS that is also what keeps
-        /// the idle session in its music-friendly state.
+        /// The platform's call audio session follows <see cref="Room"/> connections
+        /// automatically: it is held while at least one Room is connected and released
+        /// when the last one disconnects, so an instance created at app start — the
+        /// usual pattern, to keep a single ADM alive across calls — holds no call
+        /// session until a call actually starts. On Android 12+ that session is
+        /// <c>MODE_IN_COMMUNICATION</c> plus the output route pin per
+        /// <see cref="PlayoutPreference"/>; on iOS it is WebRTC's voice-processing
+        /// unit. Construction itself changes no audio mode and pins no route.
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// Thrown if the platform ADM could not be initialized (e.g., no audio devices,
@@ -254,17 +252,20 @@ namespace LiveKit
                 _routeController = CreateRouteController();
                 _routeController.DevicesChanged += OnRouteControllerDevicesChanged;
 
-#if UNITY_IOS && !UNITY_EDITOR
-                // A fresh instance starts in the playout-only state (recording has not
-                // been started); this matches the plugin's post-configure default, so the
-                // call is a no-op unless an earlier instance left another state behind.
-                UpdateIosSessionState();
-#endif
+                // The call audio session follows Room connections from here on. Applied
+                // unconditionally: an instance created while a room is already connected
+                // takes the session right away (on Android the explicit take is what
+                // acquires the lazily-held session), and one created outside a call
+                // drops to the idle state — on iOS out of the plugin's post-configure
+                // "audio enabled" default.
+                Room.ConnectedRoomCountChanged += OnConnectedRoomCountChanged;
+                ApplySessionAudio(Room.ConnectedRoomCount > 0);
             }
             catch
             {
                 // Without this, a route-controller failure would leak the FFI handle
                 // until the SafeHandle finalizer eventually reclaims it.
+                Room.ConnectedRoomCountChanged -= OnConnectedRoomCountChanged;
                 _routeController?.Dispose();
                 Handle.Dispose();
                 throw;
@@ -557,15 +558,15 @@ namespace LiveKit
         /// - Desktop (Windows/macOS/Linux): selects the ADM playout device.
         /// - Android 12 (API 31) and newer: pins the device as the communication device;
         ///   the override is dropped once the device disappears from the playout list
-        ///   (automatic policy resumes). While session audio is disabled
-        ///   (<see cref="SetSessionAudioEnabled"/>) the choice is only recorded — no pin is
-        ///   issued, and <see cref="GetDevices"/> / <see cref="DevicesChanged"/> keep
-        ///   reporting the platform's own route — until a call enables the session. There
-        ///   is deliberately no pending flag for that deferral: the app holds both inputs
-        ///   (its own SetPlayoutDevice call and its own session-enable state), so a
-        ///   pre-call device picker should treat its last selection as the pending choice
-        ///   and confirm application through the existing surface — once the session is
-        ///   enabled and the pin lands, the device's <see cref="AudioDevice.IsSelected"/>
+        ///   (automatic policy resumes). While no <see cref="Room"/> is connected the
+        ///   choice is only recorded — no pin is issued, and <see cref="GetDevices"/> /
+        ///   <see cref="DevicesChanged"/> keep reporting the platform's own route — until
+        ///   a room connects and the SDK takes the call session. There is deliberately no
+        ///   pending flag for that deferral: the app holds both inputs (its own
+        ///   SetPlayoutDevice call and its own room connection), so a pre-call device
+        ///   picker should treat its last selection as the pending choice and confirm
+        ///   application through the existing surface — once the room is connected and
+        ///   the pin lands, the device's <see cref="AudioDevice.IsSelected"/>
         ///   flips in <see cref="GetDevices"/> / <see cref="DevicesChanged"/>. A deferred
         ///   choice is dropped for good when its device disappears before the session is
         ///   enabled (the same drop-on-disappear rule as an active pin), observable as the
@@ -690,9 +691,7 @@ namespace LiveKit
             // the app's MODE_IN_COMMUNICATION request — and with it the
             // communication-device pin — is only honored while the app has active
             // voice-communication capture, so the platform may have moved the route
-            // while it was un-owned. On Android this is also where a lazily-deferred
-            // call session is first acquired (see SetSessionAudioEnabled). No-op on the
-            // other backends.
+            // while it was un-owned. No-op on the other backends.
             _routeController.ApplyPlayoutPreference(_playoutPreference.AsReadOnly());
 
             // Ensures this method is always a valid iterator even when the PLATFORM_ANDROID
@@ -734,54 +733,70 @@ namespace LiveKit
         }
 
         /// <summary>
-        /// Signals whether call audio should be active on the platform audio session,
-        /// i.e. whether a call is in progress. Enabled by default when PlatformAudio is
-        /// created, so it only needs to be called to <c>false</c> when leaving a room
-        /// (and back to <c>true</c> when rejoining) — but an app that creates
-        /// PlatformAudio well before its first call (e.g. at startup, to keep the ADM
-        /// alive) should disable it right after creation, so the platform's call audio
-        /// session is only held for the duration of an actual call.
-        ///
-        /// On iOS this gates WebRTC's VPIO audio unit while the app retains ownership
-        /// of the shared AVAudioSession. Disabling stops the microphone/remote audio
-        /// path and the hardware voice processing, and drops the session to its idle
-        /// state (music-friendly default mode), but keeps the audio session active so
-        /// other Unity audio (e.g. background music) is not interrupted — which is why
-        /// Unity audio survives a hang-up.
-        ///
-        /// On Android 12 (API 31) and newer this gates the voice-communication audio
-        /// session the routing backend holds: while enabled the SDK requests
-        /// <c>MODE_IN_COMMUNICATION</c> and keeps the output route pinned per
-        /// <see cref="PlayoutPreference"/>; while disabled it holds neither, so the OS
-        /// applies its normal routing and the call session covers the call rather than
-        /// the lifetime of this instance. The session is acquired lazily: despite the
-        /// enabled default, creating the instance takes nothing — the first routing
-        /// action while enabled takes it (calling this method with <c>true</c>, even
-        /// when already enabled; changing <see cref="PlayoutPreference"/>;
-        /// <see cref="SetPlayoutDevice(string)"/>; or the <see cref="StartRecording"/>
-        /// re-assert). A
-        /// receive-only app that never records and never touches routing therefore keeps
-        /// the platform's own routing until it calls this method with <c>true</c> at its
-        /// call boundary. Device enumeration and <see cref="DevicesChanged"/> keep working
-        /// while disabled. Unlike iOS, disabling does not stop the ADM: pair it with
-        /// <see cref="StopRecording"/>/<see cref="StartRecording"/> at the call
-        /// boundaries — an active capture without the session is what lets the platform
-        /// take routing back (see <see cref="StartRecording"/>).
-        ///
-        /// On the remaining platforms this is a no-op: the OS/ADM manages the session
-        /// directly.
+        /// Whether the platform's call audio session is currently held: true while at
+        /// least one <see cref="Room"/> is connected. Exposed for tests.
         /// </summary>
-        /// <param name="enabled">True while a call is active, false otherwise.</param>
-        public void SetSessionAudioEnabled(bool enabled)
+        internal bool SessionAudioEnabled { get; private set; }
+
+        // Room raises this on the Unity main thread whenever a room's connection state
+        // crosses into or out of ConnDisconnected, before its public events. The count
+        // is re-read at apply time, so a stale argument from a posted call can never win
+        // over a later change.
+        private void OnConnectedRoomCountChanged(int connectedRooms)
         {
-            ThrowIfDisposed();
+            if (_disposed) return;
+
+            if (_syncContext != null && _syncContext != SynchronizationContext.Current)
+            {
+                _syncContext.Post(_ => OnConnectedRoomCountChanged(Room.ConnectedRoomCount), null);
+                return;
+            }
+
+            var enabled = Room.ConnectedRoomCount > 0;
+            if (enabled == SessionAudioEnabled) return;
+            try
+            {
+                ApplySessionAudio(enabled);
+            }
+            catch (Exception e)
+            {
+                // A platform hiccup here must not surface in Room's connect or
+                // disconnect path.
+                Utils.Warning($"PlatformAudio: failed to {(enabled ? "take" : "release")} the call audio session: {e.Message}");
+            }
+        }
+
+        // Takes (true) or releases (false) the platform's call audio session.
+        //
+        // On iOS this gates WebRTC's VPIO audio unit while the app retains ownership of
+        // the shared AVAudioSession. Releasing stops the microphone/remote audio path and
+        // the hardware voice processing and drops the session to its idle state
+        // (music-friendly default mode), but keeps the audio session active so other
+        // Unity audio (e.g. background music) is not interrupted — which is why Unity
+        // audio survives a hang-up.
+        //
+        // On Android 12 (API 31) and newer this gates the voice-communication audio
+        // session the routing backend holds: while taken the SDK requests
+        // MODE_IN_COMMUNICATION and keeps the output route pinned per PlayoutPreference;
+        // while released it holds neither, so the OS applies its normal routing and the
+        // call session covers the call rather than the lifetime of this instance. Device
+        // enumeration and DevicesChanged keep working either way. Releasing does not
+        // stop the ADM or the capture: StopRecording stays the app's call at the end of
+        // a call — an active capture without the session is what lets the platform take
+        // routing back (see StartRecording).
+        //
+        // On the remaining platforms this is a no-op: the OS/ADM manages the session
+        // directly.
+        private void ApplySessionAudio(bool enabled)
+        {
+            SessionAudioEnabled = enabled;
 #if UNITY_IOS && !UNITY_EDITOR
             IOSAudioSessionHelper.LiveKit_SetAudioEnabled(enabled);
             _iosSessionAudioEnabled = enabled;
             UpdateIosSessionState();
 #endif
             _routeController.SetSessionAudioEnabled(enabled);
-            Utils.Debug($"PlatformAudio: session audio enabled={enabled}");
+            Utils.Debug($"PlatformAudio: call audio session {(enabled ? "taken" : "released")} ({Room.ConnectedRoomCount} connected room(s))");
         }
 
         /// <summary>
@@ -798,6 +813,7 @@ namespace LiveKit
         {
             if (_disposed) return;
             _disposed = true;
+            Room.ConnectedRoomCountChanged -= OnConnectedRoomCountChanged;
             _routeController.DevicesChanged -= OnRouteControllerDevicesChanged;
             _routeController.Dispose();
             Handle.Dispose();
