@@ -84,5 +84,54 @@ namespace LiveKit.EditModeTests
             Assert.IsNotNull(eventParticipant);
             Assert.AreEqual(identity, eventParticipant.Identity);
         }
+
+        [Test]
+        public void Disconnected_ReentrantDisconnectFromHandlers_KeepsServerReason()
+        {
+            var room = new Room();
+            room.RoomHandle = new FfiHandle(IntPtr.Zero);
+            // A fresh Room already reads ConnDisconnected (the enum default), so record a
+            // connected state first, as the core's own event would after a connect.
+            room.OnEventReceived(new RoomEvent
+            {
+                RoomHandle = 0,
+                ConnectionStateChanged = new ConnectionStateChanged { State = ConnectionState.ConnConnected }
+            });
+            Assert.AreEqual(ConnectionState.ConnConnected, room.ConnectionState);
+
+            var reports = 0;
+            DisconnectReason? reasonSeenByStateHandler = null;
+            room.ConnectionStateChanged += state =>
+            {
+                if (state != ConnectionState.ConnDisconnected) return;
+                reasonSeenByStateHandler = room.DisconnectReason;
+                // An app that disconnects "to be sure" from its state handler.
+                room.Disconnect();
+            };
+            room.DisconnectedWithReason += (_, __) =>
+            {
+                reports++;
+                room.Disconnect();
+            };
+
+            // The core reports a server-side disconnect as two queued events.
+            room.OnEventReceived(new RoomEvent
+            {
+                RoomHandle = 0,
+                ConnectionStateChanged = new ConnectionStateChanged { State = ConnectionState.ConnDisconnected }
+            });
+            room.OnEventReceived(new RoomEvent
+            {
+                RoomHandle = 0,
+                Disconnected = new Disconnected { Reason = DisconnectReason.ServerShutdown }
+            });
+
+            Assert.AreEqual(1, reports, "the disconnect is reported once");
+            Assert.AreEqual(DisconnectReason.ServerShutdown, room.DisconnectReason,
+                "a re-entrant Disconnect() must not replace the server's reason with ClientInitiated");
+            Assert.AreEqual(DisconnectReason.ServerShutdown, reasonSeenByStateHandler,
+                "the ConnectionStateChanged handler sees the reason already recorded");
+            Assert.AreEqual(ConnectionState.ConnDisconnected, room.ConnectionState);
+        }
     }
 }
