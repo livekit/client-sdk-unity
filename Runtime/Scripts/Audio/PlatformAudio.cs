@@ -390,9 +390,11 @@ namespace LiveKit
         /// takes effect immediately, including mid-call. On Android the full ranking applies:
         /// the backend routes to the highest-ranked available kind on Android 12 (API 31)
         /// and newer, and kinds missing from the list are never auto-selected (when
-        /// nothing ranked is available the OS default route applies). On desktop, output
-        /// is selected per device (<see cref="SetPlayoutDevice(string)"/>) and the ranking
-        /// has no routing effect.
+        /// nothing ranked is available the OS default route applies). The selected route
+        /// is duplex on both mobile platforms: the OS pairs the microphone with it (see
+        /// <see cref="SetPlayoutDevice(string)"/>). On desktop, output is selected per
+        /// device (<see cref="SetPlayoutDevice(string)"/>) and the ranking has no routing
+        /// effect.
         /// On older Android versions (routing backend not implemented there) the value
         /// is stored and round-trips, but has no routing effect either.
         /// </summary>
@@ -504,12 +506,15 @@ namespace LiveKit
         /// <summary>
         /// Sets the recording device (microphone) by device ID (GUID).
         ///
-        /// On Android and iOS this is a no-op in the native ADM: input routing is
-        /// governed by the OS (AVAudioSession on iOS, AudioManager on Android) and
-        /// the call is acknowledged but ignored. The method is still safe to call,
-        /// and the response carries no error. <see cref="GetDevices"/> only exposes a
-        /// single placeholder entry (index 0) for the OS default input on these
-        /// platforms, so there is nothing else to select.
+        /// Platform notes:
+        /// - Desktop (Windows/macOS/Linux): selects the ADM recording device, independently
+        ///   of the playout device.
+        /// - Android and iOS: no effect (a warning is logged) — the OS pairs the microphone
+        ///   with the call route, so the mic follows <see cref="SetPlayoutDevice(string)"/> /
+        ///   <see cref="PlayoutPreference"/> on Android and the active audio session route
+        ///   on iOS. <see cref="GetDevices"/> only exposes a single placeholder entry
+        ///   (index 0) for the OS default input there, so there is nothing else to select;
+        ///   this overload never throws on these platforms.
         /// </summary>
         /// <param name="deviceId">Device ID/GUID from GetDevices().Recording[i].Guid</param>
         /// <exception cref="InvalidOperationException">
@@ -518,6 +523,17 @@ namespace LiveKit
         public void SetRecordingDevice(string deviceId)
         {
             ThrowIfDisposed();
+#if UNITY_IOS && !UNITY_EDITOR
+            // The native ADM would acknowledge and ignore the request; warn instead so an
+            // unsupported selection is as visible as SetPlayoutDevice's no-op on iOS.
+            Utils.Warning(
+                "PlatformAudio.SetRecordingDevice has no effect on iOS: the OS pairs the microphone " +
+                "with the active audio route.");
+#elif UNITY_ANDROID && !UNITY_EDITOR
+            Utils.Warning(
+                "PlatformAudio.SetRecordingDevice has no effect on Android: the OS pairs the microphone " +
+                "with the call route selected by SetPlayoutDevice / PlayoutPreference.");
+#else
             using var request = FFIBridge.Instance.NewRequest<SetRecordingDeviceRequest>();
             request.request.PlatformAudioHandle = (ulong)Handle.DangerousGetHandle();
             request.request.DeviceId = deviceId;
@@ -529,6 +545,7 @@ namespace LiveKit
                 throw new InvalidOperationException($"Failed to set recording device: {res.SetRecordingDevice.Error}");
 
             Utils.Debug($"PlatformAudio: set recording device to {deviceId}");
+#endif
         }
 
         /// <summary>
@@ -561,8 +578,12 @@ namespace LiveKit
         ///
         /// Platform notes:
         /// - Desktop (Windows/macOS/Linux): selects the ADM playout device.
-        /// - Android 12 (API 31) and newer: pins the device as the communication device;
-        ///   the override is dropped once the device disappears from the playout list
+        /// - Android 12 (API 31) and newer: pins the device as the communication device.
+        ///   This selects the call route, not only the output: Android pairs the microphone
+        ///   with the communication device (a Bluetooth headset's own mic; the built-in mic
+        ///   when the speaker is pinned, even with a wired headset plugged in; the headset
+        ///   mic for the earpiece or a wired headset) and moves a running capture along.
+        ///   The override is dropped once the device disappears from the playout list
         ///   (automatic policy resumes). While no <see cref="Room"/> is connected the
         ///   choice is only recorded — no pin is issued, and <see cref="GetDevices"/> /
         ///   <see cref="DevicesChanged"/> keep reporting the platform's own route — until

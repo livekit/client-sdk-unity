@@ -179,10 +179,11 @@ public sealed class PlatformAudioController : IDisposable
         }
     }
 
-    // Sets up PlatformAudio with the default recording device. Output routing is left to
-    // the SDK's PlayoutPreference: SetPlayoutDevice is a sticky override on Android 12+
-    // that would shadow the ranking for the whole session, so it is reserved for an
-    // explicit user choice.
+    // Creates PlatformAudio and logs the device lists. No device is selected here: the ADM
+    // starts on the OS default microphone and output, and output routing is left to the
+    // SDK's PlayoutPreference (SetPlayoutDevice is a sticky override on Android 12+ that
+    // would shadow the ranking for the whole session). Both selection verbs are reserved
+    // for an explicit user choice.
     bool InitializePlatformAudio()
     {
         try
@@ -194,9 +195,6 @@ public sealed class PlatformAudioController : IDisposable
 
             var (recording, playout) = _platformAudio.GetDevices();
             Debug.Log(FormatDeviceLists(playout, recording));
-
-            if (_platformAudio.RecordingDeviceCount > 0)
-                _platformAudio.SetRecordingDevice(0);
 
             return true;
         }
