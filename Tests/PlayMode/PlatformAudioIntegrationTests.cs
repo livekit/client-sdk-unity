@@ -209,5 +209,43 @@ namespace LiveKit.PlayModeTests
             Assert.IsNotNull(inboundRtp, "expected an InboundRtp stat for the platform audio track");
             Assert.AreEqual("audio", inboundRtp.Stream.Kind);
         }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator SessionAudio_FollowsRoomConnection()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+            Assert.AreEqual(0, Room.ConnectedRoomCount,
+                "a previous test left a room connected; the call session cannot start idle");
+            Assert.IsFalse(platformAudio.SessionAudioEnabled, "call session must be released outside a call");
+
+            using var context = new TestRoomContext();
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            Assert.AreEqual(1, Room.ConnectedRoomCount);
+            Assert.IsTrue(platformAudio.SessionAudioEnabled, "call session must be taken while a room is connected");
+
+            context.Rooms[0].Disconnect();
+            Assert.AreEqual(0, Room.ConnectedRoomCount);
+            Assert.IsFalse(platformAudio.SessionAudioEnabled, "call session must be released on disconnect");
+
+            // A second Disconnect (TestRoomContext.Dispose issues one too) must not
+            // drive the count negative.
+            context.Rooms[0].Disconnect();
+            Assert.AreEqual(0, Room.ConnectedRoomCount);
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator SessionAudio_TakenWhenCreatedDuringCall()
+        {
+            using var context = new TestRoomContext();
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+            Assert.IsTrue(platformAudio.SessionAudioEnabled,
+                "an instance created while a room is connected must take the call session");
+        }
+
     }
 }

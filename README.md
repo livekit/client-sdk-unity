@@ -208,6 +208,8 @@ IEnumerator ConnectToRoom()
 }
 ```
 
+Subscribe to `room.Disconnected` (or `room.DisconnectedWithReason`) for your teardown: it is raised for server-side disconnects and, with `DisconnectReason.ClientInitiated`, for your own `room.Disconnect()` or `Dispose()` as well, so one handler covers both. Handlers run before the room's handles are released. `room.ConnectionStateChanged` reports the same transitions, and `room.IsConnected` is true from the moment `Connected` is raised. One gap to know: a `Disconnect()` while the connect is still pending is a no-op, so disconnect again once `Connect` has completed.
+
 ### Video
 
 #### Publishing a texture (e.g Unity Camera)
@@ -330,8 +332,6 @@ void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, Rem
 With Platform Audio, the audio input and output are managed by the native ADM of WebRTC. This unlocks echo cancellation, noise suppression, auto gain control and hardware processing if available.
 
 There are some known issues with Platform Audio, that we are working on resolving:
-- On iOS, disposing of Platform Audio object stops Unity audio output
-- On iOS and Unity 6, backgrounding the app breaks Platform Audio
 - On MacOS with bluetooth headset, unmuting can break audio output
 
 #### Initialize Platform Audio
@@ -355,11 +355,6 @@ void InitializePlatformAudio()
         Debug.Log("Playout devices:");
         foreach (var device in playout)
             Debug.Log($"  [{device.Index}] {device.Name}");
-
-        if (platformAudio.RecordingDeviceCount > 0)
-            platformAudio.SetRecordingDevice(0);
-        if (platformAudio.PlayoutDeviceCount > 0)
-            platformAudio.SetPlayoutDevice(0);
 
         Debug.Log($"PlatformAudio ready. AEC={echoCancellation}, NS={noiseSuppression}, AGC={autoGainControl}, HW={preferHardwareProcessing}");
     }
@@ -416,6 +411,74 @@ IEnumerator PublishLocalMicrophonePlatform(PlatformAudio platformAudio, Room roo
 #### Platform Audio Output
 
 Using Platform Audio, for audio output of subscribed remote audio tracks you don't need any Unity handling. 
+
+#### Audio Output Routing
+
+On mobile, the OS decides where call audio plays (Bluetooth headset, wired headset, loudspeaker, earpiece). The route is duplex: the microphone follows whatever output route is active, so there is no separate microphone selection on mobile (`SetRecordingDevice` has no effect there and logs a warning). `PlatformAudio` exposes a routing policy on top of that:
+
+```cs
+// Automatic policy: route to the best available output kind, most preferred first.
+// The default ranking is Bluetooth > WiredHeadset > Speaker > Earpiece.
+platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Bluetooth, AudioDeviceKind.WiredHeadset, AudioDeviceKind.Speaker };
+
+// Prefer the earpiece over the loudspeaker: the same list with the two swapped.
+// A speakerphone toggle is just switching between these two rankings.
+platformAudio.PlayoutPreference = new[] { AudioDeviceKind.Bluetooth, AudioDeviceKind.WiredHeadset, AudioDeviceKind.Earpiece, AudioDeviceKind.Speaker };
+
+// Sticky override on an explicit user choice: audio stays routed to the device until
+// the override is cleared or the device disappears (then the automatic policy resumes).
+var (recording, playout) = platformAudio.GetDevices();
+platformAudio.SetPlayoutDevice(playout[0].Guid);
+platformAudio.ClearPlayoutDeviceSelection();
+
+// Observability: raised on the Unity main thread whenever the available devices or
+// the active route change. AudioDevice.Kind and AudioDevice.IsSelected tell you what
+// each entry is and which one is playing.
+platformAudio.DevicesChanged += (playoutDevices, recordingDevices) => { /* refresh your device UI */ };
+```
+
+##### The call audio session
+
+Routing is only asserted while a call is in progress, and the SDK decides that for you: `PlatformAudio` holds the platform's call audio session while at least one `Room` is connected and releases it when the last one disconnects. So the usual pattern — create `PlatformAudio` once at startup to keep a single ADM alive across calls — needs nothing else:
+
+```cs
+var platformAudio = new PlatformAudio(); // no call session yet
+
+// ... a call starts:
+yield return room.Connect(url, token, options); // session taken
+yield return platformAudio.StartRecording();
+
+// ... the call ends:
+platformAudio.StopRecording();
+room.Disconnect(); // session released
+```
+
+While released, the SDK holds no call audio session: on iOS WebRTC's voice-processing unit is off and the session sits in a music-friendly idle state, and on Android 12+ the SDK requests neither `MODE_IN_COMMUNICATION` nor the output route pin, so the platform's normal routing applies. Constructing `PlatformAudio` outside a call issues no audio-mode traffic at all, and device enumeration and `DevicesChanged` keep working on both platforms, so a device picker can be populated before the first call. A `PlatformAudio` created while a room is already connected takes the session immediately; a room that carries no audio at all should simply not have a `PlatformAudio` alive. The session is taken and released as part of the room's own connection-state transitions, before `Room.Connected` and `Room.Disconnected` reach your handlers — on a local `Disconnect()` and a server-side disconnect alike.
+
+
+Unity's own audio engine is a separate layer that the SDK does not touch, and it needs a little care from an app that plays its own audio (music, SFX) alongside calls. When an output device is added or removed, Unity reinitializes its engine, which **stops every `AudioSource`** — and it raises `AudioSettings.OnAudioConfigurationChanged` only afterwards, so by the time the app is notified there is nothing left playing to inspect. What should still be audible therefore has to be remembered from before the change and restarted in that callback. On Android the callback's `deviceWasChanged` argument is `false` even for a real device change, so it cannot be used to filter these events. This is Unity's own behavior — it reproduces in a plain Unity scene without the SDK — so restarting the app's sources is the app's responsibility; the Agents sample's `PlatformAudioController` shows one way to do it.
+
+**Known limitation — the platform's Bluetooth SCO state can get stuck.** Android brings a Bluetooth headset's *call* link up asynchronously, and its SCO state machine can be left in a pending state that never resolves. While it is, the platform accepts `setCommunicationDevice` but never applies it (`AS.BtHelper: requestScoState: failed to connect in state 1`, `preferredCommunicationDevice: null`), so a call's audio — and any media the app plays alongside it — stays on the loudspeaker for the whole call and returns to the headset when the call ends. It is platform state, not app state: it survives the app being restarted, and the SDK cannot clear it (the outstanding request belongs to another client in the process). The SDK logs a warning naming this and retries with backoff.
+
+Two things are known to provoke or reveal it, device-verified on a Pixel 8a (Android 16):
+
+- Unity's audio engine claims the call link itself through the deprecated `AudioManager.startBluetoothSco()` when it initializes with a headset already connected — about 3 s before this SDK creates its ADM, and not triggered by anything in the SDK or the samples. Present in 2022.3 and Unity 6 alike; neither version uses the Android 12 communication-device API, which is why the two collide.
+- Once stuck, only the platform clears it: disconnecting and reconnecting the headset (which triggers the platform's own `resetBluetoothSco`), toggling Bluetooth, or restarting the phone. After that, routing works normally — the call link comes up in well under a second.
+
+The reliable workaround is to connect the headset *after* the app has started, or to reconnect it once if a call has landed on the loudspeaker.
+
+Do **not** call `AudioSettings.Reset` as part of that recovery on Android. Unity has already reopened its output by the time it notifies you, so a reset adds nothing — and reinitializing the engine makes Unity claim a Bluetooth headset's call link through the deprecated `AudioManager.startBluetoothSco()`, which evicts the `setCommunicationDevice` route pin the SDK holds and can leave the platform's SCO state machine unable to connect at all (`AS.BtHelper: requestScoState: failed to connect in state 1` on every subsequent attempt). Call audio and game audio then both stay on the loudspeaker for the rest of the session, no matter how often the route is re-pinned. Restarting the app's own `AudioSource`s is enough and stays out of the platform's way.
+
+One consequence to design around on Android: while a call session is active on a classic (BR/EDR) Bluetooth headset, the platform suspends the headset's A2DP media link and routes *all* output — the app's own media included — over the headset's call link. Observed on a Pixel 8a (Android 16) with `adb shell dumpsys audio`: `STREAM_MUSIC` moves to `bt_sco_hs` while the call is active and back to `bt_a2dp` afterwards. Game audio therefore keeps playing during a call, but at the call link's quality, and it returns to full quality once the room disconnects and the SDK releases the session. This is a platform property of classic Bluetooth, not something the routing API can override.
+
+Per-platform behavior:
+
+- **Android 12+ (API 31)**: the full `PlayoutPreference` ranking applies — the SDK routes to the highest-ranked available kind and re-routes on device changes; kinds missing from the list are never auto-selected (when nothing ranked is available, the OS default route applies). `SetPlayoutDevice` pins a device from `GetDevices().Playout` (by `Guid`) as the communication device; the pin is dropped once that device disappears. Pinning selects the call route, not only the output: Android pairs the microphone with the communication device — a Bluetooth headset's own mic, the built-in mic when the speaker is pinned (even with a wired headset plugged in), the headset mic for the earpiece or a wired headset — and moves a running capture along, so `SetRecordingDevice` has no effect (a warning is logged). While no room is connected, `SetPlayoutDevice` only records the choice — it is applied when the next room connects, and until then `GetDevices`/`DevicesChanged` keep reporting the platform's own route. There is deliberately no pending flag for that deferral: a pre-call device picker should treat its own last `SetPlayoutDevice` call as the pending choice and confirm application via the `IsSelected` flip in `GetDevices`/`DevicesChanged` once a room is connected; a deferred choice whose device disappears first is dropped for good (same rule as an active pin), observable as the device leaving the playout list. `DevicesChanged` is raised on communication-device changes and on device add/remove (via `AudioDeviceCallback`, bridged through the `LiveKitAudioDeviceMonitor` Java source plugin shipped in the package); there is no polling. Requires the `MODIFY_AUDIO_SETTINGS` permission in your `AndroidManifest.xml`. Routing is asserted only while a room is connected: the SDK then holds `MODE_IN_COMMUNICATION` with the route pinned, and clears the pin and restores the mode it replaced when the last room disconnects, while enumeration and `DevicesChanged` stay live either way. Note: since Android 13 the OS only honors the app's communication-mode request — and with it the route pin — while the app has an active voice-communication capture, so keep the mic capture running for the whole call, even while muted with the track unpublished (see `PlatformAudioController` in the Meet sample); an active capture outside a connected room hands routing back to the platform, so start it once the room is connected and stop it when the room disconnects.
+- **Older Android**: no routing backend — `PlayoutPreference` is stored and round-trips but has no routing effect, and `SetPlayoutDevice` and `SetRecordingDevice` have no effect (a warning is logged). `DevicesChanged` is never raised.
+- **iOS**: external devices (Bluetooth, wired) always take priority over the built-in outputs, so the Speaker/Earpiece relative order is the only part of the ranking with an effect. It decides where audio goes when no external device is connected, is applied through the audio session mode (never by overriding the output port), and takes effect immediately, including mid-call. `SetPlayoutDevice` has no effect (a warning is logged) — the OS owns route selection on iOS; present the system route picker (`AVRoutePickerView`) instead. `SetRecordingDevice` has no effect either (a warning is logged): the OS pairs the microphone with the active route. `GetDevices().Playout` is the audio session's current output route (iOS does not enumerate every reachable device), and `DevicesChanged` is raised when that route changes.
+- **Desktop (Windows/macOS/Linux)**: output is selected per device with `SetPlayoutDevice` and input independently with `SetRecordingDevice`; the `PlayoutPreference` ranking has no routing effect. `DevicesChanged` is never raised (no hot-plug events yet).
+
+> **Upgrading from 2.0.x:** `SetPlayoutDevice` used to be a no-op on Android and iOS. On Android 12+ it now pins the device as a sticky override that shadows `PlayoutPreference` until `ClearPlayoutDeviceSelection` is called or the device disappears. Remove any "select playout device 0 at startup" call (the earlier sample did this): on Android 12+ it would pin whichever device the OS lists first for the whole session. Call `SetPlayoutDevice` only on an explicit user choice and let the ranking route otherwise.
 
 ### RPC
   

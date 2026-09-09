@@ -112,9 +112,20 @@ namespace LiveKit
     public class Room : IDisposable
     {
         internal FfiHandle RoomHandle = null;
+        // Set at the start of Teardown, before the disconnect is reported, so a handler
+        // that calls Disconnect() re-entrantly is a no-op; reset by OnConnect so a Room
+        // can be connected again after a disconnect.
         private bool _disposed = false;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
+
+        // How many rooms are connected right now, across all instances. SDK components
+        // whose platform state follows "a call is in progress" — PlatformAudio's call
+        // audio session — subscribe to ConnectedRoomCountChanged instead of asking the
+        // app to signal its call boundaries. Maintained by SetConnectionState, the one
+        // place every connection-state transition goes through, on the Unity main thread.
+        internal static int ConnectedRoomCount { get; private set; }
+        internal static event Action<int> ConnectedRoomCountChanged;
 
         public delegate void MetaDelegate(string metaData);
         public delegate void ParticipantDelegate(Participant participant);
@@ -190,20 +201,22 @@ namespace LiveKit
             return instruction;
         }
 
+        /// <summary>
+        /// Disconnects from the room. A local disconnect is reported the way a
+        /// server-side one is — <see cref="ConnectionStateChanged"/>,
+        /// <see cref="Disconnected"/> and <see cref="DisconnectedWithReason"/> with
+        /// <see cref="DisconnectReason.ClientInitiated"/>, synchronously and with the
+        /// room's handles still live — so one teardown path covers both.
+        /// <see cref="Dispose"/> goes through here too. Calling this from a handler of
+        /// those events, or on a room that already disconnected, is a no-op. So is a
+        /// call while <see cref="Connect"/> is still pending: that connect completes,
+        /// and the app has to disconnect again once it has.
+        /// </summary>
         public void Disconnect()
         {
             if (_disposed || RoomHandle == null)
                 return;
-            var (response, _) = FFIBridge.Instance.SendDisconnectRequest(this);
-            using (response)
-            {
-                Utils.Debug($"Disconnect.... {RoomHandle}");
-                Utils.Debug($"Disconnect response.... {response}");
-            }
-            // Release the Rust-side room synchronously. Without this the FfiRoom
-            // (peer connection, signaling client, libwebrtc state) lingers in the
-            // FFI handle table until the SafeHandle finalizer runs.
-            Cleanup();
+            Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
         }
 
         public void Dispose()
@@ -212,20 +225,67 @@ namespace LiveKit
             GC.SuppressFinalize(this);
         }
 
-        private void Cleanup()
+        // The single exit for every disconnect path — a local Disconnect(), the core's
+        // Disconnected event, a panic. Reports the disconnect once, then releases the
+        // room: handlers run first, with the handles still live, as they do on a
+        // server-side disconnect, and the release runs in a finally so a throwing
+        // handler cannot leave the Rust-side room alive. closeFfiRoom asks the Rust side
+        // to close the room (local path); on the other paths the core already has.
+        private void Teardown(DisconnectReason reason, bool closeFfiRoom)
         {
             if (_disposed)
                 return;
             _disposed = true;
 
+            // Unsubscribed first: nothing still queued for this room — including the
+            // core's own Disconnected event for a local close — is processed from here on.
             FfiClient.Instance.RoomEventReceived -= OnEventReceived;
             FfiClient.Instance.RpcMethodInvocationReceived -= OnRpcMethodInvocationReceived;
             FfiClient.Instance.DisconnectReceived -= OnDisconnectReceived;
             FfiClient.Instance.PanicReceived -= OnPanicReceived;
 
-            // Participant + track + publication FFI handles are independent entries in the
-            // Rust handle table — dropping the room handle alone does not cascade to them, so
-            // they would otherwise linger until C# GC finalizes each SafeHandle.
+            try
+            {
+                DisconnectReason = reason;
+                SetConnectionState(ConnectionState.ConnDisconnected);
+                Disconnected?.Invoke(this);
+                DisconnectedWithReason?.Invoke(this, reason);
+            }
+            finally
+            {
+                try
+                {
+                    if (closeFfiRoom)
+                        CloseFfiRoom();
+                }
+                finally
+                {
+                    ReleaseHandles();
+                }
+            }
+        }
+
+        // Sent after the handlers on purpose: the Rust-side close replaces the remote
+        // track handles on its worker thread right away, so a handler touching tracks
+        // would otherwise race it.
+        private void CloseFfiRoom()
+        {
+            var (response, _) = FFIBridge.Instance.SendDisconnectRequest(this);
+            using (response)
+            {
+                Utils.Debug($"Disconnect.... {RoomHandle}");
+                Utils.Debug($"Disconnect response.... {response}");
+            }
+        }
+
+        // Released synchronously. Without this the FfiRoom (peer connection, signaling
+        // client, libwebrtc state) lingers in the FFI handle table until the SafeHandle
+        // finalizer runs. Participant + track + publication FFI handles are independent
+        // entries in the Rust handle table — dropping the room handle alone does not
+        // cascade to them, so they would otherwise linger until C# GC finalizes each
+        // SafeHandle.
+        private void ReleaseHandles()
+        {
             LocalParticipant?.DisposeHandles();
             foreach (var p in _participants.Values)
                 p.DisposeHandles();
@@ -233,6 +293,29 @@ namespace LiveKit
 
             RoomHandle?.Dispose();
             RoomHandle = null;
+        }
+
+        // Records a connection-state transition and raises ConnectionStateChanged for it.
+        // A repeat of the current state is dropped: the core's own ConnectionStateChanged
+        // (Connected) is queued behind the connect callback and drains one event pass
+        // after OnConnect recorded the transition, so this check is what keeps every
+        // connect to a single Connected report. The connected-room count is kept here
+        // too: a room counts while it is anything but ConnDisconnected, so a reconnect
+        // in progress still counts as a call, and the count moves before the public
+        // event so SDK components have settled by the time app handlers run.
+        private void SetConnectionState(ConnectionState state)
+        {
+            if (ConnectionState == state)
+                return;
+            var wasConnected = ConnectionState != ConnectionState.ConnDisconnected;
+            ConnectionState = state;
+            var isConnected = state != ConnectionState.ConnDisconnected;
+            if (isConnected != wasConnected)
+            {
+                ConnectedRoomCount += isConnected ? 1 : -1;
+                ConnectedRoomCountChanged?.Invoke(ConnectedRoomCount);
+            }
+            ConnectionStateChanged?.Invoke(state);
         }
 
         /// <summary>
@@ -308,7 +391,7 @@ namespace LiveKit
 
         internal void OnEventReceived(RoomEvent e)
         {
-            // After Cleanup() the handle is null but late events may still flow
+            // After Teardown the handle is null but late events may still flow
             // through the FfiClient before the unsubscribe fully takes effect.
             if (RoomHandle == null)
                 return;
@@ -542,14 +625,17 @@ namespace LiveKit
                     }
                     break;
                 case RoomEvent.MessageOneofCase.ConnectionStateChanged:
-                    ConnectionState = e.ConnectionStateChanged.State;
-                    ConnectionStateChanged?.Invoke(e.ConnectionStateChanged.State);
+                    // The core reports a disconnect as ConnectionStateChanged(Disconnected)
+                    // followed by Disconnected{reason}. The transition is recorded from
+                    // the latter, once the reason is known, so handlers of either event
+                    // see the same DisconnectReason on every path, and a handler that
+                    // disconnects in between cannot replace the core's reason with
+                    // ClientInitiated.
+                    if (e.ConnectionStateChanged.State != ConnectionState.ConnDisconnected)
+                        SetConnectionState(e.ConnectionStateChanged.State);
                     break;
                 case RoomEvent.MessageOneofCase.Disconnected:
-                    DisconnectReason = e.Disconnected.Reason;
-                    Disconnected?.Invoke(this);
-                    DisconnectedWithReason?.Invoke(this, DisconnectReason);
-                    OnDisconnect();
+                    Teardown(e.Disconnected.Reason, closeFfiRoom: false);
                     break;
                 case RoomEvent.MessageOneofCase.Reconnecting:
                     Reconnecting?.Invoke(this);
@@ -590,6 +676,9 @@ namespace LiveKit
         internal void OnConnect(ConnectCallback info)
         {
             RoomHandle = FfiHandle.FromOwnedHandle(info.Result.Room.Handle);
+            // A Room may be connected again after a disconnect: each connect starts a
+            // fresh lifecycle.
+            _disposed = false;
 
             UpdateFromInfo(info.Result.Room.Info);
             LocalParticipant = new LocalParticipant(info.Result.LocalParticipant, this);
@@ -604,7 +693,7 @@ namespace LiveKit
             FfiClient.Instance.RpcMethodInvocationReceived += OnRpcMethodInvocationReceived;
 
             // Signal Rust that listeners are installed and it can start forwarding room events.
-            // Without this the FFI side parks for 1s after ConnectCallback and then drops the room
+            // Without this the FFI side parks for 15s after ConnectCallback and then drops the room
             // with ConnectionTimeout. Must run after the FfiClient.RoomEventReceived subscription
             // above so no event can race ahead of OnEventReceived.
             using (var readyRequest = FFIBridge.Instance.NewRequest<ReadyForRoomEventRequest>())
@@ -613,6 +702,15 @@ namespace LiveKit
                 using var readyResponse = readyRequest.Send();
             }
 
+            // The core recorded this transition during connect, before this room was
+            // subscribed to its events (its own copy drains later and is dropped as a
+            // repeat, see SetConnectionState); recording it here makes IsConnected true
+            // from the moment Connected is raised.
+            SetConnectionState(ConnectionState.ConnConnected);
+            // A ConnectionStateChanged handler may already have disconnected the room;
+            // Connected is not raised on a torn-down room.
+            if (_disposed)
+                return;
             Connected?.Invoke(this);
         }
 
@@ -628,15 +726,7 @@ namespace LiveKit
             // room could silently stop receiving events (including Disconnected
             // itself), so the panic is surfaced through the disconnect path apps
             // already handle.
-            DisconnectReason = DisconnectReason.UnknownReason;
-            Disconnected?.Invoke(this);
-            DisconnectedWithReason?.Invoke(this, DisconnectReason);
-            OnDisconnect();
-        }
-
-        private void OnDisconnect()
-        {
-            Cleanup();
+            Teardown(DisconnectReason.UnknownReason, closeFfiRoom: false);
         }
 
         internal RemoteParticipant CreateRemoteParticipantWithTracks(ConnectCallback.Types.ParticipantWithTracks item)
@@ -694,18 +784,26 @@ namespace LiveKit
                 return;
 
             bool success = string.IsNullOrEmpty(e.Error);
-            if (success)
+            try
             {
-                if (_roomOptions.E2EE != null)
+                if (success)
                 {
-                    _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
+                    if (_roomOptions.E2EE != null)
+                    {
+                        _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
+                    }
+
+                    _room.OnConnect(e);
                 }
-
-                _room.OnConnect(e);
             }
-
-            IsError = !success;
-            IsDone = true;
+            finally
+            {
+                // Completed even when a ConnectionStateChanged or Connected handler throws
+                // inside OnConnect, so the code awaiting the connect resumes instead of
+                // hanging forever.
+                IsError = !success;
+                IsDone = true;
+            }
         }
 
         void OnCanceled()
