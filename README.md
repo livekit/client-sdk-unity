@@ -330,7 +330,6 @@ void TrackSubscribed(IRemoteTrack track, RemoteTrackPublication publication, Rem
 With Platform Audio, the audio input and output are managed by the native ADM of WebRTC. This unlocks echo cancellation, noise suppression, auto gain control and hardware processing if available.
 
 There are some known issues with Platform Audio, that we are working on resolving:
-- On iOS, disposing of Platform Audio object stops Unity audio output
 - On iOS and Unity 6, backgrounding the app breaks Platform Audio
 - On MacOS with bluetooth headset, unmuting can break audio output
 
