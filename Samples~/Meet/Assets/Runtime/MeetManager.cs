@@ -142,17 +142,14 @@ public class MeetManager : MonoBehaviour
     private void OnDestroy()
     {
         // Without this, scene change / app quit while connected leaves all tracks,
-        // streams, and their backing GPU/native resources allocated.
-        if (_room != null)
-        {
-            _room.Disconnect();
-            _room = null;
-        }
+        // streams, and their backing GPU/native resources allocated. Disconnect reports
+        // back through OnDisconnected, which tears the call down; CleanUpAllTracks after
+        // it covers anything created without a room.
+        _room?.Disconnect();
         CleanUpAllTracks();
         _webCamTexture?.Stop();
         _platformAudioSource?.Dispose();
         _platformAudio?.Dispose();
-        _room?.Disconnect();
     }
 
     #endregion
@@ -166,13 +163,9 @@ public class MeetManager : MonoBehaviour
 
     private void OnEndCall()
     {
-        if (_room == null) return;
-
-        _room.Disconnect();
-        CleanUpAllTracks();
-        _room = null;
-        _localId = null;
-        buttonBar.SetConnected(false);
+        // The SDK reports a local disconnect through OnDisconnected (with
+        // DisconnectReason.ClientInitiated), which owns the teardown.
+        _room?.Disconnect();
     }
 
     private void OnToggleCamera()
@@ -432,8 +425,20 @@ public class MeetManager : MonoBehaviour
         DestroyParticipantTile(participant.Identity);
     }
 
+    // The one teardown path: raised for the hang-up button, a server-side disconnect
+    // (kick, room deleted, token expiry) and the scene going away (OnDestroy) alike,
+    // synchronously and with the room's handles still live.
     private void OnDisconnected(Room room)
-        => Debug.Log($"Disconnected from room: {room.DisconnectReason}");
+    {
+        Debug.Log($"Disconnected from room: {room.DisconnectReason}");
+
+        CleanUpAllTracks();
+        _room = null;
+        _localId = null;
+        // Destroyed already when this runs from OnDestroy during a scene unload.
+        if (buttonBar != null)
+            buttonBar.SetConnected(false);
+    }
 
     private void OnTrackMuted(TrackPublication publication, Participant participant)
     {
