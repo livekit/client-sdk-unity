@@ -242,6 +242,9 @@ namespace LiveKit.PlayModeTests
             Assert.Throws<ObjectDisposedException>(() => platformAudio.SetPlayoutDevice(""));
             Assert.Throws<ObjectDisposedException>(() => platformAudio.StopRecording());
 
+            // IsRecording is a state query, not a guarded member: it reads false.
+            Assert.IsFalse(platformAudio.IsRecording);
+
             // StartRecording is an iterator method: the guard throws on the first MoveNext.
             var start = platformAudio.StartRecording();
             Assert.Throws<ObjectDisposedException>(() => start.MoveNext());
@@ -262,6 +265,7 @@ namespace LiveKit.PlayModeTests
             // In the editor there is no PLATFORM_ANDROID branch, so it sends the FFI request
             // synchronously. A headless ADM may legitimately fail to start recording; treat that
             // as "ADM can't record here" and skip rather than fail.
+            Assert.IsFalse(platformAudio.IsRecording);
             var start = platformAudio.StartRecording();
             while (true)
             {
@@ -280,7 +284,9 @@ namespace LiveKit.PlayModeTests
                 yield return start.Current;
             }
 
+            Assert.IsTrue(platformAudio.IsRecording);
             Assert.DoesNotThrow(() => platformAudio.StopRecording());
+            Assert.IsFalse(platformAudio.IsRecording);
         }
     }
 }

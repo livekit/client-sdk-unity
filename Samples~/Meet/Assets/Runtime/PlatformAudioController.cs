@@ -35,7 +35,6 @@ public sealed class PlatformAudioController : IDisposable
     PlatformAudioSource _source;
     LocalAudioTrack _track;
     Room _room;
-    bool _isRecording;
     // What should be audible after an output device change, remembered from before it.
     readonly Dictionary<AudioSource, float> _audibleSources = new Dictionary<AudioSource, float>();
     // Whether a remember pass has ever swept the scene; gates the adopt-loops fallback
@@ -127,12 +126,11 @@ public sealed class PlatformAudioController : IDisposable
             Debug.LogError("[PlatformAudioController] StartCapture called before Initialize(); aborting.");
             yield break;
         }
-        if (_isRecording)
+        if (_platformAudio.IsRecording)
             yield break;
 
         Debug.Log("[PlatformAudioController] Starting platform recording.");
         yield return _platformAudio.StartRecording();
-        _isRecording = true;
     }
 
     // Tears down the mic capture and track but keeps the ADM alive: remote playout
@@ -171,7 +169,7 @@ public sealed class PlatformAudioController : IDisposable
     // StartCapture (or Publish) restarts it.
     public void StopCapture()
     {
-        if (_platformAudio == null || !_isRecording)
+        if (_platformAudio == null || !_platformAudio.IsRecording)
             return;
         try
         {
@@ -181,7 +179,6 @@ public sealed class PlatformAudioController : IDisposable
         {
             Debug.LogWarning($"[PlatformAudioController] Failed to stop recording: {e.Message}");
         }
-        _isRecording = false;
     }
 
     // Sets up PlatformAudio with the default recording device. Output routing is left to

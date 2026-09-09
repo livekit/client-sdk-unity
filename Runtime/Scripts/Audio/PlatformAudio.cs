@@ -146,18 +146,17 @@ namespace LiveKit
 
         // Inputs of the iOS session-state machine (see the state table in
         // LiveKitAudioSession.mm). PlatformAudio is the driver because it is the one
-        // that knows both: whether recording is active (its own StartRecording/
-        // StopRecording calls) and whether call audio is wanted (a Room is connected).
+        // that knows both: whether recording is active (IsRecording) and whether call
+        // audio is wanted (a Room is connected).
         private const int IosSessionStateIdle = 0;
         private const int IosSessionStatePlayoutOnly = 1;
         private const int IosSessionStateRecording = 2;
-        private bool _iosRecordingActive;
         private bool _iosSessionAudioEnabled;
 
         private void UpdateIosSessionState()
         {
             var state = !_iosSessionAudioEnabled ? IosSessionStateIdle
-                : _iosRecordingActive ? IosSessionStateRecording
+                : IsRecording ? IosSessionStateRecording
                 : IosSessionStatePlayoutOnly;
             IOSAudioSessionHelper.LiveKit_SetSessionState(state);
         }
@@ -194,6 +193,16 @@ namespace LiveKit
                 return _info.PlayoutDeviceCount;
             }
         }
+
+        /// <summary>
+        /// Whether the microphone capture is running: true from a successful
+        /// <see cref="StartRecording"/> until the next <see cref="StopRecording"/> or
+        /// <see cref="Dispose"/>. A state query, not a precondition — both calls are
+        /// safe to repeat, the platform ADM ignores a start while recording and a stop
+        /// while idle — so use this to drive UI or skip a redundant call. Does not
+        /// throw after Dispose; it reads false.
+        /// </summary>
+        public bool IsRecording { get; private set; }
 
         private void ThrowIfDisposed()
         {
@@ -680,8 +689,8 @@ namespace LiveKit
             if (res.StartRecording.HasError && !string.IsNullOrEmpty(res.StartRecording.Error))
                 throw new InvalidOperationException($"Failed to start recording: {res.StartRecording.Error}");
 
+            IsRecording = true;
 #if UNITY_IOS && !UNITY_EDITOR
-            _iosRecordingActive = true;
             UpdateIosSessionState();
 #endif
 
@@ -724,8 +733,8 @@ namespace LiveKit
             if (res.StopRecording.HasError && !string.IsNullOrEmpty(res.StopRecording.Error))
                 throw new InvalidOperationException($"Failed to stop recording: {res.StopRecording.Error}");
 
+            IsRecording = false;
 #if UNITY_IOS && !UNITY_EDITOR
-            _iosRecordingActive = false;
             UpdateIosSessionState();
 #endif
 
@@ -817,6 +826,7 @@ namespace LiveKit
             _routeController.DevicesChanged -= OnRouteControllerDevicesChanged;
             _routeController.Dispose();
             Handle.Dispose();
+            IsRecording = false;
 
 #if UNITY_IOS && !UNITY_EDITOR
             // Once the last instance is gone, relinquish the app-owned audio session:
