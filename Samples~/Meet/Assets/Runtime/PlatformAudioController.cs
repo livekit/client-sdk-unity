@@ -77,9 +77,9 @@ public sealed class PlatformAudioController : IDisposable
         if (IsPublished)
             yield break;
 
-        // No-op when StartCapture already ran at call start (the normal case on
+        // Harmless when StartCapture already ran at call start (the normal case on
         // Android) or when the capture was kept running across a mute cycle (see
-        // Unpublish).
+        // Unpublish): the ADM ignores a start while it is already recording.
         yield return StartCapture();
 
         _source = new PlatformAudioSource(_platformAudio, _audioOptions);
@@ -120,10 +120,8 @@ public sealed class PlatformAudioController : IDisposable
             Debug.LogError("[PlatformAudioController] StartCapture called before Initialize(); aborting.");
             yield break;
         }
-        if (_platformAudio.IsRecording)
-            yield break;
 
-        Debug.Log("[PlatformAudioController] Starting platform recording.");
+        Debug.Log("[PlatformAudioController] Starting platform recording (no-op if already running).");
         yield return _platformAudio.StartRecording();
     }
 
@@ -157,13 +155,13 @@ public sealed class PlatformAudioController : IDisposable
         _source = null;
     }
 
-    // Stops the microphone capture if it is running. Only call this once the call has
-    // ended (after Unpublish): on Android, stopping the capture while still in a call
-    // hands routing authority back to the platform — see StartCapture. The next
-    // StartCapture (or Publish) restarts it.
+    // Stops the microphone capture; a stop while idle is ignored by the ADM. Only call
+    // this once the call has ended (after Unpublish): on Android, stopping the capture
+    // while still in a call hands routing authority back to the platform — see
+    // StartCapture. The next StartCapture (or Publish) restarts it.
     public void StopCapture()
     {
-        if (_platformAudio == null || !_platformAudio.IsRecording)
+        if (_platformAudio == null)
             return;
         try
         {
