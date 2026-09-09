@@ -8,7 +8,9 @@ using RoomOptions = LiveKit.RoomOptions;
 // up the microphone, transcription, and chat-bubble log.
 public class LiveKitAgentSession : MonoBehaviour
 {
-    [SerializeField] 
+    const string MicTrackName = "player-mic";
+
+    [SerializeField]
     private ChatLog _chatLog;
 
     TokenSourceComponent _tokenSourceComponent;
@@ -81,13 +83,20 @@ public class LiveKitAgentSession : MonoBehaviour
         // Create the WebRTC ADM before connecting. The SDK only wires automatic speaker
         // playout for remote tracks to a PlatformAudio that already exists at connect time;
         // initializing it after Connect leaves remote (agent) audio silent.
-        _audio = new PlatformAudioController();
+        _audio = new PlatformAudioController(MicTrackName, AudioProcessingOptions.Default);
         if (!_audio.Initialize())
         {
             Debug.LogError("[LiveKitAgentSession] Failed to initialize platform audio; aborting.");
             _audio = null;
             yield break;
         }
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        // Poll fallback for routing changes that fire no communication-device event
+        // (e.g. a Bluetooth headset leaving the device list after its SCO link already
+        // dropped) — see PlatformAudioController.AndroidRouteWatchdog.
+        StartCoroutine(_audio.AndroidRouteWatchdog());
+#endif
 
         _room = new Room();
 
