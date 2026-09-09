@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Builds the experimental livekit-uniffi crate (client-sdk-rust~/livekit-uniffi), installs the
+# resulting liblivekit_uniffi.dylib next to liblivekit_ffi.dylib in Runtime/Plugins and
+# regenerates the UniFFI C# bindings from it with generate_uniffi_bindings.sh.
+#
+# The build is the plain-cargo equivalent of `cargo make build` in the crate's Makefile.toml,
+# with a selectable build type instead of the release-only cargo-make task.
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 MANIFEST="$ROOT/client-sdk-rust~/Cargo.toml"
@@ -24,14 +31,12 @@ usage() {
     echo ""
     echo "Platforms:"
     echo "  macos       Build for aarch64-apple-darwin"
-    echo "  android     Build for aarch64-linux-android"
-    echo "  ios         Build for aarch64-apple-ios"
     echo ""
     echo "Build types (optional, defaults to 'debug'):"
     echo "  release     Optimized release build"
     echo "  debug       Debug build"
     echo ""
-    echo "After macOS builds, the UniFFI C# bindings in Runtime/Scripts/UniFFI are regenerated"
+    echo "After the build, the UniFFI C# bindings in Runtime/Scripts/UniFFI are regenerated"
     echo "from the new library with generate_uniffi_bindings.sh (requires uniffi-bindgen-cs)."
     exit 1
 }
@@ -62,57 +67,19 @@ esac
 case "$PLATFORM" in
     # MACOS
     macos)
-        echo "Building for macOS (aarch64-apple-darwin) [$BUILD_TYPE]..."
+        echo "Building livekit-uniffi for macOS (aarch64-apple-darwin) [$BUILD_TYPE]..."
         pushd "$ROOT/client-sdk-rust~" > /dev/null
         rustup target add aarch64-apple-darwin
         cargo build \
             --manifest-path "$MANIFEST" \
             $BUILD_FLAG \
-            -p livekit-ffi \
+            -p livekit-uniffi \
             --target aarch64-apple-darwin
         BUILD_STATUS=$?
         popd > /dev/null
 
-        SRC="$BASE_TARGET/aarch64-apple-darwin/$BUILD_DIR/liblivekit_ffi.dylib"
-        DST="$BASE_DST/ffi-macos-arm64/liblivekit_ffi.dylib"
-        ;;
-    # ANDROID
-    android)
-        echo "Building for Android (aarch64-linux-android) [$BUILD_TYPE]..."
-        pushd "$ROOT/client-sdk-rust~" > /dev/null
-        rustup target add aarch64-linux-android
-        cargo ndk \
-            --target aarch64-linux-android \
-            build \
-            $BUILD_FLAG \
-            -p livekit-ffi \
-            -v \
-            --no-default-features \
-            --features "rustls-tls-webpki-roots"
-        BUILD_STATUS=$?
-        popd > /dev/null
-
-        SRC="$BASE_TARGET/aarch64-linux-android/$BUILD_DIR/liblivekit_ffi.so"
-        DST="$BASE_DST/ffi-android-arm64/liblivekit_ffi.so"
-        JAR_SRC="$BASE_TARGET/aarch64-linux-android/$BUILD_DIR/libwebrtc.jar"
-        JAR_DST="$BASE_DST/ffi-android-arm64/libwebrtc.jar"
-        ;;
-    # IOS
-    ios)
-        echo "Building for iOS (aarch64-apple-ios) [$BUILD_TYPE]..."
-        pushd "$ROOT/client-sdk-rust~/livekit-ffi" > /dev/null
-        rustup target add aarch64-apple-ios
-        cargo rustc \
-            --crate-type staticlib \
-            $BUILD_FLAG \
-            --target aarch64-apple-ios \
-            --no-default-features \
-            --features "rustls-tls-webpki-roots"
-        BUILD_STATUS=$?
-        popd > /dev/null
-
-        SRC="$BASE_TARGET/aarch64-apple-ios/$BUILD_DIR/liblivekit_ffi.a"
-        DST="$BASE_DST/ffi-ios-arm64/liblivekit_ffi.a"
+        SRC="$BASE_TARGET/aarch64-apple-darwin/$BUILD_DIR/liblivekit_uniffi.dylib"
+        DST="$BASE_DST/ffi-macos-arm64/liblivekit_uniffi.dylib"
         ;;
     *)
         echo -e "${RED}Error: Unknown platform '$PLATFORM'.${RESET}"
@@ -123,14 +90,6 @@ esac
 if [ $BUILD_STATUS -ne 0 ]; then
     echo -e "${RED}Build failed. Aborting copy.${RESET}"
     exit 1
-fi
-
-# For iOS release, strip DWARF debug info from the static archive like CI does
-if [ "$PLATFORM" = "ios" ] && [ "$BUILD_TYPE" = "release" ]; then
-    echo ""
-    echo "Stripping DWARF debug info from $(basename "$SRC")..."
-    xcrun strip -S "$SRC"
-    xcrun ranlib "$SRC"
 fi
 
 # Copy a built artifact into the package by writing a temp file next to the
@@ -158,25 +117,9 @@ else
     exit 1
 fi
 
-# For android, also copy the built libwebrtc.jar
-if [ "$PLATFORM" = "android" ]; then
-    echo ""
-    echo "Copying to $JAR_DST..."
-    install_file "$JAR_SRC" "$JAR_DST"
+# Regenerate the UniFFI C# bindings from the freshly built dylib.
+echo ""
+"$SCRIPT_DIR/generate_uniffi_bindings.sh" "$SRC" || exit 1
 
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Copied $(basename "$JAR_DST") successfully.${RESET}"
-    else
-        echo -e "${RED}Failed to copy $(basename "$JAR_DST"). Check that the source file exists and the destination directory is writable.${RESET}"
-        exit 1
-    fi
-fi
-
-# For macOS, regenerate the UniFFI C# bindings from the freshly built dylib.
-if [ "$PLATFORM" = "macos" ]; then
-    echo ""
-    "$SCRIPT_DIR/generate_uniffi_bindings.sh" "$SRC" || exit 1
-
-    echo ""
-    echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"
-fi
+echo ""
+echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"

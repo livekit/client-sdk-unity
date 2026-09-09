@@ -201,7 +201,7 @@ public class MeetManager : MonoBehaviour
     private void OnPublishData()
     {
         Debug.Log($"Published Data");
-        Debug.Log(LivekitFfiMethods.BuildVersion());
+        Debug.Log(LivekitUniffiMethods.BuildVersion());
     }
 
     #endregion

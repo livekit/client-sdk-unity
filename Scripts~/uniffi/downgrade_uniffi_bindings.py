@@ -20,10 +20,14 @@ C# 12) cannot be expressed in C# 9 and are reported as errors; change the
 custom type mapping in uniffi.toml instead.
 
 Usage:
-    downgrade_uniffi_bindings.py <file.cs | directory> [...]
+    downgrade_uniffi_bindings.py [--no-polyfill] <file.cs | directory> [...]
 
 Directories are scanned for *.cs files (non-recursive). The script is
 idempotent: files that are already downgraded are left untouched.
+
+--no-polyfill skips the `IsExternalInit.cs` polyfill (and removes one written
+earlier) for assemblies that already define the marker type; the Unity SDK
+ships it in Runtime/Scripts/Internal/IsExternalInit.cs.
 """
 
 import re
@@ -216,12 +220,14 @@ def sync_polyfill(directory, needed):
 
 
 def main(argv):
-    if len(argv) < 2:
+    no_polyfill = "--no-polyfill" in argv[1:]
+    targets = [arg for arg in argv[1:] if arg != "--no-polyfill"]
+    if not targets or any(arg.startswith("--") for arg in targets):
         print(__doc__.strip())
         return 2
 
     status = 0
-    for arg in argv[1:]:
+    for arg in targets:
         target = Path(arg)
         if target.is_dir():
             directory = target
@@ -245,7 +251,7 @@ def main(argv):
             polyfill_needed |= needs_polyfill
             print(f"  {'downgraded' if changed else 'unchanged '} {path}")
 
-        sync_polyfill(directory, polyfill_needed)
+        sync_polyfill(directory, polyfill_needed and not no_polyfill)
 
     return status
 

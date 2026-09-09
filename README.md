@@ -83,13 +83,21 @@ So a build command is for example:
 
 `./Scripts~/build_ffi_locally.sh macos release` 
 
+### Building the UniFFI library locally
+
+The experimental [livekit-uniffi](https://github.com/livekit/rust-sdks/tree/main/livekit-uniffi) crate is built with a second script, currently for macOS only:
+
+`./Scripts~/build_uniffi_locally.sh macos [debug|release]`
+
+It installs `liblivekit_uniffi.dylib` next to `liblivekit_ffi.dylib` in `Runtime/Plugins/ffi-macos-arm64` and then regenerates the C# bindings as described below.
+
 ### Generating UniFFI C# bindings
 
-macOS builds also regenerate the C# bindings for the UniFFI part of `liblivekit_ffi` into `Runtime/Scripts/UniFFI`. This requires [uniffi-bindgen-cs](https://github.com/NordSecurity/uniffi-bindgen-cs) at the version pinned in `Scripts~/build_ffi_locally.sh`, which must match the uniffi version used by `livekit-ffi`:
+`./Scripts~/generate_uniffi_bindings.sh [library]` regenerates the C# bindings in `Runtime/Scripts/UniFFI` from a native library with UniFFI metadata; without an argument it uses the installed `liblivekit_uniffi.dylib`. Both build scripts call it after a macOS build. It requires [uniffi-bindgen-cs](https://github.com/NordSecurity/uniffi-bindgen-cs) at the version pinned in the script, which must match the uniffi version used by the Rust crate:
 
 `cargo install uniffi-bindgen-cs --git https://github.com/NordSecurity/uniffi-bindgen-cs --tag v0.11.0+v0.31.0`
 
-The generator is configured by `Scripts~/uniffi/uniffi.toml` (C# namespace `LiveKit.Uniffi`, public API types), which the build script passes with `--config`. uniffi-bindgen-cs emits C# 10+ syntax, so the build script post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler. Run that script on `Runtime/Scripts/UniFFI` yourself if you generated the bindings by hand.
+The generator is configured by `Scripts~/uniffi/uniffi.toml` (C# namespace `LiveKit.Uniffi`, public API types). uniffi-bindgen-cs emits C# 10+ syntax, so the script post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler before replacing the files in `Runtime/Scripts/UniFFI`.
 
 ### VSCode setup
 
