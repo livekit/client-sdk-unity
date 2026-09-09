@@ -67,4 +67,18 @@ void LiveKit_RestoreDefaultAudioSession() {
     }
 }
 
+/// AVAudioSession latency terms, in seconds. Used to seed the echo canceller's stream delay in
+/// Unity-audio mode (see AudioProcessingDelayHint.cs). All report 0 until the session is active.
+double LiveKit_AudioSessionOutputLatency() {
+    return [[AVAudioSession sharedInstance] outputLatency];
+}
+
+double LiveKit_AudioSessionInputLatency() {
+    return [[AVAudioSession sharedInstance] inputLatency];
+}
+
+double LiveKit_AudioSessionIOBufferDuration() {
+    return [[AVAudioSession sharedInstance] IOBufferDuration];
+}
+
 }

@@ -11,6 +11,13 @@ namespace LiveKit
     /// </summary>
     /// <remarks>
     /// Ensure microphone permissions are granted before calling <see cref="Start"/>.
+    ///
+    /// Unity's <c>Microphone</c> path does not go through a platform audio device module, so on
+    /// its own it has no echo cancellation. Construct the source with
+    /// <see cref="AudioProcessingOptions"/> to run libwebrtc's audio processing over the capture;
+    /// echo cancellation then uses the mix Unity plays as its reference (see
+    /// <see cref="PlayoutReference"/>), which covers every remote <see cref="AudioStream"/> and the
+    /// application's own audio.
     /// </remarks>
     sealed public class MicrophoneSource : RtcAudioSource
     {
@@ -30,6 +37,26 @@ namespace LiveKit
         /// <param name="sourceObject">The GameObject to attach the AudioSource to. The object must be kept in the scene
         /// for the duration of the source's lifetime.</param>
         public MicrophoneSource(string deviceName, GameObject sourceObject) : base(RtcAudioSourceType.AudioSourceMicrophone)
+        {
+            _deviceName = deviceName;
+            _sourceObject = sourceObject;
+        }
+
+        /// <summary>
+        /// Creates a microphone source whose capture is run through libwebrtc's audio processing
+        /// (AEC3 echo cancellation, noise suppression, gain control, high-pass filter) before it
+        /// reaches the track.
+        /// </summary>
+        /// <param name="deviceName">The name of the device to capture from. Use <see cref="Microphone.devices"/> to
+        /// get the list of available devices.</param>
+        /// <param name="sourceObject">The GameObject to attach the AudioSource to. The object must be kept in the scene
+        /// for the duration of the source's lifetime.</param>
+        /// <param name="processing">Which stages to enable. With <see cref="AudioProcessingOptions.EchoCancellation"/>
+        /// the SDK attaches a <see cref="PlayoutReference"/> to the active <see cref="AudioListener"/> to obtain the
+        /// far-end reference. Requires Unity's output sample rate to be a multiple of 100 Hz; otherwise processing is
+        /// bypassed with a warning. See <see cref="RtcAudioSource.AudioProcessingStats"/> for diagnostics.</param>
+        public MicrophoneSource(string deviceName, GameObject sourceObject, AudioProcessingOptions processing)
+            : base(RtcAudioSourceType.AudioSourceMicrophone, processing)
         {
             _deviceName = deviceName;
             _sourceObject = sourceObject;
@@ -207,6 +234,8 @@ namespace LiveKit
             // recover from interruption. Poll for readiness instead of using arbitrary delay.
             yield return WaitForMicrophoneReady();
 
+            // A resume is a new audio path: drop whatever the processing stage buffered before.
+            ResetAudioProcessing();
             yield return StartMicrophone();
         }
 

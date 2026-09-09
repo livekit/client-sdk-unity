@@ -49,12 +49,23 @@ namespace LiveKit
 
         private readonly RtcAudioSourceType _sourceType;
         public RtcAudioSourceType SourceType => _sourceType;
+
+        /// <summary>
+        /// Whether this source runs libwebrtc's audio processing over its capture. False when it was
+        /// created without <see cref="AudioProcessingOptions"/>, or when the module could not be
+        /// created and the source fell back to unprocessed capture.
+        /// </summary>
+        public bool AudioProcessingEnabled => _processor != null;
+
+        /// <summary>Counters from the audio processing stage; default when processing is off.</summary>
+        public AudioProcessingStats AudioProcessingStats => _processor?.GetStats() ?? default;
         private readonly int _debugId = Interlocked.Increment(ref nextDebugId);
         internal readonly uint _expectedSampleRate;
         internal readonly uint _expectedChannels;
 
         internal readonly FfiHandle Handle;
         protected AudioSourceInfo _info;
+        private readonly AudioProcessor _processor;
 
         // CaptureAudioFrame is asynchronous: the native side can continue reading from the PCM
         // pointer after request.Send() returns and encode it later on another queue. Because of
@@ -72,16 +83,29 @@ namespace LiveKit
         private bool _started = false;
         private volatile bool _disposed = false;
         private int _audioReadCount = 0;
+        private int _sentFrameCount = 0;
 
         // Device-capture sources (microphone, AudioSource taps) don't know their format ahead of
         // time — it is whatever Unity's audio graph delivers. They use this constructor, which
         // configures the native source from Unity's current output configuration.
         protected RtcAudioSource(RtcAudioSourceType audioSourceType)
-            : this(audioSourceType, 0, 0) { }
+            : this(audioSourceType, 0, 0, null) { }
+
+        /// <summary>
+        /// Device-capture source whose audio is run through libwebrtc's audio processing (echo
+        /// cancellation, noise suppression, gain control, high-pass filter) before it reaches the
+        /// track. See <see cref="AudioProcessingOptions"/>. If the module cannot be created the
+        /// source logs a warning and captures unprocessed.
+        /// </summary>
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType, AudioProcessingOptions processing)
+            : this(audioSourceType, 0, 0, processing) { }
 
         // Sources that generate a fixed, known format (e.g. test signal generators) declare it
         // directly. Passing 0 for either value falls back to the device configuration.
         protected RtcAudioSource(RtcAudioSourceType audioSourceType, uint sampleRate, uint channels)
+            : this(audioSourceType, sampleRate, channels, null) { }
+
+        protected RtcAudioSource(RtcAudioSourceType audioSourceType, uint sampleRate, uint channels, AudioProcessingOptions? processing)
         {
             _sourceType = audioSourceType;
 
@@ -110,6 +134,19 @@ namespace LiveKit
             _info = res.NewAudioSource.Source.Info;
             Handle = FfiHandle.FromOwnedHandle(res.NewAudioSource.Source.Handle);
             Utils.Debug($"{DebugTag} created handle={Handle.DangerousGetHandle()} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
+
+            if (processing is { } options && options.AnyProcessingEnabled)
+            {
+                try
+                {
+                    _processor = new AudioProcessor(options, SendProcessedFrame);
+                }
+                catch (Exception e)
+                {
+                    // Publish unprocessed rather than not at all.
+                    Utils.Warning($"{DebugTag} audio processing unavailable, capturing unprocessed: {e.Message}");
+                }
+            }
         }
 
         // Reads Unity's actual output audio configuration. The capture path delivers buffers at the
@@ -150,6 +187,7 @@ namespace LiveKit
         {
             if (_started) return;
             AudioRead += OnAudioRead;
+            _processor?.Start();
             _started = true;
             Utils.Debug($"{DebugTag} start");
         }
@@ -161,6 +199,7 @@ namespace LiveKit
         {
             if (!_started) return;
             AudioRead -= OnAudioRead;
+            _processor?.Stop();
             _started = false;
             var pendingCount = PendingFrameCount();
             if (pendingCount > 0)
@@ -174,45 +213,59 @@ namespace LiveKit
             if (_muted) return;
             if (_disposed) return;
 
-            var frameIndex = Interlocked.Increment(ref _audioReadCount);
+            var readIndex = Interlocked.Increment(ref _audioReadCount);
             if (channels <= 0)
             {
-                Utils.Warning($"{DebugTag} dropping audio frame #{frameIndex} because channels={channels}");
+                Utils.Warning($"{DebugTag} dropping audio frame #{readIndex} because channels={channels}");
                 return;
             }
 
             if (data.Length == 0 || data.Length % channels != 0)
             {
-                Utils.Warning($"{DebugTag} audio frame #{frameIndex} has invalid shape samples={data.Length} channels={channels}");
+                Utils.Warning($"{DebugTag} audio frame #{readIndex} has invalid shape samples={data.Length} channels={channels}");
                 return;
             }
 
             if ((uint)sampleRate != _expectedSampleRate || (uint)channels != _expectedChannels)
             {
-                Utils.Warning($"{DebugTag} audio frame #{frameIndex} metadata mismatch actualRate={sampleRate} actualChannels={channels} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
+                Utils.Warning($"{DebugTag} audio frame #{readIndex} metadata mismatch actualRate={sampleRate} actualChannels={channels} expectedRate={_expectedSampleRate} expectedChannels={_expectedChannels} sourceType={_sourceType}");
             }
 
-            var pendingBeforeSend = PendingFrameCount();
-            if (frameIndex <= 3 || frameIndex % 100 == 0 || pendingBeforeSend >= 3)
-            {
-                Utils.Debug($"{DebugTag} capture frame #{frameIndex} samples={data.Length} channels={channels} sampleRate={sampleRate} pendingBeforeSend={pendingBeforeSend} thread={Thread.CurrentThread.ManagedThreadId}");
-            }
+            // Optional processing stage: the block is re-chunked into 10 ms frames, run through the
+            // module and delivered to SendFrame one chunk at a time via SendProcessedFrame.
+            if (_processor != null && _processor.TryProcessCapture(data, channels, sampleRate))
+                return;
 
             // Each captured frame gets its own backing buffer so the native encoder can safely
             // consume it asynchronously after request.Send() returns.
             var frameData = new NativeArray<short>(data.Length, Allocator.Persistent);
-
-            // Copy from the audio read buffer into the frame buffer, converting
-            // each sample to a 16-bit signed integer.
-            static short FloatToS16(float v)
-            {
-                v *= 32768f;
-                v = Math.Min(v, 32767f);
-                v = Math.Max(v, -32768f);
-                return (short)(v + Math.Sign(v) * 0.5f);
-            }
             for (int i = 0; i < data.Length; i++)
-                frameData[i] = FloatToS16(data[i]);
+                frameData[i] = PcmConvert.FloatToS16(data[i]);
+
+            SendFrame(frameData, channels, sampleRate);
+        }
+
+        // Audio thread, from the processing stage. Owns the frame from here on.
+        private void SendProcessedFrame(NativeArray<short> frame, int channels, int sampleRate)
+        {
+            if (_disposed || _muted)
+            {
+                frame.Dispose();
+                return;
+            }
+            SendFrame(frame, channels, sampleRate);
+        }
+
+        // Hands one int16 frame to the native source. Takes ownership of frameData: it is released
+        // when the CaptureAudioFrame callback completes, is canceled, or the send fails.
+        private void SendFrame(NativeArray<short> frameData, int channels, int sampleRate)
+        {
+            var frameIndex = Interlocked.Increment(ref _sentFrameCount);
+            var pendingBeforeSend = PendingFrameCount();
+            if (frameIndex <= 3 || frameIndex % 100 == 0 || pendingBeforeSend >= 3)
+            {
+                Utils.Debug($"{DebugTag} capture frame #{frameIndex} samples={frameData.Length} channels={channels} sampleRate={sampleRate} pendingBeforeSend={pendingBeforeSend} thread={Thread.CurrentThread.ManagedThreadId}");
+            }
 
             // Capture the frame.
             using var request = FFIBridge.Instance.NewRequest<CaptureAudioFrameRequest>();
@@ -228,7 +281,7 @@ namespace LiveKit
             }
             pushFrame.Buffer.NumChannels = (uint)channels;
             pushFrame.Buffer.SampleRate = (uint)sampleRate;
-            pushFrame.Buffer.SamplesPerChannel = (uint)data.Length / (uint)channels;
+            pushFrame.Buffer.SamplesPerChannel = (uint)frameData.Length / (uint)channels;
 
             // Wait for async callback, log an error if the capture fails. The callback's AsyncId
             // echoes the RequestAsyncId that Unity wrote onto the request.
@@ -239,7 +292,7 @@ namespace LiveKit
                 FrameIndex = frameIndex,
                 SampleRate = sampleRate,
                 Channels = channels,
-                SampleCount = data.Length,
+                SampleCount = frameData.Length,
                 StartedTimestamp = Stopwatch.GetTimestamp(),
             };
             lock (_pendingFrameDataLock)
@@ -293,6 +346,13 @@ namespace LiveKit
         }
 
         /// <summary>
+        /// Clears the audio processing stage's buffers. Call after the capture path restarts (e.g. a
+        /// microphone resume) so stale samples do not misalign the echo canceller. No-op without
+        /// processing.
+        /// </summary>
+        protected void ResetAudioProcessing() => _processor?.RequestReset();
+
+        /// <summary>
         /// Mutes or unmutes the audio source.
         /// </summary>
         public override void SetMute(bool muted)
@@ -328,6 +388,7 @@ namespace LiveKit
                 }
                 _pendingFrameData.Clear();
             }
+            _processor?.Dispose();
             Handle?.Dispose();
             _disposed = true;
             Utils.Debug($"{DebugTag} disposed");

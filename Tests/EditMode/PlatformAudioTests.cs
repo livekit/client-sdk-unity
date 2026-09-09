@@ -18,6 +18,7 @@ namespace LiveKit.EditModeTests
             Assert.IsTrue(options.EchoCancellation, "AEC should be enabled by default");
             Assert.IsTrue(options.NoiseSuppression, "NS should be enabled by default");
             Assert.IsTrue(options.AutoGainControl, "AGC should be enabled by default");
+            Assert.IsTrue(options.HighPassFilter, "HPF should be enabled by default");
             // Unlike the C++ defaults (prefer_hardware == false), the Unity default prefers
             // hardware processing (e.g. iOS VPIO) for lower latency.
             Assert.IsTrue(options.PreferHardware, "Unity default prefers hardware processing");
