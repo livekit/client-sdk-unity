@@ -16,9 +16,18 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using uniffi.livekit_common;
+using uniffi.livekit_datatrack;
 
-namespace LiveKit.Uniffi
+namespace uniffi.livekit_uniffi
 {
+    // WORKAROUND(uniffi-bindgen-cs): `Bytes` is a custom type of uniffi.livekit_common, the only file uniffi-bindgen-cs
+    // aliases it in. See Scripts~/uniffi/UPSTREAM-external-custom-type-alias.md
+    using Bytes = System.ReadOnlyMemory<byte>;
+
+    using DataTrackSid = String;
+    using FfiConverterTypeDataTrackSid = FfiConverterString;
+
     // This is a helper for safely working with byte buffers returned from the Rust code.
     // A rust-owned buffer is represented by its capacity, its current length, and a
     // pointer to the underlying data.
@@ -843,11 +852,1574 @@ namespace LiveKit.Uniffi
             _UniFFILib.UniffiForeignFutureResultVoid @result
         );
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod0(
+            ulong @uniffiHandle,
+            ulong @reader,
+            RustBuffer @identity,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod1(
+            ulong @uniffiHandle,
+            ulong @reader,
+            RustBuffer @identity,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod2(
+            ulong @uniffiHandle,
+            RustBuffer @streamId,
+            RustBuffer @identity,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceOutgoingDataStreamManagerDelegateMethod0(
+            ulong @uniffiHandle,
+            RustBuffer @packets,
+            IntPtr @uniffiFutureCallback,
+            ulong @uniffiCallbackData,
+            IntPtr /*_UniFFILib.UniffiForeignFutureDroppedCallbackStruct*/
+            @uniffiOutDroppedCallback
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod0(
+            ulong @uniffiHandle,
+            RustBuffer @identity,
+            IntPtr /*int*/
+            @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod1(
+            ulong @uniffiHandle,
+            RustBuffer @identity,
+            IntPtr /*RustBuffer*/
+            @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod2(
+            ulong @uniffiHandle,
+            IntPtr /*RustBuffer*/
+            @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceLocalDataTrackManagerDelegateMethod0(
+            ulong @uniffiHandle,
+            RustBuffer @request,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceLocalDataTrackManagerDelegateMethod1(
+            ulong @uniffiHandle,
+            RustBuffer @packets,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod0(
+            ulong @uniffiHandle,
+            RustBuffer @request,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod1(
+            ulong @uniffiHandle,
+            ulong @track,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod2(
+            ulong @uniffiHandle,
+            RustBuffer @sid,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct UniffiVTableCallbackInterfaceIncomingDataStreamManagerDelegate
+        {
+            public IntPtr @uniffiFree;
+            public IntPtr @uniffiClone;
+            public IntPtr @onByteStreamOpened;
+            public IntPtr @onTextStreamOpened;
+            public IntPtr @onStreamClosed;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct UniffiVTableCallbackInterfaceOutgoingDataStreamManagerDelegate
+        {
+            public IntPtr @uniffiFree;
+            public IntPtr @uniffiClone;
+            public IntPtr @onPacketsAvailable;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct UniffiVTableCallbackInterfaceRemoteParticipantRegistryDelegate
+        {
+            public IntPtr @uniffiFree;
+            public IntPtr @uniffiClone;
+            public IntPtr @remoteClientProtocol;
+            public IntPtr @remoteCapabilities;
+            public IntPtr @remoteIdentities;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct UniffiVTableCallbackInterfaceLocalDataTrackManagerDelegate
+        {
+            public IntPtr @uniffiFree;
+            public IntPtr @uniffiClone;
+            public IntPtr @onSignalRequest;
+            public IntPtr @onPacketsAvailable;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct UniffiVTableCallbackInterfaceRemoteDataTrackManagerDelegate
+        {
+            public IntPtr @uniffiFree;
+            public IntPtr @uniffiClone;
+            public IntPtr @onSignalRequest;
+            public IntPtr @onTrackPublished;
+            public IntPtr @onTrackUnpublished;
+        }
+
         static _UniFFILib()
         {
             _UniFFILib.uniffiCheckContractApiVersion();
             _UniFFILib.uniffiCheckApiChecksums();
+
+            UniffiCallbackInterfaceIncomingDataStreamManagerDelegate.Register();
+            UniffiCallbackInterfaceLocalDataTrackManagerDelegate.Register();
+            UniffiCallbackInterfaceOutgoingDataStreamManagerDelegate.Register();
+            UniffiCallbackInterfaceRemoteDataTrackManagerDelegate.Register();
+            UniffiCallbackInterfaceRemoteParticipantRegistryDelegate.Register();
         }
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_bytestreamreader(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_bytestreamreader(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_bytestreamreader_info(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_bytestreamreader_next(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_bytestreamreader_read_all(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_incomingdatastreammanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_incomingdatastreammanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_constructor_incomingdatastreammanager_new(
+            ulong @delegate,
+            RustBuffer @maxPayloadByteLength,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_abort_all_streams(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_abort_streams_from(
+            ulong @ptr,
+            RustBuffer @identity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_handle_packet_received(
+            ulong @ptr,
+            RustBuffer @packet,
+            RustBuffer @encryptionType,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_open_stream_count(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_incomingdatastreammanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_incomingdatastreammanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_init_callback_vtable_incomingdatastreammanagerdelegate(
+            IntPtr /*_UniFFILib.UniffiVTableCallbackInterfaceIncomingDataStreamManagerDelegate*/
+            @vtable
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingdatastreammanagerdelegate_on_byte_stream_opened(
+            ulong @ptr,
+            ulong @reader,
+            RustBuffer @identity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingdatastreammanagerdelegate_on_text_stream_opened(
+            ulong @ptr,
+            ulong @reader,
+            RustBuffer @identity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingdatastreammanagerdelegate_on_stream_closed(
+            ulong @ptr,
+            RustBuffer @streamId,
+            RustBuffer @identity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_textstreamreader(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_textstreamreader(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_textstreamreader_info(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_textstreamreader_next(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_textstreamreader_read_all(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_bytestreamwriter(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_bytestreamwriter(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_bytestreamwriter_close(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_bytestreamwriter_close_with_reason(
+            ulong @ptr,
+            RustBuffer @reason
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_bytestreamwriter_info(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_bytestreamwriter_is_open(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_bytestreamwriter_write(ulong @ptr, RustBuffer @data);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_outgoingdatastreammanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_outgoingdatastreammanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_constructor_outgoingdatastreammanager_new(
+            ulong @delegate,
+            ulong @registry,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_send_bytes(
+            ulong @ptr,
+            RustBuffer @data,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_send_file(
+            ulong @ptr,
+            RustBuffer @path,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_send_text(
+            ulong @ptr,
+            RustBuffer @text,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_stream_bytes(
+            ulong @ptr,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_stream_text(
+            ulong @ptr,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_outgoingdatastreammanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_outgoingdatastreammanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_init_callback_vtable_outgoingdatastreammanagerdelegate(
+            IntPtr /*_UniFFILib.UniffiVTableCallbackInterfaceOutgoingDataStreamManagerDelegate*/
+            @vtable
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingdatastreammanagerdelegate_on_packets_available(
+            ulong @ptr,
+            RustBuffer @packets
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_remoteparticipantregistrydelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_remoteparticipantregistrydelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_init_callback_vtable_remoteparticipantregistrydelegate(
+            IntPtr /*_UniFFILib.UniffiVTableCallbackInterfaceRemoteParticipantRegistryDelegate*/
+            @vtable
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        int uniffi_livekit_uniffi_fn_method_remoteparticipantregistrydelegate_remote_client_protocol(
+            ulong @ptr,
+            RustBuffer @identity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_remoteparticipantregistrydelegate_remote_capabilities(
+            ulong @ptr,
+            RustBuffer @identity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_remoteparticipantregistrydelegate_remote_identities(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_textstreamwriter(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_textstreamwriter(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_textstreamwriter_close(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_textstreamwriter_close_with_reason(
+            ulong @ptr,
+            RustBuffer @reason
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_textstreamwriter_info(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_textstreamwriter_is_open(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_textstreamwriter_write(ulong @ptr, RustBuffer @text);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_incomingstreamqueue(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_incomingstreamqueue(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_incomingstreamqueue_close(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_incomingstreamqueue_next_closed_stream(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_incomingstreamqueue_next_opened_stream(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_outgoingpacketqueue(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_outgoingpacketqueue(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_outgoingpacketqueue_close(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_outgoingpacketqueue_next_packets(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_localdatatrack(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_localdatatrack(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_localdatatrack_info(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        sbyte uniffi_livekit_uniffi_fn_method_localdatatrack_is_published(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrack_try_push(
+            ulong @ptr,
+            RustBuffer @frame,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrack_unpublish(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_localdatatrack_wait_for_unpublish(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_localdatatrackmanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_localdatatrackmanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_constructor_localdatatrackmanager_new(
+            ulong @delegate,
+            RustBuffer @encryptionProvider,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrackmanager_handle_sfu_publish_response(
+            ulong @ptr,
+            RustBuffer @res,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrackmanager_handle_sfu_request_response(
+            ulong @ptr,
+            RustBuffer @res,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_localdatatrackmanager_publish_responses_for_sync_state(
+            ulong @ptr
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_localdatatrackmanager_publish_track(
+            ulong @ptr,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrackmanager_republish_tracks(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_localdatatrackmanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_localdatatrackmanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_init_callback_vtable_localdatatrackmanagerdelegate(
+            IntPtr /*_UniFFILib.UniffiVTableCallbackInterfaceLocalDataTrackManagerDelegate*/
+            @vtable
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrackmanagerdelegate_on_signal_request(
+            ulong @ptr,
+            RustBuffer @request,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_localdatatrackmanagerdelegate_on_packets_available(
+            ulong @ptr,
+            RustBuffer @packets,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_datatrackstream(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_datatrackstream(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_datatrackstream_next(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_remotedatatrack(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_remotedatatrack(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_remotedatatrack_info(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        sbyte uniffi_livekit_uniffi_fn_method_remotedatatrack_is_published(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_method_remotedatatrack_publisher_identity(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrack_set_pipeline_options(
+            ulong @ptr,
+            RustBuffer @options,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_remotedatatrack_subscribe(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_remotedatatrack_subscribe_with_options(
+            ulong @ptr,
+            RustBuffer @options
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_method_remotedatatrack_wait_for_unpublish(ulong @ptr);
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_remotedatatrackmanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_remotedatatrackmanager(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_constructor_remotedatatrackmanager_new(
+            ulong @delegate,
+            RustBuffer @decryptionProvider,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_packet_received(
+            ulong @ptr,
+            RustBuffer @packet,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_sfu_join_response(
+            ulong @ptr,
+            RustBuffer @res,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_sfu_participant_update(
+            ulong @ptr,
+            RustBuffer @res,
+            RustBuffer @localParticipantIdentity,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_subscriber_handles(
+            ulong @ptr,
+            RustBuffer @res,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_resend_subscription_updates(
+            ulong @ptr,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ulong uniffi_livekit_uniffi_fn_clone_remotedatatrackmanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_free_remotedatatrackmanagerdelegate(
+            ulong @handle,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_init_callback_vtable_remotedatatrackmanagerdelegate(
+            IntPtr /*_UniFFILib.UniffiVTableCallbackInterfaceRemoteDataTrackManagerDelegate*/
+            @vtable
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanagerdelegate_on_signal_request(
+            ulong @ptr,
+            RustBuffer @request,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanagerdelegate_on_track_published(
+            ulong @ptr,
+            ulong @track,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        void uniffi_livekit_uniffi_fn_method_remotedatatrackmanagerdelegate_on_track_unpublished(
+            ulong @ptr,
+            RustBuffer @sid,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
 
 #if NET8_0_OR_GREATER
         [LibraryImport("livekit_uniffi")]
@@ -899,6 +2471,32 @@ namespace LiveKit.Uniffi
         public static extern
 #endif
         RustBuffer uniffi_livekit_uniffi_fn_func_build_version(
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_func_polled_incoming_data_stream_manager(
+            RustBuffer @maxPayloadByteLength,
+            ref UniffiRustCallStatus _uniffi_out_err
+        );
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        RustBuffer uniffi_livekit_uniffi_fn_func_polled_outgoing_data_stream_manager(
+            ulong @registry,
             ref UniffiRustCallStatus _uniffi_out_err
         );
 
@@ -1590,6 +3188,26 @@ namespace LiveKit.Uniffi
         [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
         public static extern
 #endif
+        ushort uniffi_livekit_uniffi_checksum_func_polled_incoming_data_stream_manager();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_func_polled_outgoing_data_stream_manager();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
         ushort uniffi_livekit_uniffi_checksum_func_log_forward_bootstrap();
 
 #if NET8_0_OR_GREATER
@@ -1610,6 +3228,696 @@ namespace LiveKit.Uniffi
         [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
         public static extern
 #endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamreader_info();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamreader_next();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamreader_read_all();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_abort_all_streams();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_abort_streams_from();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_handle_packet_received();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_open_stream_count();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_byte_stream_opened();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_text_stream_opened();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_stream_closed();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamreader_info();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamreader_next();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamreader_read_all();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamwriter_close();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamwriter_close_with_reason();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamwriter_info();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamwriter_is_open();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_bytestreamwriter_write();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_bytes();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_file();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_text();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_stream_bytes();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_stream_text();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanagerdelegate_on_packets_available();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_client_protocol();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_capabilities();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_identities();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamwriter_close();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamwriter_close_with_reason();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamwriter_info();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamwriter_is_open();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_textstreamwriter_write();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_close();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_next_closed_stream();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_next_opened_stream();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingpacketqueue_close();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_outgoingpacketqueue_next_packets();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrack_info();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrack_is_published();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrack_try_push();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrack_unpublish();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrack_wait_for_unpublish();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_handle_sfu_publish_response();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_handle_sfu_request_response();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_publish_responses_for_sync_state();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_publish_track();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_republish_tracks();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanagerdelegate_on_signal_request();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_localdatatrackmanagerdelegate_on_packets_available();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_datatrackstream_next();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_info();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_is_published();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_publisher_identity();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_set_pipeline_options();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_subscribe();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_subscribe_with_options();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrack_wait_for_unpublish();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_packet_received();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_sfu_join_response();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_sfu_participant_update();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_subscriber_handles();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_resend_subscription_updates();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_signal_request();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_track_published();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_track_unpublished();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_constructor_incomingdatastreammanager_new();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_constructor_outgoingdatastreammanager_new();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_constructor_localdatatrackmanager_new();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
+        ushort uniffi_livekit_uniffi_checksum_constructor_remotedatatrackmanager_new();
+
+#if NET8_0_OR_GREATER
+        [LibraryImport("livekit_uniffi")]
+        [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+        public static partial
+#else
+        [DllImport("livekit_uniffi", CallingConvention = CallingConvention.Cdecl)]
+        public static extern
+#endif
         uint ffi_livekit_uniffi_uniffi_contract_version();
 
         static void uniffiCheckContractApiVersion()
@@ -1618,7 +3926,7 @@ namespace LiveKit.Uniffi
             if (30 != scaffolding_contract_version)
             {
                 throw new UniffiContractVersionException(
-                    $"LiveKit.Uniffi: uniffi bindings expected version `30`, library returned `{scaffolding_contract_version}`"
+                    $"uniffi.livekit_uniffi: uniffi bindings expected version `30`, library returned `{scaffolding_contract_version}`"
                 );
             }
         }
@@ -1631,7 +3939,7 @@ namespace LiveKit.Uniffi
                 if (checksum != 50037)
                 {
                     throw new UniffiContractChecksumException(
-                        $"LiveKit.Uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_token_claims_from_unverified` checksum `50037`, library returned `{checksum}`"
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_token_claims_from_unverified` checksum `50037`, library returned `{checksum}`"
                     );
                 }
             }
@@ -1640,7 +3948,7 @@ namespace LiveKit.Uniffi
                 if (checksum != 61939)
                 {
                     throw new UniffiContractChecksumException(
-                        $"LiveKit.Uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_token_generate` checksum `61939`, library returned `{checksum}`"
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_token_generate` checksum `61939`, library returned `{checksum}`"
                     );
                 }
             }
@@ -1649,7 +3957,7 @@ namespace LiveKit.Uniffi
                 if (checksum != 22102)
                 {
                     throw new UniffiContractChecksumException(
-                        $"LiveKit.Uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_token_verify` checksum `22102`, library returned `{checksum}`"
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_token_verify` checksum `22102`, library returned `{checksum}`"
                     );
                 }
             }
@@ -1658,7 +3966,27 @@ namespace LiveKit.Uniffi
                 if (checksum != 21480)
                 {
                     throw new UniffiContractChecksumException(
-                        $"LiveKit.Uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_build_version` checksum `21480`, library returned `{checksum}`"
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_build_version` checksum `21480`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_func_polled_incoming_data_stream_manager();
+                if (checksum != 59681)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_polled_incoming_data_stream_manager` checksum `59681`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_func_polled_outgoing_data_stream_manager();
+                if (checksum != 16176)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_polled_outgoing_data_stream_manager` checksum `16176`, library returned `{checksum}`"
                     );
                 }
             }
@@ -1667,7 +3995,7 @@ namespace LiveKit.Uniffi
                 if (checksum != 25458)
                 {
                     throw new UniffiContractChecksumException(
-                        $"LiveKit.Uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_log_forward_bootstrap` checksum `25458`, library returned `{checksum}`"
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_log_forward_bootstrap` checksum `25458`, library returned `{checksum}`"
                     );
                 }
             }
@@ -1676,7 +4004,688 @@ namespace LiveKit.Uniffi
                 if (checksum != 58503)
                 {
                     throw new UniffiContractChecksumException(
-                        $"LiveKit.Uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_log_forward_receive` checksum `58503`, library returned `{checksum}`"
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_func_log_forward_receive` checksum `58503`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamreader_info();
+                if (checksum != 10285)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamreader_info` checksum `10285`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamreader_next();
+                if (checksum != 62806)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamreader_next` checksum `62806`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamreader_read_all();
+                if (checksum != 8858)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamreader_read_all` checksum `8858`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_abort_all_streams();
+                if (checksum != 37772)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_abort_all_streams` checksum `37772`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_abort_streams_from();
+                if (checksum != 27277)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_abort_streams_from` checksum `27277`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_handle_packet_received();
+                if (checksum != 28698)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_handle_packet_received` checksum `28698`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_open_stream_count();
+                if (checksum != 51052)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanager_open_stream_count` checksum `51052`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_byte_stream_opened();
+                if (checksum != 16413)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_byte_stream_opened` checksum `16413`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_text_stream_opened();
+                if (checksum != 64529)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_text_stream_opened` checksum `64529`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_stream_closed();
+                if (checksum != 35314)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingdatastreammanagerdelegate_on_stream_closed` checksum `35314`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamreader_info();
+                if (checksum != 6861)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamreader_info` checksum `6861`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamreader_next();
+                if (checksum != 56274)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamreader_next` checksum `56274`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamreader_read_all();
+                if (checksum != 26313)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamreader_read_all` checksum `26313`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamwriter_close();
+                if (checksum != 39404)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamwriter_close` checksum `39404`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamwriter_close_with_reason();
+                if (checksum != 54863)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamwriter_close_with_reason` checksum `54863`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamwriter_info();
+                if (checksum != 5482)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamwriter_info` checksum `5482`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamwriter_is_open();
+                if (checksum != 18526)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamwriter_is_open` checksum `18526`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_bytestreamwriter_write();
+                if (checksum != 51985)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_bytestreamwriter_write` checksum `51985`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_bytes();
+                if (checksum != 36743)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_bytes` checksum `36743`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_file();
+                if (checksum != 17211)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_file` checksum `17211`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_text();
+                if (checksum != 44627)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_send_text` checksum `44627`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_stream_bytes();
+                if (checksum != 17761)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_stream_bytes` checksum `17761`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_stream_text();
+                if (checksum != 34690)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanager_stream_text` checksum `34690`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanagerdelegate_on_packets_available();
+                if (checksum != 2572)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingdatastreammanagerdelegate_on_packets_available` checksum `2572`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_client_protocol();
+                if (checksum != 48134)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_client_protocol` checksum `48134`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_capabilities();
+                if (checksum != 2201)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_capabilities` checksum `2201`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_identities();
+                if (checksum != 42803)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remoteparticipantregistrydelegate_remote_identities` checksum `42803`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamwriter_close();
+                if (checksum != 43279)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamwriter_close` checksum `43279`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamwriter_close_with_reason();
+                if (checksum != 39023)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamwriter_close_with_reason` checksum `39023`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamwriter_info();
+                if (checksum != 27425)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamwriter_info` checksum `27425`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamwriter_is_open();
+                if (checksum != 24885)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamwriter_is_open` checksum `24885`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_textstreamwriter_write();
+                if (checksum != 50876)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_textstreamwriter_write` checksum `50876`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_close();
+                if (checksum != 4954)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_close` checksum `4954`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_next_closed_stream();
+                if (checksum != 10337)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_next_closed_stream` checksum `10337`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_next_opened_stream();
+                if (checksum != 44884)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_incomingstreamqueue_next_opened_stream` checksum `44884`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingpacketqueue_close();
+                if (checksum != 35032)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingpacketqueue_close` checksum `35032`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_outgoingpacketqueue_next_packets();
+                if (checksum != 15206)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_outgoingpacketqueue_next_packets` checksum `15206`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrack_info();
+                if (checksum != 60151)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrack_info` checksum `60151`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrack_is_published();
+                if (checksum != 760)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrack_is_published` checksum `760`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrack_try_push();
+                if (checksum != 40290)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrack_try_push` checksum `40290`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrack_unpublish();
+                if (checksum != 40300)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrack_unpublish` checksum `40300`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrack_wait_for_unpublish();
+                if (checksum != 39190)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrack_wait_for_unpublish` checksum `39190`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_handle_sfu_publish_response();
+                if (checksum != 52069)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_handle_sfu_publish_response` checksum `52069`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_handle_sfu_request_response();
+                if (checksum != 14552)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_handle_sfu_request_response` checksum `14552`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_publish_responses_for_sync_state();
+                if (checksum != 22678)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_publish_responses_for_sync_state` checksum `22678`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_publish_track();
+                if (checksum != 31959)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_publish_track` checksum `31959`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_republish_tracks();
+                if (checksum != 2671)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanager_republish_tracks` checksum `2671`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanagerdelegate_on_signal_request();
+                if (checksum != 28972)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanagerdelegate_on_signal_request` checksum `28972`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_localdatatrackmanagerdelegate_on_packets_available();
+                if (checksum != 19578)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_localdatatrackmanagerdelegate_on_packets_available` checksum `19578`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_datatrackstream_next();
+                if (checksum != 35219)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_datatrackstream_next` checksum `35219`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum = _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_info();
+                if (checksum != 11559)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_info` checksum `11559`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_is_published();
+                if (checksum != 63127)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_is_published` checksum `63127`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_publisher_identity();
+                if (checksum != 40711)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_publisher_identity` checksum `40711`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_set_pipeline_options();
+                if (checksum != 47812)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_set_pipeline_options` checksum `47812`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_subscribe();
+                if (checksum != 23718)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_subscribe` checksum `23718`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_subscribe_with_options();
+                if (checksum != 44043)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_subscribe_with_options` checksum `44043`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrack_wait_for_unpublish();
+                if (checksum != 30281)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrack_wait_for_unpublish` checksum `30281`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_packet_received();
+                if (checksum != 20834)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_packet_received` checksum `20834`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_sfu_join_response();
+                if (checksum != 40603)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_sfu_join_response` checksum `40603`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_sfu_participant_update();
+                if (checksum != 65460)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_sfu_participant_update` checksum `65460`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_subscriber_handles();
+                if (checksum != 10984)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_handle_subscriber_handles` checksum `10984`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_resend_subscription_updates();
+                if (checksum != 45173)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanager_resend_subscription_updates` checksum `45173`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_signal_request();
+                if (checksum != 17633)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_signal_request` checksum `17633`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_track_published();
+                if (checksum != 34810)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_track_published` checksum `34810`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_track_unpublished();
+                if (checksum != 204)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_method_remotedatatrackmanagerdelegate_on_track_unpublished` checksum `204`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_constructor_incomingdatastreammanager_new();
+                if (checksum != 27033)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_constructor_incomingdatastreammanager_new` checksum `27033`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_constructor_outgoingdatastreammanager_new();
+                if (checksum != 53243)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_constructor_outgoingdatastreammanager_new` checksum `53243`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_constructor_localdatatrackmanager_new();
+                if (checksum != 49140)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_constructor_localdatatrackmanager_new` checksum `49140`, library returned `{checksum}`"
+                    );
+                }
+            }
+            {
+                var checksum =
+                    _UniFFILib.uniffi_livekit_uniffi_checksum_constructor_remotedatatrackmanager_new();
+                if (checksum != 42521)
+                {
+                    throw new UniffiContractChecksumException(
+                        $"uniffi.livekit_uniffi: uniffi bindings expected function `uniffi_livekit_uniffi_checksum_constructor_remotedatatrackmanager_new` checksum `42521`, library returned `{checksum}`"
                     );
                 }
             }
@@ -1777,6 +4786,36 @@ namespace LiveKit.Uniffi
         }
     }
 
+    class FfiConverterInt64 : FfiConverter<long, long>
+    {
+        public static FfiConverterInt64 INSTANCE = new FfiConverterInt64();
+
+        public override long Lift(long value)
+        {
+            return value;
+        }
+
+        public override long Read(BigEndianStream stream)
+        {
+            return stream.ReadLong();
+        }
+
+        public override long Lower(long value)
+        {
+            return value;
+        }
+
+        public override int AllocationSize(long value)
+        {
+            return 8;
+        }
+
+        public override void Write(long value, BigEndianStream stream)
+        {
+            stream.WriteLong(value);
+        }
+    }
+
     class FfiConverterBoolean : FfiConverter<bool, sbyte>
     {
         public static FfiConverterBoolean INSTANCE = new FfiConverterBoolean();
@@ -1861,6 +4900,28 @@ namespace LiveKit.Uniffi
         }
     }
 
+    class FfiConverterByteArray : FfiConverterRustBuffer<byte[]>
+    {
+        public static FfiConverterByteArray INSTANCE = new FfiConverterByteArray();
+
+        public override byte[] Read(BigEndianStream stream)
+        {
+            var length = stream.ReadInt();
+            return stream.ReadBytes(length);
+        }
+
+        public override int AllocationSize(byte[] value)
+        {
+            return 4 + value.Length;
+        }
+
+        public override void Write(byte[] value, BigEndianStream stream)
+        {
+            stream.WriteInt(value.Length);
+            stream.WriteBytes(value);
+        }
+    }
+
     class FfiConverterDuration : FfiConverterRustBuffer<TimeSpan>
     {
         public static FfiConverterDuration INSTANCE = new FfiConverterDuration();
@@ -1893,6 +4954,6091 @@ namespace LiveKit.Uniffi
     }
 
     /// <summary>
+    /// Reader for an incoming byte data stream.
+    /// </summary>
+    public interface IByteStreamReader
+    {
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        ByteStreamInfo Info();
+
+        /// <summary>
+        /// Returns the next chunk, or `None` once the stream has closed.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<Bytes?> Next();
+
+        /// <summary>
+        /// Reads every chunk, concatenating them into a single buffer returned once the stream closes.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<Bytes> ReadAll();
+    }
+
+    /// <summary>
+    /// Reader for an incoming byte data stream.
+    /// </summary>
+    public class ByteStreamReader : IByteStreamReader, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public ByteStreamReader(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~ByteStreamReader()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_bytestreamreader(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_bytestreamreader(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        public ByteStreamInfo Info()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterTypeByteStreamInfo.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamreader_info(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Returns the next chunk, or `None` once the stream has closed.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<Bytes?> Next()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamreader_next(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterOptionalTypeBytes.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Reads every chunk, concatenating them into a single buffer returned once the stream closes.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<Bytes> ReadAll()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamreader_read_all(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterTypeBytes.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeByteStreamReader : FfiConverter<ByteStreamReader, ulong>
+    {
+        public static FfiConverterTypeByteStreamReader INSTANCE =
+            new FfiConverterTypeByteStreamReader();
+
+        public override ulong Lower(ByteStreamReader value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override ByteStreamReader Lift(ulong value)
+        {
+            return new ByteStreamReader(value);
+        }
+
+        public override ByteStreamReader Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(ByteStreamReader value)
+        {
+            return 8;
+        }
+
+        public override void Write(ByteStreamReader value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Writer for an open byte data stream.
+    /// </summary>
+    public interface IByteStreamWriter
+    {
+        /// <summary>
+        /// Closes the stream normally.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task Close();
+
+        /// <summary>
+        /// Closes the stream abnormally with a reason.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task CloseWithReason(string @reason);
+
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        ByteStreamInfo Info();
+
+        /// <summary>
+        /// Whether the stream is still open — false once it has been closed locally or a send has failed.
+        /// </summary>
+        Task<bool> IsOpen();
+
+        /// <summary>
+        /// Appends bytes to the stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task Write(Bytes @data);
+    }
+
+    /// <summary>
+    /// Writer for an open byte data stream.
+    /// </summary>
+    public class ByteStreamWriter : IByteStreamWriter, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public ByteStreamWriter(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~ByteStreamWriter()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_bytestreamwriter(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_bytestreamwriter(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Closes the stream normally.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task Close()
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamwriter_close(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Closes the stream abnormally with a reason.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task CloseWithReason(string @reason)
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamwriter_close_with_reason(
+                        thisPtr,
+                        FfiConverterString.INSTANCE.Lower(@reason)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        public ByteStreamInfo Info()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterTypeByteStreamInfo.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamwriter_info(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Whether the stream is still open — false once it has been closed locally or a send has failed.
+        /// </summary>
+        public async Task<bool> IsOpen()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamwriter_is_open(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_i8(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_i8(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_i8(future),
+                // Lift
+                (result) => FfiConverterBoolean.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Appends bytes to the stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task Write(Bytes @data)
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_bytestreamwriter_write(
+                        thisPtr,
+                        FfiConverterTypeBytes.INSTANCE.Lower(@data)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeByteStreamWriter : FfiConverter<ByteStreamWriter, ulong>
+    {
+        public static FfiConverterTypeByteStreamWriter INSTANCE =
+            new FfiConverterTypeByteStreamWriter();
+
+        public override ulong Lower(ByteStreamWriter value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override ByteStreamWriter Lift(ulong value)
+        {
+            return new ByteStreamWriter(value);
+        }
+
+        public override ByteStreamWriter Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(ByteStreamWriter value)
+        {
+            return 8;
+        }
+
+        public override void Write(ByteStreamWriter value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// A stream of [`DataTrackFrame`]s received from a [`RemoteDataTrack`].
+    /// </summary>
+    public interface IDataTrackStream
+    {
+        /// <summary>
+        /// Returns the next received frame or `None` if the subscription has ended.
+        /// </summary>
+        Task<DataTrackFrame?> Next();
+    }
+
+    /// <summary>
+    /// A stream of [`DataTrackFrame`]s received from a [`RemoteDataTrack`].
+    /// </summary>
+    public class DataTrackStream : IDataTrackStream, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public DataTrackStream(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~DataTrackStream()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_datatrackstream(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_datatrackstream(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Returns the next received frame or `None` if the subscription has ended.
+        /// </summary>
+        public async Task<DataTrackFrame?> Next()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_datatrackstream_next(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterOptionalTypeDataTrackFrame.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeDataTrackStream : FfiConverter<DataTrackStream, ulong>
+    {
+        public static FfiConverterTypeDataTrackStream INSTANCE = new FfiConverterTypeDataTrackStream();
+
+        public override ulong Lower(DataTrackStream value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override DataTrackStream Lift(ulong value)
+        {
+            return new DataTrackStream(value);
+        }
+
+        public override DataTrackStream Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(DataTrackStream value)
+        {
+            return 8;
+        }
+
+        public override void Write(DataTrackStream value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Receives inbound data-stream packets and processes them on the incoming manager's actor loop,
+    /// surfacing opened readers through a foreign delegate.
+    ///
+    /// Mirrors [`crate::data_track::remote::RemoteDataTrackManager`]: `handle_packet_received` is a
+    /// cheap synchronous enqueue (safe to call from a native data-channel callback), while
+    /// decompression and reassembly happen on the spawned `run` task in packet order.
+    /// </summary>
+    public interface IIncomingDataStreamManager
+    {
+        /// <summary>
+        /// Aborts all open incoming streams so their readers error instead of hanging (e.g. on
+        /// disconnect). Handler wiring on the foreign side survives, so streams that arrive later
+        /// (e.g. after a reconnect) are still processed.
+        /// </summary>
+        void AbortAllStreams();
+
+        /// <summary>
+        /// Aborts open incoming streams sent by `identity` (e.g. when that participant disconnects
+        /// mid-send), so their readers error instead of hanging.
+        /// </summary>
+        void AbortStreamsFrom(string @identity);
+
+        /// <summary>
+        /// Handles an encoded [`livekit_protocol::DataPacket`] received over the data channel.
+        ///
+        /// Fire-and-forget: the packet is decoded and enqueued in order; processing happens on the
+        /// manager's run loop. Non-data-stream or undecodable packets are ignored.
+        ///
+        /// `encryption_type` is how this packet arrived on the wire, and must be passed by the host
+        /// because it cannot be recovered from the bytes: `encrypted_packet` is a member of the
+        /// `DataPacket.value` oneof, so decrypting replaces it with the decrypted stream packet.
+        /// Hosts without end-to-end encryption pass [`EncryptionType::None`]; hosts with E2EE pass
+        /// the type they decrypted with, letting the manager reject chunks whose encryption doesn't
+        /// match their stream's header ([`DataStreamError::EncryptionTypeMismatch`]).
+        /// </summary>
+        void HandlePacketReceived(Bytes @packet, EncryptionType @encryptionType);
+
+        /// <summary>
+        /// Number of currently open incoming streams: streams announced by a header that are still
+        /// awaiting more packets. Inline (single-packet) streams complete immediately and are never
+        /// counted.
+        ///
+        /// The query runs on the manager's loop in order with previously submitted events, so a
+        /// packet or abort passed beforehand is reflected in the answer — useful in tests to wait for
+        /// a header to register (or an abort to land) without racing the run loop.
+        /// </summary>
+        Task<ulong> OpenStreamCount();
+    }
+
+    /// <summary>
+    /// Receives inbound data-stream packets and processes them on the incoming manager's actor loop,
+    /// surfacing opened readers through a foreign delegate.
+    ///
+    /// Mirrors [`crate::data_track::remote::RemoteDataTrackManager`]: `handle_packet_received` is a
+    /// cheap synchronous enqueue (safe to call from a native data-channel callback), while
+    /// decompression and reassembly happen on the spawned `run` task in packet order.
+    /// </summary>
+    public class IncomingDataStreamManager : IIncomingDataStreamManager, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public IncomingDataStreamManager(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~IncomingDataStreamManager()
+        {
+            Destroy();
+        }
+
+        /// <summary>
+        /// Creates a manager that surfaces opened streams to `delegate`.
+        ///
+        /// `max_payload_byte_length` caps the decompressed size of a single incoming stream
+        /// (`None` = default, 5 GB) and is **fixed for the lifetime of the manager**. If the host
+        /// sources it from per-connection options that aren't final until connect — and can differ
+        /// between sessions of the same host object — construct a fresh manager for each session
+        /// rather than lazily memoizing one, or the first session's value is silently pinned. (Same
+        /// class of rough edge as a single room instance being `connect()`ed multiple times.)
+        /// Rebuilding is cheap and safe: dropping the manager cancels its tasks, and handler wiring
+        /// lives on the foreign side.
+        /// </summary>
+        public IncomingDataStreamManager(
+            IncomingDataStreamManagerDelegate @delegate,
+            ulong? @maxPayloadByteLength
+        )
+            : this(
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_constructor_incomingdatastreammanager_new(
+                            FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.Lower(@delegate),
+                            FfiConverterOptionalUInt64.INSTANCE.Lower(@maxPayloadByteLength),
+                            ref _status
+                        )
+                )
+            ) { }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_incomingdatastreammanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_incomingdatastreammanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Aborts all open incoming streams so their readers error instead of hanging (e.g. on
+        /// disconnect). Handler wiring on the foreign side survives, so streams that arrive later
+        /// (e.g. after a reconnect) are still processed.
+        /// </summary>
+        public void AbortAllStreams()
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_abort_all_streams(
+                            thisPtr,
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Aborts open incoming streams sent by `identity` (e.g. when that participant disconnects
+        /// mid-send), so their readers error instead of hanging.
+        /// </summary>
+        public void AbortStreamsFrom(string @identity)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_abort_streams_from(
+                            thisPtr,
+                            FfiConverterString.INSTANCE.Lower(@identity),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Handles an encoded [`livekit_protocol::DataPacket`] received over the data channel.
+        ///
+        /// Fire-and-forget: the packet is decoded and enqueued in order; processing happens on the
+        /// manager's run loop. Non-data-stream or undecodable packets are ignored.
+        ///
+        /// `encryption_type` is how this packet arrived on the wire, and must be passed by the host
+        /// because it cannot be recovered from the bytes: `encrypted_packet` is a member of the
+        /// `DataPacket.value` oneof, so decrypting replaces it with the decrypted stream packet.
+        /// Hosts without end-to-end encryption pass [`EncryptionType::None`]; hosts with E2EE pass
+        /// the type they decrypted with, letting the manager reject chunks whose encryption doesn't
+        /// match their stream's header ([`DataStreamError::EncryptionTypeMismatch`]).
+        /// </summary>
+        public void HandlePacketReceived(Bytes @packet, EncryptionType @encryptionType)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_handle_packet_received(
+                            thisPtr,
+                            FfiConverterTypeBytes.INSTANCE.Lower(@packet),
+                            FfiConverterTypeEncryptionType.INSTANCE.Lower(@encryptionType),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Number of currently open incoming streams: streams announced by a header that are still
+        /// awaiting more packets. Inline (single-packet) streams complete immediately and are never
+        /// counted.
+        ///
+        /// The query runs on the manager's loop in order with previously submitted events, so a
+        /// packet or abort passed beforehand is reflected in the answer — useful in tests to wait for
+        /// a header to register (or an abort to land) without racing the run loop.
+        /// </summary>
+        public async Task<ulong> OpenStreamCount()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanager_open_stream_count(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_u64(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_u64(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_u64(future),
+                // Lift
+                (result) => FfiConverterUInt64.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeIncomingDataStreamManager : FfiConverter<IncomingDataStreamManager, ulong>
+    {
+        public static FfiConverterTypeIncomingDataStreamManager INSTANCE =
+            new FfiConverterTypeIncomingDataStreamManager();
+
+        public override ulong Lower(IncomingDataStreamManager value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override IncomingDataStreamManager Lift(ulong value)
+        {
+            return new IncomingDataStreamManager(value);
+        }
+
+        public override IncomingDataStreamManager Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(IncomingDataStreamManager value)
+        {
+            return 8;
+        }
+
+        public override void Write(IncomingDataStreamManager value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Delegate for receiving output events from [`IncomingDataStreamManager`].
+    ///
+    /// Only stream lifecycle events (opened/closed) are surfaced. The manager's deprecated v1 raw
+    /// chunk/trailer notifications are intentionally not forwarded over the FFI boundary.
+    /// </summary>
+    public interface IncomingDataStreamManagerDelegate
+    {
+        /// <summary>
+        /// A byte stream was opened by `identity` and is ready to be read.
+        /// </summary>
+        void OnByteStreamOpened(ByteStreamReader @reader, string @identity);
+
+        /// <summary>
+        /// A text stream was opened by `identity` and is ready to be read.
+        /// </summary>
+        void OnTextStreamOpened(TextStreamReader @reader, string @identity);
+
+        /// <summary>
+        /// A previously opened stream terminated on the wire and will produce no further data: its
+        /// trailer arrived, its (single-packet) inline payload completed, it failed, or it was
+        /// aborted. Emitted exactly once per opened stream, after the corresponding open event.
+        ///
+        /// Hosts delivering streams on ordered topics use this to know when a stream's handler chain
+        /// can advance — a stream that is still open must not block streams opened after it forever.
+        /// </summary>
+        void OnStreamClosed(string @streamId, string @identity);
+    }
+
+    /// <summary>
+    /// Delegate for receiving output events from [`IncomingDataStreamManager`].
+    ///
+    /// Only stream lifecycle events (opened/closed) are surfaced. The manager's deprecated v1 raw
+    /// chunk/trailer notifications are intentionally not forwarded over the FFI boundary.
+    /// </summary>
+    public class IncomingDataStreamManagerDelegateImpl : IncomingDataStreamManagerDelegate, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public IncomingDataStreamManagerDelegateImpl(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~IncomingDataStreamManagerDelegateImpl()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_incomingdatastreammanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_incomingdatastreammanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// A byte stream was opened by `identity` and is ready to be read.
+        /// </summary>
+        public void OnByteStreamOpened(ByteStreamReader @reader, string @identity)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanagerdelegate_on_byte_stream_opened(
+                            thisPtr,
+                            FfiConverterTypeByteStreamReader.INSTANCE.Lower(@reader),
+                            FfiConverterString.INSTANCE.Lower(@identity),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// A text stream was opened by `identity` and is ready to be read.
+        /// </summary>
+        public void OnTextStreamOpened(TextStreamReader @reader, string @identity)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanagerdelegate_on_text_stream_opened(
+                            thisPtr,
+                            FfiConverterTypeTextStreamReader.INSTANCE.Lower(@reader),
+                            FfiConverterString.INSTANCE.Lower(@identity),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// A previously opened stream terminated on the wire and will produce no further data: its
+        /// trailer arrived, its (single-packet) inline payload completed, it failed, or it was
+        /// aborted. Emitted exactly once per opened stream, after the corresponding open event.
+        ///
+        /// Hosts delivering streams on ordered topics use this to know when a stream's handler chain
+        /// can advance — a stream that is still open must not block streams opened after it forever.
+        /// </summary>
+        public void OnStreamClosed(string @streamId, string @identity)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingdatastreammanagerdelegate_on_stream_closed(
+                            thisPtr,
+                            FfiConverterString.INSTANCE.Lower(@streamId),
+                            FfiConverterString.INSTANCE.Lower(@identity),
+                            ref _status
+                        )
+                )
+            );
+        }
+    }
+
+    class UniffiCallbackInterfaceIncomingDataStreamManagerDelegate
+    {
+        static void OnByteStreamOpened(
+            ulong @uniffiHandle,
+            ulong @reader,
+            RustBuffer @identity,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnByteStreamOpened(
+                    FfiConverterTypeByteStreamReader.INSTANCE.Lift(@reader),
+                    FfiConverterString.INSTANCE.Lift(@identity)
+                );
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void OnTextStreamOpened(
+            ulong @uniffiHandle,
+            ulong @reader,
+            RustBuffer @identity,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnTextStreamOpened(
+                    FfiConverterTypeTextStreamReader.INSTANCE.Lift(@reader),
+                    FfiConverterString.INSTANCE.Lift(@identity)
+                );
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void OnStreamClosed(
+            ulong @uniffiHandle,
+            RustBuffer @streamId,
+            RustBuffer @identity,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnStreamClosed(
+                    FfiConverterString.INSTANCE.Lift(@streamId),
+                    FfiConverterString.INSTANCE.Lift(@identity)
+                );
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void UniffiFree(ulong @handle)
+        {
+            FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.handleMap.Remove(@handle);
+        }
+
+        static ulong UniffiClone(ulong @handle)
+        {
+            try
+            {
+                if (
+                    !FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.handleMap.TryGet(
+                        @handle,
+                        out var obj
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{@handle}'");
+                }
+                return FfiConverterTypeIncomingDataStreamManagerDelegate.INSTANCE.handleMap.Insert(obj);
+            }
+            catch (System.Exception)
+            {
+                return 0; // 0 is never a valid handle; ConcurrentHandleMap starts at 1
+            }
+        }
+
+        static _UniFFILib.UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod0 _m0 =
+            new _UniFFILib.UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod0(
+                OnByteStreamOpened
+            );
+        static _UniFFILib.UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod1 _m1 =
+            new _UniFFILib.UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod1(
+                OnTextStreamOpened
+            );
+        static _UniFFILib.UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod2 _m2 =
+            new _UniFFILib.UniffiCallbackInterfaceIncomingDataStreamManagerDelegateMethod2(
+                OnStreamClosed
+            );
+        static _UniFFILib.UniffiCallbackInterfaceFree _callback_interface_free =
+            new _UniFFILib.UniffiCallbackInterfaceFree(UniffiFree);
+        static _UniFFILib.UniffiCallbackInterfaceClone _callback_interface_clone =
+            new _UniFFILib.UniffiCallbackInterfaceClone(UniffiClone);
+
+        private static GCHandle? _vtablePin;
+
+        public static void Register()
+        {
+            if (_vtablePin.HasValue)
+                return;
+            _UniFFILib.UniffiVTableCallbackInterfaceIncomingDataStreamManagerDelegate _vtable =
+                new _UniFFILib.UniffiVTableCallbackInterfaceIncomingDataStreamManagerDelegate
+                {
+                    @onByteStreamOpened = Marshal.GetFunctionPointerForDelegate(_m0),
+                    @onTextStreamOpened = Marshal.GetFunctionPointerForDelegate(_m1),
+                    @onStreamClosed = Marshal.GetFunctionPointerForDelegate(_m2),
+                    @uniffiFree = Marshal.GetFunctionPointerForDelegate(_callback_interface_free),
+                    @uniffiClone = Marshal.GetFunctionPointerForDelegate(_callback_interface_clone),
+                };
+
+            // Pin the vtable so the GC never moves it. The GCHandle is intentionally never freed —
+            // this pin must remain valid for the process lifetime.
+            _vtablePin = GCHandle.Alloc(_vtable, GCHandleType.Pinned);
+            _UniFFILib.uniffi_livekit_uniffi_fn_init_callback_vtable_incomingdatastreammanagerdelegate(
+                _vtablePin.Value.AddrOfPinnedObject()
+            );
+        }
+    }
+
+    class ConcurrentHandleMap<T>
+        where T : notnull
+    {
+        readonly ConcurrentDictionary<ulong, T> _map = new();
+
+        // Handles are odd numbers (1, 3, 5, ...) — the lowest bit must always be set.
+        // Rust uses (handle & 1) to distinguish foreign-language handles from Rust Arc
+        // pointers, which are always even due to memory alignment. See uniffi_core/src/ffi/handle.rs.
+        const long HANDLE_INITIAL = 1;
+        const long HANDLE_DELTA = 2;
+        long _currentHandle = HANDLE_INITIAL - HANDLE_DELTA;
+
+        public ulong Insert(T obj)
+        {
+            var handle = (ulong)Interlocked.Add(ref _currentHandle, HANDLE_DELTA);
+            if (!_map.TryAdd(handle, obj))
+            {
+                throw new InternalException("ConcurrentHandleMap: Duplicate handle");
+            }
+            return handle;
+        }
+
+        public bool TryGet(ulong handle, [NotNullWhen(true)] out T? result)
+        {
+            return _map.TryGetValue(handle, out result);
+        }
+
+        public T Get(ulong handle)
+        {
+            if (_map.TryGetValue(handle, out var result))
+            {
+                return result;
+            }
+            else
+            {
+                throw new InternalException("ConcurrentHandleMap: Invalid handle");
+            }
+        }
+
+        public bool Remove(ulong handle)
+        {
+            return _map.TryRemove(handle, out _);
+        }
+
+        public bool Remove(ulong handle, [NotNullWhen(true)] out T? result)
+        {
+            return _map.TryRemove(handle, out result);
+        }
+    }
+
+    static class UniffiCallbackResponseStatus
+    {
+        public static sbyte SUCCESS = 0;
+        public static sbyte ERROR = 1;
+        public static sbyte UNEXPECTED_ERROR = 2;
+    }
+
+    class FfiConverterTypeIncomingDataStreamManagerDelegate
+        : FfiConverter<IncomingDataStreamManagerDelegate, ulong>
+    {
+        public ConcurrentHandleMap<IncomingDataStreamManagerDelegate> handleMap =
+            new ConcurrentHandleMap<IncomingDataStreamManagerDelegate>();
+
+        public static FfiConverterTypeIncomingDataStreamManagerDelegate INSTANCE =
+            new FfiConverterTypeIncomingDataStreamManagerDelegate();
+
+        static FfiConverterTypeIncomingDataStreamManagerDelegate()
+        {
+            UniffiCallbackInterfaceIncomingDataStreamManagerDelegate.Register();
+        }
+
+        public override ulong Lower(IncomingDataStreamManagerDelegate value)
+        {
+            if (value is IncomingDataStreamManagerDelegateImpl rustObj)
+            {
+                // Rust-implemented object. Clone the handle and return it.
+                return rustObj.CallWithPointer(thisPtr => thisPtr);
+            }
+            else
+            {
+                // C# object, generate a new handle map entry and return it.
+                return handleMap.Insert(value);
+            }
+        }
+
+        public override IncomingDataStreamManagerDelegate Lift(ulong value)
+        {
+            if ((value & 1UL) == 0UL)
+            {
+                // Rust-generated handle, construct a new wrapper.
+                return new IncomingDataStreamManagerDelegateImpl(value);
+            }
+            else
+            {
+                // C#-generated handle, retrieve and remove from the handle map.
+                if (handleMap.Remove(value, out var obj))
+                {
+                    return obj;
+                }
+                else
+                {
+                    throw new InternalException($"No callback in handlemap '{value}'");
+                }
+            }
+        }
+
+        public override IncomingDataStreamManagerDelegate Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(IncomingDataStreamManagerDelegate value)
+        {
+            return 8;
+        }
+
+        public override void Write(IncomingDataStreamManagerDelegate value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Buffers opened and closed streams so they can be pulled instead of pushed.
+    ///
+    /// Implements [`IncomingDataStreamManagerDelegate`] in Rust; see the module docs.
+    /// </summary>
+    public interface IIncomingStreamQueue
+    {
+        /// <summary>
+        /// Wakes a pending [`Self::next_opened_stream`] or [`Self::next_closed_stream`] with `None`.
+        /// See [`OutgoingPacketQueue::close`].
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// Awaits the next stream-closed notification.
+        ///
+        /// Pulled independently of [`Self::next_opened_stream`], so ordering across the two queues is
+        /// not guaranteed — correlate by `stream_id` (a close always follows its open on the push
+        /// side). Returns `None` once the manager has shut down.
+        /// </summary>
+        Task<ClosedStream?> NextClosedStream();
+
+        /// <summary>
+        /// Awaits the next stream opened by a remote participant.
+        ///
+        /// Returns `None` once the manager has shut down, which ends the caller's drain loop. Unlike
+        /// [`OutgoingPacketQueue::next_packets`] this yields one at a time: each carries a reader the
+        /// caller has to route to a handler, so batching would only defer that work.
+        /// </summary>
+        Task<OpenedStream?> NextOpenedStream();
+    }
+
+    /// <summary>
+    /// Buffers opened and closed streams so they can be pulled instead of pushed.
+    ///
+    /// Implements [`IncomingDataStreamManagerDelegate`] in Rust; see the module docs.
+    /// </summary>
+    public class IncomingStreamQueue : IIncomingStreamQueue, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public IncomingStreamQueue(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~IncomingStreamQueue()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_incomingstreamqueue(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_incomingstreamqueue(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Wakes a pending [`Self::next_opened_stream`] or [`Self::next_closed_stream`] with `None`.
+        /// See [`OutgoingPacketQueue::close`].
+        /// </summary>
+        public void Close()
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingstreamqueue_close(
+                            thisPtr,
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Awaits the next stream-closed notification.
+        ///
+        /// Pulled independently of [`Self::next_opened_stream`], so ordering across the two queues is
+        /// not guaranteed — correlate by `stream_id` (a close always follows its open on the push
+        /// side). Returns `None` once the manager has shut down.
+        /// </summary>
+        public async Task<ClosedStream?> NextClosedStream()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingstreamqueue_next_closed_stream(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterOptionalTypeClosedStream.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Awaits the next stream opened by a remote participant.
+        ///
+        /// Returns `None` once the manager has shut down, which ends the caller's drain loop. Unlike
+        /// [`OutgoingPacketQueue::next_packets`] this yields one at a time: each carries a reader the
+        /// caller has to route to a handler, so batching would only defer that work.
+        /// </summary>
+        public async Task<OpenedStream?> NextOpenedStream()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_incomingstreamqueue_next_opened_stream(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterOptionalTypeOpenedStream.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeIncomingStreamQueue : FfiConverter<IncomingStreamQueue, ulong>
+    {
+        public static FfiConverterTypeIncomingStreamQueue INSTANCE =
+            new FfiConverterTypeIncomingStreamQueue();
+
+        public override ulong Lower(IncomingStreamQueue value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override IncomingStreamQueue Lift(ulong value)
+        {
+            return new IncomingStreamQueue(value);
+        }
+
+        public override IncomingStreamQueue Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(IncomingStreamQueue value)
+        {
+            return 8;
+        }
+
+        public override void Write(IncomingStreamQueue value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Data track published by the local participant.
+    /// </summary>
+    public interface ILocalDataTrack
+    {
+        /// <summary>
+        /// Information about the data track.
+        /// </summary>
+        DataTrackInfo Info();
+
+        /// <summary>
+        /// Whether or not the track is currently published.
+        /// </summary>
+        bool IsPublished();
+
+        /// <summary>
+        /// Try pushing a frame to subscribers of the track.
+        /// </summary>
+        /// <exception cref="PushFrameErrorReason"></exception>
+        void TryPush(DataTrackFrame @frame);
+
+        /// <summary>
+        /// Unpublishes the track.
+        /// </summary>
+        void Unpublish();
+
+        /// <summary>
+        /// Waits asynchronously until the track is unpublished.
+        ///
+        /// Use this to trigger follow-up work once the track is no longer published.
+        /// If the track is already unpublished, this method returns immediately.
+        /// </summary>
+        Task WaitForUnpublish();
+    }
+
+    /// <summary>
+    /// Data track published by the local participant.
+    /// </summary>
+    public class LocalDataTrack : ILocalDataTrack, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public LocalDataTrack(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~LocalDataTrack()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_localdatatrack(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_localdatatrack(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Information about the data track.
+        /// </summary>
+        public DataTrackInfo Info()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterTypeDataTrackInfo.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrack_info(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Whether or not the track is currently published.
+        /// </summary>
+        public bool IsPublished()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterBoolean.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrack_is_published(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Try pushing a frame to subscribers of the track.
+        /// </summary>
+        /// <exception cref="PushFrameErrorReason"></exception>
+        public void TryPush(DataTrackFrame @frame)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCallWithError(
+                    FfiConverterTypePushFrameErrorReason.INSTANCE,
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrack_try_push(
+                            thisPtr,
+                            FfiConverterTypeDataTrackFrame.INSTANCE.Lower(@frame),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Unpublishes the track.
+        /// </summary>
+        public void Unpublish()
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrack_unpublish(
+                            thisPtr,
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Waits asynchronously until the track is unpublished.
+        ///
+        /// Use this to trigger follow-up work once the track is no longer published.
+        /// If the track is already unpublished, this method returns immediately.
+        /// </summary>
+        public async Task WaitForUnpublish()
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrack_wait_for_unpublish(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeLocalDataTrack : FfiConverter<LocalDataTrack, ulong>
+    {
+        public static FfiConverterTypeLocalDataTrack INSTANCE = new FfiConverterTypeLocalDataTrack();
+
+        public override ulong Lower(LocalDataTrack value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override LocalDataTrack Lift(ulong value)
+        {
+            return new LocalDataTrack(value);
+        }
+
+        public override LocalDataTrack Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(LocalDataTrack value)
+        {
+            return 8;
+        }
+
+        public override void Write(LocalDataTrack value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// System for managing data track publications.
+    /// </summary>
+    public interface ILocalDataTrackManager
+    {
+        /// <summary>
+        /// Handles a serialized `PublishDataTrackResponse` signal response from the SFU.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        void HandleSfuPublishResponse(byte[] @res);
+
+        /// <summary>
+        /// Handles a serialized `RequestResponse` signal response from the SFU.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        void HandleSfuRequestResponse(byte[] @res);
+
+        /// <summary>
+        /// Get serialized publish responses for all currently published tracks to support sync state.
+        ///
+        /// Returns a vector of serialized [`proto::PublishDataTrackResponse`].
+        /// </summary>
+        Task<Bytes[]> PublishResponsesForSyncState();
+
+        /// <summary>
+        /// Publishes a data track with given options.
+        /// </summary>
+        /// <exception cref="PublishException"></exception>
+        Task<LocalDataTrack> PublishTrack(DataTrackOptions @options);
+
+        /// <summary>
+        /// Republish all tracks.
+        ///
+        /// This must be invoked after a full reconnect in order for existing publications
+        /// to be recognized by the SFU. Each republished track will be assigned a new SID.
+        /// </summary>
+        void RepublishTracks();
+    }
+
+    /// <summary>
+    /// System for managing data track publications.
+    /// </summary>
+    public class LocalDataTrackManager : ILocalDataTrackManager, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public LocalDataTrackManager(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~LocalDataTrackManager()
+        {
+            Destroy();
+        }
+
+        public LocalDataTrackManager(
+            LocalDataTrackManagerDelegate @delegate,
+            EncryptionProvider? @encryptionProvider
+        )
+            : this(
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_constructor_localdatatrackmanager_new(
+                            FfiConverterTypeLocalDataTrackManagerDelegate.INSTANCE.Lower(@delegate),
+                            FfiConverterOptionalTypeEncryptionProvider.INSTANCE.Lower(
+                                @encryptionProvider
+                            ),
+                            ref _status
+                        )
+                )
+            ) { }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_localdatatrackmanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_localdatatrackmanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Handles a serialized `PublishDataTrackResponse` signal response from the SFU.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        public void HandleSfuPublishResponse(byte[] @res)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCallWithError(
+                    FfiConverterTypeHandleSignalResponseError.INSTANCE,
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanager_handle_sfu_publish_response(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@res),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Handles a serialized `RequestResponse` signal response from the SFU.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        public void HandleSfuRequestResponse(byte[] @res)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCallWithError(
+                    FfiConverterTypeHandleSignalResponseError.INSTANCE,
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanager_handle_sfu_request_response(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@res),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Get serialized publish responses for all currently published tracks to support sync state.
+        ///
+        /// Returns a vector of serialized [`proto::PublishDataTrackResponse`].
+        /// </summary>
+        public async Task<Bytes[]> PublishResponsesForSyncState()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanager_publish_responses_for_sync_state(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterSequenceTypeBytes.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Publishes a data track with given options.
+        /// </summary>
+        /// <exception cref="PublishException"></exception>
+        public async Task<LocalDataTrack> PublishTrack(DataTrackOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanager_publish_track(
+                        thisPtr,
+                        FfiConverterTypeDataTrackOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_u64(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_u64(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_u64(future),
+                // Lift
+                (result) => FfiConverterTypeLocalDataTrack.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypePublishError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Republish all tracks.
+        ///
+        /// This must be invoked after a full reconnect in order for existing publications
+        /// to be recognized by the SFU. Each republished track will be assigned a new SID.
+        /// </summary>
+        public void RepublishTracks()
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanager_republish_tracks(
+                            thisPtr,
+                            ref _status
+                        )
+                )
+            );
+        }
+    }
+
+    class FfiConverterTypeLocalDataTrackManager : FfiConverter<LocalDataTrackManager, ulong>
+    {
+        public static FfiConverterTypeLocalDataTrackManager INSTANCE =
+            new FfiConverterTypeLocalDataTrackManager();
+
+        public override ulong Lower(LocalDataTrackManager value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override LocalDataTrackManager Lift(ulong value)
+        {
+            return new LocalDataTrackManager(value);
+        }
+
+        public override LocalDataTrackManager Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(LocalDataTrackManager value)
+        {
+            return 8;
+        }
+
+        public override void Write(LocalDataTrackManager value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Delegate for receiving output events from [`LocalDataTrackManager`].
+    /// </summary>
+    public interface LocalDataTrackManagerDelegate
+    {
+        /// <summary>
+        /// Encoded signal request to be forwarded to the SFU.
+        /// </summary>
+        void OnSignalRequest(byte[] @request);
+
+        /// <summary>
+        /// Packets available to be sent over the data channel transport.
+        /// </summary>
+        void OnPacketsAvailable(Bytes[] @packets);
+    }
+
+    /// <summary>
+    /// Delegate for receiving output events from [`LocalDataTrackManager`].
+    /// </summary>
+    public class LocalDataTrackManagerDelegateImpl : LocalDataTrackManagerDelegate, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public LocalDataTrackManagerDelegateImpl(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~LocalDataTrackManagerDelegateImpl()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_localdatatrackmanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_localdatatrackmanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Encoded signal request to be forwarded to the SFU.
+        /// </summary>
+        public void OnSignalRequest(byte[] @request)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanagerdelegate_on_signal_request(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@request),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Packets available to be sent over the data channel transport.
+        /// </summary>
+        public void OnPacketsAvailable(Bytes[] @packets)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_localdatatrackmanagerdelegate_on_packets_available(
+                            thisPtr,
+                            FfiConverterSequenceTypeBytes.INSTANCE.Lower(@packets),
+                            ref _status
+                        )
+                )
+            );
+        }
+    }
+
+    class UniffiCallbackInterfaceLocalDataTrackManagerDelegate
+    {
+        static void OnSignalRequest(
+            ulong @uniffiHandle,
+            RustBuffer @request,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeLocalDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnSignalRequest(FfiConverterByteArray.INSTANCE.Lift(@request));
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void OnPacketsAvailable(
+            ulong @uniffiHandle,
+            RustBuffer @packets,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeLocalDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnPacketsAvailable(FfiConverterSequenceTypeBytes.INSTANCE.Lift(@packets));
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void UniffiFree(ulong @handle)
+        {
+            FfiConverterTypeLocalDataTrackManagerDelegate.INSTANCE.handleMap.Remove(@handle);
+        }
+
+        static ulong UniffiClone(ulong @handle)
+        {
+            try
+            {
+                if (
+                    !FfiConverterTypeLocalDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        @handle,
+                        out var obj
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{@handle}'");
+                }
+                return FfiConverterTypeLocalDataTrackManagerDelegate.INSTANCE.handleMap.Insert(obj);
+            }
+            catch (System.Exception)
+            {
+                return 0; // 0 is never a valid handle; ConcurrentHandleMap starts at 1
+            }
+        }
+
+        static _UniFFILib.UniffiCallbackInterfaceLocalDataTrackManagerDelegateMethod0 _m0 =
+            new _UniFFILib.UniffiCallbackInterfaceLocalDataTrackManagerDelegateMethod0(OnSignalRequest);
+        static _UniFFILib.UniffiCallbackInterfaceLocalDataTrackManagerDelegateMethod1 _m1 =
+            new _UniFFILib.UniffiCallbackInterfaceLocalDataTrackManagerDelegateMethod1(
+                OnPacketsAvailable
+            );
+        static _UniFFILib.UniffiCallbackInterfaceFree _callback_interface_free =
+            new _UniFFILib.UniffiCallbackInterfaceFree(UniffiFree);
+        static _UniFFILib.UniffiCallbackInterfaceClone _callback_interface_clone =
+            new _UniFFILib.UniffiCallbackInterfaceClone(UniffiClone);
+
+        private static GCHandle? _vtablePin;
+
+        public static void Register()
+        {
+            if (_vtablePin.HasValue)
+                return;
+            _UniFFILib.UniffiVTableCallbackInterfaceLocalDataTrackManagerDelegate _vtable =
+                new _UniFFILib.UniffiVTableCallbackInterfaceLocalDataTrackManagerDelegate
+                {
+                    @onSignalRequest = Marshal.GetFunctionPointerForDelegate(_m0),
+                    @onPacketsAvailable = Marshal.GetFunctionPointerForDelegate(_m1),
+                    @uniffiFree = Marshal.GetFunctionPointerForDelegate(_callback_interface_free),
+                    @uniffiClone = Marshal.GetFunctionPointerForDelegate(_callback_interface_clone),
+                };
+
+            // Pin the vtable so the GC never moves it. The GCHandle is intentionally never freed —
+            // this pin must remain valid for the process lifetime.
+            _vtablePin = GCHandle.Alloc(_vtable, GCHandleType.Pinned);
+            _UniFFILib.uniffi_livekit_uniffi_fn_init_callback_vtable_localdatatrackmanagerdelegate(
+                _vtablePin.Value.AddrOfPinnedObject()
+            );
+        }
+    }
+
+    class FfiConverterTypeLocalDataTrackManagerDelegate
+        : FfiConverter<LocalDataTrackManagerDelegate, ulong>
+    {
+        public ConcurrentHandleMap<LocalDataTrackManagerDelegate> handleMap =
+            new ConcurrentHandleMap<LocalDataTrackManagerDelegate>();
+
+        public static FfiConverterTypeLocalDataTrackManagerDelegate INSTANCE =
+            new FfiConverterTypeLocalDataTrackManagerDelegate();
+
+        static FfiConverterTypeLocalDataTrackManagerDelegate()
+        {
+            UniffiCallbackInterfaceLocalDataTrackManagerDelegate.Register();
+        }
+
+        public override ulong Lower(LocalDataTrackManagerDelegate value)
+        {
+            if (value is LocalDataTrackManagerDelegateImpl rustObj)
+            {
+                // Rust-implemented object. Clone the handle and return it.
+                return rustObj.CallWithPointer(thisPtr => thisPtr);
+            }
+            else
+            {
+                // C# object, generate a new handle map entry and return it.
+                return handleMap.Insert(value);
+            }
+        }
+
+        public override LocalDataTrackManagerDelegate Lift(ulong value)
+        {
+            if ((value & 1UL) == 0UL)
+            {
+                // Rust-generated handle, construct a new wrapper.
+                return new LocalDataTrackManagerDelegateImpl(value);
+            }
+            else
+            {
+                // C#-generated handle, retrieve and remove from the handle map.
+                if (handleMap.Remove(value, out var obj))
+                {
+                    return obj;
+                }
+                else
+                {
+                    throw new InternalException($"No callback in handlemap '{value}'");
+                }
+            }
+        }
+
+        public override LocalDataTrackManagerDelegate Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(LocalDataTrackManagerDelegate value)
+        {
+            return 8;
+        }
+
+        public override void Write(LocalDataTrackManagerDelegate value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Sends data streams, choosing v2 single-packet/compression or legacy multi-packet framing based
+    /// on recipient capabilities. Outbound packets are handed to a foreign delegate for transport.
+    /// </summary>
+    public interface IOutgoingDataStreamManager
+    {
+        /// <summary>
+        /// Sends a complete byte payload, returning info about the created stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<ByteStreamInfo> SendBytes(Bytes @data, StreamByteOptions @options);
+
+        /// <summary>
+        /// Streams a file from disk, returning info about the created stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<ByteStreamInfo> SendFile(string @path, StreamByteOptions @options);
+
+        /// <summary>
+        /// Sends a complete text payload, returning info about the created stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<TextStreamInfo> SendText(string @text, StreamTextOptions @options);
+
+        /// <summary>
+        /// Opens an incremental byte stream writer (never compressed or inlined).
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<ByteStreamWriter> StreamBytes(StreamByteOptions @options);
+
+        /// <summary>
+        /// Opens an incremental text stream writer (never compressed or inlined).
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<TextStreamWriter> StreamText(StreamTextOptions @options);
+    }
+
+    /// <summary>
+    /// Sends data streams, choosing v2 single-packet/compression or legacy multi-packet framing based
+    /// on recipient capabilities. Outbound packets are handed to a foreign delegate for transport.
+    /// </summary>
+    public class OutgoingDataStreamManager : IOutgoingDataStreamManager, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public OutgoingDataStreamManager(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~OutgoingDataStreamManager()
+        {
+            Destroy();
+        }
+
+        public OutgoingDataStreamManager(
+            OutgoingDataStreamManagerDelegate @delegate,
+            RemoteParticipantRegistryDelegate @registry
+        )
+            : this(
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_constructor_outgoingdatastreammanager_new(
+                            FfiConverterTypeOutgoingDataStreamManagerDelegate.INSTANCE.Lower(@delegate),
+                            FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.Lower(@registry),
+                            ref _status
+                        )
+                )
+            ) { }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_outgoingdatastreammanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_outgoingdatastreammanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Sends a complete byte payload, returning info about the created stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<ByteStreamInfo> SendBytes(Bytes @data, StreamByteOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_send_bytes(
+                        thisPtr,
+                        FfiConverterTypeBytes.INSTANCE.Lower(@data),
+                        FfiConverterTypeStreamByteOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterTypeByteStreamInfo.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Streams a file from disk, returning info about the created stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<ByteStreamInfo> SendFile(string @path, StreamByteOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_send_file(
+                        thisPtr,
+                        FfiConverterString.INSTANCE.Lower(@path),
+                        FfiConverterTypeStreamByteOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterTypeByteStreamInfo.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Sends a complete text payload, returning info about the created stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<TextStreamInfo> SendText(string @text, StreamTextOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_send_text(
+                        thisPtr,
+                        FfiConverterString.INSTANCE.Lower(@text),
+                        FfiConverterTypeStreamTextOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterTypeTextStreamInfo.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Opens an incremental byte stream writer (never compressed or inlined).
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<ByteStreamWriter> StreamBytes(StreamByteOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_stream_bytes(
+                        thisPtr,
+                        FfiConverterTypeStreamByteOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_u64(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_u64(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_u64(future),
+                // Lift
+                (result) => FfiConverterTypeByteStreamWriter.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Opens an incremental text stream writer (never compressed or inlined).
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<TextStreamWriter> StreamText(StreamTextOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingdatastreammanager_stream_text(
+                        thisPtr,
+                        FfiConverterTypeStreamTextOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_u64(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_u64(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_u64(future),
+                // Lift
+                (result) => FfiConverterTypeTextStreamWriter.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeOutgoingDataStreamManager : FfiConverter<OutgoingDataStreamManager, ulong>
+    {
+        public static FfiConverterTypeOutgoingDataStreamManager INSTANCE =
+            new FfiConverterTypeOutgoingDataStreamManager();
+
+        public override ulong Lower(OutgoingDataStreamManager value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override OutgoingDataStreamManager Lift(ulong value)
+        {
+            return new OutgoingDataStreamManager(value);
+        }
+
+        public override OutgoingDataStreamManager Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(OutgoingDataStreamManager value)
+        {
+            return 8;
+        }
+
+        public override void Write(OutgoingDataStreamManager value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Delegate for receiving outbound packets from [`OutgoingDataStreamManager`].
+    /// </summary>
+    public interface OutgoingDataStreamManagerDelegate
+    {
+        /// <summary>
+        /// Encoded [`livekit_protocol::DataPacket`]s to be sent over the data channel transport, in
+        /// order. One-shot sends (`send_text`/`send_bytes`) deliver their entire stream — header,
+        /// chunks, trailer — in a single call; incremental writers and `send_file` deliver one packet
+        /// per call.
+        ///
+        /// Return only once the packets have been handed to the transport: the originating
+        /// `send_*`/`write` call stays pending until then, which is what bounds how fast a producer
+        /// can enqueue. Throwing [`PacketDeliveryError`] fails that call with
+        /// [`DataStreamError::SendFailed`](super::common::DataStreamError::SendFailed) and closes the
+        /// affected stream (`is_open` becomes false for writers).
+        /// </summary>
+        /// <exception cref="PacketDeliveryException"></exception>
+        Task OnPacketsAvailable(Bytes[] @packets);
+    }
+
+    /// <summary>
+    /// Delegate for receiving outbound packets from [`OutgoingDataStreamManager`].
+    /// </summary>
+    public class OutgoingDataStreamManagerDelegateImpl : OutgoingDataStreamManagerDelegate, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public OutgoingDataStreamManagerDelegateImpl(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~OutgoingDataStreamManagerDelegateImpl()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_outgoingdatastreammanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_outgoingdatastreammanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Encoded [`livekit_protocol::DataPacket`]s to be sent over the data channel transport, in
+        /// order. One-shot sends (`send_text`/`send_bytes`) deliver their entire stream — header,
+        /// chunks, trailer — in a single call; incremental writers and `send_file` deliver one packet
+        /// per call.
+        ///
+        /// Return only once the packets have been handed to the transport: the originating
+        /// `send_*`/`write` call stays pending until then, which is what bounds how fast a producer
+        /// can enqueue. Throwing [`PacketDeliveryError`] fails that call with
+        /// [`DataStreamError::SendFailed`](super::common::DataStreamError::SendFailed) and closes the
+        /// affected stream (`is_open` becomes false for writers).
+        /// </summary>
+        /// <exception cref="PacketDeliveryException"></exception>
+        public async Task OnPacketsAvailable(Bytes[] @packets)
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingdatastreammanagerdelegate_on_packets_available(
+                        thisPtr,
+                        FfiConverterSequenceTypeBytes.INSTANCE.Lower(@packets)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypePacketDeliveryError.INSTANCE
+            );
+        }
+    }
+
+    class UniffiCallbackInterfaceOutgoingDataStreamManagerDelegate
+    {
+        static void OnPacketsAvailable(
+            ulong @uniffiHandle,
+            RustBuffer @packets,
+            IntPtr @uniffiFutureCallback,
+            ulong @uniffiCallbackData,
+            IntPtr /*_UniFFILib.UniffiForeignFutureDroppedCallbackStruct*/
+            @uniffiOutDroppedCallback
+        )
+        {
+            var handle = @uniffiHandle;
+            var futureHandle = new UniffiForeignFutureHandle();
+            var foreignHandle = _UniFFIAsync._foreign_futures_map.Insert(futureHandle);
+            unsafe
+            {
+                (
+                    *(_UniFFILib.UniffiForeignFutureDroppedCallbackStruct*)@uniffiOutDroppedCallback
+                ).handle = foreignHandle;
+                (
+                    *(_UniFFILib.UniffiForeignFutureDroppedCallbackStruct*)@uniffiOutDroppedCallback
+                ).free = Marshal.GetFunctionPointerForDelegate(
+                    _UniFFIAsync.UniffiForeignFutureDroppedCallbackImpl.callback
+                );
+            }
+            if (
+                !FfiConverterTypeOutgoingDataStreamManagerDelegate.INSTANCE.handleMap.TryGet(
+                    handle,
+                    out var uniffiObject
+                )
+            )
+            {
+                var ret = new _UniFFILib.UniffiForeignFutureResultVoid();
+                ret.@callStatus = new UniffiRustCallStatus();
+                ret.@callStatus.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    ret.@callStatus.error_buf = FfiConverterString.INSTANCE.Lower(
+                        $"No callback in handlemap '{handle}'"
+                    );
+                }
+                catch { }
+                var earlyCb =
+                    Marshal.GetDelegateForFunctionPointer<_UniFFILib.UniffiForeignFutureCompleteVoid>(
+                        @uniffiFutureCallback
+                    );
+                futureHandle.InvokeCallbackOnce(() =>
+                {
+                    earlyCb(@uniffiCallbackData, ret);
+                });
+                futureHandle.Dispose();
+                return;
+            }
+
+            // Optimization: skip queuing if already cancelled before Task.Run schedules.
+            // TryInvokeCallback is the definitive cancellation guard inside the task body.
+            Task.Run(
+                async () =>
+                {
+                    var ret = new _UniFFILib.UniffiForeignFutureResultVoid();
+                    ret.@callStatus = new UniffiRustCallStatus();
+
+                    try
+                    {
+                        try
+                        {
+                            await uniffiObject.OnPacketsAvailable(
+                                FfiConverterSequenceTypeBytes.INSTANCE.Lift(@packets)
+                            )
+#if NET6_0_OR_GREATER
+                                .WaitAsync(futureHandle.Cts.Token)
+#endif
+                            ;
+
+                            ret.@callStatus.code = UniffiCallbackResponseStatus.SUCCESS;
+                        }
+                        catch (PacketDeliveryException e)
+                        {
+                            try
+                            {
+                                ret.@callStatus.code = UniffiCallbackResponseStatus.ERROR;
+                                ret.@callStatus.error_buf =
+                                    FfiConverterTypePacketDeliveryError.INSTANCE.Lower(e);
+                            }
+                            catch
+                            {
+                                ret.@callStatus.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                            }
+                        }
+                        catch (OperationCanceledException)
+                            when (futureHandle.Cts.IsCancellationRequested)
+                        {
+                            ret.@callStatus.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                            try
+                            {
+                                ret.@callStatus.error_buf = FfiConverterString.INSTANCE.Lower(
+                                    "Future cancelled"
+                                );
+                            }
+                            catch { }
+                        }
+                        catch (System.Exception e)
+                        {
+                            ret.@callStatus.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                            try
+                            {
+                                ret.@callStatus.error_buf = FfiConverterString.INSTANCE.Lower(
+                                    e.Message
+                                );
+                            }
+                            catch { }
+                        }
+
+                        var cb =
+                            Marshal.GetDelegateForFunctionPointer<_UniFFILib.UniffiForeignFutureCompleteVoid>(
+                                @uniffiFutureCallback
+                            );
+                        futureHandle.InvokeCallbackOnce(() =>
+                        {
+                            cb(@uniffiCallbackData, ret);
+                        });
+                    }
+                    finally
+                    {
+                        futureHandle.Dispose();
+                    }
+                },
+                futureHandle.Cts.Token
+            );
+        }
+
+        static void UniffiFree(ulong @handle)
+        {
+            FfiConverterTypeOutgoingDataStreamManagerDelegate.INSTANCE.handleMap.Remove(@handle);
+        }
+
+        static ulong UniffiClone(ulong @handle)
+        {
+            try
+            {
+                if (
+                    !FfiConverterTypeOutgoingDataStreamManagerDelegate.INSTANCE.handleMap.TryGet(
+                        @handle,
+                        out var obj
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{@handle}'");
+                }
+                return FfiConverterTypeOutgoingDataStreamManagerDelegate.INSTANCE.handleMap.Insert(obj);
+            }
+            catch (System.Exception)
+            {
+                return 0; // 0 is never a valid handle; ConcurrentHandleMap starts at 1
+            }
+        }
+
+        static _UniFFILib.UniffiCallbackInterfaceOutgoingDataStreamManagerDelegateMethod0 _m0 =
+            new _UniFFILib.UniffiCallbackInterfaceOutgoingDataStreamManagerDelegateMethod0(
+                OnPacketsAvailable
+            );
+        static _UniFFILib.UniffiCallbackInterfaceFree _callback_interface_free =
+            new _UniFFILib.UniffiCallbackInterfaceFree(UniffiFree);
+        static _UniFFILib.UniffiCallbackInterfaceClone _callback_interface_clone =
+            new _UniFFILib.UniffiCallbackInterfaceClone(UniffiClone);
+
+        private static GCHandle? _vtablePin;
+
+        public static void Register()
+        {
+            if (_vtablePin.HasValue)
+                return;
+            _UniFFILib.UniffiVTableCallbackInterfaceOutgoingDataStreamManagerDelegate _vtable =
+                new _UniFFILib.UniffiVTableCallbackInterfaceOutgoingDataStreamManagerDelegate
+                {
+                    @onPacketsAvailable = Marshal.GetFunctionPointerForDelegate(_m0),
+                    @uniffiFree = Marshal.GetFunctionPointerForDelegate(_callback_interface_free),
+                    @uniffiClone = Marshal.GetFunctionPointerForDelegate(_callback_interface_clone),
+                };
+
+            // Pin the vtable so the GC never moves it. The GCHandle is intentionally never freed —
+            // this pin must remain valid for the process lifetime.
+            _vtablePin = GCHandle.Alloc(_vtable, GCHandleType.Pinned);
+            _UniFFILib.uniffi_livekit_uniffi_fn_init_callback_vtable_outgoingdatastreammanagerdelegate(
+                _vtablePin.Value.AddrOfPinnedObject()
+            );
+        }
+    }
+
+    class FfiConverterTypeOutgoingDataStreamManagerDelegate
+        : FfiConverter<OutgoingDataStreamManagerDelegate, ulong>
+    {
+        public ConcurrentHandleMap<OutgoingDataStreamManagerDelegate> handleMap =
+            new ConcurrentHandleMap<OutgoingDataStreamManagerDelegate>();
+
+        public static FfiConverterTypeOutgoingDataStreamManagerDelegate INSTANCE =
+            new FfiConverterTypeOutgoingDataStreamManagerDelegate();
+
+        static FfiConverterTypeOutgoingDataStreamManagerDelegate()
+        {
+            UniffiCallbackInterfaceOutgoingDataStreamManagerDelegate.Register();
+        }
+
+        public override ulong Lower(OutgoingDataStreamManagerDelegate value)
+        {
+            if (value is OutgoingDataStreamManagerDelegateImpl rustObj)
+            {
+                // Rust-implemented object. Clone the handle and return it.
+                return rustObj.CallWithPointer(thisPtr => thisPtr);
+            }
+            else
+            {
+                // C# object, generate a new handle map entry and return it.
+                return handleMap.Insert(value);
+            }
+        }
+
+        public override OutgoingDataStreamManagerDelegate Lift(ulong value)
+        {
+            if ((value & 1UL) == 0UL)
+            {
+                // Rust-generated handle, construct a new wrapper.
+                return new OutgoingDataStreamManagerDelegateImpl(value);
+            }
+            else
+            {
+                // C#-generated handle, retrieve and remove from the handle map.
+                if (handleMap.Remove(value, out var obj))
+                {
+                    return obj;
+                }
+                else
+                {
+                    throw new InternalException($"No callback in handlemap '{value}'");
+                }
+            }
+        }
+
+        public override OutgoingDataStreamManagerDelegate Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(OutgoingDataStreamManagerDelegate value)
+        {
+            return 8;
+        }
+
+        public override void Write(OutgoingDataStreamManagerDelegate value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Buffers outbound packets so they can be pulled instead of pushed.
+    ///
+    /// Implements [`OutgoingDataStreamManagerDelegate`] in Rust; see the module docs.
+    /// </summary>
+    public interface IOutgoingPacketQueue
+    {
+        /// <summary>
+        /// Wakes a pending [`Self::next_packets`] with `None` so the caller's drain loop can exit.
+        ///
+        /// Call this before releasing the queue: a caller blocked in `next_packets` is holding a
+        /// pointer to it, so freeing it first is a use-after-free.
+        /// </summary>
+        void Close();
+
+        /// <summary>
+        /// Awaits the next batch of encoded `livekit.DataPacket`s to put on the wire.
+        ///
+        /// Returns `None` once the manager has shut down, which ends the caller's drain loop.
+        /// Everything already queued is returned together, so a burst costs one FFI crossing rather
+        /// than one per packet.
+        /// </summary>
+        Task<Bytes[]?> NextPackets();
+    }
+
+    /// <summary>
+    /// Buffers outbound packets so they can be pulled instead of pushed.
+    ///
+    /// Implements [`OutgoingDataStreamManagerDelegate`] in Rust; see the module docs.
+    /// </summary>
+    public class OutgoingPacketQueue : IOutgoingPacketQueue, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public OutgoingPacketQueue(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~OutgoingPacketQueue()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_outgoingpacketqueue(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_outgoingpacketqueue(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Wakes a pending [`Self::next_packets`] with `None` so the caller's drain loop can exit.
+        ///
+        /// Call this before releasing the queue: a caller blocked in `next_packets` is holding a
+        /// pointer to it, so freeing it first is a use-after-free.
+        /// </summary>
+        public void Close()
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingpacketqueue_close(
+                            thisPtr,
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Awaits the next batch of encoded `livekit.DataPacket`s to put on the wire.
+        ///
+        /// Returns `None` once the manager has shut down, which ends the caller's drain loop.
+        /// Everything already queued is returned together, so a burst costs one FFI crossing rather
+        /// than one per packet.
+        /// </summary>
+        public async Task<Bytes[]?> NextPackets()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_outgoingpacketqueue_next_packets(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterOptionalSequenceTypeBytes.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeOutgoingPacketQueue : FfiConverter<OutgoingPacketQueue, ulong>
+    {
+        public static FfiConverterTypeOutgoingPacketQueue INSTANCE =
+            new FfiConverterTypeOutgoingPacketQueue();
+
+        public override ulong Lower(OutgoingPacketQueue value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override OutgoingPacketQueue Lift(ulong value)
+        {
+            return new OutgoingPacketQueue(value);
+        }
+
+        public override OutgoingPacketQueue Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(OutgoingPacketQueue value)
+        {
+            return 8;
+        }
+
+        public override void Write(OutgoingPacketQueue value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Data track published by the remote participant.
+    /// </summary>
+    public interface IRemoteDataTrack
+    {
+        /// <summary>
+        /// Information about the data track.
+        /// </summary>
+        DataTrackInfo Info();
+
+        /// <summary>
+        /// Whether or not the track is currently published.
+        /// </summary>
+        bool IsPublished();
+
+        /// <summary>
+        /// Identity of the participant who published the track.
+        /// </summary>
+        string PublisherIdentity();
+
+        /// <summary>
+        /// Configures options for the pipeline handling incoming packets for this track.
+        ///
+        /// These options apply to all current and future subscriptions of this track, and may be
+        /// set at any time. New options take affect with the next received packet.
+        /// </summary>
+        void SetPipelineOptions(RemoteDataTrackPipelineOptions @options);
+
+        /// <summary>
+        /// Subscribes to the data track.
+        /// </summary>
+        /// <exception cref="DataTrackSubscribeException"></exception>
+        Task<DataTrackStream> Subscribe();
+
+        /// <summary>
+        /// Subscribes to the data track with custom options.
+        /// </summary>
+        /// <exception cref="DataTrackSubscribeException"></exception>
+        Task<DataTrackStream> SubscribeWithOptions(DataTrackSubscribeOptions @options);
+
+        /// <summary>
+        /// Waits asynchronously until the track is unpublished.
+        ///
+        /// Use this to trigger follow-up work once the track is no longer published.
+        /// If the track is already unpublished, this method returns immediately.
+        /// </summary>
+        Task WaitForUnpublish();
+    }
+
+    /// <summary>
+    /// Data track published by the remote participant.
+    /// </summary>
+    public class RemoteDataTrack : IRemoteDataTrack, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public RemoteDataTrack(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~RemoteDataTrack()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_remotedatatrack(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_remotedatatrack(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Information about the data track.
+        /// </summary>
+        public DataTrackInfo Info()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterTypeDataTrackInfo.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_info(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Whether or not the track is currently published.
+        /// </summary>
+        public bool IsPublished()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterBoolean.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_is_published(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Identity of the participant who published the track.
+        /// </summary>
+        public string PublisherIdentity()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterString.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_publisher_identity(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Configures options for the pipeline handling incoming packets for this track.
+        ///
+        /// These options apply to all current and future subscriptions of this track, and may be
+        /// set at any time. New options take affect with the next received packet.
+        /// </summary>
+        public void SetPipelineOptions(RemoteDataTrackPipelineOptions @options)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_set_pipeline_options(
+                            thisPtr,
+                            FfiConverterTypeRemoteDataTrackPipelineOptions.INSTANCE.Lower(@options),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Subscribes to the data track.
+        /// </summary>
+        /// <exception cref="DataTrackSubscribeException"></exception>
+        public async Task<DataTrackStream> Subscribe()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_subscribe(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_u64(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_u64(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_u64(future),
+                // Lift
+                (result) => FfiConverterTypeDataTrackStream.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataTrackSubscribeError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Subscribes to the data track with custom options.
+        /// </summary>
+        /// <exception cref="DataTrackSubscribeException"></exception>
+        public async Task<DataTrackStream> SubscribeWithOptions(DataTrackSubscribeOptions @options)
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_subscribe_with_options(
+                        thisPtr,
+                        FfiConverterTypeDataTrackSubscribeOptions.INSTANCE.Lower(@options)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_u64(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_u64(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_u64(future),
+                // Lift
+                (result) => FfiConverterTypeDataTrackStream.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataTrackSubscribeError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Waits asynchronously until the track is unpublished.
+        ///
+        /// Use this to trigger follow-up work once the track is no longer published.
+        /// If the track is already unpublished, this method returns immediately.
+        /// </summary>
+        public async Task WaitForUnpublish()
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrack_wait_for_unpublish(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeRemoteDataTrack : FfiConverter<RemoteDataTrack, ulong>
+    {
+        public static FfiConverterTypeRemoteDataTrack INSTANCE = new FfiConverterTypeRemoteDataTrack();
+
+        public override ulong Lower(RemoteDataTrack value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override RemoteDataTrack Lift(ulong value)
+        {
+            return new RemoteDataTrack(value);
+        }
+
+        public override RemoteDataTrack Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(RemoteDataTrack value)
+        {
+            return 8;
+        }
+
+        public override void Write(RemoteDataTrack value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// System for managing data track subscriptions.
+    /// </summary>
+    public interface IRemoteDataTrackManager
+    {
+        /// <summary>
+        /// Handles a encoded packet received over the data channel.
+        /// </summary>
+        void HandlePacketReceived(Bytes @packet);
+
+        /// <summary>
+        /// Handles a serialized `JoinResponse` signal response from the SFU.
+        ///
+        /// Invoke once after initial join. This is used to detect pre-existing
+        /// track publications by remote participants.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        void HandleSfuJoinResponse(byte[] @res);
+
+        /// <summary>
+        /// Handles a serialized `ParticipantUpdate` signal response from the SFU.
+        ///
+        /// Invoke every time a participant update is received. This is used to detect changes
+        /// to track publication by remote participants.
+        ///
+        /// Note: the local participant identity is required to exclude data tracks published by the
+        /// local participant from being treated as remote tracks.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        void HandleSfuParticipantUpdate(byte[] @res, string @localParticipantIdentity);
+
+        /// <summary>
+        /// Handles a serialized `DataTrackSubscriberHandles` signal response from the SFU.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        void HandleSubscriberHandles(byte[] @res);
+
+        /// <summary>
+        /// Resend all subscription updates.
+        ///
+        /// This must be sent after a full reconnect to ensure the SFU knows which tracks
+        /// are subscribed to locally.
+        /// </summary>
+        void ResendSubscriptionUpdates();
+    }
+
+    /// <summary>
+    /// System for managing data track subscriptions.
+    /// </summary>
+    public class RemoteDataTrackManager : IRemoteDataTrackManager, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public RemoteDataTrackManager(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~RemoteDataTrackManager()
+        {
+            Destroy();
+        }
+
+        public RemoteDataTrackManager(
+            RemoteDataTrackManagerDelegate @delegate,
+            DecryptionProvider? @decryptionProvider
+        )
+            : this(
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_constructor_remotedatatrackmanager_new(
+                            FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.Lower(@delegate),
+                            FfiConverterOptionalTypeDecryptionProvider.INSTANCE.Lower(
+                                @decryptionProvider
+                            ),
+                            ref _status
+                        )
+                )
+            ) { }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_remotedatatrackmanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_remotedatatrackmanager(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Handles a encoded packet received over the data channel.
+        /// </summary>
+        public void HandlePacketReceived(Bytes @packet)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_packet_received(
+                            thisPtr,
+                            FfiConverterTypeBytes.INSTANCE.Lower(@packet),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Handles a serialized `JoinResponse` signal response from the SFU.
+        ///
+        /// Invoke once after initial join. This is used to detect pre-existing
+        /// track publications by remote participants.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        public void HandleSfuJoinResponse(byte[] @res)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCallWithError(
+                    FfiConverterTypeHandleSignalResponseError.INSTANCE,
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_sfu_join_response(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@res),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Handles a serialized `ParticipantUpdate` signal response from the SFU.
+        ///
+        /// Invoke every time a participant update is received. This is used to detect changes
+        /// to track publication by remote participants.
+        ///
+        /// Note: the local participant identity is required to exclude data tracks published by the
+        /// local participant from being treated as remote tracks.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        public void HandleSfuParticipantUpdate(byte[] @res, string @localParticipantIdentity)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCallWithError(
+                    FfiConverterTypeHandleSignalResponseError.INSTANCE,
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_sfu_participant_update(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@res),
+                            FfiConverterString.INSTANCE.Lower(@localParticipantIdentity),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Handles a serialized `DataTrackSubscriberHandles` signal response from the SFU.
+        /// </summary>
+        /// <exception cref="HandleSignalResponseException"></exception>
+        public void HandleSubscriberHandles(byte[] @res)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCallWithError(
+                    FfiConverterTypeHandleSignalResponseError.INSTANCE,
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_handle_subscriber_handles(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@res),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Resend all subscription updates.
+        ///
+        /// This must be sent after a full reconnect to ensure the SFU knows which tracks
+        /// are subscribed to locally.
+        /// </summary>
+        public void ResendSubscriptionUpdates()
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanager_resend_subscription_updates(
+                            thisPtr,
+                            ref _status
+                        )
+                )
+            );
+        }
+    }
+
+    class FfiConverterTypeRemoteDataTrackManager : FfiConverter<RemoteDataTrackManager, ulong>
+    {
+        public static FfiConverterTypeRemoteDataTrackManager INSTANCE =
+            new FfiConverterTypeRemoteDataTrackManager();
+
+        public override ulong Lower(RemoteDataTrackManager value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override RemoteDataTrackManager Lift(ulong value)
+        {
+            return new RemoteDataTrackManager(value);
+        }
+
+        public override RemoteDataTrackManager Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(RemoteDataTrackManager value)
+        {
+            return 8;
+        }
+
+        public override void Write(RemoteDataTrackManager value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Delegate for receiving output events from [`RemoteDataTrackManager`].
+    /// </summary>
+    public interface RemoteDataTrackManagerDelegate
+    {
+        /// <summary>
+        /// Encoded signal request to be forwarded to the SFU.
+        /// </summary>
+        void OnSignalRequest(byte[] @request);
+
+        /// <summary>
+        /// A track has been published by a remote participant and is available to be
+        /// subscribed to.
+        ///
+        /// Emit a public event to deliver the track to the user, allowing them to subscribe
+        /// with [`RemoteDataTrack::subscribe`] if desired.
+        /// </summary>
+        void OnTrackPublished(RemoteDataTrack @track);
+
+        /// <summary>
+        /// A track with the given SID has been unpublished by a remote participant.
+        /// </summary>
+        void OnTrackUnpublished(DataTrackSid @sid);
+    }
+
+    /// <summary>
+    /// Delegate for receiving output events from [`RemoteDataTrackManager`].
+    /// </summary>
+    public class RemoteDataTrackManagerDelegateImpl : RemoteDataTrackManagerDelegate, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public RemoteDataTrackManagerDelegateImpl(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~RemoteDataTrackManagerDelegateImpl()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_remotedatatrackmanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_remotedatatrackmanagerdelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Encoded signal request to be forwarded to the SFU.
+        /// </summary>
+        public void OnSignalRequest(byte[] @request)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanagerdelegate_on_signal_request(
+                            thisPtr,
+                            FfiConverterByteArray.INSTANCE.Lower(@request),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// A track has been published by a remote participant and is available to be
+        /// subscribed to.
+        ///
+        /// Emit a public event to deliver the track to the user, allowing them to subscribe
+        /// with [`RemoteDataTrack::subscribe`] if desired.
+        /// </summary>
+        public void OnTrackPublished(RemoteDataTrack @track)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanagerdelegate_on_track_published(
+                            thisPtr,
+                            FfiConverterTypeRemoteDataTrack.INSTANCE.Lower(@track),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// A track with the given SID has been unpublished by a remote participant.
+        /// </summary>
+        public void OnTrackUnpublished(DataTrackSid @sid)
+        {
+            CallWithPointer(thisPtr =>
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_method_remotedatatrackmanagerdelegate_on_track_unpublished(
+                            thisPtr,
+                            FfiConverterTypeDataTrackSid.INSTANCE.Lower(@sid),
+                            ref _status
+                        )
+                )
+            );
+        }
+    }
+
+    class UniffiCallbackInterfaceRemoteDataTrackManagerDelegate
+    {
+        static void OnSignalRequest(
+            ulong @uniffiHandle,
+            RustBuffer @request,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnSignalRequest(FfiConverterByteArray.INSTANCE.Lift(@request));
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void OnTrackPublished(
+            ulong @uniffiHandle,
+            ulong @track,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnTrackPublished(FfiConverterTypeRemoteDataTrack.INSTANCE.Lift(@track));
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void OnTrackUnpublished(
+            ulong @uniffiHandle,
+            RustBuffer @sid,
+            IntPtr @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                uniffiObject.OnTrackUnpublished(FfiConverterTypeDataTrackSid.INSTANCE.Lift(@sid));
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void UniffiFree(ulong @handle)
+        {
+            FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.handleMap.Remove(@handle);
+        }
+
+        static ulong UniffiClone(ulong @handle)
+        {
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.handleMap.TryGet(
+                        @handle,
+                        out var obj
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{@handle}'");
+                }
+                return FfiConverterTypeRemoteDataTrackManagerDelegate.INSTANCE.handleMap.Insert(obj);
+            }
+            catch (System.Exception)
+            {
+                return 0; // 0 is never a valid handle; ConcurrentHandleMap starts at 1
+            }
+        }
+
+        static _UniFFILib.UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod0 _m0 =
+            new _UniFFILib.UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod0(
+                OnSignalRequest
+            );
+        static _UniFFILib.UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod1 _m1 =
+            new _UniFFILib.UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod1(
+                OnTrackPublished
+            );
+        static _UniFFILib.UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod2 _m2 =
+            new _UniFFILib.UniffiCallbackInterfaceRemoteDataTrackManagerDelegateMethod2(
+                OnTrackUnpublished
+            );
+        static _UniFFILib.UniffiCallbackInterfaceFree _callback_interface_free =
+            new _UniFFILib.UniffiCallbackInterfaceFree(UniffiFree);
+        static _UniFFILib.UniffiCallbackInterfaceClone _callback_interface_clone =
+            new _UniFFILib.UniffiCallbackInterfaceClone(UniffiClone);
+
+        private static GCHandle? _vtablePin;
+
+        public static void Register()
+        {
+            if (_vtablePin.HasValue)
+                return;
+            _UniFFILib.UniffiVTableCallbackInterfaceRemoteDataTrackManagerDelegate _vtable =
+                new _UniFFILib.UniffiVTableCallbackInterfaceRemoteDataTrackManagerDelegate
+                {
+                    @onSignalRequest = Marshal.GetFunctionPointerForDelegate(_m0),
+                    @onTrackPublished = Marshal.GetFunctionPointerForDelegate(_m1),
+                    @onTrackUnpublished = Marshal.GetFunctionPointerForDelegate(_m2),
+                    @uniffiFree = Marshal.GetFunctionPointerForDelegate(_callback_interface_free),
+                    @uniffiClone = Marshal.GetFunctionPointerForDelegate(_callback_interface_clone),
+                };
+
+            // Pin the vtable so the GC never moves it. The GCHandle is intentionally never freed —
+            // this pin must remain valid for the process lifetime.
+            _vtablePin = GCHandle.Alloc(_vtable, GCHandleType.Pinned);
+            _UniFFILib.uniffi_livekit_uniffi_fn_init_callback_vtable_remotedatatrackmanagerdelegate(
+                _vtablePin.Value.AddrOfPinnedObject()
+            );
+        }
+    }
+
+    class FfiConverterTypeRemoteDataTrackManagerDelegate
+        : FfiConverter<RemoteDataTrackManagerDelegate, ulong>
+    {
+        public ConcurrentHandleMap<RemoteDataTrackManagerDelegate> handleMap =
+            new ConcurrentHandleMap<RemoteDataTrackManagerDelegate>();
+
+        public static FfiConverterTypeRemoteDataTrackManagerDelegate INSTANCE =
+            new FfiConverterTypeRemoteDataTrackManagerDelegate();
+
+        static FfiConverterTypeRemoteDataTrackManagerDelegate()
+        {
+            UniffiCallbackInterfaceRemoteDataTrackManagerDelegate.Register();
+        }
+
+        public override ulong Lower(RemoteDataTrackManagerDelegate value)
+        {
+            if (value is RemoteDataTrackManagerDelegateImpl rustObj)
+            {
+                // Rust-implemented object. Clone the handle and return it.
+                return rustObj.CallWithPointer(thisPtr => thisPtr);
+            }
+            else
+            {
+                // C# object, generate a new handle map entry and return it.
+                return handleMap.Insert(value);
+            }
+        }
+
+        public override RemoteDataTrackManagerDelegate Lift(ulong value)
+        {
+            if ((value & 1UL) == 0UL)
+            {
+                // Rust-generated handle, construct a new wrapper.
+                return new RemoteDataTrackManagerDelegateImpl(value);
+            }
+            else
+            {
+                // C#-generated handle, retrieve and remove from the handle map.
+                if (handleMap.Remove(value, out var obj))
+                {
+                    return obj;
+                }
+                else
+                {
+                    throw new InternalException($"No callback in handlemap '{value}'");
+                }
+            }
+        }
+
+        public override RemoteDataTrackManagerDelegate Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(RemoteDataTrackManagerDelegate value)
+        {
+            return 8;
+        }
+
+        public override void Write(RemoteDataTrackManagerDelegate value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Read access to remote participants' advertised protocol and capabilities, implemented by the
+    /// foreign side. Mirrors [`lk_common::RemoteParticipantRegistry`]; used to decide inline/compression
+    /// eligibility per send.
+    /// </summary>
+    public interface RemoteParticipantRegistryDelegate
+    {
+        /// <summary>
+        /// A remote participant's `client_protocol`, or `0` (`CLIENT_PROTOCOL_DEFAULT`) if unknown.
+        /// </summary>
+        int RemoteClientProtocol(string @identity);
+
+        /// <summary>
+        /// A remote participant's advertised capabilities, or empty if unknown.
+        /// </summary>
+        ClientCapability[] RemoteCapabilities(string @identity);
+
+        /// <summary>
+        /// The identities of every remote participant, used to resolve a broadcast send.
+        /// </summary>
+        string[] RemoteIdentities();
+    }
+
+    /// <summary>
+    /// Read access to remote participants' advertised protocol and capabilities, implemented by the
+    /// foreign side. Mirrors [`lk_common::RemoteParticipantRegistry`]; used to decide inline/compression
+    /// eligibility per send.
+    /// </summary>
+    public class RemoteParticipantRegistryDelegateImpl : RemoteParticipantRegistryDelegate, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public RemoteParticipantRegistryDelegateImpl(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~RemoteParticipantRegistryDelegateImpl()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_remoteparticipantregistrydelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_remoteparticipantregistrydelegate(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// A remote participant's `client_protocol`, or `0` (`CLIENT_PROTOCOL_DEFAULT`) if unknown.
+        /// </summary>
+        public int RemoteClientProtocol(string @identity)
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterInt32.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_remoteparticipantregistrydelegate_remote_client_protocol(
+                                thisPtr,
+                                FfiConverterString.INSTANCE.Lower(@identity),
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// A remote participant's advertised capabilities, or empty if unknown.
+        /// </summary>
+        public ClientCapability[] RemoteCapabilities(string @identity)
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterSequenceTypeClientCapability.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_remoteparticipantregistrydelegate_remote_capabilities(
+                                thisPtr,
+                                FfiConverterString.INSTANCE.Lower(@identity),
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// The identities of every remote participant, used to resolve a broadcast send.
+        /// </summary>
+        public string[] RemoteIdentities()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterSequenceString.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_remoteparticipantregistrydelegate_remote_identities(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+    }
+
+    class UniffiCallbackInterfaceRemoteParticipantRegistryDelegate
+    {
+        static void RemoteClientProtocol(
+            ulong @uniffiHandle,
+            RustBuffer @identity,
+            IntPtr /*int*/
+            @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                var result = uniffiObject.RemoteClientProtocol(
+                    FfiConverterString.INSTANCE.Lift(@identity)
+                );
+                unsafe
+                {
+                    *(int*)uniffiOutReturn = FfiConverterInt32.INSTANCE.Lower(result);
+                }
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void RemoteCapabilities(
+            ulong @uniffiHandle,
+            RustBuffer @identity,
+            IntPtr /*RustBuffer*/
+            @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                var result = uniffiObject.RemoteCapabilities(
+                    FfiConverterString.INSTANCE.Lift(@identity)
+                );
+                unsafe
+                {
+                    *(RustBuffer*)uniffiOutReturn =
+                        FfiConverterSequenceTypeClientCapability.INSTANCE.Lower(result);
+                }
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void RemoteIdentities(
+            ulong @uniffiHandle,
+            IntPtr /*RustBuffer*/
+            @uniffiOutReturn,
+            ref UniffiRustCallStatus _uniffi_out_err
+        )
+        {
+            var handle = @uniffiHandle;
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.handleMap.TryGet(
+                        handle,
+                        out var uniffiObject
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{handle}'");
+                }
+                var result = uniffiObject.RemoteIdentities();
+                unsafe
+                {
+                    *(RustBuffer*)uniffiOutReturn = FfiConverterSequenceString.INSTANCE.Lower(result);
+                }
+
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.SUCCESS;
+            }
+            catch (System.Exception e)
+            {
+                _uniffi_out_err.code = UniffiCallbackResponseStatus.UNEXPECTED_ERROR;
+                try
+                {
+                    _uniffi_out_err.error_buf = FfiConverterString.INSTANCE.Lower(e.Message);
+                }
+                catch { }
+            }
+        }
+
+        static void UniffiFree(ulong @handle)
+        {
+            FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.handleMap.Remove(@handle);
+        }
+
+        static ulong UniffiClone(ulong @handle)
+        {
+            try
+            {
+                if (
+                    !FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.handleMap.TryGet(
+                        @handle,
+                        out var obj
+                    )
+                )
+                {
+                    throw new InternalException($"No callback in handlemap '{@handle}'");
+                }
+                return FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.handleMap.Insert(obj);
+            }
+            catch (System.Exception)
+            {
+                return 0; // 0 is never a valid handle; ConcurrentHandleMap starts at 1
+            }
+        }
+
+        static _UniFFILib.UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod0 _m0 =
+            new _UniFFILib.UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod0(
+                RemoteClientProtocol
+            );
+        static _UniFFILib.UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod1 _m1 =
+            new _UniFFILib.UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod1(
+                RemoteCapabilities
+            );
+        static _UniFFILib.UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod2 _m2 =
+            new _UniFFILib.UniffiCallbackInterfaceRemoteParticipantRegistryDelegateMethod2(
+                RemoteIdentities
+            );
+        static _UniFFILib.UniffiCallbackInterfaceFree _callback_interface_free =
+            new _UniFFILib.UniffiCallbackInterfaceFree(UniffiFree);
+        static _UniFFILib.UniffiCallbackInterfaceClone _callback_interface_clone =
+            new _UniFFILib.UniffiCallbackInterfaceClone(UniffiClone);
+
+        private static GCHandle? _vtablePin;
+
+        public static void Register()
+        {
+            if (_vtablePin.HasValue)
+                return;
+            _UniFFILib.UniffiVTableCallbackInterfaceRemoteParticipantRegistryDelegate _vtable =
+                new _UniFFILib.UniffiVTableCallbackInterfaceRemoteParticipantRegistryDelegate
+                {
+                    @remoteClientProtocol = Marshal.GetFunctionPointerForDelegate(_m0),
+                    @remoteCapabilities = Marshal.GetFunctionPointerForDelegate(_m1),
+                    @remoteIdentities = Marshal.GetFunctionPointerForDelegate(_m2),
+                    @uniffiFree = Marshal.GetFunctionPointerForDelegate(_callback_interface_free),
+                    @uniffiClone = Marshal.GetFunctionPointerForDelegate(_callback_interface_clone),
+                };
+
+            // Pin the vtable so the GC never moves it. The GCHandle is intentionally never freed —
+            // this pin must remain valid for the process lifetime.
+            _vtablePin = GCHandle.Alloc(_vtable, GCHandleType.Pinned);
+            _UniFFILib.uniffi_livekit_uniffi_fn_init_callback_vtable_remoteparticipantregistrydelegate(
+                _vtablePin.Value.AddrOfPinnedObject()
+            );
+        }
+    }
+
+    class FfiConverterTypeRemoteParticipantRegistryDelegate
+        : FfiConverter<RemoteParticipantRegistryDelegate, ulong>
+    {
+        public ConcurrentHandleMap<RemoteParticipantRegistryDelegate> handleMap =
+            new ConcurrentHandleMap<RemoteParticipantRegistryDelegate>();
+
+        public static FfiConverterTypeRemoteParticipantRegistryDelegate INSTANCE =
+            new FfiConverterTypeRemoteParticipantRegistryDelegate();
+
+        static FfiConverterTypeRemoteParticipantRegistryDelegate()
+        {
+            UniffiCallbackInterfaceRemoteParticipantRegistryDelegate.Register();
+        }
+
+        public override ulong Lower(RemoteParticipantRegistryDelegate value)
+        {
+            if (value is RemoteParticipantRegistryDelegateImpl rustObj)
+            {
+                // Rust-implemented object. Clone the handle and return it.
+                return rustObj.CallWithPointer(thisPtr => thisPtr);
+            }
+            else
+            {
+                // C# object, generate a new handle map entry and return it.
+                return handleMap.Insert(value);
+            }
+        }
+
+        public override RemoteParticipantRegistryDelegate Lift(ulong value)
+        {
+            if ((value & 1UL) == 0UL)
+            {
+                // Rust-generated handle, construct a new wrapper.
+                return new RemoteParticipantRegistryDelegateImpl(value);
+            }
+            else
+            {
+                // C#-generated handle, retrieve and remove from the handle map.
+                if (handleMap.Remove(value, out var obj))
+                {
+                    return obj;
+                }
+                else
+                {
+                    throw new InternalException($"No callback in handlemap '{value}'");
+                }
+            }
+        }
+
+        public override RemoteParticipantRegistryDelegate Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(RemoteParticipantRegistryDelegate value)
+        {
+            return 8;
+        }
+
+        public override void Write(RemoteParticipantRegistryDelegate value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Reader for an incoming text data stream.
+    /// </summary>
+    public interface ITextStreamReader
+    {
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        TextStreamInfo Info();
+
+        /// <summary>
+        /// Returns the next chunk, or `None` once the stream has closed.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<string?> Next();
+
+        /// <summary>
+        /// Reads every chunk, concatenating them into a single string returned once the stream closes.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task<string> ReadAll();
+    }
+
+    /// <summary>
+    /// Reader for an incoming text data stream.
+    /// </summary>
+    public class TextStreamReader : ITextStreamReader, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public TextStreamReader(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~TextStreamReader()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_textstreamreader(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_textstreamreader(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        public TextStreamInfo Info()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterTypeTextStreamInfo.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamreader_info(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Returns the next chunk, or `None` once the stream has closed.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<string?> Next()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamreader_next(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterOptionalString.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Reads every chunk, concatenating them into a single string returned once the stream closes.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task<string> ReadAll()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamreader_read_all(
+                        thisPtr
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_rust_buffer(
+                        future,
+                        continuation,
+                        data
+                    ),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_rust_buffer(
+                        future,
+                        ref status
+                    );
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_rust_buffer(future),
+                // Lift
+                (result) => FfiConverterString.INSTANCE.Lift(result),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeTextStreamReader : FfiConverter<TextStreamReader, ulong>
+    {
+        public static FfiConverterTypeTextStreamReader INSTANCE =
+            new FfiConverterTypeTextStreamReader();
+
+        public override ulong Lower(TextStreamReader value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override TextStreamReader Lift(ulong value)
+        {
+            return new TextStreamReader(value);
+        }
+
+        public override TextStreamReader Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(TextStreamReader value)
+        {
+            return 8;
+        }
+
+        public override void Write(TextStreamReader value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
+    /// Writer for an open text data stream.
+    /// </summary>
+    public interface ITextStreamWriter
+    {
+        /// <summary>
+        /// Closes the stream normally.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task Close();
+
+        /// <summary>
+        /// Closes the stream abnormally with a reason.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task CloseWithReason(string @reason);
+
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        TextStreamInfo Info();
+
+        /// <summary>
+        /// Whether the stream is still open — false once it has been closed locally or a send has failed.
+        /// </summary>
+        Task<bool> IsOpen();
+
+        /// <summary>
+        /// Appends text to the stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        Task Write(string @text);
+    }
+
+    /// <summary>
+    /// Writer for an open text data stream.
+    /// </summary>
+    public class TextStreamWriter : ITextStreamWriter, IDisposable
+    {
+        protected ulong pointer;
+        private int _wasDestroyed = 0;
+        private long _callCounter = 1;
+
+        public TextStreamWriter(ulong pointer)
+        {
+            this.pointer = pointer;
+        }
+
+        ~TextStreamWriter()
+        {
+            Destroy();
+        }
+
+        protected void FreeRustArcPtr()
+        {
+            _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.uniffi_livekit_uniffi_fn_free_textstreamwriter(this.pointer, ref status);
+                }
+            );
+        }
+
+        protected ulong CloneRustArcPtr()
+        {
+            return _UniffiHelpers.RustCall(
+                (ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_clone_textstreamwriter(
+                        this.pointer,
+                        ref status
+                    );
+                }
+            );
+        }
+
+        public void Destroy()
+        {
+            // Only allow a single call to this method.
+            if (Interlocked.CompareExchange(ref _wasDestroyed, 1, 0) == 0)
+            {
+                // This decrement always matches the initial count of 1 given at creation time.
+                if (Interlocked.Decrement(ref _callCounter) == 0)
+                {
+                    FreeRustArcPtr();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Destroy();
+            GC.SuppressFinalize(this); // Suppress finalization to avoid unnecessary GC overhead.
+        }
+
+        private void IncrementCallCounter()
+        {
+            // Check and increment the call counter, to keep the object alive.
+            // This needs a compare-and-set retry loop in case of concurrent updates.
+            long count;
+            do
+            {
+                count = Interlocked.Read(ref _callCounter);
+                if (count == 0L)
+                    throw new System.ObjectDisposedException(
+                        String.Format("'{0}' object has already been destroyed", this.GetType().Name)
+                    );
+                if (count == long.MaxValue)
+                    throw new System.OverflowException(
+                        String.Format("'{0}' call counter would overflow", this.GetType().Name)
+                    );
+            } while (Interlocked.CompareExchange(ref _callCounter, count + 1, count) != count);
+        }
+
+        private void DecrementCallCounter()
+        {
+            // This decrement always matches the increment we performed above.
+            if (Interlocked.Decrement(ref _callCounter) == 0)
+            {
+                FreeRustArcPtr();
+            }
+        }
+
+        internal void CallWithPointer(Action<ulong> action)
+        {
+            IncrementCallCounter();
+            try
+            {
+                action(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        internal T CallWithPointer<T>(Func<ulong, T> func)
+        {
+            IncrementCallCounter();
+            try
+            {
+                return func(CloneRustArcPtr());
+            }
+            finally
+            {
+                DecrementCallCounter();
+            }
+        }
+
+        /// <summary>
+        /// Closes the stream normally.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task Close()
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamwriter_close(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Closes the stream abnormally with a reason.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task CloseWithReason(string @reason)
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamwriter_close_with_reason(
+                        thisPtr,
+                        FfiConverterString.INSTANCE.Lower(@reason)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Information about the underlying stream.
+        /// </summary>
+        public TextStreamInfo Info()
+        {
+            return CallWithPointer(thisPtr =>
+                FfiConverterTypeTextStreamInfo.INSTANCE.Lift(
+                    _UniffiHelpers.RustCall(
+                        (ref UniffiRustCallStatus _status) =>
+                            _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamwriter_info(
+                                thisPtr,
+                                ref _status
+                            )
+                    )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Whether the stream is still open — false once it has been closed locally or a send has failed.
+        /// </summary>
+        public async Task<bool> IsOpen()
+        {
+            return await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamwriter_is_open(thisPtr);
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_i8(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    return _UniFFILib.ffi_livekit_uniffi_rust_future_complete_i8(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_i8(future),
+                // Lift
+                (result) => FfiConverterBoolean.INSTANCE.Lift(result),
+                // Error
+                NullCallStatusErrorHandler.INSTANCE
+            );
+        }
+
+        /// <summary>
+        /// Appends text to the stream.
+        /// </summary>
+        /// <exception cref="DataStreamException"></exception>
+        public async Task Write(string @text)
+        {
+            await _UniFFIAsync.UniffiRustCallAsync(
+                // Get rust future
+                CallWithPointer(thisPtr =>
+                {
+                    return _UniFFILib.uniffi_livekit_uniffi_fn_method_textstreamwriter_write(
+                        thisPtr,
+                        FfiConverterString.INSTANCE.Lower(@text)
+                    );
+                }),
+                // Poll
+                (ulong future, IntPtr continuation, ulong data) =>
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_poll_void(future, continuation, data),
+                // Complete
+                (ulong future, ref UniffiRustCallStatus status) =>
+                {
+                    _UniFFILib.ffi_livekit_uniffi_rust_future_complete_void(future, ref status);
+                },
+                // Free
+                (ulong future) => _UniFFILib.ffi_livekit_uniffi_rust_future_free_void(future),
+                // Error
+                FfiConverterTypeDataStreamError.INSTANCE
+            );
+        }
+    }
+
+    class FfiConverterTypeTextStreamWriter : FfiConverter<TextStreamWriter, ulong>
+    {
+        public static FfiConverterTypeTextStreamWriter INSTANCE =
+            new FfiConverterTypeTextStreamWriter();
+
+        public override ulong Lower(TextStreamWriter value)
+        {
+            return value.CallWithPointer(thisPtr => thisPtr);
+        }
+
+        public override TextStreamWriter Lift(ulong value)
+        {
+            return new TextStreamWriter(value);
+        }
+
+        public override TextStreamWriter Read(BigEndianStream stream)
+        {
+            return Lift(stream.ReadULong());
+        }
+
+        public override int AllocationSize(TextStreamWriter value)
+        {
+            return 8;
+        }
+
+        public override void Write(TextStreamWriter value, BigEndianStream stream)
+        {
+            stream.WriteULong(Lower(value));
+        }
+    }
+
+    /// <summary>
     /// API credentials for access token generation and verification.
     /// </summary>
     public record ApiCredentials(string Key, string Secret) { }
@@ -1920,6 +11066,70 @@ namespace LiveKit.Uniffi
         {
             FfiConverterString.INSTANCE.Write(value.Key, stream);
             FfiConverterString.INSTANCE.Write(value.Secret, stream);
+        }
+    }
+
+    /// <summary>
+    /// Information about a byte data stream. FFI wrapper around [`ds_api::ByteStreamInfo`].
+    /// </summary>
+    /// <param name="TimestampMs">
+    /// Unix timestamp in milliseconds.
+    /// </param>
+    public record ByteStreamInfo(
+        string Id,
+        string Topic,
+        /// <summary>
+        /// Unix timestamp in milliseconds.
+        /// </summary>
+        long TimestampMs,
+        ulong? TotalLength,
+        Dictionary<string, string> Attributes,
+        string MimeType,
+        string Name,
+        EncryptionType EncryptionType
+    ) { }
+
+    class FfiConverterTypeByteStreamInfo : FfiConverterRustBuffer<ByteStreamInfo>
+    {
+        public static FfiConverterTypeByteStreamInfo INSTANCE = new FfiConverterTypeByteStreamInfo();
+
+        public override ByteStreamInfo Read(BigEndianStream stream)
+        {
+            return new ByteStreamInfo(
+                Id: FfiConverterString.INSTANCE.Read(stream),
+                Topic: FfiConverterString.INSTANCE.Read(stream),
+                TimestampMs: FfiConverterInt64.INSTANCE.Read(stream),
+                TotalLength: FfiConverterOptionalUInt64.INSTANCE.Read(stream),
+                Attributes: FfiConverterDictionaryStringString.INSTANCE.Read(stream),
+                MimeType: FfiConverterString.INSTANCE.Read(stream),
+                Name: FfiConverterString.INSTANCE.Read(stream),
+                EncryptionType: FfiConverterTypeEncryptionType.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(ByteStreamInfo value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Id)
+                + FfiConverterString.INSTANCE.AllocationSize(value.Topic)
+                + FfiConverterInt64.INSTANCE.AllocationSize(value.TimestampMs)
+                + FfiConverterOptionalUInt64.INSTANCE.AllocationSize(value.TotalLength)
+                + FfiConverterDictionaryStringString.INSTANCE.AllocationSize(value.Attributes)
+                + FfiConverterString.INSTANCE.AllocationSize(value.MimeType)
+                + FfiConverterString.INSTANCE.AllocationSize(value.Name)
+                + FfiConverterTypeEncryptionType.INSTANCE.AllocationSize(value.EncryptionType);
+        }
+
+        public override void Write(ByteStreamInfo value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Id, stream);
+            FfiConverterString.INSTANCE.Write(value.Topic, stream);
+            FfiConverterInt64.INSTANCE.Write(value.TimestampMs, stream);
+            FfiConverterOptionalUInt64.INSTANCE.Write(value.TotalLength, stream);
+            FfiConverterDictionaryStringString.INSTANCE.Write(value.Attributes, stream);
+            FfiConverterString.INSTANCE.Write(value.MimeType, stream);
+            FfiConverterString.INSTANCE.Write(value.Name, stream);
+            FfiConverterTypeEncryptionType.INSTANCE.Write(value.EncryptionType, stream);
         }
     }
 
@@ -1995,6 +11205,244 @@ namespace LiveKit.Uniffi
         }
     }
 
+    /// <summary>
+    /// A stream closed by a remote participant (or terminated by an error/abort); see
+    /// [`IncomingDataStreamManagerDelegate::on_stream_closed`].
+    /// </summary>
+    /// <param name="StreamId">
+    /// Id of the stream that closed.
+    /// </param>
+    /// <param name="Identity">
+    /// Identity of the participant that opened the stream.
+    /// </param>
+    public record ClosedStream(
+        /// <summary>
+        /// Id of the stream that closed.
+        /// </summary>
+        string StreamId,
+        /// <summary>
+        /// Identity of the participant that opened the stream.
+        /// </summary>
+        string Identity
+    ) { }
+
+    class FfiConverterTypeClosedStream : FfiConverterRustBuffer<ClosedStream>
+    {
+        public static FfiConverterTypeClosedStream INSTANCE = new FfiConverterTypeClosedStream();
+
+        public override ClosedStream Read(BigEndianStream stream)
+        {
+            return new ClosedStream(
+                StreamId: FfiConverterString.INSTANCE.Read(stream),
+                Identity: FfiConverterString.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(ClosedStream value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.StreamId)
+                + FfiConverterString.INSTANCE.AllocationSize(value.Identity);
+        }
+
+        public override void Write(ClosedStream value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.StreamId, stream);
+            FfiConverterString.INSTANCE.Write(value.Identity, stream);
+        }
+    }
+
+    /// <summary>
+    /// A frame published on a data track.
+    ///
+    /// FFI wrapper around [`livekit_datatrack::api::DataTrackFrame`]. The underlying type uses the
+    /// builder pattern with private fields.
+    /// </summary>
+    public record DataTrackFrame(Bytes Payload, ulong? UserTimestamp) { }
+
+    class FfiConverterTypeDataTrackFrame : FfiConverterRustBuffer<DataTrackFrame>
+    {
+        public static FfiConverterTypeDataTrackFrame INSTANCE = new FfiConverterTypeDataTrackFrame();
+
+        public override DataTrackFrame Read(BigEndianStream stream)
+        {
+            return new DataTrackFrame(
+                Payload: FfiConverterTypeBytes.INSTANCE.Read(stream),
+                UserTimestamp: FfiConverterOptionalUInt64.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(DataTrackFrame value)
+        {
+            return 0
+                + FfiConverterTypeBytes.INSTANCE.AllocationSize(value.Payload)
+                + FfiConverterOptionalUInt64.INSTANCE.AllocationSize(value.UserTimestamp);
+        }
+
+        public override void Write(DataTrackFrame value, BigEndianStream stream)
+        {
+            FfiConverterTypeBytes.INSTANCE.Write(value.Payload, stream);
+            FfiConverterOptionalUInt64.INSTANCE.Write(value.UserTimestamp, stream);
+        }
+    }
+
+    /// <summary>
+    /// Information about a published data track.
+    /// </summary>
+    public record DataTrackInfo(
+        DataTrackSid Sid,
+        string Name,
+        bool UsesE2ee,
+        DataTrackSchemaId? Schema,
+        DataTrackFrameEncoding? FrameEncoding
+    ) { }
+
+    class FfiConverterTypeDataTrackInfo : FfiConverterRustBuffer<DataTrackInfo>
+    {
+        public static FfiConverterTypeDataTrackInfo INSTANCE = new FfiConverterTypeDataTrackInfo();
+
+        public override DataTrackInfo Read(BigEndianStream stream)
+        {
+            return new DataTrackInfo(
+                Sid: FfiConverterTypeDataTrackSid.INSTANCE.Read(stream),
+                Name: FfiConverterString.INSTANCE.Read(stream),
+                UsesE2ee: FfiConverterBoolean.INSTANCE.Read(stream),
+                Schema: FfiConverterOptionalTypeDataTrackSchemaId.INSTANCE.Read(stream),
+                FrameEncoding: FfiConverterOptionalTypeDataTrackFrameEncoding.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(DataTrackInfo value)
+        {
+            return 0
+                + FfiConverterTypeDataTrackSid.INSTANCE.AllocationSize(value.Sid)
+                + FfiConverterString.INSTANCE.AllocationSize(value.Name)
+                + FfiConverterBoolean.INSTANCE.AllocationSize(value.UsesE2ee)
+                + FfiConverterOptionalTypeDataTrackSchemaId.INSTANCE.AllocationSize(value.Schema)
+                + FfiConverterOptionalTypeDataTrackFrameEncoding.INSTANCE.AllocationSize(
+                    value.FrameEncoding
+                );
+        }
+
+        public override void Write(DataTrackInfo value, BigEndianStream stream)
+        {
+            FfiConverterTypeDataTrackSid.INSTANCE.Write(value.Sid, stream);
+            FfiConverterString.INSTANCE.Write(value.Name, stream);
+            FfiConverterBoolean.INSTANCE.Write(value.UsesE2ee, stream);
+            FfiConverterOptionalTypeDataTrackSchemaId.INSTANCE.Write(value.Schema, stream);
+            FfiConverterOptionalTypeDataTrackFrameEncoding.INSTANCE.Write(value.FrameEncoding, stream);
+        }
+    }
+
+    /// <summary>
+    /// Options for publishing a data track.
+    ///
+    /// FFI wrapper around [`livekit_datatrack::api::DataTrackOptions`]. The underlying type uses the
+    /// builder pattern with private fields.
+    /// </summary>
+    public record DataTrackOptions(
+        string Name,
+        DataTrackSchemaId? Schema = null,
+        DataTrackFrameEncoding? FrameEncoding = null
+    ) { }
+
+    class FfiConverterTypeDataTrackOptions : FfiConverterRustBuffer<DataTrackOptions>
+    {
+        public static FfiConverterTypeDataTrackOptions INSTANCE =
+            new FfiConverterTypeDataTrackOptions();
+
+        public override DataTrackOptions Read(BigEndianStream stream)
+        {
+            return new DataTrackOptions(
+                Name: FfiConverterString.INSTANCE.Read(stream),
+                Schema: FfiConverterOptionalTypeDataTrackSchemaId.INSTANCE.Read(stream),
+                FrameEncoding: FfiConverterOptionalTypeDataTrackFrameEncoding.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(DataTrackOptions value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Name)
+                + FfiConverterOptionalTypeDataTrackSchemaId.INSTANCE.AllocationSize(value.Schema)
+                + FfiConverterOptionalTypeDataTrackFrameEncoding.INSTANCE.AllocationSize(
+                    value.FrameEncoding
+                );
+        }
+
+        public override void Write(DataTrackOptions value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Name, stream);
+            FfiConverterOptionalTypeDataTrackSchemaId.INSTANCE.Write(value.Schema, stream);
+            FfiConverterOptionalTypeDataTrackFrameEncoding.INSTANCE.Write(value.FrameEncoding, stream);
+        }
+    }
+
+    /// <summary>
+    /// Identifier for a data track schema.
+    ///
+    /// A compound identifier with two components: name and encoding.
+    /// </summary>
+    public record DataTrackSchemaId(string Name, DataTrackSchemaEncoding Encoding) { }
+
+    class FfiConverterTypeDataTrackSchemaId : FfiConverterRustBuffer<DataTrackSchemaId>
+    {
+        public static FfiConverterTypeDataTrackSchemaId INSTANCE =
+            new FfiConverterTypeDataTrackSchemaId();
+
+        public override DataTrackSchemaId Read(BigEndianStream stream)
+        {
+            return new DataTrackSchemaId(
+                Name: FfiConverterString.INSTANCE.Read(stream),
+                Encoding: FfiConverterTypeDataTrackSchemaEncoding.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(DataTrackSchemaId value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Name)
+                + FfiConverterTypeDataTrackSchemaEncoding.INSTANCE.AllocationSize(value.Encoding);
+        }
+
+        public override void Write(DataTrackSchemaId value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Name, stream);
+            FfiConverterTypeDataTrackSchemaEncoding.INSTANCE.Write(value.Encoding, stream);
+        }
+    }
+
+    /// <param name="BufferSize">
+    /// Maximum number of received frames buffered internally. Zero is clamped to one.
+    /// </param>
+    public record DataTrackSubscribeOptions(
+        /// <summary>
+        /// Maximum number of received frames buffered internally. Zero is clamped to one.
+        /// </summary>
+        uint BufferSize = 16u
+    ) { }
+
+    class FfiConverterTypeDataTrackSubscribeOptions : FfiConverterRustBuffer<DataTrackSubscribeOptions>
+    {
+        public static FfiConverterTypeDataTrackSubscribeOptions INSTANCE =
+            new FfiConverterTypeDataTrackSubscribeOptions();
+
+        public override DataTrackSubscribeOptions Read(BigEndianStream stream)
+        {
+            return new DataTrackSubscribeOptions(BufferSize: FfiConverterUInt32.INSTANCE.Read(stream));
+        }
+
+        public override int AllocationSize(DataTrackSubscribeOptions value)
+        {
+            return 0 + FfiConverterUInt32.INSTANCE.AllocationSize(value.BufferSize);
+        }
+
+        public override void Write(DataTrackSubscribeOptions value, BigEndianStream stream)
+        {
+            FfiConverterUInt32.INSTANCE.Write(value.BufferSize, stream);
+        }
+    }
+
     public record LogForwardEntry(
         LogForwardLevel Level,
         string Target,
@@ -2035,6 +11483,199 @@ namespace LiveKit.Uniffi
             FfiConverterOptionalString.INSTANCE.Write(value.File, stream);
             FfiConverterOptionalUInt32.INSTANCE.Write(value.Line, stream);
             FfiConverterString.INSTANCE.Write(value.Message, stream);
+        }
+    }
+
+    /// <summary>
+    /// A stream opened by a remote participant.
+    ///
+    /// Exactly one of the two readers is set; which one tells you the stream's kind. Two `Option`s
+    /// rather than an enum keeps the shape trivial in every binding.
+    /// </summary>
+    /// <param name="Identity">
+    /// Identity of the participant that opened the stream.
+    /// </param>
+    /// <param name="ByteReader">
+    /// Set when the stream carries bytes.
+    /// </param>
+    /// <param name="TextReader">
+    /// Set when the stream carries text.
+    /// </param>
+    public record OpenedStream(
+        /// <summary>
+        /// Identity of the participant that opened the stream.
+        /// </summary>
+        string Identity,
+        /// <summary>
+        /// Set when the stream carries bytes.
+        /// </summary>
+        ByteStreamReader? ByteReader,
+        /// <summary>
+        /// Set when the stream carries text.
+        /// </summary>
+        TextStreamReader? TextReader
+    ) : IDisposable
+    {
+        public void Dispose()
+        {
+            FFIObjectUtil.DisposeAll(this.Identity, this.ByteReader, this.TextReader);
+        }
+    }
+
+    class FfiConverterTypeOpenedStream : FfiConverterRustBuffer<OpenedStream>
+    {
+        public static FfiConverterTypeOpenedStream INSTANCE = new FfiConverterTypeOpenedStream();
+
+        public override OpenedStream Read(BigEndianStream stream)
+        {
+            return new OpenedStream(
+                Identity: FfiConverterString.INSTANCE.Read(stream),
+                ByteReader: FfiConverterOptionalTypeByteStreamReader.INSTANCE.Read(stream),
+                TextReader: FfiConverterOptionalTypeTextStreamReader.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(OpenedStream value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Identity)
+                + FfiConverterOptionalTypeByteStreamReader.INSTANCE.AllocationSize(value.ByteReader)
+                + FfiConverterOptionalTypeTextStreamReader.INSTANCE.AllocationSize(value.TextReader);
+        }
+
+        public override void Write(OpenedStream value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Identity, stream);
+            FfiConverterOptionalTypeByteStreamReader.INSTANCE.Write(value.ByteReader, stream);
+            FfiConverterOptionalTypeTextStreamReader.INSTANCE.Write(value.TextReader, stream);
+        }
+    }
+
+    /// <summary>
+    /// An [`IncomingDataStreamManager`] and the queue draining it, already connected.
+    /// </summary>
+    public record PolledIncomingDataStreamManager(
+        IncomingDataStreamManager Manager,
+        IncomingStreamQueue Streams
+    ) : IDisposable
+    {
+        public void Dispose()
+        {
+            FFIObjectUtil.DisposeAll(this.Manager, this.Streams);
+        }
+    }
+
+    class FfiConverterTypePolledIncomingDataStreamManager
+        : FfiConverterRustBuffer<PolledIncomingDataStreamManager>
+    {
+        public static FfiConverterTypePolledIncomingDataStreamManager INSTANCE =
+            new FfiConverterTypePolledIncomingDataStreamManager();
+
+        public override PolledIncomingDataStreamManager Read(BigEndianStream stream)
+        {
+            return new PolledIncomingDataStreamManager(
+                Manager: FfiConverterTypeIncomingDataStreamManager.INSTANCE.Read(stream),
+                Streams: FfiConverterTypeIncomingStreamQueue.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(PolledIncomingDataStreamManager value)
+        {
+            return 0
+                + FfiConverterTypeIncomingDataStreamManager.INSTANCE.AllocationSize(value.Manager)
+                + FfiConverterTypeIncomingStreamQueue.INSTANCE.AllocationSize(value.Streams);
+        }
+
+        public override void Write(PolledIncomingDataStreamManager value, BigEndianStream stream)
+        {
+            FfiConverterTypeIncomingDataStreamManager.INSTANCE.Write(value.Manager, stream);
+            FfiConverterTypeIncomingStreamQueue.INSTANCE.Write(value.Streams, stream);
+        }
+    }
+
+    /// <summary>
+    /// An [`OutgoingDataStreamManager`] and the queue draining it, already connected.
+    /// </summary>
+    public record PolledOutgoingDataStreamManager(
+        OutgoingDataStreamManager Manager,
+        OutgoingPacketQueue Packets
+    ) : IDisposable
+    {
+        public void Dispose()
+        {
+            FFIObjectUtil.DisposeAll(this.Manager, this.Packets);
+        }
+    }
+
+    class FfiConverterTypePolledOutgoingDataStreamManager
+        : FfiConverterRustBuffer<PolledOutgoingDataStreamManager>
+    {
+        public static FfiConverterTypePolledOutgoingDataStreamManager INSTANCE =
+            new FfiConverterTypePolledOutgoingDataStreamManager();
+
+        public override PolledOutgoingDataStreamManager Read(BigEndianStream stream)
+        {
+            return new PolledOutgoingDataStreamManager(
+                Manager: FfiConverterTypeOutgoingDataStreamManager.INSTANCE.Read(stream),
+                Packets: FfiConverterTypeOutgoingPacketQueue.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(PolledOutgoingDataStreamManager value)
+        {
+            return 0
+                + FfiConverterTypeOutgoingDataStreamManager.INSTANCE.AllocationSize(value.Manager)
+                + FfiConverterTypeOutgoingPacketQueue.INSTANCE.AllocationSize(value.Packets);
+        }
+
+        public override void Write(PolledOutgoingDataStreamManager value, BigEndianStream stream)
+        {
+            FfiConverterTypeOutgoingDataStreamManager.INSTANCE.Write(value.Manager, stream);
+            FfiConverterTypeOutgoingPacketQueue.INSTANCE.Write(value.Packets, stream);
+        }
+    }
+
+    /// <summary>
+    /// FFI wrapper around [`livekit_datatrack::api::RemoteDataTrackPipelineOptions`]. The underlying
+    /// type uses the builder pattern with private fields.
+    /// </summary>
+    /// <param name="MaxPartialFrames">
+    /// Maximum number of partial frames the depacketizer will track concurrently for this track.
+    ///
+    /// Higher values give more out-of-order tolerance for high-frequency senders at the cost of
+    /// additional buffering. Zero is clamped to one.
+    /// </param>
+    public record RemoteDataTrackPipelineOptions(
+        /// <summary>
+        /// Maximum number of partial frames the depacketizer will track concurrently for this track.
+        ///
+        /// Higher values give more out-of-order tolerance for high-frequency senders at the cost of
+        /// additional buffering. Zero is clamped to one.
+        /// </summary>
+        uint MaxPartialFrames = 1u
+    ) { }
+
+    class FfiConverterTypeRemoteDataTrackPipelineOptions
+        : FfiConverterRustBuffer<RemoteDataTrackPipelineOptions>
+    {
+        public static FfiConverterTypeRemoteDataTrackPipelineOptions INSTANCE =
+            new FfiConverterTypeRemoteDataTrackPipelineOptions();
+
+        public override RemoteDataTrackPipelineOptions Read(BigEndianStream stream)
+        {
+            return new RemoteDataTrackPipelineOptions(
+                MaxPartialFrames: FfiConverterUInt32.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(RemoteDataTrackPipelineOptions value)
+        {
+            return 0 + FfiConverterUInt32.INSTANCE.AllocationSize(value.MaxPartialFrames);
+        }
+
+        public override void Write(RemoteDataTrackPipelineOptions value, BigEndianStream stream)
+        {
+            FfiConverterUInt32.INSTANCE.Write(value.MaxPartialFrames, stream);
         }
     }
 
@@ -2182,6 +11823,220 @@ namespace LiveKit.Uniffi
         {
             FfiConverterBoolean.INSTANCE.Write(value.Admin, stream);
             FfiConverterBoolean.INSTANCE.Write(value.Call, stream);
+        }
+    }
+
+    /// <summary>
+    /// Options for sending a byte stream. FFI wrapper around [`ds_api::StreamByteOptions`].
+    /// </summary>
+    public record StreamByteOptions(
+        string Topic,
+        Dictionary<string, string> Attributes,
+        string[] DestinationIdentities = null,
+        string? Id = null,
+        string? MimeType = null,
+        string? Name = null,
+        ulong? TotalLength = null,
+        bool? Compress = null,
+        string? SenderIdentity = null
+    ) { }
+
+    class FfiConverterTypeStreamByteOptions : FfiConverterRustBuffer<StreamByteOptions>
+    {
+        public static FfiConverterTypeStreamByteOptions INSTANCE =
+            new FfiConverterTypeStreamByteOptions();
+
+        public override StreamByteOptions Read(BigEndianStream stream)
+        {
+            return new StreamByteOptions(
+                Topic: FfiConverterString.INSTANCE.Read(stream),
+                Attributes: FfiConverterDictionaryStringString.INSTANCE.Read(stream),
+                DestinationIdentities: FfiConverterSequenceString.INSTANCE.Read(stream),
+                Id: FfiConverterOptionalString.INSTANCE.Read(stream),
+                MimeType: FfiConverterOptionalString.INSTANCE.Read(stream),
+                Name: FfiConverterOptionalString.INSTANCE.Read(stream),
+                TotalLength: FfiConverterOptionalUInt64.INSTANCE.Read(stream),
+                Compress: FfiConverterOptionalBoolean.INSTANCE.Read(stream),
+                SenderIdentity: FfiConverterOptionalString.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(StreamByteOptions value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Topic)
+                + FfiConverterDictionaryStringString.INSTANCE.AllocationSize(value.Attributes)
+                + FfiConverterSequenceString.INSTANCE.AllocationSize(value.DestinationIdentities)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.Id)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.MimeType)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.Name)
+                + FfiConverterOptionalUInt64.INSTANCE.AllocationSize(value.TotalLength)
+                + FfiConverterOptionalBoolean.INSTANCE.AllocationSize(value.Compress)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.SenderIdentity);
+        }
+
+        public override void Write(StreamByteOptions value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Topic, stream);
+            FfiConverterDictionaryStringString.INSTANCE.Write(value.Attributes, stream);
+            FfiConverterSequenceString.INSTANCE.Write(value.DestinationIdentities, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.Id, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.MimeType, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.Name, stream);
+            FfiConverterOptionalUInt64.INSTANCE.Write(value.TotalLength, stream);
+            FfiConverterOptionalBoolean.INSTANCE.Write(value.Compress, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.SenderIdentity, stream);
+        }
+    }
+
+    /// <summary>
+    /// Options for sending a text stream. FFI wrapper around [`ds_api::StreamTextOptions`].
+    /// </summary>
+    public record StreamTextOptions(
+        string Topic,
+        Dictionary<string, string> Attributes,
+        string[] DestinationIdentities = null,
+        string? Id = null,
+        OperationType? OperationType = null,
+        int? Version = null,
+        string? ReplyToStreamId = null,
+        string[] AttachedStreamIds = null,
+        bool? Generated = null,
+        bool? Compress = null,
+        string? SenderIdentity = null
+    ) { }
+
+    class FfiConverterTypeStreamTextOptions : FfiConverterRustBuffer<StreamTextOptions>
+    {
+        public static FfiConverterTypeStreamTextOptions INSTANCE =
+            new FfiConverterTypeStreamTextOptions();
+
+        public override StreamTextOptions Read(BigEndianStream stream)
+        {
+            return new StreamTextOptions(
+                Topic: FfiConverterString.INSTANCE.Read(stream),
+                Attributes: FfiConverterDictionaryStringString.INSTANCE.Read(stream),
+                DestinationIdentities: FfiConverterSequenceString.INSTANCE.Read(stream),
+                Id: FfiConverterOptionalString.INSTANCE.Read(stream),
+                OperationType: FfiConverterOptionalTypeOperationType.INSTANCE.Read(stream),
+                Version: FfiConverterOptionalInt32.INSTANCE.Read(stream),
+                ReplyToStreamId: FfiConverterOptionalString.INSTANCE.Read(stream),
+                AttachedStreamIds: FfiConverterSequenceString.INSTANCE.Read(stream),
+                Generated: FfiConverterOptionalBoolean.INSTANCE.Read(stream),
+                Compress: FfiConverterOptionalBoolean.INSTANCE.Read(stream),
+                SenderIdentity: FfiConverterOptionalString.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(StreamTextOptions value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Topic)
+                + FfiConverterDictionaryStringString.INSTANCE.AllocationSize(value.Attributes)
+                + FfiConverterSequenceString.INSTANCE.AllocationSize(value.DestinationIdentities)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.Id)
+                + FfiConverterOptionalTypeOperationType.INSTANCE.AllocationSize(value.OperationType)
+                + FfiConverterOptionalInt32.INSTANCE.AllocationSize(value.Version)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.ReplyToStreamId)
+                + FfiConverterSequenceString.INSTANCE.AllocationSize(value.AttachedStreamIds)
+                + FfiConverterOptionalBoolean.INSTANCE.AllocationSize(value.Generated)
+                + FfiConverterOptionalBoolean.INSTANCE.AllocationSize(value.Compress)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.SenderIdentity);
+        }
+
+        public override void Write(StreamTextOptions value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Topic, stream);
+            FfiConverterDictionaryStringString.INSTANCE.Write(value.Attributes, stream);
+            FfiConverterSequenceString.INSTANCE.Write(value.DestinationIdentities, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.Id, stream);
+            FfiConverterOptionalTypeOperationType.INSTANCE.Write(value.OperationType, stream);
+            FfiConverterOptionalInt32.INSTANCE.Write(value.Version, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.ReplyToStreamId, stream);
+            FfiConverterSequenceString.INSTANCE.Write(value.AttachedStreamIds, stream);
+            FfiConverterOptionalBoolean.INSTANCE.Write(value.Generated, stream);
+            FfiConverterOptionalBoolean.INSTANCE.Write(value.Compress, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.SenderIdentity, stream);
+        }
+    }
+
+    /// <summary>
+    /// Information about a text data stream. FFI wrapper around [`ds_api::TextStreamInfo`].
+    /// </summary>
+    /// <param name="TimestampMs">
+    /// Unix timestamp in milliseconds.
+    /// </param>
+    public record TextStreamInfo(
+        string Id,
+        string Topic,
+        /// <summary>
+        /// Unix timestamp in milliseconds.
+        /// </summary>
+        long TimestampMs,
+        ulong? TotalLength,
+        Dictionary<string, string> Attributes,
+        string MimeType,
+        OperationType OperationType,
+        int Version,
+        string? ReplyToStreamId,
+        string[] AttachedStreamIds,
+        bool Generated,
+        EncryptionType EncryptionType
+    ) { }
+
+    class FfiConverterTypeTextStreamInfo : FfiConverterRustBuffer<TextStreamInfo>
+    {
+        public static FfiConverterTypeTextStreamInfo INSTANCE = new FfiConverterTypeTextStreamInfo();
+
+        public override TextStreamInfo Read(BigEndianStream stream)
+        {
+            return new TextStreamInfo(
+                Id: FfiConverterString.INSTANCE.Read(stream),
+                Topic: FfiConverterString.INSTANCE.Read(stream),
+                TimestampMs: FfiConverterInt64.INSTANCE.Read(stream),
+                TotalLength: FfiConverterOptionalUInt64.INSTANCE.Read(stream),
+                Attributes: FfiConverterDictionaryStringString.INSTANCE.Read(stream),
+                MimeType: FfiConverterString.INSTANCE.Read(stream),
+                OperationType: FfiConverterTypeOperationType.INSTANCE.Read(stream),
+                Version: FfiConverterInt32.INSTANCE.Read(stream),
+                ReplyToStreamId: FfiConverterOptionalString.INSTANCE.Read(stream),
+                AttachedStreamIds: FfiConverterSequenceString.INSTANCE.Read(stream),
+                Generated: FfiConverterBoolean.INSTANCE.Read(stream),
+                EncryptionType: FfiConverterTypeEncryptionType.INSTANCE.Read(stream)
+            );
+        }
+
+        public override int AllocationSize(TextStreamInfo value)
+        {
+            return 0
+                + FfiConverterString.INSTANCE.AllocationSize(value.Id)
+                + FfiConverterString.INSTANCE.AllocationSize(value.Topic)
+                + FfiConverterInt64.INSTANCE.AllocationSize(value.TimestampMs)
+                + FfiConverterOptionalUInt64.INSTANCE.AllocationSize(value.TotalLength)
+                + FfiConverterDictionaryStringString.INSTANCE.AllocationSize(value.Attributes)
+                + FfiConverterString.INSTANCE.AllocationSize(value.MimeType)
+                + FfiConverterTypeOperationType.INSTANCE.AllocationSize(value.OperationType)
+                + FfiConverterInt32.INSTANCE.AllocationSize(value.Version)
+                + FfiConverterOptionalString.INSTANCE.AllocationSize(value.ReplyToStreamId)
+                + FfiConverterSequenceString.INSTANCE.AllocationSize(value.AttachedStreamIds)
+                + FfiConverterBoolean.INSTANCE.AllocationSize(value.Generated)
+                + FfiConverterTypeEncryptionType.INSTANCE.AllocationSize(value.EncryptionType);
+        }
+
+        public override void Write(TextStreamInfo value, BigEndianStream stream)
+        {
+            FfiConverterString.INSTANCE.Write(value.Id, stream);
+            FfiConverterString.INSTANCE.Write(value.Topic, stream);
+            FfiConverterInt64.INSTANCE.Write(value.TimestampMs, stream);
+            FfiConverterOptionalUInt64.INSTANCE.Write(value.TotalLength, stream);
+            FfiConverterDictionaryStringString.INSTANCE.Write(value.Attributes, stream);
+            FfiConverterString.INSTANCE.Write(value.MimeType, stream);
+            FfiConverterTypeOperationType.INSTANCE.Write(value.OperationType, stream);
+            FfiConverterInt32.INSTANCE.Write(value.Version, stream);
+            FfiConverterOptionalString.INSTANCE.Write(value.ReplyToStreamId, stream);
+            FfiConverterSequenceString.INSTANCE.Write(value.AttachedStreamIds, stream);
+            FfiConverterBoolean.INSTANCE.Write(value.Generated, stream);
+            FfiConverterTypeEncryptionType.INSTANCE.Write(value.EncryptionType, stream);
         }
     }
 
@@ -2443,6 +12298,562 @@ namespace LiveKit.Uniffi
         }
     }
 
+    /// <summary>
+    /// A capability a remote participant's client advertises, mirroring [`common::ClientCapability`].
+    /// </summary>
+    public enum ClientCapability : int
+    {
+        Unused,
+        PacketTrailer,
+        CompressionDeflateRaw,
+    }
+
+    class FfiConverterTypeClientCapability : FfiConverterRustBuffer<ClientCapability>
+    {
+        public static FfiConverterTypeClientCapability INSTANCE =
+            new FfiConverterTypeClientCapability();
+
+        public override ClientCapability Read(BigEndianStream stream)
+        {
+            var value = stream.ReadInt();
+            switch (value)
+            {
+                case 1:
+                    return ClientCapability.Unused;
+                case 2:
+                    return ClientCapability.PacketTrailer;
+                case 3:
+                    return ClientCapability.CompressionDeflateRaw;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid enum value '{0}' in FfiConverterTypeClientCapability.Read()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override int AllocationSize(ClientCapability value)
+        {
+            return 4;
+        }
+
+        public override void Write(ClientCapability value, BigEndianStream stream)
+        {
+            switch (value)
+            {
+                case ClientCapability.Unused:
+                    stream.WriteInt(1);
+                    break;
+                case ClientCapability.PacketTrailer:
+                    stream.WriteInt(2);
+                    break;
+                case ClientCapability.CompressionDeflateRaw:
+                    stream.WriteInt(3);
+                    break;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid enum value '{0}' in FfiConverterTypeClientCapability.Write()",
+                            value
+                        )
+                    );
+            }
+        }
+    }
+
+    /// <summary>
+    /// A data stream operation failed. Structured mirror of [`ds_api::StreamError`] so foreign callers
+    /// can map each case to their own error type; variants carrying a message forward it as `message`.
+    /// </summary>
+    public class DataStreamException : UniffiException
+    {
+        DataStreamException()
+            : base() { }
+
+        DataStreamException(String @Message)
+            : base(@Message) { }
+
+        // Each variant is a nested class
+
+        public class AlreadyClosed : DataStreamException
+        {
+            public AlreadyClosed()
+                : base() { }
+        }
+
+        public class AbnormalEnd : DataStreamException
+        {
+            // Members
+            public string @reason;
+
+            // Constructor
+            public AbnormalEnd(string @reason)
+                : base("@reason" + "=" + @reason)
+            {
+                this.@reason = @reason;
+            }
+        }
+
+        public class Utf8 : DataStreamException
+        {
+            // Members
+            public string @reason;
+
+            // Constructor
+            public Utf8(string @reason)
+                : base("@reason" + "=" + @reason)
+            {
+                this.@reason = @reason;
+            }
+        }
+
+        public class InvalidHeader : DataStreamException
+        {
+            public InvalidHeader()
+                : base() { }
+        }
+
+        public class MissedChunk : DataStreamException
+        {
+            public MissedChunk()
+                : base() { }
+        }
+
+        public class LengthExceeded : DataStreamException
+        {
+            public LengthExceeded()
+                : base() { }
+        }
+
+        public class Incomplete : DataStreamException
+        {
+            public Incomplete()
+                : base() { }
+        }
+
+        public class SendFailed : DataStreamException
+        {
+            public SendFailed()
+                : base() { }
+        }
+
+        public class Io : DataStreamException
+        {
+            // Members
+            public string @reason;
+
+            // Constructor
+            public Io(string @reason)
+                : base("@reason" + "=" + @reason)
+            {
+                this.@reason = @reason;
+            }
+        }
+
+        public class Internal : DataStreamException
+        {
+            public Internal()
+                : base() { }
+        }
+
+        public class EncryptionTypeMismatch : DataStreamException
+        {
+            // Members
+            public EncryptionType @expected;
+            public EncryptionType @received;
+
+            // Constructor
+            public EncryptionTypeMismatch(EncryptionType @expected, EncryptionType @received)
+                : base("@expected" + "=" + @expected + ", " + "@received" + "=" + @received)
+            {
+                this.@expected = @expected;
+
+                this.@received = @received;
+            }
+        }
+
+        public class HeaderTooLarge : DataStreamException
+        {
+            public HeaderTooLarge()
+                : base() { }
+        }
+
+        public class PayloadTooLarge : DataStreamException
+        {
+            public PayloadTooLarge()
+                : base() { }
+        }
+
+        public class Decompression : DataStreamException
+        {
+            public Decompression()
+                : base() { }
+        }
+
+        public class InvalidFileName : DataStreamException
+        {
+            public InvalidFileName()
+                : base() { }
+        }
+    }
+
+    class FfiConverterTypeDataStreamError
+        : FfiConverterRustBuffer<DataStreamException>,
+            CallStatusErrorHandler<DataStreamException>
+    {
+        public static FfiConverterTypeDataStreamError INSTANCE = new FfiConverterTypeDataStreamError();
+
+        public override DataStreamException Read(BigEndianStream stream)
+        {
+            var value = stream.ReadInt();
+            switch (value)
+            {
+                case 1:
+                    return new DataStreamException.AlreadyClosed();
+                case 2:
+                    return new DataStreamException.AbnormalEnd(
+                        FfiConverterString.INSTANCE.Read(stream)
+                    );
+                case 3:
+                    return new DataStreamException.Utf8(FfiConverterString.INSTANCE.Read(stream));
+                case 4:
+                    return new DataStreamException.InvalidHeader();
+                case 5:
+                    return new DataStreamException.MissedChunk();
+                case 6:
+                    return new DataStreamException.LengthExceeded();
+                case 7:
+                    return new DataStreamException.Incomplete();
+                case 8:
+                    return new DataStreamException.SendFailed();
+                case 9:
+                    return new DataStreamException.Io(FfiConverterString.INSTANCE.Read(stream));
+                case 10:
+                    return new DataStreamException.Internal();
+                case 11:
+                    return new DataStreamException.EncryptionTypeMismatch(
+                        FfiConverterTypeEncryptionType.INSTANCE.Read(stream),
+                        FfiConverterTypeEncryptionType.INSTANCE.Read(stream)
+                    );
+                case 12:
+                    return new DataStreamException.HeaderTooLarge();
+                case 13:
+                    return new DataStreamException.PayloadTooLarge();
+                case 14:
+                    return new DataStreamException.Decompression();
+                case 15:
+                    return new DataStreamException.InvalidFileName();
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypeDataStreamError.Read()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override int AllocationSize(DataStreamException value)
+        {
+            switch (value)
+            {
+                case DataStreamException.AlreadyClosed variant_value:
+                    return 4;
+
+                case DataStreamException.AbnormalEnd variant_value:
+                    return 4 + FfiConverterString.INSTANCE.AllocationSize(variant_value.@reason);
+
+                case DataStreamException.Utf8 variant_value:
+                    return 4 + FfiConverterString.INSTANCE.AllocationSize(variant_value.@reason);
+
+                case DataStreamException.InvalidHeader variant_value:
+                    return 4;
+
+                case DataStreamException.MissedChunk variant_value:
+                    return 4;
+
+                case DataStreamException.LengthExceeded variant_value:
+                    return 4;
+
+                case DataStreamException.Incomplete variant_value:
+                    return 4;
+
+                case DataStreamException.SendFailed variant_value:
+                    return 4;
+
+                case DataStreamException.Io variant_value:
+                    return 4 + FfiConverterString.INSTANCE.AllocationSize(variant_value.@reason);
+
+                case DataStreamException.Internal variant_value:
+                    return 4;
+
+                case DataStreamException.EncryptionTypeMismatch variant_value:
+                    return 4
+                        + FfiConverterTypeEncryptionType.INSTANCE.AllocationSize(
+                            variant_value.@expected
+                        )
+                        + FfiConverterTypeEncryptionType.INSTANCE.AllocationSize(
+                            variant_value.@received
+                        );
+
+                case DataStreamException.HeaderTooLarge variant_value:
+                    return 4;
+
+                case DataStreamException.PayloadTooLarge variant_value:
+                    return 4;
+
+                case DataStreamException.Decompression variant_value:
+                    return 4;
+
+                case DataStreamException.InvalidFileName variant_value:
+                    return 4;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypeDataStreamError.AllocationSize()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override void Write(DataStreamException value, BigEndianStream stream)
+        {
+            switch (value)
+            {
+                case DataStreamException.AlreadyClosed variant_value:
+                    stream.WriteInt(1);
+                    break;
+                case DataStreamException.AbnormalEnd variant_value:
+                    stream.WriteInt(2);
+                    FfiConverterString.INSTANCE.Write(variant_value.@reason, stream);
+                    break;
+                case DataStreamException.Utf8 variant_value:
+                    stream.WriteInt(3);
+                    FfiConverterString.INSTANCE.Write(variant_value.@reason, stream);
+                    break;
+                case DataStreamException.InvalidHeader variant_value:
+                    stream.WriteInt(4);
+                    break;
+                case DataStreamException.MissedChunk variant_value:
+                    stream.WriteInt(5);
+                    break;
+                case DataStreamException.LengthExceeded variant_value:
+                    stream.WriteInt(6);
+                    break;
+                case DataStreamException.Incomplete variant_value:
+                    stream.WriteInt(7);
+                    break;
+                case DataStreamException.SendFailed variant_value:
+                    stream.WriteInt(8);
+                    break;
+                case DataStreamException.Io variant_value:
+                    stream.WriteInt(9);
+                    FfiConverterString.INSTANCE.Write(variant_value.@reason, stream);
+                    break;
+                case DataStreamException.Internal variant_value:
+                    stream.WriteInt(10);
+                    break;
+                case DataStreamException.EncryptionTypeMismatch variant_value:
+                    stream.WriteInt(11);
+                    FfiConverterTypeEncryptionType.INSTANCE.Write(variant_value.@expected, stream);
+                    FfiConverterTypeEncryptionType.INSTANCE.Write(variant_value.@received, stream);
+                    break;
+                case DataStreamException.HeaderTooLarge variant_value:
+                    stream.WriteInt(12);
+                    break;
+                case DataStreamException.PayloadTooLarge variant_value:
+                    stream.WriteInt(13);
+                    break;
+                case DataStreamException.Decompression variant_value:
+                    stream.WriteInt(14);
+                    break;
+                case DataStreamException.InvalidFileName variant_value:
+                    stream.WriteInt(15);
+                    break;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypeDataStreamError.Write()",
+                            value
+                        )
+                    );
+            }
+        }
+    }
+
+    /// <summary>
+    /// Encryption applied to a data stream, mirroring [`common::EncryptionType`].
+    /// </summary>
+    public enum EncryptionType : int
+    {
+        None,
+        Gcm,
+        Custom,
+    }
+
+    class FfiConverterTypeEncryptionType : FfiConverterRustBuffer<EncryptionType>
+    {
+        public static FfiConverterTypeEncryptionType INSTANCE = new FfiConverterTypeEncryptionType();
+
+        public override EncryptionType Read(BigEndianStream stream)
+        {
+            var value = stream.ReadInt();
+            switch (value)
+            {
+                case 1:
+                    return EncryptionType.None;
+                case 2:
+                    return EncryptionType.Gcm;
+                case 3:
+                    return EncryptionType.Custom;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid enum value '{0}' in FfiConverterTypeEncryptionType.Read()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override int AllocationSize(EncryptionType value)
+        {
+            return 4;
+        }
+
+        public override void Write(EncryptionType value, BigEndianStream stream)
+        {
+            switch (value)
+            {
+                case EncryptionType.None:
+                    stream.WriteInt(1);
+                    break;
+                case EncryptionType.Gcm:
+                    stream.WriteInt(2);
+                    break;
+                case EncryptionType.Custom:
+                    stream.WriteInt(3);
+                    break;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid enum value '{0}' in FfiConverterTypeEncryptionType.Write()",
+                            value
+                        )
+                    );
+            }
+        }
+    }
+
+    /// <summary>
+    /// Signal response crossing the FFI boundary could not be processed.
+    /// </summary>
+    public class HandleSignalResponseException : UniffiException
+    {
+        HandleSignalResponseException(string message)
+            : base(message) { }
+
+        // Each variant is a nested class
+        // Flat enums carries a string error message, so no special implementation is necessary.
+
+        public class Decode : HandleSignalResponseException
+        {
+            public Decode(string message)
+                : base(message) { }
+        }
+
+        public class EmptyMessage : HandleSignalResponseException
+        {
+            public EmptyMessage(string message)
+                : base(message) { }
+        }
+
+        public class UnsupportedType : HandleSignalResponseException
+        {
+            public UnsupportedType(string message)
+                : base(message) { }
+        }
+
+        public class Internal : HandleSignalResponseException
+        {
+            public Internal(string message)
+                : base(message) { }
+        }
+    }
+
+    class FfiConverterTypeHandleSignalResponseError
+        : FfiConverterRustBuffer<HandleSignalResponseException>,
+            CallStatusErrorHandler<HandleSignalResponseException>
+    {
+        public static FfiConverterTypeHandleSignalResponseError INSTANCE =
+            new FfiConverterTypeHandleSignalResponseError();
+
+        public override HandleSignalResponseException Read(BigEndianStream stream)
+        {
+            var value = stream.ReadInt();
+            switch (value)
+            {
+                case 1:
+                    return new HandleSignalResponseException.Decode(
+                        FfiConverterString.INSTANCE.Read(stream)
+                    );
+                case 2:
+                    return new HandleSignalResponseException.EmptyMessage(
+                        FfiConverterString.INSTANCE.Read(stream)
+                    );
+                case 3:
+                    return new HandleSignalResponseException.UnsupportedType(
+                        FfiConverterString.INSTANCE.Read(stream)
+                    );
+                case 4:
+                    return new HandleSignalResponseException.Internal(
+                        FfiConverterString.INSTANCE.Read(stream)
+                    );
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypeHandleSignalResponseError.Read()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override int AllocationSize(HandleSignalResponseException value)
+        {
+            return 4 + FfiConverterString.INSTANCE.AllocationSize(value.Message);
+        }
+
+        public override void Write(HandleSignalResponseException value, BigEndianStream stream)
+        {
+            switch (value)
+            {
+                case HandleSignalResponseException.Decode:
+                    stream.WriteInt(1);
+                    break;
+                case HandleSignalResponseException.EmptyMessage:
+                    stream.WriteInt(2);
+                    break;
+                case HandleSignalResponseException.UnsupportedType:
+                    stream.WriteInt(3);
+                    break;
+                case HandleSignalResponseException.Internal:
+                    stream.WriteInt(4);
+                    break;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypeHandleSignalResponseError.Write()",
+                            value
+                        )
+                    );
+            }
+        }
+    }
+
     public enum LogForwardFilter : int
     {
         Off,
@@ -2596,6 +13007,166 @@ namespace LiveKit.Uniffi
         }
     }
 
+    /// <summary>
+    /// Operation type for text streams, mirroring [`ds_api::OperationType`].
+    /// </summary>
+    public enum OperationType : int
+    {
+        Create,
+        Update,
+        Delete,
+        Reaction,
+    }
+
+    class FfiConverterTypeOperationType : FfiConverterRustBuffer<OperationType>
+    {
+        public static FfiConverterTypeOperationType INSTANCE = new FfiConverterTypeOperationType();
+
+        public override OperationType Read(BigEndianStream stream)
+        {
+            var value = stream.ReadInt();
+            switch (value)
+            {
+                case 1:
+                    return OperationType.Create;
+                case 2:
+                    return OperationType.Update;
+                case 3:
+                    return OperationType.Delete;
+                case 4:
+                    return OperationType.Reaction;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid enum value '{0}' in FfiConverterTypeOperationType.Read()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override int AllocationSize(OperationType value)
+        {
+            return 4;
+        }
+
+        public override void Write(OperationType value, BigEndianStream stream)
+        {
+            switch (value)
+            {
+                case OperationType.Create:
+                    stream.WriteInt(1);
+                    break;
+                case OperationType.Update:
+                    stream.WriteInt(2);
+                    break;
+                case OperationType.Delete:
+                    stream.WriteInt(3);
+                    break;
+                case OperationType.Reaction:
+                    stream.WriteInt(4);
+                    break;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid enum value '{0}' in FfiConverterTypeOperationType.Write()",
+                            value
+                        )
+                    );
+            }
+        }
+    }
+
+    /// <summary>
+    /// A foreign transport failed to deliver outbound packets; thrown by hosts from
+    /// [`OutgoingDataStreamManagerDelegate::on_packets_available`](super::outgoing::OutgoingDataStreamManagerDelegate::on_packets_available).
+    ///
+    /// Morally `struct PacketDeliveryError(String)`, but uniffi error types must be enums, so the
+    /// string travels as the single variant's `reason` (free-form host context: logged, not parsed).
+    /// </summary>
+    public class PacketDeliveryException : UniffiException
+    {
+        PacketDeliveryException()
+            : base() { }
+
+        PacketDeliveryException(String @Message)
+            : base(@Message) { }
+
+        // Each variant is a nested class
+
+        public class Failed : PacketDeliveryException
+        {
+            // Members
+            public string @reason;
+
+            // Constructor
+            public Failed(string @reason)
+                : base("@reason" + "=" + @reason)
+            {
+                this.@reason = @reason;
+            }
+        }
+    }
+
+    class FfiConverterTypePacketDeliveryError
+        : FfiConverterRustBuffer<PacketDeliveryException>,
+            CallStatusErrorHandler<PacketDeliveryException>
+    {
+        public static FfiConverterTypePacketDeliveryError INSTANCE =
+            new FfiConverterTypePacketDeliveryError();
+
+        public override PacketDeliveryException Read(BigEndianStream stream)
+        {
+            var value = stream.ReadInt();
+            switch (value)
+            {
+                case 1:
+                    return new PacketDeliveryException.Failed(FfiConverterString.INSTANCE.Read(stream));
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypePacketDeliveryError.Read()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override int AllocationSize(PacketDeliveryException value)
+        {
+            switch (value)
+            {
+                case PacketDeliveryException.Failed variant_value:
+                    return 4 + FfiConverterString.INSTANCE.AllocationSize(variant_value.@reason);
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypePacketDeliveryError.AllocationSize()",
+                            value
+                        )
+                    );
+            }
+        }
+
+        public override void Write(PacketDeliveryException value, BigEndianStream stream)
+        {
+            switch (value)
+            {
+                case PacketDeliveryException.Failed variant_value:
+                    stream.WriteInt(1);
+                    FfiConverterString.INSTANCE.Write(variant_value.@reason, stream);
+                    break;
+                default:
+                    throw new InternalException(
+                        String.Format(
+                            "invalid error value '{0}' in FfiConverterTypePacketDeliveryError.Write()",
+                            value
+                        )
+                    );
+            }
+        }
+    }
+
     class FfiConverterOptionalUInt32 : FfiConverterRustBuffer<uint?>
     {
         public static FfiConverterOptionalUInt32 INSTANCE = new FfiConverterOptionalUInt32();
@@ -2631,6 +13202,123 @@ namespace LiveKit.Uniffi
             {
                 stream.WriteByte(1);
                 FfiConverterUInt32.INSTANCE.Write((uint)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalInt32 : FfiConverterRustBuffer<int?>
+    {
+        public static FfiConverterOptionalInt32 INSTANCE = new FfiConverterOptionalInt32();
+
+        public override int? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterInt32.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(int? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterInt32.INSTANCE.AllocationSize((int)value);
+            }
+        }
+
+        public override void Write(int? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterInt32.INSTANCE.Write((int)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalUInt64 : FfiConverterRustBuffer<ulong?>
+    {
+        public static FfiConverterOptionalUInt64 INSTANCE = new FfiConverterOptionalUInt64();
+
+        public override ulong? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterUInt64.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(ulong? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterUInt64.INSTANCE.AllocationSize((ulong)value);
+            }
+        }
+
+        public override void Write(ulong? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterUInt64.INSTANCE.Write((ulong)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalBoolean : FfiConverterRustBuffer<bool?>
+    {
+        public static FfiConverterOptionalBoolean INSTANCE = new FfiConverterOptionalBoolean();
+
+        public override bool? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterBoolean.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(bool? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterBoolean.INSTANCE.AllocationSize((bool)value);
+            }
+        }
+
+        public override void Write(bool? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterBoolean.INSTANCE.Write((bool)value, stream);
             }
         }
     }
@@ -2713,6 +13401,174 @@ namespace LiveKit.Uniffi
         }
     }
 
+    class FfiConverterOptionalTypeDecryptionProvider : FfiConverterRustBuffer<DecryptionProvider?>
+    {
+        public static FfiConverterOptionalTypeDecryptionProvider INSTANCE =
+            new FfiConverterOptionalTypeDecryptionProvider();
+
+        public override DecryptionProvider? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeDecryptionProvider.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(DecryptionProvider? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeDecryptionProvider.INSTANCE.AllocationSize(
+                        (DecryptionProvider)value
+                    );
+            }
+        }
+
+        public override void Write(DecryptionProvider? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeDecryptionProvider.INSTANCE.Write((DecryptionProvider)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeEncryptionProvider : FfiConverterRustBuffer<EncryptionProvider?>
+    {
+        public static FfiConverterOptionalTypeEncryptionProvider INSTANCE =
+            new FfiConverterOptionalTypeEncryptionProvider();
+
+        public override EncryptionProvider? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeEncryptionProvider.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(EncryptionProvider? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeEncryptionProvider.INSTANCE.AllocationSize(
+                        (EncryptionProvider)value
+                    );
+            }
+        }
+
+        public override void Write(EncryptionProvider? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeEncryptionProvider.INSTANCE.Write((EncryptionProvider)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeByteStreamReader : FfiConverterRustBuffer<ByteStreamReader?>
+    {
+        public static FfiConverterOptionalTypeByteStreamReader INSTANCE =
+            new FfiConverterOptionalTypeByteStreamReader();
+
+        public override ByteStreamReader? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeByteStreamReader.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(ByteStreamReader? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeByteStreamReader.INSTANCE.AllocationSize((ByteStreamReader)value);
+            }
+        }
+
+        public override void Write(ByteStreamReader? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeByteStreamReader.INSTANCE.Write((ByteStreamReader)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeTextStreamReader : FfiConverterRustBuffer<TextStreamReader?>
+    {
+        public static FfiConverterOptionalTypeTextStreamReader INSTANCE =
+            new FfiConverterOptionalTypeTextStreamReader();
+
+        public override TextStreamReader? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeTextStreamReader.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(TextStreamReader? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeTextStreamReader.INSTANCE.AllocationSize((TextStreamReader)value);
+            }
+        }
+
+        public override void Write(TextStreamReader? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeTextStreamReader.INSTANCE.Write((TextStreamReader)value, stream);
+            }
+        }
+    }
+
     class FfiConverterOptionalTypeApiCredentials : FfiConverterRustBuffer<ApiCredentials?>
     {
         public static FfiConverterOptionalTypeApiCredentials INSTANCE =
@@ -2754,6 +13610,130 @@ namespace LiveKit.Uniffi
         }
     }
 
+    class FfiConverterOptionalTypeClosedStream : FfiConverterRustBuffer<ClosedStream?>
+    {
+        public static FfiConverterOptionalTypeClosedStream INSTANCE =
+            new FfiConverterOptionalTypeClosedStream();
+
+        public override ClosedStream? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeClosedStream.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(ClosedStream? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterTypeClosedStream.INSTANCE.AllocationSize((ClosedStream)value);
+            }
+        }
+
+        public override void Write(ClosedStream? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeClosedStream.INSTANCE.Write((ClosedStream)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeDataTrackFrame : FfiConverterRustBuffer<DataTrackFrame?>
+    {
+        public static FfiConverterOptionalTypeDataTrackFrame INSTANCE =
+            new FfiConverterOptionalTypeDataTrackFrame();
+
+        public override DataTrackFrame? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeDataTrackFrame.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(DataTrackFrame? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeDataTrackFrame.INSTANCE.AllocationSize((DataTrackFrame)value);
+            }
+        }
+
+        public override void Write(DataTrackFrame? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeDataTrackFrame.INSTANCE.Write((DataTrackFrame)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeDataTrackSchemaId : FfiConverterRustBuffer<DataTrackSchemaId?>
+    {
+        public static FfiConverterOptionalTypeDataTrackSchemaId INSTANCE =
+            new FfiConverterOptionalTypeDataTrackSchemaId();
+
+        public override DataTrackSchemaId? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeDataTrackSchemaId.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(DataTrackSchemaId? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeDataTrackSchemaId.INSTANCE.AllocationSize(
+                        (DataTrackSchemaId)value
+                    );
+            }
+        }
+
+        public override void Write(DataTrackSchemaId? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeDataTrackSchemaId.INSTANCE.Write((DataTrackSchemaId)value, stream);
+            }
+        }
+    }
+
     class FfiConverterOptionalTypeLogForwardEntry : FfiConverterRustBuffer<LogForwardEntry?>
     {
         public static FfiConverterOptionalTypeLogForwardEntry INSTANCE =
@@ -2791,6 +13771,46 @@ namespace LiveKit.Uniffi
             {
                 stream.WriteByte(1);
                 FfiConverterTypeLogForwardEntry.INSTANCE.Write((LogForwardEntry)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeOpenedStream : FfiConverterRustBuffer<OpenedStream?>
+    {
+        public static FfiConverterOptionalTypeOpenedStream INSTANCE =
+            new FfiConverterOptionalTypeOpenedStream();
+
+        public override OpenedStream? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeOpenedStream.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(OpenedStream? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterTypeOpenedStream.INSTANCE.AllocationSize((OpenedStream)value);
+            }
+        }
+
+        public override void Write(OpenedStream? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeOpenedStream.INSTANCE.Write((OpenedStream)value, stream);
             }
         }
     }
@@ -2918,6 +13938,133 @@ namespace LiveKit.Uniffi
         }
     }
 
+    class FfiConverterOptionalTypeDataTrackFrameEncoding
+        : FfiConverterRustBuffer<DataTrackFrameEncoding?>
+    {
+        public static FfiConverterOptionalTypeDataTrackFrameEncoding INSTANCE =
+            new FfiConverterOptionalTypeDataTrackFrameEncoding();
+
+        public override DataTrackFrameEncoding? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeDataTrackFrameEncoding.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(DataTrackFrameEncoding? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1
+                    + FfiConverterTypeDataTrackFrameEncoding.INSTANCE.AllocationSize(
+                        (DataTrackFrameEncoding)value
+                    );
+            }
+        }
+
+        public override void Write(DataTrackFrameEncoding? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeDataTrackFrameEncoding.INSTANCE.Write(
+                    (DataTrackFrameEncoding)value,
+                    stream
+                );
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeOperationType : FfiConverterRustBuffer<OperationType?>
+    {
+        public static FfiConverterOptionalTypeOperationType INSTANCE =
+            new FfiConverterOptionalTypeOperationType();
+
+        public override OperationType? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeOperationType.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(OperationType? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterTypeOperationType.INSTANCE.AllocationSize((OperationType)value);
+            }
+        }
+
+        public override void Write(OperationType? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeOperationType.INSTANCE.Write((OperationType)value, stream);
+            }
+        }
+    }
+
+    class FfiConverterOptionalSequenceTypeBytes : FfiConverterRustBuffer<Bytes[]?>
+    {
+        public static FfiConverterOptionalSequenceTypeBytes INSTANCE =
+            new FfiConverterOptionalSequenceTypeBytes();
+
+        public override Bytes[]? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterSequenceTypeBytes.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(Bytes[]? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterSequenceTypeBytes.INSTANCE.AllocationSize((Bytes[])value);
+            }
+        }
+
+        public override void Write(Bytes[]? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterSequenceTypeBytes.INSTANCE.Write((Bytes[])value, stream);
+            }
+        }
+    }
+
     class FfiConverterOptionalDictionaryStringString
         : FfiConverterRustBuffer<Dictionary<string, string>?>
     {
@@ -2961,6 +14108,45 @@ namespace LiveKit.Uniffi
                     (Dictionary<string, string>)value,
                     stream
                 );
+            }
+        }
+    }
+
+    class FfiConverterOptionalTypeBytes : FfiConverterRustBuffer<Bytes?>
+    {
+        public static FfiConverterOptionalTypeBytes INSTANCE = new FfiConverterOptionalTypeBytes();
+
+        public override Bytes? Read(BigEndianStream stream)
+        {
+            if (stream.ReadByte() == 0)
+            {
+                return null;
+            }
+            return FfiConverterTypeBytes.INSTANCE.Read(stream);
+        }
+
+        public override int AllocationSize(Bytes? value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 1 + FfiConverterTypeBytes.INSTANCE.AllocationSize((Bytes)value);
+            }
+        }
+
+        public override void Write(Bytes? value, BigEndianStream stream)
+        {
+            if (value == null)
+            {
+                stream.WriteByte(0);
+            }
+            else
+            {
+                stream.WriteByte(1);
+                FfiConverterTypeBytes.INSTANCE.Write((Bytes)value, stream);
             }
         }
     }
@@ -3062,6 +14248,103 @@ namespace LiveKit.Uniffi
         }
     }
 
+    class FfiConverterSequenceTypeClientCapability : FfiConverterRustBuffer<ClientCapability[]>
+    {
+        public static FfiConverterSequenceTypeClientCapability INSTANCE =
+            new FfiConverterSequenceTypeClientCapability();
+
+        public override ClientCapability[] Read(BigEndianStream stream)
+        {
+            var length = stream.ReadInt();
+            if (length == 0)
+            {
+                return System.Array.Empty<ClientCapability>();
+            }
+
+            var result = new ClientCapability[length];
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = FfiConverterTypeClientCapability.INSTANCE.Read(stream);
+            }
+            return result;
+        }
+
+        public override int AllocationSize(ClientCapability[] value)
+        {
+            var sizeForLength = 4;
+
+            // details/1-empty-list-as-default-method-parameter.md
+            if (value == null)
+            {
+                return sizeForLength;
+            }
+
+            var sizeForItems = value.Sum(item => FfiConverterTypeClientCapability.INSTANCE.AllocationSize(item));
+            return sizeForLength + sizeForItems;
+        }
+
+        public override void Write(ClientCapability[] value, BigEndianStream stream)
+        {
+            // details/1-empty-list-as-default-method-parameter.md
+            if (value == null)
+            {
+                stream.WriteInt(0);
+                return;
+            }
+
+            stream.WriteInt(value.Length);
+            value.ForEach(item => FfiConverterTypeClientCapability.INSTANCE.Write(item, stream));
+        }
+    }
+
+    class FfiConverterSequenceTypeBytes : FfiConverterRustBuffer<Bytes[]>
+    {
+        public static FfiConverterSequenceTypeBytes INSTANCE = new FfiConverterSequenceTypeBytes();
+
+        public override Bytes[] Read(BigEndianStream stream)
+        {
+            var length = stream.ReadInt();
+            if (length == 0)
+            {
+                return System.Array.Empty<Bytes>();
+            }
+
+            var result = new Bytes[length];
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = FfiConverterTypeBytes.INSTANCE.Read(stream);
+            }
+            return result;
+        }
+
+        public override int AllocationSize(Bytes[] value)
+        {
+            var sizeForLength = 4;
+
+            // details/1-empty-list-as-default-method-parameter.md
+            if (value == null)
+            {
+                return sizeForLength;
+            }
+
+            var sizeForItems = value.Sum(item => FfiConverterTypeBytes.INSTANCE.AllocationSize(item));
+            return sizeForLength + sizeForItems;
+        }
+
+        public override void Write(Bytes[] value, BigEndianStream stream)
+        {
+            // details/1-empty-list-as-default-method-parameter.md
+            if (value == null)
+            {
+                stream.WriteInt(0);
+                return;
+            }
+
+            stream.WriteInt(value.Length);
+            value.ForEach(item => FfiConverterTypeBytes.INSTANCE.Write(item, stream));
+        }
+    }
+
     class FfiConverterDictionaryStringString : FfiConverterRustBuffer<Dictionary<string, string>>
     {
         public static FfiConverterDictionaryStringString INSTANCE =
@@ -3115,53 +14398,177 @@ namespace LiveKit.Uniffi
         }
     }
 
-    class ConcurrentHandleMap<T>
-        where T : notnull
+    /**
+     * Typealias from the type name used in the UDL file to the builtin type.  This
+     * is needed because the UDL type name is used in function/method signatures.
+     * It's also what we have an external type that references a custom type.
+     */
+
+    class FfiConverterTypeDataTrackFrameEncoding : FfiConverterRustBuffer<DataTrackFrameEncoding>
     {
-        readonly ConcurrentDictionary<ulong, T> _map = new();
+        public static FfiConverterTypeDataTrackFrameEncoding INSTANCE =
+            new FfiConverterTypeDataTrackFrameEncoding();
 
-        // Handles are odd numbers (1, 3, 5, ...) — the lowest bit must always be set.
-        // Rust uses (handle & 1) to distinguish foreign-language handles from Rust Arc
-        // pointers, which are always even due to memory alignment. See uniffi_core/src/ffi/handle.rs.
-        const long HANDLE_INITIAL = 1;
-        const long HANDLE_DELTA = 2;
-        long _currentHandle = HANDLE_INITIAL - HANDLE_DELTA;
-
-        public ulong Insert(T obj)
+        public override DataTrackFrameEncoding Read(BigEndianStream stream)
         {
-            var handle = (ulong)Interlocked.Add(ref _currentHandle, HANDLE_DELTA);
-            if (!_map.TryAdd(handle, obj))
-            {
-                throw new InternalException("ConcurrentHandleMap: Duplicate handle");
-            }
-            return handle;
+            return uniffi.livekit_datatrack.FfiConverterTypeDataTrackFrameEncoding.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
         }
 
-        public bool TryGet(ulong handle, [NotNullWhen(true)] out T? result)
+        public override int AllocationSize(DataTrackFrameEncoding value)
         {
-            return _map.TryGetValue(handle, out result);
+            return uniffi.livekit_datatrack.FfiConverterTypeDataTrackFrameEncoding.INSTANCE.AllocationSize(
+                value
+            );
         }
 
-        public T Get(ulong handle)
+        public override void Write(DataTrackFrameEncoding value, BigEndianStream stream)
         {
-            if (_map.TryGetValue(handle, out var result))
-            {
-                return result;
-            }
-            else
-            {
-                throw new InternalException("ConcurrentHandleMap: Invalid handle");
-            }
+            uniffi.livekit_datatrack.FfiConverterTypeDataTrackFrameEncoding.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
+    class FfiConverterTypeDataTrackSchemaEncoding : FfiConverterRustBuffer<DataTrackSchemaEncoding>
+    {
+        public static FfiConverterTypeDataTrackSchemaEncoding INSTANCE =
+            new FfiConverterTypeDataTrackSchemaEncoding();
+
+        public override DataTrackSchemaEncoding Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDataTrackSchemaEncoding.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
         }
 
-        public bool Remove(ulong handle)
+        public override int AllocationSize(DataTrackSchemaEncoding value)
         {
-            return _map.TryRemove(handle, out _);
+            return uniffi.livekit_datatrack.FfiConverterTypeDataTrackSchemaEncoding.INSTANCE.AllocationSize(
+                value
+            );
         }
 
-        public bool Remove(ulong handle, [NotNullWhen(true)] out T? result)
+        public override void Write(DataTrackSchemaEncoding value, BigEndianStream stream)
         {
-            return _map.TryRemove(handle, out result);
+            uniffi.livekit_datatrack.FfiConverterTypeDataTrackSchemaEncoding.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
+    class FfiConverterTypeDataTrackSubscribeError
+        : FfiConverterRustBuffer<DataTrackSubscribeException>,
+            CallStatusErrorHandler<DataTrackSubscribeException>
+    {
+        public static FfiConverterTypeDataTrackSubscribeError INSTANCE =
+            new FfiConverterTypeDataTrackSubscribeError();
+
+        public override DataTrackSubscribeException Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDataTrackSubscribeError.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+
+        public override int AllocationSize(DataTrackSubscribeException value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDataTrackSubscribeError.INSTANCE.AllocationSize(
+                value
+            );
+        }
+
+        public override void Write(DataTrackSubscribeException value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypeDataTrackSubscribeError.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
+    class FfiConverterTypePublishError
+        : FfiConverterRustBuffer<PublishException>,
+            CallStatusErrorHandler<PublishException>
+    {
+        public static FfiConverterTypePublishError INSTANCE = new FfiConverterTypePublishError();
+
+        public override PublishException Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypePublishError.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+
+        public override int AllocationSize(PublishException value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypePublishError.INSTANCE.AllocationSize(value);
+        }
+
+        public override void Write(PublishException value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypePublishError.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
+    class FfiConverterTypePushFrameErrorReason
+        : FfiConverterRustBuffer<PushFrameErrorReason>,
+            CallStatusErrorHandler<PushFrameErrorReason>
+    {
+        public static FfiConverterTypePushFrameErrorReason INSTANCE =
+            new FfiConverterTypePushFrameErrorReason();
+
+        public override PushFrameErrorReason Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypePushFrameErrorReason.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+
+        public override int AllocationSize(PushFrameErrorReason value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypePushFrameErrorReason.INSTANCE.AllocationSize(
+                value
+            );
+        }
+
+        public override void Write(PushFrameErrorReason value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypePushFrameErrorReason.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
+    class FfiConverterTypeBytes : FfiConverterRustBuffer<Bytes>
+    {
+        public static FfiConverterTypeBytes INSTANCE = new FfiConverterTypeBytes();
+
+        public override Bytes Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_common.FfiConverterTypeBytes.INSTANCE.Read(
+                new uniffi.livekit_common.BigEndianStream(stream.InnerStream)
+            );
+        }
+
+        public override int AllocationSize(Bytes value)
+        {
+            return uniffi.livekit_common.FfiConverterTypeBytes.INSTANCE.AllocationSize(value);
+        }
+
+        public override void Write(Bytes value, BigEndianStream stream)
+        {
+            uniffi.livekit_common.FfiConverterTypeBytes.INSTANCE.Write(
+                value,
+                new uniffi.livekit_common.BigEndianStream(stream.InnerStream)
+            );
         }
     }
 
@@ -3405,6 +14812,50 @@ namespace LiveKit.Uniffi
         }
 
         /// <summary>
+        /// Builds an incoming manager whose opened streams are pulled rather than pushed.
+        ///
+        /// `max_payload_byte_length` is fixed for the lifetime of the manager; see
+        /// [`IncomingDataStreamManager::new`]. Hosts sourcing it from per-connection options should build
+        /// a fresh manager per session rather than memoizing one.
+        /// </summary>
+        public static PolledIncomingDataStreamManager PolledIncomingDataStreamManager(
+            ulong? @maxPayloadByteLength
+        )
+        {
+            return FfiConverterTypePolledIncomingDataStreamManager.INSTANCE.Lift(
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_func_polled_incoming_data_stream_manager(
+                            FfiConverterOptionalUInt64.INSTANCE.Lower(@maxPayloadByteLength),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
+        /// Builds an outgoing manager whose packets are pulled rather than pushed.
+        ///
+        /// The two halves are wired together here rather than by the caller: passing a Rust object where
+        /// `Arc<dyn OutgoingDataStreamManagerDelegate>` is expected is awkward-to-impossible from some
+        /// bindings, and unnecessary — it's ordinary Rust on this side.
+        /// </summary>
+        public static PolledOutgoingDataStreamManager PolledOutgoingDataStreamManager(
+            RemoteParticipantRegistryDelegate @registry
+        )
+        {
+            return FfiConverterTypePolledOutgoingDataStreamManager.INSTANCE.Lift(
+                _UniffiHelpers.RustCall(
+                    (ref UniffiRustCallStatus _status) =>
+                        _UniFFILib.uniffi_livekit_uniffi_fn_func_polled_outgoing_data_stream_manager(
+                            FfiConverterTypeRemoteParticipantRegistryDelegate.INSTANCE.Lower(@registry),
+                            ref _status
+                        )
+                )
+            );
+        }
+
+        /// <summary>
         /// Bootstraps log forwarding.
         ///
         /// Generally, you will invoke this once early in program execution. However,
@@ -3455,6 +14906,74 @@ namespace LiveKit.Uniffi
                 // Error
                 NullCallStatusErrorHandler.INSTANCE
             );
+        }
+    }
+
+    // WORKAROUND(uniffi-bindgen-cs): `FfiConverterTypeDecryptionProvider` belongs to uniffi.livekit_datatrack. uniffi-bindgen-cs aliases that
+    // crate's converter directly, whose Read/Write take that crate's BigEndianStream instead of
+    // this file's. This forwarding converter re-wraps the stream the way the generator already
+    // does for external records and enums. See Scripts~/uniffi/UPSTREAM-external-object-converter-stream.md
+    class FfiConverterTypeDecryptionProvider : FfiConverter<uniffi.livekit_datatrack.DecryptionProvider, ulong>
+    {
+        public static FfiConverterTypeDecryptionProvider INSTANCE = new FfiConverterTypeDecryptionProvider();
+
+        public override uniffi.livekit_datatrack.DecryptionProvider Lift(ulong value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Lift(value);
+        }
+
+        public override ulong Lower(uniffi.livekit_datatrack.DecryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Lower(value);
+        }
+
+        public override uniffi.livekit_datatrack.DecryptionProvider Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Read(new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
+        }
+
+        public override int AllocationSize(uniffi.livekit_datatrack.DecryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.AllocationSize(value);
+        }
+
+        public override void Write(uniffi.livekit_datatrack.DecryptionProvider value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Write(value, new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
+        }
+    }
+
+    // WORKAROUND(uniffi-bindgen-cs): `FfiConverterTypeEncryptionProvider` belongs to uniffi.livekit_datatrack. uniffi-bindgen-cs aliases that
+    // crate's converter directly, whose Read/Write take that crate's BigEndianStream instead of
+    // this file's. This forwarding converter re-wraps the stream the way the generator already
+    // does for external records and enums. See Scripts~/uniffi/UPSTREAM-external-object-converter-stream.md
+    class FfiConverterTypeEncryptionProvider : FfiConverter<uniffi.livekit_datatrack.EncryptionProvider, ulong>
+    {
+        public static FfiConverterTypeEncryptionProvider INSTANCE = new FfiConverterTypeEncryptionProvider();
+
+        public override uniffi.livekit_datatrack.EncryptionProvider Lift(ulong value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Lift(value);
+        }
+
+        public override ulong Lower(uniffi.livekit_datatrack.EncryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Lower(value);
+        }
+
+        public override uniffi.livekit_datatrack.EncryptionProvider Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Read(new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
+        }
+
+        public override int AllocationSize(uniffi.livekit_datatrack.EncryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.AllocationSize(value);
+        }
+
+        public override void Write(uniffi.livekit_datatrack.EncryptionProvider value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Write(value, new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
         }
     }
 }

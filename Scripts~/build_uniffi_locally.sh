@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Builds the experimental livekit-uniffi crate (client-sdk-rust~/livekit-uniffi), installs the
-# resulting liblivekit_uniffi.dylib next to liblivekit_ffi.dylib in Runtime/Plugins and
-# regenerates the UniFFI C# bindings from it with generate_uniffi_bindings.sh.
+# Builds the experimental livekit-uniffi crate (client-sdk-rust~/livekit-uniffi), regenerates the
+# UniFFI C# bindings from the resulting liblivekit_uniffi.dylib with generate_uniffi_bindings.sh
+# and, only if that succeeded, installs the dylib next to liblivekit_ffi.dylib in Runtime/Plugins.
 #
 # The build is the plain-cargo equivalent of `cargo make build` in the crate's Makefile.toml,
 # with a selectable build type instead of the release-only cargo-make task.
@@ -36,8 +36,9 @@ usage() {
     echo "  release     Optimized release build"
     echo "  debug       Debug build"
     echo ""
-    echo "After the build, the UniFFI C# bindings in Runtime/Scripts/UniFFI are regenerated"
-    echo "from the new library with generate_uniffi_bindings.sh (requires uniffi-bindgen-cs)."
+    echo "The UniFFI C# bindings in Runtime/Scripts/UniFFI are regenerated from the new library"
+    echo "with generate_uniffi_bindings.sh (requires uniffi-bindgen-cs) before it is installed;"
+    echo "if that fails, neither the bindings nor the installed library change."
     exit 1
 }
 
@@ -92,6 +93,13 @@ if [ $BUILD_STATUS -ne 0 ]; then
     exit 1
 fi
 
+# Generate the C# bindings from the freshly built dylib BEFORE installing it. If they cannot
+# be produced (e.g. the post-processing rejects the output), the previous library stays in
+# place, so Runtime/Plugins never gets ahead of Runtime/Scripts/UniFFI: a mismatched pair
+# throws in the bindings' contract/checksum check on first use.
+echo ""
+"$SCRIPT_DIR/generate_uniffi_bindings.sh" "$SRC" || exit 1
+
 # Copy a built artifact into the package by writing a temp file next to the
 # destination and renaming it into place, instead of overwriting in place.
 # macOS caches code-signature state per inode: overwriting a signed dylib that a
@@ -116,10 +124,6 @@ else
     echo -e "${RED}Failed to copy $(basename "$DST"). Check that the source file exists and the destination directory is writable.${RESET}"
     exit 1
 fi
-
-# Regenerate the UniFFI C# bindings from the freshly built dylib.
-echo ""
-"$SCRIPT_DIR/generate_uniffi_bindings.sh" "$SRC" || exit 1
 
 echo ""
 echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"

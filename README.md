@@ -89,7 +89,7 @@ The experimental [livekit-uniffi](https://github.com/livekit/rust-sdks/tree/main
 
 `./Scripts~/build_uniffi_locally.sh macos [debug|release]`
 
-It installs `liblivekit_uniffi.dylib` next to `liblivekit_ffi.dylib` in `Runtime/Plugins/ffi-macos-arm64` and then regenerates the C# bindings as described below.
+It regenerates the C# bindings from the built library as described below and, only if that succeeds, installs `liblivekit_uniffi.dylib` next to `liblivekit_ffi.dylib` in `Runtime/Plugins/ffi-macos-arm64`.
 
 ### Generating UniFFI C# bindings
 
@@ -97,7 +97,7 @@ It installs `liblivekit_uniffi.dylib` next to `liblivekit_ffi.dylib` in `Runtime
 
 `cargo install uniffi-bindgen-cs --git https://github.com/NordSecurity/uniffi-bindgen-cs --tag v0.11.0+v0.31.0`
 
-The generator is configured by `Scripts~/uniffi/uniffi.toml` (C# namespace `LiveKit.Uniffi`, public API types). uniffi-bindgen-cs emits C# 10+ syntax, so the script post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler before replacing the files in `Runtime/Scripts/UniFFI`.
+The generator is configured by `Scripts~/uniffi/uniffi.toml` (public API types, custom type mappings). The library contains several Rust crates and each keeps its default namespace, e.g. `uniffi.livekit_uniffi`. uniffi-bindgen-cs emits C# 10+ syntax, so the script post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler before replacing the files in `Runtime/Scripts/UniFFI`. That script also applies two clearly marked workarounds for uniffi-bindgen-cs bugs in multi-crate output; the bug reports for upstream are in `Scripts~/uniffi/UPSTREAM-*.md`.
 
 ### VSCode setup
 

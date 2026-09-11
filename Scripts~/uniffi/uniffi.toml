@@ -1,7 +1,27 @@
 # uniffi-bindgen-cs configuration for the C# bindings in Runtime/Scripts/UniFFI.
-# Passed via --config by build_ffi_locally.sh; keeps the Unity-specific choices out of
-# the Rust crate. Options: https://github.com/NordSecurity/uniffi-bindgen-cs/blob/main/docs/CONFIGURATION.md
+# Passed via --config by generate_uniffi_bindings.sh; keeps the Unity-specific choices out of
+# the Rust crates. Options: https://github.com/NordSecurity/uniffi-bindgen-cs/blob/main/docs/CONFIGURATION.md
+#
+# In library mode this file applies to EVERY crate compiled into liblivekit_uniffi (livekit-uniffi,
+# livekit-common, livekit-net, livekit-datatrack), so it must not set `namespace`: a shared namespace
+# makes the per-crate copies of the UniFFI runtime (RustBuffer, FfiConverter, BigEndianStream, ...)
+# collide. Each crate keeps its default `uniffi.<crate>` namespace, e.g. uniffi.livekit_uniffi.
 [bindings.csharp]
-namespace = "LiveKit.Uniffi"
 # Generated API types (methods class, records, enums, errors, objects) are internal by default.
 access_modifier = "public"
+
+# Custom types backed by Vec<u8>. Without a mapping uniffi-bindgen-cs emits `using Bytes = byte[];`,
+# an alias of an array type that needs C# 12 while Unity compiles C# 9 (downgrade_uniffi_bindings.py
+# rejects it). Map them to a named type instead; byte[] converts to ReadOnlyMemory<byte> implicitly.
+
+# livekit-common: uniffi::custom_type!(Bytes, Vec<u8>)
+[bindings.csharp.custom_types.Bytes]
+type_name = "System.ReadOnlyMemory<byte>"
+into_custom = "new System.ReadOnlyMemory<byte>({})"
+from_custom = "{}.ToArray()"
+
+# livekit-datatrack: uniffi::custom_type!(InitializationVector, Vec<u8>), a 12-byte AES-GCM IV
+[bindings.csharp.custom_types.InitializationVector]
+type_name = "System.ReadOnlyMemory<byte>"
+into_custom = "new System.ReadOnlyMemory<byte>({})"
+from_custom = "{}.ToArray()"

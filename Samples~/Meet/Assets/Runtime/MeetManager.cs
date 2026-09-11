@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using LiveKit;
 using LiveKit.Proto;
 using RoomOptions = LiveKit.RoomOptions;
-using LiveKit.Uniffi;
+using uniffi.livekit_uniffi;
 
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.

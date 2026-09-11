@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Regenerates the UniFFI C# bindings in Runtime/Scripts/UniFFI from a native library that
-# carries UniFFI metadata and post-processes them for C# 9 (Unity).
+# carries UniFFI metadata and post-processes them for C# 9 (Unity), including the clearly
+# marked workarounds for uniffi-bindgen-cs bugs documented in uniffi/UPSTREAM-*.md.
 #
 # Usage: generate_uniffi_bindings.sh [LIBRARY]
 #   LIBRARY   dylib to read the UniFFI metadata from. Defaults to the macOS
@@ -89,7 +90,10 @@ fi
 
 # --no-polyfill: the Runtime assembly already defines the IsExternalInit marker type that
 # records / init accessors need (Runtime/Scripts/Internal/IsExternalInit.cs).
-python3 "$DOWNGRADE" --no-polyfill "$TMP_OUT" || exit 1
+if ! python3 "$DOWNGRADE" --no-polyfill "$TMP_OUT"; then
+    echo -e "${RED}C# 9 post-processing failed. Bindings in $OUT_DIR left untouched.${RESET}"
+    exit 1
+fi
 
 # Replace the generated files: drop every previously generated .cs, move the new set in and
 # remove .meta files whose .cs is gone. Regenerated files keep their .meta (and GUID); Unity

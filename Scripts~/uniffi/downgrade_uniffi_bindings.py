@@ -19,6 +19,19 @@ Custom types that alias an array, nullable or tuple type (`using Foo = byte[];`,
 C# 12) cannot be expressed in C# 9 and are reported as errors; change the
 custom type mapping in uniffi.toml instead.
 
+Two uniffi-bindgen-cs bugs in library-mode output that spans several crates
+are worked around as well. Everything they insert is preceded by a comment
+starting with `WORKAROUND(uniffi-bindgen-cs)` and points to the bug report
+next to this script:
+
+  * a custom type of another crate (e.g. `Bytes`) is only aliased in that
+    crate's file, but C# `using` aliases are per file; the alias is repeated
+    in every file that uses the type (UPSTREAM-external-custom-type-alias.md)
+  * the converter of an object / callback interface of another crate is a
+    plain alias of that crate's converter, whose Read/Write take that crate's
+    BigEndianStream; a local forwarding converter that re-wraps the stream
+    replaces the alias (UPSTREAM-external-object-converter-stream.md)
+
 Usage:
     downgrade_uniffi_bindings.py [--no-polyfill] <file.cs | directory> [...]
 
@@ -67,6 +80,190 @@ RECORD_DECLARATION = re.compile(
     r"^\s*(?:(?:public|internal|private|protected|sealed|abstract|partial|static|new)\s+)*record\s+(?:struct\s+|class\s+)?[A-Za-z_@]"
 )
 INIT_ACCESSOR = re.compile(r"\binit\s*[;{]")
+
+# ---------------------------------------------------------------------------
+# WORKAROUNDS for uniffi-bindgen-cs (v0.11.0+v0.31.0) library-mode output that
+# spans several crates. Both are generator bugs in its external-type templates;
+# the bug reports for upstream (NordSecurity/uniffi-bindgen-cs) live next to
+# this script:
+#   UPSTREAM-external-custom-type-alias.md       -> import_external_custom_type_aliases()
+#   UPSTREAM-external-object-converter-stream.md -> wrap_external_object_converters()
+# Every line these insert into the bindings is preceded by a comment starting
+# with WORKAROUND_TAG. Delete this whole section (and the two calls in
+# process_file) once the bindgen release pinned in generate_uniffi_bindings.sh
+# contains the fixes.
+# ---------------------------------------------------------------------------
+WORKAROUND_TAG = "WORKAROUND(uniffi-bindgen-cs)"
+# `namespace Foo;` (file-scoped) or `namespace Foo` / `namespace Foo {` (block-scoped)
+NAMESPACE_DECLARATION = re.compile(r"^\s*namespace\s+(?P<name>[A-Za-z_][\w.]*)\s*[;{]?\s*$")
+ALIAS_DECLARATION = re.compile(r"^\s*using\s+(?P<name>[A-Za-z_@]\w*)\s*=\s*(?P<target>[^;]+);\s*$")
+# `ns.FfiConverterTypeX.INSTANCE.Read(` inside the forwarding converters that
+# ExternalTypeTemplate.cs generates for every record, enum, error or custom type
+# used from another crate
+EXTERNAL_CONVERTER_CALL = re.compile(
+    r"(?P<namespace>[A-Za-z_][\w.]*)\.FfiConverterType(?P<name>\w+)\.INSTANCE\.Read\("
+)
+# `using FfiConverterTypeX = ns.FfiConverterTypeX;` from ExternalObjectTypeTemplate.cs
+EXTERNAL_OBJECT_ALIAS = re.compile(
+    r"^\s*using\s+(?P<converter>FfiConverterType\w+)\s*=\s*(?P<namespace>[A-Za-z_][\w.]*)\.(?P=converter)\s*;\s*$"
+)
+# `class FfiConverterTypeX : FfiConverter<CsType, FfiType>` as declared by the defining crate
+CONVERTER_DECLARATION = re.compile(
+    r"^\s*(?:\w+\s+)*class\s+(?P<converter>FfiConverterType\w+)\s*:\s*FfiConverter<(?P<cs_type>[^,<>]+),\s*(?P<ffi_type>[^<>]+)>"
+)
+
+
+def read_lines(path):
+    """Returns (lines, bom, newline) of a generated file, without the trailing newline."""
+    raw = path.read_bytes()
+    bom = raw.startswith(b"\xef\xbb\xbf")
+    text = raw[3:].decode("utf-8") if bom else raw.decode("utf-8")
+    newline = "\r\n" if "\r\n" in text else "\n"
+    lines = text.replace("\r\n", "\n").split("\n")
+    if lines and lines[-1] == "":
+        lines.pop()  # trailing newline is re-added on write
+    return lines, bom, newline
+
+
+class GeneratedFile:
+    """What the cross-file workarounds need to know about one bindings file."""
+
+    def __init__(self, path):
+        self.path = path
+        lines, _, _ = read_lines(path)
+        namespaces = [m.group("name") for m in map(NAMESPACE_DECLARATION.match, lines) if m]
+        self.namespace = namespaces[0] if namespaces else None
+        self.aliases = {
+            m.group("name"): m.group("target").strip() for m in map(ALIAS_DECLARATION.match, lines) if m
+        }
+        self.converters = {
+            m.group("converter"): (m.group("cs_type").strip(), m.group("ffi_type").strip())
+            for m in map(CONVERTER_DECLARATION.match, lines)
+            if m
+        }
+
+
+def namespace_layout(lines):
+    """Returns (body_start, body_end, indent) of the file's namespace: the line
+    range that holds its members and the indentation members use."""
+    for index, line in enumerate(lines):
+        if NAMESPACE_DECLARATION.match(line):
+            break
+    else:
+        raise ValueError("no namespace declaration found")
+
+    if line.rstrip().endswith(";"):  # file-scoped: the body runs to the end of the file
+        return index + 1, len(lines), ""
+
+    body_start = index + 1 if line.rstrip().endswith("{") else index + 2
+    for body_end in range(len(lines) - 1, index, -1):
+        if lines[body_end].strip() == "}":
+            return body_start, body_end, INDENT
+    raise ValueError("block-scoped namespace without closing brace")
+
+
+def import_external_custom_type_aliases(lines, siblings):
+    """WORKAROUND: repeat the `using Name = Target;` alias of a custom type that
+    another crate defines in the file that uses it. uniffi-bindgen-cs emits the
+    alias only in the defining crate's file, but C# `using` aliases are per file
+    (UPSTREAM-external-custom-type-alias.md). Returns (lines, changed)."""
+    by_namespace = {sibling.namespace: sibling for sibling in siblings if sibling.namespace}
+    declared = {m.group("name") for m in map(ALIAS_DECLARATION.match, lines) if m}
+    missing = {}
+    for match in EXTERNAL_CONVERTER_CALL.finditer("\n".join(lines)):
+        namespace, name = match.group("namespace"), match.group("name")
+        sibling = by_namespace.get(namespace)
+        if sibling is None or name in declared:
+            continue
+        target = sibling.aliases.get(name)
+        if target is not None:  # only custom types are aliases; records and enums resolve via `using ns;`
+            missing[name] = (namespace, target)
+    if not missing:
+        return lines, False
+
+    body_start, _, indent = namespace_layout(lines)
+    inserted = []
+    for name, (namespace, target) in sorted(missing.items()):
+        inserted += [
+            f"{indent}// {WORKAROUND_TAG}: `{name}` is a custom type of {namespace}, the only file uniffi-bindgen-cs",
+            f"{indent}// aliases it in. See Scripts~/uniffi/UPSTREAM-external-custom-type-alias.md",
+            f"{indent}using {name} = {target};",
+        ]
+    return lines[:body_start] + inserted + lines[body_start:], True
+
+
+def external_object_converter(converter, namespace, cs_type, ffi_type):
+    """A local converter that forwards to `namespace.converter` and re-wraps the
+    stream, like ExternalTypeTemplate.cs already does for records and enums."""
+    remote = f"{namespace}.{converter}.INSTANCE"
+    if "." not in cs_type:
+        cs_type = f"{namespace}.{cs_type}"
+    return [
+        f"// {WORKAROUND_TAG}: `{converter}` belongs to {namespace}. uniffi-bindgen-cs aliases that",
+        "// crate's converter directly, whose Read/Write take that crate's BigEndianStream instead of",
+        "// this file's. This forwarding converter re-wraps the stream the way the generator already",
+        "// does for external records and enums. See Scripts~/uniffi/UPSTREAM-external-object-converter-stream.md",
+        f"class {converter} : FfiConverter<{cs_type}, {ffi_type}>",
+        "{",
+        f"{INDENT}public static {converter} INSTANCE = new {converter}();",
+        "",
+        f"{INDENT}public override {cs_type} Lift({ffi_type} value)",
+        f"{INDENT}{{",
+        f"{INDENT}{INDENT}return {remote}.Lift(value);",
+        f"{INDENT}}}",
+        "",
+        f"{INDENT}public override {ffi_type} Lower({cs_type} value)",
+        f"{INDENT}{{",
+        f"{INDENT}{INDENT}return {remote}.Lower(value);",
+        f"{INDENT}}}",
+        "",
+        f"{INDENT}public override {cs_type} Read(BigEndianStream stream)",
+        f"{INDENT}{{",
+        f"{INDENT}{INDENT}return {remote}.Read(new {namespace}.BigEndianStream(stream.InnerStream));",
+        f"{INDENT}}}",
+        "",
+        f"{INDENT}public override int AllocationSize({cs_type} value)",
+        f"{INDENT}{{",
+        f"{INDENT}{INDENT}return {remote}.AllocationSize(value);",
+        f"{INDENT}}}",
+        "",
+        f"{INDENT}public override void Write({cs_type} value, BigEndianStream stream)",
+        f"{INDENT}{{",
+        f"{INDENT}{INDENT}{remote}.Write(value, new {namespace}.BigEndianStream(stream.InnerStream));",
+        f"{INDENT}}}",
+        "}",
+    ]
+
+
+def wrap_external_object_converters(lines, siblings):
+    """WORKAROUND: replace `using FfiConverterTypeX = ns.FfiConverterTypeX;` for
+    an object or callback interface of another crate with a local forwarding
+    converter (UPSTREAM-external-object-converter-stream.md). Returns (lines, changed)."""
+    by_namespace = {sibling.namespace: sibling for sibling in siblings if sibling.namespace}
+    kept, converters = [], []
+    for number, line in enumerate(lines, start=1):
+        alias = EXTERNAL_OBJECT_ALIAS.match(line)
+        if not alias:
+            kept.append(line)
+            continue
+        converter, namespace = alias.group("converter"), alias.group("namespace")
+        sibling = by_namespace.get(namespace)
+        declaration = sibling.converters.get(converter) if sibling else None
+        if declaration is None:
+            raise ValueError(
+                f"line {number}: `{line.strip()}` refers to a converter of {namespace}, but no generated file "
+                f"in this directory declares `class {converter} : FfiConverter<...>`; run this script on the "
+                "directory that holds all bindings of the library"
+            )
+        converters.append(external_object_converter(converter, namespace, *declaration))
+    if not converters:
+        return lines, False
+
+    _, body_end, indent = namespace_layout(kept)
+    body = []
+    for converter in converters:
+        body += [""] + [indent + line if line else "" for line in converter]
+    return kept[:body_end] + body + kept[body_end:], True
 
 
 def block_scope_namespace(lines):
@@ -179,21 +376,22 @@ def needs_is_external_init(lines):
     return any(RECORD_DECLARATION.match(line) or INIT_ACCESSOR.search(line) for line in lines)
 
 
-def process_file(path):
-    """Returns (changed, needs_polyfill)."""
-    raw = path.read_bytes()
-    bom = raw.startswith(b"\xef\xbb\xbf")
-    text = raw[3:].decode("utf-8") if bom else raw.decode("utf-8")
-    newline = "\r\n" if "\r\n" in text else "\n"
-    lines = text.replace("\r\n", "\n").split("\n")
-    if lines and lines[-1] == "":
-        lines.pop()  # trailing newline is re-added on write
+def process_file(path, siblings=()):
+    """Returns (changed, needs_polyfill). `siblings` are the other generated
+    files of the same library (GeneratedFile), needed by the uniffi-bindgen-cs
+    workarounds."""
+    lines, bom, newline = read_lines(path)
+
+    # uniffi-bindgen-cs workarounds first; what they insert is treated like
+    # generated code by the C# 9 steps below.
+    lines, aliases_added = import_external_custom_type_aliases(lines, siblings)
+    lines, converters_wrapped = wrap_external_object_converters(lines, siblings)
 
     check_type_aliases(lines)
     lines, namespace_changed = block_scope_namespace(lines)
     lines, returns_changed = replace_empty_collection_returns(lines)
     lines, method_groups_changed = inline_method_groups(lines)
-    changed = namespace_changed or returns_changed or method_groups_changed
+    changed = aliases_added or converters_wrapped or namespace_changed or returns_changed or method_groups_changed
 
     if changed:
         lines = add_marker(lines)
@@ -240,10 +438,14 @@ def main(argv):
             status = 1
             continue
 
+        # All bindings files of the library, for the cross-file workarounds.
+        generated = [GeneratedFile(p) for p in sorted(directory.glob("*.cs")) if p.name != POLYFILL_NAME]
+
         polyfill_needed = False
         for path in files:
+            siblings = [g for g in generated if g.path.resolve() != path.resolve()]
             try:
-                changed, needs_polyfill = process_file(path)
+                changed, needs_polyfill = process_file(path, siblings)
             except (ValueError, UnicodeDecodeError) as exc:
                 print(f"error: {path}: {exc}", file=sys.stderr)
                 status = 1
