@@ -83,6 +83,22 @@ So a build command is for example:
 
 `./Scripts~/build_ffi_locally.sh macos release` 
 
+### Building the UniFFI library locally
+
+The experimental [livekit-uniffi](https://github.com/livekit/rust-sdks/tree/main/livekit-uniffi) crate is built with a second script, currently for macOS only:
+
+`./Scripts~/build_uniffi_locally.sh macos [debug|release]`
+
+It regenerates the C# bindings from the built library as described below and, only if that succeeds, installs `liblivekit_uniffi.dylib` next to `liblivekit_ffi.dylib` in `Runtime/Plugins/ffi-macos-arm64`.
+
+### Generating UniFFI C# bindings
+
+`./Scripts~/generate_uniffi_bindings.sh [library]` regenerates the C# bindings in `Runtime/Scripts/UniFFI` from a native library with UniFFI metadata; without an argument it uses the installed `liblivekit_uniffi.dylib`. Both build scripts call it after a macOS build. It requires [uniffi-bindgen-cs](https://github.com/NordSecurity/uniffi-bindgen-cs) at the version pinned in the script, which must match the uniffi version used by the Rust crate:
+
+`cargo install uniffi-bindgen-cs --git https://github.com/NordSecurity/uniffi-bindgen-cs --tag v0.11.0+v0.31.0`
+
+The generator is configured by `Scripts~/uniffi/uniffi.toml` (public API types, custom type mappings). The library contains several Rust crates and each keeps its default namespace, e.g. `uniffi.livekit_uniffi`. uniffi-bindgen-cs emits C# 10+ syntax, so the script post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` to keep it compatible with Unity's C# 9 compiler before replacing the files in `Runtime/Scripts/UniFFI`. That script also applies two clearly marked workarounds for uniffi-bindgen-cs bugs in multi-crate output; the bug reports for upstream are in `Scripts~/uniffi/UPSTREAM-*.md`.
+
 ### VSCode setup
 
 Look at the Unity-SDK.code-workspace setup for VSCode. This will use the Meet Sample as the Unity project and the Unity SDK package as two roots in a multi-root workspace and the Meet.sln as the `dotnet.defaultSolution`, enabling Rust and C# IDE support.

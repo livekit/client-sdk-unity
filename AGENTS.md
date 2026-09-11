@@ -28,10 +28,32 @@ Scripts~/build_ffi_locally.sh <platform> [build_type]
 - **Android**: requires `cargo-ndk` and Android NDK
 - **iOS**: builds static lib (`liblivekit_ffi.a`)
 - After macOS builds, Unity must be restarted to load the new dylib
+- macOS builds also run `Scripts~/generate_uniffi_bindings.sh` on the new dylib (see below); if it carries no UniFFI metadata the step warns and leaves the existing bindings untouched
+
+### Build the UniFFI library locally from Rust source
+```bash
+# Builds the experimental livekit-uniffi crate (client-sdk-rust~/livekit-uniffi), macOS only
+Scripts~/build_uniffi_locally.sh macos [build_type]
+# Build types: debug (default), release
+```
+- Plain-cargo equivalent of `cargo make build` in the crate's `Makefile.toml`, with a selectable build type
+- Regenerates the UniFFI C# bindings from the built dylib with `Scripts~/generate_uniffi_bindings.sh` first and installs the dylib next to `liblivekit_ffi.dylib` in `Runtime/Plugins/ffi-macos-arm64/` only if that succeeded, so plugin and bindings never get out of sync (a mismatched pair throws in the bindings' checksum check on first use)
+- After the build, Unity must be restarted to load the new dylib
+
+### Generate the UniFFI C# bindings
+```bash
+# Defaults to the installed Runtime/Plugins/ffi-macos-arm64/liblivekit_uniffi.dylib
+Scripts~/generate_uniffi_bindings.sh [library]
+```
+- Runs `uniffi-bindgen-cs` (release tag pinned in the script; must match the uniffi version of the Rust crate) from inside `client-sdk-rust~` because bindgen needs `cargo metadata`; configured by `Scripts~/uniffi/uniffi.toml` (public API types, `Vec<u8>` custom types mapped to `System.ReadOnlyMemory<byte>`; deliberately no namespace override, so every crate in the library keeps its default `uniffi.<crate>` namespace and the per-crate copies of the UniFFI runtime don't collide)
+- Post-processes the output with `Scripts~/uniffi/downgrade_uniffi_bindings.py` for C# 9 and applies its clearly marked uniffi-bindgen-cs workarounds (bug reports in `Scripts~/uniffi/UPSTREAM-*.md`), then replaces the `.cs` files in `Runtime/Scripts/UniFFI/` and removes `.meta` files of bindings that no longer exist. The folder always reflects the last library it was generated from; a library without UniFFI metadata leaves it untouched (with a warning)
 
 ### Other scripts in `Scripts~/`
 - `download_libs.py` — downloads the prebuilt FFI binaries for all platforms; the release tag is pinned in `version.ini`
 - `generate_proto.sh` — regenerates `Runtime/Scripts/Proto/` from the protobuf definitions in `client-sdk-rust~/livekit-ffi/protocol` (requires `protoc`)
+- `uniffi/uniffi.toml` — uniffi-bindgen-cs config passed via `--config` (access modifier, custom type mappings; no namespace, see the file); not auto-discovered, so keep it in sync with `generate_uniffi_bindings.sh`
+- `uniffi/downgrade_uniffi_bindings.py` — rewrites uniffi-bindgen-cs output for C# 9 in place (block-scoped namespace, inlined method-group locals, `Array.Empty<T>()` for `return []`, `IsExternalInit.cs` polyfill when records/`init` are present unless `--no-polyfill`); idempotent, called by `generate_uniffi_bindings.sh` with `--no-polyfill` because the Runtime assembly already ships `Internal/IsExternalInit.cs`. Also carries two clearly marked workarounds (`WORKAROUND(uniffi-bindgen-cs)`) for bugs in uniffi-bindgen-cs output that spans several crates; remove them once a fixed release is pinned
+- `uniffi/UPSTREAM-*.md` — bug reports for those two uniffi-bindgen-cs issues (external custom-type alias missing in consuming crates; external object converters passed the wrong crate's `BigEndianStream`), ready to file at NordSecurity; `uniffi/upstream-repro/issue1/` and `issue2/` are the generic, self-contained reproductions they point to (each: two crates, a .NET project, `build.sh`)
 - `build_docs.sh`, `prepare_release.py`, `unity_test_results_utils.py` — docs generation, release preparation, CI test-result parsing
 
 ### Run tests
@@ -60,6 +82,7 @@ The SDK wraps a Rust native library (`liblivekit_ffi`) via P/Invoke. The communi
 - `TokenSource/` — token generation/fetching helpers and MonoBehaviour component
 - `UniTask/` — optional UniTask integration (own asmdef: `livekit.unity.Runtime.UniTask.asmdef`)
 - `Internal/`, `Proto/` — FFI plumbing and generated protobuf code
+- `UniFFI/` — generated C# bindings for the UniFFI surface of the native library, currently `liblivekit_uniffi` from the experimental `livekit-uniffi` crate; one file and namespace per crate (`uniffi.livekit_uniffi`, `uniffi.livekit_common`, `uniffi.livekit_net`, `uniffi.livekit_datatrack`; uniffi-bindgen-cs output, post-processed for C# 9)
 
 Key internal files:
 - `Internal/FFI/FFIClient.cs` — singleton managing request/response lifecycle with Rust via protobuf
@@ -70,8 +93,10 @@ Key internal files:
 ### Proto/Generated Code
 `Runtime/Scripts/Proto/` contains auto-generated C# from protobuf definitions in the Rust SDK. Do not edit these files manually; regenerate with `Scripts~/generate_proto.sh`.
 
+`Runtime/Scripts/UniFFI/` contains auto-generated C# from `uniffi-bindgen-cs`. Do not edit these files manually; regenerate with `Scripts~/generate_uniffi_bindings.sh` (also run by `Scripts~/build_uniffi_locally.sh macos`), which includes the C# 9 post-processing.
+
 ### Native Plugins
-10 platform/arch combinations in `Runtime/Plugins/ffi-{platform}-{arch}/`. These are large binary files tracked with Git LFS. The `.meta` files configure Unity platform targeting.
+10 platform/arch combinations in `Runtime/Plugins/ffi-{platform}-{arch}/`. These are large binary files tracked with Git LFS. The `.meta` files configure Unity platform targeting. `ffi-macos-arm64/` additionally holds `liblivekit_uniffi.dylib`, the locally built experimental UniFFI library.
 
 ### Samples
 - `Samples~/Common` — shared components used by the other samples
