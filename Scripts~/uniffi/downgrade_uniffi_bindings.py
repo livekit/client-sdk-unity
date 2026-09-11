@@ -384,14 +384,15 @@ def process_file(path, siblings=()):
 
     # uniffi-bindgen-cs workarounds first; what they insert is treated like
     # generated code by the C# 9 steps below.
-    lines, aliases_added = import_external_custom_type_aliases(lines, siblings)
-    lines, converters_wrapped = wrap_external_object_converters(lines, siblings)
+    # lines, aliases_added = import_external_custom_type_aliases(lines, siblings)
+    # lines, converters_wrapped = wrap_external_object_converters(lines, siblings)
 
     check_type_aliases(lines)
     lines, namespace_changed = block_scope_namespace(lines)
     lines, returns_changed = replace_empty_collection_returns(lines)
     lines, method_groups_changed = inline_method_groups(lines)
-    changed = aliases_added or converters_wrapped or namespace_changed or returns_changed or method_groups_changed
+    # changed = aliases_added or converters_wrapped or namespace_changed or returns_changed or method_groups_changed
+    changed = namespace_changed or returns_changed or method_groups_changed
 
     if changed:
         lines = add_marker(lines)
