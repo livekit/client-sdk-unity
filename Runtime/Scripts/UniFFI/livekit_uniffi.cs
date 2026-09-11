@@ -16,15 +16,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using uniffi.livekit_common;
 using uniffi.livekit_datatrack;
 
 namespace uniffi.livekit_uniffi
 {
-    // WORKAROUND(uniffi-bindgen-cs): `Bytes` is a custom type of uniffi.livekit_common, the only file uniffi-bindgen-cs
-    // aliases it in. See Scripts~/uniffi/UPSTREAM-external-custom-type-alias.md
     using Bytes = System.ReadOnlyMemory<byte>;
-
     using DataTrackSid = String;
     using FfiConverterTypeDataTrackSid = FfiConverterString;
 
@@ -14404,6 +14400,88 @@ namespace uniffi.livekit_uniffi
      * It's also what we have an external type that references a custom type.
      */
 
+    // Forwards to the converter generated in `uniffi.livekit_datatrack`. Every generated file has its own
+    // `BigEndianStream` class, so `Read` and `Write` re-wrap the stream before handing it over. This is
+    // what lets the external object sit inside an optional, a sequence, a map or a record of this file.
+    class FfiConverterTypeDecryptionProvider : FfiConverter<DecryptionProvider, ulong>
+    {
+        public static FfiConverterTypeDecryptionProvider INSTANCE =
+            new FfiConverterTypeDecryptionProvider();
+
+        public override DecryptionProvider Lift(ulong value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Lift(value);
+        }
+
+        public override ulong Lower(DecryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Lower(value);
+        }
+
+        public override DecryptionProvider Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+
+        public override int AllocationSize(DecryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.AllocationSize(
+                value
+            );
+        }
+
+        public override void Write(DecryptionProvider value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
+    // Forwards to the converter generated in `uniffi.livekit_datatrack`. Every generated file has its own
+    // `BigEndianStream` class, so `Read` and `Write` re-wrap the stream before handing it over. This is
+    // what lets the external object sit inside an optional, a sequence, a map or a record of this file.
+    class FfiConverterTypeEncryptionProvider : FfiConverter<EncryptionProvider, ulong>
+    {
+        public static FfiConverterTypeEncryptionProvider INSTANCE =
+            new FfiConverterTypeEncryptionProvider();
+
+        public override EncryptionProvider Lift(ulong value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Lift(value);
+        }
+
+        public override ulong Lower(EncryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Lower(value);
+        }
+
+        public override EncryptionProvider Read(BigEndianStream stream)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Read(
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+
+        public override int AllocationSize(EncryptionProvider value)
+        {
+            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.AllocationSize(
+                value
+            );
+        }
+
+        public override void Write(EncryptionProvider value, BigEndianStream stream)
+        {
+            uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Write(
+                value,
+                new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream)
+            );
+        }
+    }
+
     class FfiConverterTypeDataTrackFrameEncoding : FfiConverterRustBuffer<DataTrackFrameEncoding>
     {
         public static FfiConverterTypeDataTrackFrameEncoding INSTANCE =
@@ -14547,28 +14625,44 @@ namespace uniffi.livekit_uniffi
         }
     }
 
-    class FfiConverterTypeBytes : FfiConverterRustBuffer<Bytes>
+    /**
+     * Typealias from the type name used in the UDL file to the custom type.  This
+     * is needed because the UDL type name is used in function/method signatures.
+     * It's also what we have an external type that references a custom type.
+     */
+
+    class FfiConverterTypeBytes : FfiConverter<Bytes, RustBuffer>
     {
         public static FfiConverterTypeBytes INSTANCE = new FfiConverterTypeBytes();
 
+        public override Bytes Lift(RustBuffer value)
+        {
+            var builtinValue = FfiConverterByteArray.INSTANCE.Lift(value);
+            return new System.ReadOnlyMemory<byte>(builtinValue);
+        }
+
+        public override RustBuffer Lower(Bytes value)
+        {
+            var builtinValue = value.ToArray();
+            return FfiConverterByteArray.INSTANCE.Lower(builtinValue);
+        }
+
         public override Bytes Read(BigEndianStream stream)
         {
-            return uniffi.livekit_common.FfiConverterTypeBytes.INSTANCE.Read(
-                new uniffi.livekit_common.BigEndianStream(stream.InnerStream)
-            );
+            var builtinValue = FfiConverterByteArray.INSTANCE.Read(stream);
+            return new System.ReadOnlyMemory<byte>(builtinValue);
         }
 
         public override int AllocationSize(Bytes value)
         {
-            return uniffi.livekit_common.FfiConverterTypeBytes.INSTANCE.AllocationSize(value);
+            var builtinValue = value.ToArray();
+            return FfiConverterByteArray.INSTANCE.AllocationSize(builtinValue);
         }
 
         public override void Write(Bytes value, BigEndianStream stream)
         {
-            uniffi.livekit_common.FfiConverterTypeBytes.INSTANCE.Write(
-                value,
-                new uniffi.livekit_common.BigEndianStream(stream.InnerStream)
-            );
+            var builtinValue = value.ToArray();
+            FfiConverterByteArray.INSTANCE.Write(builtinValue, stream);
         }
     }
 
@@ -14906,74 +15000,6 @@ namespace uniffi.livekit_uniffi
                 // Error
                 NullCallStatusErrorHandler.INSTANCE
             );
-        }
-    }
-
-    // WORKAROUND(uniffi-bindgen-cs): `FfiConverterTypeDecryptionProvider` belongs to uniffi.livekit_datatrack. uniffi-bindgen-cs aliases that
-    // crate's converter directly, whose Read/Write take that crate's BigEndianStream instead of
-    // this file's. This forwarding converter re-wraps the stream the way the generator already
-    // does for external records and enums. See Scripts~/uniffi/UPSTREAM-external-object-converter-stream.md
-    class FfiConverterTypeDecryptionProvider : FfiConverter<uniffi.livekit_datatrack.DecryptionProvider, ulong>
-    {
-        public static FfiConverterTypeDecryptionProvider INSTANCE = new FfiConverterTypeDecryptionProvider();
-
-        public override uniffi.livekit_datatrack.DecryptionProvider Lift(ulong value)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Lift(value);
-        }
-
-        public override ulong Lower(uniffi.livekit_datatrack.DecryptionProvider value)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Lower(value);
-        }
-
-        public override uniffi.livekit_datatrack.DecryptionProvider Read(BigEndianStream stream)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Read(new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
-        }
-
-        public override int AllocationSize(uniffi.livekit_datatrack.DecryptionProvider value)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.AllocationSize(value);
-        }
-
-        public override void Write(uniffi.livekit_datatrack.DecryptionProvider value, BigEndianStream stream)
-        {
-            uniffi.livekit_datatrack.FfiConverterTypeDecryptionProvider.INSTANCE.Write(value, new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
-        }
-    }
-
-    // WORKAROUND(uniffi-bindgen-cs): `FfiConverterTypeEncryptionProvider` belongs to uniffi.livekit_datatrack. uniffi-bindgen-cs aliases that
-    // crate's converter directly, whose Read/Write take that crate's BigEndianStream instead of
-    // this file's. This forwarding converter re-wraps the stream the way the generator already
-    // does for external records and enums. See Scripts~/uniffi/UPSTREAM-external-object-converter-stream.md
-    class FfiConverterTypeEncryptionProvider : FfiConverter<uniffi.livekit_datatrack.EncryptionProvider, ulong>
-    {
-        public static FfiConverterTypeEncryptionProvider INSTANCE = new FfiConverterTypeEncryptionProvider();
-
-        public override uniffi.livekit_datatrack.EncryptionProvider Lift(ulong value)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Lift(value);
-        }
-
-        public override ulong Lower(uniffi.livekit_datatrack.EncryptionProvider value)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Lower(value);
-        }
-
-        public override uniffi.livekit_datatrack.EncryptionProvider Read(BigEndianStream stream)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Read(new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
-        }
-
-        public override int AllocationSize(uniffi.livekit_datatrack.EncryptionProvider value)
-        {
-            return uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.AllocationSize(value);
-        }
-
-        public override void Write(uniffi.livekit_datatrack.EncryptionProvider value, BigEndianStream stream)
-        {
-            uniffi.livekit_datatrack.FfiConverterTypeEncryptionProvider.INSTANCE.Write(value, new uniffi.livekit_datatrack.BigEndianStream(stream.InnerStream));
         }
     }
 }

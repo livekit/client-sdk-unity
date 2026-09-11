@@ -74,7 +74,7 @@ echo "Generating C# bindings from $LIBRARY..."
 # uniffi-bindgen-cs resolves the crate's own uniffi.toml via `cargo metadata`, so it has to
 # run from inside the Rust workspace.
 pushd "$RUST_ROOT" > /dev/null
-uniffi-bindgen-cs --library "$LIBRARY" --config "$UNIFFI_CONFIG" --out-dir "$TMP_OUT"
+/Users/maxheimbrock/dev/unity/UniFFI/uniffi-bindgen-cs/target/release/uniffi-bindgen-cs --library "$LIBRARY" --config "$UNIFFI_CONFIG" --out-dir "$TMP_OUT"
 BINDGEN_STATUS=$?
 popd > /dev/null
 
