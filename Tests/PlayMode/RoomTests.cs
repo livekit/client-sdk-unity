@@ -129,7 +129,7 @@ namespace LiveKit.PlayModeTests
             StringAssert.StartsWith("RM_", context.Rooms[0].Sid);
         }
 
-        [UnityTest, Category("E2E"), Ignore("Known issue")]
+        [UnityTest, Category("E2E")]
         public IEnumerator ConnectionState_IsConnected()
         {
             using var context = new TestRoomContext();
@@ -232,7 +232,7 @@ namespace LiveKit.PlayModeTests
             if (expectation.Error != null) Assert.Fail(expectation.Error);
         }
 
-        [UnityTest, Category("E2E"), Ignore("Known issue")]
+        [UnityTest, Category("E2E")]
         public IEnumerator Disconnect_TriggersEvent()
         {
             using var context = new TestRoomContext();
@@ -266,6 +266,87 @@ namespace LiveKit.PlayModeTests
 
             yield return expectation.Wait();
             if (expectation.Error != null) Assert.Fail(expectation.Error);
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator Connect_ReportsConnectedOnce()
+        {
+            using var context = new TestRoomContext();
+            var room = context.Rooms[0];
+            var connectedReports = 0;
+            room.ConnectionStateChanged += s =>
+            {
+                if (s == ConnectionState.ConnConnected) connectedReports++;
+            };
+
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            Assert.AreEqual(1, connectedReports, "recorded from the connect callback");
+
+            // The core's own ConnectionStateChanged(Connected) is queued behind the connect
+            // callback and drains on a later frame; it must be absorbed as a repeat.
+            for (var i = 0; i < 5; i++) yield return null;
+            Assert.AreEqual(1, connectedReports, "the core's copy of the transition must not be reported again");
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator Disconnect_ReportsClientInitiated_OnceWithRoomIntact()
+        {
+            using var context = new TestRoomContext();
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            var room = context.Rooms[0];
+
+            var disconnected = 0;
+            var disconnectedWithReason = 0;
+            DisconnectReason? reason = null;
+            room.Disconnected += r =>
+            {
+                disconnected++;
+                // Handlers run before the release, with the state already recorded.
+                Assert.IsNotNull(r.RoomHandle, "the room handle must still be live in the handler");
+                Assert.IsFalse(r.LocalParticipant.Handle.IsClosed, "participant handles must still be live in the handler");
+                Assert.AreEqual(ConnectionState.ConnDisconnected, r.ConnectionState);
+                Assert.AreEqual(DisconnectReason.ClientInitiated, r.DisconnectReason);
+                // A teardown handler that hangs up "to be sure" must not re-report.
+                r.Disconnect();
+            };
+            room.DisconnectedWithReason += (_, r) =>
+            {
+                disconnectedWithReason++;
+                reason = r;
+            };
+
+            // Dispose is a disconnect too. Reported synchronously: no frame has to pass
+            // for a hang-up to be observable.
+            room.Dispose();
+
+            Assert.AreEqual(1, disconnected);
+            Assert.AreEqual(1, disconnectedWithReason);
+            Assert.AreEqual(DisconnectReason.ClientInitiated, reason);
+            Assert.AreEqual(ConnectionState.ConnDisconnected, room.ConnectionState);
+            Assert.IsNull(room.RoomHandle, "the room is released once the handlers ran");
+
+            // A later Disconnect (TestRoomContext.Dispose issues one too) reports nothing.
+            room.Disconnect();
+            Assert.AreEqual(1, disconnected);
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator Disconnect_ThrowingHandler_StillReleasesRoom()
+        {
+            using var context = new TestRoomContext();
+            yield return context.ConnectAll();
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            var room = context.Rooms[0];
+
+            room.Disconnected += _ => throw new System.InvalidOperationException("handler failed");
+
+            Assert.Throws<System.InvalidOperationException>(() => room.Disconnect());
+
+            // The handler's exception surfaces, but the room is still released.
+            Assert.IsNull(room.RoomHandle, "the release must run even when a Disconnected handler throws");
+            Assert.DoesNotThrow(() => room.Dispose());
         }
     }
 }
