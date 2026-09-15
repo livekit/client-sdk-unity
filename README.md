@@ -320,8 +320,7 @@ var processing = new AudioProcessingOptions
 {
     EchoCancellation = true,
     NoiseSuppression = true,
-    AutoGainControl = true,
-    HighPassFilter = true
+    AutoGainControl = true
 };
 var rtcSource = new MicrophoneSource(Microphone.devices[0], microphoneObject, processing);
 ```

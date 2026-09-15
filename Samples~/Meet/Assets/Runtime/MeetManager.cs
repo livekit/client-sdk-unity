@@ -632,8 +632,7 @@ public class MeetManager : MonoBehaviour
         {
             EchoCancellation = echoCancellation,
             NoiseSuppression = noiseSuppression,
-            AutoGainControl = autoGainControl,
-            HighPassFilter = true
+            AutoGainControl = autoGainControl
         };
         var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject, processing);
 

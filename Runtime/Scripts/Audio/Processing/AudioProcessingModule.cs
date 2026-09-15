@@ -21,7 +21,7 @@ namespace LiveKit
     /// the native module is internally synchronised for exactly that split, and the SDK's request
     /// plumbing is safe to use from both.
     /// </remarks>
-    public sealed class AudioProcessingModule : IDisposable
+    internal sealed class AudioProcessingModule : IDisposable
     {
         /// <summary>libwebrtc's <c>kChunkSizeMs</c> — the APM accepts nothing else.</summary>
         public const int ChunkSizeMs = 10;

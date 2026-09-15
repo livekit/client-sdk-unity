@@ -125,15 +125,14 @@ namespace LiveKit.EditModeTests
         }
 
         [Test]
-        public void AudioProcessingOptions_Default_EnablesHighPassFilter_AndReportsProcessing()
+        public void AudioProcessingOptions_AnyProcessingEnabled_TracksTheProcessingStages()
         {
-            Assert.IsTrue(AudioProcessingOptions.Default.HighPassFilter);
             Assert.IsTrue(AudioProcessingOptions.Default.AnyProcessingEnabled);
 
             // An all-false struct means "no processing"; PreferHardware alone is not a stage.
             Assert.IsFalse(default(AudioProcessingOptions).AnyProcessingEnabled);
             Assert.IsFalse(new AudioProcessingOptions { PreferHardware = true }.AnyProcessingEnabled);
-            Assert.IsTrue(new AudioProcessingOptions { HighPassFilter = true }.AnyProcessingEnabled);
+            Assert.IsTrue(new AudioProcessingOptions { NoiseSuppression = true }.AnyProcessingEnabled);
         }
 
         [Test]

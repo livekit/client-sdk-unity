@@ -9,7 +9,7 @@ namespace LiveKit
     /// <summary>
     /// Options for libwebrtc's audio processing. Used by <see cref="PlatformAudioSource"/>, where
     /// the ADM applies them, and by Unity-audio sources such as <see cref="MicrophoneSource"/>
-    /// created with options, where the SDK runs the <see cref="AudioProcessingModule"/> over the
+    /// created with options, where the SDK runs libwebrtc's audio processing module over the
     /// capture with the mix Unity plays as the echo reference (see <see cref="PlayoutReference"/>).
     /// </summary>
     public struct AudioProcessingOptions
@@ -20,12 +20,6 @@ namespace LiveKit
         public bool NoiseSuppression;
         /// <summary>Enable automatic gain control (AGC). Default: true.</summary>
         public bool AutoGainControl;
-        /// <summary>
-        /// Enable the high-pass filter, which removes DC offset and low-frequency rumble ahead of
-        /// the other stages. Unity-audio sources only; <see cref="PlatformAudioSource"/> ignores it.
-        /// Default: true.
-        /// </summary>
-        public bool HighPassFilter;
         /// <summary>
         /// Prefer hardware audio processing (e.g., iOS VPIO). Lower latency.
         /// <see cref="PlatformAudioSource"/> only. Default: true.
@@ -40,12 +34,11 @@ namespace LiveKit
             EchoCancellation = true,
             NoiseSuppression = true,
             AutoGainControl = true,
-            HighPassFilter = true,
             PreferHardware = true
         };
 
         /// <summary>Whether any stage of the Unity-audio processing pipeline is enabled.</summary>
-        internal bool AnyProcessingEnabled => EchoCancellation || NoiseSuppression || AutoGainControl || HighPassFilter;
+        internal bool AnyProcessingEnabled => EchoCancellation || NoiseSuppression || AutoGainControl;
     }
 
     /// <summary>

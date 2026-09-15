@@ -107,7 +107,7 @@ namespace LiveKit.PlayModeTests
 
             var meter = new EchoMeter();
             var processor = new AudioProcessor(
-                new AudioProcessingOptions { EchoCancellation = true, HighPassFilter = true },
+                new AudioProcessingOptions { EchoCancellation = true },
                 meter.OnProcessed);
             probe.AudioRead += (data, channels, sampleRate) =>
             {

@@ -87,10 +87,13 @@ namespace LiveKit
         {
             _sink = sink ?? throw new ArgumentNullException(nameof(sink));
             _echoCancellation = options.EchoCancellation;
+            // The high-pass filter is not exposed as an option: libwebrtc instantiates it anyway
+            // whenever AEC or NS is on, and the platform ADM path always runs it, so both paths
+            // stay identical.
             _apm = new AudioProcessingModule(
                 echoCancellerEnabled: options.EchoCancellation,
                 gainControllerEnabled: options.AutoGainControl,
-                highPassFilterEnabled: options.HighPassFilter,
+                highPassFilterEnabled: true,
                 noiseSuppressionEnabled: options.NoiseSuppression);
         }
 
