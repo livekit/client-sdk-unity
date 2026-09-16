@@ -41,8 +41,41 @@ namespace LiveKit.PlayModeTests
             }
         }
 
+        [Test]
+        public void AudioProcessor_ChunksCaptureIntoTenMilliseconds()
+        {
+            var rate = AudioSettings.outputSampleRate;
+            const int channels = 2;
+            if (!AudioProcessingModule.IsSupportedApiRate(rate))
+                Assert.Ignore($"output rate {rate} has no whole-sample 10 ms chunk");
+
+            var chunkSamples = AudioProcessingModule.FrameSizeFor(rate) * channels;
+            var counter = new ChunkCounter(chunkSamples);
+            using var processor = new AudioProcessor(AudioProcessingOptions.Default, counter.OnProcessed);
+            processor.Start();
+
+            const int blockFrames = 1024;
+            const int blocks = 10;
+            var block = new float[blockFrames * channels];
+            for (int i = 0; i < block.Length; i++)
+                block[i] = 0.1f * Mathf.Sin(i * 0.05f);
+            for (int i = 0; i < blocks; i++)
+                Assert.IsTrue(processor.TryProcessCapture(block, channels, rate), "block was not processed");
+
+            var expectedChunks = blockFrames * blocks / AudioProcessingModule.FrameSizeFor(rate);
+            Assert.That(counter.Chunks, Is.InRange(expectedChunks - 1, expectedChunks));
+            Assert.AreEqual(0, counter.WrongSizedChunks, "a frame was not exactly one 10 ms chunk");
+
+            processor.Stop();
+        }
+
+        /// <summary>
+        /// The source-level path: options create the processor, and the capture the source reads goes
+        /// through it to the FFI. The Rust side takes the process down on a frame that is not 10 ms,
+        /// so getting through the pushes is the check; the exact chunking is covered above.
+        /// </summary>
         [UnityTest]
-        public IEnumerator RtcAudioSource_WithProcessing_CapturesInTenMillisecondChunks()
+        public IEnumerator RtcAudioSource_WithProcessing_PublishesPushedCapture()
         {
             using var source = new PushAudioSource(AudioProcessingOptions.Default);
             Assert.IsTrue(source.AudioProcessingEnabled, "module creation failed");
@@ -64,13 +97,6 @@ namespace LiveKit.PlayModeTests
 
             // Let the capture callbacks return before disposing.
             yield return new WaitForSeconds(0.2f);
-
-            var stats = source.AudioProcessingStats;
-            var expectedChunks = blockFrames * blocks / AudioProcessingModule.FrameSizeFor(rate);
-            Assert.IsTrue(stats.Active, stats.ToString());
-            Assert.AreEqual(0, stats.FailedChunks, stats.LastError);
-            Assert.That(stats.CaptureChunks, Is.InRange(expectedChunks - 1, expectedChunks), stats.ToString());
-            Assert.AreEqual(0, stats.DroppedCaptureSamples, stats.ToString());
 
             source.Stop();
         }
@@ -120,7 +146,6 @@ namespace LiveKit.PlayModeTests
             far.PlayScheduled(startTime);
             near.PlayScheduled(startTime + 0.12);
 
-            AudioProcessingStats stats;
             float rawRms, processedRms;
             try
             {
@@ -135,7 +160,6 @@ namespace LiveKit.PlayModeTests
                 yield return new WaitForSeconds(1.5f);
 
                 (rawRms, processedRms) = meter.Window();
-                stats = processor.GetStats();
             }
             finally
             {
@@ -146,12 +170,10 @@ namespace LiveKit.PlayModeTests
             }
 
             Assert.Greater(rawRms, 0.01f, "near-end source produced no signal");
-            Assert.AreEqual(0, stats.FailedChunks, stats.ToString());
-            Assert.Greater(stats.ReferenceChunks, 0, stats.ToString());
 
             var attenuationDb = 20f * Mathf.Log10(rawRms / Mathf.Max(processedRms, 1e-6f));
-            Debug.Log($"AEC3 attenuated the synthetic echo by {attenuationDb:F1} dB ({stats})");
-            Assert.GreaterOrEqual(attenuationDb, 6f, $"AEC3 attenuated the echo by only {attenuationDb:F1} dB; {stats}");
+            Debug.Log($"AEC3 attenuated the synthetic echo by {attenuationDb:F1} dB");
+            Assert.GreaterOrEqual(attenuationDb, 6f, $"AEC3 attenuated the echo by only {attenuationDb:F1} dB");
         }
 
         private static AudioClip NoiseClip(int sampleRate, float seconds, int seed, float amplitude)
@@ -175,6 +197,25 @@ namespace LiveKit.PlayModeTests
                 : base(RtcAudioSourceType.AudioSourceMicrophone, options) { }
 
             public void Push(float[] data, int channels, int sampleRate) => AudioRead?.Invoke(data, channels, sampleRate);
+        }
+
+        // Counts the frames the processor hands out and checks each one is exactly one chunk. The
+        // sink owns and disposes the frames it is handed.
+        private sealed class ChunkCounter
+        {
+            private readonly int _chunkSamples;
+
+            public ChunkCounter(int chunkSamples) => _chunkSamples = chunkSamples;
+
+            public int Chunks { get; private set; }
+            public int WrongSizedChunks { get; private set; }
+
+            public void OnProcessed(NativeArray<short> frame, int channels, int sampleRate)
+            {
+                if (frame.Length != _chunkSamples) WrongSizedChunks++;
+                Chunks++;
+                frame.Dispose();
+            }
         }
 
         // Accumulates energy of the raw near end and of the processed output. Both callbacks run on

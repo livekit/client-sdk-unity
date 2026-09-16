@@ -25,7 +25,7 @@ namespace LiveKit
     /// echo of tick N's playout only reaches the microphone several ticks later. <see cref="Start"/>,
     /// <see cref="Stop"/> and the maintenance coroutine run on the main thread and never touch the
     /// ring buffers; they raise flags the audio thread acts on. Nothing here logs from the audio
-    /// thread — diagnostics are counters, read via <see cref="GetStats"/>.
+    /// thread; the two warnings it can raise are posted to the main thread.
     ///
     /// The Rust side asserts (and takes the process down) on a frame that is not a whole multiple
     /// of 10 ms, so the chunking here is not optional, and rates whose 10 ms chunk is not a whole
@@ -73,14 +73,11 @@ namespace LiveKit
         private int _captureResetRequested;
         private int _referenceResetRequested;
         private int _unsupportedRateWarned;
+        private int _moduleFailureWarned;
         private int _maintenanceGeneration;
 
-        // Counters.
-        private long _captureChunks;
-        private long _referenceChunks;
-        private long _failedChunks;
-        private volatile string _lastError;
-        private volatile int _delayHintMs = -1;
+        // Main thread only.
+        private int _delayHintMs = -1;
 
         /// <exception cref="InvalidOperationException">The FFI could not create the module.</exception>
         public AudioProcessor(AudioProcessingOptions options, ProcessedFrameSink sink)
@@ -207,7 +204,6 @@ namespace LiveKit
                 var frame = new NativeArray<short>(_captureChunkSamples, Allocator.Persistent);
                 frame.CopyFrom(_captureChunk);
                 ProcessCaptureChunk(frame, sampleRate, channels);
-                Interlocked.Increment(ref _captureChunks);
                 _sink(frame, channels, sampleRate);
             }
 
@@ -224,12 +220,12 @@ namespace LiveKit
                     ptr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(frame);
                 }
                 var error = _apm.ProcessStream(ptr, frame.Length * sizeof(short), sampleRate, channels);
-                if (error != null) RecordFailure(error);
+                if (error != null) WarnModuleFailure(error);
             }
             catch (Exception e)
             {
                 // The chunk goes out unprocessed rather than not at all.
-                RecordFailure(e.Message);
+                WarnModuleFailure(e.Message);
             }
         }
 
@@ -260,13 +256,12 @@ namespace LiveKit
                     try
                     {
                         var error = _apm.ProcessReverseStream(_referenceChunkPin.AddrOfPinnedObject(), byteCount, sampleRate, channels);
-                        if (error != null) RecordFailure(error);
+                        if (error != null) WarnModuleFailure(error);
                     }
                     catch (Exception e)
                     {
-                        RecordFailure(e.Message);
+                        WarnModuleFailure(e.Message);
                     }
-                    Interlocked.Increment(ref _referenceChunks);
                 }
             }
         }
@@ -300,40 +295,32 @@ namespace LiveKit
             _referenceRing = new PcmRingBuffer(Math.Max(chunkSamples * BufferedChunks, incomingSamples + chunkSamples));
         }
 
-        private void RecordFailure(string error)
+        // The module rejected a chunk, which went out unprocessed. Warn once.
+        private void WarnModuleFailure(string error)
         {
-            _lastError = error;
-            Interlocked.Increment(ref _failedChunks);
+            if (Interlocked.Exchange(ref _moduleFailureWarned, 1) == 1) return;
+
+            PostWarning("AudioProcessor: the audio processing module rejected a chunk, which was published " +
+                        $"unprocessed: {error}");
         }
 
-        // Logging is not allowed on the audio thread; hand the message to the main thread.
         private void WarnUnsupportedRate(int sampleRate)
         {
             if (Interlocked.Exchange(ref _unsupportedRateWarned, 1) == 1) return;
 
-            var message = $"AudioProcessor: Unity's output sample rate {sampleRate} Hz has no whole-sample 10 ms chunk; " +
-                          "audio processing is bypassed and the capture is published unprocessed.";
+            PostWarning($"AudioProcessor: Unity's output sample rate {sampleRate} Hz has no whole-sample 10 ms chunk; " +
+                        "audio processing is bypassed and the capture is published unprocessed.");
+        }
+
+        // Logging is not allowed on the audio thread; hand the message to the main thread.
+        private static void PostWarning(string message)
+        {
             var context = FfiClient.Instance._context;
             if (context != null)
                 context.Post(static m => Utils.Warning(m), message);
             else
                 Utils.Warning(message);
         }
-
-        public AudioProcessingStats GetStats() => new AudioProcessingStats(
-            active: _running && !_bypass && !_disposed,
-            referenceAttached: _echoCancellation && PlayoutReference.IsAttached,
-            captureSampleRate: _captureRate,
-            captureChannels: _captureChannels,
-            referenceSampleRate: _referenceRate,
-            referenceChannels: _referenceChannels,
-            captureChunks: Interlocked.Read(ref _captureChunks),
-            referenceChunks: Interlocked.Read(ref _referenceChunks),
-            droppedCaptureSamples: _captureRing?.OverflowSamples ?? 0,
-            droppedReferenceSamples: _referenceRing?.OverflowSamples ?? 0,
-            failedChunks: Interlocked.Read(ref _failedChunks),
-            lastError: _lastError,
-            streamDelayHintMs: _delayHintMs);
 
         public void Dispose()
         {

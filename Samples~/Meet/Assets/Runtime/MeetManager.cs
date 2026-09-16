@@ -665,21 +665,6 @@ public class MeetManager : MonoBehaviour
         Debug.Log(rtcSource.AudioProcessingEnabled
             ? "Microphone published via Unity Microphone API (audio processing active)"
             : "Microphone published via Unity Microphone API (no audio processing)");
-
-        if (rtcSource.AudioProcessingEnabled)
-            StartCoroutine(LogAudioProcessingStats(rtcSource));
-    }
-
-    // Periodic snapshot of the processing stage while the Unity microphone is published: confirms
-    // the playout reference is attached and that capture and reference chunks are flowing.
-    private IEnumerator LogAudioProcessingStats(RtcAudioSource source)
-    {
-        while (_microphoneActive && ReferenceEquals(_localRtcAudioSource, source))
-        {
-            yield return new WaitForSeconds(5f);
-            if (!_microphoneActive || !ReferenceEquals(_localRtcAudioSource, source)) yield break;
-            Debug.Log($"Audio processing: {source.AudioProcessingStats}");
-        }
     }
 
     private void UnpublishLocalMicrophone()

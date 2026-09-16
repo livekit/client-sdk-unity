@@ -54,7 +54,7 @@ namespace LiveKit
         /// <param name="processing">Which stages to enable. With <see cref="AudioProcessingOptions.EchoCancellation"/>
         /// the SDK attaches a <see cref="PlayoutReference"/> to the active <see cref="AudioListener"/> to obtain the
         /// far-end reference. Requires Unity's output sample rate to be a multiple of 100 Hz; otherwise processing is
-        /// bypassed with a warning. See <see cref="RtcAudioSource.AudioProcessingStats"/> for diagnostics.</param>
+        /// bypassed with a warning.</param>
         public MicrophoneSource(string deviceName, GameObject sourceObject, AudioProcessingOptions processing)
             : base(RtcAudioSourceType.AudioSourceMicrophone, processing)
         {

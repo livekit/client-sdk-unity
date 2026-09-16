@@ -325,7 +325,7 @@ var processing = new AudioProcessingOptions
 var rtcSource = new MicrophoneSource(Microphone.devices[0], microphoneObject, processing);
 ```
 
-Echo cancellation takes its reference from the final mix Unity plays, so it covers every remote `AudioStream` as well as the game's own audio. The SDK attaches a `PlayoutReference` component to the active `AudioListener` for that; adding it to the listener yourself does the same. `rtcSource.AudioProcessingStats` reports whether the reference is attached and how many chunks flowed. Unity's output sample rate must be a multiple of 100 Hz (48000, 44100 and 24000 all are); otherwise processing is bypassed with a warning and the raw microphone is published.
+Echo cancellation takes its reference from the final mix Unity plays, so it covers every remote `AudioStream` as well as the game's own audio. The SDK attaches a `PlayoutReference` component to the active `AudioListener` for that; adding it to the listener yourself does the same. Unity's output sample rate must be a multiple of 100 Hz (48000, 44100 and 24000 all are); otherwise processing is bypassed with a warning and the raw microphone is published.
 
 #### Unity Audio Output
 

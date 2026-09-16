@@ -56,9 +56,6 @@ namespace LiveKit
         /// created and the source fell back to unprocessed capture.
         /// </summary>
         public bool AudioProcessingEnabled => _processor != null;
-
-        /// <summary>Counters from the audio processing stage; default when processing is off.</summary>
-        public AudioProcessingStats AudioProcessingStats => _processor?.GetStats() ?? default;
         private readonly int _debugId = Interlocked.Increment(ref nextDebugId);
         internal readonly uint _expectedSampleRate;
         internal readonly uint _expectedChannels;
