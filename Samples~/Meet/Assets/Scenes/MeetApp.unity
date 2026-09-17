@@ -907,7 +907,6 @@ MonoBehaviour:
   noiseSuppression: 1
   autoGainControl: 1
   preferHardwareProcessing: 1
-  remoteAudioGain: 0.7
 --- !u!114 &1478206705
 MonoBehaviour:
   m_ObjectHideFlags: 0

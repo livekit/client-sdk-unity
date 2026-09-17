@@ -47,13 +47,6 @@ public class MeetManager : MonoBehaviour
     [Tooltip("PlatformAudio only. Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics.")]
     [SerializeField] private bool preferHardwareProcessing = true;
 
-    [Header("Unity Audio (PlatformAudio off)")]
-    [Tooltip("Playback gain for every remote AudioSource in Unity audio mode. Kept below 1 so a device " +
-             "at full speaker volume keeps headroom: full-scale playout distorts on Android and feeds " +
-             "the echo canceller more echo than it can remove. Linear amplitude, 0.7 is -3.1 dB.")]
-    [Range(0f, 1f)]
-    [SerializeField] private float remoteAudioGain = 0.7f;
-
     private const string PlaceholderTextureResourceName = "PlaceholderTileSquare";
     private Texture _placeholderTexture;
 
@@ -209,10 +202,8 @@ public class MeetManager : MonoBehaviour
 
     private void OnPublishData()
     {
-        Debug.Log($"Published Data");
-        var bytes = System.Text.Encoding.Default.GetBytes("hello from unity!");
-        _room.LocalParticipant.PublishData(bytes);
-        _room.LocalParticipant.SendText("Hello from Unity, Max", "Chat");
+        echoCancellation = !echoCancellation;
+        Debug.Log($"use AEC is {echoCancellation}");
     }
 
     #endregion
@@ -382,7 +373,6 @@ public class MeetManager : MonoBehaviour
         audioObject.transform.SetParent(_audioTrackParent);
 
         var source = audioObject.AddComponent<AudioSource>();
-        source.volume = remoteAudioGain;
         var audiostream = new AudioStream(audioTrack, source);
         _audioStreams.Add(sid, audiostream);
 
@@ -634,6 +624,9 @@ public class MeetManager : MonoBehaviour
             NoiseSuppression = noiseSuppression,
             AutoGainControl = autoGainControl
         };
+
+        Debug.Log($"Created mic with echo cancellation {echoCancellation}");
+
         var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject, processing);
 
         _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, rtcSource, _room);

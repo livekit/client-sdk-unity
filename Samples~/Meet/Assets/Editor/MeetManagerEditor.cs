@@ -13,7 +13,6 @@ public class MeetManagerEditor : Editor
     private SerializedProperty noiseSuppression;
     private SerializedProperty autoGainControl;
     private SerializedProperty preferHardwareProcessing;
-    private SerializedProperty remoteAudioGain;
 
     private void OnEnable()
     {
@@ -26,7 +25,6 @@ public class MeetManagerEditor : Editor
         noiseSuppression = serializedObject.FindProperty("noiseSuppression");
         autoGainControl = serializedObject.FindProperty("autoGainControl");
         preferHardwareProcessing = serializedObject.FindProperty("preferHardwareProcessing");
-        remoteAudioGain = serializedObject.FindProperty("remoteAudioGain");
     }
 
     public override void OnInspectorGUI()
@@ -69,20 +67,11 @@ public class MeetManagerEditor : Editor
                 "different quality characteristics."));
         }
 
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Unity Audio (PlatformAudio off)", EditorStyles.boldLabel);
-
-        // Gray out Unity audio options when PlatformAudio is enabled
-        using (new EditorGUI.DisabledGroupScope(platformAudioEnabled))
+        if (!platformAudioEnabled)
         {
-            EditorGUILayout.HelpBox(platformAudioEnabled
-                ? "Unity audio options are only used when 'Use Platform Audio' is disabled."
-                : "Echo cancellation in this mode runs libwebrtc's AEC3 in the SDK; the reference is the mix on the " +
-                  "AudioListener (a PlayoutReference component is attached automatically).", MessageType.Info);
-
-            EditorGUILayout.PropertyField(remoteAudioGain, new GUIContent("Remote Audio Gain",
-                "Playback gain for every remote AudioSource. Below 1 keeps headroom so full-volume playout does not " +
-                "distort or overload the echo canceller. 0.7 is -3.1 dB."));
+            EditorGUILayout.HelpBox("Echo cancellation in this mode runs libwebrtc's AEC3 in the SDK; the reference is " +
+                                    "the mix on the AudioListener (a PlayoutReference component is attached automatically).",
+                MessageType.Info);
         }
 
         serializedObject.ApplyModifiedProperties();
