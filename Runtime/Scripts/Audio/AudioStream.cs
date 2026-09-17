@@ -405,7 +405,7 @@ namespace LiveKit
                 // main thread.
                 if (disposing)
                 {
-                    _audioSource.Stop();
+                    if (_audioSource) _audioSource.Stop();
                     if (_probe != null)
                     {
                         _probe.AudioRead -= OnAudioRead;
