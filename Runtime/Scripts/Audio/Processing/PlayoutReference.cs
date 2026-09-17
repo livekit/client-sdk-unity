@@ -6,9 +6,14 @@ using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     /// <summary>
-    /// Taps the final mix Unity sends to the audio device and feeds it to the echo canceller as
-    /// the far-end reference. Lives on the GameObject of the active <see cref="AudioListener"/>.
+    /// The <see cref="PlayoutReferenceTaps"/> the final mix Unity sends to the audio hardware device and 
+    /// feeds it to the echo canceller as the far-end reference.
+    /// 
+    /// Attaches itself to the GameObject of the active <see cref="AudioListener"/>, which is the virtual 
+    /// microphone in the scene, usually sitting on the virtual camera object, capturing the virtual sound
+    /// and sending it to the audio output hardware.     /// 
     /// </summary>
+    /// 
     /// <remarks>
     /// An <see cref="RtcAudioSource"/> created with <see cref="AudioProcessingOptions.EchoCancellation"/>
     /// attaches this component to the active listener when it starts and re-attaches it after
@@ -23,7 +28,6 @@ namespace LiveKit
     /// <c>OnAudioFilterRead</c> runs on the Unity audio thread and must not touch Unity APIs, so
     /// the sample rate and listener state are cached on the main thread.
     /// </remarks>
-    [AddComponentMenu("LiveKit/Playout Reference")]
     public sealed class PlayoutReference : MonoBehaviour
     {
         internal delegate void PlayoutAudioDelegate(float[] data, int channels, int sampleRate);
@@ -34,15 +38,17 @@ namespace LiveKit
         /// </summary>
         internal static event PlayoutAudioDelegate AudioRead;
 
-        private static PlayoutReference _active;
+        // Singleton pattern instance
+        private static PlayoutReference _instance;
         private static int _consumers;
 
+        // The AudioListener we are attached to
         private AudioListener _listener;
         private volatile int _sampleRate;
         private volatile bool _deliver;
 
         /// <summary>Whether a reference on an enabled listener is delivering audio.</summary>
-        internal static bool IsAttached => _active != null && _active._deliver;
+        internal static bool IsAttached => _instance != null && _instance._deliver;
 
         /// <summary>Main thread. Registers a consumer and attaches to the listener if possible.</summary>
         internal static void Acquire()
@@ -65,15 +71,15 @@ namespace LiveKit
         internal static void EnsureAttached()
         {
             if (_consumers == 0) return;
-            if (_active != null && _active.isActiveAndEnabled &&
-                _active._listener != null && _active._listener.isActiveAndEnabled)
+            if (_instance != null && _instance.isActiveAndEnabled &&
+                _instance._listener != null && _instance._listener.isActiveAndEnabled)
                 return;
 
             var listener = FindActiveListener();
             if (listener == null) return;
 
             var existing = listener.GetComponent<PlayoutReference>();
-            _active = existing != null ? existing : listener.gameObject.AddComponent<PlayoutReference>();
+            _instance = existing != null ? existing : listener.gameObject.AddComponent<PlayoutReference>();
         }
 
         private static AudioListener FindActiveListener()
@@ -94,14 +100,14 @@ namespace LiveKit
 
             RefreshDeliveryState();
             AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged;
-            if (_active == null) _active = this;
+            if (_instance == null) _instance = this;
         }
 
         private void OnDisable()
         {
             AudioSettings.OnAudioConfigurationChanged -= OnAudioConfigurationChanged;
             _deliver = false;
-            if (_active == this) _active = null;
+            if (_instance == this) _instance = null;
         }
 
         private void Update()
@@ -136,7 +142,7 @@ namespace LiveKit
             yield return null;
             if (host == null || _consumers == 0) yield break;
             if (host.GetComponent<PlayoutReference>() == null)
-                _active = host.AddComponent<PlayoutReference>();
+                _instance = host.AddComponent<PlayoutReference>();
         }
 
         // Unity audio thread.
