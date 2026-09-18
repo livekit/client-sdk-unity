@@ -207,8 +207,11 @@ namespace LiveKit
 
         private void OnAudioRead(float[] data, int channels, int sampleRate)
         {
-            if (_muted) return;
             if (_disposed) return;
+            // A muted block still runs through the processing stage so the echo canceller keeps
+            // seeing the near end next to its reference; SendProcessedFrame drops the output.
+            // Without a processing stage there is nothing to keep warm.
+            if (_muted && _processor == null) return;
 
             var readIndex = Interlocked.Increment(ref _audioReadCount);
             if (channels <= 0)
@@ -233,6 +236,8 @@ namespace LiveKit
             if (_processor != null && _processor.TryProcessCapture(data, channels, sampleRate))
                 return;
 
+            if (_muted) return;
+
             // Each captured frame gets its own backing buffer so the native encoder can safely
             // consume it asynchronously after request.Send() returns.
             var frameData = new NativeArray<short>(data.Length, Allocator.Persistent);
@@ -242,7 +247,8 @@ namespace LiveKit
             SendFrame(frameData, channels, sampleRate);
         }
 
-        // Audio thread, from the processing stage. Owns the frame from here on.
+        // Audio thread, from the processing stage. Owns the frame from here on. Muted output is
+        // dropped here, after the module has seen the block.
         private void SendProcessedFrame(NativeArray<short> frame, int channels, int sampleRate)
         {
             if (_disposed || _muted)
@@ -385,7 +391,7 @@ namespace LiveKit
                 }
                 _pendingFrameData.Clear();
             }
-            _processor?.Dispose();
+            _processor?.Dispose(disposing);
             Handle?.Dispose();
             _disposed = true;
             Utils.Debug($"{DebugTag} disposed");

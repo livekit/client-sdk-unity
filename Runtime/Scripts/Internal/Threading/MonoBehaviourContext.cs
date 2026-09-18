@@ -13,6 +13,12 @@ namespace LiveKit.Internal.Threading
         private static MonoBehaviourContext _instance;
         private const string OBJECT_NAME = "LiveKitSDK";
 
+        /// <summary>
+        /// Whether a host exists to run coroutines over time. When false, <see cref="RunCoroutine"/>
+        /// drains the coroutine synchronously, which is only safe for one that finishes on its own.
+        /// </summary>
+        internal static bool CanRunCoroutines => _instance != null;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Init()
         {

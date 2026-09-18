@@ -9,8 +9,9 @@ using RoomOptions = LiveKit.RoomOptions;
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
 ///
-/// Supports two audio modes:
-/// - PlatformAudio (default): Uses WebRTC's ADM for microphone capture and automatic
+/// Supports two audio modes, selected with <c>usePlatformAudio</c> (the Meet scene ships with
+/// Unity Audio selected):
+/// - PlatformAudio: Uses WebRTC's ADM for microphone capture and automatic
 ///   speaker playout. Provides echo cancellation (AEC), AGC, and noise suppression.
 /// - Unity Audio: Uses Unity's Microphone API and AudioStream for manual audio handling.
 ///   Gives more control over audio processing. The same AEC/NS/AGC toggles apply: the SDK runs
@@ -202,8 +203,10 @@ public class MeetManager : MonoBehaviour
 
     private void OnPublishData()
     {
-        echoCancellation = !echoCancellation;
-        Debug.Log($"use AEC is {echoCancellation}");
+        Debug.Log($"Published Data");
+        var bytes = System.Text.Encoding.Default.GetBytes("hello from unity!");
+        _room.LocalParticipant.PublishData(bytes);
+        _room.LocalParticipant.SendText("Hello from Unity, Max", "Chat");
     }
 
     #endregion
@@ -624,8 +627,6 @@ public class MeetManager : MonoBehaviour
             NoiseSuppression = noiseSuppression,
             AutoGainControl = autoGainControl
         };
-
-        Debug.Log($"Created mic with echo cancellation {echoCancellation}");
 
         var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject, processing);
 

@@ -28,8 +28,8 @@ namespace LiveKit
     /// thread; the two warnings it can raise are posted to the main thread.
     ///
     /// The Rust side asserts (and takes the process down) on a frame that is not a whole multiple
-    /// of 10 ms, so the chunking here is not optional, and rates whose 10 ms chunk is not a whole
-    /// number of samples are bypassed entirely.
+    /// of 10 ms, so the chunking here is not optional, and blocks at a rate whose 10 ms chunk is
+    /// not a whole number of samples are bypassed.
     /// </remarks>
     internal sealed class AudioProcessor : IDisposable
     {
@@ -68,7 +68,6 @@ namespace LiveKit
 
         // Cross-thread flags.
         private volatile bool _running;
-        private volatile bool _bypass;
         private volatile bool _disposed;
         private int _captureResetRequested;
         private int _referenceResetRequested;
@@ -108,7 +107,10 @@ namespace LiveKit
             }
 
             SeedDelayHint();
-            MonoBehaviourContext.RunCoroutine(Maintenance(++_maintenanceGeneration));
+            // Only echo cancellation has periodic upkeep. The loop never finishes on its own, so it
+            // is not handed to a host that would drain it synchronously.
+            if (_echoCancellation && MonoBehaviourContext.CanRunCoroutines)
+                MonoBehaviourContext.RunCoroutine(Maintenance(++_maintenanceGeneration));
         }
 
         /// <summary>Main thread.</summary>
@@ -134,15 +136,16 @@ namespace LiveKit
             Interlocked.Exchange(ref _referenceResetRequested, 1);
         }
 
-        // Periodic main-thread upkeep: re-attach the reference after scene or device changes and
-        // refresh the delay hint (iOS reports zero session latency until the session is active).
+        // Periodic main-thread upkeep for echo cancellation: re-attach the reference after scene or
+        // device changes and refresh the delay hint (iOS reports zero session latency until the
+        // session is active). Unscaled time, so a paused game keeps its reference.
         private IEnumerator Maintenance(int generation)
         {
             while (_running && !_disposed && generation == _maintenanceGeneration)
             {
-                if (_echoCancellation) PlayoutReference.EnsureAttached();
+                PlayoutReference.EnsureAttached();
                 SeedDelayHint();
-                yield return new WaitForSeconds(MaintenanceIntervalSeconds);
+                yield return new WaitForSecondsRealtime(MaintenanceIntervalSeconds);
             }
         }
 
@@ -179,12 +182,13 @@ namespace LiveKit
         /// </summary>
         public bool TryProcessCapture(float[] data, int channels, int sampleRate)
         {
-            if (_disposed || !_running || _bypass) return false;
+            if (_disposed || !_running) return false;
             if (data == null || data.Length == 0 || channels <= 0 || sampleRate <= 0) return false;
 
+            // Checked per block rather than latched: Unity's output rate can change with the
+            // device, and a rate that becomes supported later is processed again.
             if (!AudioProcessingModule.IsSupportedApiRate(sampleRate))
             {
-                _bypass = true;
                 WarnUnsupportedRate(sampleRate);
                 return false;
             }
@@ -232,7 +236,7 @@ namespace LiveKit
         // Unity audio thread, from PlayoutReference. Must not modify data.
         private void OnPlayoutAudio(float[] data, int channels, int sampleRate)
         {
-            if (_disposed || !_running || _bypass) return;
+            if (_disposed || !_running) return;
             if (data == null || data.Length == 0 || channels <= 0) return;
             if (!AudioProcessingModule.IsSupportedApiRate(sampleRate)) return;
 
@@ -322,11 +326,20 @@ namespace LiveKit
                 Utils.Warning(message);
         }
 
-        public void Dispose()
+        public void Dispose() => Dispose(true);
+
+        /// <summary>
+        /// <paramref name="disposing"/> is false on the owner's finalizer path: only the native
+        /// module and the pinned chunk are released there. The <see cref="PlayoutReference"/>
+        /// registration is main-thread state and is only touched by <see cref="Stop"/>.
+        /// </summary>
+        internal void Dispose(bool disposing)
         {
             if (_disposed) return;
 
-            Stop();
+            if (disposing) Stop();
+            else _running = false;
+
             lock (_referenceLock)
             {
                 _disposed = true;

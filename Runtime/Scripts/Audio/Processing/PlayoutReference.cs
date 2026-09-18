@@ -6,14 +6,13 @@ using LiveKit.Internal.Threading;
 namespace LiveKit
 {
     /// <summary>
-    /// The <see cref="PlayoutReferenceTaps"/> the final mix Unity sends to the audio hardware device and 
-    /// feeds it to the echo canceller as the far-end reference.
-    /// 
-    /// Attaches itself to the GameObject of the active <see cref="AudioListener"/>, which is the virtual 
-    /// microphone in the scene, usually sitting on the virtual camera object, capturing the virtual sound
-    /// and sending it to the audio output hardware.     /// 
+    /// Taps the final mix Unity sends to the audio output device and feeds it to the echo
+    /// canceller as the far-end reference.
+    ///
+    /// Attaches itself to the GameObject of the active <see cref="AudioListener"/>, the virtual
+    /// microphone in the scene, usually on the camera, which hears the scene and sends the result
+    /// to the audio output hardware.
     /// </summary>
-    /// 
     /// <remarks>
     /// An <see cref="RtcAudioSource"/> created with <see cref="AudioProcessingOptions.EchoCancellation"/>
     /// attaches this component to the active listener when it starts and re-attaches it after
@@ -28,6 +27,7 @@ namespace LiveKit
     /// <c>OnAudioFilterRead</c> runs on the Unity audio thread and must not touch Unity APIs, so
     /// the sample rate and listener state are cached on the main thread.
     /// </remarks>
+    [DisallowMultipleComponent]
     public sealed class PlayoutReference : MonoBehaviour
     {
         internal delegate void PlayoutAudioDelegate(float[] data, int channels, int sampleRate);
