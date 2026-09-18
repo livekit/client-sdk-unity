@@ -348,6 +348,22 @@ IEnumerator PublishLocalMicrophoneUnity(Room room)
 }
 ```
 
+#### Unity Audio Processing
+
+Unity's `Microphone` path does not go through a platform audio device module, so on its own it has no echo cancellation. Pass `AudioProcessingOptions` to run libwebrtc's audio processing (AEC3 echo cancellation, noise suppression, gain control, high-pass filter) over the captured audio before it reaches the track:
+
+```cs
+var processing = new AudioProcessingOptions
+{
+    EchoCancellation = true,
+    NoiseSuppression = true,
+    AutoGainControl = true
+};
+var rtcSource = new MicrophoneSource(Microphone.devices[0], microphoneObject, processing);
+```
+
+Echo cancellation takes its reference from the final mix Unity plays, so it covers every remote `AudioStream` as well as the game's own audio. The SDK attaches a `PlayoutReference` component to the active `AudioListener` for that; adding it to the listener yourself does the same. Unity's output sample rate must be a multiple of 100 Hz (48000, 44100 and 24000 all are); otherwise processing is bypassed with a warning and the raw microphone is published.
+
 #### Unity Audio Output
 
 ```cs

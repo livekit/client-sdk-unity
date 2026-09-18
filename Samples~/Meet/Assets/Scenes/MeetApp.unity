@@ -902,7 +902,7 @@ MonoBehaviour:
   videoTrackParent: {fileID: 2128321498}
   participantTilePrefab: {fileID: 4315784896331113596, guid: bec493bbc3d574c07b5bbf8dd2be26b3, type: 3}
   frameRate: 30
-  usePlatformAudio: 1
+  usePlatformAudio: 0
   echoCancellation: 1
   noiseSuppression: 1
   autoGainControl: 1

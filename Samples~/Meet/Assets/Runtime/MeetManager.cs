@@ -9,11 +9,14 @@ using RoomOptions = LiveKit.RoomOptions;
 /// <summary>
 /// Manages a LiveKit room connection with local/remote audio and video tracks.
 ///
-/// Supports two audio modes:
-/// - PlatformAudio (default): Uses WebRTC's ADM for microphone capture and automatic
+/// Supports two audio modes, selected with <c>usePlatformAudio</c> (the Meet scene ships with
+/// Unity Audio selected):
+/// - PlatformAudio: Uses WebRTC's ADM for microphone capture and automatic
 ///   speaker playout. Provides echo cancellation (AEC), AGC, and noise suppression.
 /// - Unity Audio: Uses Unity's Microphone API and AudioStream for manual audio handling.
-///   No AEC support but gives more control over audio processing.
+///   Gives more control over audio processing. The same AEC/NS/AGC toggles apply: the SDK runs
+///   libwebrtc's audio processing over the Microphone capture, with the mix Unity plays as the
+///   echo reference (see <see cref="PlayoutReference"/>).
 /// </summary>
 [RequireComponent(typeof(TokenSourceComponent))]
 public class MeetManager : MonoBehaviour
@@ -34,14 +37,15 @@ public class MeetManager : MonoBehaviour
              "Provides AEC, AGC, and NS. Disable to use Unity's Microphone API instead.")]
     [SerializeField] private bool usePlatformAudio = true;
 
-    [Header("Audio Processing (PlatformAudio only)")]
-    [Tooltip("Enable echo cancellation to remove echo from speaker playback.")]
+    [Header("Audio Processing")]
+    [Tooltip("Enable echo cancellation. PlatformAudio: WebRTC's ADM. Unity audio: libwebrtc's AEC3 over the " +
+             "Microphone capture, with the mix Unity plays as the reference.")]
     [SerializeField] private bool echoCancellation = true;
     [Tooltip("Enable noise suppression to remove background noise.")]
     [SerializeField] private bool noiseSuppression = true;
     [Tooltip("Enable auto gain control to normalize audio levels.")]
     [SerializeField] private bool autoGainControl = true;
-    [Tooltip("Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics.")]
+    [Tooltip("PlatformAudio only. Prefer hardware audio processing (e.g., iOS VPIO). Lower latency but may have different quality characteristics.")]
     [SerializeField] private bool preferHardwareProcessing = true;
 
     private const string PlaceholderTextureResourceName = "PlaceholderTileSquare";
@@ -610,15 +614,26 @@ public class MeetManager : MonoBehaviour
 
     private IEnumerator PublishLocalMicrophoneUnity()
     {
-        Debug.Log("Publishing microphone using Unity Microphone API");
+        Debug.Log($"Publishing microphone using Unity Microphone API (AEC={echoCancellation}, NS={noiseSuppression}, AGC={autoGainControl})");
 
         // Start the microphone here for early iOS permission request and android getting access to Microphone.devices
         Microphone.Start(null, true, 10, 44100);
-        
+
         var audioObject = new GameObject($"My Microphone: {Microphone.devices[0]}");
         audioObject.transform.SetParent(_audioTrackParent);
 
-        var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject);
+        // With options, MicrophoneSource runs libwebrtc's audio processing over the capture. Echo
+        // cancellation takes its reference from the mix Unity plays (the SDK attaches a
+        // PlayoutReference to the AudioListener), so it covers every remote AudioStream and the
+        // app's own audio. If the module cannot be created the source publishes the raw microphone.
+        var processing = new AudioProcessingOptions
+        {
+            EchoCancellation = echoCancellation,
+            NoiseSuppression = noiseSuppression,
+            AutoGainControl = autoGainControl
+        };
+
+        var rtcSource = new MicrophoneSource(Microphone.devices[0], audioObject, processing);
 
         _localAudioTrack = LocalAudioTrack.CreateAudioTrack(LocalAudioTrackName, rtcSource, _room);
 
@@ -633,6 +648,9 @@ public class MeetManager : MonoBehaviour
 
         if (publish.IsError)
         {
+            // Dispose before destroying the host object so the source and its processing module
+            // are released now rather than by the finalizer.
+            rtcSource.Dispose();
             Destroy(audioObject);
             _localAudioTrack = null;
             yield break;
@@ -643,7 +661,9 @@ public class MeetManager : MonoBehaviour
         _localRtcAudioSource = rtcSource;
         rtcSource.Start();
 
-        Debug.Log("Microphone published via Unity Microphone API (no AEC)");
+        Debug.Log(rtcSource.AudioProcessingEnabled
+            ? "Microphone published via Unity Microphone API (audio processing active)"
+            : "Microphone published via Unity Microphone API (no audio processing)");
     }
 
     private void UnpublishLocalMicrophone()
