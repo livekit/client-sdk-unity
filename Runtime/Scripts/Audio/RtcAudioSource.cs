@@ -146,20 +146,34 @@ namespace LiveKit
             }
         }
 
+        // Format used when Unity reports no usable output configuration. Matches the FFI defaults.
+        private const uint FallbackSampleRate = 48000;
+        private const uint FallbackChannels = 1;
+
         // Reads Unity's actual output audio configuration. The capture path delivers buffers at the
         // DSP output rate/channel count (see AudioProbe), so this is the format the native source
-        // must match. Falls back to the platform defaults when Unity cannot report a configuration
-        // (e.g. batch mode without an audio device).
+        // must match. When the Unity audio system is disabled (Project Settings > Audio > Disable
+        // Unity Audio, dedicated servers) Unity reports a 0 Hz rate and the Raw speaker mode. The
+        // native source must not be created with that format: its 10 ms silence timer divides by
+        // the channel count once the track is published. Fall back to the FFI defaults and warn;
+        // capture through Unity audio cannot work in that state, but the process stays alive.
         private (uint sampleRate, uint channels) ResolveDeviceFormat()
         {
             var config = UnityEngine.AudioSettings.GetConfiguration();
-            var sampleRate = (uint)config.sampleRate;
-            var configuredChannels = SpeakerModeChannels(config.speakerMode);
-            var channels = configuredChannels;
+            var sampleRate = config.sampleRate;
+            var channels = SpeakerModeChannels(config.speakerMode);
+
+            if (sampleRate <= 0 || channels == 0)
+            {
+                Utils.Warning($"{DebugTag} Unity reports no usable output format (sampleRate={sampleRate}, " +
+                              $"speakerMode={config.speakerMode}); the Unity audio system is probably disabled. " +
+                              $"Falling back to {FallbackSampleRate} Hz, {FallbackChannels} channel(s).");
+                return (FallbackSampleRate, FallbackChannels);
+            }
 
             Utils.Info($"Configured native audio source with sampleRate {sampleRate} and channels {channels}");
 
-            return (sampleRate, channels);
+            return ((uint)sampleRate, channels);
         }
 
         private static uint SpeakerModeChannels(UnityEngine.AudioSpeakerMode mode)
