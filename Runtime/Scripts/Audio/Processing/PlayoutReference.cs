@@ -25,42 +25,51 @@ namespace LiveKit
     /// local microphone never appears in the mix.
     ///
     /// <c>OnAudioFilterRead</c> runs on the Unity audio thread and must not touch Unity APIs, so
-    /// the sample rate and listener state are cached on the main thread.
+    /// the sample rate, listener state and consumer count are cached on the main thread.
     /// </remarks>
     [DisallowMultipleComponent]
     public sealed class PlayoutReference : MonoBehaviour
     {
         internal delegate void PlayoutAudioDelegate(float[] data, int channels, int sampleRate);
 
-        /// <summary>
-        /// Raised on the Unity audio thread with the final mix. Subscribers must not modify the
-        /// buffer: it is on its way to the speaker.
-        /// </summary>
-        internal static event PlayoutAudioDelegate AudioRead;
+        // Raised on the Unity audio thread with the final mix. Consumers must not modify the
+        // buffer: it is on its way to the speaker. The invocation list is the consumer list, so
+        // a consumer cannot exist without holding the reference and vice versa.
+        private static event PlayoutAudioDelegate AudioRead;
+        private static bool HasConsumers => AudioRead != null;
 
         // Singleton pattern instance
         private static PlayoutReference _instance;
-        private static int _consumers;
 
         // The AudioListener we are attached to
-        private AudioListener _listener;
+        private AudioListener _sceneAudioListener;
         private volatile int _sampleRate;
         private volatile bool _deliver;
 
-        /// <summary>Whether a reference on an enabled listener is delivering audio.</summary>
+        /// <summary>Whether a reference on an enabled listener is delivering audio to a consumer.</summary>
         internal static bool IsAttached => _instance != null && _instance._deliver;
 
-        /// <summary>Main thread. Registers a consumer and attaches to the listener if possible.</summary>
-        internal static void Acquire()
+        /// <summary>
+        /// Main thread. Registers <paramref name="consumer"/> to receive the final mix and attaches
+        /// to the listener if possible. Acquiring the same consumer twice delivers to it twice
+        /// until it is released twice.
+        /// </summary>
+        internal static void Acquire(PlayoutAudioDelegate consumer)
         {
-            _consumers++;
+            AudioRead += consumer;
             EnsureAttached();
+            if (_instance != null) _instance.RefreshDeliveryState();
         }
 
-        /// <summary>Main thread. The component stays on the listener; it is inert without consumers.</summary>
-        internal static void Release()
+        /// <summary>
+        /// Main thread. Removes <paramref name="consumer"/>. The component stays on the listener;
+        /// once the last consumer is gone it stops delivering. Releasing a consumer that was not
+        /// acquired is a no-op.
+        /// </summary>
+        internal static void Release(PlayoutAudioDelegate consumer)
         {
-            if (_consumers > 0) _consumers--;
+            AudioRead -= consumer;
+            if (_instance != null) _instance.RefreshDeliveryState();
         }
 
         /// <summary>
@@ -70,9 +79,9 @@ namespace LiveKit
         /// </summary>
         internal static void EnsureAttached()
         {
-            if (_consumers == 0) return;
+            if (!HasConsumers) return;
             if (_instance != null && _instance.isActiveAndEnabled &&
-                _instance._listener != null && _instance._listener.isActiveAndEnabled)
+                _instance._sceneAudioListener != null && _instance._sceneAudioListener.isActiveAndEnabled)
                 return;
 
             var listener = FindActiveListener();
@@ -94,8 +103,8 @@ namespace LiveKit
 
         private void OnEnable()
         {
-            _listener = GetComponent<AudioListener>();
-            if (_listener == null)
+            _sceneAudioListener = GetComponent<AudioListener>();
+            if (_sceneAudioListener == null)
                 Utils.Warning("PlayoutReference must be on the AudioListener's GameObject; it will not deliver a reference from here.");
 
             RefreshDeliveryState();
@@ -115,11 +124,12 @@ namespace LiveKit
             RefreshDeliveryState();
         }
 
-        // Listener state and the output rate are Unity APIs; sample them here for the audio thread.
+        // Listener state and the output rate are Unity APIs and the consumer list is mutated on the
+        // main thread; fold them into one flag so the audio thread reads a single volatile.
         private void RefreshDeliveryState()
         {
             _sampleRate = AudioSettings.outputSampleRate;
-            _deliver = _listener != null && _listener.isActiveAndEnabled;
+            _deliver = HasConsumers && _sceneAudioListener != null && _sceneAudioListener.isActiveAndEnabled;
         }
 
         // Unity rebuilds the DSP graph on a device change (or AudioSettings.Reset), which can leave
@@ -129,7 +139,7 @@ namespace LiveKit
         private void OnAudioConfigurationChanged(bool deviceWasChanged)
         {
             RefreshDeliveryState();
-            if (_consumers == 0) return;
+            if (!HasConsumers) return;
 
             var host = gameObject;
             Destroy(this);
@@ -140,7 +150,7 @@ namespace LiveKit
         {
             // Let the deferred Destroy apply before adding the replacement.
             yield return null;
-            if (host == null || _consumers == 0) yield break;
+            if (host == null || !HasConsumers) yield break;
             if (host.GetComponent<PlayoutReference>() == null)
                 _instance = host.AddComponent<PlayoutReference>();
         }

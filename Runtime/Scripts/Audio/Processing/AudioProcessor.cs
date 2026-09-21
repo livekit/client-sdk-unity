@@ -101,10 +101,7 @@ namespace LiveKit
             RequestReset();
 
             if (_echoCancellation)
-            {
-                PlayoutReference.AudioRead += OnPlayoutAudio;
-                PlayoutReference.Acquire();
-            }
+                PlayoutReference.Acquire(OnPlayoutAudio);
 
             SeedDelayHint();
             // Only echo cancellation has periodic upkeep. The loop never finishes on its own, so it
@@ -120,10 +117,7 @@ namespace LiveKit
             _running = false;
 
             if (_echoCancellation)
-            {
-                PlayoutReference.AudioRead -= OnPlayoutAudio;
-                PlayoutReference.Release();
-            }
+                PlayoutReference.Release(OnPlayoutAudio);
         }
 
         /// <summary>
