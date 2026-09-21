@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -199,8 +198,7 @@ namespace LiveKit.PlayModeTests
             public void Push(float[] data, int channels, int sampleRate) => AudioRead?.Invoke(data, channels, sampleRate);
         }
 
-        // Counts the frames the processor hands out and checks each one is exactly one chunk. The
-        // sink owns and disposes the frames it is handed.
+        // Counts the frames the processor hands out and checks each one is exactly one chunk.
         private sealed class ChunkCounter
         {
             private readonly int _chunkSamples;
@@ -210,16 +208,15 @@ namespace LiveKit.PlayModeTests
             public int Chunks { get; private set; }
             public int WrongSizedChunks { get; private set; }
 
-            public void OnProcessed(NativeArray<short> frame, int channels, int sampleRate)
+            public void OnProcessed(ReadOnlySpan<short> frame, int channels, int sampleRate)
             {
                 if (frame.Length != _chunkSamples) WrongSizedChunks++;
                 Chunks++;
-                frame.Dispose();
             }
         }
 
         // Accumulates energy of the raw near end and of the processed output. Both callbacks run on
-        // the Unity audio thread; the sink owns and disposes the frames it is handed.
+        // the Unity audio thread.
         private sealed class EchoMeter
         {
             private readonly object _lock = new object();
@@ -243,7 +240,7 @@ namespace LiveKit.PlayModeTests
                 }
             }
 
-            public void OnProcessed(NativeArray<short> frame, int channels, int sampleRate)
+            public void OnProcessed(ReadOnlySpan<short> frame, int channels, int sampleRate)
             {
                 double sum = 0;
                 var length = frame.Length;
@@ -252,7 +249,6 @@ namespace LiveKit.PlayModeTests
                     var v = frame[i] / 32768.0;
                     sum += v * v;
                 }
-                frame.Dispose();
                 lock (_lock)
                 {
                     _processedSum += sum;

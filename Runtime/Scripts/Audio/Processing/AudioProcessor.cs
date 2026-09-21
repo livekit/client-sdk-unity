@@ -5,8 +5,6 @@ using System.Threading;
 using LiveKit.Internal;
 using LiveKit.Internal.FFI;
 using LiveKit.Internal.Threading;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace LiveKit
@@ -33,8 +31,8 @@ namespace LiveKit
     /// </remarks>
     internal sealed class AudioProcessor : IDisposable
     {
-        /// <summary>Receives one processed 10 ms chunk and takes ownership of the array.</summary>
-        internal delegate void ProcessedFrameSink(NativeArray<short> frame, int channels, int sampleRate);
+        /// <summary>Receives one processed 10 ms chunk. The frame is valid only during the call.</summary>
+        internal delegate void ProcessedFrameSink(ReadOnlySpan<short> frame, int channels, int sampleRate);
 
         // Ring capacity in chunks. Bounds the latency added when a DSP block is not a multiple of 10 ms.
         private const int BufferedChunks = 8;
@@ -45,7 +43,7 @@ namespace LiveKit
         private readonly bool _echoCancellation;
 
         // Guards the pinned reference chunk against Dispose racing an in-flight callback. The
-        // capture side needs no lock: each chunk lives in its own NativeArray owned by the sink.
+        // capture side needs no lock: its chunk is pinned only for the duration of each call.
         private readonly object _referenceLock = new object();
 
         // Capture side. Audio thread only.
@@ -199,25 +197,23 @@ namespace LiveKit
 
             while (_captureRing.TryDrain(_captureChunk, _captureChunkSamples))
             {
-                var frame = new NativeArray<short>(_captureChunkSamples, Allocator.Persistent);
-                frame.CopyFrom(_captureChunk);
-                ProcessCaptureChunk(frame, sampleRate, channels);
-                _sink(frame, channels, sampleRate);
+                ProcessCaptureChunk(_captureChunk, sampleRate, channels);
+                _sink(_captureChunk, channels, sampleRate);
             }
 
             return true;
         }
 
-        private void ProcessCaptureChunk(NativeArray<short> frame, int sampleRate, int channels)
+        private void ProcessCaptureChunk(short[] chunk, int sampleRate, int channels)
         {
             try
             {
-                IntPtr ptr;
+                string error;
                 unsafe
                 {
-                    ptr = (IntPtr)NativeArrayUnsafeUtility.GetUnsafePtr(frame);
+                    fixed (short* ptr = chunk)
+                        error = _apm.ProcessStream((IntPtr)ptr, chunk.Length * sizeof(short), sampleRate, channels);
                 }
-                var error = _apm.ProcessStream(ptr, frame.Length * sizeof(short), sampleRate, channels);
                 if (error != null) WarnModuleFailure(error);
             }
             catch (Exception e)
