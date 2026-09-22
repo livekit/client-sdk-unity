@@ -25,6 +25,7 @@ namespace LiveKit.PlayModeTests.Utils
         private double _phase;
         private bool _running;
         private bool _disposed;
+        private int _pumping;
 
         public SineWaveAudioSource(
             int channels = 2,
@@ -60,6 +61,9 @@ namespace LiveKit.PlayModeTests.Utils
         private void PumpFrame(object _)
         {
             if (!_running || _disposed) return;
+            // Timer callbacks can overlap on the thread pool; AudioRead must not be invoked
+            // concurrently, so a tick that finds the previous one still running is skipped.
+            if (Interlocked.Exchange(ref _pumping, 1) == 1) return;
             try
             {
                 var buffer = new float[_samplesPerFrame * _channels];
@@ -76,6 +80,10 @@ namespace LiveKit.PlayModeTests.Utils
             catch
             {
                 // Timer fires independently of FFI lifecycle; swallow errors during teardown.
+            }
+            finally
+            {
+                Interlocked.Exchange(ref _pumping, 0);
             }
         }
 

@@ -7,7 +7,10 @@ using LiveKit.Internal.FFI;
 namespace LiveKit
 {
     /// <summary>
-    /// Options for audio processing when creating a PlatformAudioSource.
+    /// Options for libwebrtc's audio processing. Used by <see cref="PlatformAudioSource"/>, where
+    /// the ADM applies them, and by Unity-audio sources such as <see cref="MicrophoneSource"/>
+    /// created with options, where the SDK runs libwebrtc's audio processing module over the
+    /// capture with the mix Unity plays as the echo reference (see <see cref="PlayoutReference"/>).
     /// </summary>
     public struct AudioProcessingOptions
     {
@@ -17,7 +20,10 @@ namespace LiveKit
         public bool NoiseSuppression;
         /// <summary>Enable automatic gain control (AGC). Default: true.</summary>
         public bool AutoGainControl;
-        /// <summary>Prefer hardware audio processing (e.g., iOS VPIO). Lower latency. Default: true.</summary>
+        /// <summary>
+        /// Prefer hardware audio processing (e.g., iOS VPIO). Lower latency.
+        /// <see cref="PlatformAudioSource"/> only. Default: true.
+        /// </summary>
         public bool PreferHardware;
 
         /// <summary>
@@ -30,6 +36,9 @@ namespace LiveKit
             AutoGainControl = true,
             PreferHardware = true
         };
+
+        /// <summary>Whether any stage of the Unity-audio processing pipeline is enabled.</summary>
+        internal bool AnyProcessingEnabled => EchoCancellation || NoiseSuppression || AutoGainControl;
     }
 
     /// <summary>
