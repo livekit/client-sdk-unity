@@ -103,3 +103,6 @@ downloads~
 
 # Temp logs
 Logs~
+
+# Python bytecode cache from Scripts~/
+__pycache__/
