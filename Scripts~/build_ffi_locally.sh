@@ -30,6 +30,9 @@ usage() {
     echo "Build types (optional, defaults to 'debug'):"
     echo "  release     Optimized release build"
     echo "  debug       Debug build"
+    echo ""
+    echo "After macOS builds, the UniFFI C# bindings in Runtime/Scripts/UniFFI are regenerated"
+    echo "from the new library with generate_uniffi_bindings.sh (requires uniffi-bindgen-cs)."
     exit 1
 }
 
@@ -130,17 +133,26 @@ if [ "$PLATFORM" = "ios" ] && [ "$BUILD_TYPE" = "release" ]; then
     xcrun ranlib "$SRC"
 fi
 
+# Copy a built artifact into the package by writing a temp file next to the
+# destination and renaming it into place, instead of overwriting in place.
+# macOS caches code-signature state per inode: overwriting a signed dylib that a
+# running Unity editor still has mapped makes every later load of that path die
+# with SIGKILL "Code Signature Invalid" until the file gets a new inode.
+install_file() {
+    local src="$1" dst="$2" tmp="$2.tmp"
+    if ! cp -f "$src" "$tmp" || ! mv -f "$tmp" "$dst"; then
+        rm -f "$tmp"
+        return 1
+    fi
+}
+
 # Copy the built lib
 echo ""
 echo "Copying to $DST..."
-cp -f "$SRC" "$DST"
+install_file "$SRC" "$DST"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Copied $(basename "$DST") successfully.${RESET}"
-    if [ "$PLATFORM" = "macos" ]; then
-        echo ""
-        echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"
-    fi
 else
     echo -e "${RED}Failed to copy $(basename "$DST"). Check that the source file exists and the destination directory is writable.${RESET}"
     exit 1
@@ -150,7 +162,7 @@ fi
 if [ "$PLATFORM" = "android" ]; then
     echo ""
     echo "Copying to $JAR_DST..."
-    cp -f "$JAR_SRC" "$JAR_DST"
+    install_file "$JAR_SRC" "$JAR_DST"
 
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}Copied $(basename "$JAR_DST") successfully.${RESET}"
@@ -158,4 +170,13 @@ if [ "$PLATFORM" = "android" ]; then
         echo -e "${RED}Failed to copy $(basename "$JAR_DST"). Check that the source file exists and the destination directory is writable.${RESET}"
         exit 1
     fi
+fi
+
+# For macOS, regenerate the UniFFI C# bindings from the freshly built dylib.
+if [ "$PLATFORM" = "macos" ]; then
+    echo ""
+    "$SCRIPT_DIR/generate_uniffi_bindings.sh" "$SRC" || exit 1
+
+    echo ""
+    echo -e "${YELLOW}WARNING: QUIT UNITY TO LOAD NEW LIB${RESET}"
 fi
