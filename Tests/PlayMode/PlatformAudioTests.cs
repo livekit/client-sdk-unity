@@ -103,6 +103,126 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest]
+        public IEnumerator OutputPreference_DefaultsAndRoundtrips()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            // Documented default ranking.
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Speaker,
+                    AudioOutputKind.Earpiece,
+                },
+                platformAudio.OutputPreference);
+
+            // Set/get roundtrip preserves order and content.
+            var ranked = new[] { AudioOutputKind.Usb, AudioOutputKind.Speaker, AudioOutputKind.Bluetooth };
+            platformAudio.OutputPreference = ranked;
+            CollectionAssert.AreEqual(ranked, platformAudio.OutputPreference);
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator OutputPreference_RejectsInvalidLists()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            Assert.Throws<ArgumentNullException>(() => platformAudio.OutputPreference = null);
+            Assert.Throws<ArgumentException>(() =>
+                platformAudio.OutputPreference = new[] { AudioOutputKind.Unknown });
+            Assert.Throws<ArgumentException>(() =>
+                platformAudio.OutputPreference = new[] { AudioOutputKind.Speaker, AudioOutputKind.Speaker });
+
+            // A rejected assignment leaves the stored preference untouched.
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Speaker,
+                    AudioOutputKind.Earpiece,
+                },
+                platformAudio.OutputPreference);
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator SpeakerPreference_BoolAndListOrderAreOneState()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            // Default ranking has Speaker ahead of Earpiece.
+            Assert.IsTrue(platformAudio.IsSpeakerOutputPreferred);
+
+            // Setting the bool rewrites the Speaker/Earpiece order inside the list.
+            platformAudio.IsSpeakerOutputPreferred = false;
+            CollectionAssert.AreEqual(
+                new[]
+                {
+                    AudioOutputKind.Bluetooth,
+                    AudioOutputKind.WiredHeadset,
+                    AudioOutputKind.Earpiece,
+                    AudioOutputKind.Speaker,
+                },
+                platformAudio.OutputPreference);
+            Assert.IsFalse(platformAudio.IsSpeakerOutputPreferred);
+
+            // Setting the list order flips the bool back — the list is the source of truth.
+            platformAudio.OutputPreference = new[]
+            {
+                AudioOutputKind.Speaker,
+                AudioOutputKind.Earpiece,
+                AudioOutputKind.Bluetooth,
+            };
+            Assert.IsTrue(platformAudio.IsSpeakerOutputPreferred);
+
+            // A missing kind is inserted next to the present one so the value round-trips.
+            platformAudio.OutputPreference = new[] { AudioOutputKind.Bluetooth, AudioOutputKind.Speaker };
+            platformAudio.IsSpeakerOutputPreferred = false;
+            CollectionAssert.AreEqual(
+                new[] { AudioOutputKind.Bluetooth, AudioOutputKind.Earpiece, AudioOutputKind.Speaker },
+                platformAudio.OutputPreference);
+            Assert.IsFalse(platformAudio.IsSpeakerOutputPreferred);
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator SelectOutput_BogusDevice_Throws()
+        {
+            using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            var bogus = new AudioDevice { Index = 9999, Name = "not-a-device", Guid = "no-such-guid" };
+            Assert.Throws<ArgumentException>(() => platformAudio.SelectOutput(bogus));
+
+            // Clearing is always safe, whether or not an override exists.
+            Assert.DoesNotThrow(() => platformAudio.ClearOutputOverride());
+
+            yield break;
+        }
+
+        [UnityTest]
+        public IEnumerator DevicesChanged_SubscribeUnsubscribe_SafeAcrossDispose()
+        {
+            var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
+
+            Action<IReadOnlyList<AudioDevice>, IReadOnlyList<AudioDevice>> handler = (playout, recording) => { };
+            platformAudio.DevicesChanged += handler;
+            platformAudio.Dispose();
+
+            Assert.DoesNotThrow(() => platformAudio.DevicesChanged -= handler);
+            Assert.DoesNotThrow(() => platformAudio.DevicesChanged += handler);
+            Assert.DoesNotThrow(() => platformAudio.Dispose());
+
+            yield break;
+        }
+
+        [UnityTest]
         public IEnumerator StartThenStopRecording_DoesNotThrow()
         {
             using var platformAudio = PlatformAudioTestHelper.TryCreateOrIgnore();
