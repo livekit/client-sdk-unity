@@ -49,55 +49,72 @@ namespace LiveKit.Proto {
             "b3RvLlZpZGVvQnVmZmVySW5mbxIUCgx0aW1lc3RhbXBfdXMYAyACKAMSLgoI",
             "cm90YXRpb24YBCACKA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24S",
             "LgoIbWV0YWRhdGEYBSABKAsyHC5saXZla2l0LnByb3RvLkZyYW1lTWV0YWRh",
-            "dGEiGwoZQ2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZSKHAQoTVmlkZW9Db252",
-            "ZXJ0UmVxdWVzdBIOCgZmbGlwX3kYASABKAgSLgoGYnVmZmVyGAIgAigLMh4u",
-            "bGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8SMAoIZHN0X3R5cGUYAyAC",
-            "KA4yHi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVyVHlwZSJlChRWaWRlb0Nv",
-            "bnZlcnRSZXNwb25zZRIPCgVlcnJvchgBIAEoCUgAEjEKBmJ1ZmZlchgCIAEo",
-            "CzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlckgAQgkKB21lc3Nh",
-            "Z2UiRAoPVmlkZW9SZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdo",
-            "dBgCIAIoDRISCgpmcmFtZV9yYXRlGAMgAigBIoMCCg9WaWRlb0J1ZmZlcklu",
-            "Zm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJU",
-            "eXBlEg0KBXdpZHRoGAIgAigNEg4KBmhlaWdodBgDIAIoDRIQCghkYXRhX3B0",
-            "chgEIAIoBBIOCgZzdHJpZGUYBiABKA0SQAoKY29tcG9uZW50cxgHIAMoCzIs",
-            "LmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvLkNvbXBvbmVudEluZm8a",
-            "PwoNQ29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgBIAIoBBIOCgZzdHJpZGUY",
-            "AiACKA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZpZGVvQnVmZmVyEi0KBmhh",
-            "bmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZpT3duZWRIYW5kbGUSLAoE",
-            "aW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZvIkwK",
-            "DUZyYW1lTWV0YWRhdGESFgoOdXNlcl90aW1lc3RhbXAYASABKAQSEAoIZnJh",
-            "bWVfaWQYAiABKA0SEQoJdXNlcl9kYXRhGAMgASgMIj8KD1ZpZGVvU3RyZWFt",
-            "SW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5wcm90by5WaWRlb1N0cmVh",
-            "bVR5cGUibwoQT3duZWRWaWRlb1N0cmVhbRItCgZoYW5kbGUYASACKAsyHS5s",
-            "aXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwKBGluZm8YAiACKAsyHi5s",
-            "aXZla2l0LnByb3RvLlZpZGVvU3RyZWFtSW5mbyKfAQoQVmlkZW9TdHJlYW1F",
-            "dmVudBIVCg1zdHJlYW1faGFuZGxlGAEgAigEEjsKDmZyYW1lX3JlY2VpdmVk",
-            "GAIgASgLMiEubGl2ZWtpdC5wcm90by5WaWRlb0ZyYW1lUmVjZWl2ZWRIABIs",
-            "CgNlb3MYAyABKAsyHS5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtRU9TSABC",
-            "CQoHbWVzc2FnZSK7AQoSVmlkZW9GcmFtZVJlY2VpdmVkEi8KBmJ1ZmZlchgB",
-            "IAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1ZmZlchIUCgx0aW1l",
-            "c3RhbXBfdXMYAiACKAMSLgoIcm90YXRpb24YAyACKA4yHC5saXZla2l0LnBy",
-            "b3RvLlZpZGVvUm90YXRpb24SLgoIbWV0YWRhdGEYBCABKAsyHC5saXZla2l0",
-            "LnByb3RvLkZyYW1lTWV0YWRhdGEiEAoOVmlkZW9TdHJlYW1FT1MiNgoVVmlk",
-            "ZW9Tb3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRoGAEgAigNEg4KBmhlaWdodBgC",
-            "IAIoDSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVr",
-            "aXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8KEE93bmVkVmlkZW9Tb3VyY2US",
-            "LQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRs",
-            "ZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJjZUlu",
-            "Zm8qOwoKVmlkZW9Db2RlYxIHCgNWUDgQABIICgRIMjY0EAESBwoDQVYxEAIS",
-            "BwoDVlA5EAMSCAoESDI2NRAEKmwKDVZpZGVvUm90YXRpb24SFAoQVklERU9f",
-            "Uk9UQVRJT05fMBAAEhUKEVZJREVPX1JPVEFUSU9OXzkwEAESFgoSVklERU9f",
-            "Uk9UQVRJT05fMTgwEAISFgoSVklERU9fUk9UQVRJT05fMjcwEAMqgQEKD1Zp",
-            "ZGVvQnVmZmVyVHlwZRIICgRSR0JBEAASCAoEQUJHUhABEggKBEFSR0IQAhII",
-            "CgRCR1JBEAMSCQoFUkdCMjQQBBIICgRJNDIwEAUSCQoFSTQyMEEQBhIICgRJ",
-            "NDIyEAcSCAoESTQ0NBAIEggKBEkwMTAQCRIICgROVjEyEAoqWQoPVmlkZW9T",
-            "dHJlYW1UeXBlEhcKE1ZJREVPX1NUUkVBTV9OQVRJVkUQABIWChJWSURFT19T",
-            "VFJFQU1fV0VCR0wQARIVChFWSURFT19TVFJFQU1fSFRNTBACKioKD1ZpZGVv",
-            "U291cmNlVHlwZRIXChNWSURFT19TT1VSQ0VfTkFUSVZFEABCEKoCDUxpdmVL",
-            "aXQuUHJvdG8="));
+            "dGEiGwoZQ2FwdHVyZVZpZGVvRnJhbWVSZXNwb25zZSI8ChZFbmNvZGVkVmlk",
+            "ZW9CdWZmZXJJbmZvEhAKCGRhdGFfcHRyGAEgAigEEhAKCGRhdGFfbGVuGAIg",
+            "AigEIrMCCh9DYXB0dXJlRW5jb2RlZFZpZGVvRnJhbWVSZXF1ZXN0EhUKDXNv",
+            "dXJjZV9oYW5kbGUYASACKAQSNQoGYnVmZmVyGAIgAigLMiUubGl2ZWtpdC5w",
+            "cm90by5FbmNvZGVkVmlkZW9CdWZmZXJJbmZvEigKBWNvZGVjGAMgAigOMhku",
+            "bGl2ZWtpdC5wcm90by5WaWRlb0NvZGVjEjMKCmZyYW1lX3R5cGUYBCACKA4y",
+            "Hy5saXZla2l0LnByb3RvLkVuY29kZWRGcmFtZVR5cGUSDQoFd2lkdGgYBSAC",
+            "KA0SDgoGaGVpZ2h0GAYgAigNEhQKDHRpbWVzdGFtcF91cxgHIAIoAxIuCght",
+            "ZXRhZGF0YRgIIAEoCzIcLmxpdmVraXQucHJvdG8uRnJhbWVNZXRhZGF0YSI0",
+            "CiBDYXB0dXJlRW5jb2RlZFZpZGVvRnJhbWVSZXNwb25zZRIQCghhY2NlcHRl",
+            "ZBgBIAIoCCI+CiVUYWtlRW5jb2RlZFZpZGVvU291cmNlRmVlZGJhY2tSZXF1",
+            "ZXN0EhUKDXNvdXJjZV9oYW5kbGUYASACKAQiRwoSRW5jb2RlZFJhdGVDb250",
+            "cm9sEhoKEnRhcmdldF9iaXRyYXRlX2JwcxgBIAIoBBIVCg1mcmFtZXJhdGVf",
+            "ZnBzGAIgAigBIn0KJlRha2VFbmNvZGVkVmlkZW9Tb3VyY2VGZWVkYmFja1Jl",
+            "c3BvbnNlEhoKEmtleWZyYW1lX3JlcXVlc3RlZBgBIAIoCBI3CgxyYXRlX2Nv",
+            "bnRyb2wYAiABKAsyIS5saXZla2l0LnByb3RvLkVuY29kZWRSYXRlQ29udHJv",
+            "bCKHAQoTVmlkZW9Db252ZXJ0UmVxdWVzdBIOCgZmbGlwX3kYASABKAgSLgoG",
+            "YnVmZmVyGAIgAigLMh4ubGl2ZWtpdC5wcm90by5WaWRlb0J1ZmZlckluZm8S",
+            "MAoIZHN0X3R5cGUYAyACKA4yHi5saXZla2l0LnByb3RvLlZpZGVvQnVmZmVy",
+            "VHlwZSJlChRWaWRlb0NvbnZlcnRSZXNwb25zZRIPCgVlcnJvchgBIAEoCUgA",
+            "EjEKBmJ1ZmZlchgCIAEoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb0J1",
+            "ZmZlckgAQgkKB21lc3NhZ2UiRAoPVmlkZW9SZXNvbHV0aW9uEg0KBXdpZHRo",
+            "GAEgAigNEg4KBmhlaWdodBgCIAIoDRISCgpmcmFtZV9yYXRlGAMgAigBIoMC",
+            "Cg9WaWRlb0J1ZmZlckluZm8SLAoEdHlwZRgBIAIoDjIeLmxpdmVraXQucHJv",
+            "dG8uVmlkZW9CdWZmZXJUeXBlEg0KBXdpZHRoGAIgAigNEg4KBmhlaWdodBgD",
+            "IAIoDRIQCghkYXRhX3B0chgEIAIoBBIOCgZzdHJpZGUYBiABKA0SQAoKY29t",
+            "cG9uZW50cxgHIAMoCzIsLmxpdmVraXQucHJvdG8uVmlkZW9CdWZmZXJJbmZv",
+            "LkNvbXBvbmVudEluZm8aPwoNQ29tcG9uZW50SW5mbxIQCghkYXRhX3B0chgB",
+            "IAIoBBIOCgZzdHJpZGUYAiACKA0SDAoEc2l6ZRgDIAIoDSJvChBPd25lZFZp",
+            "ZGVvQnVmZmVyEi0KBmhhbmRsZRgBIAIoCzIdLmxpdmVraXQucHJvdG8uRmZp",
+            "T3duZWRIYW5kbGUSLAoEaW5mbxgCIAIoCzIeLmxpdmVraXQucHJvdG8uVmlk",
+            "ZW9CdWZmZXJJbmZvIkwKDUZyYW1lTWV0YWRhdGESFgoOdXNlcl90aW1lc3Rh",
+            "bXAYASABKAQSEAoIZnJhbWVfaWQYAiABKA0SEQoJdXNlcl9kYXRhGAMgASgM",
+            "Ij8KD1ZpZGVvU3RyZWFtSW5mbxIsCgR0eXBlGAEgAigOMh4ubGl2ZWtpdC5w",
+            "cm90by5WaWRlb1N0cmVhbVR5cGUibwoQT3duZWRWaWRlb1N0cmVhbRItCgZo",
+            "YW5kbGUYASACKAsyHS5saXZla2l0LnByb3RvLkZmaU93bmVkSGFuZGxlEiwK",
+            "BGluZm8YAiACKAsyHi5saXZla2l0LnByb3RvLlZpZGVvU3RyZWFtSW5mbyKf",
+            "AQoQVmlkZW9TdHJlYW1FdmVudBIVCg1zdHJlYW1faGFuZGxlGAEgAigEEjsK",
+            "DmZyYW1lX3JlY2VpdmVkGAIgASgLMiEubGl2ZWtpdC5wcm90by5WaWRlb0Zy",
+            "YW1lUmVjZWl2ZWRIABIsCgNlb3MYAyABKAsyHS5saXZla2l0LnByb3RvLlZp",
+            "ZGVvU3RyZWFtRU9TSABCCQoHbWVzc2FnZSK7AQoSVmlkZW9GcmFtZVJlY2Vp",
+            "dmVkEi8KBmJ1ZmZlchgBIAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRl",
+            "b0J1ZmZlchIUCgx0aW1lc3RhbXBfdXMYAiACKAMSLgoIcm90YXRpb24YAyAC",
+            "KA4yHC5saXZla2l0LnByb3RvLlZpZGVvUm90YXRpb24SLgoIbWV0YWRhdGEY",
+            "BCABKAsyHC5saXZla2l0LnByb3RvLkZyYW1lTWV0YWRhdGEiEAoOVmlkZW9T",
+            "dHJlYW1FT1MiNgoVVmlkZW9Tb3VyY2VSZXNvbHV0aW9uEg0KBXdpZHRoGAEg",
+            "AigNEg4KBmhlaWdodBgCIAIoDSI/Cg9WaWRlb1NvdXJjZUluZm8SLAoEdHlw",
+            "ZRgBIAIoDjIeLmxpdmVraXQucHJvdG8uVmlkZW9Tb3VyY2VUeXBlIm8KEE93",
+            "bmVkVmlkZW9Tb3VyY2USLQoGaGFuZGxlGAEgAigLMh0ubGl2ZWtpdC5wcm90",
+            "by5GZmlPd25lZEhhbmRsZRIsCgRpbmZvGAIgAigLMh4ubGl2ZWtpdC5wcm90",
+            "by5WaWRlb1NvdXJjZUluZm8qOwoKVmlkZW9Db2RlYxIHCgNWUDgQABIICgRI",
+            "MjY0EAESBwoDQVYxEAISBwoDVlA5EAMSCAoESDI2NRAEKkIKEEVuY29kZWRG",
+            "cmFtZVR5cGUSFQoRRU5DT0RFRF9GUkFNRV9LRVkQABIXChNFTkNPREVEX0ZS",
+            "QU1FX0RFTFRBEAEqbAoNVmlkZW9Sb3RhdGlvbhIUChBWSURFT19ST1RBVElP",
+            "Tl8wEAASFQoRVklERU9fUk9UQVRJT05fOTAQARIWChJWSURFT19ST1RBVElP",
+            "Tl8xODAQAhIWChJWSURFT19ST1RBVElPTl8yNzAQAyqBAQoPVmlkZW9CdWZm",
+            "ZXJUeXBlEggKBFJHQkEQABIICgRBQkdSEAESCAoEQVJHQhACEggKBEJHUkEQ",
+            "AxIJCgVSR0IyNBAEEggKBEk0MjAQBRIJCgVJNDIwQRAGEggKBEk0MjIQBxII",
+            "CgRJNDQ0EAgSCAoESTAxMBAJEggKBE5WMTIQCipZCg9WaWRlb1N0cmVhbVR5",
+            "cGUSFwoTVklERU9fU1RSRUFNX05BVElWRRAAEhYKElZJREVPX1NUUkVBTV9X",
+            "RUJHTBABEhUKEVZJREVPX1NUUkVBTV9IVE1MEAIqRAoPVmlkZW9Tb3VyY2VU",
+            "eXBlEhcKE1ZJREVPX1NPVVJDRV9OQVRJVkUQABIYChRWSURFT19TT1VSQ0Vf",
+            "RU5DT0RFRBABQhCqAg1MaXZlS2l0LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.TrackReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.VideoCodec), typeof(global::LiveKit.Proto.EncodedFrameType), typeof(global::LiveKit.Proto.VideoRotation), typeof(global::LiveKit.Proto.VideoBufferType), typeof(global::LiveKit.Proto.VideoStreamType), typeof(global::LiveKit.Proto.VideoSourceType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamRequest), global::LiveKit.Proto.NewVideoStreamRequest.Parser, new[]{ "TrackHandle", "Type", "Format", "NormalizeStride", "QueueSizeFrames" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoStreamResponse), global::LiveKit.Proto.NewVideoStreamResponse.Parser, new[]{ "Stream" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoStreamFromParticipantRequest), global::LiveKit.Proto.VideoStreamFromParticipantRequest.Parser, new[]{ "ParticipantHandle", "Type", "TrackSource", "Format", "NormalizeStride", "QueueSizeFrames" }, null, null, null, null),
@@ -106,6 +123,12 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewVideoSourceResponse), global::LiveKit.Proto.NewVideoSourceResponse.Parser, new[]{ "Source" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureVideoFrameRequest), global::LiveKit.Proto.CaptureVideoFrameRequest.Parser, new[]{ "SourceHandle", "Buffer", "TimestampUs", "Rotation", "Metadata" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureVideoFrameResponse), global::LiveKit.Proto.CaptureVideoFrameResponse.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.EncodedVideoBufferInfo), global::LiveKit.Proto.EncodedVideoBufferInfo.Parser, new[]{ "DataPtr", "DataLen" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureEncodedVideoFrameRequest), global::LiveKit.Proto.CaptureEncodedVideoFrameRequest.Parser, new[]{ "SourceHandle", "Buffer", "Codec", "FrameType", "Width", "Height", "TimestampUs", "Metadata" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureEncodedVideoFrameResponse), global::LiveKit.Proto.CaptureEncodedVideoFrameResponse.Parser, new[]{ "Accepted" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TakeEncodedVideoSourceFeedbackRequest), global::LiveKit.Proto.TakeEncodedVideoSourceFeedbackRequest.Parser, new[]{ "SourceHandle" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.EncodedRateControl), global::LiveKit.Proto.EncodedRateControl.Parser, new[]{ "TargetBitrateBps", "FramerateFps" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.TakeEncodedVideoSourceFeedbackResponse), global::LiveKit.Proto.TakeEncodedVideoSourceFeedbackResponse.Parser, new[]{ "KeyframeRequested", "RateControl" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoConvertRequest), global::LiveKit.Proto.VideoConvertRequest.Parser, new[]{ "FlipY", "Buffer", "DstType" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoConvertResponse), global::LiveKit.Proto.VideoConvertResponse.Parser, new[]{ "Error", "Buffer" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.VideoResolution), global::LiveKit.Proto.VideoResolution.Parser, new[]{ "Width", "Height", "FrameRate" }, null, null, null, null),
@@ -132,6 +155,11 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("AV1")] Av1 = 2,
     [pbr::OriginalName("VP9")] Vp9 = 3,
     [pbr::OriginalName("H265")] H265 = 4,
+  }
+
+  public enum EncodedFrameType {
+    [pbr::OriginalName("ENCODED_FRAME_KEY")] EncodedFrameKey = 0,
+    [pbr::OriginalName("ENCODED_FRAME_DELTA")] EncodedFrameDelta = 1,
   }
 
   public enum VideoRotation {
@@ -167,6 +195,7 @@ namespace LiveKit.Proto {
 
   public enum VideoSourceType {
     [pbr::OriginalName("VIDEO_SOURCE_NATIVE")] VideoSourceNative = 0,
+    [pbr::OriginalName("VIDEO_SOURCE_ENCODED")] VideoSourceEncoded = 1,
   }
 
   #endregion
@@ -2623,6 +2652,1811 @@ namespace LiveKit.Proto {
 
   }
 
+  /// <summary>
+  /// Foreign-memory buffer containing one encoded video access unit.
+  /// The payload pointer only needs to remain valid for the duration of the
+  /// synchronous FFI request; the native implementation copies it before
+  /// returning.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class EncodedVideoBufferInfo : pb::IMessage<EncodedVideoBufferInfo>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<EncodedVideoBufferInfo> _parser = new pb::MessageParser<EncodedVideoBufferInfo>(() => new EncodedVideoBufferInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<EncodedVideoBufferInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodedVideoBufferInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodedVideoBufferInfo(EncodedVideoBufferInfo other) : this() {
+      _hasBits0 = other._hasBits0;
+      dataPtr_ = other.dataPtr_;
+      dataLen_ = other.dataLen_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodedVideoBufferInfo Clone() {
+      return new EncodedVideoBufferInfo(this);
+    }
+
+    /// <summary>Field number for the "data_ptr" field.</summary>
+    public const int DataPtrFieldNumber = 1;
+    private readonly static ulong DataPtrDefaultValue = 0UL;
+
+    private ulong dataPtr_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong DataPtr {
+      get { if ((_hasBits0 & 1) != 0) { return dataPtr_; } else { return DataPtrDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        dataPtr_ = value;
+      }
+    }
+    /// <summary>Gets whether the "data_ptr" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDataPtr {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "data_ptr" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDataPtr() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "data_len" field.</summary>
+    public const int DataLenFieldNumber = 2;
+    private readonly static ulong DataLenDefaultValue = 0UL;
+
+    private ulong dataLen_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong DataLen {
+      get { if ((_hasBits0 & 2) != 0) { return dataLen_; } else { return DataLenDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        dataLen_ = value;
+      }
+    }
+    /// <summary>Gets whether the "data_len" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasDataLen {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "data_len" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearDataLen() {
+      _hasBits0 &= ~2;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as EncodedVideoBufferInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(EncodedVideoBufferInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (DataPtr != other.DataPtr) return false;
+      if (DataLen != other.DataLen) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasDataPtr) hash ^= DataPtr.GetHashCode();
+      if (HasDataLen) hash ^= DataLen.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasDataPtr) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(DataPtr);
+      }
+      if (HasDataLen) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(DataLen);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasDataPtr) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(DataPtr);
+      }
+      if (HasDataLen) {
+        output.WriteRawTag(16);
+        output.WriteUInt64(DataLen);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasDataPtr) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(DataPtr);
+      }
+      if (HasDataLen) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(DataLen);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(EncodedVideoBufferInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasDataPtr) {
+        DataPtr = other.DataPtr;
+      }
+      if (other.HasDataLen) {
+        DataLen = other.DataLen;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            DataPtr = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            DataLen = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            DataPtr = input.ReadUInt64();
+            break;
+          }
+          case 16: {
+            DataLen = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Push one complete pre-encoded access unit to an encoded VideoSource.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CaptureEncodedVideoFrameRequest : pb::IMessage<CaptureEncodedVideoFrameRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CaptureEncodedVideoFrameRequest> _parser = new pb::MessageParser<CaptureEncodedVideoFrameRequest>(() => new CaptureEncodedVideoFrameRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CaptureEncodedVideoFrameRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CaptureEncodedVideoFrameRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CaptureEncodedVideoFrameRequest(CaptureEncodedVideoFrameRequest other) : this() {
+      _hasBits0 = other._hasBits0;
+      sourceHandle_ = other.sourceHandle_;
+      buffer_ = other.buffer_ != null ? other.buffer_.Clone() : null;
+      codec_ = other.codec_;
+      frameType_ = other.frameType_;
+      width_ = other.width_;
+      height_ = other.height_;
+      timestampUs_ = other.timestampUs_;
+      metadata_ = other.metadata_ != null ? other.metadata_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CaptureEncodedVideoFrameRequest Clone() {
+      return new CaptureEncodedVideoFrameRequest(this);
+    }
+
+    /// <summary>Field number for the "source_handle" field.</summary>
+    public const int SourceHandleFieldNumber = 1;
+    private readonly static ulong SourceHandleDefaultValue = 0UL;
+
+    private ulong sourceHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong SourceHandle {
+      get { if ((_hasBits0 & 1) != 0) { return sourceHandle_; } else { return SourceHandleDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        sourceHandle_ = value;
+      }
+    }
+    /// <summary>Gets whether the "source_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSourceHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "source_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSourceHandle() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "buffer" field.</summary>
+    public const int BufferFieldNumber = 2;
+    private global::LiveKit.Proto.EncodedVideoBufferInfo buffer_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.EncodedVideoBufferInfo Buffer {
+      get { return buffer_; }
+      set {
+        buffer_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "codec" field.</summary>
+    public const int CodecFieldNumber = 3;
+    private readonly static global::LiveKit.Proto.VideoCodec CodecDefaultValue = global::LiveKit.Proto.VideoCodec.Vp8;
+
+    private global::LiveKit.Proto.VideoCodec codec_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.VideoCodec Codec {
+      get { if ((_hasBits0 & 2) != 0) { return codec_; } else { return CodecDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        codec_ = value;
+      }
+    }
+    /// <summary>Gets whether the "codec" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCodec {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "codec" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCodec() {
+      _hasBits0 &= ~2;
+    }
+
+    /// <summary>Field number for the "frame_type" field.</summary>
+    public const int FrameTypeFieldNumber = 4;
+    private readonly static global::LiveKit.Proto.EncodedFrameType FrameTypeDefaultValue = global::LiveKit.Proto.EncodedFrameType.EncodedFrameKey;
+
+    private global::LiveKit.Proto.EncodedFrameType frameType_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.EncodedFrameType FrameType {
+      get { if ((_hasBits0 & 4) != 0) { return frameType_; } else { return FrameTypeDefaultValue; } }
+      set {
+        _hasBits0 |= 4;
+        frameType_ = value;
+      }
+    }
+    /// <summary>Gets whether the "frame_type" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFrameType {
+      get { return (_hasBits0 & 4) != 0; }
+    }
+    /// <summary>Clears the value of the "frame_type" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFrameType() {
+      _hasBits0 &= ~4;
+    }
+
+    /// <summary>Field number for the "width" field.</summary>
+    public const int WidthFieldNumber = 5;
+    private readonly static uint WidthDefaultValue = 0;
+
+    private uint width_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Width {
+      get { if ((_hasBits0 & 8) != 0) { return width_; } else { return WidthDefaultValue; } }
+      set {
+        _hasBits0 |= 8;
+        width_ = value;
+      }
+    }
+    /// <summary>Gets whether the "width" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasWidth {
+      get { return (_hasBits0 & 8) != 0; }
+    }
+    /// <summary>Clears the value of the "width" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearWidth() {
+      _hasBits0 &= ~8;
+    }
+
+    /// <summary>Field number for the "height" field.</summary>
+    public const int HeightFieldNumber = 6;
+    private readonly static uint HeightDefaultValue = 0;
+
+    private uint height_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Height {
+      get { if ((_hasBits0 & 16) != 0) { return height_; } else { return HeightDefaultValue; } }
+      set {
+        _hasBits0 |= 16;
+        height_ = value;
+      }
+    }
+    /// <summary>Gets whether the "height" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasHeight {
+      get { return (_hasBits0 & 16) != 0; }
+    }
+    /// <summary>Clears the value of the "height" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearHeight() {
+      _hasBits0 &= ~16;
+    }
+
+    /// <summary>Field number for the "timestamp_us" field.</summary>
+    public const int TimestampUsFieldNumber = 7;
+    private readonly static long TimestampUsDefaultValue = 0L;
+
+    private long timestampUs_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long TimestampUs {
+      get { if ((_hasBits0 & 32) != 0) { return timestampUs_; } else { return TimestampUsDefaultValue; } }
+      set {
+        _hasBits0 |= 32;
+        timestampUs_ = value;
+      }
+    }
+    /// <summary>Gets whether the "timestamp_us" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTimestampUs {
+      get { return (_hasBits0 & 32) != 0; }
+    }
+    /// <summary>Clears the value of the "timestamp_us" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTimestampUs() {
+      _hasBits0 &= ~32;
+    }
+
+    /// <summary>Field number for the "metadata" field.</summary>
+    public const int MetadataFieldNumber = 8;
+    private global::LiveKit.Proto.FrameMetadata metadata_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.FrameMetadata Metadata {
+      get { return metadata_; }
+      set {
+        metadata_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CaptureEncodedVideoFrameRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CaptureEncodedVideoFrameRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SourceHandle != other.SourceHandle) return false;
+      if (!object.Equals(Buffer, other.Buffer)) return false;
+      if (Codec != other.Codec) return false;
+      if (FrameType != other.FrameType) return false;
+      if (Width != other.Width) return false;
+      if (Height != other.Height) return false;
+      if (TimestampUs != other.TimestampUs) return false;
+      if (!object.Equals(Metadata, other.Metadata)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasSourceHandle) hash ^= SourceHandle.GetHashCode();
+      if (buffer_ != null) hash ^= Buffer.GetHashCode();
+      if (HasCodec) hash ^= Codec.GetHashCode();
+      if (HasFrameType) hash ^= FrameType.GetHashCode();
+      if (HasWidth) hash ^= Width.GetHashCode();
+      if (HasHeight) hash ^= Height.GetHashCode();
+      if (HasTimestampUs) hash ^= TimestampUs.GetHashCode();
+      if (metadata_ != null) hash ^= Metadata.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasSourceHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(SourceHandle);
+      }
+      if (buffer_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Buffer);
+      }
+      if (HasCodec) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Codec);
+      }
+      if (HasFrameType) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) FrameType);
+      }
+      if (HasWidth) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(Width);
+      }
+      if (HasHeight) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(Height);
+      }
+      if (HasTimestampUs) {
+        output.WriteRawTag(56);
+        output.WriteInt64(TimestampUs);
+      }
+      if (metadata_ != null) {
+        output.WriteRawTag(66);
+        output.WriteMessage(Metadata);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasSourceHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(SourceHandle);
+      }
+      if (buffer_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Buffer);
+      }
+      if (HasCodec) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Codec);
+      }
+      if (HasFrameType) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) FrameType);
+      }
+      if (HasWidth) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(Width);
+      }
+      if (HasHeight) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(Height);
+      }
+      if (HasTimestampUs) {
+        output.WriteRawTag(56);
+        output.WriteInt64(TimestampUs);
+      }
+      if (metadata_ != null) {
+        output.WriteRawTag(66);
+        output.WriteMessage(Metadata);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasSourceHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
+      }
+      if (buffer_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Buffer);
+      }
+      if (HasCodec) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Codec);
+      }
+      if (HasFrameType) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) FrameType);
+      }
+      if (HasWidth) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Width);
+      }
+      if (HasHeight) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Height);
+      }
+      if (HasTimestampUs) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(TimestampUs);
+      }
+      if (metadata_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Metadata);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CaptureEncodedVideoFrameRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasSourceHandle) {
+        SourceHandle = other.SourceHandle;
+      }
+      if (other.buffer_ != null) {
+        if (buffer_ == null) {
+          Buffer = new global::LiveKit.Proto.EncodedVideoBufferInfo();
+        }
+        Buffer.MergeFrom(other.Buffer);
+      }
+      if (other.HasCodec) {
+        Codec = other.Codec;
+      }
+      if (other.HasFrameType) {
+        FrameType = other.FrameType;
+      }
+      if (other.HasWidth) {
+        Width = other.Width;
+      }
+      if (other.HasHeight) {
+        Height = other.Height;
+      }
+      if (other.HasTimestampUs) {
+        TimestampUs = other.TimestampUs;
+      }
+      if (other.metadata_ != null) {
+        if (metadata_ == null) {
+          Metadata = new global::LiveKit.Proto.FrameMetadata();
+        }
+        Metadata.MergeFrom(other.Metadata);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            SourceHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (buffer_ == null) {
+              Buffer = new global::LiveKit.Proto.EncodedVideoBufferInfo();
+            }
+            input.ReadMessage(Buffer);
+            break;
+          }
+          case 24: {
+            Codec = (global::LiveKit.Proto.VideoCodec) input.ReadEnum();
+            break;
+          }
+          case 32: {
+            FrameType = (global::LiveKit.Proto.EncodedFrameType) input.ReadEnum();
+            break;
+          }
+          case 40: {
+            Width = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            Height = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            TimestampUs = input.ReadInt64();
+            break;
+          }
+          case 66: {
+            if (metadata_ == null) {
+              Metadata = new global::LiveKit.Proto.FrameMetadata();
+            }
+            input.ReadMessage(Metadata);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            SourceHandle = input.ReadUInt64();
+            break;
+          }
+          case 18: {
+            if (buffer_ == null) {
+              Buffer = new global::LiveKit.Proto.EncodedVideoBufferInfo();
+            }
+            input.ReadMessage(Buffer);
+            break;
+          }
+          case 24: {
+            Codec = (global::LiveKit.Proto.VideoCodec) input.ReadEnum();
+            break;
+          }
+          case 32: {
+            FrameType = (global::LiveKit.Proto.EncodedFrameType) input.ReadEnum();
+            break;
+          }
+          case 40: {
+            Width = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            Height = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            TimestampUs = input.ReadInt64();
+            break;
+          }
+          case 66: {
+            if (metadata_ == null) {
+              Metadata = new global::LiveKit.Proto.FrameMetadata();
+            }
+            input.ReadMessage(Metadata);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CaptureEncodedVideoFrameResponse : pb::IMessage<CaptureEncodedVideoFrameResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CaptureEncodedVideoFrameResponse> _parser = new pb::MessageParser<CaptureEncodedVideoFrameResponse>(() => new CaptureEncodedVideoFrameResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CaptureEncodedVideoFrameResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CaptureEncodedVideoFrameResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CaptureEncodedVideoFrameResponse(CaptureEncodedVideoFrameResponse other) : this() {
+      _hasBits0 = other._hasBits0;
+      accepted_ = other.accepted_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CaptureEncodedVideoFrameResponse Clone() {
+      return new CaptureEncodedVideoFrameResponse(this);
+    }
+
+    /// <summary>Field number for the "accepted" field.</summary>
+    public const int AcceptedFieldNumber = 1;
+    private readonly static bool AcceptedDefaultValue = false;
+
+    private bool accepted_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Accepted {
+      get { if ((_hasBits0 & 1) != 0) { return accepted_; } else { return AcceptedDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        accepted_ = value;
+      }
+    }
+    /// <summary>Gets whether the "accepted" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasAccepted {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "accepted" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearAccepted() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CaptureEncodedVideoFrameResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CaptureEncodedVideoFrameResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Accepted != other.Accepted) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasAccepted) hash ^= Accepted.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasAccepted) {
+        output.WriteRawTag(8);
+        output.WriteBool(Accepted);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasAccepted) {
+        output.WriteRawTag(8);
+        output.WriteBool(Accepted);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasAccepted) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CaptureEncodedVideoFrameResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasAccepted) {
+        Accepted = other.Accepted;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Accepted = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Accepted = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Consumes feedback accumulated by the pre-encoded passthrough encoder since
+  /// the previous call.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class TakeEncodedVideoSourceFeedbackRequest : pb::IMessage<TakeEncodedVideoSourceFeedbackRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TakeEncodedVideoSourceFeedbackRequest> _parser = new pb::MessageParser<TakeEncodedVideoSourceFeedbackRequest>(() => new TakeEncodedVideoSourceFeedbackRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<TakeEncodedVideoSourceFeedbackRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TakeEncodedVideoSourceFeedbackRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TakeEncodedVideoSourceFeedbackRequest(TakeEncodedVideoSourceFeedbackRequest other) : this() {
+      _hasBits0 = other._hasBits0;
+      sourceHandle_ = other.sourceHandle_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TakeEncodedVideoSourceFeedbackRequest Clone() {
+      return new TakeEncodedVideoSourceFeedbackRequest(this);
+    }
+
+    /// <summary>Field number for the "source_handle" field.</summary>
+    public const int SourceHandleFieldNumber = 1;
+    private readonly static ulong SourceHandleDefaultValue = 0UL;
+
+    private ulong sourceHandle_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong SourceHandle {
+      get { if ((_hasBits0 & 1) != 0) { return sourceHandle_; } else { return SourceHandleDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        sourceHandle_ = value;
+      }
+    }
+    /// <summary>Gets whether the "source_handle" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasSourceHandle {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "source_handle" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearSourceHandle() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as TakeEncodedVideoSourceFeedbackRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(TakeEncodedVideoSourceFeedbackRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SourceHandle != other.SourceHandle) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasSourceHandle) hash ^= SourceHandle.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasSourceHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(SourceHandle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasSourceHandle) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(SourceHandle);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasSourceHandle) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(SourceHandle);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(TakeEncodedVideoSourceFeedbackRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasSourceHandle) {
+        SourceHandle = other.SourceHandle;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            SourceHandle = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            SourceHandle = input.ReadUInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class EncodedRateControl : pb::IMessage<EncodedRateControl>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<EncodedRateControl> _parser = new pb::MessageParser<EncodedRateControl>(() => new EncodedRateControl());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<EncodedRateControl> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodedRateControl() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodedRateControl(EncodedRateControl other) : this() {
+      _hasBits0 = other._hasBits0;
+      targetBitrateBps_ = other.targetBitrateBps_;
+      framerateFps_ = other.framerateFps_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EncodedRateControl Clone() {
+      return new EncodedRateControl(this);
+    }
+
+    /// <summary>Field number for the "target_bitrate_bps" field.</summary>
+    public const int TargetBitrateBpsFieldNumber = 1;
+    private readonly static ulong TargetBitrateBpsDefaultValue = 0UL;
+
+    private ulong targetBitrateBps_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ulong TargetBitrateBps {
+      get { if ((_hasBits0 & 1) != 0) { return targetBitrateBps_; } else { return TargetBitrateBpsDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        targetBitrateBps_ = value;
+      }
+    }
+    /// <summary>Gets whether the "target_bitrate_bps" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasTargetBitrateBps {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "target_bitrate_bps" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearTargetBitrateBps() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "framerate_fps" field.</summary>
+    public const int FramerateFpsFieldNumber = 2;
+    private readonly static double FramerateFpsDefaultValue = 0D;
+
+    private double framerateFps_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public double FramerateFps {
+      get { if ((_hasBits0 & 2) != 0) { return framerateFps_; } else { return FramerateFpsDefaultValue; } }
+      set {
+        _hasBits0 |= 2;
+        framerateFps_ = value;
+      }
+    }
+    /// <summary>Gets whether the "framerate_fps" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasFramerateFps {
+      get { return (_hasBits0 & 2) != 0; }
+    }
+    /// <summary>Clears the value of the "framerate_fps" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearFramerateFps() {
+      _hasBits0 &= ~2;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as EncodedRateControl);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(EncodedRateControl other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TargetBitrateBps != other.TargetBitrateBps) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(FramerateFps, other.FramerateFps)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasTargetBitrateBps) hash ^= TargetBitrateBps.GetHashCode();
+      if (HasFramerateFps) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(FramerateFps);
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasTargetBitrateBps) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(TargetBitrateBps);
+      }
+      if (HasFramerateFps) {
+        output.WriteRawTag(17);
+        output.WriteDouble(FramerateFps);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasTargetBitrateBps) {
+        output.WriteRawTag(8);
+        output.WriteUInt64(TargetBitrateBps);
+      }
+      if (HasFramerateFps) {
+        output.WriteRawTag(17);
+        output.WriteDouble(FramerateFps);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasTargetBitrateBps) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt64Size(TargetBitrateBps);
+      }
+      if (HasFramerateFps) {
+        size += 1 + 8;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(EncodedRateControl other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasTargetBitrateBps) {
+        TargetBitrateBps = other.TargetBitrateBps;
+      }
+      if (other.HasFramerateFps) {
+        FramerateFps = other.FramerateFps;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TargetBitrateBps = input.ReadUInt64();
+            break;
+          }
+          case 17: {
+            FramerateFps = input.ReadDouble();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TargetBitrateBps = input.ReadUInt64();
+            break;
+          }
+          case 17: {
+            FramerateFps = input.ReadDouble();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class TakeEncodedVideoSourceFeedbackResponse : pb::IMessage<TakeEncodedVideoSourceFeedbackResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TakeEncodedVideoSourceFeedbackResponse> _parser = new pb::MessageParser<TakeEncodedVideoSourceFeedbackResponse>(() => new TakeEncodedVideoSourceFeedbackResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<TakeEncodedVideoSourceFeedbackResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[13]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TakeEncodedVideoSourceFeedbackResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TakeEncodedVideoSourceFeedbackResponse(TakeEncodedVideoSourceFeedbackResponse other) : this() {
+      _hasBits0 = other._hasBits0;
+      keyframeRequested_ = other.keyframeRequested_;
+      rateControl_ = other.rateControl_ != null ? other.rateControl_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TakeEncodedVideoSourceFeedbackResponse Clone() {
+      return new TakeEncodedVideoSourceFeedbackResponse(this);
+    }
+
+    /// <summary>Field number for the "keyframe_requested" field.</summary>
+    public const int KeyframeRequestedFieldNumber = 1;
+    private readonly static bool KeyframeRequestedDefaultValue = false;
+
+    private bool keyframeRequested_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool KeyframeRequested {
+      get { if ((_hasBits0 & 1) != 0) { return keyframeRequested_; } else { return KeyframeRequestedDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        keyframeRequested_ = value;
+      }
+    }
+    /// <summary>Gets whether the "keyframe_requested" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKeyframeRequested {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "keyframe_requested" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKeyframeRequested() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "rate_control" field.</summary>
+    public const int RateControlFieldNumber = 2;
+    private global::LiveKit.Proto.EncodedRateControl rateControl_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.EncodedRateControl RateControl {
+      get { return rateControl_; }
+      set {
+        rateControl_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as TakeEncodedVideoSourceFeedbackResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(TakeEncodedVideoSourceFeedbackResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (KeyframeRequested != other.KeyframeRequested) return false;
+      if (!object.Equals(RateControl, other.RateControl)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasKeyframeRequested) hash ^= KeyframeRequested.GetHashCode();
+      if (rateControl_ != null) hash ^= RateControl.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasKeyframeRequested) {
+        output.WriteRawTag(8);
+        output.WriteBool(KeyframeRequested);
+      }
+      if (rateControl_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(RateControl);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasKeyframeRequested) {
+        output.WriteRawTag(8);
+        output.WriteBool(KeyframeRequested);
+      }
+      if (rateControl_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(RateControl);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasKeyframeRequested) {
+        size += 1 + 1;
+      }
+      if (rateControl_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RateControl);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(TakeEncodedVideoSourceFeedbackResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasKeyframeRequested) {
+        KeyframeRequested = other.KeyframeRequested;
+      }
+      if (other.rateControl_ != null) {
+        if (rateControl_ == null) {
+          RateControl = new global::LiveKit.Proto.EncodedRateControl();
+        }
+        RateControl.MergeFrom(other.RateControl);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            KeyframeRequested = input.ReadBool();
+            break;
+          }
+          case 18: {
+            if (rateControl_ == null) {
+              RateControl = new global::LiveKit.Proto.EncodedRateControl();
+            }
+            input.ReadMessage(RateControl);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            KeyframeRequested = input.ReadBool();
+            break;
+          }
+          case 18: {
+            if (rateControl_ == null) {
+              RateControl = new global::LiveKit.Proto.EncodedRateControl();
+            }
+            input.ReadMessage(RateControl);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class VideoConvertRequest : pb::IMessage<VideoConvertRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -2639,7 +4473,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[8]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2951,7 +4785,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[9]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3247,7 +5081,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[10]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3566,7 +5400,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[11]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4344,7 +6178,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[12]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4598,7 +6432,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[13]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4916,7 +6750,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[14]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5130,7 +6964,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[15]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5384,7 +7218,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[16]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5732,7 +7566,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[17]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6093,7 +7927,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[18]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6255,7 +8089,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[19]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[25]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6522,7 +8356,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[20]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[26]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6736,7 +8570,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[21]; }
+      get { return global::LiveKit.Proto.VideoFrameReflection.Descriptor.MessageTypes[27]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
