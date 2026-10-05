@@ -845,7 +845,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1600, y: 1080}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1218777497
 MonoBehaviour:
@@ -867,7 +867,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1409bc8d8a29c493aabe6b46b0cf6afc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f5ede557de6a41fc8846bf88aed9e26, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a498c208deeab40c39b4ba609d7d222c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LiveKit::LiveKit.TokenSource
-  _config: {fileID: 11400000, guid: 246ede3a166cc4dd98e13ebcd6983c0a, type: 2}
+  _config: {fileID: 11400000, guid: 579d67c978ed34498b10f6baa7dbb633, type: 2}
 --- !u!114 &1980330950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1675,8 +1675,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AgentsRPG.LiveKitAgentSession
   _chatLog: {fileID: 1268769261}
   _muteButton: {fileID: 1022477005}
-  _churchWithStrawberryJuice: {fileID: 21300000, guid: b20a5557d3b4f4e22bd93574a4502366, type: 3}
-  _backgroundImage: {fileID: 1218777497}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
