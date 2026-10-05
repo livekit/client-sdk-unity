@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Agents.sln"
+    "dotnet.defaultSolution": "Agents.slnx"
 }
