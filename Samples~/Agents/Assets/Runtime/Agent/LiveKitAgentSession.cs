@@ -156,6 +156,10 @@ public class LiveKitAgentSession : MonoBehaviour
 
     /*
 
+    STT: Deepgram Nova-3
+    LLM: Gemma 4
+    TTS: Inworld Realtime TTS 2.0: Ronald
+
     [SerializeField]
     private Sprite _churchWithStrawberryJuice;
 
