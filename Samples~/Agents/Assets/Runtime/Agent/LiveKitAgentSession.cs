@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
-using LiveKit;
+using System.Threading.Tasks;
+using LiveKit;  
+using UnityEngine.UI;
 using UnityEngine;
 using RoomOptions = LiveKit.RoomOptions;
 
@@ -151,4 +153,26 @@ public class LiveKitAgentSession : MonoBehaviour
         }
         EndSession();
     }
+
+    /*
+
+    [SerializeField]
+    private Sprite _churchWithStrawberryJuice;
+
+    [SerializeField]
+    private Image _backgroundImage; 
+
+    protected virtual void OnRoomConnected(Room room)
+    {
+        room.LocalParticipant.RegisterRpcMethod("GiveStrawberryJuice", OnStrawberryJuiceGiven);
+    }
+
+    private async Task<string> OnStrawberryJuiceGiven(RpcInvocationData data)
+    {
+        Debug.Log("OnStrawberryJuiceGiven called");
+        _backgroundImage.sprite = _churchWithStrawberryJuice;
+        return await Task.FromResult("");
+    }
+
+    // */
 }
