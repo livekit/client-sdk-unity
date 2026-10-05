@@ -11,6 +11,9 @@ public class LiveKitAgentSession : MonoBehaviour
     [SerializeField] 
     private ChatLog _chatLog;
 
+    [SerializeField]
+    private MuteButton _muteButton;
+
     TokenSourceComponent _tokenSourceComponent;
     Room _room;
     PlatformAudioController _audio;
@@ -20,7 +23,26 @@ public class LiveKitAgentSession : MonoBehaviour
 
     public void Start()
     {
+        if (_muteButton != null)
+        {
+            _muteButton.Clicked += ToggleMute;
+            UpdateMuteButton();
+        }
         StartSession();
+    }
+
+    void ToggleMute()
+    {
+        if (_audio == null || !_audio.IsPublished) return;
+        _audio.SetMuted(!_audio.IsMuted);
+        UpdateMuteButton();
+    }
+
+    void UpdateMuteButton()
+    {
+        if (_muteButton == null) return;
+        _muteButton.Interactable = _audio != null && _audio.IsPublished;
+        _muteButton.SetMuted(_audio != null && _audio.IsMuted);
     }
 
     // Creates a bubble for a new reply and returns its sink; the transcription reader pushes
@@ -52,6 +74,7 @@ public class LiveKitAgentSession : MonoBehaviour
 
         _audio?.Dispose();
         _audio = null;
+        UpdateMuteButton();
 
         if (_room != null)
         {
@@ -106,6 +129,7 @@ public class LiveKitAgentSession : MonoBehaviour
             yield break;
         }
 
+        UpdateMuteButton();
         _transcription = new TranscriptionReader(_room, this, BeginReply);
         Debug.Log("[LiveKitAgentSession] Session ready.");
     }

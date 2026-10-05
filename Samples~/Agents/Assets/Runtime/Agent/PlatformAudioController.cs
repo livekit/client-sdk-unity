@@ -19,6 +19,16 @@ public sealed class PlatformAudioController : IDisposable
 
     public bool IsPublished { get; private set; }
 
+    public bool IsMuted => _source?.Muted ?? false;
+
+    // Mutes or unmutes the published mic track; a no-op before Publish succeeded.
+    public void SetMuted(bool muted)
+    {
+        if (_track == null) return;
+        ((ILocalTrack)_track).SetMute(muted);
+        Debug.Log($"[PlatformAudioController] Microphone {(muted ? "muted" : "unmuted")}.");
+    }
+
     // Creates the WebRTC ADM. This MUST run before Room.Connect so the SDK wires automatic
     // speaker playout for remote tracks to this ADM — otherwise remote (agent) audio is never
     // routed to an output and stays silent. Returns false if the ADM could not be created.
