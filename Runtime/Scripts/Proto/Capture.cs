@@ -25,53 +25,69 @@ namespace LiveKit.Proto {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg1jYXB0dXJlLnByb3RvEg1saXZla2l0LnByb3RvGgxoYW5kbGUucHJvdG8a",
-            "CnJvb20ucHJvdG8aEXZpZGVvX2ZyYW1lLnByb3RvIpQBChhQYXR0ZXJuVmlk",
-            "ZW9Tb3VyY2VDb25maWcSOAoKcmVzb2x1dGlvbhgBIAIoCzIkLmxpdmVraXQu",
-            "cHJvdG8uVmlkZW9Tb3VyY2VSZXNvbHV0aW9uEhUKDWZyYW1lcmF0ZV9mcHMY",
-            "AiACKA0SJwoHcGF0dGVybhgDIAIoDjIWLmxpdmVraXQucHJvdG8uUGF0dGVy",
-            "biJpChZDbG9ja1ZpZGVvU291cmNlQ29uZmlnEjgKCnJlc29sdXRpb24YASAC",
-            "KAsyJC5saXZla2l0LnByb3RvLlZpZGVvU291cmNlUmVzb2x1dGlvbhIVCg1m",
-            "cmFtZXJhdGVfZnBzGAIgAigNIqcCChFDYXB0dXJlU291cmNlSW5mbxIuCgRr",
-            "aW5kGAEgAigOMiAubGl2ZWtpdC5wcm90by5DYXB0dXJlU291cmNlS2luZBI4",
-            "CgpyZXNvbHV0aW9uGAIgAigLMiQubGl2ZWtpdC5wcm90by5WaWRlb1NvdXJj",
-            "ZVJlc29sdXRpb24SKAoFY29kZWMYAyABKA4yGS5saXZla2l0LnByb3RvLlZp",
-            "ZGVvQ29kZWMSRwobcmVjb21tZW5kZWRfcHVibGlzaF9vcHRpb25zGAQgAigL",
-            "MiIubGl2ZWtpdC5wcm90by5UcmFja1B1Ymxpc2hPcHRpb25zEjUKDHZpZGVv",
-            "X3NvdXJjZRgFIAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb1NvdXJj",
-            "ZSJzChJPd25lZENhcHR1cmVTb3VyY2USLQoGaGFuZGxlGAEgAigLMh0ubGl2",
-            "ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZRIuCgRpbmZvGAIgAigLMiAubGl2",
-            "ZWtpdC5wcm90by5DYXB0dXJlU291cmNlSW5mbyKxAQoXTmV3Q2FwdHVyZVNv",
-            "dXJjZVJlcXVlc3QSOgoHcGF0dGVybhgCIAEoCzInLmxpdmVraXQucHJvdG8u",
-            "UGF0dGVyblZpZGVvU291cmNlQ29uZmlnSAASNgoFY2xvY2sYBSABKAsyJS5s",
-            "aXZla2l0LnByb3RvLkNsb2NrVmlkZW9Tb3VyY2VDb25maWdIABIYChByZXF1",
-            "ZXN0X2FzeW5jX2lkGAMgASgEQggKBmNvbmZpZyIsChhOZXdDYXB0dXJlU291",
-            "cmNlUmVzcG9uc2USEAoIYXN5bmNfaWQYASACKAQifQoYTmV3Q2FwdHVyZVNv",
-            "dXJjZUNhbGxiYWNrEhAKCGFzeW5jX2lkGAEgAigEEg8KBWVycm9yGAIgASgJ",
-            "SAASMwoGc291cmNlGAMgASgLMiEubGl2ZWtpdC5wcm90by5Pd25lZENhcHR1",
-            "cmVTb3VyY2VIAEIJCgdtZXNzYWdlIi0KE1N0YXJ0Q2FwdHVyZVJlcXVlc3QS",
-            "FgoOY2FwdHVyZV9oYW5kbGUYASACKAQiJQoUU3RhcnRDYXB0dXJlUmVzcG9u",
-            "c2USDQoFZXJyb3IYASABKAkiLAoSU3RvcENhcHR1cmVSZXF1ZXN0EhYKDmNh",
-            "cHR1cmVfaGFuZGxlGAEgAigEIiQKE1N0b3BDYXB0dXJlUmVzcG9uc2USDQoF",
-            "ZXJyb3IYASABKAkiVAoPQ2FwdHVyZUZpbmlzaGVkEhcKD2ZyYW1lc19jYXB0",
-            "dXJlZBgBIAIoBBIoCgRleGl0GAIgAigOMhoubGl2ZWtpdC5wcm90by5DYXB0",
-            "dXJlRXhpdCIdCgxDYXB0dXJlRXJyb3ISDQoFZXJyb3IYASACKAkimQEKEkNh",
-            "cHR1cmVTb3VyY2VFdmVudBIWCg5jYXB0dXJlX2hhbmRsZRgBIAIoBBIyCghm",
-            "aW5pc2hlZBgCIAEoCzIeLmxpdmVraXQucHJvdG8uQ2FwdHVyZUZpbmlzaGVk",
-            "SAASLAoFZXJyb3IYAyABKAsyGy5saXZla2l0LnByb3RvLkNhcHR1cmVFcnJv",
-            "ckgAQgkKB21lc3NhZ2UqMQoHUGF0dGVybhIUChBQQVRURVJOX0dSQURJRU5U",
-            "EAASEAoMUEFUVEVSTl9MT0dPEAEqSQoRQ2FwdHVyZVNvdXJjZUtpbmQSGAoU",
-            "Q0FQVFVSRV9TT1VSQ0VfUElYRUwQABIaChZDQVBUVVJFX1NPVVJDRV9FTkNP",
-            "REVEEAEqRwoLQ2FwdHVyZUV4aXQSGAoUQ0FQVFVSRV9FWElUX1NUT1BQRUQQ",
-            "ABIeChpDQVBUVVJFX0VYSVRfRU5EX09GX1NUUkVBTRABQhCqAg1MaXZlS2l0",
+            "CnJvb20ucHJvdG8aEXZpZGVvX2ZyYW1lLnByb3RvImwKFEdzdHJlYW1lclJh",
+            "dGVDb250cm9sEg8KB2VsZW1lbnQYASACKAkSEAoIcHJvcGVydHkYAiACKAkS",
+            "MQoEdW5pdBgDIAIoDjIjLmxpdmVraXQucHJvdG8uR3N0cmVhbWVyQml0cmF0",
+            "ZVVuaXQizQEKGkdzdHJlYW1lclZpZGVvU291cmNlQ29uZmlnEhAKCHBpcGVs",
+            "aW5lGAEgAigJEigKBWNvZGVjGAIgASgOMhkubGl2ZWtpdC5wcm90by5WaWRl",
+            "b0NvZGVjEjgKCnJlc29sdXRpb24YAyABKAsyJC5saXZla2l0LnByb3RvLlZp",
+            "ZGVvU291cmNlUmVzb2x1dGlvbhI5CgxyYXRlX2NvbnRyb2wYBCABKAsyIy5s",
+            "aXZla2l0LnByb3RvLkdzdHJlYW1lclJhdGVDb250cm9sIpQBChhQYXR0ZXJu",
+            "VmlkZW9Tb3VyY2VDb25maWcSOAoKcmVzb2x1dGlvbhgBIAIoCzIkLmxpdmVr",
+            "aXQucHJvdG8uVmlkZW9Tb3VyY2VSZXNvbHV0aW9uEhUKDWZyYW1lcmF0ZV9m",
+            "cHMYAiACKA0SJwoHcGF0dGVybhgDIAIoDjIWLmxpdmVraXQucHJvdG8uUGF0",
+            "dGVybiJpChZDbG9ja1ZpZGVvU291cmNlQ29uZmlnEjgKCnJlc29sdXRpb24Y",
+            "ASACKAsyJC5saXZla2l0LnByb3RvLlZpZGVvU291cmNlUmVzb2x1dGlvbhIV",
+            "Cg1mcmFtZXJhdGVfZnBzGAIgAigNIqcCChFDYXB0dXJlU291cmNlSW5mbxIu",
+            "CgRraW5kGAEgAigOMiAubGl2ZWtpdC5wcm90by5DYXB0dXJlU291cmNlS2lu",
+            "ZBI4CgpyZXNvbHV0aW9uGAIgAigLMiQubGl2ZWtpdC5wcm90by5WaWRlb1Nv",
+            "dXJjZVJlc29sdXRpb24SKAoFY29kZWMYAyABKA4yGS5saXZla2l0LnByb3Rv",
+            "LlZpZGVvQ29kZWMSRwobcmVjb21tZW5kZWRfcHVibGlzaF9vcHRpb25zGAQg",
+            "AigLMiIubGl2ZWtpdC5wcm90by5UcmFja1B1Ymxpc2hPcHRpb25zEjUKDHZp",
+            "ZGVvX3NvdXJjZRgFIAIoCzIfLmxpdmVraXQucHJvdG8uT3duZWRWaWRlb1Nv",
+            "dXJjZSJzChJPd25lZENhcHR1cmVTb3VyY2USLQoGaGFuZGxlGAEgAigLMh0u",
+            "bGl2ZWtpdC5wcm90by5GZmlPd25lZEhhbmRsZRIuCgRpbmZvGAIgAigLMiAu",
+            "bGl2ZWtpdC5wcm90by5DYXB0dXJlU291cmNlSW5mbyLxAQoXTmV3Q2FwdHVy",
+            "ZVNvdXJjZVJlcXVlc3QSPgoJZ3N0cmVhbWVyGAEgASgLMikubGl2ZWtpdC5w",
+            "cm90by5Hc3RyZWFtZXJWaWRlb1NvdXJjZUNvbmZpZ0gAEjoKB3BhdHRlcm4Y",
+            "AiABKAsyJy5saXZla2l0LnByb3RvLlBhdHRlcm5WaWRlb1NvdXJjZUNvbmZp",
+            "Z0gAEjYKBWNsb2NrGAUgASgLMiUubGl2ZWtpdC5wcm90by5DbG9ja1ZpZGVv",
+            "U291cmNlQ29uZmlnSAASGAoQcmVxdWVzdF9hc3luY19pZBgDIAEoBEIICgZj",
+            "b25maWciLAoYTmV3Q2FwdHVyZVNvdXJjZVJlc3BvbnNlEhAKCGFzeW5jX2lk",
+            "GAEgAigEIn0KGE5ld0NhcHR1cmVTb3VyY2VDYWxsYmFjaxIQCghhc3luY19p",
+            "ZBgBIAIoBBIPCgVlcnJvchgCIAEoCUgAEjMKBnNvdXJjZRgDIAEoCzIhLmxp",
+            "dmVraXQucHJvdG8uT3duZWRDYXB0dXJlU291cmNlSABCCQoHbWVzc2FnZSIt",
+            "ChNTdGFydENhcHR1cmVSZXF1ZXN0EhYKDmNhcHR1cmVfaGFuZGxlGAEgAigE",
+            "IiUKFFN0YXJ0Q2FwdHVyZVJlc3BvbnNlEg0KBWVycm9yGAEgASgJIiwKElN0",
+            "b3BDYXB0dXJlUmVxdWVzdBIWCg5jYXB0dXJlX2hhbmRsZRgBIAIoBCIkChNT",
+            "dG9wQ2FwdHVyZVJlc3BvbnNlEg0KBWVycm9yGAEgASgJIlQKD0NhcHR1cmVG",
+            "aW5pc2hlZBIXCg9mcmFtZXNfY2FwdHVyZWQYASACKAQSKAoEZXhpdBgCIAIo",
+            "DjIaLmxpdmVraXQucHJvdG8uQ2FwdHVyZUV4aXQiTAoMQ2FwdHVyZUVycm9y",
+            "Eg0KBWVycm9yGAEgAigJEi0KBGtpbmQYAiACKA4yHy5saXZla2l0LnByb3Rv",
+            "LkNhcHR1cmVFcnJvcktpbmQimQEKEkNhcHR1cmVTb3VyY2VFdmVudBIWCg5j",
+            "YXB0dXJlX2hhbmRsZRgBIAIoBBIyCghmaW5pc2hlZBgCIAEoCzIeLmxpdmVr",
+            "aXQucHJvdG8uQ2FwdHVyZUZpbmlzaGVkSAASLAoFZXJyb3IYAyABKAsyGy5s",
+            "aXZla2l0LnByb3RvLkNhcHR1cmVFcnJvckgAQgkKB21lc3NhZ2UqVwoUR3N0",
+            "cmVhbWVyQml0cmF0ZVVuaXQSHgoaR1NUUkVBTUVSX0JJVFJBVEVfVU5JVF9C",
+            "UFMQABIfChtHU1RSRUFNRVJfQklUUkFURV9VTklUX0tCUFMQASoxCgdQYXR0",
+            "ZXJuEhQKEFBBVFRFUk5fR1JBRElFTlQQABIQCgxQQVRURVJOX0xPR08QASpJ",
+            "ChFDYXB0dXJlU291cmNlS2luZBIYChRDQVBUVVJFX1NPVVJDRV9QSVhFTBAA",
+            "EhoKFkNBUFRVUkVfU09VUkNFX0VOQ09ERUQQASpHCgtDYXB0dXJlRXhpdBIY",
+            "ChRDQVBUVVJFX0VYSVRfU1RPUFBFRBAAEh4KGkNBUFRVUkVfRVhJVF9FTkRf",
+            "T0ZfU1RSRUFNEAEqbgoQQ2FwdHVyZUVycm9yS2luZBIdChlDQVBUVVJFX0VS",
+            "Uk9SX0tJTkRfU09VUkNFEAASGgoWQ0FQVFVSRV9FUlJPUl9LSU5EX1JUQxAB",
+            "Eh8KG0NBUFRVUkVfRVJST1JfS0lORF9QQU5JQ0tFRBACQhCqAg1MaXZlS2l0",
             "LlByb3Rv"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::LiveKit.Proto.HandleReflection.Descriptor, global::LiveKit.Proto.RoomReflection.Descriptor, global::LiveKit.Proto.VideoFrameReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.Pattern), typeof(global::LiveKit.Proto.CaptureSourceKind), typeof(global::LiveKit.Proto.CaptureExit), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LiveKit.Proto.GstreamerBitrateUnit), typeof(global::LiveKit.Proto.Pattern), typeof(global::LiveKit.Proto.CaptureSourceKind), typeof(global::LiveKit.Proto.CaptureExit), typeof(global::LiveKit.Proto.CaptureErrorKind), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GstreamerRateControl), global::LiveKit.Proto.GstreamerRateControl.Parser, new[]{ "Element", "Property", "Unit" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.GstreamerVideoSourceConfig), global::LiveKit.Proto.GstreamerVideoSourceConfig.Parser, new[]{ "Pipeline", "Codec", "Resolution", "RateControl" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.PatternVideoSourceConfig), global::LiveKit.Proto.PatternVideoSourceConfig.Parser, new[]{ "Resolution", "FramerateFps", "Pattern" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.ClockVideoSourceConfig), global::LiveKit.Proto.ClockVideoSourceConfig.Parser, new[]{ "Resolution", "FramerateFps" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureSourceInfo), global::LiveKit.Proto.CaptureSourceInfo.Parser, new[]{ "Kind", "Resolution", "Codec", "RecommendedPublishOptions", "VideoSource" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.OwnedCaptureSource), global::LiveKit.Proto.OwnedCaptureSource.Parser, new[]{ "Handle", "Info" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewCaptureSourceRequest), global::LiveKit.Proto.NewCaptureSourceRequest.Parser, new[]{ "Pattern", "Clock", "RequestAsyncId" }, new[]{ "Config" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewCaptureSourceRequest), global::LiveKit.Proto.NewCaptureSourceRequest.Parser, new[]{ "Gstreamer", "Pattern", "Clock", "RequestAsyncId" }, new[]{ "Config" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewCaptureSourceResponse), global::LiveKit.Proto.NewCaptureSourceResponse.Parser, new[]{ "AsyncId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.NewCaptureSourceCallback), global::LiveKit.Proto.NewCaptureSourceCallback.Parser, new[]{ "AsyncId", "Error", "Source" }, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.StartCaptureRequest), global::LiveKit.Proto.StartCaptureRequest.Parser, new[]{ "CaptureHandle" }, null, null, null, null),
@@ -79,7 +95,7 @@ namespace LiveKit.Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.StopCaptureRequest), global::LiveKit.Proto.StopCaptureRequest.Parser, new[]{ "CaptureHandle" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.StopCaptureResponse), global::LiveKit.Proto.StopCaptureResponse.Parser, new[]{ "Error" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureFinished), global::LiveKit.Proto.CaptureFinished.Parser, new[]{ "FramesCaptured", "Exit" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureError), global::LiveKit.Proto.CaptureError.Parser, new[]{ "Error" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureError), global::LiveKit.Proto.CaptureError.Parser, new[]{ "Error", "Kind" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LiveKit.Proto.CaptureSourceEvent), global::LiveKit.Proto.CaptureSourceEvent.Parser, new[]{ "CaptureHandle", "Finished", "Error" }, new[]{ "Message" }, null, null, null)
           }));
     }
@@ -87,6 +103,14 @@ namespace LiveKit.Proto {
 
   }
   #region Enums
+  /// <summary>
+  /// Bitrate unit expected by a GStreamer encoder property.
+  /// </summary>
+  public enum GstreamerBitrateUnit {
+    [pbr::OriginalName("GSTREAMER_BITRATE_UNIT_BPS")] Bps = 0,
+    [pbr::OriginalName("GSTREAMER_BITRATE_UNIT_KBPS")] Kbps = 1,
+  }
+
   /// <summary>
   /// Test patterns built into livekit-capture.
   /// </summary>
@@ -129,9 +153,736 @@ namespace LiveKit.Proto {
     [pbr::OriginalName("CAPTURE_EXIT_END_OF_STREAM")] EndOfStream = 1,
   }
 
+  /// <summary>
+  /// Why a capture ended with an error.
+  /// </summary>
+  public enum CaptureErrorKind {
+    /// <summary>
+    /// The capture source failed or violated its contract.
+    /// </summary>
+    [pbr::OriginalName("CAPTURE_ERROR_KIND_SOURCE")] Source = 0,
+    /// <summary>
+    /// The RTC video source rejected a frame.
+    /// </summary>
+    [pbr::OriginalName("CAPTURE_ERROR_KIND_RTC")] Rtc = 1,
+    /// <summary>
+    /// The pump thread panicked.
+    /// </summary>
+    [pbr::OriginalName("CAPTURE_ERROR_KIND_PANICKED")] Panicked = 2,
+  }
+
   #endregion
 
   #region Messages
+  /// <summary>
+  /// Binding from WebRTC rate-control targets to a GStreamer encoder property.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GstreamerRateControl : pb::IMessage<GstreamerRateControl>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GstreamerRateControl> _parser = new pb::MessageParser<GstreamerRateControl>(() => new GstreamerRateControl());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GstreamerRateControl> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GstreamerRateControl() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GstreamerRateControl(GstreamerRateControl other) : this() {
+      _hasBits0 = other._hasBits0;
+      element_ = other.element_;
+      property_ = other.property_;
+      unit_ = other.unit_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GstreamerRateControl Clone() {
+      return new GstreamerRateControl(this);
+    }
+
+    /// <summary>Field number for the "element" field.</summary>
+    public const int ElementFieldNumber = 1;
+    private readonly static string ElementDefaultValue = "";
+
+    private string element_;
+    /// <summary>
+    /// Name of the encoder element in the pipeline (e.g. `lk_encoder`).
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Element {
+      get { return element_ ?? ElementDefaultValue; }
+      set {
+        element_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "element" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasElement {
+      get { return element_ != null; }
+    }
+    /// <summary>Clears the value of the "element" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearElement() {
+      element_ = null;
+    }
+
+    /// <summary>Field number for the "property" field.</summary>
+    public const int PropertyFieldNumber = 2;
+    private readonly static string PropertyDefaultValue = "";
+
+    private string property_;
+    /// <summary>
+    /// Bitrate property to set on the element (e.g. `bitrate` for x264enc,
+    /// `target-bitrate` for vp8enc/vp9enc).
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Property {
+      get { return property_ ?? PropertyDefaultValue; }
+      set {
+        property_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "property" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasProperty {
+      get { return property_ != null; }
+    }
+    /// <summary>Clears the value of the "property" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearProperty() {
+      property_ = null;
+    }
+
+    /// <summary>Field number for the "unit" field.</summary>
+    public const int UnitFieldNumber = 3;
+    private readonly static global::LiveKit.Proto.GstreamerBitrateUnit UnitDefaultValue = global::LiveKit.Proto.GstreamerBitrateUnit.Bps;
+
+    private global::LiveKit.Proto.GstreamerBitrateUnit unit_;
+    /// <summary>
+    /// Unit the property expects.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.GstreamerBitrateUnit Unit {
+      get { if ((_hasBits0 & 1) != 0) { return unit_; } else { return UnitDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        unit_ = value;
+      }
+    }
+    /// <summary>Gets whether the "unit" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasUnit {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "unit" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearUnit() {
+      _hasBits0 &= ~1;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GstreamerRateControl);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GstreamerRateControl other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Element != other.Element) return false;
+      if (Property != other.Property) return false;
+      if (Unit != other.Unit) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasElement) hash ^= Element.GetHashCode();
+      if (HasProperty) hash ^= Property.GetHashCode();
+      if (HasUnit) hash ^= Unit.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasElement) {
+        output.WriteRawTag(10);
+        output.WriteString(Element);
+      }
+      if (HasProperty) {
+        output.WriteRawTag(18);
+        output.WriteString(Property);
+      }
+      if (HasUnit) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Unit);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasElement) {
+        output.WriteRawTag(10);
+        output.WriteString(Element);
+      }
+      if (HasProperty) {
+        output.WriteRawTag(18);
+        output.WriteString(Property);
+      }
+      if (HasUnit) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Unit);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasElement) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Element);
+      }
+      if (HasProperty) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Property);
+      }
+      if (HasUnit) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Unit);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GstreamerRateControl other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasElement) {
+        Element = other.Element;
+      }
+      if (other.HasProperty) {
+        Property = other.Property;
+      }
+      if (other.HasUnit) {
+        Unit = other.Unit;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Element = input.ReadString();
+            break;
+          }
+          case 18: {
+            Property = input.ReadString();
+            break;
+          }
+          case 24: {
+            Unit = (global::LiveKit.Proto.GstreamerBitrateUnit) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Element = input.ReadString();
+            break;
+          }
+          case 18: {
+            Property = input.ReadString();
+            break;
+          }
+          case 24: {
+            Unit = (global::LiveKit.Proto.GstreamerBitrateUnit) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Encoded ingest from a GStreamer pipeline.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class GstreamerVideoSourceConfig : pb::IMessage<GstreamerVideoSourceConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GstreamerVideoSourceConfig> _parser = new pb::MessageParser<GstreamerVideoSourceConfig>(() => new GstreamerVideoSourceConfig());
+    private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GstreamerVideoSourceConfig> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GstreamerVideoSourceConfig() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GstreamerVideoSourceConfig(GstreamerVideoSourceConfig other) : this() {
+      _hasBits0 = other._hasBits0;
+      pipeline_ = other.pipeline_;
+      codec_ = other.codec_;
+      resolution_ = other.resolution_ != null ? other.resolution_.Clone() : null;
+      rateControl_ = other.rateControl_ != null ? other.rateControl_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GstreamerVideoSourceConfig Clone() {
+      return new GstreamerVideoSourceConfig(this);
+    }
+
+    /// <summary>Field number for the "pipeline" field.</summary>
+    public const int PipelineFieldNumber = 1;
+    private readonly static string PipelineDefaultValue = "";
+
+    private string pipeline_;
+    /// <summary>
+    /// GStreamer launch description for the encoded producer pipeline.
+    /// Must contain `appsink name=lk_appsink`, or leave exactly one encoded
+    /// video source pad unlinked for the source to attach one to.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Pipeline {
+      get { return pipeline_ ?? PipelineDefaultValue; }
+      set {
+        pipeline_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+    /// <summary>Gets whether the "pipeline" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasPipeline {
+      get { return pipeline_ != null; }
+    }
+    /// <summary>Clears the value of the "pipeline" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPipeline() {
+      pipeline_ = null;
+    }
+
+    /// <summary>Field number for the "codec" field.</summary>
+    public const int CodecFieldNumber = 2;
+    private readonly static global::LiveKit.Proto.VideoCodec CodecDefaultValue = global::LiveKit.Proto.VideoCodec.Vp8;
+
+    private global::LiveKit.Proto.VideoCodec codec_;
+    /// <summary>
+    /// Codec expected from the pipeline; inferred from pipeline caps when
+    /// omitted.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.VideoCodec Codec {
+      get { if ((_hasBits0 & 1) != 0) { return codec_; } else { return CodecDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        codec_ = value;
+      }
+    }
+    /// <summary>Gets whether the "codec" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasCodec {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "codec" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearCodec() {
+      _hasBits0 &= ~1;
+    }
+
+    /// <summary>Field number for the "resolution" field.</summary>
+    public const int ResolutionFieldNumber = 3;
+    private global::LiveKit.Proto.VideoSourceResolution resolution_;
+    /// <summary>
+    /// Encoded frame resolution. When omitted, it is discovered from the
+    /// pipeline's negotiated caps; when set, the pipeline output is verified
+    /// against it.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.VideoSourceResolution Resolution {
+      get { return resolution_; }
+      set {
+        resolution_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "rate_control" field.</summary>
+    public const int RateControlFieldNumber = 4;
+    private global::LiveKit.Proto.GstreamerRateControl rateControl_;
+    /// <summary>
+    /// Forwards WebRTC rate-control targets to an encoder element's bitrate
+    /// property. Without this, the pipeline encodes at a fixed bitrate.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.GstreamerRateControl RateControl {
+      get { return rateControl_; }
+      set {
+        rateControl_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GstreamerVideoSourceConfig);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GstreamerVideoSourceConfig other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Pipeline != other.Pipeline) return false;
+      if (Codec != other.Codec) return false;
+      if (!object.Equals(Resolution, other.Resolution)) return false;
+      if (!object.Equals(RateControl, other.RateControl)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HasPipeline) hash ^= Pipeline.GetHashCode();
+      if (HasCodec) hash ^= Codec.GetHashCode();
+      if (resolution_ != null) hash ^= Resolution.GetHashCode();
+      if (rateControl_ != null) hash ^= RateControl.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HasPipeline) {
+        output.WriteRawTag(10);
+        output.WriteString(Pipeline);
+      }
+      if (HasCodec) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Codec);
+      }
+      if (resolution_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Resolution);
+      }
+      if (rateControl_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(RateControl);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HasPipeline) {
+        output.WriteRawTag(10);
+        output.WriteString(Pipeline);
+      }
+      if (HasCodec) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Codec);
+      }
+      if (resolution_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Resolution);
+      }
+      if (rateControl_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(RateControl);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HasPipeline) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Pipeline);
+      }
+      if (HasCodec) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Codec);
+      }
+      if (resolution_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Resolution);
+      }
+      if (rateControl_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RateControl);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GstreamerVideoSourceConfig other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HasPipeline) {
+        Pipeline = other.Pipeline;
+      }
+      if (other.HasCodec) {
+        Codec = other.Codec;
+      }
+      if (other.resolution_ != null) {
+        if (resolution_ == null) {
+          Resolution = new global::LiveKit.Proto.VideoSourceResolution();
+        }
+        Resolution.MergeFrom(other.Resolution);
+      }
+      if (other.rateControl_ != null) {
+        if (rateControl_ == null) {
+          RateControl = new global::LiveKit.Proto.GstreamerRateControl();
+        }
+        RateControl.MergeFrom(other.RateControl);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Pipeline = input.ReadString();
+            break;
+          }
+          case 16: {
+            Codec = (global::LiveKit.Proto.VideoCodec) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (resolution_ == null) {
+              Resolution = new global::LiveKit.Proto.VideoSourceResolution();
+            }
+            input.ReadMessage(Resolution);
+            break;
+          }
+          case 34: {
+            if (rateControl_ == null) {
+              RateControl = new global::LiveKit.Proto.GstreamerRateControl();
+            }
+            input.ReadMessage(RateControl);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            Pipeline = input.ReadString();
+            break;
+          }
+          case 16: {
+            Codec = (global::LiveKit.Proto.VideoCodec) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (resolution_ == null) {
+              Resolution = new global::LiveKit.Proto.VideoSourceResolution();
+            }
+            input.ReadMessage(Resolution);
+            break;
+          }
+          case 34: {
+            if (rateControl_ == null) {
+              RateControl = new global::LiveKit.Proto.GstreamerRateControl();
+            }
+            input.ReadMessage(RateControl);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   /// <summary>
   /// Test pattern rendered on the GPU.
   /// </summary>
@@ -151,7 +902,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[0]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -477,7 +1228,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[1]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -744,7 +1495,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[2]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1163,7 +1914,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[3]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1424,7 +2175,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[4]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1447,6 +2198,9 @@ namespace LiveKit.Proto {
       _hasBits0 = other._hasBits0;
       requestAsyncId_ = other.requestAsyncId_;
       switch (other.ConfigCase) {
+        case ConfigOneofCase.Gstreamer:
+          Gstreamer = other.Gstreamer.Clone();
+          break;
         case ConfigOneofCase.Pattern:
           Pattern = other.Pattern.Clone();
           break;
@@ -1462,6 +2216,18 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NewCaptureSourceRequest Clone() {
       return new NewCaptureSourceRequest(this);
+    }
+
+    /// <summary>Field number for the "gstreamer" field.</summary>
+    public const int GstreamerFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.GstreamerVideoSourceConfig Gstreamer {
+      get { return configCase_ == ConfigOneofCase.Gstreamer ? (global::LiveKit.Proto.GstreamerVideoSourceConfig) config_ : null; }
+      set {
+        config_ = value;
+        configCase_ = value == null ? ConfigOneofCase.None : ConfigOneofCase.Gstreamer;
+      }
     }
 
     /// <summary>Field number for the "pattern" field.</summary>
@@ -1519,6 +2285,7 @@ namespace LiveKit.Proto {
     /// <summary>Enum of possible cases for the "config" oneof.</summary>
     public enum ConfigOneofCase {
       None = 0,
+      Gstreamer = 1,
       Pattern = 2,
       Clock = 5,
     }
@@ -1551,6 +2318,7 @@ namespace LiveKit.Proto {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (!object.Equals(Gstreamer, other.Gstreamer)) return false;
       if (!object.Equals(Pattern, other.Pattern)) return false;
       if (!object.Equals(Clock, other.Clock)) return false;
       if (RequestAsyncId != other.RequestAsyncId) return false;
@@ -1562,6 +2330,7 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (configCase_ == ConfigOneofCase.Gstreamer) hash ^= Gstreamer.GetHashCode();
       if (configCase_ == ConfigOneofCase.Pattern) hash ^= Pattern.GetHashCode();
       if (configCase_ == ConfigOneofCase.Clock) hash ^= Clock.GetHashCode();
       if (HasRequestAsyncId) hash ^= RequestAsyncId.GetHashCode();
@@ -1584,6 +2353,10 @@ namespace LiveKit.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (configCase_ == ConfigOneofCase.Gstreamer) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Gstreamer);
+      }
       if (configCase_ == ConfigOneofCase.Pattern) {
         output.WriteRawTag(18);
         output.WriteMessage(Pattern);
@@ -1606,6 +2379,10 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (configCase_ == ConfigOneofCase.Gstreamer) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Gstreamer);
+      }
       if (configCase_ == ConfigOneofCase.Pattern) {
         output.WriteRawTag(18);
         output.WriteMessage(Pattern);
@@ -1628,6 +2405,9 @@ namespace LiveKit.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (configCase_ == ConfigOneofCase.Gstreamer) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Gstreamer);
+      }
       if (configCase_ == ConfigOneofCase.Pattern) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Pattern);
       }
@@ -1653,6 +2433,12 @@ namespace LiveKit.Proto {
         RequestAsyncId = other.RequestAsyncId;
       }
       switch (other.ConfigCase) {
+        case ConfigOneofCase.Gstreamer:
+          if (Gstreamer == null) {
+            Gstreamer = new global::LiveKit.Proto.GstreamerVideoSourceConfig();
+          }
+          Gstreamer.MergeFrom(other.Gstreamer);
+          break;
         case ConfigOneofCase.Pattern:
           if (Pattern == null) {
             Pattern = new global::LiveKit.Proto.PatternVideoSourceConfig();
@@ -1686,6 +2472,15 @@ namespace LiveKit.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
+          case 10: {
+            global::LiveKit.Proto.GstreamerVideoSourceConfig subBuilder = new global::LiveKit.Proto.GstreamerVideoSourceConfig();
+            if (configCase_ == ConfigOneofCase.Gstreamer) {
+              subBuilder.MergeFrom(Gstreamer);
+            }
+            input.ReadMessage(subBuilder);
+            Gstreamer = subBuilder;
+            break;
+          }
           case 18: {
             global::LiveKit.Proto.PatternVideoSourceConfig subBuilder = new global::LiveKit.Proto.PatternVideoSourceConfig();
             if (configCase_ == ConfigOneofCase.Pattern) {
@@ -1727,6 +2522,15 @@ namespace LiveKit.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
+          case 10: {
+            global::LiveKit.Proto.GstreamerVideoSourceConfig subBuilder = new global::LiveKit.Proto.GstreamerVideoSourceConfig();
+            if (configCase_ == ConfigOneofCase.Gstreamer) {
+              subBuilder.MergeFrom(Gstreamer);
+            }
+            input.ReadMessage(subBuilder);
+            Gstreamer = subBuilder;
+            break;
+          }
           case 18: {
             global::LiveKit.Proto.PatternVideoSourceConfig subBuilder = new global::LiveKit.Proto.PatternVideoSourceConfig();
             if (configCase_ == ConfigOneofCase.Pattern) {
@@ -1772,7 +2576,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[5]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1987,7 +2791,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[6]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2339,7 +3143,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[7]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2553,7 +3357,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[8]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2771,7 +3575,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[9]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2985,7 +3789,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[10]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3198,7 +4002,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[11]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3457,6 +4261,7 @@ namespace LiveKit.Proto {
   {
     private static readonly pb::MessageParser<CaptureError> _parser = new pb::MessageParser<CaptureError>(() => new CaptureError());
     private pb::UnknownFieldSet _unknownFields;
+    private int _hasBits0;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pb::MessageParser<CaptureError> Parser { get { return _parser; } }
@@ -3464,7 +4269,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[12]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3484,7 +4289,9 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CaptureError(CaptureError other) : this() {
+      _hasBits0 = other._hasBits0;
       error_ = other.error_;
+      kind_ = other.kind_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3520,6 +4327,33 @@ namespace LiveKit.Proto {
       error_ = null;
     }
 
+    /// <summary>Field number for the "kind" field.</summary>
+    public const int KindFieldNumber = 2;
+    private readonly static global::LiveKit.Proto.CaptureErrorKind KindDefaultValue = global::LiveKit.Proto.CaptureErrorKind.Source;
+
+    private global::LiveKit.Proto.CaptureErrorKind kind_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::LiveKit.Proto.CaptureErrorKind Kind {
+      get { if ((_hasBits0 & 1) != 0) { return kind_; } else { return KindDefaultValue; } }
+      set {
+        _hasBits0 |= 1;
+        kind_ = value;
+      }
+    }
+    /// <summary>Gets whether the "kind" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasKind {
+      get { return (_hasBits0 & 1) != 0; }
+    }
+    /// <summary>Clears the value of the "kind" field</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearKind() {
+      _hasBits0 &= ~1;
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -3536,6 +4370,7 @@ namespace LiveKit.Proto {
         return true;
       }
       if (Error != other.Error) return false;
+      if (Kind != other.Kind) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3544,6 +4379,7 @@ namespace LiveKit.Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (HasError) hash ^= Error.GetHashCode();
+      if (HasKind) hash ^= Kind.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3566,6 +4402,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Error);
       }
+      if (HasKind) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Kind);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3580,6 +4420,10 @@ namespace LiveKit.Proto {
         output.WriteRawTag(10);
         output.WriteString(Error);
       }
+      if (HasKind) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Kind);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3592,6 +4436,9 @@ namespace LiveKit.Proto {
       int size = 0;
       if (HasError) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
+      }
+      if (HasKind) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Kind);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3607,6 +4454,9 @@ namespace LiveKit.Proto {
       }
       if (other.HasError) {
         Error = other.Error;
+      }
+      if (other.HasKind) {
+        Kind = other.Kind;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -3631,6 +4481,10 @@ namespace LiveKit.Proto {
             Error = input.ReadString();
             break;
           }
+          case 16: {
+            Kind = (global::LiveKit.Proto.CaptureErrorKind) input.ReadEnum();
+            break;
+          }
         }
       }
     #endif
@@ -3652,6 +4506,10 @@ namespace LiveKit.Proto {
             break;
           case 10: {
             Error = input.ReadString();
+            break;
+          }
+          case 16: {
+            Kind = (global::LiveKit.Proto.CaptureErrorKind) input.ReadEnum();
             break;
           }
         }
@@ -3681,7 +4539,7 @@ namespace LiveKit.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[13]; }
+      get { return global::LiveKit.Proto.CaptureReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
