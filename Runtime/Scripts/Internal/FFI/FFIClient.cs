@@ -107,6 +107,23 @@ namespace LiveKit.Internal.FFI
         {
             InitializeSdk();
         }
+
+        // The Editor raises Application.quitting when Play mode stops, so Quit() disposes the
+        // client at the end of every Play session. With a domain reload the next session starts
+        // from fresh statics; with Enter Play Mode Options skipping the reload, _isDisposed stays
+        // true and every event from Rust is dropped, so connects time out waiting for
+        // ReadyForRoomEventRequest. Bring the client back up for the new session instead.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ReinitializeOnEnterPlayMode()
+        {
+            if (!_isDisposed)
+                return;
+
+            _isDisposed = false;
+            AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+            AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+            InitializeSdk();
+        }
 #else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
