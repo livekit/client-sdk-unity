@@ -276,7 +276,25 @@ namespace LiveKit.Internal.FFI
                 }
             );
             ClearPendingCallbacks();
+            ClearEventSubscribers();
             Utils.Debug("FFIServer - Disposed");
+        }
+
+        // Every subscriber holds native handles that the DisposeRequest just invalidated. Drop them so
+        // rooms and streams left over from an earlier Play session are not kept alive by this
+        // singleton once it is re-initialized without a domain reload.
+        private void ClearEventSubscribers()
+        {
+            DisconnectReceived = null;
+            PanicReceived = null;
+            RoomEventReceived = null;
+            TrackEventReceived = null;
+            RpcMethodInvocationReceived = null;
+            VideoStreamEventReceived = null;
+            AudioStreamEventReceived = null;
+            ByteStreamReaderEventReceived = null;
+            TextStreamReaderEventReceived = null;
+            DataTrackStreamEventReceived = null;
         }
 
         internal void RegisterPendingCallback<TCallback>(
