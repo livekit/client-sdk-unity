@@ -1,0 +1,9 @@
+#:schema https://raw.githubusercontent.com/livekit/verwalter/main/schemas/v1.json
+
+[packages."io.livekit.livekit-sdk"]
+path = "."
+versioning.files = [
+  "package.json",
+  { path = "package.json", regex = 'releases/tag/v(?<version>[^"]+)' },
+  { path = "README.md", regex = '`#v(?<version>\d[^`]*)`' },
+]

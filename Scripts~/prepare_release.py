@@ -1,6 +1,5 @@
 import argparse
 import configparser
-import json
 import os
 from pathlib import Path
 import shutil
@@ -10,18 +9,6 @@ import sys
 import download_libs
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-
-
-def update_package_json(version):
-    print(f"\n=== Updating package.json to version {version} ===")
-    with open("package.json", "r") as f:
-        data = json.load(f)
-    data["version"] = version
-    data["changelogUrl"] = f"https://github.com/livekit/client-sdk-unity/releases/tag/v{version}"
-    with open("package.json", "w") as f:
-        json.dump(data, f, indent=2)
-        f.write("\n")
-    print("Done.")
 
 
 def update_version_ini(ffi_version):
@@ -70,7 +57,6 @@ def stage_all_changes():
     print("\n=== Staging all changes ===")
     subprocess.run([
         "git", "add",
-        "package.json",
         "version.ini",
         "Runtime/Plugins",
         "client-sdk-rust~",
@@ -82,14 +68,12 @@ def stage_all_changes():
 def main():
     os.chdir(REPO_ROOT)
 
-    parser = argparse.ArgumentParser(description="Prepare the repo for a new release.")
-    parser.add_argument("sdk_version", help="SDK version (e.g. 1.4.0)")
+    parser = argparse.ArgumentParser(description="Update the repo to a new FFI version. verwalter owns the SDK version.")
     parser.add_argument("ffi_version", help="FFI version (e.g. 0.12.53)")
     args = parser.parse_args()
 
-    print(f"Preparing release: SDK v{args.sdk_version}, FFI v{args.ffi_version}")
+    print(f"Updating FFI to v{args.ffi_version}")
 
-    update_package_json(args.sdk_version)
     update_version_ini(args.ffi_version)
     download_ffi_binaries()
     update_submodule(args.ffi_version)
