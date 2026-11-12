@@ -107,6 +107,23 @@ namespace LiveKit.Internal.FFI
         {
             InitializeSdk();
         }
+
+        // The Editor raises Application.quitting when Play mode stops, so Quit() disposes the
+        // client at the end of every Play session. With a domain reload the next session starts
+        // from fresh statics; with Enter Play Mode Options skipping the reload, _isDisposed stays
+        // true and every event from Rust is dropped, so connects time out waiting for
+        // ReadyForRoomEventRequest. Bring the client back up for the new session instead.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ReinitializeOnEnterPlayMode()
+        {
+            if (!_isDisposed)
+                return;
+
+            _isDisposed = false;
+            AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+            AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+            InitializeSdk();
+        }
 #else
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void Init()
@@ -259,7 +276,25 @@ namespace LiveKit.Internal.FFI
                 }
             );
             ClearPendingCallbacks();
+            ClearEventSubscribers();
             Utils.Debug("FFIServer - Disposed");
+        }
+
+        // Every subscriber holds native handles that the DisposeRequest just invalidated. Drop them so
+        // rooms and streams left over from an earlier Play session are not kept alive by this
+        // singleton once it is re-initialized without a domain reload.
+        private void ClearEventSubscribers()
+        {
+            DisconnectReceived = null;
+            PanicReceived = null;
+            RoomEventReceived = null;
+            TrackEventReceived = null;
+            RpcMethodInvocationReceived = null;
+            VideoStreamEventReceived = null;
+            AudioStreamEventReceived = null;
+            ByteStreamReaderEventReceived = null;
+            TextStreamReaderEventReceived = null;
+            DataTrackStreamEventReceived = null;
         }
 
         internal void RegisterPendingCallback<TCallback>(
