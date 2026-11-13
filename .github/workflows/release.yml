@@ -4,9 +4,10 @@
 name: Release
 
 on:
+  # No branch filter: an rc PR from pre-release.yml targets the branch it
+  # was run on. The job condition below decides which PRs release.
   pull_request:
     types: [closed]
-    branches: [main]
   # Re-run by hand after a fix: `verwalter release` resumes from the
   # current state (tag, release) and skips what is done.
   workflow_dispatch:
