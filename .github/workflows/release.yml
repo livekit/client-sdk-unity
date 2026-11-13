@@ -1,0 +1,36 @@
+# After the release PR merges: tag and create the GitHub release. The
+# package is installed by git URL and tag, so the tag is the whole release.
+# There is no build job and no publish job.
+name: Release
+
+on:
+  # No branch filter: an rc PR from pre-release.yml targets the branch it
+  # was run on. The job condition below decides which PRs release.
+  pull_request:
+    types: [closed]
+  # Re-run by hand after a fix: `verwalter release` resumes from the
+  # current state (tag, release) and skips what is done.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # Only a release PR the tool opened: the branch prefix alone would let
+    # any pushed `release/*` branch start a release. The author is the
+    # GitHub App of `app-client-id`. Without an App, it is github-actions[bot].
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.user.login == 'verwalter-release[bot]' && contains(github.event.pull_request.body, '<!-- verwalter release -->'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The merge commit itself: a push to main right after the merge
+          # must not move the tag.
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.sha }}
+          fetch-depth: 0
+      - uses: livekit/verwalter@359985c1e5567b17ae84db0241fbb305c383f89e # v0.30.0
+        with:
+          command: release
+          app-client-id: ${{ secrets.VERWALTER_RELEASE_CLIENT_ID }}
+          app-private-key: ${{ secrets.VERWALTER_RELEASE_APP_KEY }}

@@ -32,7 +32,8 @@ Scripts~/build_ffi_locally.sh <platform> [build_type]
 ### Other scripts in `Scripts~/`
 - `download_libs.py` — downloads the prebuilt FFI binaries for all platforms; the release tag is pinned in `version.ini`
 - `generate_proto.sh` — regenerates `Runtime/Scripts/Proto/` from the protobuf definitions in `client-sdk-rust~/livekit-ffi/protocol` (requires `protoc`)
-- `build_docs.sh`, `prepare_release.py`, `unity_test_results_utils.py` — docs generation, release preparation, CI test-result parsing
+- `prepare_release.py <ffi_version>` — updates the FFI: `version.ini`, the prebuilt binaries, the submodule and the generated protobuf code. It does not touch the SDK version
+- `build_docs.sh`, `unity_test_results_utils.py` — docs generation, CI test-result parsing
 
 ### Run tests
 Tests require a local LiveKit server running:
@@ -78,6 +79,9 @@ Key internal files:
 - `Samples~/Basic` — minimal connection example, also used as the CI build target
 - `Samples~/Meet` — more complete multi-participant example (LiveKit Meet-like), default project for `run_unity.sh`
 - `Samples~/Agents` — connect to an agent and display the transcript
+
+### Releases
+[verwalter](https://github.com/livekit/verwalter) releases the package. Every PR that changes the package adds a changeset file in `.changeset/` (`verwalter changeset --level patch|minor|major`), or carries the `internal` label. Each push to `main` updates one release PR. Merging it bumps `package.json`, writes `CHANGELOG.md`, tags `vX.Y.Z` and creates the GitHub release. Never edit the version by hand.
 
 ### Rust Submodule
 `client-sdk-rust~/` is a git submodule pointing to the shared Rust SDK. The `~` suffix tells Unity to ignore the directory.
