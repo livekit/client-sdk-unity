@@ -98,6 +98,7 @@ namespace LiveKit.Internal.FFI
             Application.quitting += Quit;
         }
 
+
         static void OnBeforeAssemblyReload()
         {
             Instance.Dispose();
