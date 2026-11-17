@@ -32,7 +32,7 @@ Scripts~/build_ffi_locally.sh <platform> [build_type]
 ### Other scripts in `Scripts~/`
 - `download_libs.py` — downloads the prebuilt FFI binaries for all platforms; the release tag is pinned in `version.ini`
 - `generate_proto.sh` — regenerates `Runtime/Scripts/Proto/` from the protobuf definitions in `client-sdk-rust~/livekit-ffi/protocol` (requires `protoc`)
-- `prepare_release.py <ffi_version>` — updates the FFI: `version.ini`, the prebuilt binaries, the submodule and the generated protobuf code. It does not touch the SDK version
+- `update_ffi.py <ffi_version>` — updates the FFI: `version.ini`, the prebuilt binaries, the submodule and the generated protobuf code. It does not touch the SDK version
 - `build_docs.sh`, `unity_test_results_utils.py` — docs generation, CI test-result parsing
 
 ### Run tests
