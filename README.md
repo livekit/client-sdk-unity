@@ -89,7 +89,7 @@ cd  client-sdk-unity
 ```
   
 Or you can import the Git url `https://github.com/livekit/client-sdk-unity.git` from the package manager. 
-If you want to use tagged release versions, use `https://github.com/livekit/client-sdk-unity.git#vX.X.X`, for example with `#v1.3.5`.
+If you want to use tagged release versions, use `https://github.com/livekit/client-sdk-unity.git#vX.X.X`, for example with `#v2.1.1`.
 
 ### Using OpenUPM
 
