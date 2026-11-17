@@ -4,6 +4,5 @@
 path = "."
 versioning.files = [
   "package.json",
-  { path = "package.json", regex = 'releases/tag/v(?<version>[^"]+)' },
   { path = "README.md", regex = '`#v(?<version>\d[^`]*)`' },
 ]
