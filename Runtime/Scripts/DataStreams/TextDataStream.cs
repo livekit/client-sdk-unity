@@ -193,6 +193,7 @@ namespace LiveKit
             if (ReplyToStreamId != null) proto.ReplyToStreamId = ReplyToStreamId;
             proto.AttachedStreamIds.AddRange(AttachedStreamIds);
             if (Generated != null) proto.Generated = Generated.Value;
+            if (Compress != null) proto.Compress = Compress.Value;
             return proto;
         }
     }
