@@ -214,6 +214,7 @@ namespace LiveKit
             if (MimeType != null) proto.MimeType = MimeType;
             if (Name != null) proto.Name = Name;
             if (TotalLength != null) proto.TotalLength = TotalLength.Value;
+            if (Compress != null) proto.Compress = Compress.Value;
             return proto;
         }
     }
