@@ -270,6 +270,14 @@ jobs:
            Library-${{ env.UNITY_PROJECT_PATH }}-${{ matrix.targetPlatform }}-
            Library-${{ env.UNITY_PROJECT_PATH }}-
            Library-
+     - name: Pin Unity Hub 3.x
+       # Hub 4 (Homebrew, Nov 2026) removed `--headless install`, which game-ci/unity-builder@v4 uses.
+       # unity-builder skips its own Hub install when /Applications/Unity Hub.app already exists.
+       run: |
+         curl -fsSL -o "$RUNNER_TEMP/hub.dmg" https://public-cdn.cloud.unity3d.com/hub/prod/3.22.6/UnityHubSetup-3.22.6-arm64.dmg
+         hdiutil attach "$RUNNER_TEMP/hub.dmg" -nobrowse -mountpoint /Volumes/UnityHub
+         cp -R "/Volumes/UnityHub/Unity Hub.app" /Applications/
+         hdiutil detach /Volumes/UnityHub
      - name: Build
        uses: game-ci/unity-builder@v4
        env:
@@ -280,6 +288,7 @@ jobs:
          projectPath: ${{ env.UNITY_PROJECT_PATH }}
          unityVersion: ${{ matrix.unityVersion }}
          targetPlatform: ${{ matrix.targetPlatform }}
+         cacheUnityInstallationOnMac: true
      - name: Upload Build
        uses: actions/upload-artifact@v4
        with:
