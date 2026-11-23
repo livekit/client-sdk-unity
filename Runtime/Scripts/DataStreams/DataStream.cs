@@ -212,6 +212,14 @@ namespace LiveKit
         public List<string> DestinationIdentities { get; set; } = new List<string>();
         public string Id { get; set; }
 
+        /// <summary>
+        /// Whether to compress the payload when every recipient supports it. Applies to
+        /// <c>SendText</c> and <c>SendFile</c> only; incrementally written streams are never
+        /// compressed. Defaults to <c>true</c> when unset. Set to <c>false</c> for payloads
+        /// that don't compress, such as data that's already compressed.
+        /// </summary>
+        public bool? Compress { get; set; }
+
         protected void RequireTopic()
         {
             if (Topic == null)
