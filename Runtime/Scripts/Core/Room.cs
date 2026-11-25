@@ -116,6 +116,11 @@ namespace LiveKit
         // that calls Disconnect() re-entrantly is a no-op; reset by OnConnect so a Room
         // can be connected again after a disconnect.
         private bool _disposed = false;
+        // True from Connect() until its callback arrives. A Disconnect() in that window
+        // has no handle to close yet, so it is remembered in _disconnectRequested and
+        // carried out by OnConnect as soon as the handle exists.
+        private bool _connecting = false;
+        private bool _disconnectRequested = false;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
 
@@ -180,6 +185,12 @@ namespace LiveKit
 
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
+            // A second connect on a live or connecting room would overwrite RoomHandle and
+            // subscribe the handlers twice, leaking the first native room.
+            if (_connecting || RoomHandle != null)
+                throw new InvalidOperationException(
+                    "Room is already connecting or connected. Call Disconnect() and wait for it to complete before connecting again.");
+
             Utils.Debug("Connect....");
             using var request = FFIBridge.Instance.NewRequest<ConnectRequest>();
             var connect = request.request;
@@ -187,10 +198,20 @@ namespace LiveKit
             connect.Token = token;
             connect.Options = options.ToProto();
 
-            var instruction = new ConnectInstruction(request.RequestAsyncId, this, options);
-            using var response = request.Send();
-            Utils.Debug($"Connect response.... {response}");
-            return instruction;
+            _connecting = true;
+            _disconnectRequested = false;
+            try
+            {
+                var instruction = new ConnectInstruction(request.RequestAsyncId, this, options);
+                using var response = request.Send();
+                Utils.Debug($"Connect response.... {response}");
+                return instruction;
+            }
+            catch
+            {
+                _connecting = false;
+                throw;
+            }
         }
 
         /// <summary>
@@ -200,12 +221,19 @@ namespace LiveKit
         /// <see cref="DisconnectReason.ClientInitiated"/>, synchronously and with the
         /// room's handles still live — so one teardown path covers both.
         /// <see cref="Dispose"/> goes through here too. Calling this from a handler of
-        /// those events, or on a room that already disconnected, is a no-op. So is a
-        /// call while <see cref="Connect"/> is still pending: that connect completes,
-        /// and the app has to disconnect again once it has.
+        /// those events, or on a room that already disconnected, is a no-op. A call
+        /// while <see cref="Connect"/> is still pending is remembered: when the connect
+        /// completes the room is torn down right away (reported as
+        /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>)
+        /// and <see cref="Connected"/> is never raised.
         /// </summary>
         public void Disconnect()
         {
+            if (_connecting)
+            {
+                _disconnectRequested = true;
+                return;
+            }
             if (_disposed || RoomHandle == null)
                 return;
             Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
@@ -655,12 +683,24 @@ namespace LiveKit
             }
         }
 
-        internal void OnConnect(ConnectCallback info)
+        // The connect failed or was cancelled: nothing to tear down, and a Disconnect()
+        // requested meanwhile is satisfied.
+        internal void OnConnectFailed()
         {
+            _connecting = false;
+            _disconnectRequested = false;
+        }
+
+        internal void OnConnect(ConnectCallback info, RoomOptions options)
+        {
+            _connecting = false;
             RoomHandle = FfiHandle.FromOwnedHandle(info.Result.Room.Handle);
             // A Room may be connected again after a disconnect: each connect starts a
             // fresh lifecycle.
             _disposed = false;
+
+            // Needs the room handle, so it can only be built once that is set.
+            E2EEManager = options.E2EE != null ? new E2EEManager(RoomHandle, options.E2EE) : null;
 
             UpdateFromInfo(info.Result.Room.Info);
             LocalParticipant = new LocalParticipant(info.Result.LocalParticipant, this);
@@ -682,6 +722,15 @@ namespace LiveKit
             {
                 readyRequest.request.RoomHandle = (ulong)RoomHandle.DangerousGetHandle();
                 using var readyResponse = readyRequest.Send();
+            }
+
+            // Disconnect() was called while this connect was pending: close the room now
+            // that it has a handle. Connected is never raised for it.
+            if (_disconnectRequested)
+            {
+                _disconnectRequested = false;
+                Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
+                return;
             }
 
             // The core recorded this transition during connect, before this room was
@@ -770,12 +819,11 @@ namespace LiveKit
             {
                 if (success)
                 {
-                    if (_roomOptions.E2EE != null)
-                    {
-                        _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
-                    }
-
-                    _room.OnConnect(e);
+                    _room.OnConnect(e, _roomOptions);
+                }
+                else
+                {
+                    _room.OnConnectFailed();
                 }
             }
             finally
@@ -790,6 +838,7 @@ namespace LiveKit
 
         void OnCanceled()
         {
+            _room.OnConnectFailed();
             IsError = true;
             IsDone = true;
         }
