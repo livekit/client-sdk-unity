@@ -189,7 +189,7 @@ namespace LiveKit
             // subscribe the handlers twice, leaking the first native room.
             if (_connecting || RoomHandle != null)
                 throw new InvalidOperationException(
-                    "Room is already connecting or connected. Call Disconnect() and wait for it to complete before connecting again.");
+                    "Room is already connecting or connected. Call Disconnect() and, if a Connect() is still pending, wait for its ConnectInstruction to complete before connecting again.");
 
             Utils.Debug("Connect....");
             using var request = FFIBridge.Instance.NewRequest<ConnectRequest>();
@@ -224,8 +224,9 @@ namespace LiveKit
         /// those events, or on a room that already disconnected, is a no-op. A call
         /// while <see cref="Connect"/> is still pending is remembered: when the connect
         /// completes the room is torn down right away (reported as
-        /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>)
-        /// and <see cref="Connected"/> is never raised.
+        /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>),
+        /// <see cref="Connected"/> is never raised, and the pending
+        /// <see cref="ConnectInstruction"/> completes with <c>IsError</c> set.
         /// </summary>
         public void Disconnect()
         {
@@ -691,7 +692,9 @@ namespace LiveKit
             _disconnectRequested = false;
         }
 
-        internal void OnConnect(ConnectCallback info, RoomOptions options)
+        // Returns whether Connected was raised; false when the room was torn down
+        // before that, so the ConnectInstruction does not report a success.
+        internal bool OnConnect(ConnectCallback info, RoomOptions options)
         {
             _connecting = false;
             RoomHandle = FfiHandle.FromOwnedHandle(info.Result.Room.Handle);
@@ -730,7 +733,7 @@ namespace LiveKit
             {
                 _disconnectRequested = false;
                 Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
-                return;
+                return false;
             }
 
             // The core recorded this transition during connect, before this room was
@@ -741,8 +744,9 @@ namespace LiveKit
             // A ConnectionStateChanged handler may already have disconnected the room;
             // Connected is not raised on a torn-down room.
             if (_disposed)
-                return;
+                return false;
             Connected?.Invoke(this);
+            return true;
         }
 
         private void OnDisconnectReceived(DisconnectCallback e)
@@ -819,7 +823,7 @@ namespace LiveKit
             {
                 if (success)
                 {
-                    _room.OnConnect(e, _roomOptions);
+                    success = _room.OnConnect(e, _roomOptions);
                 }
                 else
                 {

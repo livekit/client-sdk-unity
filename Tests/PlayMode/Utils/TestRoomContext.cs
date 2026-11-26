@@ -69,6 +69,7 @@ namespace LiveKit.PlayModeTests.Utils
         {
             ConnectionOptions options = _connectionOptions[index];
             var room = Rooms[index];
+            ConnectionError = null;
             var token = CreateToken(options);
             var roomOptions = new RoomOptions { Dynacast = options.Dynacast, E2EE = options.E2EE };
             var connect = room.Connect(options.ServerUrl ?? _serverUrl, token, roomOptions);

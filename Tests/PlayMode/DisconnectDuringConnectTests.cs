@@ -43,6 +43,7 @@ namespace LiveKit.PlayModeTests
             yield return done.Wait();
             Assert.IsNull(done.Error, "Room was not disconnected after the pending connect completed.");
 
+            Assert.IsNotNull(context.ConnectionError, "The pending connect reported success for a room disconnected mid-connect.");
             Assert.AreEqual(0, connected, "Connected must not be raised for a room disconnected mid-connect.");
             Assert.AreEqual(DisconnectReason.ClientInitiated, reason);
             Assert.IsFalse(room.IsConnected);
@@ -64,7 +65,7 @@ namespace LiveKit.PlayModeTests
             yield return first.Current;
             while (first.MoveNext())
                 yield return first.Current;
-            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            Assert.IsNotNull(context.ConnectionError, "The pending connect reported success for a room disconnected mid-connect.");
             Assert.IsNull(room.RoomHandle);
 
             yield return context.ConnectRoom(0);
