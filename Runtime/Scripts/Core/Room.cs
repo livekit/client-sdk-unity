@@ -121,6 +121,10 @@ namespace LiveKit
         // carried out by OnConnect as soon as the handle exists.
         private bool _connecting = false;
         private bool _disconnectRequested = false;
+        // True while Connect() tears down a reconnecting session to replace it. A
+        // handler connecting in that window would start a second connect next to the
+        // replacing one, and the later OnConnect would leak the first room.
+        private bool _replacingConnection = false;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
 
@@ -189,8 +193,10 @@ namespace LiveKit
         /// returned instruction is already complete. While the room is reconnecting,
         /// the reconnection is replaced: the current session is disconnected (reported as
         /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>)
-        /// and a fresh connect starts. Throws <see cref="InvalidOperationException"/>
-        /// while another connect is pending, or from a handler of the disconnect events.
+        /// and a fresh connect starts. A handler of the disconnect events may call this to
+        /// reconnect right away. Throws <see cref="InvalidOperationException"/> while
+        /// another connect is pending, or from a disconnect handler raised by such a
+        /// replacement, which already starts the new connection.
         /// </summary>
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
@@ -199,13 +205,16 @@ namespace LiveKit
             if (_connecting)
                 throw new InvalidOperationException(
                     "A Connect() is already pending on this room. Wait for its ConnectInstruction to complete before connecting again.");
-            // Inside Teardown's disconnect handlers the handle is still live until the
-            // handlers return, so this is neither connected nor disconnected yet.
-            if (_disposed && RoomHandle != null)
+            if (_replacingConnection)
                 throw new InvalidOperationException(
-                    "Connect() cannot be called while the room is disconnecting, such as from a Disconnected handler.");
+                    "Connect() cannot be called from a disconnect handler while Connect() is replacing a reconnecting session; that Connect() already starts the new connection.");
 
-            if (RoomHandle != null)
+            // Inside Teardown's disconnect handlers the old handle is still live, but the
+            // room is already reported disconnected, so it connects as a disconnected room
+            // does. The new handle only arrives with the connect callback, which is posted
+            // to the main thread and so runs after Teardown has released the old one.
+            bool tearingDown = _disposed && RoomHandle != null;
+            if (RoomHandle != null && !tearingDown)
             {
                 if (ConnectionState != ConnectionState.ConnReconnecting)
                 {
@@ -213,7 +222,15 @@ namespace LiveKit
                     return ConnectInstruction.AlreadyConnected();
                 }
                 Utils.Debug("Connect() while reconnecting: replacing the reconnection with a new connection");
-                Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
+                _replacingConnection = true;
+                try
+                {
+                    Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
+                }
+                finally
+                {
+                    _replacingConnection = false;
+                }
             }
 
             Utils.Debug("Connect....");
