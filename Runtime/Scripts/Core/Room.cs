@@ -183,13 +183,38 @@ namespace LiveKit
         public event DataTrackPublishedDelegate DataTrackPublished;
         public event DataTrackUnpublishedDelegate DataTrackUnpublished;
 
+        /// <summary>
+        /// Connects to a LiveKit room. On a room that is already connected this is a
+        /// no-op: a warning is logged, url, token and options are ignored, and the
+        /// returned instruction is already complete. While the room is reconnecting,
+        /// the reconnection is replaced: the current session is disconnected (reported as
+        /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>)
+        /// and a fresh connect starts. Throws <see cref="InvalidOperationException"/>
+        /// while another connect is pending, or from a handler of the disconnect events.
+        /// </summary>
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
             // A second connect on a live or connecting room would overwrite RoomHandle and
             // subscribe the handlers twice, leaking the first native room.
-            if (_connecting || RoomHandle != null)
+            if (_connecting)
                 throw new InvalidOperationException(
-                    "Room is already connecting or connected. Call Disconnect() and, if a Connect() is still pending, wait for its ConnectInstruction to complete before connecting again.");
+                    "A Connect() is already pending on this room. Wait for its ConnectInstruction to complete before connecting again.");
+            // Inside Teardown's disconnect handlers the handle is still live until the
+            // handlers return, so this is neither connected nor disconnected yet.
+            if (_disposed && RoomHandle != null)
+                throw new InvalidOperationException(
+                    "Connect() cannot be called while the room is disconnecting, such as from a Disconnected handler.");
+
+            if (RoomHandle != null)
+            {
+                if (ConnectionState != ConnectionState.ConnReconnecting)
+                {
+                    Utils.Warning($"Connect() called on room '{Name}', which is already connected; ignoring it.");
+                    return ConnectInstruction.AlreadyConnected();
+                }
+                Utils.Debug("Connect() while reconnecting: replacing the reconnection with a new connection");
+                Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
+            }
 
             Utils.Debug("Connect....");
             using var request = FFIBridge.Instance.NewRequest<ConnectRequest>();
@@ -764,6 +789,18 @@ namespace LiveKit
             Teardown(DisconnectReason.UnknownReason, closeFfiRoom: false);
         }
 
+        // Test hook: asks the core to simulate a scenario such as a signal reconnect.
+        internal SimulateScenarioInstruction SimulateScenario(SimulateScenarioKind scenario)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SimulateScenarioRequest>();
+            request.request.RoomHandle = (ulong)RoomHandle.DangerousGetHandle();
+            request.request.Scenario = scenario;
+
+            var instruction = new SimulateScenarioInstruction(request.RequestAsyncId);
+            using var response = request.Send();
+            return instruction;
+        }
+
         internal RemoteParticipant CreateRemoteParticipantWithTracks(ConnectCallback.Types.ParticipantWithTracks item)
         {
             var participant = item.Participant;
@@ -796,11 +833,26 @@ namespace LiveKit
         }
     }
 
+    internal sealed class SimulateScenarioInstruction : FfiInstruction<SimulateScenarioCallback>
+    {
+        internal SimulateScenarioInstruction(ulong asyncId)
+            : base(asyncId, static e => e.SimulateScenario, static e => e.Error) { }
+    }
+
     public sealed class ConnectInstruction : LiveKit.Internal.Threading.YieldInstruction
     {
         private ulong _asyncId;
         private Room _room;
         private RoomOptions _roomOptions;
+
+        private ConnectInstruction()
+        {
+            IsDone = true;
+        }
+
+        // Returned by Connect() on a room that is already connected: nothing is sent,
+        // and the caller sees a completed, successful connect.
+        internal static ConnectInstruction AlreadyConnected() => new ConnectInstruction();
 
         internal ConnectInstruction(ulong asyncId, Room room, RoomOptions options)
         {

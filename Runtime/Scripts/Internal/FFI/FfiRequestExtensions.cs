@@ -107,6 +107,9 @@ namespace LiveKit.Internal.FFI
                 case SetLocalNameRequest updateLocalNameRequest:
                     ffiRequest.SetLocalName = updateLocalNameRequest;
                     break;
+                case SimulateScenarioRequest simulateScenarioRequest:
+                    ffiRequest.SimulateScenario = simulateScenarioRequest;
+                    break;
                 case SetLocalAttributesRequest setLocalAttributesRequest:
                     ffiRequest.SetLocalAttributes = setLocalAttributesRequest;
                     break;

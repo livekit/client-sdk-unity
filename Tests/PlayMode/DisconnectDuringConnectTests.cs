@@ -96,7 +96,7 @@ namespace LiveKit.PlayModeTests
         }
 
         [UnityTest, Category("E2E")]
-        public IEnumerator Connect_WhenAlreadyConnected_ThrowsAndKeepsRoom()
+        public IEnumerator Connect_WhenAlreadyConnected_IsNoOp()
         {
             var options = TestRoomContext.ConnectionOptions.Default;
             options.Identity = "connect-while-connected";
@@ -107,11 +107,75 @@ namespace LiveKit.PlayModeTests
             Assert.IsNull(context.ConnectionError, context.ConnectionError);
             var handle = room.RoomHandle;
 
-            Assert.Throws<System.InvalidOperationException>(
-                () => room.Connect("ws://localhost:7880", "token", new RoomOptions()));
+            int connected = 0, disconnected = 0;
+            room.Connected += _ => connected++;
+            room.Disconnected += _ => disconnected++;
+
+            var second = room.Connect("ws://localhost:7880", "token", new RoomOptions());
+            Assert.IsTrue(second.IsDone, "Connect() on a connected room must complete immediately.");
+            Assert.IsFalse(second.IsError);
+            yield return second;
 
             Assert.IsTrue(room.IsConnected);
             Assert.AreSame(handle, room.RoomHandle, "The live room handle was replaced.");
+            Assert.AreEqual(0, connected);
+            Assert.AreEqual(0, disconnected);
+        }
+
+        [UnityTest, Category("E2E")]
+        public IEnumerator Connect_WhileReconnecting_ReplacesReconnection()
+        {
+            var options = TestRoomContext.ConnectionOptions.Default;
+            options.Identity = "connect-while-reconnecting";
+            using var context = new TestRoomContext(options);
+            var room = context.Rooms[0];
+
+            yield return context.ConnectRoom(0);
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+            var oldHandle = room.RoomHandle;
+
+            int connected = 0, disconnected = 0;
+            DisconnectReason? reason = null;
+            room.Connected += _ => connected++;
+            room.Disconnected += _ => disconnected++;
+            room.DisconnectedWithReason += (_, r) => reason = r;
+
+            // Connect() is called from the Reconnecting transition itself, so the
+            // test does not depend on how long the resume takes.
+            IEnumerator reconnect = null;
+            room.ConnectionStateChanged += state =>
+            {
+                if (state != ConnectionState.ConnReconnecting || reconnect != null)
+                    return;
+                reconnect = context.ConnectRoom(0);
+                reconnect.MoveNext(); // runs up to the first yield: Connect() has been called
+            };
+
+            // Not awaited: its callback only arrives once the resume finishes, and the
+            // Connect() above closes the room in the middle of that resume.
+            room.SimulateScenario(SimulateScenarioKind.SimulateSignalReconnect);
+
+            var reconnecting = new Expectation(() => reconnect != null, TimeoutSeconds);
+            yield return reconnecting.Wait();
+            Assert.IsNull(reconnecting.Error, "The room never reported Reconnecting.");
+
+            yield return reconnect.Current;
+            while (reconnect.MoveNext())
+                yield return reconnect.Current;
+            Assert.IsNull(context.ConnectionError, context.ConnectionError);
+
+            Assert.AreEqual(1, disconnected, "The replaced session must be reported as disconnected once.");
+            Assert.AreEqual(DisconnectReason.ClientInitiated, reason);
+            Assert.AreEqual(1, connected);
+            Assert.IsTrue(room.IsConnected);
+            Assert.IsNotNull(room.RoomHandle);
+            Assert.AreNotSame(oldHandle, room.RoomHandle, "The old room handle was kept.");
+
+            // The old session closing (same identity) must not take the new one down.
+            var stays = new Expectation(() => !room.IsConnected, 3f);
+            yield return stays.Wait();
+            Assert.IsNotNull(stays.Error, "The new session was disconnected after replacing the reconnection.");
+            Assert.AreEqual(1, disconnected);
         }
 
         [UnityTest, Category("E2E")]
