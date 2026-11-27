@@ -116,6 +116,15 @@ namespace LiveKit
         // that calls Disconnect() re-entrantly is a no-op; reset by OnConnect so a Room
         // can be connected again after a disconnect.
         private bool _disposed = false;
+        // True from Connect() until its callback arrives. A Disconnect() in that window
+        // has no handle to close yet, so it is remembered in _disconnectRequested and
+        // carried out by OnConnect as soon as the handle exists.
+        private bool _connecting = false;
+        private bool _disconnectRequested = false;
+        // True while Connect() tears down a reconnecting session to replace it. A
+        // handler connecting in that window would start a second connect next to the
+        // replacing one, and the later OnConnect would leak the first room.
+        private bool _replacingConnection = false;
         private readonly Dictionary<string, RemoteParticipant> _participants = new();
         private StreamHandlerRegistry _streamHandlers = new();
 
@@ -178,8 +187,52 @@ namespace LiveKit
         public event DataTrackPublishedDelegate DataTrackPublished;
         public event DataTrackUnpublishedDelegate DataTrackUnpublished;
 
+        /// <summary>
+        /// Connects to a LiveKit room. On a room that is already connected this is a
+        /// no-op: a warning is logged, url, token and options are ignored, and the
+        /// returned instruction is already complete. While the room is reconnecting,
+        /// the reconnection is replaced: the current session is disconnected (reported as
+        /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>)
+        /// and a fresh connect starts. A handler of the disconnect events may call this to
+        /// reconnect right away. Throws <see cref="InvalidOperationException"/> while
+        /// another connect is pending, or from a disconnect handler raised by such a
+        /// replacement, which already starts the new connection.
+        /// </summary>
         public ConnectInstruction Connect(string url, string token, RoomOptions options)
         {
+            // A second connect on a live or connecting room would overwrite RoomHandle and
+            // subscribe the handlers twice, leaking the first native room.
+            if (_connecting)
+                throw new InvalidOperationException(
+                    "A Connect() is already pending on this room. Wait for its ConnectInstruction to complete before connecting again.");
+            if (_replacingConnection)
+                throw new InvalidOperationException(
+                    "Connect() cannot be called from a disconnect handler while Connect() is replacing a reconnecting session; that Connect() already starts the new connection.");
+
+            // Inside Teardown's disconnect handlers the old handle is still live, but the
+            // room is already reported disconnected, so it connects as a disconnected room
+            // does. The new handle only arrives with the connect callback, which is posted
+            // to the main thread and so runs after Teardown has released the old one.
+            bool tearingDown = _disposed && RoomHandle != null;
+            if (RoomHandle != null && !tearingDown)
+            {
+                if (ConnectionState != ConnectionState.ConnReconnecting)
+                {
+                    Utils.Warning($"Connect() called on room '{Name}', which is already connected; ignoring it.");
+                    return ConnectInstruction.AlreadyConnected();
+                }
+                Utils.Debug("Connect() while reconnecting: replacing the reconnection with a new connection");
+                _replacingConnection = true;
+                try
+                {
+                    Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
+                }
+                finally
+                {
+                    _replacingConnection = false;
+                }
+            }
+
             Utils.Debug("Connect....");
             using var request = FFIBridge.Instance.NewRequest<ConnectRequest>();
             var connect = request.request;
@@ -187,10 +240,20 @@ namespace LiveKit
             connect.Token = token;
             connect.Options = options.ToProto();
 
-            var instruction = new ConnectInstruction(request.RequestAsyncId, this, options);
-            using var response = request.Send();
-            Utils.Debug($"Connect response.... {response}");
-            return instruction;
+            _connecting = true;
+            _disconnectRequested = false;
+            try
+            {
+                var instruction = new ConnectInstruction(request.RequestAsyncId, this, options);
+                using var response = request.Send();
+                Utils.Debug($"Connect response.... {response}");
+                return instruction;
+            }
+            catch
+            {
+                _connecting = false;
+                throw;
+            }
         }
 
         /// <summary>
@@ -200,12 +263,20 @@ namespace LiveKit
         /// <see cref="DisconnectReason.ClientInitiated"/>, synchronously and with the
         /// room's handles still live — so one teardown path covers both.
         /// <see cref="Dispose"/> goes through here too. Calling this from a handler of
-        /// those events, or on a room that already disconnected, is a no-op. So is a
-        /// call while <see cref="Connect"/> is still pending: that connect completes,
-        /// and the app has to disconnect again once it has.
+        /// those events, or on a room that already disconnected, is a no-op. A call
+        /// while <see cref="Connect"/> is still pending is remembered: when the connect
+        /// completes the room is torn down right away (reported as
+        /// <see cref="Disconnected"/> with <see cref="DisconnectReason.ClientInitiated"/>),
+        /// <see cref="Connected"/> is never raised, and the pending
+        /// <see cref="ConnectInstruction"/> completes with <c>IsError</c> set.
         /// </summary>
         public void Disconnect()
         {
+            if (_connecting)
+            {
+                _disconnectRequested = true;
+                return;
+            }
             if (_disposed || RoomHandle == null)
                 return;
             Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
@@ -655,12 +726,26 @@ namespace LiveKit
             }
         }
 
-        internal void OnConnect(ConnectCallback info)
+        // The connect failed or was cancelled: nothing to tear down, and a Disconnect()
+        // requested meanwhile is satisfied.
+        internal void OnConnectFailed()
         {
+            _connecting = false;
+            _disconnectRequested = false;
+        }
+
+        // Returns whether Connected was raised; false when the room was torn down
+        // before that, so the ConnectInstruction does not report a success.
+        internal bool OnConnect(ConnectCallback info, RoomOptions options)
+        {
+            _connecting = false;
             RoomHandle = FfiHandle.FromOwnedHandle(info.Result.Room.Handle);
             // A Room may be connected again after a disconnect: each connect starts a
             // fresh lifecycle.
             _disposed = false;
+
+            // Needs the room handle, so it can only be built once that is set.
+            E2EEManager = options.E2EE != null ? new E2EEManager(RoomHandle, options.E2EE) : null;
 
             UpdateFromInfo(info.Result.Room.Info);
             LocalParticipant = new LocalParticipant(info.Result.LocalParticipant, this);
@@ -684,6 +769,15 @@ namespace LiveKit
                 using var readyResponse = readyRequest.Send();
             }
 
+            // Disconnect() was called while this connect was pending: close the room now
+            // that it has a handle. Connected is never raised for it.
+            if (_disconnectRequested)
+            {
+                _disconnectRequested = false;
+                Teardown(DisconnectReason.ClientInitiated, closeFfiRoom: true);
+                return false;
+            }
+
             // The core recorded this transition during connect, before this room was
             // subscribed to its events (its own copy drains later and is dropped as a
             // repeat, see SetConnectionState); recording it here makes IsConnected true
@@ -692,8 +786,9 @@ namespace LiveKit
             // A ConnectionStateChanged handler may already have disconnected the room;
             // Connected is not raised on a torn-down room.
             if (_disposed)
-                return;
+                return false;
             Connected?.Invoke(this);
+            return true;
         }
 
         private void OnDisconnectReceived(DisconnectCallback e)
@@ -709,6 +804,18 @@ namespace LiveKit
             // itself), so the panic is surfaced through the disconnect path apps
             // already handle.
             Teardown(DisconnectReason.UnknownReason, closeFfiRoom: false);
+        }
+
+        // Test hook: asks the core to simulate a scenario such as a signal reconnect.
+        internal SimulateScenarioInstruction SimulateScenario(SimulateScenarioKind scenario)
+        {
+            using var request = FFIBridge.Instance.NewRequest<SimulateScenarioRequest>();
+            request.request.RoomHandle = (ulong)RoomHandle.DangerousGetHandle();
+            request.request.Scenario = scenario;
+
+            var instruction = new SimulateScenarioInstruction(request.RequestAsyncId);
+            using var response = request.Send();
+            return instruction;
         }
 
         internal RemoteParticipant CreateRemoteParticipantWithTracks(ConnectCallback.Types.ParticipantWithTracks item)
@@ -743,11 +850,26 @@ namespace LiveKit
         }
     }
 
+    internal sealed class SimulateScenarioInstruction : FfiInstruction<SimulateScenarioCallback>
+    {
+        internal SimulateScenarioInstruction(ulong asyncId)
+            : base(asyncId, static e => e.SimulateScenario, static e => e.Error) { }
+    }
+
     public sealed class ConnectInstruction : LiveKit.Internal.Threading.YieldInstruction
     {
         private ulong _asyncId;
         private Room _room;
         private RoomOptions _roomOptions;
+
+        private ConnectInstruction()
+        {
+            IsDone = true;
+        }
+
+        // Returned by Connect() on a room that is already connected: nothing is sent,
+        // and the caller sees a completed, successful connect.
+        internal static ConnectInstruction AlreadyConnected() => new ConnectInstruction();
 
         internal ConnectInstruction(ulong asyncId, Room room, RoomOptions options)
         {
@@ -770,12 +892,11 @@ namespace LiveKit
             {
                 if (success)
                 {
-                    if (_roomOptions.E2EE != null)
-                    {
-                        _room.E2EEManager = new E2EEManager(_room.RoomHandle, _roomOptions.E2EE);
-                    }
-
-                    _room.OnConnect(e);
+                    success = _room.OnConnect(e, _roomOptions);
+                }
+                else
+                {
+                    _room.OnConnectFailed();
                 }
             }
             finally
@@ -790,6 +911,7 @@ namespace LiveKit
 
         void OnCanceled()
         {
+            _room.OnConnectFailed();
             IsError = true;
             IsDone = true;
         }
