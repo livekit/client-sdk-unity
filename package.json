@@ -1,6 +1,6 @@
 {
   "name": "io.livekit.livekit-sdk",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "displayName": "LiveKit SDK",
   "description": "LiveKit",
   "unity": "2022.3",
